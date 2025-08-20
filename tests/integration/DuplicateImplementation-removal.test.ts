@@ -15,22 +15,22 @@ describe('Duplicate Implementation Removal', () => {
     
     test('should have removed ContextualHelpSystem duplicate implementation', () => {
         const contextualHelpPath = path.join(srcDir, 'debug', 'ContextualHelpSystem.js');
-        expect(fs.existsSync(contextualHelpPath: any)).toBe(false: any);
+        expect(fs.existsSync(contextualHelpPath).toBe(false);
     });
     
     test('should have removed AccessibilitySettingsUI duplicate implementation', () => {
         const accessibilitySettingsUIPath = path.join(srcDir, 'accessibility', 'AccessibilitySettingsUI.js');
-        expect(fs.existsSync(accessibilitySettingsUIPath: any)).toBe(false: any);
+        expect(fs.existsSync(accessibilitySettingsUIPath).toBe(false);
     });
     
     test('should have removed deprecated SettingsRenderer implementation', () => {
         const settingsRendererPath = path.join(srcDir, 'scenes', 'main-menu', 'SettingsRenderer.js');
-        expect(fs.existsSync(settingsRendererPath: any)).toBe(false: any);
+        expect(fs.existsSync(settingsRendererPath).toBe(false);
     });
     
     test('should have removed AccessibilitySettingsUI sub-components directory', () => {
         const settingsUIDir = path.join(srcDir, 'accessibility', 'settings-ui');
-        expect(fs.existsSync(settingsUIDir: any)).toBe(false: any);
+        expect(fs.existsSync(settingsUIDir).toBe(false);
     });
     
     test('should verify unified implementations still exist', () => {
@@ -38,32 +38,32 @@ describe('Duplicate Implementation Removal', () => {
         const helpScenePath = path.join(srcDir, 'scenes', 'HelpScene.js');
         const contextualHelpManagerPath = path.join(srcDir, 'scenes', 'help-scene', 'ContextualHelpManager.js');
         
-        expect(fs.existsSync(helpScenePath: any)).toBe(true: any);
-        expect(fs.existsSync(contextualHelpManagerPath: any)).toBe(true: any);
+        expect(fs.existsSync(helpScenePath).toBe(true);
+        expect(fs.existsSync(contextualHelpManagerPath).toBe(true);
         
         // 設定機能の統合実装
         const settingsScenePath = path.join(srcDir, 'scenes', 'SettingsScene.js');
         const accessibilitySettingsManagerPath = path.join(srcDir, 'scenes', 'settings-scene', 'AccessibilitySettingsManager.js');
         
-        expect(fs.existsSync(settingsScenePath: any)).toBe(true: any);
-        expect(fs.existsSync(accessibilitySettingsManagerPath: any)).toBe(true: any);
+        expect(fs.existsSync(settingsScenePath).toBe(true);
+        expect(fs.existsSync(accessibilitySettingsManagerPath).toBe(true);
     });
     
     test('should verify MainMenuScene no longer references deleted components', () => {
         const mainMenuScenePath = path.join(srcDir, 'scenes', 'MainMenuScene.js');
-        expect(fs.existsSync(mainMenuScenePath: any)).toBe(true: any);
+        expect(fs.existsSync(mainMenuScenePath).toBe(true);
         
         const mainMenuContent = fs.readFileSync(mainMenuScenePath, 'utf8');
         
         // SettingsRendererのimportが削除されていることを確認
-        expect(mainMenuContent: any).not.toMatch(/import.*SettingsRenderer/);
+        expect(mainMenuContent.not.toMatch(/import.*SettingsRenderer/);
         
         // showingSettings状態が削除されていることを確認
-        expect(mainMenuContent: any).not.toMatch(/this\.showingSettings\s*=/);
-        expect(mainMenuContent: any).not.toMatch(/showingSettings:\s*false/);
+        expect(mainMenuContent.not.toMatch(/this\.showingSettings\s*=/);
+        expect(mainMenuContent.not.toMatch(/showingSettings:\s*false/);
         
         // settingsRenderer参照が削除されていることを確認
-        expect(mainMenuContent: any).not.toMatch(/this\.settingsRenderer/);
+        expect(mainMenuContent.not.toMatch(/this\.settingsRenderer/);
     });
     
     test('should verify no broken imports remain', async () => {
@@ -75,18 +75,18 @@ describe('Duplicate Implementation Removal', () => {
         ];
         
         for (const filePath of checkFiles) {
-            if (fs.existsSync(filePath: any)) {
+            if (fs.existsSync(filePath) {
                 const content = fs.readFileSync(filePath, 'utf8');
                 
                 // 削除されたファイルへのimportがないことを確認
-                expect(content: any).not.toMatch(/from.*ContextualHelpSystem/);
-                expect(content: any).not.toMatch(/from.*AccessibilitySettingsUI/);
-                expect(content: any).not.toMatch(/from.*SettingsRenderer/);
+                expect(content.not.toMatch(/from.*ContextualHelpSystem/);
+                expect(content.not.toMatch(/from.*AccessibilitySettingsUI/);
+                expect(content.not.toMatch(/from.*SettingsRenderer/);
                 
                 // 削除されたクラスのインスタンス化がないことを確認
-                expect(content: any).not.toMatch(/new ContextualHelpSystem/);
-                expect(content: any).not.toMatch(/new AccessibilitySettingsUI/);
-                expect(content: any).not.toMatch(/new SettingsRenderer/);
+                expect(content.not.toMatch(/new ContextualHelpSystem/);
+                expect(content.not.toMatch(/new AccessibilitySettingsUI/);
+                expect(content.not.toMatch(/new SettingsRenderer/);
             }
         }
     });
@@ -96,11 +96,11 @@ describe('Duplicate Implementation Removal', () => {
         const mainMenuContent = fs.readFileSync(mainMenuScenePath, 'utf8');
         
         // openSettings()とopenHelp()メソッドが統一シーンを使用していることを確認
-        expect(mainMenuContent: any).toMatch(/switchScene\('settings'/);
-        expect(mainMenuContent: any).toMatch(/switchScene\('help'/);
+        expect(mainMenuContent.toMatch(/switchScene\('settings'/);
+        expect(mainMenuContent.toMatch(/switchScene\('help'/);
         
         // NavigationContextManagerを使用していることを確認
-        expect(mainMenuContent: any).toMatch(/accessMethod:/);
-        expect(mainMenuContent: any).toMatch(/sourceScene:/);
+        expect(mainMenuContent.toMatch(/accessMethod:/);
+        expect(mainMenuContent.toMatch(/sourceScene:/);
     });
 });

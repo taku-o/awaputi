@@ -1,5 +1,5 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
 #!/usr/bin/env node
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest, it } from '@jest/globals';
 
 /**
  * 国際化E2Eテスト実行スクリプト

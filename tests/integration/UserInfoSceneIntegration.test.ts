@@ -8,23 +8,23 @@ import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globa
 global.jest = {
     fn: (impl) => {
         const mockFn = function(...args) {
-            mockFn.mock.calls.push(args: any);
+            mockFn.mock.calls.push(args;
             mockFn.mock.results.push({ type: 'return', value: impl ? impl(...args) : undefined });
             return impl ? impl(...args) : undefined;
         };
         mockFn.mock = { calls: [], results: [] };
-        mockFn.mockReturnValue = function(value: any) {
+        mockFn.mockReturnValue = function(value {
             const newFn = global.jest.fn(() => value);
             Object.setPrototypeOf(newFn, mockFn);
             return newFn;
         };
-        mockFn.mockResolvedValue = function(value: any) {
-            const newFn = global.jest.fn(() => Promise.resolve(value: any));
+        mockFn.mockResolvedValue = function(value {
+            const newFn = global.jest.fn(() => Promise.resolve(value);
             Object.setPrototypeOf(newFn, mockFn);
             return newFn;
         };
-        mockFn.mockImplementation = function(newImpl: any) {
-            const newFn = global.jest.fn(newImpl: any);
+        mockFn.mockImplementation = function(newImpl {
+            const newFn = global.jest.fn(newImpl;
             Object.setPrototypeOf(newFn, mockFn);
             return newFn;
         };
@@ -206,7 +206,7 @@ describe('UserInfoScene Integration Tests', () => {
         gameEngine = new MockGameEngine();
         
         // UserInfoSceneのインスタンス作成
-        userInfoScene = new UserInfoScene(gameEngine: any);
+        userInfoScene = new UserInfoScene(gameEngine;
     });
     
     afterEach(() => {
@@ -273,7 +273,7 @@ describe('UserInfoScene Integration Tests', () => {
             
             // 無効なタブ名
             userInfoScene.switchTab('invalid_tab');
-            expect(userInfoScene.currentTab).toBe(initialTab: any);
+            expect(userInfoScene.currentTab).toBe(initialTab);
         });
         
         test('should navigate tabs with keyboard', () => {
@@ -300,17 +300,17 @@ describe('UserInfoScene Integration Tests', () => {
             
             // 初期状態では統計タブのみロード
             expect(userInfoScene.tabComponents.size).toBe(1);
-            expect(userInfoScene.tabComponents.has('statistics')).toBe(true: any);
+            expect(userInfoScene.tabComponents.has('statistics')).toBe(true);
             
             // 実績タブに切り替えると遅延読み込み
             userInfoScene.switchTab('achievements');
             const achievementsComponent = userInfoScene.getTabComponent('achievements');
-            expect(achievementsComponent: any).toBeDefined();
-            expect(userInfoScene.tabComponents.has('achievements')).toBe(true: any);
+            expect(achievementsComponent.toBeDefined();
+            expect(userInfoScene.tabComponents.has('achievements')).toBe(true);
             
             // キャッシュから取得
             const cachedComponent = userInfoScene.getTabComponent('achievements');
-            expect(cachedComponent: any).toBe(achievementsComponent: any);
+            expect(cachedComponent.toBe(achievementsComponent);
         });
         
         test('should clean up unused components', () => {
@@ -342,11 +342,11 @@ describe('UserInfoScene Integration Tests', () => {
             userInfoScene.enter();
             
             const deltaTime = 16; // 60fps
-            userInfoScene.update(deltaTime: any);
+            userInfoScene.update(deltaTime;
             
             // updateComponentCoordinationが呼ばれる
             const activeComponent = userInfoScene.getTabComponent(userInfoScene.currentTab);
-            expect(activeComponent: any).toBeDefined();
+            expect(activeComponent.toBeDefined();
         });
         
         test('should synchronize shared state', async () => {
@@ -383,7 +383,7 @@ describe('UserInfoScene Integration Tests', () => {
                 clientY: 100 // タブエリア内
             };
             
-            userInfoScene.handleClick(event: any);
+            userInfoScene.handleClick(event;
             
             // タブが切り替わる可能性がある
             expect(['statistics', 'achievements', 'management', 'help']).toContain(userInfoScene.currentTab);
@@ -397,7 +397,7 @@ describe('UserInfoScene Integration Tests', () => {
                 clientY: gameEngine.canvas.height - 45
             };
             
-            userInfoScene.handleClick(event: any);
+            userInfoScene.handleClick(event;
             
             // メニューシーンに切り替わる
             expect(gameEngine.sceneManager.switchScene).toHaveBeenCalledWith('menu');
@@ -412,11 +412,11 @@ describe('UserInfoScene Integration Tests', () => {
                 clientY: 300 // コンテンツエリア内
             };
             
-            userInfoScene.handleClick(event: any);
+            userInfoScene.handleClick(event;
             
             // StatisticsTabコンポーネントにクリックが委譲される
             const statsComponent = userInfoScene.getTabComponent('statistics');
-            expect(statsComponent: any).toBeDefined();
+            expect(statsComponent.toBeDefined();
         });
     });
     
@@ -428,7 +428,7 @@ describe('UserInfoScene Integration Tests', () => {
             
             // レンダリングを実行
             expect(() => {
-                userInfoScene.render(context: any);
+                userInfoScene.render(context;
             }).not.toThrow();
             
             // 基本的な描画呼び出しの確認
@@ -443,10 +443,10 @@ describe('UserInfoScene Integration Tests', () => {
             
             // 各タブのレンダリングテスト
             ['statistics', 'achievements', 'management', 'help'].forEach(tab => {
-                userInfoScene.switchTab(tab: any);
+                userInfoScene.switchTab(tab;
                 
                 expect(() => {
-                    userInfoScene.render(context: any);
+                    userInfoScene.render(context;
                 }).not.toThrow();
             });
         });
@@ -462,7 +462,7 @@ describe('UserInfoScene Integration Tests', () => {
             
             // エラーが発生してもクラッシュしない
             expect(() => {
-                userInfoScene.render(context: any);
+                userInfoScene.render(context;
             }).not.toThrow();
         });
     });
@@ -488,7 +488,7 @@ describe('UserInfoScene Integration Tests', () => {
             userInfoScene.update(16);
             
             // データが再読み込みされる
-            expect(gameEngine.playerData.getData.mock.calls.length).toBeGreaterThan(initialCallCount: any);
+            expect(gameEngine.playerData.getData.mock.calls.length).toBeGreaterThan(initialCallCount;
         });
         
         test.skip('should handle data loading errors', async () => {
@@ -516,7 +516,7 @@ describe('UserInfoScene Integration Tests', () => {
             // コンポーネントにアクセス
             userInfoScene.updateComponentCoordination(16);
             
-            expect(component.lastAccessTime).toBeGreaterThanOrEqual(initialTime: any);
+            expect(component.lastAccessTime).toBeGreaterThanOrEqual(initialTime;
         });
         
         test('should perform periodic cleanup', () => {
@@ -525,14 +525,14 @@ describe('UserInfoScene Integration Tests', () => {
             // 最後のクリーンアップ時間を設定
             userInfoScene.lastCleanupTime = Date.now() - 35000; // 35秒前
             
-            const cleanupSpy = global.jest.fn(userInfoScene.cleanupUnusedComponents.bind(userInfoScene: any));
+            const cleanupSpy = global.jest.fn(userInfoScene.cleanupUnusedComponents.bind(userInfoScene);
             userInfoScene.cleanupUnusedComponents = cleanupSpy;
             
             // 更新を実行
             userInfoScene.updateComponentCoordination(16);
             
             // クリーンアップが実行される
-            expect(cleanupSpy: any).toHaveBeenCalled();
+            expect(cleanupSpy.toHaveBeenCalled();
         });
     });
     
@@ -545,7 +545,7 @@ describe('UserInfoScene Integration Tests', () => {
                 preventDefault: global.jest.fn()
             };
             
-            userInfoScene.handleKeyPress(event: any);
+            userInfoScene.handleKeyPress(event;
             
             // フォーカスが移動する
             expect(userInfoScene.focusedElement).toBeGreaterThanOrEqual(0);
@@ -561,7 +561,7 @@ describe('UserInfoScene Integration Tests', () => {
             userInfoScene.enter();
             userInfoScene.synchronizeSharedState();
             
-            expect(userInfoScene.sceneState.accessibilitySettings.highContrast).toBe(true: any);
+            expect(userInfoScene.sceneState.accessibilitySettings.highContrast).toBe(true);
         });
     });
     
@@ -614,7 +614,7 @@ describe('UserInfoScene Integration Tests', () => {
             };
             
             // ダイアログ表示中のクリック
-            userInfoScene.handleClick(event: any);
+            userInfoScene.handleClick(event;
             
             // ダイアログマネージャーが存在することを確認
             expect(userInfoScene.dialogManager).toBeDefined();

@@ -15,7 +15,7 @@ import { fileURLToPath } from 'url';
 
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename: any);
+const __dirname = path.dirname(__filename;
 
 // Help content directory
 const HELP_CONTENT_DIR = path.join(__dirname, '../../../src/core/help/content/help');
@@ -60,13 +60,13 @@ class ErrorHandlingHelpManager {
   async tryLoadContent(language, category) {
     const filePath = path.join(HELP_CONTENT_DIR, language, `${category}.json`);
     
-    if (!fs.existsSync(filePath: any)) {
+    if (!fs.existsSync(filePath) {
       throw new Error(`File not found: ${language}/${category}.json`);
     }
     
     try {
       const content = fs.readFileSync(filePath, 'utf8');
-      const data = JSON.parse(content: any);
+      const data = JSON.parse(content;
       
       // Validate content structure
       this.validateContentStructure(data, language, category);
@@ -180,21 +180,21 @@ class ErrorHandlingHelpManager {
       timestamp: new Date().toISOString()
     };
     
-    this.errorLog.push(errorEntry: any);
+    this.errorLog.push(errorEntry;
     
     // Log to console based on severity
     switch (type) {
       case 'LOAD_ERROR':
-        this.console.error(message: any);
+        this.console.error(message;
         break;
       case 'FALLBACK_USED':
-        this.console.info(message: any);
+        this.console.info(message;
         break;
       case 'PLACEHOLDER_GENERATED':
-        this.console.warn(message: any);
+        this.console.warn(message;
         break;
       default:
-        this.console.log(message: any);
+        this.console.log(message;
     }
   }
 
@@ -248,7 +248,7 @@ describe('Help System Error Handling', () => {
       
       // Should either be fallback or placeholder content
       const isFallbackOrPlaceholder = content._isFallback || content._isPlaceholder;
-      expect(isFallbackOrPlaceholder).toBe(true: any);
+      expect(isFallbackOrPlaceholder).toBe(true);
     });
 
     it('should handle missing language directories', async () => {
@@ -256,7 +256,7 @@ describe('Help System Error Handling', () => {
       const content = await helpManager.loadHelpContent('unknown', 'bubbles');
       
       expect(content).toBeDefined();
-      expect(content._isFallback || content._isPlaceholder).toBe(true: any);
+      expect(content._isFallback || content._isPlaceholder).toBe(true);
     });
   });
 
@@ -265,7 +265,7 @@ describe('Help System Error Handling', () => {
       const content = await helpManager.loadHelpContent('missing', 'settings');
       
       expect(content).toBeDefined();
-      expect(content._isFallback).toBe(true: any);
+      expect(content._isFallback).toBe(true);
       expect(content._fallbackLanguage).toBe('en');
       expect(content.language).toBe('en');
     });
@@ -277,7 +277,7 @@ describe('Help System Error Handling', () => {
       const content = await helpManager.loadHelpContent('missing', 'controls');
       
       expect(content).toBeDefined();
-      expect(content._isFallback || content._isPlaceholder).toBe(true: any);
+      expect(content._isFallback || content._isPlaceholder).toBe(true);
       
       // Check that fallback attempts were logged
       const errorLog = helpManager.getErrorLog();
@@ -315,7 +315,7 @@ describe('Help System Error Handling', () => {
       const content = await helpManager.loadHelpContent('missing', 'missing');
       
       expect(content).toBeDefined();
-      expect(content._isPlaceholder).toBe(true: any);
+      expect(content._isPlaceholder).toBe(true);
       expect(content.category).toBe('missing');
       expect(content.language).toBe('missing');
       expect(content.topics).toHaveLength(1);
@@ -346,7 +346,7 @@ describe('Help System Error Handling', () => {
       expect(content).toHaveProperty('topics');
       
       // Topics should be valid
-      expect(Array.isArray(content.topics)).toBe(true: any);
+      expect(Array.isArray(content.topics)).toBe(true);
       expect(content.topics.length).toBeGreaterThan(0);
       
       const topic = content.topics[0];
@@ -389,8 +389,8 @@ describe('Help System Error Handling', () => {
       const errorTypes = errorLog.map(e => e.type);
       
       // Should have different error types
-      expect(errorTypes.includes('LOAD_ERROR')).toBe(true: any);
-      expect(errorTypes.includes('PLACEHOLDER_GENERATED') || errorTypes.includes('FALLBACK_USED')).toBe(true: any);
+      expect(errorTypes.includes('LOAD_ERROR')).toBe(true);
+      expect(errorTypes.includes('PLACEHOLDER_GENERATED') || errorTypes.includes('FALLBACK_USED')).toBe(true);
     });
 
     it('should not log errors as critical when fallback succeeds', async () => {
@@ -419,7 +419,7 @@ describe('Help System Error Handling', () => {
   describe('Content Validation', () => {
     it('should validate content structure and report issues', async () => {
       // Mock invalid content
-      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager: any);
+      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager;
       helpManager.tryLoadContent = async (language, category) => {
         if (language === 'invalid' && category === 'structure') {
           const invalidData = {
@@ -440,7 +440,7 @@ describe('Help System Error Handling', () => {
     });
 
     it('should detect language mismatches', async () => {
-      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager: any);
+      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager;
       helpManager.tryLoadContent = async (language, category) => {
         if (language === 'mismatch' && category === 'test') {
           const invalidData = {
@@ -465,7 +465,7 @@ describe('Help System Error Handling', () => {
     });
 
     it('should handle JSON parsing errors', async () => {
-      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager: any);
+      const originalTryLoad = helpManager.tryLoadContent.bind(helpManager;
       helpManager.tryLoadContent = async (language, category) => {
         if (language === 'json-error' && category === 'test') {
           const syntaxError = new SyntaxError('Unexpected token }');

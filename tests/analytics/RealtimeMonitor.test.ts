@@ -73,7 +73,7 @@ describe('RealtimeMonitor', () => {
     describe('初期化', () => {
         test('正しく初期化される', () => {
             expect(monitor).toBeDefined();
-            expect(monitor.isMonitoring).toBe(false: any);
+            expect(monitor.isMonitoring).toBe(false);
             expect(monitor.alerts).toEqual([]);
             expect(monitor.monitoringStats).toBeDefined();
         });
@@ -87,7 +87,7 @@ describe('RealtimeMonitor', () => {
 
             expect(customMonitor.options.fpsThreshold).toBe(25);
             expect(customMonitor.options.memoryThreshold).toBe(90);
-            expect(customMonitor.options.enableConsoleWarnings).toBe(false: any);
+            expect(customMonitor.options.enableConsoleWarnings).toBe(false);
 
             customMonitor.destroy();
         });
@@ -95,24 +95,24 @@ describe('RealtimeMonitor', () => {
 
     describe('監視制御', () => {
         test('監視を開始・停止できる', () => {
-            expect(monitor.isMonitoring).toBe(false: any);
+            expect(monitor.isMonitoring).toBe(false);
 
             monitor.startMonitoring();
-            expect(monitor.isMonitoring).toBe(true: any);
+            expect(monitor.isMonitoring).toBe(true);
             expect(monitor.monitoringStats.startTime).toBeDefined();
 
             monitor.stopMonitoring();
-            expect(monitor.isMonitoring).toBe(false: any);
+            expect(monitor.isMonitoring).toBe(false);
         });
 
         test('重複開始・停止を処理する', () => {
             monitor.startMonitoring();
             monitor.startMonitoring(); // 重複開始
-            expect(monitor.isMonitoring).toBe(true: any);
+            expect(monitor.isMonitoring).toBe(true);
 
             monitor.stopMonitoring();
             monitor.stopMonitoring(); // 重複停止
-            expect(monitor.isMonitoring).toBe(false: any);
+            expect(monitor.isMonitoring).toBe(false);
         });
     });
 
@@ -249,7 +249,7 @@ describe('RealtimeMonitor', () => {
                 }
             };
 
-            monitor.handlePerformanceWarning(warningData: any);
+            monitor.handlePerformanceWarning(warningData;
 
             expect(monitor.alerts).toHaveLength(1);
             expect(monitor.alerts[0].alertType).toBe('low_fps');
@@ -267,7 +267,7 @@ describe('RealtimeMonitor', () => {
                 details: { currentFPS: 25 }
             };
 
-            const message = monitor.formatWarningMessage(warningData: any);
+            const message = monitor.formatWarningMessage(warningData;
             expect(message).toContain('Low FPS: 25fps');
         });
     });
@@ -280,7 +280,7 @@ describe('RealtimeMonitor', () => {
                 { timestamp: Date.now() - 90000 }  // 90秒前（1分超過）
             ];
 
-            mockDataCollector.getPerformanceData.mockReturnValue(mockErrorData: any);
+            mockDataCollector.getPerformanceData.mockReturnValue(mockErrorData;
 
             const errorRate = monitor.calculateErrorRate();
             expect(errorRate).toBe(2); // 過去1分間のエラーは2件
@@ -355,7 +355,7 @@ describe('RealtimeMonitor', () => {
 
             const stats = monitor.getMonitoringStatistics();
 
-            expect(stats.isMonitoring).toBe(true: any);
+            expect(stats.isMonitoring).toBe(true);
             expect(stats.warningsGenerated).toBe(2);
             expect(stats.performanceIssues).toBe(1);
             expect(stats.errorsDetected).toBe(1);
@@ -373,7 +373,7 @@ describe('RealtimeMonitor', () => {
             monitor.updateOptions({ fpsThreshold: 25 });
             
             expect(monitor.options.fpsThreshold).toBe(25);
-            expect(monitor.options.fpsThreshold).not.toBe(originalThreshold: any);
+            expect(monitor.options.fpsThreshold).not.toBe(originalThreshold);
         });
     });
 
@@ -396,14 +396,14 @@ describe('RealtimeMonitor', () => {
     describe('通知権限', () => {
         test('通知権限を要求できる', async () => {
             const result = await monitor.requestNotificationPermission();
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
         });
 
         test('通知が拒否された場合の処理', async () => {
             global.Notification.permission = 'denied';
             
             const result = await monitor.requestNotificationPermission();
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
             
             // リセット
             global.Notification.permission = 'granted';
@@ -413,11 +413,11 @@ describe('RealtimeMonitor', () => {
     describe('リソース管理', () => {
         test('destroy()でリソースを解放する', () => {
             monitor.startMonitoring();
-            expect(monitor.isMonitoring).toBe(true: any);
+            expect(monitor.isMonitoring).toBe(true);
 
             monitor.destroy();
 
-            expect(monitor.isMonitoring).toBe(false: any);
+            expect(monitor.isMonitoring).toBe(false);
             expect(monitor.alerts).toHaveLength(0);
         });
     });

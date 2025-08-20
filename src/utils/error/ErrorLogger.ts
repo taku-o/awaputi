@@ -249,12 +249,8 @@ export class ErrorLogger {
      * Get error statistics
      * @returns Error statistics
      */
-    getErrorStats(): { total: number; byType: Record<string, number>; byContext: Record<string, number>; critical: number; recovered: number; } {
-        return {
-            ...this.errorStats,
-            byType: Object.fromEntries(this.errorStats.byType),
-            byContext: Object.fromEntries(this.errorStats.byContext)
-        };
+    getErrorStats(): ErrorStats {
+        return this.errorStats;
     }
     
     /**

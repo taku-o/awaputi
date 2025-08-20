@@ -74,7 +74,7 @@ interface MockErrorHandler {
 
 interface MockConfigManager {
     get: jest.MockedFunction<(category: string, key: string) => any>;
-    set: jest.MockedFunction<(category: string, key: string, value: any) => boolean>;
+    set: jest.MockedFunction<(category: string, key: string, value => boolean>;
     has: jest.MockedFunction<(category: string, key: string) => boolean>;
     getCategory: jest.MockedFunction<(category: string) => any>;
 }

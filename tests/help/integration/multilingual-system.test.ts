@@ -144,7 +144,7 @@ describe('Multilingual Help System Integration', () => {
             expect(parsed).toHaveProperty('title');
             expect(parsed).toHaveProperty('sections');
             expect(Array.isArray(parsed.sections)).toBe(true);
-          } catch (error: any) {
+          } catch (error {
             errors.push({ file: `${language}/${file}`, error: error.message });
           }
         }

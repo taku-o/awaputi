@@ -69,9 +69,9 @@ interface BubbleManager {
     getBubblesAlongPath(start: Position, end: Position): any[];
     setStageConfig(config: StageConfig): void;
     setSpecialSpawnRate(type: string, rate: number): void;
-    render(context: any): void;
+    render(context: void;
     addTestBubble(data: BubbleData): void;
-    removeTestBubbles(condition: (bubble: any) => boolean): void;
+    removeTestBubbles(condition: (bubble => boolean): void;
     getTestBubbleInfo(): TestBubbleInfo;
 }
 

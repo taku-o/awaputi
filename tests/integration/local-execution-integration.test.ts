@@ -150,7 +150,7 @@ describe('Local Execution Integration', () => {
             const initResult = await localModeManager.initialize();
 
             // Assert: All components should initialize successfully
-            expect(initResult: any).toBe(true: any);
+            expect(initResult.toBe(true);
             expect(mockDocument.createElement).toHaveBeenCalledWith('canvas');
             expect(mockDocument.head.querySelector).toHaveBeenCalled();
             expect(mockDocument.body.appendChild).toHaveBeenCalled();
@@ -175,7 +175,7 @@ describe('Local Execution Integration', () => {
             const initResult = await localModeManager.initialize();
 
             // Assert: Should continue initialization despite favicon failure
-            expect(initResult: any).toBe(true: any);
+            expect(initResult.toBe(true);
             expect(mockDocument.body.appendChild).toHaveBeenCalled(); // Developer guidance should still work
         });
 
@@ -188,7 +188,7 @@ describe('Local Execution Integration', () => {
 
             // Simulate the main.js flow
             const isLocalExecution = LocalExecutionDetector.isLocalExecution();
-            expect(isLocalExecution: any).toBe(true: any);
+            expect(isLocalExecution.toBe(true);
 
             // Initialize local mode as main.js would
             const localModeManager = new LocalModeManager({
@@ -206,7 +206,7 @@ describe('Local Execution Integration', () => {
             }
 
             // Assert: Integration should work smoothly
-            expect(initSuccess: any).toBe(true: any);
+            expect(initSuccess.toBe(true);
             expect(mockGameEngine.initialize).toHaveBeenCalled();
             expect(mockGameEngine.start).toHaveBeenCalled();
         });
@@ -264,7 +264,7 @@ describe('Local Execution Integration', () => {
 
             // Developer guidance should not be shown
             const divCreationCalls = mockDocument.createElement.mock.calls.filter(call => call[0] === 'div');
-            expect(divCreationCalls: any).toHaveLength(0);
+            expect(divCreationCalls.toHaveLength(0);
         });
     });
 
@@ -279,7 +279,7 @@ describe('Local Execution Integration', () => {
                 enableFallbacks: true
             });
 
-            expect(initSpy: any).toHaveBeenCalledWith({
+            expect(initSpy.toHaveBeenCalledWith({
                 enableGlobalHandling: true,
                 enableUserNotifications: true,
                 enableFallbacks: true
@@ -326,7 +326,7 @@ describe('Local Execution Integration', () => {
             });
 
             const result1 = await localModeManager1.initialize();
-            expect(result1: any).toBe(true: any); // Should still initialize successfully
+            expect(result1.toBe(true); // Should still initialize successfully
 
             // Test case 2: No localStorage support
             delete mockWindow.localStorage;
@@ -337,7 +337,7 @@ describe('Local Execution Integration', () => {
             });
 
             const result2 = await localModeManager2.initialize();
-            expect(result2: any).toBe(true: any); // Should still work without localStorage
+            expect(result2.toBe(true); // Should still work without localStorage
         });
     });
 
@@ -357,7 +357,7 @@ describe('Local Execution Integration', () => {
             const executionTime = endTime - startTime;
 
             // Should complete initialization in under 2 seconds
-            expect(executionTime: any).toBeLessThan(2000);
+            expect(executionTime.toBeLessThan(2000);
         });
 
         test('should not create memory leaks during initialization', async () => {
@@ -381,7 +381,7 @@ describe('Local Execution Integration', () => {
             const memoryIncrease = finalMemory - initialMemory;
 
             // Should not increase memory by more than 5MB after 10 initializations
-            expect(memoryIncrease: any).toBeLessThan(5 * 1024 * 1024);
+            expect(memoryIncrease.toBeLessThan(5 * 1024 * 1024);
         });
 
         test('should clean up resources properly', async () => {
@@ -415,7 +415,7 @@ describe('Local Execution Integration', () => {
 
         test('should respect user preferences for guidance display', async () => {
             // Test showing guidance for new users
-            mockLocalStorage.getItem.mockReturnValue(null: any);
+            mockLocalStorage.getItem.mockReturnValue(null;
 
             const localModeManager1 = new LocalModeManager({
                 enableDeveloperGuidance: true
@@ -455,7 +455,7 @@ describe('Local Execution Integration', () => {
             });
 
             const result = await localModeManager.initialize();
-            expect(result: any).toBe(true: any);
+            expect(result.toBe(true);
         });
 
         test('should handle Firefox local storage restrictions', async () => {
@@ -470,7 +470,7 @@ describe('Local Execution Integration', () => {
 
             const result = await localModeManager.initialize();
             // Should still work even without localStorage
-            expect(result: any).toBe(true: any);
+            expect(result.toBe(true);
         });
 
         test('should adapt to Safari security restrictions', async () => {
@@ -492,7 +492,7 @@ describe('Local Execution Integration', () => {
 
             const result = await localModeManager.initialize();
             // Should handle canvas failure gracefully
-            expect(result: any).toBe(true: any);
+            expect(result.toBe(true);
         });
     });
 });

@@ -36,7 +36,7 @@ const GameplaySimulator = {
             
             if (bubbleCount > 0) {
                 const randomIndex = Math.floor(Math.random() * bubbleCount);
-                await bubbles.nth(randomIndex: any).click();
+                await bubbles.nth(randomIndex.click();
             }
 
             await page.waitForTimeout(100); // 100ms待機
@@ -146,7 +146,7 @@ const AccessibilityHelper = {
         // テキストのコントラスト比を確認（簡易チェック）
         const textElement = page.locator('.statistics-text').first();
         const styles = await textElement.evaluate(el => {
-            const computed = window.getComputedStyle(el: any);
+            const computed = window.getComputedStyle(el;
             return {
                 color: computed.color,
                 backgroundColor: computed.backgroundColor
@@ -172,7 +172,7 @@ const ResponsiveHelper = {
      */
     async testResponsiveDisplay(page, testFunc) {
         for (const [device, viewport] of Object.entries(this.viewports)) {
-            await page.setViewportSize(viewport: any);
+            await page.setViewportSize(viewport;
             await page.waitForTimeout(500); // レイアウト調整を待機
 
             console.log(`Testing on ${device} (${viewport.width}x${viewport.height})`);
@@ -196,7 +196,7 @@ test.describe('統計機能E2Eテスト', () => {
     test.describe('基本的な統計データ収集フロー', () => {
         test('ゲームプレイから統計表示までの完全フロー', async ({ page }) => {
             // 1. ゲームプレイ
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             
             // 2. 統計画面に移動
             await page.click('[data-testid="user-info-button"]');
@@ -246,21 +246,21 @@ test.describe('統計機能E2Eテスト', () => {
             
             // 新しいゲームをプレイ
             await page.click('[data-testid="back-to-menu-button"]');
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             
             // 統計画面に戻る
             await page.click('[data-testid="user-info-button"]');
             
             // 統計が更新されていることを確認
             const updatedGames = await page.locator('[data-testid="total-games"]').textContent();
-            expect(parseInt(updatedGames: any)).toBeGreaterThan(parseInt(initialGames: any));
+            expect(parseInt(updatedGames).toBeGreaterThan(parseInt(initialGames);
         });
     });
 
     test.describe('統計データ表示と可視化', () => {
         test('各種統計チャートの表示', async ({ page }) => {
             // テストデータの準備
-            await GameplaySimulator.simulateHighScoreGameplay(page: any);
+            await GameplaySimulator.simulateHighScoreGameplay(page;
             
             await page.click('[data-testid="user-info-button"]');
             await page.waitForSelector('[data-testid="statistics-section"]');
@@ -309,7 +309,7 @@ test.describe('統計機能E2Eテスト', () => {
         });
 
         test('統計詳細表示の切り替え', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             
             await page.click('[data-testid="user-info-button"]');
             await page.waitForSelector('[data-testid="statistics-section"]');
@@ -358,7 +358,7 @@ test.describe('統計機能E2Eテスト', () => {
         });
 
         test('CSV形式でのエクスポート', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             
             await page.click('[data-testid="user-info-button"]');
             await page.click('[data-testid="export-button"]');
@@ -374,7 +374,7 @@ test.describe('統計機能E2Eテスト', () => {
 
         test('データインポート機能', async ({ page }) => {
             // 元のデータを作成
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             
             await page.click('[data-testid="user-info-button"]');
             const originalGames = await page.locator('[data-testid="total-games"]').textContent();
@@ -407,7 +407,7 @@ test.describe('統計機能E2Eテスト', () => {
             await fileInput.setInputFiles({
                 name: 'test-statistics.json',
                 mimeType: 'application/json',
-                buffer: Buffer.from(JSON.stringify(testData: any))
+                buffer: Buffer.from(JSON.stringify(testData)
             });
             
             await page.click('[data-testid="import-confirm-button"]');
@@ -425,7 +425,7 @@ test.describe('統計機能E2Eテスト', () => {
         test('モバイル表示での統計機能', async ({ page }) => {
             await page.setViewportSize(ResponsiveHelper.viewports.mobile);
             
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // モバイル用レイアウトが適用されることを確認
@@ -444,7 +444,7 @@ test.describe('統計機能E2Eテスト', () => {
         test('タブレット表示での統計機能', async ({ page }) => {
             await page.setViewportSize(ResponsiveHelper.viewports.tablet);
             
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // タブレット用レイアウトの確認
@@ -461,7 +461,7 @@ test.describe('統計機能E2Eテスト', () => {
         test('デスクトップ表示での統計機能', async ({ page }) => {
             await page.setViewportSize(ResponsiveHelper.viewports.desktop);
             
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // デスクトップ用レイアウトの確認
@@ -478,7 +478,7 @@ test.describe('統計機能E2Eテスト', () => {
         });
 
         test('レスポンシブチャート表示', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             await ResponsiveHelper.testResponsiveDisplay(page, async (page, device) => {
@@ -493,7 +493,7 @@ test.describe('統計機能E2Eテスト', () => {
                 // フォントサイズの調整確認
                 const chartLabels = page.locator('[data-testid="chart-labels"]');
                 const fontSize = await chartLabels.evaluate(el => 
-                    window.getComputedStyle(el: any).fontSize
+                    window.getComputedStyle(el.fontSize
                 );
                 expect(fontSize).toBeTruthy();
             });
@@ -502,11 +502,11 @@ test.describe('統計機能E2Eテスト', () => {
 
     test.describe('アクセシビリティ機能テスト', () => {
         test('キーボードナビゲーション', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // キーボードナビゲーションのテスト
-            await AccessibilityHelper.testKeyboardNavigation(page: any);
+            await AccessibilityHelper.testKeyboardNavigation(page;
             
             // フォーカス表示の確認
             const focusedElement = page.locator(':focus');
@@ -514,10 +514,10 @@ test.describe('統計機能E2Eテスト', () => {
         });
 
         test('スクリーンリーダー対応', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
-            await AccessibilityHelper.testScreenReaderSupport(page: any);
+            await AccessibilityHelper.testScreenReaderSupport(page;
             
             // 統計データの読み上げテキスト確認
             const screenReaderText = page.locator('[data-testid="screen-reader-stats"]');
@@ -529,10 +529,10 @@ test.describe('統計機能E2Eテスト', () => {
         });
 
         test('高コントラストモード', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
-            await AccessibilityHelper.testHighContrastMode(page: any);
+            await AccessibilityHelper.testHighContrastMode(page;
             
             // 高コントラストでのチャート表示確認
             const chart = page.locator('[data-testid="statistics-chart"]');
@@ -540,7 +540,7 @@ test.describe('統計機能E2Eテスト', () => {
         });
 
         test('大きなフォントサイズ対応', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // 大きなフォントモードを有効化
@@ -554,13 +554,13 @@ test.describe('統計機能E2Eテスト', () => {
             // テキストが読みやすいサイズになることを確認
             const largeText = page.locator('[data-testid="large-font-text"]');
             const fontSize = await largeText.evaluate(el => 
-                window.getComputedStyle(el: any).fontSize
+                window.getComputedStyle(el.fontSize
             );
-            expect(parseFloat(fontSize: any)).toBeGreaterThan(16);
+            expect(parseFloat(fontSize).toBeGreaterThan(16);
         });
 
         test('色覚サポート機能', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // 色覚サポートモードを有効化
@@ -604,7 +604,7 @@ test.describe('統計機能E2Eテスト', () => {
                         ]))
                     }
                 };
-                localStorage.setItem('awaputi_statistics', JSON.stringify(largeStats: any));
+                localStorage.setItem('awaputi_statistics', JSON.stringify(largeStats);
             });
             
             // 統計表示の読み込み時間を測定
@@ -708,7 +708,7 @@ test.describe('統計機能E2Eテスト', () => {
     test.describe('エラーハンドリングと復旧', () => {
         test('統計データ破損からの復旧', async ({ page }) => {
             // 正常な統計データを作成
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             
             // 統計データを意図的に破損させる
             await page.evaluate(() => {
@@ -731,7 +731,7 @@ test.describe('統計機能E2Eテスト', () => {
             // ネットワークを無効化
             await page.route('**/*', route => route.abort());
             
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // オフライン表示が出ることを確認
@@ -755,7 +755,7 @@ test.describe('統計機能E2Eテスト', () => {
                 };
             });
             
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             await page.click('[data-testid="user-info-button"]');
             
             // ストレージエラーメッセージが表示されることを確認
@@ -778,7 +778,7 @@ test.describe('統計機能E2Eテスト', () => {
             await page.waitForSelector('[data-testid="statistics-section"]');
             
             const totalGames = await page.locator('[data-testid="total-games"]').textContent();
-            expect(parseInt(totalGames: any)).toBe(3);
+            expect(parseInt(totalGames).toBe(3);
             
             // 3. 期間フィルター適用
             await page.selectOption('[data-testid="period-filter"]', 'today');
@@ -805,15 +805,15 @@ test.describe('統計機能E2Eテスト', () => {
         });
 
         test('マルチデバイス・アクセシビリティ統合テスト', async ({ page }) => {
-            await GameplaySimulator.simulateBasicGameplay(page: any);
+            await GameplaySimulator.simulateBasicGameplay(page;
             
             await ResponsiveHelper.testResponsiveDisplay(page, async (page, device) => {
                 await page.click('[data-testid="user-info-button"]');
                 
                 // アクセシビリティ機能のテスト
                 if (device === 'desktop') {
-                    await AccessibilityHelper.testKeyboardNavigation(page: any);
-                    await AccessibilityHelper.testHighContrastMode(page: any);
+                    await AccessibilityHelper.testKeyboardNavigation(page;
+                    await AccessibilityHelper.testHighContrastMode(page;
                 }
                 
                 // レスポンシブ統計表示の確認

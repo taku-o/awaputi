@@ -29,7 +29,7 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 getLockedStages: jest.fn().mockReturnValue([
                     { id: 'stage3', name: 'ステージ3', description: 'テストステージ3', unlockMessage: 'ロック中' }
                 ]),
-                startStage: jest.fn().mockReturnValue(true: any)
+                startStage: jest.fn().mockReturnValue(true
             },
             playerData: {
                 username: 'TestPlayer',
@@ -43,12 +43,12 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
         mockStageSelectScene = {
             gameEngine: mockGameEngine,
             sceneManager: {
-                switchScene: jest.fn().mockReturnValue(true: any)
+                switchScene: jest.fn().mockReturnValue(true
             }
         };
         
         // StageSelectDataManagerの初期化
-        dataManager = new StageSelectDataManager(mockStageSelectScene: any);
+        dataManager = new StageSelectDataManager(mockStageSelectScene;
         dataManager.initialize();
     });
     
@@ -58,10 +58,10 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'KeyS'
             };
             
-            const result = dataManager.handleStageKeyInput(sKeyEvent: any);
+            const result = dataManager.handleStageKeyInput(sKeyEvent;
             
             // Sキーは無効なので、falseを返す
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
             // ショップシーンに遷移しない
             expect(mockStageSelectScene.sceneManager.switchScene).not.toHaveBeenCalled();
         });
@@ -82,9 +82,9 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'ArrowUp'
             };
             
-            const result = dataManager.handleStageKeyInput(upKeyEvent: any);
+            const result = dataManager.handleStageKeyInput(upKeyEvent;
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(dataManager.selectedStageIndex).toBe(0);
         });
         
@@ -95,9 +95,9 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'ArrowDown'
             };
             
-            const result = dataManager.handleStageKeyInput(downKeyEvent: any);
+            const result = dataManager.handleStageKeyInput(downKeyEvent;
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(dataManager.selectedStageIndex).toBe(1);
         });
         
@@ -109,9 +109,9 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'Enter'
             };
             
-            const result = dataManager.handleStageKeyInput(enterKeyEvent: any);
+            const result = dataManager.handleStageKeyInput(enterKeyEvent;
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(selectStageSpy).toHaveBeenCalled();
             
             selectStageSpy.mockRestore();
@@ -122,9 +122,9 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
                 code: 'KeyZ'
             };
             
-            const result = dataManager.handleStageKeyInput(invalidKeyEvent: any);
+            const result = dataManager.handleStageKeyInput(invalidKeyEvent;
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
         });
         
         test('すべての有効なキーがtrueを返す', () => {
@@ -132,8 +132,8 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
             
             validKeys.forEach(keyCode => {
                 const keyEvent = { code: keyCode };
-                const result = dataManager.handleStageKeyInput(keyEvent: any);
-                expect(result).toBe(true: any);
+                const result = dataManager.handleStageKeyInput(keyEvent;
+                expect(result).toBe(true);
             });
         });
         
@@ -142,8 +142,8 @@ describe('StageSelectDataManager Keyboard Input Tests', () => {
             
             invalidKeys.forEach(keyCode => {
                 const keyEvent = { code: keyCode };
-                const result = dataManager.handleStageKeyInput(keyEvent: any);
-                expect(result).toBe(false: any);
+                const result = dataManager.handleStageKeyInput(keyEvent;
+                expect(result).toBe(false);
             });
         });
     });

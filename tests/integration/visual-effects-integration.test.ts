@@ -75,9 +75,9 @@ describe('Visual Effects Integration Tests', () => {
         context = canvas.getContext('2d');
 
         // Initialize managers
-        particleManager = new EnhancedParticleManager(canvas: any);
-        effectManager = new EnhancedEffectManager(canvas: any);
-        animationManager = new AnimationManager(canvas: any);
+        particleManager = new EnhancedParticleManager(canvas;
+        effectManager = new EnhancedEffectManager(canvas;
+        animationManager = new AnimationManager(canvas;
         qualityController = new EffectQualityController();
     });
 
@@ -112,11 +112,11 @@ describe('Visual Effects Integration Tests', () => {
             // Update both systems
             const deltaTime = 16;
             particleManager.update?.(deltaTime);
-            effectManager.update(deltaTime: any);
+            effectManager.update(deltaTime;
 
             // Render both systems
             particleManager.render?.(context);
-            effectManager.render(context: any);
+            effectManager.render(context;
 
             // Verify rendering calls were made
             expect(context.save).toHaveBeenCalled();
@@ -249,7 +249,7 @@ describe('Visual Effects Integration Tests', () => {
 
             for (let frame = 0; frame < frames; frame++) {
                 animationManager.updateLoadingAnimation?.(frameTime);
-                effectManager.updateBackgroundEffects(frameTime: any);
+                effectManager.updateBackgroundEffects(frameTime;
             }
 
             if (loadingAnimation) {
@@ -291,9 +291,9 @@ describe('Visual Effects Integration Tests', () => {
 
                 // Lower quality should result in fewer particles/effects
                 if (quality === 'low') {
-                    expect(particleCount: any).toBeLessThanOrEqual(10);
+                    expect(particleCount.toBeLessThanOrEqual(10);
                 } else if (quality === 'ultra') {
-                    expect(particleCount: any).toBeGreaterThanOrEqual(0);
+                    expect(particleCount.toBeGreaterThanOrEqual(0);
                 }
             }
         });
@@ -332,8 +332,8 @@ describe('Visual Effects Integration Tests', () => {
             const finalParticleCount = particleManager.particles?.length || 0;
             const finalEffectCount = effectManager.effects?.length || 0;
 
-            expect(finalParticleCount: any).toBeLessThanOrEqual(500);
-            expect(finalEffectCount: any).toBeLessThanOrEqual(50);
+            expect(finalParticleCount.toBeLessThanOrEqual(500);
+            expect(finalEffectCount.toBeLessThanOrEqual(50);
         });
     });
 
@@ -369,8 +369,8 @@ describe('Visual Effects Integration Tests', () => {
             const finalEffectCount = effectManager.effects?.length || 0;
 
             // Should have cleaned up some resources
-            expect(finalParticleCount: any).toBeLessThanOrEqual(initialParticleCount: any);
-            expect(finalEffectCount: any).toBeLessThanOrEqual(initialEffectCount: any);
+            expect(finalParticleCount.toBeLessThanOrEqual(initialParticleCount;
+            expect(finalEffectCount.toBeLessThanOrEqual(initialEffectCount;
         });
 
         test('should handle resource pooling across systems', async () => {
@@ -418,7 +418,7 @@ describe('Visual Effects Integration Tests', () => {
             // Rendering should not crash despite errors
             expect(() => {
                 particleManager.render?.(errorContext);
-                effectManager.render(errorContext: any);
+                effectManager.render(errorContext;
                 animationManager.render?.(errorContext);
             }).not.toThrow();
         });
@@ -467,12 +467,12 @@ describe('Visual Effects Integration Tests', () => {
 
             for (let frame = 0; frame < frameCount; frame++) {
                 particleManager.update?.(frameTime);
-                effectManager.update(frameTime: any);
+                effectManager.update(frameTime;
                 animationManager.update?.(frameTime);
                 
                 // Simulate render time
                 particleManager.render?.(context);
-                effectManager.render(context: any);
+                effectManager.render(context;
                 animationManager.render?.(context);
             }
 
@@ -481,7 +481,7 @@ describe('Visual Effects Integration Tests', () => {
             const averageFrameTime = totalTime / frameCount;
 
             // Should be able to update and render within frame budget
-            expect(averageFrameTime: any).toBeLessThan(frameTime * 1.5); // 50% tolerance
+            expect(averageFrameTime.toBeLessThan(frameTime * 1.5); // 50% tolerance
         });
 
         test('should scale down effects when performance drops', async () => {
@@ -521,10 +521,10 @@ describe('Visual Effects Integration Tests', () => {
 
             // Should have reduced complexity
             if (particleManager.adaptToPerformance) {
-                expect(finalParticleCount: any).toBeLessThanOrEqual(initialParticleCount: any);
+                expect(finalParticleCount.toBeLessThanOrEqual(initialParticleCount;
             }
             if (effectManager.adaptToPerformance) {
-                expect(finalLightCount: any).toBeLessThanOrEqual(initialLightCount: any);
+                expect(finalLightCount.toBeLessThanOrEqual(initialLightCount;
             }
         });
     });
@@ -572,21 +572,21 @@ describe('Visual Effects Integration Tests', () => {
             if (particleManager.initialize) {
                 particleManager.initialize = jest.fn(async () => {
                     initOrder.push('particle');
-                    return originalParticleInit?.call(particleManager: any);
+                    return originalParticleInit?.call(particleManager;
                 });
             }
 
             if (effectManager.initialize) {
                 effectManager.initialize = jest.fn(async () => {
                     initOrder.push('effect');
-                    return originalEffectInit?.call(effectManager: any);
+                    return originalEffectInit?.call(effectManager;
                 });
             }
 
             if (animationManager.initialize) {
                 animationManager.initialize = jest.fn(async () => {
                     initOrder.push('animation');
-                    return originalAnimationInit?.call(animationManager: any);
+                    return originalAnimationInit?.call(animationManager;
                 });
             }
 

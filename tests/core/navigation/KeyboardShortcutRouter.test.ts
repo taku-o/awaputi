@@ -34,8 +34,8 @@ describe('KeyboardShortcutRouter', () => {
         // Mock GameEngine
         mockGameEngine = {
             sceneManager: {
-                hasScene: jest.fn().mockReturnValue(true: any),
-                switchScene: jest.fn().mockReturnValue(true: any),
+                hasScene: jest.fn().mockReturnValue(true,
+                switchScene: jest.fn().mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'MenuScene' }
                 }
@@ -48,7 +48,7 @@ describe('KeyboardShortcutRouter', () => {
         mockDocument.documentElement.requestFullscreen.mockClear();
         mockDocument.exitFullscreen.mockClear();
         
-        shortcutRouter = new KeyboardShortcutRouter(mockGameEngine: any);
+        shortcutRouter = new KeyboardShortcutRouter(mockGameEngine;
     });
     
     afterEach(() => {
@@ -72,7 +72,7 @@ describe('KeyboardShortcutRouter', () => {
         
         test('should be active by default', () => {
             const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.state.isActive).toBe(true: any);
+            expect(debugInfo.state.isActive).toBe(true);
         });
     });
     
@@ -86,7 +86,7 @@ describe('KeyboardShortcutRouter', () => {
                 metaKey: false
             };
             
-            const combo = shortcutRouter.generateKeyCombo(event: any);
+            const combo = shortcutRouter.generateKeyCombo(event;
             expect(combo).toBe('KeyH');
         });
         
@@ -99,7 +99,7 @@ describe('KeyboardShortcutRouter', () => {
                 metaKey: false
             };
             
-            const combo = shortcutRouter.generateKeyCombo(event: any);
+            const combo = shortcutRouter.generateKeyCombo(event;
             expect(combo).toBe('Ctrl+KeyH');
         });
         
@@ -112,7 +112,7 @@ describe('KeyboardShortcutRouter', () => {
                 metaKey: false
             };
             
-            const combo = shortcutRouter.generateKeyCombo(event: any);
+            const combo = shortcutRouter.generateKeyCombo(event;
             expect(combo).toBe('Ctrl+Shift+Alt+KeyH');
         });
     });
@@ -129,7 +129,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help');
             expect(event.preventDefault).toHaveBeenCalled();
@@ -146,7 +146,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
             expect(event.preventDefault).toHaveBeenCalled();
@@ -163,7 +163,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help');
         });
@@ -179,7 +179,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help');
         });
@@ -197,7 +197,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             const navDebugInfo = shortcutRouter.getDebugInfo().navigationContext;
             expect(navDebugInfo.stackSize).toBe(1);
@@ -226,7 +226,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             // Should attempt to go back instead of navigating to help
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('menu');
@@ -248,7 +248,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('menu');
         });
@@ -274,9 +274,9 @@ describe('KeyboardShortcutRouter', () => {
             };
             
             // Rapid fire events
-            shortcutRouter.handleKeyDown(event: any);
-            shortcutRouter.handleKeyDown(event: any);
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
+            shortcutRouter.handleKeyDown(event;
+            shortcutRouter.handleKeyDown(event;
             
             // Only first event should be processed
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledTimes(1);
@@ -291,11 +291,11 @@ describe('KeyboardShortcutRouter', () => {
                 debounceDelay: 200
             };
             
-            shortcutRouter.updateConfig(newConfig: any);
+            shortcutRouter.updateConfig(newConfig;
             
             const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.config.enableLogging).toBe(false: any);
-            expect(debugInfo.config.preventDefaultBehavior).toBe(false: any);
+            expect(debugInfo.config.enableLogging).toBe(false);
+            expect(debugInfo.config.preventDefaultBehavior).toBe(false);
             expect(debugInfo.config.debounceDelay).toBe(200);
         });
         
@@ -312,7 +312,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalled();
         });
@@ -330,7 +330,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(event.preventDefault).not.toHaveBeenCalled();
         });
@@ -338,17 +338,17 @@ describe('KeyboardShortcutRouter', () => {
     
     describe('Active State Management', () => {
         test('should toggle active state', () => {
-            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(true: any);
+            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(true);
             
-            shortcutRouter.setActive(false: any);
-            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(false: any);
+            shortcutRouter.setActive(false;
+            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(false);
             
-            shortcutRouter.setActive(true: any);
-            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(true: any);
+            shortcutRouter.setActive(true;
+            expect(shortcutRouter.getDebugInfo().state.isActive).toBe(true);
         });
         
         test('should not process shortcuts when inactive', () => {
-            shortcutRouter.setActive(false: any);
+            shortcutRouter.setActive(false;
             
             const event = {
                 code: 'KeyH',
@@ -360,7 +360,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(event: any);
+            shortcutRouter.handleKeyDown(event;
             
             expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalled();
         });
@@ -394,7 +394,7 @@ describe('KeyboardShortcutRouter', () => {
         
         test('should remove shortcut', () => {
             const removed = shortcutRouter.removeShortcut('KeyH');
-            expect(removed).toBe(true: any);
+            expect(removed).toBe(true);
             
             const debugInfo = shortcutRouter.getDebugInfo();
             const helpShortcut = debugInfo.shortcuts.find(([key]) => key === 'KeyH');
@@ -416,11 +416,11 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            expect(() => routerWithoutSM.handleKeyDown(event: any)).not.toThrow();
+            expect(() => routerWithoutSM.handleKeyDown(event).not.toThrow();
         });
         
         test('should handle invalid scene names', () => {
-            mockGameEngine.sceneManager.switchScene.mockReturnValue(false: any);
+            mockGameEngine.sceneManager.switchScene.mockReturnValue(false;
             
             const event = {
                 code: 'KeyH',
@@ -432,7 +432,7 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            expect(() => shortcutRouter.handleKeyDown(event: any)).not.toThrow();
+            expect(() => shortcutRouter.handleKeyDown(event).not.toThrow();
         });
     });
     
@@ -449,11 +449,11 @@ describe('KeyboardShortcutRouter', () => {
                 stopPropagation: jest.fn()
             };
             
-            shortcutRouter.handleKeyDown(keyEvent: any);
+            shortcutRouter.handleKeyDown(keyEvent;
             
             // Simulate window blur
             const blurEvent = { type: 'blur' };
-            shortcutRouter.handleFocusChange(blurEvent: any);
+            shortcutRouter.handleFocusChange(blurEvent;
             
             const debugInfo = shortcutRouter.getDebugInfo();
             expect(debugInfo.state.pressedKeys.size).toBe(0);
@@ -469,7 +469,7 @@ describe('KeyboardShortcutRouter', () => {
             shortcutRouter.cleanup();
             
             const debugInfo = shortcutRouter.getDebugInfo();
-            expect(debugInfo.state.isActive).toBe(false: any);
+            expect(debugInfo.state.isActive).toBe(false);
             expect(debugInfo.state.pressedKeys.size).toBe(0);
             expect(debugInfo.state.activeModifiers.size).toBe(0);
         });

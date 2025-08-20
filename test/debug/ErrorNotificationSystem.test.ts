@@ -56,7 +56,7 @@ describe('ErrorNotificationSystem', () => {
     beforeEach(() => {
         setupDOMEnvironment();
         mockErrorReporter = createMockErrorReporter();
-        notificationSystem = new ErrorNotificationSystem(mockErrorReporter: any);
+        notificationSystem = new ErrorNotificationSystem(mockErrorReporter as any);
         
         // コンソールのモック
         jest.spyOn(console, 'log').mockImplementation();
@@ -79,9 +79,9 @@ describe('ErrorNotificationSystem', () => {
     describe('初期化', () => {
         test('ErrorNotificationSystemが正しく初期化される', () => {
             expect(notificationSystem).toBeDefined();
-            expect(notificationSystem.notificationConfig.enabled).toBe(true: any);
+            expect(notificationSystem.notificationConfig.enabled).toBe(true as any);
             expect(notificationSystem.notificationHistory).toEqual([]);
-            expect(notificationSystem.pendingNotifications).toBeInstanceOf(Map: any);
+            expect(notificationSystem.pendingNotifications).toBeInstanceOf(Map as any);
         });
         
         test('UI コンテナが作成される', () => {
@@ -92,9 +92,9 @@ describe('ErrorNotificationSystem', () => {
         test('設定が正しく初期化される', () => {
             const config = notificationSystem.notificationConfig;
             
-            expect(config.channels.console.enabled).toBe(true: any);
-            expect(config.channels.ui.enabled).toBe(true: any);
-            expect(config.channels.storage.enabled).toBe(true: any);
+            expect(config.channels.console.enabled).toBe(true as any);
+            expect(config.channels.ui.enabled).toBe(true as any);
+            expect(config.channels.storage.enabled).toBe(true as any);
             expect(config.rateLimit.maxPerMinute).toBe(10);
         });
     });
@@ -109,9 +109,9 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'test_fingerprint'
             };
             
-            const result = notificationSystem.processErrorNotification(testError: any);
+            const result = notificationSystem.processErrorNotification(testError as any);
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true as any);
             expect(notificationSystem.notificationHistory.length).toBe(1);
             expect(console.group).toHaveBeenCalled();
         });
@@ -128,9 +128,9 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'low_fingerprint'
             };
             
-            const result = notificationSystem.processErrorNotification(lowSeverityError: any);
+            const result = notificationSystem.processErrorNotification(lowSeverityError as any);
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
             expect(notificationSystem.notificationHistory.length).toBe(0);
         });
         
@@ -154,11 +154,11 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'render_fingerprint'
             };
             
-            const networkResult = notificationSystem.processErrorNotification(networkError: any);
-            const renderResult = notificationSystem.processErrorNotification(renderError: any);
+            const networkResult = notificationSystem.processErrorNotification(networkError as any);
+            const renderResult = notificationSystem.processErrorNotification(renderError as any);
             
-            expect(networkResult).toBe(true: any);
-            expect(renderResult).toBe(false: any);
+            expect(networkResult).toBe(true as any);
+            expect(renderResult).toBe(false as any);
         });
         
         test('除外パターンが正しく動作する', () => {
@@ -172,9 +172,9 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'test_exclude_pattern'
             };
             
-            const result = notificationSystem.processErrorNotification(excludedError: any);
+            const result = notificationSystem.processErrorNotification(excludedError as any);
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
         });
     });
     
@@ -192,11 +192,11 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 制限内では成功
-            expect(notificationSystem.processErrorNotification(testError: any)).toBe(true: any);
-            expect(notificationSystem.processErrorNotification(testError: any)).toBe(true: any);
+            expect(notificationSystem.processErrorNotification(testError as any)).toBe(true as any);
+            expect(notificationSystem.processErrorNotification(testError as any)).toBe(true as any);
             
             // 制限を超えると失敗
-            expect(notificationSystem.processErrorNotification(testError: any)).toBe(false: any);
+            expect(notificationSystem.processErrorNotification(testError as any)).toBe(false as any);
         });
         
         test('レート制限リセットが正しく動作する', () => {
@@ -211,16 +211,16 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 1回目は成功
-            expect(notificationSystem.processErrorNotification(testError: any)).toBe(true: any);
+            expect(notificationSystem.processErrorNotification(testError as any)).toBe(true as any);
             
             // 2回目は失敗（制限に達している）
-            expect(notificationSystem.processErrorNotification(testError: any)).toBe(false: any);
+            expect(notificationSystem.processErrorNotification(testError as any)).toBe(false as any);
             
             // 時間を進めてリセット
             jest.advanceTimersByTime(60000); // 1分進める
             
             // リセット後は再び成功
-            expect(notificationSystem.processErrorNotification(testError: any)).toBe(true: any);
+            expect(notificationSystem.processErrorNotification(testError as any)).toBe(true as any);
         });
     });
     
@@ -250,7 +250,7 @@ describe('ErrorNotificationSystem', () => {
             }
             
             // 5回目で通知される
-            expect(notificationSystem.processErrorNotification(testError: any)).toBe(true: any);
+            expect(notificationSystem.processErrorNotification(testError as any)).toBe(true as any);
         });
         
         test('クリティカルエラーは即座に通知される', () => {
@@ -263,7 +263,7 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 1回目から通知される
-            expect(notificationSystem.processErrorNotification(criticalError: any)).toBe(true: any);
+            expect(notificationSystem.processErrorNotification(criticalError as any)).toBe(true as any);
         });
     });
     
@@ -288,8 +288,8 @@ describe('ErrorNotificationSystem', () => {
             };
             
             // 複数のエラーを追加
-            notificationSystem.processErrorNotification(testError1: any);
-            notificationSystem.processErrorNotification(testError2: any);
+            notificationSystem.processErrorNotification(testError1 as any);
+            notificationSystem.processErrorNotification(testError2 as any);
             
             // 集約期間内なので即座には送信されない
             expect(console.group).not.toHaveBeenCalled();
@@ -329,7 +329,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'console_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any);
+            notificationSystem.processErrorNotification(testError as any);
             
             expect(console.group).toHaveBeenCalled();
             expect(console.error).toHaveBeenCalledWith(
@@ -349,7 +349,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'ui_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any);
+            notificationSystem.processErrorNotification(testError as any);
             
             // UI要素が作成されることを確認
             expect(document.createElement).toHaveBeenCalledWith('div');
@@ -364,11 +364,11 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'storage_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any);
+            notificationSystem.processErrorNotification(testError as any);
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_notifications',
-                expect.any(String: any)
+                expect.any(String as any)
             );
         });
         
@@ -377,7 +377,7 @@ describe('ErrorNotificationSystem', () => {
             notificationSystem.notificationConfig.channels.webhook.enabled = true;
             notificationSystem.notificationConfig.channels.webhook.url = 'https://example.com/webhook';
             
-            const mockFetch = jest.fn() as jest.Mock.mockResolvedValue({ ok: true });
+            const mockFetch = jest.fn().mockResolvedValue({ ok: true });
             (global as any).fetch = mockFetch;
             
             const testError = {
@@ -388,7 +388,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'webhook_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any);
+            notificationSystem.processErrorNotification(testError as any);
             
             // 非同期処理を待つ
             await new Promise(resolve => setTimeout(resolve, 0));
@@ -433,7 +433,7 @@ describe('ErrorNotificationSystem', () => {
                 lastSeen: Date.now()
             };
             
-            const aggregated = notificationSystem.createAggregatedNotification(group: any);
+            const aggregated = notificationSystem.createAggregatedNotification(group as any);
             
             expect(aggregated.type).toBe('aggregated');
             expect(aggregated.error.count).toBe(2);
@@ -462,10 +462,10 @@ describe('ErrorNotificationSystem', () => {
             const criticalNotification = { error: { severity: 'critical' } };
             const lowNotification = { error: { severity: 'low' } };
             
-            const criticalDuration = notificationSystem.getNotificationDuration(criticalNotification: any);
-            const lowDuration = notificationSystem.getNotificationDuration(lowNotification: any);
+            const criticalDuration = notificationSystem.getNotificationDuration(criticalNotification as any);
+            const lowDuration = notificationSystem.getNotificationDuration(lowNotification as any);
             
-            expect(criticalDuration).toBeGreaterThan(lowDuration: any);
+            expect(criticalDuration).toBeGreaterThan(lowDuration as any);
         });
     });
     
@@ -477,12 +477,12 @@ describe('ErrorNotificationSystem', () => {
                 }
             };
             
-            notificationSystem.updateSettings(newSettings: any);
+            notificationSystem.updateSettings(newSettings as any);
             
-            expect(notificationSystem.notificationConfig.channels.console.enabled).toBe(false: any);
+            expect(notificationSystem.notificationConfig.channels.console.enabled).toBe(false as any);
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_notification_settings',
-                expect.any(String: any)
+                expect.any(String as any)
             );
         });
         
@@ -493,12 +493,12 @@ describe('ErrorNotificationSystem', () => {
                 }
             };
             
-            localStorage.getItem.mockReturnValue(JSON.stringify(storedSettings: any));
+            localStorage.getItem.mockReturnValue(JSON.stringify(storedSettings as any));
             
             // 新しいインスタンスを作成
-            const newNotificationSystem = new ErrorNotificationSystem(mockErrorReporter: any);
+            const newNotificationSystem = new ErrorNotificationSystem(mockErrorReporter as any);
             
-            expect(newNotificationSystem.notificationConfig.channels.ui.enabled).toBe(false: any);
+            expect(newNotificationSystem.notificationConfig.channels.ui.enabled).toBe(false as any);
             
             newNotificationSystem.destroy();
         });
@@ -515,7 +515,7 @@ describe('ErrorNotificationSystem', () => {
                 fingerprint: 'stats_fingerprint'
             };
             
-            notificationSystem.processErrorNotification(testError: any);
+            notificationSystem.processErrorNotification(testError as any);
             
             const stats = notificationSystem.getNotificationStatistics();
             
@@ -532,7 +532,7 @@ describe('ErrorNotificationSystem', () => {
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_notification_settings',
-                expect.any(String: any)
+                expect.any(String as any)
             );
         });
     });

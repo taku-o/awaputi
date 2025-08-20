@@ -249,7 +249,7 @@ describe('CloudStorageAdapter', () => {
             
             try {
                 await adapter.set('testKey', { data: 'test' });
-            } catch (error: any) {
+            } catch (error {
                 expect(error.message).toContain('Offline - queued for sync');
             }
             

@@ -5,7 +5,7 @@ import { VolumeControlComponent } from '../../../src/components/VolumeControlCom
 interface MockGameEngine {
     settingsManager: {
         get: jest.Mock<(key: string) => any>;
-        set: jest.Mock<(key: string, value: any) => void>;
+        set: jest.Mock<(key: string, value => void>;
     };
     audioManager: {
         playUISound: jest.Mock<(sound: string, options?: {volume?: number}) => void>;

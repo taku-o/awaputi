@@ -64,7 +64,7 @@ const mockGet = jest.fn((category: string, key: string, defaultValue?: any) => {
     return defaultValue;
 });
 
-const mockSet = jest.fn((category: string, key: string, value: any): boolean => {
+const mockSet = jest.fn((category: string, key: string, value: any) => {
     return true;
 });
 
@@ -458,7 +458,7 @@ describe('PerformanceConfig', () => {
                 return null;
             });
             
-            mockConfigManager.set = jest.fn((category: string, key: string, value: any): boolean => {
+            mockConfigManager.set = jest.fn((category: string, key: string, value: any) => {
                 setCalls.push({ category, key, value });
                 return true;
             });
@@ -566,7 +566,7 @@ describe('PerformanceConfig', () => {
             
             // モックの設定
             let setCalls: SetCall[] = [];
-            mockConfigManager.set = jest.fn((category: string, key: string, value: any): boolean => {
+            mockConfigManager.set = jest.fn((category: string, key: string, value: any) => {
                 setCalls.push({ category, key, value });
                 return true;
             });

@@ -3,7 +3,7 @@ import { FontSourceManager, LocalFontSource, GoogleFontSource, SystemFontSource 
 
 // Type definitions
 interface MockFetch {
-    mockResolvedValue: (value: any) => void;
+    mockResolvedValue: (value => void;
     mockRejectedValue: (error: Error) => void;
     mockClear: () => void;
 }

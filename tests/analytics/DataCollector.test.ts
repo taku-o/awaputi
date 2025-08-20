@@ -17,7 +17,7 @@ class MockPrivacyManager {
     }
     
     isOptedOut(feature: any) {
-        return this.optOutFeatures.has(feature: any);
+        return this.optOutFeatures.has(feature;
     }
     
     anonymizeData(data: any) {
@@ -31,11 +31,11 @@ class MockPrivacyManager {
     hashString(str: any) {
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i: any);
+            const char = str.charCodeAt(i;
             hash = ((hash << 5) - hash) + char;
             hash = hash & hash;
         }
-        return Math.abs(hash: any).toString(36);
+        return Math.abs(hash.toString(36);
     }
 }
 
@@ -48,10 +48,10 @@ class MockStorageManager {
         if (!this.savedData[storeName]) {
             this.savedData[storeName] = [];
         }
-        if (Array.isArray(data: any)) {
+        if (Array.isArray(data) {
             this.savedData[storeName].push(...data);
         } else {
-            this.savedData[storeName].push(data: any);
+            this.savedData[storeName].push(data;
         }
     }
     
@@ -87,8 +87,8 @@ describe('DataCollector', () => {
         test('初期状態が正しく設定される', () => {
             expect(dataCollector.eventQueue).toEqual([]);
             expect(dataCollector.batchSize).toBe(50);
-            expect(dataCollector.isEnabled).toBe(true: any);
-            expect(dataCollector.isPaused).toBe(false: any);
+            expect(dataCollector.isEnabled).toBe(true);
+            expect(dataCollector.isPaused).toBe(false);
             expect(dataCollector.currentSessionId).toBeNull();
         });
         
@@ -106,7 +106,7 @@ describe('DataCollector', () => {
                 effectsEnabled: true
             };
             
-            dataCollector.startSession(sessionInfo: any);
+            dataCollector.startSession(sessionInfo;
             
             expect(dataCollector.currentSessionId).not.toBeNull();
             expect(dataCollector.sessionStartTime).not.toBeNull();
@@ -133,7 +133,7 @@ describe('DataCollector', () => {
                 exitReason: 'completed'
             };
             
-            dataCollector.endSession(endInfo: any);
+            dataCollector.endSession(endInfo;
             
             expect(dataCollector.currentSessionId).toBeNull();
             expect(dataCollector.sessionStartTime).toBeNull();
@@ -142,10 +142,10 @@ describe('DataCollector', () => {
             const endEvent = dataCollector.eventQueue[1];
             expect(endEvent.type).toBe('session');
             // SessionIdはハッシュ化されるため、元のIDとは異なる値になる
-            expect(endEvent.data.sessionId).not.toBe(sessionId: any);
+            expect(endEvent.data.sessionId).not.toBe(sessionId);
             expect(typeof endEvent.data.sessionId).toBe('string');
             expect(endEvent.data.finalScore).toBe(1000);
-            expect(endEvent.data.completed).toBe(true: any);
+            expect(endEvent.data.completed).toBe(true);
         });
         
         test('セッションIDが一意に生成される', () => {
@@ -156,7 +156,7 @@ describe('DataCollector', () => {
             dataCollector.startSession({ stageId: 'test' });
             const sessionId2 = dataCollector.currentSessionId;
             
-            expect(sessionId1).not.toBe(sessionId2: any);
+            expect(sessionId1).not.toBe(sessionId2);
         });
     });
     
@@ -178,7 +178,7 @@ describe('DataCollector', () => {
                 timeRemaining: 240000
             };
             
-            dataCollector.collectBubbleInteraction(bubbleData: any);
+            dataCollector.collectBubbleInteraction(bubbleData;
             
             expect(dataCollector.eventQueue.length).toBe(2); // session + bubble
             
@@ -212,7 +212,7 @@ describe('DataCollector', () => {
                 ]
             };
             
-            dataCollector.collectPerformanceData(performanceMetrics: any);
+            dataCollector.collectPerformanceData(performanceMetrics;
             
             const performanceEvent = dataCollector.eventQueue[1];
             expect(performanceEvent.type).toBe('performance');
@@ -233,7 +233,7 @@ describe('DataCollector', () => {
                 activeItems: ['timeExtender']
             };
             
-            dataCollector.collectScoreData(scoreData: any);
+            dataCollector.collectScoreData(scoreData;
             
             const scoreEvent = dataCollector.eventQueue[1];
             expect(scoreEvent.type).toBe('score');
@@ -254,7 +254,7 @@ describe('DataCollector', () => {
                 currentScore: 500
             };
             
-            dataCollector.collectItemUsageData(itemData: any);
+            dataCollector.collectItemUsageData(itemData;
             
             const itemEvent = dataCollector.eventQueue[1];
             expect(itemEvent.type).toBe('itemUsage');
@@ -389,7 +389,7 @@ describe('DataCollector', () => {
                 { type: 'performance', data: { fps: 60 } }
             ];
             
-            const grouped = dataCollector.groupEventsByType(events: any);
+            const grouped = dataCollector.groupEventsByType(events;
             
             expect(grouped.session).toHaveLength(2);
             expect(grouped.bubbleInteraction).toHaveLength(1);
@@ -452,7 +452,7 @@ describe('DataCollector', () => {
             // maxRetriesを超えるretryCountでretryBatchを呼び出し
             await testDataCollector.retryBatch(testBatch, testDataCollector.maxRetries);
             
-            expect(testDataCollector.eventStats.dropped).toBeGreaterThan(initialDropped: any);
+            expect(testDataCollector.eventStats.dropped).toBeGreaterThan(initialDropped;
         }, 5000);
         
         test('キュー追加エラーが適切に処理される', () => {
@@ -469,7 +469,7 @@ describe('DataCollector', () => {
             expect(dataCollector.eventStats.errors).toBe(initialErrors + 1);
             expect(consoleSpy).toHaveBeenCalledWith(
                 'Failed to add event to queue:',
-                expect.any(Error: any)
+                expect.any(Error
             );
             
             consoleSpy.mockRestore();
@@ -478,16 +478,16 @@ describe('DataCollector', () => {
     
     describe('制御機能', () => {
         test('データ収集の有効/無効切り替えが正常に動作する', () => {
-            dataCollector.setEnabled(false: any);
+            dataCollector.setEnabled(false;
             
-            expect(dataCollector.isEnabled).toBe(false: any);
+            expect(dataCollector.isEnabled).toBe(false);
             expect(dataCollector.batchTimer).toBeNull();
             
             dataCollector.startSession({ stageId: 'test' });
             expect(dataCollector.eventQueue.length).toBe(0);
             
-            dataCollector.setEnabled(true: any);
-            expect(dataCollector.isEnabled).toBe(true: any);
+            dataCollector.setEnabled(true;
+            expect(dataCollector.isEnabled).toBe(true);
             expect(dataCollector.batchTimer).not.toBeNull();
         });
         
@@ -495,8 +495,8 @@ describe('DataCollector', () => {
             dataCollector.startSession({ stageId: 'test' });
             expect(dataCollector.eventQueue.length).toBe(1);
             
-            dataCollector.setPaused(true: any);
-            expect(dataCollector.isPaused).toBe(true: any);
+            dataCollector.setPaused(true;
+            expect(dataCollector.isPaused).toBe(true);
             
             dataCollector.collectBubbleInteraction({
                 bubbleType: 'normal',
@@ -504,8 +504,8 @@ describe('DataCollector', () => {
             });
             expect(dataCollector.eventQueue.length).toBe(1); // 増えない
             
-            dataCollector.setPaused(false: any);
-            expect(dataCollector.isPaused).toBe(false: any);
+            dataCollector.setPaused(false;
+            expect(dataCollector.isPaused).toBe(false);
         });
         
         test('キューのクリアが正常に動作する', () => {
@@ -555,8 +555,8 @@ describe('DataCollector', () => {
             expect(stats.collected).toBe(initialStats.collected + 1);
             expect(stats.queueSize).toBe(2);
             expect(stats.currentSessionId).not.toBeNull();
-            expect(stats.isEnabled).toBe(true: any);
-            expect(stats.isPaused).toBe(false: any);
+            expect(stats.isEnabled).toBe(true);
+            expect(stats.isPaused).toBe(false);
         });
     });
     

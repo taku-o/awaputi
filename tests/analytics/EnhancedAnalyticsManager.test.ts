@@ -61,7 +61,7 @@ class MockIndexedDBStorageManager {
     
     async saveData(storeName, data) {
         this.data[storeName] = this.data[storeName] || [];
-        this.data[storeName].push(data: any);
+        this.data[storeName].push(data;
         return true;
     }
     
@@ -181,7 +181,7 @@ describe('EnhancedAnalyticsManager', () => {
         };
         
         // デフォルトエクスポートのモック設定
-        jest.mocked(Analytics: any).mockImplementation(() => mockAnalytics);
+        jest.mocked(Analytics.mockImplementation(() => mockAnalytics);
         
         // コンソールをモック
         jest.spyOn(console, 'info').mockImplementation(() => {});
@@ -212,11 +212,11 @@ describe('EnhancedAnalyticsManager', () => {
 
     describe('初期化', () => {
         test('デフォルト設定で正しく初期化される', () => {
-            expect(analyticsManager.options.enableGameAnalytics).toBe(true: any);
-            expect(analyticsManager.options.enablePerformanceTracking).toBe(true: any);
-            expect(analyticsManager.options.enableBehaviorAnalysis).toBe(true: any);
-            expect(analyticsManager.isInitialized).toBe(false: any);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false: any);
+            expect(analyticsManager.options.enableGameAnalytics).toBe(true);
+            expect(analyticsManager.options.enablePerformanceTracking).toBe(true);
+            expect(analyticsManager.options.enableBehaviorAnalysis).toBe(true);
+            expect(analyticsManager.isInitialized).toBe(false);
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
         });
 
         test('カスタム設定で初期化される', () => {
@@ -226,19 +226,19 @@ describe('EnhancedAnalyticsManager', () => {
                 autoInitialize: false
             });
 
-            expect(customManager.options.enableGameAnalytics).toBe(false: any);
-            expect(customManager.options.enablePerformanceTracking).toBe(false: any);
+            expect(customManager.options.enableGameAnalytics).toBe(false);
+            expect(customManager.options.enablePerformanceTracking).toBe(false);
         });
 
         test('initialize()が正常に完了する', async () => {
             await analyticsManager.initialize();
 
-            expect(analyticsManager.isInitialized).toBe(true: any);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(true: any);
-            expect(analyticsManager.privacyManager).toBeInstanceOf(MockPrivacyManager: any);
-            expect(analyticsManager.storageManager).toBeInstanceOf(MockIndexedDBStorageManager: any);
-            expect(analyticsManager.dataCollector).toBeInstanceOf(MockDataCollector: any);
-            expect(analyticsManager.gameBalanceCollector).toBeInstanceOf(MockGameBalanceCollector: any);
+            expect(analyticsManager.isInitialized).toBe(true);
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(true);
+            expect(analyticsManager.privacyManager).toBeInstanceOf(MockPrivacyManager;
+            expect(analyticsManager.storageManager).toBeInstanceOf(MockIndexedDBStorageManager;
+            expect(analyticsManager.dataCollector).toBeInstanceOf(MockDataCollector;
+            expect(analyticsManager.gameBalanceCollector).toBeInstanceOf(MockGameBalanceCollector;
         });
 
         test('同意がない場合は初期化をスキップする', async () => {
@@ -252,7 +252,7 @@ describe('EnhancedAnalyticsManager', () => {
 
             await consentDeniedManager.initialize();
 
-            expect(consentDeniedManager.isGameAnalyticsEnabled).toBe(false: any);
+            expect(consentDeniedManager.isGameAnalyticsEnabled).toBe(false);
         });
     });
 
@@ -270,7 +270,7 @@ describe('EnhancedAnalyticsManager', () => {
                 playerLevel: 5
             };
 
-            analyticsManager.startGameSession(sessionInfo: any);
+            analyticsManager.startGameSession(sessionInfo;
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('game_session_start', {
                 stage_id: 'normal',
@@ -295,7 +295,7 @@ describe('EnhancedAnalyticsManager', () => {
                 exitReason: 'completed'
             };
 
-            analyticsManager.endGameSession(endInfo: any);
+            analyticsManager.endGameSession(endInfo;
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('game_session_end', {
                 duration: 120000,
@@ -315,7 +315,7 @@ describe('EnhancedAnalyticsManager', () => {
                 comboCount: 3
             };
 
-            analyticsManager.trackBubbleInteraction(bubbleData: any);
+            analyticsManager.trackBubbleInteraction(bubbleData;
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('bubble_interaction', {
                 bubble_type: 'normal',
@@ -336,7 +336,7 @@ describe('EnhancedAnalyticsManager', () => {
                 comboCount: 5
             };
 
-            analyticsManager.trackScore(scoreData: any);
+            analyticsManager.trackScore(scoreData;
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('score_gained', {
                 score_type: 'bubble',
@@ -353,7 +353,7 @@ describe('EnhancedAnalyticsManager', () => {
                 duration: 5000
             };
 
-            analyticsManager.trackItemUsage(itemData: any);
+            analyticsManager.trackItemUsage(itemData;
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('item_used', {
                 item_type: 'timeExtender',
@@ -386,7 +386,7 @@ describe('EnhancedAnalyticsManager', () => {
                 averagePlayTime: 180000
             };
 
-            analyticsManager.trackGameBalance(balanceData: any);
+            analyticsManager.trackGameBalance(balanceData;
 
             expect(mockAnalytics.trackEvent).toHaveBeenCalledWith('game_balance', {
                 balance_type: 'bubbleFrequency',
@@ -406,11 +406,11 @@ describe('EnhancedAnalyticsManager', () => {
                 completionRate: 0.05 // 異常に低い完了率
             };
 
-            analyticsManager.trackGameBalance(balanceData: any);
+            analyticsManager.trackGameBalance(balanceData;
 
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('[Game Balance Warning]'),
-                expect.any(Object: any)
+                expect.any(Object
             );
         });
     });
@@ -445,7 +445,7 @@ describe('EnhancedAnalyticsManager', () => {
                 timestamp: Date.now()
             };
 
-            analyticsManager.checkPerformanceWarnings(lowFpsMetrics: any);
+            analyticsManager.checkPerformanceWarnings(lowFpsMetrics;
 
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('[Performance Warning]'),
@@ -465,7 +465,7 @@ describe('EnhancedAnalyticsManager', () => {
                 timestamp: Date.now()
             };
 
-            analyticsManager.checkPerformanceWarnings(highMemoryMetrics: any);
+            analyticsManager.checkPerformanceWarnings(highMemoryMetrics;
 
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('[Performance Warning]'),
@@ -495,7 +495,7 @@ describe('EnhancedAnalyticsManager', () => {
                 currentScore: 150
             };
 
-            analyticsManager.trackPlayerBehavior(behaviorData: any);
+            analyticsManager.trackPlayerBehavior(behaviorData;
 
             expect(analyticsManager.dataCollector.eventStats.totalEvents).toBeGreaterThan(0);
         });
@@ -511,7 +511,7 @@ describe('EnhancedAnalyticsManager', () => {
                 bubbleType: 'normal'
             };
 
-            analyticsManager.trackPlayerBehavior(behaviorData: any);
+            analyticsManager.trackPlayerBehavior(behaviorData;
 
             expect(console.info).toHaveBeenCalledWith(
                 expect.stringContaining('[Analytics] Long session detected')
@@ -543,7 +543,7 @@ describe('EnhancedAnalyticsManager', () => {
                 accuracy: 1
             };
 
-            analyticsManager.analyzePlayStyle(aggressivePattern: any);
+            analyticsManager.analyzePlayStyle(aggressivePattern;
 
             expect(analyticsManager.playerBehavior.playStyle.aggressive).toBe(1);
         });
@@ -579,9 +579,9 @@ describe('EnhancedAnalyticsManager', () => {
         test('初期化エラーを処理する', () => {
             const error = new Error('Initialization failed');
             
-            analyticsManager.handleInitializationError(error: any);
+            analyticsManager.handleInitializationError(error;
 
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false: any);
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
             expect(console.warn).toHaveBeenCalledWith(
                 'Falling back to basic analytics only'
             );
@@ -603,11 +603,11 @@ describe('EnhancedAnalyticsManager', () => {
                 }
             };
 
-            analyticsManager.updateSettings(newSettings: any);
+            analyticsManager.updateSettings(newSettings;
 
-            expect(analyticsManager.options.enableGameAnalytics).toBe(false: any);
-            expect(analyticsManager.options.enablePerformanceTracking).toBe(true: any);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false: any);
+            expect(analyticsManager.options.enableGameAnalytics).toBe(false);
+            expect(analyticsManager.options.enablePerformanceTracking).toBe(true);
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
         });
 
         test('統計情報を取得する', () => {
@@ -694,8 +694,8 @@ describe('EnhancedAnalyticsManager', () => {
             
             analyticsManager.destroy();
 
-            expect(analyticsManager.isInitialized).toBe(false: any);
-            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false: any);
+            expect(analyticsManager.isInitialized).toBe(false);
+            expect(analyticsManager.isGameAnalyticsEnabled).toBe(false);
         });
 
         test('破棄後の操作でエラーが発生しない', async () => {

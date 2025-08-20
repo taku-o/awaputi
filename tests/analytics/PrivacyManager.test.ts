@@ -52,10 +52,10 @@ describe('PrivacyManager', () => {
     
     describe('初期化', () => {
         test('デフォルトの匿名化ルールが設定される', () => {
-            expect(manager.anonymizationRules.has('ipAddress')).toBe(true: any);
-            expect(manager.anonymizationRules.has('timestamp')).toBe(true: any);
-            expect(manager.anonymizationRules.has('position')).toBe(true: any);
-            expect(manager.anonymizationRules.has('sessionId')).toBe(true: any);
+            expect(manager.anonymizationRules.has('ipAddress')).toBe(true);
+            expect(manager.anonymizationRules.has('timestamp')).toBe(true);
+            expect(manager.anonymizationRules.has('position')).toBe(true);
+            expect(manager.anonymizationRules.has('sessionId')).toBe(true);
         });
         
         test('同意バージョンが設定される', () => {
@@ -68,12 +68,12 @@ describe('PrivacyManager', () => {
                 version: '1.0',
                 optOutFeatures: ['performanceTracking']
             };
-            localStorageMock.getItem.mockReturnValue(JSON.stringify(consentData: any));
+            localStorageMock.getItem.mockReturnValue(JSON.stringify(consentData));
             
             const newManager = new PrivacyManager();
             
-            expect(newManager.consentStatus).toBe(true: any);
-            expect(newManager.optOutFeatures.has('performanceTracking')).toBe(true: any);
+            expect(newManager.consentStatus).toBe(true);
+            expect(newManager.optOutFeatures.has('performanceTracking')).toBe(true);
         });
         
         test('古いバージョンの同意データは無視される', () => {
@@ -82,7 +82,7 @@ describe('PrivacyManager', () => {
                 version: '0.9',
                 optOutFeatures: []
             };
-            localStorageMock.getItem.mockReturnValue(JSON.stringify(consentData: any));
+            localStorageMock.getItem.mockReturnValue(JSON.stringify(consentData));
             
             const newManager = new PrivacyManager();
             
@@ -122,7 +122,7 @@ describe('PrivacyManager', () => {
             
             expect(consoleSpy).toHaveBeenCalledWith(
                 'Failed to save consent status:',
-                expect.any(Error: any)
+                expect.any(Error)
             );
             
             consoleSpy.mockRestore();
@@ -132,17 +132,17 @@ describe('PrivacyManager', () => {
     describe('同意チェック', () => {
         test('同意がある場合trueが返される', () => {
             manager.consentStatus = true;
-            expect(manager.checkConsent()).toBe(true: any);
+            expect(manager.checkConsent()).toBe(true);
         });
         
         test('同意がない場合falseが返される', () => {
             manager.consentStatus = false;
-            expect(manager.checkConsent()).toBe(false: any);
+            expect(manager.checkConsent()).toBe(false);
         });
         
         test('未設定の場合falseが返される', () => {
             manager.consentStatus = null;
-            expect(manager.checkConsent()).toBe(false: any);
+            expect(manager.checkConsent()).toBe(false);
         });
     });
     
@@ -150,16 +150,16 @@ describe('PrivacyManager', () => {
         test('オプトアウト状態が正常にチェックされる', () => {
             manager.optOutFeatures.add('sessionTracking');
             
-            expect(manager.isOptedOut('sessionTracking')).toBe(true: any);
-            expect(manager.isOptedOut('performanceTracking')).toBe(false: any);
+            expect(manager.isOptedOut('sessionTracking')).toBe(true);
+            expect(manager.isOptedOut('performanceTracking')).toBe(false);
         });
         
         test('オプトアウト設定が正常に更新される', () => {
             manager.setOptOut('sessionTracking', true);
-            expect(manager.optOutFeatures.has('sessionTracking')).toBe(true: any);
+            expect(manager.optOutFeatures.has('sessionTracking')).toBe(true);
             
             manager.setOptOut('sessionTracking', false);
-            expect(manager.optOutFeatures.has('sessionTracking')).toBe(false: any);
+            expect(manager.optOutFeatures.has('sessionTracking')).toBe(false);
         });
         
         test('オプトアウト設定変更時に同意状態が保存される', () => {
@@ -176,15 +176,15 @@ describe('PrivacyManager', () => {
             const rule = manager.anonymizationRules.get('ipAddress');
             
             expect(rule('192.168.1.100')).toBe('192.168.1.0');
-            expect(rule(null: any)).toBeNull();
+            expect(rule(null)).toBeNull();
             expect(rule('invalid-ip')).toBeNull();
         });
         
         test('タイムスタンプが5分単位に丸められる', () => {
             const rule = manager.anonymizationRules.get('timestamp');
             const originalTime = new Date('2023-01-01T12:37:42.123Z').getTime();
-            const anonymized = rule(originalTime: any);
-            const anonymizedDate = new Date(anonymized: any);
+            const anonymized = rule(originalTime);
+            const anonymizedDate = new Date(anonymized);
             
             expect(anonymizedDate.getMinutes()).toBe(35); // 37分 → 35分に丸め
             expect(anonymizedDate.getSeconds()).toBe(0);
@@ -195,7 +195,7 @@ describe('PrivacyManager', () => {
             const rule = manager.anonymizationRules.get('position');
             
             expect(rule({ x: 123, y: 456 })).toEqual({ x: 100, y: 450 });
-            expect(rule(null: any)).toBeNull();
+            expect(rule(null).toBeNull();
             expect(rule({})).toBeNull();
         });
         
@@ -217,7 +217,7 @@ describe('PrivacyManager', () => {
                 score: 1000 // 匿名化ルールなし
             };
             
-            const anonymized = manager.anonymizeData(data: any);
+            const anonymized = manager.anonymizeData(data);
             
             expect(anonymized.sessionId).not.toBe(data.sessionId);
             expect(anonymized.ipAddress).toBe('192.168.1.0');
@@ -231,9 +231,9 @@ describe('PrivacyManager', () => {
                 { sessionId: 'session-2', score: 200 }
             ];
             
-            const anonymized = manager.anonymizeData(data: any);
+            const anonymized = manager.anonymizeData(data);
             
-            expect(Array.isArray(anonymized: any)).toBe(true: any);
+            expect(Array.isArray(anonymized)).toBe(true);
             expect(anonymized[0].sessionId).not.toBe('session-1');
             expect(anonymized[1].sessionId).not.toBe('session-2');
         });
@@ -248,7 +248,7 @@ describe('PrivacyManager', () => {
                 }
             };
             
-            const anonymized = manager.anonymizeData(data: any);
+            const anonymized = manager.anonymizeData(data);
             
             expect(anonymized.session.sessionId).not.toBe('test-session');
             expect(anonymized.session.user.ipAddress).toBe('192.168.1.0');
@@ -260,21 +260,21 @@ describe('PrivacyManager', () => {
             const hash1 = manager.hashString('test');
             const hash2 = manager.hashString('test');
             
-            expect(hash1).toBe(hash2: any);
+            expect(hash1).toBe(hash2);
         });
         
         test('異なる文字列は異なるハッシュを生成する', () => {
             const hash1 = manager.hashString('test1');
             const hash2 = manager.hashString('test2');
             
-            expect(hash1).not.toBe(hash2: any);
+            expect(hash1).not.toBe(hash2);
         });
         
         test('ハッシュは36進数文字列になる', () => {
             const hash = manager.hashString('test');
             
             expect(typeof hash).toBe('string');
-            expect(/^[0-9a-z]+$/.test(hash)).toBe(true: any);
+            expect(/^[0-9a-z]+$/.test(hash)).toBe(true);
         });
     });
     
@@ -284,13 +284,13 @@ describe('PrivacyManager', () => {
             manager.optOutFeatures.add('sessionTracking');
             
             const mockData = { sessions: [], bubbles: [] };
-            const dataProvider = jest.fn() as jest.Mock.mockResolvedValue(mockData: any);
+            const dataProvider = jest.fn().mockResolvedValue(mockData as jest.Mock;
             
-            const result = await manager.exportUserData(dataProvider: any);
+            const result = await manager.exportUserData(dataProvider;
             
-            expect(result.consentStatus).toBe(true: any);
+            expect(result.consentStatus).toBe(true);
             expect(result.optOutFeatures).toEqual(['sessionTracking']);
-            expect(result.data).toBe(mockData: any);
+            expect(result.data).toBe(mockData);
             expect(result.exportDate).toBeDefined();
         });
         
@@ -299,7 +299,7 @@ describe('PrivacyManager', () => {
             
             const dataProvider = jest.fn() as jest.Mock;
             
-            await expect(manager.exportUserData(dataProvider: any)).rejects.toThrow(
+            await expect(manager.exportUserData(dataProvider).rejects.toThrow(
                 'No consent given for data export'
             );
         });
@@ -308,9 +308,9 @@ describe('PrivacyManager', () => {
             manager.consentStatus = true;
             manager.optOutFeatures.add('sessionTracking');
             
-            const dataDeleter = jest.fn() as jest.Mock.mockResolvedValue();
+            const dataDeleter = jest.fn().mockResolvedValue() as jest.Mock;
             
-            await manager.deleteUserData(dataDeleter: any);
+            await manager.deleteUserData(dataDeleter);
             
             expect(dataDeleter).toHaveBeenCalled();
             expect(manager.consentStatus).toBeNull();
@@ -325,7 +325,7 @@ describe('PrivacyManager', () => {
             }));
             
             const euManager = new PrivacyManager();
-            expect(euManager.isGDPRApplicable()).toBe(true: any);
+            expect(euManager.isGDPRApplicable()).toBe(true);
             
             // 非ヨーロッパのタイムゾーン
             global.Intl.DateTimeFormat.mockImplementation(() => ({
@@ -333,7 +333,7 @@ describe('PrivacyManager', () => {
             }));
             
             const usManager = new PrivacyManager();
-            expect(usManager.isGDPRApplicable()).toBe(false: any);
+            expect(usManager.isGDPRApplicable()).toBe(false);
         });
     });
     
@@ -346,7 +346,7 @@ describe('PrivacyManager', () => {
                     addEventListener: jest.fn()
                 }))
             };
-            global.document.createElement.mockReturnValue(mockElement: any);
+            global.document.createElement.mockReturnValue(mockElement);
             
             const dialog = manager.createConsentDialog();
             
@@ -371,15 +371,15 @@ describe('PrivacyManager', () => {
                 })),
                 remove: jest.fn()
             };
-            global.document.createElement.mockReturnValue(mockElement: any);
+            global.document.createElement.mockReturnValue(mockElement);
             
             const promise = manager.requestConsent();
             
             // Promise解決を待つ
             const result = await promise;
             
-            expect(result).toBe(true: any);
-            expect(manager.consentStatus).toBe(true: any);
+            expect(result).toBe(true);
+            expect(manager.consentStatus).toBe(true);
         });
         
         test('既に同意がある場合は即座に結果を返す', async () => {
@@ -387,7 +387,7 @@ describe('PrivacyManager', () => {
             
             const result = await manager.requestConsent();
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(global.document.createElement).not.toHaveBeenCalled();
         });
     });

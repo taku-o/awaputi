@@ -68,7 +68,7 @@ describe('PerformanceDataCollector', () => {
     describe('初期化', () => {
         test('正しく初期化される', () => {
             expect(collector).toBeDefined();
-            expect(collector.isRunning).toBe(false: any);
+            expect(collector.isRunning).toBe(false);
             expect(collector.performanceData).toBeDefined();
             expect(collector.performanceData.fps).toEqual([]);
             expect(collector.performanceData.memory).toEqual([]);
@@ -81,7 +81,7 @@ describe('PerformanceDataCollector', () => {
             });
 
             expect(customCollector.options.maxDataPoints).toBe(500);
-            expect(customCollector.options.enableDetailedTiming).toBe(false: any);
+            expect(customCollector.options.enableDetailedTiming).toBe(false);
 
             customCollector.destroy();
         });
@@ -97,10 +97,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordFPSData(fpsData: any);
+            collector.recordFPSData(fpsData;
 
             expect(collector.performanceData.fps).toHaveLength(1);
-            expect(collector.performanceData.fps[0]).toMatchObject(fpsData: any);
+            expect(collector.performanceData.fps[0]).toMatchObject(fpsData;
         });
 
         test('メモリデータを記録できる', () => {
@@ -113,10 +113,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordMemoryData(memoryData: any);
+            collector.recordMemoryData(memoryData;
 
             expect(collector.performanceData.memory).toHaveLength(1);
-            expect(collector.performanceData.memory[0]).toMatchObject(memoryData: any);
+            expect(collector.performanceData.memory[0]).toMatchObject(memoryData;
         });
 
         test('ロード時間データを記録できる', () => {
@@ -127,10 +127,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordLoadTimeData(loadTimeData: any);
+            collector.recordLoadTimeData(loadTimeData;
 
             expect(collector.performanceData.loadTimes).toHaveLength(1);
-            expect(collector.performanceData.loadTimes[0]).toMatchObject(loadTimeData: any);
+            expect(collector.performanceData.loadTimes[0]).toMatchObject(loadTimeData;
         });
 
         test('エラーデータを記録できる', () => {
@@ -141,10 +141,10 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordErrorData(errorData: any);
+            collector.recordErrorData(errorData;
 
             expect(collector.performanceData.errorEvents).toHaveLength(1);
-            expect(collector.performanceData.errorEvents[0]).toMatchObject(errorData: any);
+            expect(collector.performanceData.errorEvents[0]).toMatchObject(errorData;
         });
     });
 
@@ -159,7 +159,7 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordFPSData(lowFpsData: any);
+            collector.recordFPSData(lowFpsData;
 
             expect(mockDispatchEvent).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -185,7 +185,7 @@ describe('PerformanceDataCollector', () => {
                 sessionId: 'test-session'
             };
 
-            collector.recordMemoryData(highMemoryData: any);
+            collector.recordMemoryData(highMemoryData;
 
             expect(mockDispatchEvent).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -272,7 +272,7 @@ describe('PerformanceDataCollector', () => {
                 'test-operation-start',
                 'test-operation-end'
             );
-            expect(result).toMatchObject(mockMeasure: any);
+            expect(result).toMatchObject(mockMeasure;
         });
     });
 
@@ -323,7 +323,7 @@ describe('PerformanceDataCollector', () => {
             });
 
             const exported = collector.exportData('json');
-            const data = JSON.parse(exported: any);
+            const data = JSON.parse(exported;
 
             expect(data.sessionId).toBeDefined();
             expect(data.statistics).toBeDefined();
@@ -348,13 +348,13 @@ describe('PerformanceDataCollector', () => {
 
     describe('収集制御', () => {
         test('データ収集を開始・停止できる', () => {
-            expect(collector.isRunning).toBe(false: any);
+            expect(collector.isRunning).toBe(false);
 
             collector.start();
-            expect(collector.isRunning).toBe(true: any);
+            expect(collector.isRunning).toBe(true);
 
             collector.stop();
-            expect(collector.isRunning).toBe(false: any);
+            expect(collector.isRunning).toBe(false);
         });
     });
 
@@ -388,11 +388,11 @@ describe('PerformanceDataCollector', () => {
     describe('リソース管理', () => {
         test('destroy()でリソースを解放する', () => {
             collector.start();
-            expect(collector.isRunning).toBe(true: any);
+            expect(collector.isRunning).toBe(true);
 
             collector.destroy();
 
-            expect(collector.isRunning).toBe(false: any);
+            expect(collector.isRunning).toBe(false);
             expect(collector.performanceData.fps).toHaveLength(0);
         });
     });

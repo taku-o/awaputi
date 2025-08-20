@@ -500,7 +500,7 @@ describe('ConfigurationErrorHandler', () => {
             // handleErrorメソッドを一時的に破壊
             const originalHandleError = errorHandler.handleError;
             
-            errorHandler.handleError = function(this: any, error: Error, errorType: string, context: any): ErrorHandlingResult {
+            errorHandler.handleError = function(this: any, error: Error, errorType: string, context: ErrorHandlingResult {
                 // 最初の処理でエラーを発生させる
                 if (!this._emergencyMode) {
                     this._emergencyMode = true;

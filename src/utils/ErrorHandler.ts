@@ -54,7 +54,7 @@ declare global {
     }
 }
 
-class ErrorHandler {
+export class ErrorHandler {
     private isBrowser: boolean;
     private isNode: boolean;
     public isInitialized: boolean;
@@ -87,10 +87,10 @@ class ErrorHandler {
         this.isInitialized = false;
         
         // Initialize sub-components with dependency injection
-        this.logger = new ErrorLogger(this);
-        this.reporter = new UtilsErrorReporter(this);
-        this.recovery = new ErrorRecovery(this);
-        this.analyzer = new UtilsErrorAnalyzer(this);
+        this.logger = new ErrorLogger(this as any);
+        this.reporter = new UtilsErrorReporter(this as any);
+        this.recovery = new ErrorRecovery(this as any);
+        this.analyzer = new UtilsErrorAnalyzer(this as any);
         
         // Legacy compatibility properties - delegated to sub-components
         this.errorLog = [];
@@ -256,7 +256,7 @@ class ErrorHandler {
             const errorInfo: ErrorInfo = {
                 id: normalizedError.id || crypto.randomUUID(),
                 message: normalizedError.message || 'Unknown error',
-                timestamp: normalizedError.timestamp || Date.now(),
+                timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now(),
                 ...normalizedError,
                 context: context,
                 metadata: metadata

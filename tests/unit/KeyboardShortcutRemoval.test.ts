@@ -10,7 +10,7 @@ import { CoreKeyboardShortcutManager } from '../../src/core/KeyboardShortcutMana
 interface MockGameEngine {
     settingsManager: {
         get: jest.Mock<(key: string) => any>;
-        set: jest.Mock<(key: string, value: any) => void>;
+        set: jest.Mock<(key: string, value => void>;
     };
     audioManager: {
         toggleMute: jest.Mock<() => void>;

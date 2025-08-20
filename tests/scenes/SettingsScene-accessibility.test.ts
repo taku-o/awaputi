@@ -52,8 +52,8 @@ describe('SettingsScene Accessibility Integration', () => {
         // Mock GameEngine
         mockGameEngine = {
             sceneManager: {
-                hasScene: jest.fn().mockReturnValue(true: any),
-                switchScene: jest.fn().mockReturnValue(true: any),
+                hasScene: jest.fn().mockReturnValue(true,
+                switchScene: jest.fn().mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'SettingsScene' }
                 }
@@ -83,7 +83,7 @@ describe('SettingsScene Accessibility Integration', () => {
             }
         };
         
-        settingsScene = new SettingsScene(mockGameEngine: any);
+        settingsScene = new SettingsScene(mockGameEngine;
     });
     
     afterEach(() => {
@@ -96,13 +96,13 @@ describe('SettingsScene Accessibility Integration', () => {
     describe('AccessibilitySettingsManager Integration', () => {
         test('should initialize AccessibilitySettingsManager', () => {
             expect(settingsScene.accessibilitySettingsManager).toBeDefined();
-            expect(settingsScene.accessibilitySettingsManager).toBeInstanceOf(AccessibilitySettingsManager: any);
+            expect(settingsScene.accessibilitySettingsManager).toBeInstanceOf(AccessibilitySettingsManager;
         });
         
         test('should use extended accessibility settings', () => {
             const accessibilitySettings = settingsScene.settingItems.accessibility;
             
-            expect(Array.isArray(accessibilitySettings: any)).toBe(true: any);
+            expect(Array.isArray(accessibilitySettings).toBe(true);
             expect(accessibilitySettings.length).toBeGreaterThan(5); // 基本の5項目より多い
             
             // 拡張設定項目の存在確認
@@ -160,7 +160,7 @@ describe('SettingsScene Accessibility Integration', () => {
             );
             
             if (fontSizeSetting) {
-                settingsScene.selectedSettingIndex = settingsScene.settingItems.accessibility.indexOf(fontSizeSetting: any);
+                settingsScene.selectedSettingIndex = settingsScene.settingItems.accessibility.indexOf(fontSizeSetting;
                 
                 const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting');
                 
@@ -181,7 +181,7 @@ describe('SettingsScene Accessibility Integration', () => {
             );
             
             if (contrastSetting) {
-                settingsScene.selectedSettingIndex = settingsScene.settingItems.accessibility.indexOf(contrastSetting: any);
+                settingsScene.selectedSettingIndex = settingsScene.settingItems.accessibility.indexOf(contrastSetting;
                 
                 const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting');
                 
@@ -207,7 +207,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 key: 'accessibility.customLabel',
                 type: 'text'
             };
-            settingsScene.settingItems.accessibility.push(textSetting: any);
+            settingsScene.settingItems.accessibility.push(textSetting;
             settingsScene.selectedSettingIndex = settingsScene.settingItems.accessibility.length - 1;
             
             const setSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'setSetting');
@@ -228,7 +228,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 ctrlKey: true
             };
             
-            settingsScene.handleKeyInput(mockEvent: any);
+            settingsScene.handleKeyInput(mockEvent;
             
             expect(showProfilesSpy).toHaveBeenCalled();
         });
@@ -242,7 +242,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 ctrlKey: true
             };
             
-            settingsScene.handleKeyInput(mockEvent: any);
+            settingsScene.handleKeyInput(mockEvent;
             
             expect(exportSpy).toHaveBeenCalled();
         });
@@ -256,7 +256,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 ctrlKey: true
             };
             
-            settingsScene.handleKeyInput(mockEvent: any);
+            settingsScene.handleKeyInput(mockEvent;
             
             expect(importSpy).toHaveBeenCalled();
         });
@@ -270,7 +270,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 ctrlKey: true
             };
             
-            settingsScene.handleKeyInput(mockEvent: any);
+            settingsScene.handleKeyInput(mockEvent;
             
             expect(showProfilesSpy).not.toHaveBeenCalled();
         });
@@ -287,7 +287,7 @@ describe('SettingsScene Accessibility Integration', () => {
             settingsScene.showAccessibilityProfiles();
             
             expect(getProfilesSpy).toHaveBeenCalled();
-            expect(settingsScene.showingProfileDialog).toBe(true: any);
+            expect(settingsScene.showingProfileDialog).toBe(true);
             expect(settingsScene.profileDialogData).toBeDefined();
             expect(settingsScene.profileDialogData.profiles).toHaveLength(2);
         });
@@ -296,7 +296,7 @@ describe('SettingsScene Accessibility Integration', () => {
     describe('Export/Import Functionality', () => {
         test('should export accessibility settings', () => {
             const exportSpy = jest.spyOn(settingsScene.accessibilitySettingsManager, 'exportSettings');
-            exportSpy.mockReturnValue(true: any);
+            exportSpy.mockReturnValue(true;
             
             settingsScene.exportAccessibilitySettings();
             
@@ -313,7 +313,7 @@ describe('SettingsScene Accessibility Integration', () => {
             
             settingsScene.exportAccessibilitySettings();
             
-            expect(consoleSpy).toHaveBeenCalledWith('[SettingsScene] Export failed:', expect.any(Error: any));
+            expect(consoleSpy).toHaveBeenCalledWith('[SettingsScene] Export failed:', expect.any(Error);
             
             consoleSpy.mockRestore();
         });
@@ -327,15 +327,15 @@ describe('SettingsScene Accessibility Integration', () => {
                 click: jest.fn()
             };
             
-            mockDocument.createElement.mockReturnValue(mockInput: any);
+            mockDocument.createElement.mockReturnValue(mockInput;
             
             settingsScene.importAccessibilitySettings();
             
             expect(mockDocument.createElement).toHaveBeenCalledWith('input');
             expect(mockInput.type).toBe('file');
             expect(mockInput.accept).toBe('.json');
-            expect(mockInput.addEventListener).toHaveBeenCalledWith('change', expect.any(Function: any));
-            expect(mockDocument.body.appendChild).toHaveBeenCalledWith(mockInput: any);
+            expect(mockInput.addEventListener).toHaveBeenCalledWith('change', expect.any(Function);
+            expect(mockDocument.body.appendChild).toHaveBeenCalledWith(mockInput;
             expect(mockInput.click).toHaveBeenCalled();
         });
     });
@@ -344,7 +344,7 @@ describe('SettingsScene Accessibility Integration', () => {
         test('should report correct integration status', () => {
             const status = settingsScene.getAccessibilityIntegrationStatus();
             
-            expect(status.integrated).toBe(true: any);
+            expect(status.integrated).toBe(true);
             expect(status.stats).toBeDefined();
             expect(status.profileCount).toBeGreaterThan(0);
             expect(status.extendedSettings).toBeGreaterThan(5);
@@ -355,7 +355,7 @@ describe('SettingsScene Accessibility Integration', () => {
             
             const status = settingsScene.getAccessibilityIntegrationStatus();
             
-            expect(status.integrated).toBe(false: any);
+            expect(status.integrated).toBe(false);
             expect(status.reason).toBe('AccessibilitySettingsManager not initialized');
         });
     });
@@ -367,7 +367,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 fromHelp: true
             };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             expect(settingsScene.currentCategory).toBe('accessibility');
             expect(settingsScene.selectedCategoryIndex).toBe(4); // accessibility category index
@@ -379,7 +379,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 targetSetting: 'accessibility.highContrast'
             };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             expect(settingsScene.currentCategory).toBe('accessibility');
             
@@ -387,7 +387,7 @@ describe('SettingsScene Accessibility Integration', () => {
                 item => item.key === 'accessibility.highContrast'
             );
             if (highContrastIndex !== -1) {
-                expect(settingsScene.selectedSettingIndex).toBe(highContrastIndex: any);
+                expect(settingsScene.selectedSettingIndex).toBe(highContrastIndex);
             }
         });
     });

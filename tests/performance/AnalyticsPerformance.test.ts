@@ -11,7 +11,7 @@ import { IndexedDBStorageManager } from '../../src/analytics/IndexedDBStorageMan
 
 // テスト用の大量データ生成ヘルパー
 class TestDataGenerator {
-    static generateSessionData(count: any) {
+    static generateSessionData(count {
         const sessions: any[] = [];
         for (let i = 0; i < count; i++) {
             sessions.push({
@@ -31,7 +31,7 @@ class TestDataGenerator {
         return sessions;
     }
     
-    static generateBubbleInteractions(count: any) {
+    static generateBubbleInteractions(count {
         const interactions: any[] = [];
         const bubbleTypes = ['normal', 'stone', 'rainbow', 'pink', 'clock', 'electric', 'poison'];
         const actions = ['popped', 'missed', 'expired'];
@@ -51,7 +51,7 @@ class TestDataGenerator {
         return interactions;
     }
     
-    static generatePerformanceData(count: any) {
+    static generatePerformanceData(count {
         const performanceData: any[] = [];
         for (let i = 0; i < count; i++) {
             performanceData.push({
@@ -242,8 +242,8 @@ describe('Analytics Performance Tests', () => {
             const batchEfficiency = stats.batchesProcessed > 0 ? 
                 (interactions.length / stats.batchesProcessed) / performanceOptimizer.config.batchSize : 0;
             
-            expect(batchEfficiency: any).toBeGreaterThan(PERFORMANCE_THRESHOLDS.BATCH_PROCESSING_EFFICIENCY);
-            expect(processingTime: any).toBeLessThan(PERFORMANCE_THRESHOLDS.MEDIUM_DATASET_PROCESSING);
+            expect(batchEfficiency.toBeGreaterThan(PERFORMANCE_THRESHOLDS.BATCH_PROCESSING_EFFICIENCY);
+            expect(processingTime.toBeLessThan(PERFORMANCE_THRESHOLDS.MEDIUM_DATASET_PROCESSING);
         });
     });
 
@@ -297,7 +297,7 @@ describe('Analytics Performance Tests', () => {
             const finalMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
             const memoryLeak = finalMemory - initialMemory;
             
-            expect(memoryLeak: any).toBeLessThan(PERFORMANCE_THRESHOLDS.MEMORY_LEAK_THRESHOLD);
+            expect(memoryLeak.toBeLessThan(PERFORMANCE_THRESHOLDS.MEMORY_LEAK_THRESHOLD);
         });
     });
 
@@ -315,13 +315,13 @@ describe('Analytics Performance Tests', () => {
             // キャッシュからデータを取得（ヒット）
             for (let i = 0; i < 100; i++) {
                 const cached = performanceOptimizer.getCachedData(`session_${i}`);
-                expect(cached: any).toBeTruthy();
+                expect(cached.toBeTruthy();
             }
             
             // 存在しないデータを取得（ミス）
             for (let i = 100; i < 120; i++) {
                 const cached = performanceOptimizer.getCachedData(`session_${i}`);
-                expect(cached: any).toBeNull();
+                expect(cached.toBeNull();
             }
             
             const result = profiler.end('cache_retrieval');
@@ -354,7 +354,7 @@ describe('Analytics Performance Tests', () => {
             expect(performanceOptimizer.cache.size).toBeLessThanOrEqual(performanceOptimizer.config.cacheSize);
             
             // メモリが適切に回収されているか確認
-            expect(memoryRecovered: any).toBeGreaterThan(memoryIncrease * 0.5);
+            expect(memoryRecovered.toBeGreaterThan(memoryIncrease * 0.5);
         });
     });
 
@@ -368,7 +368,7 @@ describe('Analytics Performance Tests', () => {
             const tasks: any[] = [];
             for (let task = 0; task < concurrentTasks; task++) {
                 const taskPromise = new Promise(async (resolve) => {
-                    const taskData = TestDataGenerator.generateBubbleInteractions(dataPerTask: any);
+                    const taskData = TestDataGenerator.generateBubbleInteractions(dataPerTask;
                     
                     for (const item of taskData) {
                         performanceOptimizer.batchEvent(`task_${task}`, item, jest.fn());
@@ -377,10 +377,10 @@ describe('Analytics Performance Tests', () => {
                     resolve();
                 });
                 
-                tasks.push(taskPromise: any);
+                tasks.push(taskPromise;
             }
             
-            await Promise.all(tasks: any);
+            await Promise.all(tasks;
             await new Promise(resolve => setTimeout(resolve, 200));
             
             const result = profiler.end('concurrent_processing');
@@ -420,7 +420,7 @@ describe('Analytics Performance Tests', () => {
             }, {});
             
             // 集計結果の計算
-            const aggregatedResults = Object.entries(aggregation: any).map(([type, data]) => ({
+            const aggregatedResults = Object.entries(aggregation.map(([type, data]) => ({
                 bubbleType: type,
                 count: data.count,
                 averageScore: data.totalScore / data.count,
@@ -432,7 +432,7 @@ describe('Analytics Performance Tests', () => {
             
             expect(result.duration).toBeLessThan(PERFORMANCE_THRESHOLDS.AGGREGATION_TIME);
             expect(aggregatedResults.length).toBeGreaterThan(0);
-            expect(aggregatedResults.every(r => r.averageScore >= 0)).toBe(true: any);
+            expect(aggregatedResults.every(r => r.averageScore >= 0)).toBe(true);
         });
     });
 
@@ -447,11 +447,11 @@ describe('Analytics Performance Tests', () => {
             profiler.start('data_export');
             
             // JSON形式でのエクスポート
-            const jsonExport = JSON.stringify(exportData: any);
+            const jsonExport = JSON.stringify(exportData;
             
             // CSV形式でのエクスポート（簡易実装）
             const csvExport = exportData.sessions.map(session => 
-                Object.values(session: any).join(',')
+                Object.values(session.join(',')
             ).join('\n');
             
             const result = profiler.end('data_export');
@@ -471,7 +471,7 @@ describe('Analytics Performance Tests', () => {
             const initialMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
             
             for (let cycle = 0; cycle < processingCycles; cycle++) {
-                const cycleData = TestDataGenerator.generateBubbleInteractions(dataPerCycle: any);
+                const cycleData = TestDataGenerator.generateBubbleInteractions(dataPerCycle;
                 
                 for (const item of cycleData) {
                     performanceOptimizer.batchEvent('stability_test', item, jest.fn());
@@ -494,7 +494,7 @@ describe('Analytics Performance Tests', () => {
             
             // メモリ使用量の安定性確認
             const memoryGrowth = finalMemory - initialMemory;
-            expect(memoryGrowth: any).toBeLessThan(PERFORMANCE_THRESHOLDS.MEMORY_GROWTH_LIMIT);
+            expect(memoryGrowth.toBeLessThan(PERFORMANCE_THRESHOLDS.MEMORY_GROWTH_LIMIT);
         });
     });
 
@@ -531,7 +531,7 @@ describe('Analytics Performance Tests', () => {
             console.log(`Performance improvement ratio: ${improvementRatio.toFixed(2)}x`);
             
             // 少なくとも同等かそれより良いパフォーマンスを期待
-            expect(improvementRatio: any).toBeGreaterThanOrEqual(0.8);
+            expect(improvementRatio.toBeGreaterThanOrEqual(0.8);
         });
     });
 });

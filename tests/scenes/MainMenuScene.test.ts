@@ -61,8 +61,8 @@ describe('MainMenuScene Shop Button Tests', () => {
         mockGameEngine = {
             canvas: mockCanvas,
             sceneManager: {
-                hasScene: jest.fn().mockReturnValue(true: any),
-                switchScene: jest.fn().mockReturnValue(true: any),
+                hasScene: jest.fn().mockReturnValue(true,
+                switchScene: jest.fn().mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'MainMenuScene' }
                 }
@@ -90,7 +90,7 @@ describe('MainMenuScene Shop Button Tests', () => {
         };
         
         // MainMenuSceneの初期化
-        mainMenuScene = new MainMenuScene(mockGameEngine: any);
+        mainMenuScene = new MainMenuScene(mockGameEngine;
     });
     
     describe('ショップメニュー項目の存在確認', () => {
@@ -99,7 +99,7 @@ describe('MainMenuScene Shop Button Tests', () => {
             expect(shopMenuItem).toBeDefined();
             expect(shopMenuItem.id).toBe('shop');
             expect(shopMenuItem.key).toBe('menu.shop');
-            expect(shopMenuItem.action).toBeInstanceOf(Function: any);
+            expect(shopMenuItem.action).toBeInstanceOf(Function;
         });
         
         test('ショップ項目が正しい位置（インデックス1）にある', () => {
@@ -109,7 +109,7 @@ describe('MainMenuScene Shop Button Tests', () => {
         test('メニュー項目の順序が正しい', () => {
             const expectedOrder = ['start', 'shop', 'settings', 'userInfo', 'help'];
             const actualOrder = mainMenuScene.menuItems.map(item => item.id);
-            expect(actualOrder).toEqual(expectedOrder: any);
+            expect(actualOrder).toEqual(expectedOrder);
         });
         
         test('updateMenuLabelsでショップラベルが正しく設定される', () => {
@@ -150,7 +150,7 @@ describe('MainMenuScene Shop Button Tests', () => {
         });
         
         test('openShopでシーン切り替えが失敗した場合のエラーハンドリング', () => {
-            mockGameEngine.sceneManager.switchScene.mockReturnValue(false: any);
+            mockGameEngine.sceneManager.switchScene.mockReturnValue(false;
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
             
             mainMenuScene.openShop();
@@ -186,13 +186,13 @@ describe('MainMenuScene Shop Button Tests', () => {
             };
             
             mainMenuScene.selectedMenuIndex = 0; // start
-            mainMenuScene.handleMainMenuInput(mockEvent: any); // ショップに移動
+            mainMenuScene.handleMainMenuInput(mockEvent; // ショップに移動
             expect(mainMenuScene.selectedMenuIndex).toBe(1);
             
             // Enterでショップを選択
             mockEvent.code = 'Enter';
             const spy = jest.spyOn(mainMenuScene, 'openShop');
-            mainMenuScene.handleMainMenuInput(mockEvent: any);
+            mainMenuScene.handleMainMenuInput(mockEvent;
             expect(spy).toHaveBeenCalled();
             
             spy.mockRestore();
@@ -209,7 +209,7 @@ describe('MainMenuScene Shop Button Tests', () => {
             
             mainMenuScene.openShop();
             expect(errorHandlerSpy).toHaveBeenCalledWith(
-                expect.any(Error: any),
+                expect.any(Error,
                 { context: 'MainMenuScene.openShop' }
             );
             

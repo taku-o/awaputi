@@ -22,7 +22,7 @@ describe('MobileSystemIntegrator Integration', () => {
 
     describe('Component Interactions', () => {
         test('should initialize with sub-components', () => {
-            expect(mobileSystemIntegrator: any).toBeDefined();
+            expect(mobileSystemIntegrator.toBeDefined();
             expect(mobileSystemIntegrator.performanceAdapter).toBeDefined();
             expect(mobileSystemIntegrator.accessibilityAdapter).toBeDefined();
             expect(mobileSystemIntegrator.integrationManager).toBeDefined();
@@ -30,32 +30,32 @@ describe('MobileSystemIntegrator Integration', () => {
 
         test('should delegate mobile optimization to performance adapter', async () => {
             const mockOptimization = { applied: true, level: 'medium' };
-            jest.spyOn(mobileSystemIntegrator.performanceAdapter, 'optimizeForMobile').mockResolvedValue(mockOptimization: any);
+            jest.spyOn(mobileSystemIntegrator.performanceAdapter, 'optimizeForMobile').mockResolvedValue(mockOptimization;
 
             const result = await mobileSystemIntegrator.optimizeForMobile();
             
             expect(mobileSystemIntegrator.performanceAdapter.optimizeForMobile).toHaveBeenCalled();
-            expect(result: any).toEqual(mockOptimization: any);
+            expect(result.toEqual(mockOptimization);
         });
 
         test('should handle accessibility integration', async () => {
             const mockAccessibilityConfig = { highContrast: true, largeText: false };
-            jest.spyOn(mobileSystemIntegrator.accessibilityAdapter, 'configureAccessibility').mockResolvedValue(true: any);
+            jest.spyOn(mobileSystemIntegrator.accessibilityAdapter, 'configureAccessibility').mockResolvedValue(true;
 
-            const result = await mobileSystemIntegrator.configureAccessibility(mockAccessibilityConfig: any);
+            const result = await mobileSystemIntegrator.configureAccessibility(mockAccessibilityConfig;
             
-            expect(mobileSystemIntegrator.accessibilityAdapter.configureAccessibility).toHaveBeenCalledWith(mockAccessibilityConfig: any);
-            expect(result: any).toBe(true: any);
+            expect(mobileSystemIntegrator.accessibilityAdapter.configureAccessibility).toHaveBeenCalledWith(mockAccessibilityConfig;
+            expect(result.toBe(true);
         });
 
         test('should coordinate system integration', async () => {
             const mockIntegrationResult = { status: 'success', components: ['performance', 'accessibility'] };
-            jest.spyOn(mobileSystemIntegrator.integrationManager, 'integrateAllSystems').mockResolvedValue(mockIntegrationResult: any);
+            jest.spyOn(mobileSystemIntegrator.integrationManager, 'integrateAllSystems').mockResolvedValue(mockIntegrationResult;
 
             const result = await mobileSystemIntegrator.integrateAllSystems();
             
             expect(mobileSystemIntegrator.integrationManager.integrateAllSystems).toHaveBeenCalled();
-            expect(result: any).toEqual(mockIntegrationResult: any);
+            expect(result.toEqual(mockIntegrationResult);
         });
     });
 
@@ -65,18 +65,18 @@ describe('MobileSystemIntegrator Integration', () => {
             const performanceResult = { fps: 60, memoryUsage: 80 };
             const accessibilityResult = { compliant: true, issues: [] };
 
-            jest.spyOn(mobileSystemIntegrator.performanceAdapter, 'getPerformanceMetrics').mockResolvedValue(performanceResult: any);
-            jest.spyOn(mobileSystemIntegrator.accessibilityAdapter, 'validateAccessibility').mockResolvedValue(accessibilityResult: any);
+            jest.spyOn(mobileSystemIntegrator.performanceAdapter, 'getPerformanceMetrics').mockResolvedValue(performanceResult;
+            jest.spyOn(mobileSystemIntegrator.accessibilityAdapter, 'validateAccessibility').mockResolvedValue(accessibilityResult;
 
             const performance = await mobileSystemIntegrator.getPerformanceMetrics();
             const accessibility = await mobileSystemIntegrator.validateAccessibility();
 
-            expect(performance: any).toEqual(performanceResult: any);
-            expect(accessibility: any).toEqual(accessibilityResult: any);
+            expect(performance.toEqual(performanceResult);
+            expect(accessibility.toEqual(accessibilityResult);
             
             // 両方のシステムが正常に動作することを確認
             expect(performance.fps).toBeGreaterThan(30);
-            expect(accessibility.compliant).toBe(true: any);
+            expect(accessibility.compliant).toBe(true);
         });
     });
 

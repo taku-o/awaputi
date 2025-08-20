@@ -19,7 +19,7 @@ describe('RealtimeDashboard', () => {
     beforeEach(() => {
         // DOM要素を作成
         container = document.createElement('div');
-        document.body.appendChild(container: any);
+        document.body.appendChild(container;
 
         // 依存関係のモック
         dataCollector = {
@@ -46,7 +46,7 @@ describe('RealtimeDashboard', () => {
             dashboard.destroy();
         }
         if (container && container.parentNode) {
-            container.parentNode.removeChild(container: any);
+            container.parentNode.removeChild(container;
         }
         jest.clearAllMocks();
     });
@@ -62,25 +62,25 @@ describe('RealtimeDashboard', () => {
         test('FPSチャートが作成される', () => {
             const fpsCanvas = container.querySelector('#fps-chart');
             expect(fpsCanvas).toBeTruthy();
-            expect(dashboard.charts.has('fps')).toBe(true: any);
+            expect(dashboard.charts.has('fps')).toBe(true);
         });
 
         test('メモリチャートが作成される', () => {
             const memoryCanvas = container.querySelector('#memory-chart');
             expect(memoryCanvas).toBeTruthy();
-            expect(dashboard.charts.has('memory')).toBe(true: any);
+            expect(dashboard.charts.has('memory')).toBe(true);
         });
 
         test('エラーチャートが作成される', () => {
             const errorsCanvas = container.querySelector('#errors-chart');
             expect(errorsCanvas).toBeTruthy();
-            expect(dashboard.charts.has('errors')).toBe(true: any);
+            expect(dashboard.charts.has('errors')).toBe(true);
         });
 
         test('レイテンシチャートが作成される', () => {
             const latencyCanvas = container.querySelector('#latency-chart');
             expect(latencyCanvas).toBeTruthy();
-            expect(dashboard.charts.has('latency')).toBe(true: any);
+            expect(dashboard.charts.has('latency')).toBe(true);
         });
 
         test('監視開始ボタンが機能する', () => {
@@ -91,7 +91,7 @@ describe('RealtimeDashboard', () => {
             // 監視開始
             toggleBtn.click();
             expect(toggleBtn.textContent).toBe('監視停止');
-            expect(toggleBtn.classList.contains('active')).toBe(true: any);
+            expect(toggleBtn.classList.contains('active')).toBe(true);
             expect(dashboard.updateTimer).toBeTruthy();
             expect(realtimeMonitor.startMonitoring).toHaveBeenCalled();
         });
@@ -105,8 +105,8 @@ describe('RealtimeDashboard', () => {
             // 監視停止
             toggleBtn.click();
             expect(toggleBtn.textContent).toBe('監視開始');
-            expect(toggleBtn.classList.contains('active')).toBe(false: any);
-            expect(dashboard.updateTimer).toBe(null: any);
+            expect(toggleBtn.classList.contains('active')).toBe(false);
+            expect(dashboard.updateTimer).toBe(null);
         });
 
         test('データ更新が正しく実行される', () => {
@@ -185,12 +185,12 @@ describe('RealtimeDashboard', () => {
                 message: 'Low FPS detected: 25fps'
             };
 
-            dashboard.displayAlert(alert: any);
+            dashboard.displayAlert(alert;
 
             const alertsContainer = container.querySelector('#alerts-container');
             const alertItem = alertsContainer.querySelector('.alert-item');
             expect(alertItem).toBeTruthy();
-            expect(alertItem.classList.contains('warning')).toBe(true: any);
+            expect(alertItem.classList.contains('warning')).toBe(true);
             expect(alertItem.textContent).toContain('Low FPS detected: 25fps');
         });
 
@@ -207,7 +207,7 @@ describe('RealtimeDashboard', () => {
             const alertsContainer = container.querySelector('#alerts-container');
             const alertItem = alertsContainer.querySelector('.alert-item');
             expect(alertItem).toBeTruthy();
-            expect(alertItem.classList.contains('error')).toBe(true: any);
+            expect(alertItem.classList.contains('error')).toBe(true);
         });
 
         test('データエクスポートが機能する', () => {
@@ -240,7 +240,7 @@ describe('RealtimeDashboard', () => {
 
         test('平均値が正しく計算される', () => {
             const values = [10, 20, 30, 40, 50];
-            const average = dashboard.calculateAverage(values: any);
+            const average = dashboard.calculateAverage(values;
             expect(average).toBe(30);
         });
 
@@ -282,7 +282,7 @@ describe('RealtimeDashboard', () => {
             
             // リソースが解放される
             expect(dashboard.charts.size).toBe(0);
-            expect(dashboard.updateTimer).toBe(null: any);
+            expect(dashboard.updateTimer).toBe(null);
             expect(container.innerHTML).toBe('');
         });
     });

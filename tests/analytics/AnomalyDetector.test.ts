@@ -8,7 +8,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName: any) || [];
+        const storeData = this.data.get(storeName || [];
         if (!query) return storeData;
 
         return storeData.filter(item => {
@@ -31,7 +31,7 @@ describe('AnomalyDetector', () => {
 
     beforeEach(() => {
         mockStorageManager = new MockStorageManager();
-        anomalyDetector = new AnomalyDetector(mockStorageManager: any);
+        anomalyDetector = new AnomalyDetector(mockStorageManager;
     });
 
     afterEach(() => {
@@ -44,8 +44,8 @@ describe('AnomalyDetector', () => {
 
     describe('コンストラクタ', () => {
         test('正しく初期化される', () => {
-            expect(anomalyDetector.storageManager).toBe(mockStorageManager: any);
-            expect(anomalyDetector.detectionRules).toBeInstanceOf(Map: any);
+            expect(anomalyDetector.storageManager).toBe(mockStorageManager);
+            expect(anomalyDetector.detectionRules).toBeInstanceOf(Map;
             expect(anomalyDetector.alertHistory).toEqual([]);
             expect(anomalyDetector.maxAlertHistory).toBe(100);
             
@@ -58,9 +58,9 @@ describe('AnomalyDetector', () => {
 
         test('検出ルールが正しく初期化される', () => {
             expect(anomalyDetector.detectionRules.size).toBe(8);
-            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.SCORE_OUTLIER)).toBe(true: any);
-            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.ACCURACY_DROP)).toBe(true: any);
-            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.PERFORMANCE_DEGRADATION)).toBe(true: any);
+            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.SCORE_OUTLIER)).toBe(true);
+            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.ACCURACY_DROP)).toBe(true);
+            expect(anomalyDetector.detectionRules.has(anomalyDetector.anomalyTypes.PERFORMANCE_DEGRADATION)).toBe(true);
         });
     });
 
@@ -72,7 +72,7 @@ describe('AnomalyDetector', () => {
 
             const result = await anomalyDetector.detectAnomalies();
 
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true);
             expect(result.anomalies).toEqual([]);
             expect(result.summary).toContain('分析対象データが不足しています');
             expect(result.recommendations).toEqual([]);
@@ -104,7 +104,7 @@ describe('AnomalyDetector', () => {
 
             const result = await anomalyDetector.detectAnomalies();
 
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true);
             expect(result.anomalies.length).toBeLessThanOrEqual(2); // 正常データでも若干の異常は許容
         });
     });
@@ -125,7 +125,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const outliers = anomalyDetector.detectScoreOutliers(testData: any);
+            const outliers = anomalyDetector.detectScoreOutliers(testData;
 
             expect(outliers.length).toBeGreaterThan(0);
             expect(outliers[0].sessionId).toBe('s5');
@@ -142,7 +142,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const outliers = anomalyDetector.detectScoreOutliers(testData: any);
+            const outliers = anomalyDetector.detectScoreOutliers(testData;
             expect(outliers).toEqual([]);
         });
 
@@ -157,7 +157,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const outliers = anomalyDetector.detectScoreOutliers(testData: any);
+            const outliers = anomalyDetector.detectScoreOutliers(testData;
             expect(outliers).toEqual([]);
         });
     });
@@ -172,7 +172,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const drops = anomalyDetector.detectAccuracyDrop(testData: any);
+            const drops = anomalyDetector.detectAccuracyDrop(testData;
 
             expect(drops.length).toBeGreaterThan(0);
             expect(drops[0].sessionId).toBe('s3');
@@ -188,7 +188,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const drops = anomalyDetector.detectAccuracyDrop(testData: any);
+            const drops = anomalyDetector.detectAccuracyDrop(testData;
             expect(drops).toEqual([]);
         });
     });
@@ -209,7 +209,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const anomalies = anomalyDetector.detectPlayTimeAnomaly(testData: any);
+            const anomalies = anomalyDetector.detectPlayTimeAnomaly(testData;
 
             expect(anomalies.length).toBeGreaterThan(0);
             const shortSession = anomalies.find(a => a.sessionId === 's5');
@@ -232,7 +232,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const anomalies = anomalyDetector.detectPlayTimeAnomaly(testData: any);
+            const anomalies = anomalyDetector.detectPlayTimeAnomaly(testData;
             expect(anomalies.length).toBeGreaterThan(0);
         });
     });
@@ -251,7 +251,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const inconsistencies = anomalyDetector.detectComboInconsistency(testData: any);
+            const inconsistencies = anomalyDetector.detectComboInconsistency(testData;
 
             expect(inconsistencies.length).toBeGreaterThan(0);
             expect(inconsistencies[0]).toHaveProperty('consistencyScore');
@@ -279,7 +279,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const anomalies = anomalyDetector.detectBubbleInteractionAnomaly(testData: any);
+            const anomalies = anomalyDetector.detectBubbleInteractionAnomaly(testData;
 
             expect(anomalies.length).toBeGreaterThan(0);
             expect(anomalies[0].anomalyType).toBe('slow_reactions');
@@ -289,7 +289,7 @@ describe('AnomalyDetector', () => {
 
         test('インタラクションデータがない場合、空配列を返す', () => {
             const testData = { interactions: [] };
-            const anomalies = anomalyDetector.detectBubbleInteractionAnomaly(testData: any);
+            const anomalies = anomalyDetector.detectBubbleInteractionAnomaly(testData;
             expect(anomalies).toEqual([]);
         });
     });
@@ -305,7 +305,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const anomalies = anomalyDetector.detectPerformanceDegradation(testData: any);
+            const anomalies = anomalyDetector.detectPerformanceDegradation(testData;
 
             expect(anomalies.length).toBeGreaterThan(0);
             expect(anomalies[0]).toHaveProperty('lowPerformanceRatio');
@@ -314,7 +314,7 @@ describe('AnomalyDetector', () => {
 
         test('パフォーマンスデータが不足している場合、空配列を返す', () => {
             const testData = { performance: [] };
-            const anomalies = anomalyDetector.detectPerformanceDegradation(testData: any);
+            const anomalies = anomalyDetector.detectPerformanceDegradation(testData;
             expect(anomalies).toEqual([]);
         });
     });
@@ -336,7 +336,7 @@ describe('AnomalyDetector', () => {
                 ]
             };
 
-            const anomalies = anomalyDetector.detectUnusualQuitPattern(testData: any);
+            const anomalies = anomalyDetector.detectUnusualQuitPattern(testData;
 
             expect(anomalies.length).toBeGreaterThan(0);
             expect(anomalies[0].quitRatio).toBeGreaterThan(0.4);
@@ -354,7 +354,7 @@ describe('AnomalyDetector', () => {
                 { severity: 'critical' }
             ];
 
-            const breakdown = anomalyDetector.calculateSeverityBreakdown(results: any);
+            const breakdown = anomalyDetector.calculateSeverityBreakdown(results;
 
             expect(breakdown.low).toBe(1);
             expect(breakdown.medium).toBe(2);
@@ -376,7 +376,7 @@ describe('AnomalyDetector', () => {
                 { type: 'score_outlier', severity: 'medium' }
             ];
 
-            const summary = anomalyDetector.generateAnomalySummary(results: any);
+            const summary = anomalyDetector.generateAnomalySummary(results;
 
             expect(summary).toContain('3件の異常パターンが検出されました');
             expect(summary).toContain('1件は高優先度');
@@ -391,7 +391,7 @@ describe('AnomalyDetector', () => {
                 { type: anomalyDetector.anomalyTypes.ACCURACY_DROP, severity: 'high' }
             ];
 
-            const recommendations = anomalyDetector.generateRecommendations(results: any);
+            const recommendations = anomalyDetector.generateRecommendations(results;
 
             expect(recommendations.length).toBe(2);
             expect(recommendations[0]).toContain('スコアの変動');
@@ -405,7 +405,7 @@ describe('AnomalyDetector', () => {
                 { type: 'test_anomaly', severity: 'medium', description: 'テスト異常' }
             ];
 
-            anomalyDetector.saveToAlertHistory(results: any);
+            anomalyDetector.saveToAlertHistory(results;
 
             const history = anomalyDetector.getAlertHistory();
             expect(history.length).toBe(1);
@@ -437,7 +437,7 @@ describe('AnomalyDetector', () => {
                 behavioral: 0.9
             };
 
-            anomalyDetector.updateThresholds(newThresholds: any);
+            anomalyDetector.updateThresholds(newThresholds;
 
             expect(anomalyDetector.thresholds.statistical).toBe(3.0);
             expect(anomalyDetector.thresholds.behavioral).toBe(0.9);
@@ -475,7 +475,7 @@ describe('AnomalyDetector', () => {
 
             const result = await anomalyDetector.detectAnomalies();
 
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false);
             expect(result.error).toBe('Database error');
             expect(result.anomalies).toEqual([]);
         });

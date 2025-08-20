@@ -94,15 +94,15 @@ describe('CoordinateCalculator', () => {
     
     describe('境界検証', () => {
         test('validateElementBoundsが境界内の要素に対してtrueを返す', () => {
-            expect(calculator.validateElementBounds(0, 0, 100, 100)).toBe(true: any);
-            expect(calculator.validateElementBounds(500, 500, 100, 100)).toBe(true: any);
+            expect(calculator.validateElementBounds(0, 0, 100, 100)).toBe(true);
+            expect(calculator.validateElementBounds(500, 500, 100, 100)).toBe(true);
         });
         
         test('validateElementBoundsが境界外の要素に対してfalseを返す', () => {
-            expect(calculator.validateElementBounds(-10, 0, 100, 100)).toBe(false: any);
-            expect(calculator.validateElementBounds(0, -10, 100, 100)).toBe(false: any);
-            expect(calculator.validateElementBounds(1900, 0, 100, 100)).toBe(false: any);
-            expect(calculator.validateElementBounds(0, 1000, 100, 100)).toBe(false: any);
+            expect(calculator.validateElementBounds(-10, 0, 100, 100)).toBe(false);
+            expect(calculator.validateElementBounds(0, -10, 100, 100)).toBe(false);
+            expect(calculator.validateElementBounds(1900, 0, 100, 100)).toBe(false);
+            expect(calculator.validateElementBounds(0, 1000, 100, 100)).toBe(false);
         });
     });
     

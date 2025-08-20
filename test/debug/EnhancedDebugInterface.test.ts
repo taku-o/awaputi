@@ -72,7 +72,7 @@ describe('EnhancedDebugInterface', () => {
         localStorage.clear();
 
         // Create instance
-        debugInterface = new EnhancedDebugInterface(mockGameEngine: any);
+        debugInterface = new EnhancedDebugInterface(mockGameEngine as any);
     });
 
     afterEach(() => {
@@ -92,11 +92,11 @@ describe('EnhancedDebugInterface', () => {
 
     describe('Initialization', () => {
         test('should initialize with default values', () => {
-            expect(debugInterface.panels).toBeInstanceOf(Map: any);
+            expect(debugInterface.panels).toBeInstanceOf(Map as any);
             expect(debugInterface.activePanel).toBe('overview');
             expect(debugInterface.panelHistory).toEqual([]);
             expect(debugInterface.layout).toBe('docked');
-            expect(debugInterface.shortcuts).toBeInstanceOf(Map: any);
+            expect(debugInterface.shortcuts).toBeInstanceOf(Map as any);
             expect(debugInterface.sessionId).toBeDefined();
             expect(debugInterface.sessionStartTime).toBeDefined();
         });
@@ -114,15 +114,15 @@ describe('EnhancedDebugInterface', () => {
         });
 
         test('should generate unique session ID', () => {
-            const debugInterface2 = new EnhancedDebugInterface(mockGameEngine: any);
+            const debugInterface2 = new EnhancedDebugInterface(mockGameEngine as any);
             expect(debugInterface.sessionId).not.toBe(debugInterface2.sessionId);
             debugInterface2.destroy();
         });
 
         test('should setup default shortcuts', () => {
             expect(debugInterface.shortcuts.size).toBeGreaterThan(0);
-            expect(debugInterface.shortcuts.has('ctrl+shift+d')).toBe(true: any);
-            expect(debugInterface.shortcuts.has('escape')).toBe(true: any);
+            expect(debugInterface.shortcuts.has('ctrl+shift+d')).toBe(true as any);
+            expect(debugInterface.shortcuts.has('escape')).toBe(true as any);
         });
     });
 
@@ -150,15 +150,15 @@ describe('EnhancedDebugInterface', () => {
 
         test('should register new panel successfully', () => {
             const result = debugInterface.registerPanel('mock', MockPanel);
-            expect(result).toBe(true: any);
-            expect(debugInterface.panels.has('mock')).toBe(true: any);
-            expect(debugInterface.panels.get('mock')).toBeInstanceOf(MockPanel: any);
+            expect(result).toBe(true as any);
+            expect(debugInterface.panels.has('mock')).toBe(true as any);
+            expect(debugInterface.panels.get('mock')).toBeInstanceOf(MockPanel as any);
         });
 
         test('should not register duplicate panel', () => {
             debugInterface.registerPanel('mock', MockPanel);
             const result = debugInterface.registerPanel('mock', MockPanel);
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
             expect(consoleWarnSpy).toHaveBeenCalledWith("Panel 'mock' is already registered");
         });
 
@@ -170,7 +170,7 @@ describe('EnhancedDebugInterface', () => {
             }
             
             const result = debugInterface.registerPanel('bad', BadPanel);
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
             expect(consoleErrorSpy).toHaveBeenCalled();
         });
 
@@ -180,7 +180,7 @@ describe('EnhancedDebugInterface', () => {
             
             expect(debugInterface.activePanel).toBe('mock');
             expect(debugInterface.panelHistory).toContain('overview');
-            expect(debugInterface.panels.get('mock').activated).toBe(true: any);
+            expect(debugInterface.panels.get('mock').activated).toBe(true as any);
         });
 
         test('should track panel history', () => {
@@ -216,8 +216,8 @@ describe('EnhancedDebugInterface', () => {
             const callback = jest.fn() as jest.Mock;
             const result = debugInterface.registerShortcut('ctrl+shift+x', callback, 'Test shortcut');
             
-            expect(result).toBe(true: any);
-            expect(debugInterface.shortcuts.has('ctrl+shift+x')).toBe(true: any);
+            expect(result).toBe(true as any);
+            expect(debugInterface.shortcuts.has('ctrl+shift+x')).toBe(true as any);
         });
 
         test('should detect shortcut conflicts', () => {
@@ -227,8 +227,8 @@ describe('EnhancedDebugInterface', () => {
             debugInterface.registerShortcut('ctrl+shift+x', callback1, 'First shortcut');
             const result = debugInterface.registerShortcut('ctrl+shift+x', callback2, 'Second shortcut');
             
-            expect(result).toBe(false: any);
-            expect(debugInterface.shortcutConflicts.has('ctrl+shift+x')).toBe(true: any);
+            expect(result).toBe(false as any);
+            expect(debugInterface.shortcutConflicts.has('ctrl+shift+x')).toBe(true as any);
             expect(consoleWarnSpy).toHaveBeenCalled();
         });
 
@@ -246,7 +246,7 @@ describe('EnhancedDebugInterface', () => {
                 key: 'X'
             };
             
-            expect(debugInterface.buildShortcutString(event: any)).toBe('ctrl+shift+x');
+            expect(debugInterface.buildShortcutString(event as any)).toBe('ctrl+shift+x');
         });
 
         test('should handle keyboard events correctly', () => {
@@ -262,9 +262,9 @@ describe('EnhancedDebugInterface', () => {
                 preventDefault: jest.fn()
             };
             
-            const result = debugInterface.handleKeyboardEvent(event: any);
+            const result = debugInterface.handleKeyboardEvent(event as any);
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true as any);
             expect(callback).toHaveBeenCalled();
             expect(event.preventDefault).toHaveBeenCalled();
         });
@@ -279,9 +279,9 @@ describe('EnhancedDebugInterface', () => {
                 preventDefault: jest.fn()
             };
             
-            const result = debugInterface.handleKeyboardEvent(event: any);
+            const result = debugInterface.handleKeyboardEvent(event as any);
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
             expect(event.preventDefault).not.toHaveBeenCalled();
         });
     });
@@ -329,9 +329,9 @@ describe('EnhancedDebugInterface', () => {
                 activePanel: 'console'
             };
             
-            localStorage.setItem('enhanced-debug-settings', JSON.stringify(settings: any));
+            localStorage.setItem('enhanced-debug-settings', JSON.stringify(settings as any));
             
-            const newDebugInterface = new EnhancedDebugInterface(mockGameEngine: any);
+            const newDebugInterface = new EnhancedDebugInterface(mockGameEngine as any);
             expect(newDebugInterface.position).toEqual({ x: 150, y: 250 });
             expect(newDebugInterface.size).toEqual({ width: 600, height: 800 });
             expect(newDebugInterface.settings.theme).toBe('light');
@@ -342,8 +342,8 @@ describe('EnhancedDebugInterface', () => {
         test('should handle corrupted settings gracefully', () => {
             localStorage.setItem('enhanced-debug-settings', 'invalid json');
             
-            const newDebugInterface = new EnhancedDebugInterface(mockGameEngine: any);
-            expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load debug settings:', expect.any(Error: any));
+            const newDebugInterface = new EnhancedDebugInterface(mockGameEngine as any);
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load debug settings:', expect.any(Error));
             
             newDebugInterface.destroy();
         });
@@ -358,14 +358,14 @@ describe('EnhancedDebugInterface', () => {
 
     describe('UI Interaction', () => {
         test('should toggle visibility correctly', () => {
-            expect(debugInterface.isVisible).toBe(false: any);
+            expect(debugInterface.isVisible).toBe(false as any);
             
             debugInterface.show();
-            expect(debugInterface.isVisible).toBe(true: any);
+            expect(debugInterface.isVisible).toBe(true as any);
             expect(debugInterface.debugPanel.style.display).toBe('block');
             
             debugInterface.hide();
-            expect(debugInterface.isVisible).toBe(false: any);
+            expect(debugInterface.isVisible).toBe(false as any);
             expect(debugInterface.debugPanel.style.display).toBe('none');
         });
 
@@ -373,11 +373,11 @@ describe('EnhancedDebugInterface', () => {
             debugInterface.show();
             
             debugInterface.minimize();
-            expect(debugInterface.debugPanel.classList.contains('minimized')).toBe(true: any);
+            expect(debugInterface.debugPanel.classList.contains('minimized')).toBe(true as any);
             expect(debugInterface.debugPanel.style.height).toBe('40px');
             
             debugInterface.restore();
-            expect(debugInterface.debugPanel.classList.contains('minimized')).toBe(false: any);
+            expect(debugInterface.debugPanel.classList.contains('minimized')).toBe(false as any);
             expect(debugInterface.debugPanel.style.height).toBe(`${debugInterface.size.height}px`);
         });
 
@@ -421,7 +421,7 @@ describe('EnhancedDebugInterface', () => {
 
         test('should return shortcuts', () => {
             const shortcuts = debugInterface.getShortcuts();
-            expect(shortcuts).toBeInstanceOf(Map: any);
+            expect(shortcuts).toBeInstanceOf(Map as any);
             expect(shortcuts.size).toBeGreaterThan(0);
         });
 
@@ -433,7 +433,7 @@ describe('EnhancedDebugInterface', () => {
             debugInterface.registerShortcut('ctrl+x', callback2);
             
             const conflicts = debugInterface.getShortcutConflicts();
-            expect(conflicts.has('ctrl+x')).toBe(true: any);
+            expect(conflicts.has('ctrl+x')).toBe(true as any);
         });
     });
 
@@ -454,7 +454,7 @@ describe('EnhancedDebugInterface', () => {
             
             debugInterface.destroy();
             
-            expect(panel.destroyed).toBe(true: any);
+            expect(panel.destroyed).toBe(true as any);
             expect(document.getElementById('enhanced-debug-panel')).toBeNull();
             expect(document.getElementById('enhanced-debug-styles')).toBeNull();
         });

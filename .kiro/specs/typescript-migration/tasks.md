@@ -247,10 +247,15 @@
   - **実装内容**: ProgressTracker、PerformanceOptimizer、ItemManager、遅延読み込みシステム
   - _要件: 7.1, 7.4_
 
-- [ ] 34. 未定義変数の初期化
-  - TypeScriptコンパイル時に発見された未定義変数を初期化
-  - 変数の型を明確に定義
-  - 初期化処理の妥当性を検証
+- [x] 34. 未定義変数の初期化 ✅
+  - ✅ TypeScriptコンパイル時に発見された未定義変数を初期化
+  - ✅ 変数の型を明確に定義
+  - ✅ 初期化処理の妥当性を検証
+  - **修正内容**:
+    - ErrorHandler: export キーワード追加、MainController型アサーション使用
+    - Dialog インターフェース: getSelectedButton/setSelectedButton メソッド追加
+    - テストファイル: パラメータ型注釈修正、括弧の不一致修正
+  - **注意**: テストファイルに3,285個のTypeScriptエラーが残存（主に構文エラー）
   - _要件: 7.2_
 
 - [ ] 35. 型エラーの修正

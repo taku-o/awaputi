@@ -258,8 +258,8 @@ Object.defineProperty(global, 'performance', {
 Object.defineProperty(global, 'Worker', {
     value: class MockWorker {
         url: string;
-        onmessage: ((event: any) => void) | null = null;
-        onerror: ((event: any) => void) | null = null;
+        onmessage: ((event => void) | null = null;
+        onerror: ((event => void) | null = null;
         
         constructor(url: string) {
             this.url = url;

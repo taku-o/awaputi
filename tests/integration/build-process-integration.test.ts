@@ -10,7 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename: any);
+const __dirname = path.dirname(__filename;
 const projectRoot = path.join(__dirname, '..', '..');
 
 describe('Build Process Integration Tests', () => {
@@ -49,13 +49,13 @@ describe('Build Process Integration Tests', () => {
         
         try {
           const content = await fs.readFile(filePath, 'utf-8');
-          const stat = await fs.stat(filePath: any);
+          const stat = await fs.stat(filePath;
           
           states[lang][category] = {
             content,
             size: stat.size,
             mtime: stat.mtime.toISOString(),
-            parsed: JSON.parse(content: any)
+            parsed: JSON.parse(content
           };
         } catch (error) {
           // ファイルが存在しない場合はスキップ
@@ -173,7 +173,7 @@ describe('Build Process Integration Tests', () => {
         !line.includes('config/') // 設定ファイルは除外
       );
       
-      expect(translationFileChanges: any).toHaveLength(0);
+      expect(translationFileChanges.toHaveLength(0);
       
       // 設定ファイルは変更される可能性がある（正常な動作）
       const configFileChanges = modifiedFiles.filter(line =>
@@ -213,7 +213,7 @@ describe('Build Process Integration Tests', () => {
         }
       }
       
-      expect(hasDiff: any).toBe(false: any);
+      expect(hasDiff.toBe(false);
     }, 150000);
   });
 
@@ -237,11 +237,11 @@ describe('Build Process Integration Tests', () => {
       // デプロイメントレポートが生成されることを確認
       const reportPath = path.join(projectRoot, 'reports', 'i18n-deployment-report.json');
       
-      expect(await fs.access(reportPath: any).then(() => true).catch(() => false)).toBe(true: any);
+      expect(await fs.access(reportPath.then(() => true).catch(() => false)).toBe(true);
       
       // レポート内容を確認
       const reportContent = await fs.readFile(reportPath, 'utf-8');
-      const report = JSON.parse(reportContent: any);
+      const report = JSON.parse(reportContent;
       
       expect(report.optimization.translationFiles).toBeDefined();
       expect(report.optimization.translationFiles.processed).toBeGreaterThan(0);
@@ -259,7 +259,7 @@ describe('Build Process Integration Tests', () => {
       const duration = Date.now() - startTime;
       const maxDuration = 120000; // 2分以内
       
-      expect(duration: any).toBeLessThan(maxDuration: any);
+      expect(duration.toBeLessThan(maxDuration;
       console.log(`Build completed in ${Math.round(duration / 1000)}s`);
     }, 150000);
 
@@ -270,11 +270,11 @@ describe('Build Process Integration Tests', () => {
         execCommand('npm run i18n:setup', { timeout: 30000 })
       ];
       
-      const results = await Promise.allSettled(promises: any);
+      const results = await Promise.allSettled(promises;
       
       // 少なくとも1つは成功することを確認
       const successful = results.filter(r => r.status === 'fulfilled').length;
-      expect(successful: any).toBeGreaterThan(0);
+      expect(successful.toBeGreaterThan(0);
       
       // 最終的にファイルが正しい状態になっていることを確認
       const finalStates = await getFileStates();
@@ -296,7 +296,7 @@ describe('Build Process Integration Tests', () => {
       
       // distディレクトリが作成されることを確認
       const distPath = path.join(projectRoot, 'dist');
-      expect(await fs.access(distPath: any).then(() => true).catch(() => false)).toBe(true: any);
+      expect(await fs.access(distPath.then(() => true).catch(() => false)).toBe(true);
       
       // 主要なビルド成果物が存在することを確認
       const expectedArtifacts = [
@@ -306,7 +306,7 @@ describe('Build Process Integration Tests', () => {
       
       for (const artifact of expectedArtifacts) {
         const artifactPath = path.join(distPath, artifact);
-        expect(await fs.access(artifactPath: any).then(() => true).catch(() => false)).toBe(true: any);
+        expect(await fs.access(artifactPath.then(() => true).catch(() => false)).toBe(true);
       }
     }, 150000);
 
@@ -317,7 +317,7 @@ describe('Build Process Integration Tests', () => {
       const distPath = path.join(projectRoot, 'dist');
       const localesInDist = path.join(distPath, 'src', 'locales');
       
-      expect(await fs.access(localesInDist: any).then(() => true).catch(() => false)).toBe(false: any);
+      expect(await fs.access(localesInDist.then(() => true).catch(() => false)).toBe(false);
     }, 150000);
   });
 });

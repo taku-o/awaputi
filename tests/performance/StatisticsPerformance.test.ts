@@ -65,12 +65,12 @@ describe('統計システムパフォーマンステスト', () => {
             const StatisticsPerformanceOptimizerModule = await import('../../src/core/StatisticsPerformanceOptimizer.js');
 
             // インスタンス作成
-            statisticsManager = new StatisticsManagerModule.StatisticsManager(mockGameEngine: any);
-            statisticsCollector = new StatisticsCollectorModule.StatisticsCollector(statisticsManager: any);
-            statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager: any);
-            chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas: any);
-            statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager: any);
-            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager: any);
+            statisticsManager = new StatisticsManagerModule.StatisticsManager(mockGameEngine;
+            statisticsCollector = new StatisticsCollectorModule.StatisticsCollector(statisticsManager;
+            statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager;
+            chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas;
+            statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager;
+            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager;
         } catch (error) {
             console.error('Failed to import modules:', error);
         }
@@ -89,9 +89,9 @@ describe('統計システムパフォーマンステスト', () => {
         };
         
         // Initialize sub-components with dependency injection
-        dataCollectionTests = new DataCollectionPerformanceTests(mainTestSuite: any);
-        analysisRenderingTests = new AnalysisRenderingPerformanceTests(mainTestSuite: any);
-        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite: any);
+        dataCollectionTests = new DataCollectionPerformanceTests(mainTestSuite;
+        analysisRenderingTests = new AnalysisRenderingPerformanceTests(mainTestSuite;
+        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite;
         
         console.log('[StatisticsPerformance] Main test controller initialized successfully');
     });
@@ -164,7 +164,7 @@ describe('統計システムパフォーマンステスト', () => {
      * Configure test suite settings
      * @param {Object} config - Test configuration
      */
-    function configureTestSuite(config: any) {
+    function configureTestSuite(config {
         if (config.performanceConfig) {
             Object.assign(performanceConfig, config.performanceConfig);
         }

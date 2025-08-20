@@ -155,7 +155,7 @@ describe('Configuration System Integration Tests', () => {
         test('検証システムとの連携', () => {
             // 検証ルールを設定
             configManager.setValidationRule('game.scoring.baseScores.normal', {
-                validate: (value: any) => typeof value === 'number' && value >= 1 && value <= 100,
+                validate: (value => typeof value === 'number' && value >= 1 && value <= 100,
                 errorMessage: 'Value must be a number between 1 and 100'
             });
             

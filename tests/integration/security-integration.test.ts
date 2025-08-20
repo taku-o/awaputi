@@ -74,23 +74,23 @@ describe('Security Integration Tests', () => {
 
     describe('Security System Integration', () => {
         test('I18nSecurityManagerが正しく統合されている', () => {
-            expect(localizationManager.securityManager).toBeInstanceOf(I18nSecurityManager: any);
+            expect(localizationManager.securityManager).toBeInstanceOf(I18nSecurityManager;
             expect(localizationManager.securityManager).toBeDefined();
         });
 
         test('I18nSecurityTesterが正しく統合されている', () => {
-            expect(localizationManager.securityTester).toBeInstanceOf(I18nSecurityTester: any);
+            expect(localizationManager.securityTester).toBeInstanceOf(I18nSecurityTester;
             expect(localizationManager.securityTester).toBeDefined();
         });
 
         test('セキュリティ統計を取得できる', () => {
             const stats = localizationManager.getSecurityStats();
             
-            expect(stats: any).toHaveProperty('totalValidations');
-            expect(stats: any).toHaveProperty('blockedAttempts');
-            expect(stats: any).toHaveProperty('xssAttempts');
-            expect(stats: any).toHaveProperty('securityLevel');
-            expect(stats: any).toHaveProperty('threatLevel');
+            expect(stats.toHaveProperty('totalValidations');
+            expect(stats.toHaveProperty('blockedAttempts');
+            expect(stats.toHaveProperty('xssAttempts');
+            expect(stats.toHaveProperty('securityLevel');
+            expect(stats.toHaveProperty('threatLevel');
         });
     });
 
@@ -107,7 +107,7 @@ describe('Security Integration Tests', () => {
                 'test_safe_data'
             );
 
-            expect(result.isValid).toBe(true: any);
+            expect(result.isValid).toBe(true);
             expect(result.violations).toHaveLength(0);
         });
 
@@ -123,7 +123,7 @@ describe('Security Integration Tests', () => {
                 'test_malicious_data'
             );
 
-            expect(result.isValid).toBe(false: any);
+            expect(result.isValid).toBe(false);
             expect(result.violations.length).toBeGreaterThan(0);
             
             const highSeverityViolations = result.violations.filter(v => v.severity === 'high');
@@ -142,7 +142,7 @@ describe('Security Integration Tests', () => {
                 'test_injection_data'
             );
 
-            expect(result.isValid).toBe(false: any);
+            expect(result.isValid).toBe(false);
             
             const suspiciousViolations = result.violations.filter(
                 v => v.type === 'suspicious_content'
@@ -160,13 +160,13 @@ describe('Security Integration Tests', () => {
 
             // OptimizedTranslationLoaderをモック
             localizationManager.optimizedLoader.loadLanguage = jest.fn() as jest.Mock
-                .mockResolvedValue(safeTranslations: any);
+                .mockResolvedValue(safeTranslations;
 
             const result = await localizationManager.loadLanguageData('test-lang');
 
-            expect(result: any).toBe(true: any);
-            expect(localizationManager.translations.get('test-lang')).toEqual(safeTranslations: any);
-            expect(localizationManager.loadedLanguages.has('test-lang')).toBe(true: any);
+            expect(result.toBe(true);
+            expect(localizationManager.translations.get('test-lang')).toEqual(safeTranslations);
+            expect(localizationManager.loadedLanguages.has('test-lang')).toBe(true);
         });
 
         test('セキュリティ違反のある言語データは読み込みが拒否される', async () => {
@@ -177,13 +177,13 @@ describe('Security Integration Tests', () => {
 
             // OptimizedTranslationLoaderをモック
             localizationManager.optimizedLoader.loadLanguage = jest.fn() as jest.Mock
-                .mockResolvedValue(maliciousTranslations: any);
+                .mockResolvedValue(maliciousTranslations;
 
             const result = await localizationManager.loadLanguageData('malicious-lang');
 
-            expect(result: any).toBe(false: any);
-            expect(localizationManager.translations.has('malicious-lang')).toBe(false: any);
-            expect(localizationManager.loadedLanguages.has('malicious-lang')).toBe(false: any);
+            expect(result.toBe(false);
+            expect(localizationManager.translations.has('malicious-lang')).toBe(false);
+            expect(localizationManager.loadedLanguages.has('malicious-lang')).toBe(false);
         });
 
         test('軽微なセキュリティ違反の場合は警告付きで読み込まれる', async () => {
@@ -194,14 +194,14 @@ describe('Security Integration Tests', () => {
 
             // OptimizedTranslationLoaderをモック
             localizationManager.optimizedLoader.loadLanguage = jest.fn() as jest.Mock
-                .mockResolvedValue(minorViolationTranslations: any);
+                .mockResolvedValue(minorViolationTranslations;
 
             const result = await localizationManager.loadLanguageData('minor-violation-lang');
 
-            expect(result: any).toBe(true: any);
+            expect(result.toBe(true);
             expect(console.warn).toHaveBeenCalledWith(
                 expect.stringContaining('Security violations found'),
-                expect.any(Array: any)
+                expect.any(Array
             );
         });
     });
@@ -220,7 +220,7 @@ describe('Security Integration Tests', () => {
         test('安全なパラメータでの翻訳生成', () => {
             const result = localizationManager.t('test.parameter', { name: 'テスト' });
             
-            expect(result: any).toBe('こんにちは テストさん');
+            expect(result.toBe('こんにちは テストさん');
         });
 
         test('危険なパラメータは自動的にサニタイズされる', () => {
@@ -228,9 +228,9 @@ describe('Security Integration Tests', () => {
                 name: '<script>alert("XSS")</script>' 
             });
             
-            expect(result: any).not.toContain('<script>');
-            expect(result: any).not.toContain('alert(');
-            expect(result: any).toContain('&lt;'); // HTMLエンティティ化されている
+            expect(result.not.toContain('<script>');
+            expect(result.not.toContain('alert(');
+            expect(result.toContain('&lt;'); // HTMLエンティティ化されている
         });
 
         test('HTMLテンプレートでの危険なパラメータ処理', () => {
@@ -238,9 +238,9 @@ describe('Security Integration Tests', () => {
                 message: '<img src="x" onerror="alert(1)">' 
             });
             
-            expect(result: any).not.toContain('onerror');
-            expect(result: any).not.toContain('alert(1)');
-            expect(result: any).toContain('&lt;img'); // サニタイズされている
+            expect(result.not.toContain('onerror');
+            expect(result.not.toContain('alert(1)');
+            expect(result.toContain('&lt;img'); // サニタイズされている
         });
 
         test('不正なパラメータキーは無視される', () => {
@@ -250,8 +250,8 @@ describe('Security Integration Tests', () => {
                 'name': 'safe_value'
             });
             
-            expect(result: any).toBe('こんにちは safe_valueさん');
-            expect(result: any).not.toContain('malicious');
+            expect(result.toBe('こんにちは safe_valueさん');
+            expect(result.not.toContain('malicious');
         });
     });
 
@@ -259,9 +259,9 @@ describe('Security Integration Tests', () => {
         test('包括的セキュリティテストを実行できる', async () => {
             const testReport = await localizationManager.runSecurityTest();
             
-            expect(testReport: any).toHaveProperty('summary');
-            expect(testReport: any).toHaveProperty('vulnerabilities');
-            expect(testReport: any).toHaveProperty('recommendations');
+            expect(testReport.toHaveProperty('summary');
+            expect(testReport.toHaveProperty('vulnerabilities');
+            expect(testReport.toHaveProperty('recommendations');
             
             expect(testReport.summary).toHaveProperty('totalTests');
             expect(testReport.summary).toHaveProperty('passedTests');
@@ -272,11 +272,11 @@ describe('Security Integration Tests', () => {
         test('セキュリティレポートを生成できる', () => {
             const report = localizationManager.generateSecurityReport();
             
-            expect(report: any).toHaveProperty('timestamp');
-            expect(report: any).toHaveProperty('securityConfig');
-            expect(report: any).toHaveProperty('statistics');
-            expect(report: any).toHaveProperty('cspConfig');
-            expect(report: any).toHaveProperty('recommendations');
+            expect(report.toHaveProperty('timestamp');
+            expect(report.toHaveProperty('securityConfig');
+            expect(report.toHaveProperty('statistics');
+            expect(report.toHaveProperty('cspConfig');
+            expect(report.toHaveProperty('recommendations');
         });
     });
 
@@ -288,9 +288,9 @@ describe('Security Integration Tests', () => {
                 maxTranslationLength: 5000
             };
             
-            const result = localizationManager.updateSecurityConfig(newConfig: any);
+            const result = localizationManager.updateSecurityConfig(newConfig;
             
-            expect(result: any).toBe(true: any);
+            expect(result.toBe(true);
             
             const stats = localizationManager.getSecurityStats();
             expect(stats.securityLevel).toBeDefined();
@@ -299,42 +299,42 @@ describe('Security Integration Tests', () => {
         test('無効なセキュリティ設定は拒否される', () => {
             const invalidConfig = 'invalid_config';
             
-            const result = localizationManager.updateSecurityConfig(invalidConfig: any);
+            const result = localizationManager.updateSecurityConfig(invalidConfig;
             
-            expect(result: any).toBe(false: any);
+            expect(result.toBe(false);
         });
     });
 
     describe('Text Sanitization', () => {
         test('危険な文字列は適切にサニタイズされる', () => {
             const dangerousText = '<script>alert("XSS")</script>';
-            const sanitized = localizationManager.sanitizeTranslation(dangerousText: any);
+            const sanitized = localizationManager.sanitizeTranslation(dangerousText;
             
-            expect(sanitized: any).not.toContain('<script>');
-            expect(sanitized: any).not.toContain('alert(');
-            expect(sanitized: any).toContain('&lt;');
-            expect(sanitized: any).toContain('&gt;');
+            expect(sanitized.not.toContain('<script>');
+            expect(sanitized.not.toContain('alert(');
+            expect(sanitized.toContain('&lt;');
+            expect(sanitized.toContain('&gt;');
         });
 
         test('HTMLエンティティが適切にエスケープされる', () => {
             const textWithEntities = 'Text with & < > " \' / ` = characters';
-            const sanitized = localizationManager.sanitizeTranslation(textWithEntities: any);
+            const sanitized = localizationManager.sanitizeTranslation(textWithEntities;
             
-            expect(sanitized: any).toContain('&amp;');
-            expect(sanitized: any).toContain('&lt;');
-            expect(sanitized: any).toContain('&gt;');
-            expect(sanitized: any).toContain('&quot;');
-            expect(sanitized: any).toContain('&#39;');
-            expect(sanitized: any).toContain('&#x2F;');
-            expect(sanitized: any).toContain('&#x60;');
-            expect(sanitized: any).toContain('&#x3D;');
+            expect(sanitized.toContain('&amp;');
+            expect(sanitized.toContain('&lt;');
+            expect(sanitized.toContain('&gt;');
+            expect(sanitized.toContain('&quot;');
+            expect(sanitized.toContain('&#39;');
+            expect(sanitized.toContain('&#x2F;');
+            expect(sanitized.toContain('&#x60;');
+            expect(sanitized.toContain('&#x3D;');
         });
 
         test('安全なテキストはそのまま保持される', () => {
             const safeText = 'これは安全なテキストです';
-            const sanitized = localizationManager.sanitizeTranslation(safeText: any);
+            const sanitized = localizationManager.sanitizeTranslation(safeText;
             
-            expect(sanitized: any).toBe(safeText: any);
+            expect(sanitized.toBe(safeText);
         });
     });
 
@@ -352,7 +352,7 @@ describe('Security Integration Tests', () => {
             const duration = endTime - startTime;
             
             // 100回の操作が100ms以内に完了することを確認
-            expect(duration: any).toBeLessThan(100);
+            expect(duration.toBeLessThan(100);
         });
 
         test('セキュリティ検証の処理時間は適切', () => {
@@ -363,14 +363,14 @@ describe('Security Integration Tests', () => {
             };
             
             const startTime = performance.now();
-            const result = localizationManager.validateTranslationSecurity(testData: any);
+            const result = localizationManager.validateTranslationSecurity(testData;
             const endTime = performance.now();
             
             const duration = endTime - startTime;
             
             // セキュリティ検証が10ms以内に完了することを確認
-            expect(duration: any).toBeLessThan(10);
-            expect(result.isValid).toBe(true: any);
+            expect(duration.toBeLessThan(10);
+            expect(result.isValid).toBe(true);
         });
     });
 
@@ -391,7 +391,7 @@ describe('Security Integration Tests', () => {
             const result = localizationManager.t('test.error', { param: 'value' });
             
             // エラーが発生してもフォールバック処理で翻訳が返される
-            expect(result: any).toBeTruthy();
+            expect(result.toBeTruthy();
         });
 
         test('翻訳データ検証エラー時の処理', () => {
@@ -402,9 +402,9 @@ describe('Security Integration Tests', () => {
                 });
             
             const testData = { 'test.key': 'Test value' };
-            const result = localizationManager.validateTranslationSecurity(testData: any);
+            const result = localizationManager.validateTranslationSecurity(testData;
             
-            expect(result.isValid).toBe(false: any);
+            expect(result.isValid).toBe(false);
             expect(result.violations).toContainEqual(
                 expect.objectContaining({
                     type: 'validation_error'

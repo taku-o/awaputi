@@ -18,7 +18,7 @@ import { KeyboardShortcutRouter } from '../../src/core/navigation/KeyboardShortc
 // Mock dependencies
 const mockGameEngine = {
     sceneManager: {
-        switchScene: jest.fn().mockReturnValue(true: any),
+        switchScene: jest.fn().mockReturnValue(true,
         getCurrentScene: jest.fn(() => ({ constructor: { name: 'MenuScene' } })),
         getScene: jest.fn()
     },
@@ -59,13 +59,13 @@ describe('Unified Settings Screen Access Integration Tests', () => {
         jest.clearAllMocks();
         
         // Reset scene manager mocks
-        mockGameEngine.sceneManager.switchScene.mockReturnValue(true: any);
+        mockGameEngine.sceneManager.switchScene.mockReturnValue(true;
         mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({ constructor: { name: 'MenuScene' } });
         
         // Initialize components
-        navigationContextManager = new NavigationContextManager(mockGameEngine: any);
-        keyboardShortcutRouter = new KeyboardShortcutRouter(mockGameEngine: any);
-        settingsScene = new SettingsScene(mockGameEngine: any);
+        navigationContextManager = new NavigationContextManager(mockGameEngine;
+        keyboardShortcutRouter = new KeyboardShortcutRouter(mockGameEngine;
+        settingsScene = new SettingsScene(mockGameEngine;
     });
     
     afterEach(() => {
@@ -87,18 +87,18 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             
             // Assert - Core requirement: navigation should work
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
-            expect(success: any).toBe(true: any);
+            expect(success.toBe(true);
         });
         
         test('should handle navigation failures gracefully', () => {
             // Arrange
-            mockGameEngine.sceneManager.switchScene.mockReturnValue(false: any);
+            mockGameEngine.sceneManager.switchScene.mockReturnValue(false;
             
             // Act
             const success = keyboardShortcutRouter.handleSettingsShortcut('MenuScene');
             
             // Assert
-            expect(success: any).toBe(false: any);
+            expect(success.toBe(false);
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalled();
         });
         
@@ -110,7 +110,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             };
             
             // Act
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             // Assert
             expect(settingsScene.navigationContext.getReturnDestination()).toBe('menu');
@@ -126,18 +126,18 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             'ShopScene'
         ];
         
-        test.each(testScenes: any)('should handle S key from %s correctly', (sceneName) => {
+        test.each(testScenes('should handle S key from %s correctly', (sceneName) => {
             // Arrange
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
                 constructor: { name: sceneName }
             });
             
             // Act
-            const success = keyboardShortcutRouter.handleSettingsShortcut(sceneName: any);
+            const success = keyboardShortcutRouter.handleSettingsShortcut(sceneName;
             
             // Assert - Core requirement: S key should navigate to settings from any scene
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
-            expect(success: any).toBe(true: any);
+            expect(success.toBe(true);
         });
         
         test('should preserve navigation context when using S key from different scenes', () => {
@@ -151,10 +151,10 @@ describe('Unified Settings Screen Access Integration Tests', () => {
                 });
                 
                 // Act
-                const success = keyboardShortcutRouter.handleSettingsShortcut(sceneName: any);
+                const success = keyboardShortcutRouter.handleSettingsShortcut(sceneName;
                 
                 // Assert - Should successfully handle S key from all scenes
-                expect(success: any).toBe(true: any);
+                expect(success.toBe(true);
                 expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
                 
                 // Reset for next iteration
@@ -189,9 +189,9 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const depth3 = navigationContextManager.getStackDepth();
             
             // Assert - Should properly manage stack operations
-            expect(depth1: any).toBe(1);
-            expect(depth2: any).toBe(2);
-            expect(depth3: any).toBe(1);
+            expect(depth1.toBe(1);
+            expect(depth2.toBe(2);
+            expect(depth3.toBe(1);
         });
         
         test('should handle complex navigation chains', () => {
@@ -208,9 +208,9 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const afterSecond = navigationContextManager.getStackDepth();
             
             // Assert - Stack should decrease properly
-            expect(initialDepth: any).toBe(3);
-            expect(afterFirst: any).toBe(2);
-            expect(afterSecond: any).toBe(1);
+            expect(initialDepth.toBe(3);
+            expect(afterFirst.toBe(2);
+            expect(afterSecond.toBe(1);
         });
     });
 
@@ -221,7 +221,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
                 accessMethod: 'menu_click',
                 sourceScene: 'MenuScene'
             };
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             // Act - Simulate going back
             const callback = settingsScene.setupEventCallbacks?.();
@@ -229,7 +229,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const returnDestination = settingsScene.navigationContext.getReturnDestination();
             
             // Assert
-            expect(returnDestination: any).toBe('menu');
+            expect(returnDestination.toBe('menu');
         });
         
         test('should handle navigation from game scene', () => {
@@ -240,7 +240,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const currentContext = navigationContextManager.getCurrentContext();
             
             // Assert - Should properly track game scene context
-            expect(currentContext: any).toBeDefined();
+            expect(currentContext.toBeDefined();
             expect(currentContext.scene).toBe('GameScene');
             expect(currentContext.method).toBe('keyboard_s');
         });
@@ -253,7 +253,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const currentContext = navigationContextManager.getCurrentContext();
             
             // Assert - Should properly track help scene context
-            expect(currentContext: any).toBeDefined();
+            expect(currentContext.toBeDefined();
             expect(currentContext.scene).toBe('HelpScene');
             expect(currentContext.method).toBe('keyboard_s');
         });
@@ -285,7 +285,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const shortcutConfig = keyboardShortcutRouter.shortcuts.get('KeyS');
             
             // Assert - Should have proper mapping
-            expect(shortcutExists: any).toBe(true: any);
+            expect(shortcutExists.toBe(true);
             expect(shortcutConfig.action).toBe('settings');
             expect(shortcutConfig.scene).toBe('settings');
         });
@@ -300,7 +300,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const success = keyboardShortcutRouter.handleSettingsShortcut('MenuScene');
             
             // Assert
-            expect(success: any).toBe(true: any);
+            expect(success.toBe(true);
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
         });
         
@@ -310,7 +310,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             keyboardShortcutRouter.state = { isActive: false, lastKeyTime: 0 };
             
             // Act
-            keyboardShortcutRouter.handleKeyDown(keyEvent: any);
+            keyboardShortcutRouter.handleKeyDown(keyEvent;
             
             // Assert - Should not process when inactive
             expect(mockGameEngine.sceneManager.switchScene).not.toHaveBeenCalled();
@@ -327,7 +327,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             
             // Act & Assert - Should not throw
             expect(() => {
-                settingsScene.enter(contextData: any);
+                settingsScene.enter(contextData;
             }).not.toThrow();
         });
         
@@ -349,7 +349,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             };
             
             // Act
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             // Assert - Should have accessibility manager
             expect(settingsScene.accessibilitySettingsManager).toBeDefined();
@@ -364,7 +364,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             
             // Act & Assert
             expect(() => {
-                const testRouter = new KeyboardShortcutRouter(faultyGameEngine: any);
+                const testRouter = new KeyboardShortcutRouter(faultyGameEngine;
                 testRouter.handleSettingsShortcut('MenuScene');
             }).not.toThrow();
         });
@@ -388,7 +388,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             
             // Act & Assert
             expect(() => {
-                const testNavigation = new NavigationContextManager(faultyGameEngine: any);
+                const testNavigation = new NavigationContextManager(faultyGameEngine;
                 testNavigation.pushContext('MenuScene', 'keyboard_s');
             }).not.toThrow();
         });
@@ -400,7 +400,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             
             // Act & Assert
             expect(() => {
-                const testSettingsScene = new SettingsScene(faultyGameEngine: any);
+                const testSettingsScene = new SettingsScene(faultyGameEngine;
                 testSettingsScene.enter({});
             }).not.toThrow();
         });
@@ -411,7 +411,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             // Test that settings access goes through unified system
             const success = keyboardShortcutRouter.handleSettingsShortcut('MenuScene');
             
-            expect(success: any).toBe(true: any);
+            expect(success.toBe(true);
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
         });
         
@@ -425,7 +425,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
                     constructor: { name: sceneName }
                 });
                 
-                keyboardShortcutRouter.handleSettingsShortcut(sceneName: any);
+                keyboardShortcutRouter.handleSettingsShortcut(sceneName;
                 expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
             });
         });
@@ -434,7 +434,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             // Test that S key works consistently
             const shortcutConfig = keyboardShortcutRouter.shortcuts.get('KeyS');
             
-            expect(shortcutConfig: any).toBeDefined();
+            expect(shortcutConfig.toBeDefined();
             expect(shortcutConfig.action).toBe('settings');
             expect(shortcutConfig.scene).toBe('settings');
         });
@@ -448,7 +448,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             expect(context.method).toBe('keyboard_s');
             
             const returnDestination = navigationContextManager.getReturnDestination();
-            expect(returnDestination: any).toBe('menu');
+            expect(returnDestination.toBe('menu');
         });
     });
 
@@ -462,7 +462,7 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             }
             
             // Assert - Should handle all calls successfully
-            expect(successCount: any).toBe(5);
+            expect(successCount.toBe(5);
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledTimes(5);
         });
         
@@ -476,8 +476,8 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const afterCleanup = navigationContextManager.getStackDepth();
             
             // Assert
-            expect(beforeCleanup: any).toBe(1);
-            expect(afterCleanup: any).toBe(0);
+            expect(beforeCleanup.toBe(1);
+            expect(afterCleanup.toBe(0);
         });
         
         test('should maintain consistent state across scene transitions', () => {
@@ -491,8 +491,8 @@ describe('Unified Settings Screen Access Integration Tests', () => {
             const finalDepth = navigationContextManager.getStackDepth();
             
             // Assert - Should maintain consistent stack behavior
-            expect(initialDepth: any).toBe(1);
-            expect(finalDepth: any).toBe(1);
+            expect(initialDepth.toBe(1);
+            expect(finalDepth.toBe(1);
         });
     });
 });

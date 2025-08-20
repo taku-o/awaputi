@@ -58,11 +58,11 @@ describe('DeveloperAlertSystem', () => {
         });
 
         test('アラートカテゴリが正しく設定される', () => {
-            expect(alertSystem.alertCategories.has('gameplay')).toBe(true: any);
-            expect(alertSystem.alertCategories.has('performance')).toBe(true: any);
-            expect(alertSystem.alertCategories.has('security')).toBe(true: any);
-            expect(alertSystem.alertCategories.has('data')).toBe(true: any);
-            expect(alertSystem.alertCategories.has('business')).toBe(true: any);
+            expect(alertSystem.alertCategories.has('gameplay')).toBe(true);
+            expect(alertSystem.alertCategories.has('performance')).toBe(true);
+            expect(alertSystem.alertCategories.has('security')).toBe(true);
+            expect(alertSystem.alertCategories.has('data')).toBe(true);
+            expect(alertSystem.alertCategories.has('business')).toBe(true);
 
             const gameplayCategory = alertSystem.alertCategories.get('gameplay');
             expect(gameplayCategory.name).toBe('異常なゲームプレイ');
@@ -82,8 +82,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkUnusualScoreProgression(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkUnusualScoreProgression(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('warning');
             expect(result.message).toContain('異常に急激なスコア上昇');
         });
@@ -98,8 +98,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkAbnormalSessionLength(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkAbnormalSessionLength(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('warning');
             expect(result.message).toContain('異常に長いセッション時間');
         });
@@ -111,8 +111,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkRepetitiveActions(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkRepetitiveActions(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('info');
             expect(result.message).toContain('繰り返し動作パターン');
         });
@@ -126,8 +126,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkImpossibleAchievements(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkImpossibleAchievements(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('critical');
             expect(result.message).toContain('不可能な実績取得');
         });
@@ -142,8 +142,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkLowFrameRate(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkLowFrameRate(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('error');
             expect(result.message).toContain('深刻なパフォーマンス問題');
         });
@@ -158,8 +158,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkHighMemoryUsage(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkHighMemoryUsage(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('warning');
             expect(result.message).toContain('高メモリ使用量');
         });
@@ -174,8 +174,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkLongLoadTimes(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkLongLoadTimes(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('warning');
             expect(result.message).toContain('長いロード時間');
         });
@@ -188,8 +188,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkFrequentErrors(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkFrequentErrors(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('error');
             expect(result.message).toContain('高いエラー発生率');
         });
@@ -205,8 +205,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkSuspiciousActivity(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkSuspiciousActivity(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('critical');
             expect(result.message).toContain('疑わしい活動');
         });
@@ -223,8 +223,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkDataManipulation(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkDataManipulation(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('critical');
             expect(result.message).toContain('データ整合性の問題');
         });
@@ -239,8 +239,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkDataInconsistency(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkDataInconsistency(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('warning');
             expect(result.message).toContain('データ不整合が多数検出');
         });
@@ -251,8 +251,8 @@ describe('DeveloperAlertSystem', () => {
                 // playerBehavior と performance が欠損
             };
 
-            const result = alertSystem.checkMissingData(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkMissingData(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('error');
             expect(result.message).toContain('必須データが欠損');
         });
@@ -267,8 +267,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkUserEngagementDrop(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkUserEngagementDrop(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('warning');
             expect(result.message).toContain('ユーザーエンゲージメントが大幅に低下');
         });
@@ -283,8 +283,8 @@ describe('DeveloperAlertSystem', () => {
                 }
             };
 
-            const result = alertSystem.checkRetentionRateChange(testData: any);
-            expect(result.shouldAlert).toBe(true: any);
+            const result = alertSystem.checkRetentionRateChange(testData);
+            expect(result.shouldAlert).toBe(true);
             expect(result.severity).toBe('error');
             expect(result.message).toContain('ユーザーリテンション率が大幅に低下');
         });
@@ -299,7 +299,7 @@ describe('DeveloperAlertSystem', () => {
                 recommendations: ['テスト推奨アクション']
             };
 
-            const alert = alertSystem.generateAlert(alertData: any);
+            const alert = alertSystem.generateAlert(alertData);
             
             expect(alert).toBeTruthy();
             expect(alert.id).toMatch(/^alert_\d+_[a-z0-9]+$/);
@@ -307,7 +307,7 @@ describe('DeveloperAlertSystem', () => {
             expect(alert.severity).toBe('error');
             expect(alert.message).toBe('テストアラート');
             expect(alert.status).toBe('new');
-            expect(alert.acknowledged).toBe(false: any);
+            expect(alert.acknowledged).toBe(false);
         });
 
         test('アラートフィルターが正しく動作する', () => {
@@ -319,10 +319,10 @@ describe('DeveloperAlertSystem', () => {
             };
 
             alertSystem.options.minSeverityLevel = 'warning';
-            expect(alertSystem.passesFilters(lowSeverityAlert: any)).toBe(false: any);
+            expect(alertSystem.passesFilters(lowSeverityAlert)).toBe(false);
 
             alertSystem.options.minSeverityLevel = 'info';
-            expect(alertSystem.passesFilters(lowSeverityAlert: any)).toBe(true: any);
+            expect(alertSystem.passesFilters(lowSeverityAlert)).toBe(true);
         });
 
         test('レート制限フィルターが動作する', () => {
@@ -336,11 +336,11 @@ describe('DeveloperAlertSystem', () => {
             alertSystem.options.maxAlertsPerHour = 2;
 
             // 最初の2つは通る
-            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(true: any);
-            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(true: any);
+            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(true);
+            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(true);
             
             // 3つ目は制限される
-            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(false: any);
+            expect(alertSystem.alertFilters.get('rateLimit')(alert)).toBe(false);
         });
 
         test('重複フィルターが動作する', () => {
@@ -357,11 +357,11 @@ describe('DeveloperAlertSystem', () => {
             };
 
             // 最初のアラートは通る
-            expect(alertSystem.alertFilters.get('duplicate')(alert1)).toBe(true: any);
-            alertSystem.alertHistory.push(alert1: any);
+            expect(alertSystem.alertFilters.get('duplicate')(alert1)).toBe(true);
+            alertSystem.alertHistory.push(alert1);
 
             // 同じアラートは重複として除外される
-            expect(alertSystem.alertFilters.get('duplicate')(alert2)).toBe(false: any);
+            expect(alertSystem.alertFilters.get('duplicate')(alert2)).toBe(false);
         });
 
         test('コンソールログが出力される', () => {
@@ -375,10 +375,10 @@ describe('DeveloperAlertSystem', () => {
                 timestamp: Date.now()
             };
 
-            alertSystem.logToConsole(alert: any);
+            alertSystem.logToConsole(alert);
 
             expect(consoleGroupSpy).toHaveBeenCalledWith(expect.stringContaining('テストアラート'));
-            expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('カテゴリ'), expect.any(String: any));
+            expect(consoleLogSpy).toHaveBeenCalledWith(expect.stringContaining('カテゴリ'), expect.any(String);
             expect(consoleLogSpy).toHaveBeenCalledWith('データ:', { test: 'data' });
             expect(consoleGroupEndSpy).toHaveBeenCalled();
         });
@@ -394,7 +394,7 @@ describe('DeveloperAlertSystem', () => {
                 message: 'テストアラート'
             };
 
-            await alertSystem.sendWebhookNotification(alert: any);
+            await alertSystem.sendWebhookNotification(alert);
 
             expect(fetch).toHaveBeenCalledWith(
                 'https://webhook.example.com',
@@ -422,7 +422,7 @@ describe('DeveloperAlertSystem', () => {
                 recommendations: ['推奨アクション']
             };
 
-            await alertSystem.sendEmailNotification(alert: any);
+            await alertSystem.sendEmailNotification(alert);
 
             expect(fetch).toHaveBeenCalledWith(
                 'https://email.example.com',
@@ -442,7 +442,7 @@ describe('DeveloperAlertSystem', () => {
             };
 
             const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert');
-            alertSystem.handlePerformanceWarning(warningData: any);
+            alertSystem.handlePerformanceWarning(warningData;
 
             expect(generateAlertSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -462,7 +462,7 @@ describe('DeveloperAlertSystem', () => {
             };
 
             const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert');
-            alertSystem.handleErrorEvent(errorData: any);
+            alertSystem.handleErrorEvent(errorData;
 
             expect(generateAlertSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -483,18 +483,18 @@ describe('DeveloperAlertSystem', () => {
                 message: 'テストアラート'
             };
 
-            alertSystem.executeCallbacks(alert: any);
-            expect(callback).toHaveBeenCalledWith(alert: any);
+            alertSystem.executeCallbacks(alert);
+            expect(callback).toHaveBeenCalledWith(alert);
 
             alertSystem.unregisterCallback('test-callback');
             callback.mockClear();
             
-            alertSystem.executeCallbacks(alert: any);
+            alertSystem.executeCallbacks(alert);
             expect(callback).not.toHaveBeenCalled();
         });
 
         test('カスタムフィルターが追加・削除される', () => {
-            const customFilter = jest.fn() as jest.Mock.mockReturnValue(true: any);
+            const customFilter = jest.fn().mockReturnValue(true) as jest.Mock;
             alertSystem.addFilter('custom-filter', customFilter);
 
             const alert = { 
@@ -503,14 +503,14 @@ describe('DeveloperAlertSystem', () => {
                 checkType: 'test_check',
                 timestamp: Date.now()
             };
-            alertSystem.passesFilters(alert: any);
+            alertSystem.passesFilters(alert);
 
-            expect(customFilter).toHaveBeenCalledWith(alert: any);
+            expect(customFilter).toHaveBeenCalledWith(alert);
 
             alertSystem.removeFilter('custom-filter');
             customFilter.mockClear();
             
-            alertSystem.passesFilters(alert: any);
+            alertSystem.passesFilters(alert);
             expect(customFilter).not.toHaveBeenCalled();
         });
 
@@ -570,8 +570,8 @@ describe('DeveloperAlertSystem', () => {
                 gameBalance: { some: 'data' } // データ欠損を防ぐ
             };
 
-            const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert').mockReturnValue(null: any);
-            alertSystem.analyzeData(testData: any);
+            const generateAlertSpy = jest.spyOn(alertSystem, 'generateAlert').mockReturnValue(null);
+            alertSystem.analyzeData(testData);
 
             // 複数のアラートが生成されることを確認
             expect(generateAlertSpy).toHaveBeenCalled();
@@ -586,12 +586,12 @@ describe('DeveloperAlertSystem', () => {
         test('ヘルパーメソッドが正しく動作する', () => {
             // calculateAverageIncrease
             const values = [100, 150, 200, 300];
-            const avgIncrease = alertSystem.calculateAverageIncrease(values: any);
+            const avgIncrease = alertSystem.calculateAverageIncrease(values;
             expect(avgIncrease).toBeCloseTo(66.67, 1);
 
             // analyzeActionPatterns - より繰り返しが多いパターンを作成
             const actions = Array(20).fill(['A', 'B', 'C']).flat(); // 同じパターンを20回繰り返し
-            const patterns = alertSystem.analyzeActionPatterns(actions: any);
+            const patterns = alertSystem.analyzeActionPatterns(actions;
             expect(patterns.repetitiveScore).toBeGreaterThan(0);
 
             // getSeverityColor
@@ -605,9 +605,9 @@ describe('DeveloperAlertSystem', () => {
                 maxAlertsPerHour: 5
             };
 
-            alertSystem.updateOptions(newOptions: any);
+            alertSystem.updateOptions(newOptions;
 
-            expect(alertSystem.options.enableDeveloperAlerts).toBe(false: any);
+            expect(alertSystem.options.enableDeveloperAlerts).toBe(false);
             expect(alertSystem.options.maxAlertsPerHour).toBe(5);
         });
 
@@ -655,7 +655,7 @@ describe('DeveloperAlertSystem', () => {
                 recommendations: ['アクション1', 'アクション2']
             };
 
-            const emailBody = alertSystem.formatEmailBody(alert: any);
+            const emailBody = alertSystem.formatEmailBody(alert);
 
             expect(emailBody).toContain('開発者アラート通知');
             expect(emailBody).toContain('パフォーマンス問題');
@@ -671,7 +671,7 @@ describe('DeveloperAlertSystem', () => {
 
             expect(typeof id1).toBe('string');
             expect(typeof id2).toBe('string');
-            expect(id1).not.toBe(id2: any);
+            expect(id1).not.toBe(id2);
             expect(id1).toMatch(/^alert_\d+_[a-z0-9]+$/);
         });
     });

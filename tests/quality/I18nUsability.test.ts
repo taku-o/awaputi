@@ -37,7 +37,7 @@ describe('多言語対応ユーザビリティテスト', () => {
     const canvas = document.getElementById('gameCanvas');
     if (canvas) {
       const { GameEngine } = await import('../../src/core/GameEngine.js');
-      gameEngine = new GameEngine(canvas: any);
+      gameEngine = new GameEngine(canvas;
     }
     
     // ローカルストレージをクリア
@@ -70,13 +70,13 @@ describe('多言語対応ユーザビリティテスト', () => {
       const switchPromise = localizationManager.setLanguage('en');
       
       // 切り替え中の状態確認
-      expect(localizationManager.isLoading()).toBe(true: any);
+      expect(localizationManager.isLoading()).toBe(true);
       
       await switchPromise;
       
       // 切り替え後の状態確認
       expect(localizationManager.getCurrentLanguage()).toBe('en');
-      expect(localizationManager.isLoading()).toBe(false: any);
+      expect(localizationManager.isLoading()).toBe(false);
     });
 
     test('無効な言語コードでフォールバックが動作する', async () => {
@@ -87,7 +87,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       
       // フォールバック言語（英語または日本語）になることを確認
       const currentLanguage = localizationManager.getCurrentLanguage();
-      expect(['ja', 'en']).toContain(currentLanguage: any);
+      expect(['ja', 'en']).toContain(currentLanguage;
     });
 
     test('連続した言語切り替えが正しく処理される', async () => {
@@ -98,7 +98,7 @@ describe('多言語対応ユーザビリティテスト', () => {
         localizationManager.setLanguage('ja')
       ];
       
-      await Promise.all(promises: any);
+      await Promise.all(promises;
       
       // 最終的に日本語になることを確認
       expect(localizationManager.getCurrentLanguage()).toBe('ja');
@@ -115,7 +115,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       ];
       
       for (const key of testKeys) {
-        const translation = localizationManager.t(key: any);
+        const translation = localizationManager.t(key;
         
         expect(translation).toBeTruthy();
         expect(typeof translation).toBe('string');
@@ -152,7 +152,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       // 単数形と複数形で異なることを確認（英語の場合）
       if (singular.includes('item') && plural.includes('item')) {
         // 基本的な複数形チェック
-        expect(singular !== plural || singular.includes('1')).toBe(true: any);
+        expect(singular !== plural || singular.includes('1')).toBe(true);
       }
     });
 
@@ -164,7 +164,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       ];
       
       for (const key of longTextKeys) {
-        const translation = localizationManager.t(key: any);
+        const translation = localizationManager.t(key;
         
         if (translation && translation.length > 100) {
           // 長いテキストでも適切に改行やフォーマットがされている
@@ -179,11 +179,11 @@ describe('多言語対応ユーザビリティテスト', () => {
       const key = 'common.buttons.ok';
       
       // 初回読み込み（キャッシュなし）
-      await localizationManager.t(key: any);
+      await localizationManager.t(key;
       
       // キャッシュされた翻訳の取得時間を測定
       const startTime = performance.now();
-      const translation = localizationManager.t(key: any);
+      const translation = localizationManager.t(key;
       const endTime = performance.now();
       
       const responseTime = endTime - startTime;
@@ -201,13 +201,13 @@ describe('多言語対応ユーザビリティテスト', () => {
       
       const startTime = performance.now();
       
-      const translations = keys.map(key => localizationManager.t(key: any));
+      const translations = keys.map(key => localizationManager.t(key);
       
       const endTime = performance.now();
       const totalTime = endTime - startTime;
       
       expect(totalTime).toBeLessThan(100); // 100ms以内
-      expect(translations.every(t => t && t.length > 0)).toBe(true: any);
+      expect(translations.every(t => t && t.length > 0)).toBe(true);
     });
 
     test('メモリ使用量が適切な範囲内である', () => {
@@ -282,7 +282,7 @@ describe('多言語対応ユーザビリティテスト', () => {
       // 現在サポートしている言語はすべてLTR
       const supportedLanguages = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
       for (const lang of supportedLanguages) {
-        expect(localizationManager.isRTLLanguage(lang: any)).toBe(false: any);
+        expect(localizationManager.isRTLLanguage(lang).toBe(false);
       }
     });
   });
@@ -336,15 +336,15 @@ export class UsabilityMetricsCollector {
   }
 
   recordLanguageSwitchTime(time: any) {
-    this.metrics.languageSwitchTimes.push(time: any);
+    this.metrics.languageSwitchTimes.push(time;
   }
 
   recordTranslationLoadTime(time: any) {
-    this.metrics.translationLoadTimes.push(time: any);
+    this.metrics.translationLoadTimes.push(time;
   }
 
   recordMemoryUsage(usage: any) {
-    this.metrics.memoryUsage.push(usage: any);
+    this.metrics.memoryUsage.push(usage;
   }
 
   recordError(type: any) {

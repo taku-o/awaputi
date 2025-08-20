@@ -59,7 +59,7 @@ class MockSceneManager {
     }
 
     switchScene(name: any) {
-        const scene = this.scenes.get(name: any);
+        const scene = this.scenes.get(name;
         if (!scene) {
             console.error(`Scene ${name} not found`);
             return false;
@@ -179,7 +179,7 @@ class MockGameEngine {
     initialize() {
         // Setup scenes
         const mainMenuScene = new MockMainMenuScene();
-        const settingsScene = new MockSettingsScene(this: any);
+        const settingsScene = new MockSettingsScene(this;
 
         this.sceneManager.addScene('menu', mainMenuScene);
         this.sceneManager.addScene('settings', settingsScene);
@@ -228,15 +228,15 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Verify we start at main menu
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
-            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true: any);
+            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
 
             // Navigate to settings
             const success = gameEngine.sceneManager.switchScene('settings');
-            expect(success: any).toBe(true: any);
+            expect(success.toBe(true);
 
             // Verify settings scene is active
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('settings');
-            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true: any);
+            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
         });
 
         test('should successfully return from settings to main menu using ESC', () => {
@@ -246,15 +246,15 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Get settings scene instance
             const settingsScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(settingsScene: any).toBeInstanceOf(MockSettingsScene: any);
+            expect(settingsScene.toBeInstanceOf(MockSettingsScene;
 
             // Simulate ESC key press (calls goBack method)
             settingsScene.goBack();
 
             // Verify we're back at main menu
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
-            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene: any);
-            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true: any);
+            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene;
+            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
         });
 
         test('should handle scene transitions and cleanup properly', () => {
@@ -268,17 +268,17 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
             const settingsScene = gameEngine.sceneManager.currentSceneInstance;
 
             // Verify settings scene entered and main menu exited
-            expect(settingsScene.isActive).toBe(true: any);
-            expect(initialMainMenuScene.isActive).toBe(false: any);
+            expect(settingsScene.isActive).toBe(true);
+            expect(initialMainMenuScene.isActive).toBe(false);
 
             // Return to main menu
             settingsScene.goBack();
             const finalMainMenuScene = gameEngine.sceneManager.currentSceneInstance;
 
             // Verify proper cleanup and activation
-            expect(settingsScene.isActive).toBe(false: any);
-            expect(finalMainMenuScene.isActive).toBe(true: any);
-            expect(finalMainMenuScene: any).toBeInstanceOf(MockMainMenuScene: any);
+            expect(settingsScene.isActive).toBe(false);
+            expect(finalMainMenuScene.isActive).toBe(true);
+            expect(finalMainMenuScene.toBeInstanceOf(MockMainMenuScene;
         });
 
         test('should not navigate when editing value in settings', () => {
@@ -293,7 +293,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Should still be in settings scene
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('settings');
-            expect(settingsScene.isEditingValue).toBe(false: any); // Should cancel editing
+            expect(settingsScene.isEditingValue).toBe(false); // Should cancel editing
         });
 
         test('should not navigate when showing confirm dialog in settings', () => {
@@ -308,7 +308,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Should still be in settings scene
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('settings');
-            expect(settingsScene.showingConfirmDialog).toBe(false: any); // Should close dialog
+            expect(settingsScene.showingConfirmDialog).toBe(false); // Should close dialog
         });
     });
 
@@ -321,7 +321,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
             settingsScene.goBack();
 
             // Verify no error messages were logged
-            expect(consoleErrorSpy: any).not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled();
         });
 
         // NOTE: Error handling tests are covered in detail by unit tests.
@@ -364,8 +364,8 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
 
             // Verify main menu scene is properly set up
             const mainMenuScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(mainMenuScene: any).toBeInstanceOf(MockMainMenuScene: any);
-            expect(mainMenuScene.isActive).toBe(true: any);
+            expect(mainMenuScene.toBeInstanceOf(MockMainMenuScene;
+            expect(mainMenuScene.isActive).toBe(true);
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
         });
 
@@ -385,7 +385,7 @@ describe('Settings to Main Menu Navigation Integration Test', () => {
             }
 
             // Verify no errors occurred
-            expect(consoleErrorSpy: any).not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled();
         });
     });
 });

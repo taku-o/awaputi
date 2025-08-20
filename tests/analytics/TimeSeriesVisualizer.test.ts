@@ -25,7 +25,7 @@ class MockChartRenderer {
     }
 
     getChart(chartId: any) {
-        return this.charts.get(chartId: any);
+        return this.charts.get(chartId;
     }
 }
 
@@ -61,9 +61,9 @@ describe('TimeSeriesVisualizer', () => {
 
     describe('コンストラクタ', () => {
         test('正しく初期化される', () => {
-            expect(visualizer.chartRenderer).toBe(mockChartRenderer: any);
-            expect(visualizer.trendAnalyzer).toBe(mockTrendAnalyzer: any);
-            expect(visualizer.activeCharts).toBeInstanceOf(Map: any);
+            expect(visualizer.chartRenderer).toBe(mockChartRenderer);
+            expect(visualizer.trendAnalyzer).toBe(mockTrendAnalyzer);
+            expect(visualizer.activeCharts).toBeInstanceOf(Map;
             expect(visualizer.colors).toHaveProperty('score');
             expect(visualizer.colors).toHaveProperty('accuracy');
         });
@@ -95,7 +95,7 @@ describe('TimeSeriesVisualizer', () => {
             expect(chart.data.labels).toEqual(['2024-01', '2024-02', '2024-03', '2024-04']);
             expect(chart.data.datasets[0].label).toBe('スコア');
             expect(chart.data.datasets[0].data).toEqual([100, 110, 125, 130]);
-            expect(visualizer.activeCharts.has('test-canvas')).toBe(true: any);
+            expect(visualizer.activeCharts.has('test-canvas')).toBe(true);
         });
 
         test('トレンドライン付きチャートが作成される', () => {
@@ -138,7 +138,7 @@ describe('TimeSeriesVisualizer', () => {
                 { title: customTitle }
             );
 
-            expect(chart.options.plugins.title.text).toBe(customTitle: any);
+            expect(chart.options.plugins.title.text).toBe(customTitle);
         });
     });
 
@@ -357,7 +357,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('トレンドラインが正しく計算される', () => {
             const values = [10, 20, 30, 40, 50];
-            const trendLine = visualizer.calculateTrendLine(values: any);
+            const trendLine = visualizer.calculateTrendLine(values;
 
             expect(trendLine).toHaveLength(5);
             // 線形増加データなので、トレンドラインも線形増加するはず
@@ -370,7 +370,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('信頼区間が正しく計算される', () => {
             const values = [100, 110, 120, 130, 140];
-            const confidenceInterval = visualizer.calculateConfidenceInterval(values: any);
+            const confidenceInterval = visualizer.calculateConfidenceInterval(values;
 
             expect(confidenceInterval).toHaveProperty('upper');
             expect(confidenceInterval).toHaveProperty('lower');
@@ -385,7 +385,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('値が正しく正規化される', () => {
             const values = [10, 20, 30, 40, 50];
-            const normalized = visualizer.normalizeValues(values: any);
+            const normalized = visualizer.normalizeValues(values;
 
             expect(normalized).toHaveLength(5);
             expect(Math.min(...normalized)).toBe(0);
@@ -395,7 +395,7 @@ describe('TimeSeriesVisualizer', () => {
 
         test('同じ値の場合、正規化で0.5が返される', () => {
             const values = [100, 100, 100];
-            const normalized = visualizer.normalizeValues(values: any);
+            const normalized = visualizer.normalizeValues(values;
 
             expect(normalized).toEqual([0.5, 0.5, 0.5]);
         });
@@ -438,12 +438,12 @@ describe('TimeSeriesVisualizer', () => {
         test('チャートが破棄される', () => {
             const chart = visualizer.createSingleMetricChart(mockCanvas, sampleData, 'score');
             
-            expect(visualizer.activeCharts.has('test-canvas')).toBe(true: any);
+            expect(visualizer.activeCharts.has('test-canvas')).toBe(true);
             
             visualizer.destroyChart('test-canvas');
             
             expect(chart.destroy).toHaveBeenCalled();
-            expect(visualizer.activeCharts.has('test-canvas')).toBe(false: any);
+            expect(visualizer.activeCharts.has('test-canvas')).toBe(false);
         });
 
         test('全チャートが破棄される', () => {
@@ -484,7 +484,7 @@ describe('TimeSeriesVisualizer', () => {
         });
 
         test('CSV形式でデータがエクスポートされる', () => {
-            const csv = visualizer.exportToCSV(sampleData: any);
+            const csv = visualizer.exportToCSV(sampleData;
             
             expect(csv).toContain('期間,スコア,精度,プレイ時間');
             expect(csv).toContain('2024-01,100,0.8,300');

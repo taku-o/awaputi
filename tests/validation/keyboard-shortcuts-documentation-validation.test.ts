@@ -80,7 +80,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
         jest.clearAllMocks();
 
         // Create instance
-        shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+        shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
     });
 
     afterEach(() => {
@@ -104,26 +104,26 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             const shortcutRegex = /\*\*([A-Za-z0-9+]+)\*\*/g;
             let match: any;
             
-            while ((match = shortcutRegex.exec(japaneseDoc: any)) !== null) {
+            while ((match = shortcutRegex.exec(japaneseDoc) !== null) {
                 const shortcut = match[1];
                 // Filter out common markdown formatting that's not a shortcut
-                if (!['Key', 'Function', 'Description', 'Notes'].includes(shortcut: any)) {
-                    documentedShortcuts.push(shortcut: any);
+                if (!['Key', 'Function', 'Description', 'Notes'].includes(shortcut) {
+                    documentedShortcuts.push(shortcut;
                 }
             }
 
             // Remove duplicates
-            const uniqueDocumentedShortcuts = [...new Set(documentedShortcuts: any)];
+            const uniqueDocumentedShortcuts = [...new Set(documentedShortcuts];
 
             // Cross-reference with actual implementation
             const implementedKeys: any[] = [];
-            for (const [name, shortcut] of Object.entries(shortcuts: any)) {
+            for (const [name, shortcut] of Object.entries(shortcuts) {
                 if (shortcut.keys) {
                     shortcut.keys.forEach(key => {
                         // Convert KeyboardEvent codes to documentation format
-                        const docKey = convertKeyCodeToDocFormat(key: any);
+                        const docKey = convertKeyCodeToDocFormat(key;
                         if (docKey) {
-                            implementedKeys.push(docKey: any);
+                            implementedKeys.push(docKey;
                         }
                     });
                 }
@@ -151,14 +151,14 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             }
 
             const shortcuts = shortcutManager.getShortcuts();
-            const implementedShortcuts = Object.keys(shortcuts: any);
+            const implementedShortcuts = Object.keys(shortcuts;
             
             // Check if major shortcuts are mentioned in documentation
             const majorShortcuts = ['pause', 'menu', 'fullscreen', 'mute'];
             const documentationLower = japaneseDoc.toLowerCase();
             
             for (const shortcut of majorShortcuts) {
-                if (implementedShortcuts.includes(shortcut: any)) {
+                if (implementedShortcuts.includes(shortcut) {
                     // Each major shortcut should be mentioned or its function described
                     const isDocumented = 
                         documentationLower.includes('space') && shortcut === 'pause' ||
@@ -186,23 +186,23 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             const shortcutRegex = /\*\*([A-Za-z0-9+]+)\*\*/g;
             let match: any;
             
-            while ((match = shortcutRegex.exec(englishDoc: any)) !== null) {
+            while ((match = shortcutRegex.exec(englishDoc) !== null) {
                 const shortcut = match[1];
-                if (!['Key', 'Function', 'Description', 'Notes'].includes(shortcut: any)) {
-                    documentedShortcuts.push(shortcut: any);
+                if (!['Key', 'Function', 'Description', 'Notes'].includes(shortcut) {
+                    documentedShortcuts.push(shortcut;
                 }
             }
 
-            const uniqueDocumentedShortcuts = [...new Set(documentedShortcuts: any)];
+            const uniqueDocumentedShortcuts = [...new Set(documentedShortcuts];
 
             // Cross-reference with actual implementation
             const implementedKeys: any[] = [];
-            for (const [name, shortcut] of Object.entries(shortcuts: any)) {
+            for (const [name, shortcut] of Object.entries(shortcuts) {
                 if (shortcut.keys) {
                     shortcut.keys.forEach(key => {
-                        const docKey = convertKeyCodeToDocFormat(key: any);
+                        const docKey = convertKeyCodeToDocFormat(key;
                         if (docKey) {
-                            implementedKeys.push(docKey: any);
+                            implementedKeys.push(docKey;
                         }
                     });
                 }
@@ -283,7 +283,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             const helpText = shortcutManager.generateHelpText();
             
             // Convert help text to a searchable format
-            const allHelpText = Object.values(helpText: any)
+            const allHelpText = Object.values(helpText
                 .flat()
                 .join(' ')
                 .toLowerCase();
@@ -309,8 +309,8 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             expect(helpText['その他']).toBeDefined();
 
             // Each section should be an array with valid entries
-            Object.entries(helpText: any).forEach(([section, entries]) => {
-                expect(Array.isArray(entries: any)).toBe(true: any);
+            Object.entries(helpText.forEach(([section, entries]) => {
+                expect(Array.isArray(entries).toBe(true);
                 
                 entries.forEach(entry => {
                     expect(typeof entry).toBe('string');
@@ -336,8 +336,8 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             ];
 
             majorSections.forEach(({ jp, en }) => {
-                const hasJpSection = japaneseDoc.includes(jp: any);
-                const hasEnSection = englishDoc.includes(en: any);
+                const hasJpSection = japaneseDoc.includes(jp;
+                const hasEnSection = englishDoc.includes(en;
                 
                 if (hasJpSection !== hasEnSection) {
                     console.warn(`Section mismatch: JP "${jp}" (${hasJpSection}) vs EN "${en}" (${hasEnSection})`);
@@ -359,8 +359,8 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
             ];
 
             removedFunctionality.forEach(({ jp, en }, index) => {
-                const jpPattern = new RegExp(jp: any);
-                const enPattern = new RegExp(en: any);
+                const jpPattern = new RegExp(jp;
+                const enPattern = new RegExp(en;
                 
                 const jpHasRemoved = jpPattern.test(japaneseDoc);
                 const enHasRemoved = enPattern.test(englishDoc);
@@ -370,8 +370,8 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
                     console.warn(`Removed shortcut ${shortcut} still found: JP=${jpHasRemoved}, EN=${enHasRemoved}`);
                 }
                 
-                expect(jpHasRemoved).toBe(false: any);
-                expect(enHasRemoved).toBe(false: any);
+                expect(jpHasRemoved).toBe(false);
+                expect(enHasRemoved).toBe(false);
             });
         });
     });
@@ -380,7 +380,7 @@ describe('Keyboard Shortcuts Documentation Validation (Issue #169)', () => {
 /**
  * Convert KeyboardEvent code to documentation format
  */
-function convertKeyCodeToDocFormat(keyCode: any) {
+function convertKeyCodeToDocFormat(keyCode {
     const conversions = {
         'Space': 'Space',
         'Escape': 'Escape',

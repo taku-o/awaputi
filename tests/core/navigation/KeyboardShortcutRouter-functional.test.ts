@@ -12,9 +12,9 @@ import { NavigationContextManager } from '../../../src/core/navigation/Navigatio
 // Functional mock game engine
 const createFunctionalGameEngine = () => ({
     sceneManager: {
-        switchScene: jest.fn().mockReturnValue(true: any),
+        switchScene: jest.fn().mockReturnValue(true,
         getCurrentScene: jest.fn(() => ({ constructor: { name: 'MenuScene' } })),
-        hasScene: jest.fn().mockReturnValue(true: any),
+        hasScene: jest.fn().mockReturnValue(true,
         currentScene: { constructor: { name: 'MenuScene' } }
     },
     localizationManager: {
@@ -36,7 +36,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
         (global as any).document = undefined;
         
         gameEngine = createFunctionalGameEngine();
-        shortcutRouter = new KeyboardShortcutRouter(gameEngine: any);
+        shortcutRouter = new KeyboardShortcutRouter(gameEngine;
     });
 
     afterEach(() => {
@@ -47,10 +47,10 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
 
     describe('Core Functionality Verification', () => {
         test('should initialize with correct shortcut mappings', () => {
-            expect(shortcutRouter.shortcuts.has('KeyH')).toBe(true: any);
-            expect(shortcutRouter.shortcuts.has('KeyS')).toBe(true: any);
-            expect(shortcutRouter.shortcuts.has('F1')).toBe(true: any);
-            expect(shortcutRouter.shortcuts.has('Escape')).toBe(true: any);
+            expect(shortcutRouter.shortcuts.has('KeyH')).toBe(true);
+            expect(shortcutRouter.shortcuts.has('KeyS')).toBe(true);
+            expect(shortcutRouter.shortcuts.has('F1')).toBe(true);
+            expect(shortcutRouter.shortcuts.has('Escape')).toBe(true);
             
             const hShortcut = shortcutRouter.shortcuts.get('KeyH');
             expect(hShortcut.action).toBe('help');
@@ -60,28 +60,28 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
         test('should successfully route help requests', () => {
             const success = shortcutRouter.handleHelpShortcut('MenuScene');
             
-            expect(success).toBe(true: any);
+            expect(success).toBe(true);
             expect(gameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help');
         });
 
         test('should successfully route settings requests', () => {
             const success = shortcutRouter.handleSettingsShortcut('GameScene');
             
-            expect(success).toBe(true: any);
+            expect(success).toBe(true);
             expect(gameEngine.sceneManager.switchScene).toHaveBeenCalledWith('settings');
         });
 
         test('should handle contextual help requests', () => {
             const success = shortcutRouter.handleContextualHelp('GameScene');
             
-            expect(success).toBe(true: any);
+            expect(success).toBe(true);
             expect(gameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help');
         });
     });
 
     describe('Navigation Context Integration', () => {
         test('should integrate with NavigationContextManager correctly', () => {
-            expect(shortcutRouter.navigationContext).toBeInstanceOf(NavigationContextManager: any);
+            expect(shortcutRouter.navigationContext).toBeInstanceOf(NavigationContextManager;
         });
 
         test('should handle navigation operations', () => {
@@ -135,22 +135,22 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
             };
             
             expect(() => {
-                shortcutRouter.updateConfig(newConfig: any);
+                shortcutRouter.updateConfig(newConfig;
             }).not.toThrow();
             
-            expect(shortcutRouter.config.enableLogging).toBe(false: any);
+            expect(shortcutRouter.config.enableLogging).toBe(false);
             expect(shortcutRouter.config.debounceDelay).toBe(200);
         });
 
         test('should handle active state changes', () => {
             expect(() => {
-                shortcutRouter.setActive(false: any);
+                shortcutRouter.setActive(false;
             }).not.toThrow();
             
-            expect(shortcutRouter.state.isActive).toBe(false: any);
+            expect(shortcutRouter.state.isActive).toBe(false);
             
-            shortcutRouter.setActive(true: any);
-            expect(shortcutRouter.state.isActive).toBe(true: any);
+            shortcutRouter.setActive(true;
+            expect(shortcutRouter.state.isActive).toBe(true);
         });
     });
 
@@ -166,8 +166,8 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
                 shortcutRouter.addShortcut('KeyT', newShortcut);
             }).not.toThrow();
             
-            expect(shortcutRouter.shortcuts.has('KeyT')).toBe(true: any);
-            expect(shortcutRouter.shortcuts.get('KeyT')).toEqual(newShortcut: any);
+            expect(shortcutRouter.shortcuts.has('KeyT')).toBe(true);
+            expect(shortcutRouter.shortcuts.get('KeyT')).toEqual(newShortcut);
         });
 
         test('should allow removing shortcuts', () => {
@@ -175,8 +175,8 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
             
             const removed = shortcutRouter.removeShortcut('KeyT');
             
-            expect(removed).toBe(true: any);
-            expect(shortcutRouter.shortcuts.has('KeyT')).toBe(false: any);
+            expect(removed).toBe(true);
+            expect(shortcutRouter.shortcuts.has('KeyT')).toBe(false);
         });
     });
 
@@ -190,11 +190,11 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
         });
 
         test('should handle scene switching failures', () => {
-            gameEngine.sceneManager.switchScene.mockReturnValue(false: any);
+            gameEngine.sceneManager.switchScene.mockReturnValue(false;
             
             const result = shortcutRouter.handleSettingsShortcut('MenuScene');
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
         });
 
         test('should handle invalid scene names', () => {
@@ -217,9 +217,9 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
 
         test('should track state correctly', () => {
             expect(shortcutRouter.state).toBeDefined();
-            expect(shortcutRouter.state.isActive).toBe(true: any);
-            expect(shortcutRouter.state.pressedKeys).toBeInstanceOf(Set: any);
-            expect(shortcutRouter.state.activeModifiers).toBeInstanceOf(Set: any);
+            expect(shortcutRouter.state.isActive).toBe(true);
+            expect(shortcutRouter.state.pressedKeys).toBeInstanceOf(Set;
+            expect(shortcutRouter.state.activeModifiers).toBeInstanceOf(Set;
         });
     });
 
@@ -240,7 +240,7 @@ describe('KeyboardShortcutRouter Functional Tests', () => {
         test('should integrate navigation context in scene switching', () => {
             const success = shortcutRouter.navigateToScene('help', 'MenuScene', 'keyboard_h');
             
-            expect(success).toBe(true: any);
+            expect(success).toBe(true);
             expect(gameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help');
             
             // Verify context was pushed

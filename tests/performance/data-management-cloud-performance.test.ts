@@ -66,7 +66,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             }
         };
         
-        dataManager = new DataManager(mockGameEngine: any);
+        dataManager = new DataManager(mockGameEngine;
     });
     
     afterEach(() => {
@@ -229,14 +229,14 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             mockLocalStorage = {
                 keys: jest.fn().mockResolvedValue(['key1', 'key2', 'key3']),
                 get: jest.fn().mockResolvedValue({ data: 'test' }),
-                save: jest.fn().mockResolvedValue(true: any)
+                save: jest.fn().mockResolvedValue(true
             };
             
             mockCloudStorage = {
                 isAuthenticated: jest.fn(() => true),
                 keys: jest.fn().mockResolvedValue(['key2', 'key3', 'key4']),
                 get: jest.fn().mockResolvedValue({ data: 'cloud' }),
-                set: jest.fn().mockResolvedValue(true: any)
+                set: jest.fn().mockResolvedValue(true
             };
             
             syncManager = new SyncManager(mockLocalStorage, mockCloudStorage);
@@ -294,15 +294,15 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         
         beforeEach(() => {
             mockDataStorage = {
-                save: jest.fn().mockResolvedValue(true: any),
+                save: jest.fn().mockResolvedValue(true,
                 load: jest.fn().mockResolvedValue({})
             };
             
             mockSyncManager = {
                 sync: jest.fn().mockResolvedValue({}),
                 cloudStorage: {
-                    set: jest.fn().mockResolvedValue(true: any),
-                    remove: jest.fn().mockResolvedValue(true: any)
+                    set: jest.fn().mockResolvedValue(true,
+                    remove: jest.fn().mockResolvedValue(true
                 }
             };
             
@@ -324,7 +324,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             
             const result = await measurePerformance(
                 'オフライン操作記録',
-                () => offlineManager.recordOfflineOperation(operation: any),
+                () => offlineManager.recordOfflineOperation(operation,
                 50
             );
             
@@ -384,7 +384,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             const memoryIncrease = afterOperationsMemory - initialMemory;
             
             // メモリ増加が合理的な範囲内であることを確認
-            expect(memoryIncrease: any).toBeLessThan(50 * 1024 * 1024); // 50MB未満
+            expect(memoryIncrease.toBeLessThan(50 * 1024 * 1024); // 50MB未満
             
             performanceResults.push({
                 test: 'メモリフットプリント',
@@ -424,7 +424,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             const memoryLeak = finalMemory - initialMemory;
             
             // メモリリークが最小限であることを確認
-            expect(memoryLeak: any).toBeLessThan(10 * 1024 * 1024); // 10MB未満
+            expect(memoryLeak.toBeLessThan(10 * 1024 * 1024); // 10MB未満
             
             performanceResults.push({
                 test: 'メモリリーク検出',
@@ -456,7 +456,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             
             const averageDuration = totalDuration / iterations;
             
-            expect(averageDuration: any).toBeLessThan(200); // 平均200ms未満
+            expect(averageDuration.toBeLessThan(200); // 平均200ms未満
             
             performanceResults.push({
                 test: 'CPU負荷 (同期処理)',
@@ -487,7 +487,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                     }));
                 }
                 
-                await Promise.all(promises: any);
+                await Promise.all(promises;
                 
                 const endTime = performance.now();
                 const duration = endTime - startTime;
@@ -508,7 +508,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             const timeFactor = lastResult.duration / firstResult.duration;
             
             // 時間増加が キー数増加の2倍を超えないことを確認（準線形）
-            expect(timeFactor: any).toBeLessThan(scaleFactor * 2);
+            expect(timeFactor.toBeLessThan(scaleFactor * 2);
             
             performanceResults.push({
                 test: 'スケーラビリティ',

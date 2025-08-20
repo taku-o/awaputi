@@ -188,7 +188,7 @@ describe('音響システムパフォーマンステスト', () => {
         });
 
         // Web Audio API のパフォーマンステスト用モック
-        (global as any).AudioContext = function(this: any) {
+        (global as any).AudioContext = function(this {
             return {
                 createGain: mockFn(() => ({
                     gain: { 

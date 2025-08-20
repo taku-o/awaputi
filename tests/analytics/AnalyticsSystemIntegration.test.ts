@@ -96,7 +96,7 @@ describe('Analytics System Integration Tests', () => {
             };
             
             // 2. データコレクターでの収集
-            await dataCollector.collectPlayerBehavior(testData: any);
+            await dataCollector.collectPlayerBehavior(testData;
             
             // 3. ストレージからのデータ取得確認
             const storedData = await storageManager.getData('sessionData');
@@ -105,7 +105,7 @@ describe('Analytics System Integration Tests', () => {
             // 4. プライバシー管理の適用確認
             const anonymizedData = await privacyManager.anonymizeData([testData]);
             expect(anonymizedData).toBeDefined();
-            expect(Array.isArray(anonymizedData: any)).toBe(true: any);
+            expect(Array.isArray(anonymizedData).toBe(true);
         });
         
         test('バッチデータ処理の統合フロー', async () => {
@@ -122,12 +122,12 @@ describe('Analytics System Integration Tests', () => {
             }
             
             // 2. バッチ処理での収集
-            await dataCollector.batchCollect(batchData: any);
+            await dataCollector.batchCollect(batchData;
             
             // 3. データが正しく保存されていることを確認
             const storedData = await storageManager.getData('bubbleInteractions');
             expect(storedData).toBeDefined();
-            expect(Array.isArray(storedData: any)).toBe(true: any);
+            expect(Array.isArray(storedData).toBe(true);
         });
     });
     
@@ -143,7 +143,7 @@ describe('Analytics System Integration Tests', () => {
             };
             
             // 2. データコレクターでの収集
-            await dataCollector.collectPlayerBehavior(testData: any);
+            await dataCollector.collectPlayerBehavior(testData;
             
             // 3. ExportManagerでのエクスポート
             const exportResult = await exportManager.exportData({
@@ -152,7 +152,7 @@ describe('Analytics System Integration Tests', () => {
                 anonymize: true
             });
             
-            expect(exportResult.success).toBe(true: any);
+            expect(exportResult.success).toBe(true);
             expect(exportResult.data).toBeDefined();
             expect(exportResult.format).toBe('json');
         });
@@ -170,7 +170,7 @@ describe('Analytics System Integration Tests', () => {
             
             // 2. API経由でのデータ取得
             const apiResponse = await analyticsAPI.getData('/sessionData');
-            expect(apiResponse.success).toBe(true: any);
+            expect(apiResponse.success).toBe(true);
             expect(apiResponse.data).toBeDefined();
             
             // 3. API経由でのエクスポート
@@ -179,7 +179,7 @@ describe('Analytics System Integration Tests', () => {
                 dataTypes: 'sessionData'
             });
             
-            expect(exportResponse.success).toBe(true: any);
+            expect(exportResponse.success).toBe(true);
             expect(exportResponse.data).toBeDefined();
         });
     });
@@ -188,7 +188,7 @@ describe('Analytics System Integration Tests', () => {
         test('基本的なエラーハンドリング', async () => {
             // 1. 無効なデータでのエラーハンドリング
             try {
-                await dataCollector.collectPlayerBehavior(null: any);
+                await dataCollector.collectPlayerBehavior(null;
             } catch (error) {
                 expect(error).toBeDefined();
             }
@@ -199,7 +199,7 @@ describe('Analytics System Integration Tests', () => {
                 promises.push(analyticsAPI.getData('/sessionData'));
             }
             
-            const results = await Promise.allSettled(promises: any);
+            const results = await Promise.allSettled(promises;
             const rateLimitedRequests = results.filter(r => 
                 r.status === 'fulfilled' && 
                 r.value.error && 

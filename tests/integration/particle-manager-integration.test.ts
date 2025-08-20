@@ -59,13 +59,13 @@ describe('ParticleManager統合テスト', () => {
             const newMaxParticles = 300;
 
             // 設定を変更
-            effectsConfig.setMaxParticleCount(newMaxParticles: any);
+            effectsConfig.setMaxParticleCount(newMaxParticles;
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
 
-            expect(particleManager.maxParticles).toBe(newMaxParticles: any);
-            expect(particleManager.maxParticles).not.toBe(initialMaxParticles: any);
+            expect(particleManager.maxParticles).toBe(newMaxParticles);
+            expect(particleManager.maxParticles).not.toBe(initialMaxParticles);
         });
 
         test('プールサイズの動的変更', async () => {
@@ -73,13 +73,13 @@ describe('ParticleManager統合テスト', () => {
             const newPoolSize = 150;
 
             // 設定を変更
-            effectsConfig.setParticlePoolSize(newPoolSize: any);
+            effectsConfig.setParticlePoolSize(newPoolSize;
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
 
-            expect(particleManager.poolSize).toBe(newPoolSize: any);
-            expect(particleManager.particlePool.length).toBe(newPoolSize: any);
+            expect(particleManager.poolSize).toBe(newPoolSize);
+            expect(particleManager.particlePool.length).toBe(newPoolSize);
         });
 
         test('品質の動的変更', async () => {
@@ -87,13 +87,13 @@ describe('ParticleManager統合テスト', () => {
             const newQuality = 0.5;
 
             // 設定を変更
-            effectsConfig.setParticleQuality(newQuality: any);
+            effectsConfig.setParticleQuality(newQuality;
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
 
-            expect(particleManager.quality).toBe(newQuality: any);
-            expect(particleManager.quality).not.toBe(initialQuality: any);
+            expect(particleManager.quality).toBe(newQuality);
+            expect(particleManager.quality).not.toBe(initialQuality);
         });
 
         test('有効状態の動的変更', async () => {
@@ -102,12 +102,12 @@ describe('ParticleManager統合テスト', () => {
             expect(particleManager.particles.length).toBeGreaterThan(0);
 
             // 無効に変更
-            effectsConfig.setParticleEnabled(false: any);
+            effectsConfig.setParticleEnabled(false;
 
             // 少し待って変更が反映されるのを確認
             await new Promise(resolve => setTimeout(resolve, 10));
 
-            expect(particleManager.enabled).toBe(false: any);
+            expect(particleManager.enabled).toBe(false);
             expect(particleManager.particles.length).toBe(0); // パーティクルがクリアされる
         });
     });
@@ -143,7 +143,7 @@ describe('ParticleManager統合テスト', () => {
 
         test('パーティクルが無効な場合は生成されない', async () => {
             // パーティクルを無効にする
-            effectsConfig.setParticleEnabled(false: any);
+            effectsConfig.setParticleEnabled(false;
             await new Promise(resolve => setTimeout(resolve, 10));
 
             particleManager.createBubblePopEffect(100, 100, 'normal', 20);
@@ -163,7 +163,7 @@ describe('ParticleManager統合テスト', () => {
                 enabled: false
             };
 
-            particleManager.updateConfiguration(newConfig: any);
+            particleManager.updateConfiguration(newConfig;
 
             // 設定が EffectsConfig に反映されているか確認
             expect(effectsConfig.getMaxParticleCount()).toBe(newConfig.maxParticles);
@@ -175,12 +175,12 @@ describe('ParticleManager統合テスト', () => {
         test('getCurrentConfiguration メソッド', () => {
             const config = particleManager.getCurrentConfiguration();
 
-            expect(config: any).toHaveProperty('maxParticles');
-            expect(config: any).toHaveProperty('poolSize');
-            expect(config: any).toHaveProperty('quality');
-            expect(config: any).toHaveProperty('enabled');
-            expect(config: any).toHaveProperty('currentParticleCount');
-            expect(config: any).toHaveProperty('poolUsage');
+            expect(config.toHaveProperty('maxParticles');
+            expect(config.toHaveProperty('poolSize');
+            expect(config.toHaveProperty('quality');
+            expect(config.toHaveProperty('enabled');
+            expect(config.toHaveProperty('currentParticleCount');
+            expect(config.toHaveProperty('poolUsage');
 
             expect(typeof config.maxParticles).toBe('number');
             expect(typeof config.poolSize).toBe('number');
@@ -193,14 +193,14 @@ describe('ParticleManager統合テスト', () => {
         test('getPerformanceStats メソッド', () => {
             const stats = particleManager.getPerformanceStats();
 
-            expect(stats: any).toHaveProperty('activeParticles');
-            expect(stats: any).toHaveProperty('maxParticles');
-            expect(stats: any).toHaveProperty('poolSize');
-            expect(stats: any).toHaveProperty('availableInPool');
-            expect(stats: any).toHaveProperty('poolUsagePercent');
-            expect(stats: any).toHaveProperty('particleUtilizationPercent');
-            expect(stats: any).toHaveProperty('quality');
-            expect(stats: any).toHaveProperty('enabled');
+            expect(stats.toHaveProperty('activeParticles');
+            expect(stats.toHaveProperty('maxParticles');
+            expect(stats.toHaveProperty('poolSize');
+            expect(stats.toHaveProperty('availableInPool');
+            expect(stats.toHaveProperty('poolUsagePercent');
+            expect(stats.toHaveProperty('particleUtilizationPercent');
+            expect(stats.toHaveProperty('quality');
+            expect(stats.toHaveProperty('enabled');
 
             expect(typeof stats.poolUsagePercent).toBe('string');
             expect(typeof stats.particleUtilizationPercent).toBe('string');
@@ -210,7 +210,7 @@ describe('ParticleManager統合テスト', () => {
     describe('パフォーマンステスト', () => {
         test('最大パーティクル数制限が正しく動作する', () => {
             const maxParticles = 10;
-            effectsConfig.setMaxParticleCount(maxParticles: any);
+            effectsConfig.setMaxParticleCount(maxParticles;
 
             // 制限を超えるパーティクルを生成しようとする
             for (let i = 0; i < 5; i++) {
@@ -220,7 +220,7 @@ describe('ParticleManager統合テスト', () => {
             // 更新処理を実行してパーティクル数制限を適用
             particleManager.update(16); // 16ms (60fps)
 
-            expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles: any);
+            expect(particleManager.particles.length).toBeLessThanOrEqual(maxParticles;
         });
 
         test('プールサイズ変更時のメモリ効率', () => {
@@ -228,15 +228,15 @@ describe('ParticleManager統合テスト', () => {
             const newPoolSize = initialPoolSize * 2;
 
             // プールサイズを増加
-            effectsConfig.setParticlePoolSize(newPoolSize: any);
+            effectsConfig.setParticlePoolSize(newPoolSize;
 
-            expect(particleManager.particlePool.length).toBe(newPoolSize: any);
+            expect(particleManager.particlePool.length).toBe(newPoolSize);
 
             // プールサイズを減少
             const smallerPoolSize = Math.floor(initialPoolSize / 2);
-            effectsConfig.setParticlePoolSize(smallerPoolSize: any);
+            effectsConfig.setParticlePoolSize(smallerPoolSize;
 
-            expect(particleManager.particlePool.length).toBe(smallerPoolSize: any);
+            expect(particleManager.particlePool.length).toBe(smallerPoolSize);
         });
 
         test('品質設定がパーティクル生成に影響する', () => {
@@ -251,7 +251,7 @@ describe('ParticleManager統合テスト', () => {
             particleManager.createBubblePopEffect(100, 100, 'normal', 20);
             const lowQualityCount = particleManager.particles.length;
 
-            expect(highQualityCount: any).toBeGreaterThan(lowQualityCount: any);
+            expect(highQualityCount.toBeGreaterThan(lowQualityCount;
         });
     });
 
@@ -309,9 +309,9 @@ describe('ParticleManager統合テスト', () => {
                 particleManager.debugInfo();
             }).not.toThrow();
 
-            expect(groupCalled: any).toBe(true: any);
-            expect(logCalled: any).toBe(true: any);
-            expect(groupEndCalled: any).toBe(true: any);
+            expect(groupCalled.toBe(true);
+            expect(logCalled.toBe(true);
+            expect(groupEndCalled.toBe(true);
 
             // モックを復元
             console.group = originalGroup;

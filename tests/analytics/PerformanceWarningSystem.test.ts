@@ -33,7 +33,7 @@ import { RealtimeMonitor } from '../../src/analytics/RealtimeMonitor';
     onclick: null
 }));
 global.Notification.permission = 'granted';
-global.Notification.requestPermission = jest.fn() as jest.Mock.mockResolvedValue('granted');
+global.Notification.requestPermission = jest.fn().mockResolvedValue('granted') as jest.Mock;
 
 describe('PerformanceWarningSystem', () => {
     let realtimeMonitor: any;
@@ -53,7 +53,7 @@ describe('PerformanceWarningSystem', () => {
         };
 
         // PerformanceWarningSystemを作成
-        warningSystem = new PerformanceWarningSystem(realtimeMonitor: any);
+        warningSystem = new PerformanceWarningSystem(realtimeMonitor;
         
         // グローバル参照を設定
         window.performanceWarningSystem = warningSystem;
@@ -75,11 +75,11 @@ describe('PerformanceWarningSystem', () => {
         });
 
         test('警告カテゴリが正しく設定される', () => {
-            expect(warningSystem.warningCategories.has('performance')).toBe(true: any);
-            expect(warningSystem.warningCategories.has('memory')).toBe(true: any);
-            expect(warningSystem.warningCategories.has('fps')).toBe(true: any);
-            expect(warningSystem.warningCategories.has('error')).toBe(true: any);
-            expect(warningSystem.warningCategories.has('network')).toBe(true: any);
+            expect(warningSystem.warningCategories.has('performance')).toBe(true);
+            expect(warningSystem.warningCategories.has('memory')).toBe(true);
+            expect(warningSystem.warningCategories.has('fps')).toBe(true);
+            expect(warningSystem.warningCategories.has('error')).toBe(true);
+            expect(warningSystem.warningCategories.has('network')).toBe(true);
 
             const performanceCategory = warningSystem.warningCategories.get('performance');
             expect(performanceCategory.name).toBe('パフォーマンス');
@@ -96,9 +96,9 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.processAlert(alertData: any);
+            warningSystem.processAlert(alertData;
 
-            expect(warningSystem.activeWarnings.has('test-alert-1')).toBe(true: any);
+            expect(warningSystem.activeWarnings.has('test-alert-1')).toBe(true);
             expect(warningSystem.warningHistory.length).toBe(1);
         });
 
@@ -109,7 +109,7 @@ describe('PerformanceWarningSystem', () => {
                 details: { usagePercent: 85 }
             };
 
-            warningSystem.processPerformanceWarning(warningData: any);
+            warningSystem.processPerformanceWarning(warningData;
 
             expect(warningSystem.activeWarnings.size).toBe(1);
             const warning = Array.from(warningSystem.activeWarnings.values())[0];
@@ -160,7 +160,7 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.displayVisualWarning(warningData: any);
+            warningSystem.displayVisualWarning(warningData;
 
             const warningElement = document.querySelector('[data-warning-id="visual-test"]');
             expect(warningElement).toBeTruthy();
@@ -178,11 +178,11 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.showWarning(warningData: any);
-            expect(warningSystem.activeWarnings.has('dismiss-test')).toBe(true: any);
+            warningSystem.showWarning(warningData;
+            expect(warningSystem.activeWarnings.has('dismiss-test')).toBe(true);
 
             warningSystem.dismissWarning('dismiss-test');
-            expect(warningSystem.activeWarnings.has('dismiss-test')).toBe(false: any);
+            expect(warningSystem.activeWarnings.has('dismiss-test')).toBe(false);
         });
 
         test('警告が正しく確認される', () => {
@@ -196,11 +196,11 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now()
             };
 
-            warningSystem.showWarning(warningData: any);
+            warningSystem.showWarning(warningData;
             warningSystem.acknowledgeWarning('ack-test');
 
-            expect(warningSystem.acknowledgements.has('ack-test')).toBe(true: any);
-            expect(warningSystem.activeWarnings.has('ack-test')).toBe(false: any);
+            expect(warningSystem.acknowledgements.has('ack-test')).toBe(true);
+            expect(warningSystem.activeWarnings.has('ack-test')).toBe(false);
         });
 
         test('重複警告がフィルタリングされる', () => {
@@ -218,10 +218,10 @@ describe('PerformanceWarningSystem', () => {
                 timestamp: Date.now() + 1000 // 1秒後
             };
 
-            warningSystem.processAlert(warningData1: any);
+            warningSystem.processAlert(warningData1;
             expect(warningSystem.activeWarnings.size).toBe(1);
 
-            warningSystem.processAlert(warningData2: any);
+            warningSystem.processAlert(warningData2;
             expect(warningSystem.activeWarnings.size).toBe(1); // 重複なので増えない
         });
 
@@ -231,7 +231,7 @@ describe('PerformanceWarningSystem', () => {
             
             // オブジェクトの場合
             const details = { fps: 25, memory: 80 };
-            const formatted = warningSystem.formatWarningDetails(details: any);
+            const formatted = warningSystem.formatWarningDetails(details;
             expect(formatted).toContain('fps: 25');
             expect(formatted).toContain('memory: 80');
         });
@@ -250,7 +250,7 @@ describe('PerformanceWarningSystem', () => {
                 severity: 'warning'
             };
 
-            await warningSystem.showBrowserNotification(warningData: any);
+            await warningSystem.showBrowserNotification(warningData;
             expect(global.Notification).toHaveBeenCalledWith(
                 'テスト通知',
                 expect.objectContaining({
@@ -284,14 +284,14 @@ describe('PerformanceWarningSystem', () => {
                 type: 'performance', 
                 category: 'fps' 
             };
-            const suggestions = warningSystem.generateOptimizationSuggestions(fpsWarning: any);
+            const suggestions = warningSystem.generateOptimizationSuggestions(fpsWarning;
             expect(suggestions.length).toBeGreaterThan(0);
             expect(suggestions[0]).toContain('エフェクトの品質');
 
             const memoryWarning = { 
                 category: 'memory' 
             };
-            const memorySuggestions = warningSystem.generateOptimizationSuggestions(memoryWarning: any);
+            const memorySuggestions = warningSystem.generateOptimizationSuggestions(memoryWarning;
             expect(memorySuggestions[0]).toContain('ブラウザを再起動');
         });
 
@@ -310,7 +310,7 @@ describe('PerformanceWarningSystem', () => {
                     category: 'performance',
                     timestamp: Date.now() + i
                 };
-                warningSystem.showWarning(warningData: any);
+                warningSystem.showWarning(warningData;
             }
 
             // showWarningメソッド内でlimitVisibleWarningsが自動的に呼ばれるので
@@ -366,9 +366,9 @@ describe('PerformanceWarningSystem', () => {
                 maxVisibleWarnings: 10
             };
 
-            warningSystem.updateOptions(newOptions: any);
+            warningSystem.updateOptions(newOptions;
             
-            expect(warningSystem.options.enableVisualWarnings).toBe(false: any);
+            expect(warningSystem.options.enableVisualWarnings).toBe(false);
             expect(warningSystem.options.maxVisibleWarnings).toBe(10);
         });
 
@@ -378,7 +378,7 @@ describe('PerformanceWarningSystem', () => {
             warningSystem.destroy();
             
             expect(document.getElementById('performance-warning-container')).toBeFalsy();
-            expect(warningSystem.warningContainer).toBe(null: any);
+            expect(warningSystem.warningContainer).toBe(null);
         });
 
         test('イベントリスナーが正しく設定される', () => {
@@ -394,13 +394,13 @@ describe('PerformanceWarningSystem', () => {
             // realtime-alertイベントを発火
             window.dispatchEvent(new CustomEvent('realtime-alert', { detail: alertData }));
             
-            expect(warningSystem.activeWarnings.has('event-test')).toBe(true: any);
+            expect(warningSystem.activeWarnings.has('event-test')).toBe(true);
         });
 
         test('自動確認が正しく判定される', () => {
-            expect(warningSystem.shouldAutoAcknowledge({ severity: 'info' })).toBe(true: any);
-            expect(warningSystem.shouldAutoAcknowledge({ type: 'network' })).toBe(true: any);
-            expect(warningSystem.shouldAutoAcknowledge({ severity: 'critical' })).toBe(false: any);
+            expect(warningSystem.shouldAutoAcknowledge({ severity: 'info' })).toBe(true);
+            expect(warningSystem.shouldAutoAcknowledge({ type: 'network' })).toBe(true);
+            expect(warningSystem.shouldAutoAcknowledge({ severity: 'critical' })).toBe(false);
         });
 
         test('カスタムイベントが発火される', () => {
@@ -417,9 +417,9 @@ describe('PerformanceWarningSystem', () => {
                 category: 'performance'
             };
 
-            warningSystem.showWarning(warningData: any);
+            warningSystem.showWarning(warningData;
             
-            expect(eventFired).toBe(true: any);
+            expect(eventFired).toBe(true);
             
             window.removeEventListener('performance-warning-displayed', eventListener);
         });

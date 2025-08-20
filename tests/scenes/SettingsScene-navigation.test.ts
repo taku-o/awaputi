@@ -36,15 +36,15 @@ describe('SettingsScene Context-Aware Navigation', () => {
         // Mock GameEngine
         mockGameEngine = {
             sceneManager: {
-                hasScene: jest.fn().mockReturnValue(true: any),
-                switchScene: jest.fn().mockReturnValue(true: any),
+                hasScene: jest.fn().mockReturnValue(true,
+                switchScene: jest.fn().mockReturnValue(true,
                 currentScene: {
                     constructor: { name: 'SettingsScene' }
                 }
             },
             settingsManager: {
                 save: jest.fn(),
-                get: jest.fn().mockReturnValue(true: any),
+                get: jest.fn().mockReturnValue(true,
                 set: jest.fn()
             },
             localizationManager: {
@@ -53,7 +53,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
             }
         };
         
-        settingsScene = new SettingsScene(mockGameEngine: any);
+        settingsScene = new SettingsScene(mockGameEngine;
     });
     
     afterEach(() => {
@@ -67,7 +67,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should handle standard settings mode', () => {
             const contextData: Record<string, any> = {};
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             // デフォルトでソーシャルカテゴリが選択されることを確認
             expect(settingsScene.currentCategory).toBe('social');
@@ -81,7 +81,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 accessMethod: 'help_to_settings'
             };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             // ヘルプからのアクセスでは一般設定から開始
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
@@ -98,7 +98,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 sourceScene: 'help'
             };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             // アクセシビリティカテゴリが選択されることを確認
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
@@ -116,7 +116,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 accessMethod: 'quick_settings'
             };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
                 'SettingsScene',
@@ -130,7 +130,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 accessMethod: 'game_settings'
             };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             // ゲームシーンからは一般設定を開く
             expect(settingsScene.currentCategory).toBe('general');
@@ -141,7 +141,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
     describe('Navigation Context Integration', () => {
         test('should use NavigationContextManager for go back', () => {
             // ナビゲーションコンテキストをモック
-            settingsScene.navigationContext.getReturnDestination = jest.fn() as jest.Mock.mockReturnValue('help');
+            settingsScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue('help') as jest.Mock;
             settingsScene.navigationContext.popContext = jest.fn() as jest.Mock;
             
             settingsScene.goBack();
@@ -153,7 +153,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         
         test('should fallback to menu when no return destination', () => {
             // 戻り先がない場合のテスト
-            settingsScene.navigationContext.getReturnDestination = jest.fn() as jest.Mock.mockReturnValue(null: any);
+            settingsScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue(null as jest.Mock;
             settingsScene.navigationContext.popContext = jest.fn() as jest.Mock;
             
             settingsScene.goBack();
@@ -162,11 +162,11 @@ describe('SettingsScene Context-Aware Navigation', () => {
         });
         
         test('should handle scene switch failure with fallback', () => {
-            settingsScene.navigationContext.getReturnDestination = jest.fn() as jest.Mock.mockReturnValue('nonexistent');
+            settingsScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue('nonexistent') as jest.Mock;
             settingsScene.navigationContext.popContext = jest.fn() as jest.Mock;
             mockGameEngine.sceneManager.switchScene = jest.fn() as jest.Mock
-                .mockReturnValueOnce(false: any)  // 最初の試行は失敗
-                .mockReturnValueOnce(true: any);  // フォールバックは成功
+                .mockReturnValueOnce(false  // 最初の試行は失敗
+                .mockReturnValueOnce(true;  // フォールバックは成功
             
             settingsScene.goBack();
             
@@ -199,7 +199,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should navigate to specific setting by key', () => {
             const success = settingsScene.navigateToSetting('ui.language');
             
-            expect(success).toBe(true: any);
+            expect(success).toBe(true);
             expect(settingsScene.currentCategory).toBe('general');
             expect(settingsScene.selectedCategoryIndex).toBe(0);
             expect(settingsScene.selectedSettingIndex).toBe(0); // language is first in general
@@ -208,13 +208,13 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should return false for non-existent setting', () => {
             const success = settingsScene.navigateToSetting('nonexistent.setting');
             
-            expect(success).toBe(false: any);
+            expect(success).toBe(false);
         });
         
         test('should navigate to accessibility setting', () => {
             const success = settingsScene.navigateToSetting('accessibility.screenReader');
             
-            expect(success).toBe(true: any);
+            expect(success).toBe(true);
             expect(settingsScene.currentCategory).toBe('accessibility');
         });
     });
@@ -240,8 +240,8 @@ describe('SettingsScene Context-Aware Navigation', () => {
             
             settingsScene.adjustCategoryForSourceScene('unknown');
             
-            expect(settingsScene.currentCategory).toBe(originalCategory: any);
-            expect(settingsScene.selectedCategoryIndex).toBe(originalIndex: any);
+            expect(settingsScene.currentCategory).toBe(originalCategory);
+            expect(settingsScene.selectedCategoryIndex).toBe(originalIndex);
         });
     });
     
@@ -262,7 +262,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         });
         
         test('should activate quick access mode with specific setting', () => {
-            settingsScene.navigateToSetting = jest.fn() as jest.Mock.mockReturnValue(true: any);
+            settingsScene.navigateToSetting = jest.fn().mockReturnValue(true as jest.Mock;
             
             settingsScene.setQuickAccessMode('ui.quality');
             
@@ -272,7 +272,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should handle quick access mode without target setting', () => {
             settingsScene.navigateToSetting = jest.fn() as jest.Mock;
             
-            settingsScene.setQuickAccessMode(null: any);
+            settingsScene.setQuickAccessMode(null;
             
             expect(settingsScene.navigateToSetting).not.toHaveBeenCalled();
         });
@@ -314,7 +314,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
                 sourceScene: 'menu'
             };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             expect(settingsScene.loggingSystem.info).toHaveBeenCalledWith(
                 'SettingsScene',
@@ -327,7 +327,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         });
         
         test('should log successful navigation', () => {
-            settingsScene.navigationContext.getReturnDestination = jest.fn() as jest.Mock.mockReturnValue('menu');
+            settingsScene.navigationContext.getReturnDestination = jest.fn().mockReturnValue('menu') as jest.Mock;
             settingsScene.navigationContext.popContext = jest.fn() as jest.Mock;
             
             settingsScene.goBack();
@@ -341,7 +341,7 @@ describe('SettingsScene Context-Aware Navigation', () => {
         test('should log context processing debug info', () => {
             const contextData = { sourceScene: 'game' };
             
-            settingsScene.enter(contextData: any);
+            settingsScene.enter(contextData;
             
             expect(settingsScene.loggingSystem.debug).toHaveBeenCalledWith(
                 'SettingsScene',

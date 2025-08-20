@@ -56,7 +56,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             await analyticsManager.initialize();
             
             // 全コンポーネントの初期化確認
-            expect(analyticsManager.isInitialized).toBe(true: any);
+            expect(analyticsManager.isInitialized).toBe(true);
             expect(analyticsManager.privacyManager).toBeTruthy();
             expect(analyticsManager.storageManager).toBeTruthy();
             expect(analyticsManager.dataCollector).toBeTruthy();
@@ -64,7 +64,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // 関連コンポーネントの初期化
             const container = document.createElement('div');
-            dashboard = new AnalyticsDashboard(container: any);
+            dashboard = new AnalyticsDashboard(container;
             trendAnalyzer = new TrendAnalyzer(analyticsManager.storageManager);
             comparisonEngine = new ComparisonEngine(analyticsManager.storageManager);
             exportManager = new ExportManager(analyticsManager.storageManager);
@@ -89,7 +89,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 previousBestScore: 5000
             };
             
-            analyticsManager.startSession(sessionData: any);
+            analyticsManager.startSession(sessionData;
             
             // 2. プレイヤー行動データ収集
             const interactions: any[] = [];
@@ -105,8 +105,8 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                     timeRemaining: Math.max(0, 300000 - i * 6000)
                 };
                 
-                interactions.push(interaction: any);
-                analyticsManager.recordPlayerInteractionPattern(interaction: any);
+                interactions.push(interaction;
+                analyticsManager.recordPlayerInteractionPattern(interaction;
             }
             
             // 3. パフォーマンスデータ収集
@@ -130,14 +130,14 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 activeItems: []
             };
             
-            analyticsManager.updatePlayerBehaviorAnalysis(endInfo: any);
+            analyticsManager.updatePlayerBehaviorAnalysis(endInfo;
             
             // バッチ処理完了を待機
             await new Promise(resolve => setTimeout(resolve, 200));
             
             // 5. データ確認
             const stats = analyticsManager.getAnalyticsStats();
-            expect(stats.isInitialized).toBe(true: any);
+            expect(stats.isInitialized).toBe(true);
             expect(stats.dataCollector).toBeTruthy();
             
             // 6. 分析結果確認
@@ -147,7 +147,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             // 7. パフォーマンスレポート生成
             const performanceReport = analyticsManager.generatePerformanceReport();
             expect(performanceReport.summary).toBeTruthy();
-            expect(performanceReport.recommendations).toBeInstanceOf(Array: any);
+            expect(performanceReport.recommendations).toBeInstanceOf(Array;
         });
     });
 
@@ -211,7 +211,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 previousBestScore: mockPlayerData.getBestScore('stage_1')
             };
             
-            analyticsManager.startSession(sessionData: any);
+            analyticsManager.startSession(sessionData;
             
             // セッション後のプレイヤーデータ更新確認
             const sessionStats = analyticsManager.getAnalyticsStats();
@@ -243,7 +243,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             });
             
             const stats = analyticsManager.getAnalyticsStats();
-            expect(stats.isGameAnalyticsEnabled).toBe(true: any);
+            expect(stats.isGameAnalyticsEnabled).toBe(true);
         });
     });
 
@@ -253,7 +253,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // 不正データの投入テスト
             expect(() => {
-                analyticsManager.recordPlayerInteractionPattern(null: any);
+                analyticsManager.recordPlayerInteractionPattern(null;
             }).not.toThrow();
             
             expect(() => {
@@ -273,7 +273,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // システムが正常に動作し続けることを確認
             const stats = analyticsManager.getAnalyticsStats();
-            expect(stats.isInitialized).toBe(true: any);
+            expect(stats.isInitialized).toBe(true);
         });
 
         test('データ破損からの回復テスト', async () => {
@@ -299,7 +299,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // システムが回復することを確認
             const stats = analyticsManager.getAnalyticsStats();
-            expect(stats.isInitialized).toBe(true: any);
+            expect(stats.isInitialized).toBe(true);
             
             // 正常なデータ保存が継続できることを確認
             expect(() => {
@@ -322,7 +322,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             await analyticsManager.initialize();
             
             // テストデータの準備
-            await generateTestData(analyticsManager: any);
+            await generateTestData(analyticsManager;
             
             analyticsAPI = new AnalyticsAPI(analyticsManager.storageManager);
             
@@ -352,12 +352,12 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 }
             });
             
-            expect(aggregatedData: any).toBeInstanceOf(Array: any);
+            expect(aggregatedData.toBeInstanceOf(Array;
         });
 
         test('データエクスポート機能の完全検証', async () => {
             await analyticsManager.initialize();
-            await generateTestData(analyticsManager: any);
+            await generateTestData(analyticsManager;
             
             exportManager = new ExportManager(analyticsManager.storageManager);
             
@@ -368,7 +368,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             });
             
             expect(typeof jsonData).toBe('string');
-            expect(() => JSON.parse(jsonData: any)).not.toThrow();
+            expect(() => JSON.parse(jsonData).not.toThrow();
             
             // CSV形式エクスポート
             const csvData = await exportManager.exportToCSV('sessions', {
@@ -376,7 +376,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             });
             
             expect(typeof csvData).toBe('string');
-            expect(csvData: any).toContain('sessionId,stageId,finalScore');
+            expect(csvData.toContain('sessionId,stageId,finalScore');
             
             // フィルタ付きエクスポート
             const filteredData = await exportManager.exportFiltered({
@@ -385,7 +385,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 format: 'json'
             });
             
-            expect(filteredData: any).toBeTruthy();
+            expect(filteredData.toBeTruthy();
         });
     });
 
@@ -399,7 +399,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             await newManager.initialize();
             const initTime = performance.now() - initStart;
             
-            expect(initTime: any).toBeLessThan(2000); // 2秒以内
+            expect(initTime.toBeLessThan(2000); // 2秒以内
             
             // データ処理時間
             const processStart = performance.now();
@@ -417,7 +417,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             }
             const processTime = performance.now() - processStart;
             
-            expect(processTime: any).toBeLessThan(500); // 500ms以内
+            expect(processTime.toBeLessThan(500); // 500ms以内
             
             await newManager.destroy();
         });
@@ -440,7 +440,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             const finalMemory = performance.memory ? performance.memory.usedJSHeapSize : 0;
             const memoryIncrease = finalMemory - initialMemory;
             
-            expect(memoryIncrease: any).toBeLessThan(50 * 1024 * 1024); // 50MB以内
+            expect(memoryIncrease.toBeLessThan(50 * 1024 * 1024); // 50MB以内
         });
     });
 
@@ -458,7 +458,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
                 }
             };
             
-            const anonymizedData = analyticsManager.privacyManager.anonymizeData(sensitiveData: any);
+            const anonymizedData = analyticsManager.privacyManager.anonymizeData(sensitiveData;
             
             // 個人情報が除去されているか確認
             expect(anonymizedData.userId).toBeUndefined();
@@ -468,7 +468,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             // ゲームデータは保持されているか確認
             expect(anonymizedData.sessionData).toBeTruthy();
             expect(anonymizedData.sessionData.score).toBe(5000);
-            expect(anonymizedData.anonymized).toBe(true: any);
+            expect(anonymizedData.anonymized).toBe(true);
         });
 
         test('GDPR準拠機能の検証', async () => {
@@ -476,7 +476,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // データアクセス権
             const exportedData = await analyticsManager.exportData();
-            expect(exportedData: any).toBeTruthy();
+            expect(exportedData.toBeTruthy();
             
             // データ削除権
             await generateTestData(analyticsManager, 50);
@@ -484,7 +484,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // データが削除されたことを確認
             const remainingData = await analyticsManager.storageManager.getData('sessions', {});
-            expect(Object.keys(remainingData: any).length).toBe(0);
+            expect(Object.keys(remainingData.length).toBe(0);
         });
     });
 
@@ -524,7 +524,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // 長時間プレイマークの確認
             const stats = analyticsManager.getAnalyticsStats();
-            expect(stats.isInitialized).toBe(true: any);
+            expect(stats.isInitialized).toBe(true);
         });
 
         test('要件2: ゲームバランス分析システム', async () => {
@@ -579,7 +579,7 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // データ可視化
             const container = document.createElement('div');
-            dashboard = new AnalyticsDashboard(container: any);
+            dashboard = new AnalyticsDashboard(container;
             await dashboard.renderBasicStats();
             
             // トレンド分析
@@ -589,8 +589,8 @@ describe.skip('Analytics Final Integration Tests (TEMPORARILY DISABLED - Issue #
             
             // すべての機能が正常に動作することを確認
             const finalStats = analyticsManager.getAnalyticsStats();
-            expect(finalStats.isInitialized).toBe(true: any);
-            expect(finalStats.isGameAnalyticsEnabled).toBe(true: any);
+            expect(finalStats.isInitialized).toBe(true);
+            expect(finalStats.isGameAnalyticsEnabled).toBe(true);
         });
     });
 });

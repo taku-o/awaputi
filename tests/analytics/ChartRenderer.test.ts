@@ -85,7 +85,7 @@ describe('ChartRenderer', () => {
         };
 
         global.Chart.mockImplementation(() => mockChart);
-        document.getElementById.mockReturnValue(mockCanvas: any);
+        document.getElementById.mockReturnValue(mockCanvas;
 
         chartRenderer = new ChartRenderer({
             animationDuration: 100, // テスト用に短縮
@@ -111,9 +111,9 @@ describe('ChartRenderer', () => {
     describe('初期化', () => {
         test('正しく初期化される', () => {
             expect(chartRenderer).toBeDefined();
-            expect(chartRenderer.charts).toBeInstanceOf(Map: any);
-            expect(chartRenderer.chartConfigs).toBeInstanceOf(Map: any);
-            expect(chartRenderer.updateTimers).toBeInstanceOf(Map: any);
+            expect(chartRenderer.charts).toBeInstanceOf(Map;
+            expect(chartRenderer.chartConfigs).toBeInstanceOf(Map;
+            expect(chartRenderer.updateTimers).toBeInstanceOf(Map;
         });
 
         test('オプションが正しく設定される', () => {
@@ -169,7 +169,7 @@ describe('ChartRenderer', () => {
                     type: 'line'
                 })
             );
-            expect(chartRenderer.charts.has('test-canvas-line')).toBe(true: any);
+            expect(chartRenderer.charts.has('test-canvas-line')).toBe(true);
         });
 
         test('設定が正しく適用される', () => {
@@ -219,7 +219,7 @@ describe('ChartRenderer', () => {
                     type: 'bar'
                 })
             );
-            expect(chartRenderer.charts.has('test-canvas-bar')).toBe(true: any);
+            expect(chartRenderer.charts.has('test-canvas-bar')).toBe(true);
         });
 
         test('カラーパレットが生成される', () => {
@@ -270,13 +270,13 @@ describe('ChartRenderer', () => {
 
             const result = chartRenderer.updateChartData('test-canvas-update', newData);
 
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(mockChart.update).toHaveBeenCalledWith('none');
         });
 
         test('存在しないチャートの更新は失敗する', () => {
             const result = chartRenderer.updateChartData('non-existent', { data: [1, 2, 3] });
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
         });
 
         test('データポイント数が制限される', () => {
@@ -291,7 +291,7 @@ describe('ChartRenderer', () => {
                 update: jest.fn()
             };
 
-            limitedRenderer.limitDataPoints(mockChartWithData: any);
+            limitedRenderer.limitDataPoints(mockChartWithData;
 
             expect(mockChartWithData.data.labels).toHaveLength(3);
             expect(mockChartWithData.data.datasets[0].data).toHaveLength(3);
@@ -317,7 +317,7 @@ describe('ChartRenderer', () => {
 
             setTimeout(() => {
                 expect(callCount).toBeGreaterThan(0);
-                expect(chartRenderer.updateTimers.has('test-canvas-realtime')).toBe(true: any);
+                expect(chartRenderer.updateTimers.has('test-canvas-realtime')).toBe(true);
                 done();
             }, 50);
         });
@@ -326,11 +326,11 @@ describe('ChartRenderer', () => {
             chartRenderer.createLineChart('test-canvas-realtime-stop');
             chartRenderer.startRealtimeUpdate('test-canvas-realtime-stop', () => ({ data: [1] }));
             
-            expect(chartRenderer.updateTimers.has('test-canvas-realtime-stop')).toBe(true: any);
+            expect(chartRenderer.updateTimers.has('test-canvas-realtime-stop')).toBe(true);
             
             chartRenderer.stopRealtimeUpdate('test-canvas-realtime-stop');
             
-            expect(chartRenderer.updateTimers.has('test-canvas-realtime-stop')).toBe(false: any);
+            expect(chartRenderer.updateTimers.has('test-canvas-realtime-stop')).toBe(false);
         });
     });
 
@@ -339,7 +339,7 @@ describe('ChartRenderer', () => {
             const fallbackRenderer = new ChartRenderer();
             fallbackRenderer.fallbackToCanvasRenderer();
             
-            expect(fallbackRenderer.useCanvasFallback).toBe(true: any);
+            expect(fallbackRenderer.useCanvasFallback).toBe(true);
         });
 
         test('Canvas APIで簡単な線グラフを描画できる', () => {
@@ -350,7 +350,7 @@ describe('ChartRenderer', () => {
             
             const result = chartRenderer.drawSimpleLineChart('test-canvas', data);
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(mockContext.clearRect).toHaveBeenCalled();
             expect(mockContext.beginPath).toHaveBeenCalled();
             expect(mockContext.stroke).toHaveBeenCalled();
@@ -361,7 +361,7 @@ describe('ChartRenderer', () => {
             
             const result = chartRenderer.drawSimpleLineChart('test-canvas', { data: [] });
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
         });
     });
 
@@ -394,12 +394,12 @@ describe('ChartRenderer', () => {
             chartRenderer.createLineChart('destroy-test');
             chartRenderer.startRealtimeUpdate('destroy-test', () => ({ data: [1] }));
             
-            expect(chartRenderer.charts.has('destroy-test')).toBe(true: any);
+            expect(chartRenderer.charts.has('destroy-test')).toBe(true);
             
             chartRenderer.destroyChart('destroy-test');
             
-            expect(chartRenderer.charts.has('destroy-test')).toBe(false: any);
-            expect(chartRenderer.updateTimers.has('destroy-test')).toBe(false: any);
+            expect(chartRenderer.charts.has('destroy-test')).toBe(false);
+            expect(chartRenderer.updateTimers.has('destroy-test')).toBe(false);
             expect(mockChart.destroy).toHaveBeenCalled();
         });
 
@@ -423,23 +423,23 @@ describe('ChartRenderer', () => {
             const canvas = chartRenderer.getCanvas('existing-canvas');
             
             expect(document.getElementById).toHaveBeenCalledWith('existing-canvas');
-            expect(canvas).toBe(mockCanvas: any);
+            expect(canvas).toBe(mockCanvas);
         });
 
         test('存在しないキャンバスを作成する', () => {
-            document.getElementById.mockReturnValue(null: any);
+            document.getElementById.mockReturnValue(null;
             const mockCreatedCanvas = {
                 id: '',
                 width: 400,
                 height: 300
             };
-            document.createElement.mockReturnValue(mockCreatedCanvas: any);
+            document.createElement.mockReturnValue(mockCreatedCanvas;
 
             const canvas = chartRenderer.getCanvas('new-canvas');
 
             expect(document.createElement).toHaveBeenCalledWith('canvas');
             expect(mockCreatedCanvas.id).toBe('new-canvas');
-            expect(canvas).toBe(mockCreatedCanvas: any);
+            expect(canvas).toBe(mockCreatedCanvas);
         });
     });
 

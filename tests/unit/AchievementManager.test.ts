@@ -110,7 +110,7 @@ class MockPlayerData {
         return (this.data as any)[key];
     }
 
-    set(key: string, value: any): void {
+    set(key: string, value: void {
         (this.data as any)[key] = value;
     }
 

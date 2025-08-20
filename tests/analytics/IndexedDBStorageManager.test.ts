@@ -14,7 +14,7 @@ class MockIDBDatabase {
     }
     
     createObjectStore(name, options) {
-        this.objectStoreNames.push(name: any);
+        this.objectStoreNames.push(name;
         const store = new MockIDBObjectStore(name, options);
         this.stores.set(name, store);
         return store;
@@ -38,9 +38,9 @@ class MockIDBObjectStore {
     }
     
     createIndex(name, keyPath, options) {
-        this.indexNames.push(name: any);
+        this.indexNames.push(name;
         this.indexes.set(name, new MockIDBIndex(name, keyPath, options));
-        return this.indexes.get(name: any);
+        return this.indexes.get(name;
     }
     
     put(data: any) {
@@ -54,7 +54,7 @@ class MockIDBObjectStore {
     get(key: any) {
         const request = { onsuccess: null, onerror: null };
         setTimeout(() => {
-            request.result = this.data.get(key: any);
+            request.result = this.data.get(key);
             if (request.onsuccess) request.onsuccess();
         }, 0);
         return request;
@@ -70,7 +70,7 @@ class MockIDBObjectStore {
     }
     
     delete(key: any) {
-        this.data.delete(key: any);
+        this.data.delete(key;
         return { onsuccess: null, onerror: null };
     }
     
@@ -108,7 +108,7 @@ class MockIDBObjectStore {
     }
     
     index(name: any) {
-        return this.indexes.get(name: any) || new MockIDBIndex(name, name, {});
+        return this.indexes.get(name || new MockIDBIndex(name, name, {});
     }
 }
 
@@ -132,7 +132,7 @@ class MockIDBIndex {
 class MockIDBTransaction {
     constructor(stores, storeNames, mode) {
         this.stores = stores;
-        this.storeNames = Array.isArray(storeNames: any) ? storeNames : [storeNames];
+        this.storeNames = Array.isArray(storeNames ? storeNames : [storeNames];
         this.mode = mode;
         this.oncomplete = null;
         this.onerror = null;
@@ -145,7 +145,7 @@ class MockIDBTransaction {
     }
     
     objectStore(name: any) {
-        return this.stores.get(name: any);
+        return this.stores.get(name;
     }
 }
 
@@ -168,7 +168,7 @@ class MockIDBTransaction {
                 const event = {
                     target: { result: db, transaction: new MockIDBTransaction(new Map(), [], 'versionchange') }
                 };
-                request.onupgradeneeded(event: any);
+                request.onupgradeneeded(event;
             }
             
             request.result = db;
@@ -474,7 +474,7 @@ describe('IndexedDBStorageManager', () => {
             
             const result = await manager.getDatabaseSize();
             
-            expect(result.supported).toBe(true: any);
+            expect(result.supported).toBe(true);
             expect(result.usageInMB).toBe('1.00');
             expect(result.quotaInMB).toBe('100.00');
             expect(result.percentUsed).toBe('1.00');
@@ -490,7 +490,7 @@ describe('IndexedDBStorageManager', () => {
             
             const result = await manager.getDatabaseSize();
             
-            expect(result.supported).toBe(false: any);
+            expect(result.supported).toBe(false);
             
             // navigatorを復元
             Object.defineProperty(global, 'navigator', {

@@ -57,9 +57,9 @@ class MockHelpEventManager {
     }
 
     trigger(eventName, data) {
-        const callback = this.callbacks.get(eventName: any);
+        const callback = this.callbacks.get(eventName;
         if (callback) {
-            callback(data: any);
+            callback(data;
         }
     }
 }
@@ -77,7 +77,7 @@ class MockSceneManager {
     }
 
     switchScene(name: any) {
-        const scene = this.scenes.get(name: any);
+        const scene = this.scenes.get(name;
         if (!scene) {
             console.error(`Scene ${name} not found`);
             return false;
@@ -157,11 +157,11 @@ class MockHelpScene {
         });
         
         this.helpEventManager.setCallback('onFeedbackRequest', (data) => {
-            this.showFeedbackDialog(data: any);
+            this.showFeedbackDialog(data;
         });
         
         this.helpEventManager.setCallback('onEffectivenessReport', (report) => {
-            this.showEffectivenessReport(report: any);
+            this.showEffectivenessReport(report;
         });
         
         this.helpEventManager.setCallback('onSearchFocus', () => {
@@ -211,7 +211,7 @@ class MockGameEngine {
     initialize() {
         // Setup scenes
         const mainMenuScene = new MockMainMenuScene();
-        const helpScene = new MockHelpScene(this: any);
+        const helpScene = new MockHelpScene(this;
 
         this.sceneManager.addScene('menu', mainMenuScene);
         this.sceneManager.addScene('help', helpScene);
@@ -260,15 +260,15 @@ describe('Help to Main Menu Navigation Integration Test', () => {
 
             // Verify we start at main menu
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
-            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true: any);
+            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
 
             // Navigate to help
             const success = gameEngine.sceneManager.switchScene('help');
-            expect(success: any).toBe(true: any);
+            expect(success.toBe(true);
 
             // Verify help scene is active
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('help');
-            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true: any);
+            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
         });
 
         test('should successfully return from help to main menu using ESC', () => {
@@ -278,15 +278,15 @@ describe('Help to Main Menu Navigation Integration Test', () => {
 
             // Get help scene instance
             const helpScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(helpScene: any).toBeInstanceOf(MockHelpScene: any);
+            expect(helpScene.toBeInstanceOf(MockHelpScene;
 
             // Simulate ESC key press (triggers onGoBack callback)
             helpScene.simulateEscKey();
 
             // Verify we're back at main menu
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
-            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene: any);
-            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true: any);
+            expect(gameEngine.sceneManager.currentSceneInstance).toBeInstanceOf(MockMainMenuScene;
+            expect(gameEngine.sceneManager.currentSceneInstance.isActive).toBe(true);
         });
 
         test('should handle scene transitions and cleanup properly', () => {
@@ -300,17 +300,17 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             const helpScene = gameEngine.sceneManager.currentSceneInstance;
 
             // Verify help scene entered and main menu exited
-            expect(helpScene.isActive).toBe(true: any);
-            expect(initialMainMenuScene.isActive).toBe(false: any);
+            expect(helpScene.isActive).toBe(true);
+            expect(initialMainMenuScene.isActive).toBe(false);
 
             // Return to main menu via ESC
             helpScene.simulateEscKey();
             const finalMainMenuScene = gameEngine.sceneManager.currentSceneInstance;
 
             // Verify proper cleanup and activation
-            expect(helpScene.isActive).toBe(false: any);
-            expect(finalMainMenuScene.isActive).toBe(true: any);
-            expect(finalMainMenuScene: any).toBeInstanceOf(MockMainMenuScene: any);
+            expect(helpScene.isActive).toBe(false);
+            expect(finalMainMenuScene.isActive).toBe(true);
+            expect(finalMainMenuScene.toBeInstanceOf(MockMainMenuScene;
         });
     });
 
@@ -323,7 +323,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             
             // Verify callback is properly set up
             const callback = helpScene.helpEventManager.callbacks.get('onGoBack');
-            expect(callback: any).toBeDefined();
+            expect(callback.toBeDefined();
             expect(typeof callback).toBe('function');
         });
 
@@ -334,7 +334,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             const helpScene = gameEngine.sceneManager.currentSceneInstance;
             const initialScene = gameEngine.sceneManager.getCurrentScene();
             
-            expect(initialScene: any).toBe('help');
+            expect(initialScene.toBe('help');
             
             // Trigger onGoBack through event system
             helpScene.helpEventManager.trigger('onGoBack');
@@ -374,7 +374,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             helpScene.simulateEscKey();
 
             // Verify no error messages were logged
-            expect(consoleErrorSpy: any).not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled();
         });
 
         // NOTE: Error handling tests are covered in detail by unit tests.
@@ -428,8 +428,8 @@ describe('Help to Main Menu Navigation Integration Test', () => {
 
             // Verify main menu scene is properly set up
             const mainMenuScene = gameEngine.sceneManager.currentSceneInstance;
-            expect(mainMenuScene: any).toBeInstanceOf(MockMainMenuScene: any);
-            expect(mainMenuScene.isActive).toBe(true: any);
+            expect(mainMenuScene.toBeInstanceOf(MockMainMenuScene;
+            expect(mainMenuScene.isActive).toBe(true);
             expect(gameEngine.sceneManager.getCurrentScene()).toBe('menu');
         });
 
@@ -449,7 +449,7 @@ describe('Help to Main Menu Navigation Integration Test', () => {
             }
 
             // Verify no errors occurred
-            expect(consoleErrorSpy: any).not.toHaveBeenCalled();
+            expect(consoleErrorSpy.not.toHaveBeenCalled();
         });
 
         test('should maintain event callback functionality across navigation cycles', () => {

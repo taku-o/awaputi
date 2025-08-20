@@ -59,7 +59,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
         jest.clearAllMocks();
 
         // Create instance
-        shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+        shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
     });
 
     afterEach(() => {
@@ -78,7 +78,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
                 constructor: { name: 'GameScene' },
                 togglePause: jest.fn()
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene;
 
             // Space key press event
             const event = new KeyboardEvent('keydown', {
@@ -89,7 +89,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify pause was triggered
             expect(mockGameScene.togglePause).toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             const mockGameScene = {
                 constructor: { name: 'GameScene' }
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene;
 
             // Escape key press event
             const event = new KeyboardEvent('keydown', {
@@ -119,7 +119,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify menu switch was triggered
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('menu');
@@ -132,7 +132,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
                 showingSettings: true,
                 closeSettings: jest.fn()
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene;
 
             // Escape key press event
             const event = new KeyboardEvent('keydown', {
@@ -143,7 +143,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify settings close was triggered
             expect(mockScene.closeSettings).toHaveBeenCalled();
@@ -167,7 +167,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify fullscreen toggle was triggered
             expect(mockGameEngine.responsiveCanvasManager.toggleFullscreen).toHaveBeenCalled();
@@ -191,7 +191,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify mute toggle was triggered
             expect(mockGameEngine.audioManager.toggleMute).toHaveBeenCalled();
@@ -199,7 +199,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
 
         test('should update settings when mute is toggled', () => {
             // Mock mute returning true (muted)
-            mockGameEngine.audioManager.toggleMute.mockReturnValue(true: any);
+            mockGameEngine.audioManager.toggleMute.mockReturnValue(true;
 
             // M key press event
             const event = new KeyboardEvent('keydown', {
@@ -210,7 +210,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify settings were updated
             expect(mockGameEngine.settingsManager.set).toHaveBeenCalledWith('isMuted', true);
@@ -229,7 +229,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             const mockScene = {
                 constructor: { name: 'MainMenuScene' }
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene;
 
             // F1 key press event
             const event = new KeyboardEvent('keydown', {
@@ -240,7 +240,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify help scene switch was triggered with contextual data
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help', 
@@ -265,7 +265,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             const mockScene = {
                 constructor: { name: 'GameScene' }
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene;
 
             // Ctrl+H key press event
             const event = new KeyboardEvent('keydown', {
@@ -277,7 +277,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify help scene switch was triggered with documentation data
             expect(mockGameEngine.sceneManager.switchScene).toHaveBeenCalledWith('help', 
@@ -303,7 +303,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
                 constructor: { name: 'GameScene' },
                 giveUp: jest.fn()
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene;
 
             // G key press event
             const event = new KeyboardEvent('keydown', {
@@ -314,7 +314,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify give up was triggered (confirm dialog was shown)
             expect(global.confirm).toHaveBeenCalledWith('ゲームを終了しますか？');
@@ -327,7 +327,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
                 constructor: { name: 'GameScene' },
                 restart: jest.fn()
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene;
 
             // R key press event
             const event = new KeyboardEvent('keydown', {
@@ -338,7 +338,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify restart was triggered (confirm dialog was shown)
             expect(global.confirm).toHaveBeenCalledWith('ゲームを再開始しますか？');
@@ -361,7 +361,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify volume was increased
             expect(mockGameEngine.settingsManager.set).toHaveBeenCalledWith('masterVolume', 0.6);
@@ -381,7 +381,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify volume was decreased
             expect(mockGameEngine.settingsManager.set).toHaveBeenCalledWith('masterVolume', 0.4);
@@ -391,13 +391,13 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
     describe('Debug Shortcuts Still Work', () => {
         test('should show debug info with F12 key', () => {
             // Enable debug mode
-            mockGameEngine.isDebugMode.mockReturnValue(true: any);
+            mockGameEngine.isDebugMode.mockReturnValue(true;
 
             // Mock current scene
             const mockScene = {
                 constructor: { name: 'GameScene' }
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockScene;
 
             // F12 key press event
             const event = new KeyboardEvent('keydown', {
@@ -408,12 +408,12 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify debug info was logged
             expect(consoleLogSpy).toHaveBeenCalledWith('Debug info:', expect.objectContaining({
                 scene: 'GameScene',
-                performance: expect.any(Object: any),
+                performance: expect.any(Object,
                 settings: undefined
             }));
         });
@@ -423,7 +423,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             localStorage.setItem('debug', 'false');
 
             // Mock confirm for reload
-            global.confirm.mockReturnValue(false: any); // Don't reload for test
+            global.confirm.mockReturnValue(false; // Don't reload for test
 
             // Ctrl+Shift+D key press event
             const event = new KeyboardEvent('keydown', {
@@ -436,7 +436,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify debug mode was toggled
             expect(localStorage.getItem('debug')).toBe('true');
@@ -447,7 +447,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
     describe('Accessibility Shortcuts Still Work', () => {
         test('should toggle high contrast with Ctrl+Alt+H', () => {
             // Mock current setting
-            mockGameEngine.settingsManager.get.mockReturnValue(false: any);
+            mockGameEngine.settingsManager.get.mockReturnValue(false;
 
             // Ctrl+Alt+H key press event
             const event = new KeyboardEvent('keydown', {
@@ -460,7 +460,7 @@ describe('CoreKeyboardShortcutManager - Remaining Functionality (Issue #169)', (
             });
 
             // Simulate key press
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify accessibility setting was toggled
             expect(mockGameEngine.settingsManager.set).toHaveBeenCalledWith('accessibility.highContrast', true);

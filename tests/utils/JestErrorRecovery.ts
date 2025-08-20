@@ -176,7 +176,7 @@ export class JestErrorRecovery {
     
     try {
       // Ensure Jest globals are available
-      if (typeof (global as any).jest = == 'undefined') {
+      if (typeof (global as any).jest === 'undefined') {
         (global as any).jest = {
           fn: this.fallbackImplementations.get('jest.fn'),
           spyOn: this.fallbackImplementations.get('jest.spyOn'),
@@ -254,7 +254,7 @@ export class JestErrorRecovery {
       if (typeof jest === 'undefined' || typeof jest.fn !== 'function') {
         const fallbackFn = this.fallbackImplementations.get('jest.fn');
         
-        if (typeof (global as any).jest = == 'undefined') {
+        if (typeof (global as any).jest === 'undefined') {
           (global as any).jest = {};
         }
         

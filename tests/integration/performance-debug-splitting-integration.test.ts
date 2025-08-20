@@ -28,7 +28,7 @@ describe('Performance Debug Splitting Integration', () => {
 
     afterEach(() => {
         // クリーンアップ
-        Object.values(testInstances: any).forEach(instance => {
+        Object.values(testInstances.forEach(instance => {
             if (instance && typeof instance.cleanup === 'function') {
                 instance.cleanup();
             }
@@ -41,7 +41,7 @@ describe('Performance Debug Splitting Integration', () => {
             testInstances.performanceTestSuite = performanceTestSuite;
 
             // メインコントローラーの存在確認
-            expect(performanceTestSuite: any).toBeDefined();
+            expect(performanceTestSuite.toBeDefined();
             
             // サブコンポーネントの存在確認
             expect(performanceTestSuite.testExecutor).toBeDefined();
@@ -55,13 +55,13 @@ describe('Performance Debug Splitting Integration', () => {
 
             // テスト実行のモック
             const mockTestResult = { passed: true, duration: 100, metrics: {} };
-            jest.spyOn(performanceTestSuite.testExecutor, 'executeTest').mockResolvedValue(mockTestResult: any);
+            jest.spyOn(performanceTestSuite.testExecutor, 'executeTest').mockResolvedValue(mockTestResult;
 
             const result = await performanceTestSuite.runTest('sample-test');
             
             // サブコンポーネントが呼ばれることを確認
             expect(performanceTestSuite.testExecutor.executeTest).toHaveBeenCalledWith('sample-test');
-            expect(result: any).toEqual(mockTestResult: any);
+            expect(result.toEqual(mockTestResult);
         });
 
         test('should handle component communication correctly', async () => {
@@ -70,10 +70,10 @@ describe('Performance Debug Splitting Integration', () => {
 
             // コンポーネント間の通信テスト
             const mockMetrics = { fps: 60, memory: 100 };
-            jest.spyOn(performanceTestSuite.metricsCollector, 'collectMetrics').mockResolvedValue(mockMetrics: any);
+            jest.spyOn(performanceTestSuite.metricsCollector, 'collectMetrics').mockResolvedValue(mockMetrics;
 
             const metrics = await performanceTestSuite.collectMetrics();
-            expect(metrics: any).toEqual(mockMetrics: any);
+            expect(metrics.toEqual(mockMetrics);
         });
     });
 
@@ -82,7 +82,7 @@ describe('Performance Debug Splitting Integration', () => {
             const performanceWarningSystem = new PerformanceWarningSystem();
             testInstances.performanceWarningSystem = performanceWarningSystem;
 
-            expect(performanceWarningSystem: any).toBeDefined();
+            expect(performanceWarningSystem.toBeDefined();
             expect(performanceWarningSystem.thresholdMonitor).toBeDefined();
             expect(performanceWarningSystem.notificationManager).toBeDefined();
             expect(performanceWarningSystem.alertGenerator).toBeDefined();
@@ -94,11 +94,11 @@ describe('Performance Debug Splitting Integration', () => {
 
             // 警告処理のモック
             const mockWarning = { type: 'performance', severity: 'high', message: 'High CPU usage' };
-            jest.spyOn(performanceWarningSystem.alertGenerator, 'generateAlert').mockReturnValue(mockWarning: any);
+            jest.spyOn(performanceWarningSystem.alertGenerator, 'generateAlert').mockReturnValue(mockWarning;
 
             const warning = performanceWarningSystem.generateAlert('performance', { cpu: 90 });
             expect(performanceWarningSystem.alertGenerator.generateAlert).toHaveBeenCalled();
-            expect(warning: any).toEqual(mockWarning: any);
+            expect(warning.toEqual(mockWarning);
         });
     });
 
@@ -107,7 +107,7 @@ describe('Performance Debug Splitting Integration', () => {
             const performanceMonitoringSystem = new PerformanceMonitoringSystem();
             testInstances.performanceMonitoringSystem = performanceMonitoringSystem;
 
-            expect(performanceMonitoringSystem: any).toBeDefined();
+            expect(performanceMonitoringSystem.toBeDefined();
             expect(performanceMonitoringSystem.realTimeMonitor).toBeDefined();
             expect(performanceMonitoringSystem.dataAnalyzer).toBeDefined();
         });
@@ -118,11 +118,11 @@ describe('Performance Debug Splitting Integration', () => {
 
             // リアルタイム監視のモック
             const mockData = { timestamp: Date.now(), metrics: { fps: 58 } };
-            jest.spyOn(performanceMonitoringSystem.realTimeMonitor, 'collectRealTimeData').mockResolvedValue(mockData: any);
+            jest.spyOn(performanceMonitoringSystem.realTimeMonitor, 'collectRealTimeData').mockResolvedValue(mockData;
 
             const data = await performanceMonitoringSystem.collectRealTimeData();
             expect(performanceMonitoringSystem.realTimeMonitor.collectRealTimeData).toHaveBeenCalled();
-            expect(data: any).toEqual(mockData: any);
+            expect(data.toEqual(mockData);
         });
     });
 
@@ -131,7 +131,7 @@ describe('Performance Debug Splitting Integration', () => {
             const benchmarkSuite = new BenchmarkSuite();
             testInstances.benchmarkSuite = benchmarkSuite;
 
-            expect(benchmarkSuite: any).toBeDefined();
+            expect(benchmarkSuite.toBeDefined();
             expect(benchmarkSuite.benchmarkExecutor).toBeDefined();
             expect(benchmarkSuite.resultAnalyzer).toBeDefined();
             expect(benchmarkSuite.benchmarkReporter).toBeDefined();
@@ -143,7 +143,7 @@ describe('Performance Debug Splitting Integration', () => {
 
             // ベンチマーク実行のモック
             const mockResults = { duration: 150, iterations: 1000, score: 95 };
-            jest.spyOn(benchmarkSuite.benchmarkExecutor, 'executeBenchmark').mockResolvedValue(mockResults: any);
+            jest.spyOn(benchmarkSuite.benchmarkExecutor, 'executeBenchmark').mockResolvedValue(mockResults;
 
             const results = await benchmarkSuite.runBenchmarks(['test-benchmark']);
             expect(benchmarkSuite.benchmarkExecutor.executeBenchmark).toHaveBeenCalled();
@@ -155,7 +155,7 @@ describe('Performance Debug Splitting Integration', () => {
             const testResultVisualizer = new TestResultVisualizer();
             testInstances.testResultVisualizer = testResultVisualizer;
 
-            expect(testResultVisualizer: any).toBeDefined();
+            expect(testResultVisualizer.toBeDefined();
             expect(testResultVisualizer.chartGenerator).toBeDefined();
             expect(testResultVisualizer.dataVisualizer).toBeDefined();
         });
@@ -166,7 +166,7 @@ describe('Performance Debug Splitting Integration', () => {
 
             // 可視化処理のモック
             const mockChart = { type: 'bar', data: [], options: {} };
-            jest.spyOn(testResultVisualizer.chartGenerator, 'generateChart').mockResolvedValue(mockChart: any);
+            jest.spyOn(testResultVisualizer.chartGenerator, 'generateChart').mockResolvedValue(mockChart;
 
             const chart = await testResultVisualizer.visualizeResults({ data: [] });
             expect(testResultVisualizer.chartGenerator.generateChart).toHaveBeenCalled();
@@ -178,7 +178,7 @@ describe('Performance Debug Splitting Integration', () => {
             const errorReporter = new ErrorReporter();
             testInstances.errorReporter = errorReporter;
 
-            expect(errorReporter: any).toBeDefined();
+            expect(errorReporter.toBeDefined();
             expect(errorReporter.errorCollector).toBeDefined();
             expect(errorReporter.errorAnalyzer).toBeDefined();
             expect(errorReporter.submissionManager).toBeDefined();
@@ -192,11 +192,11 @@ describe('Performance Debug Splitting Integration', () => {
             const mockError = new Error('Test error');
             const mockReport = { id: 'error-123', timestamp: Date.now() };
             
-            jest.spyOn(errorReporter.errorCollector, 'collectError').mockReturnValue(mockReport: any);
+            jest.spyOn(errorReporter.errorCollector, 'collectError').mockReturnValue(mockReport;
 
-            const report = errorReporter.reportError(mockError: any);
-            expect(errorReporter.errorCollector.collectError).toHaveBeenCalledWith(mockError: any);
-            expect(report: any).toEqual(mockReport: any);
+            const report = errorReporter.reportError(mockError;
+            expect(errorReporter.errorCollector.collectError).toHaveBeenCalledWith(mockError;
+            expect(report.toEqual(mockReport);
         });
     });
 
@@ -205,7 +205,7 @@ describe('Performance Debug Splitting Integration', () => {
             const mobileTestSuite = new MobileTestSuite();
             testInstances.mobileTestSuite = mobileTestSuite;
 
-            expect(mobileTestSuite: any).toBeDefined();
+            expect(mobileTestSuite.toBeDefined();
             expect(mobileTestSuite.testRunner).toBeDefined();
             expect(mobileTestSuite.deviceSimulator).toBeDefined();
             expect(mobileTestSuite.testReporter).toBeDefined();
@@ -217,11 +217,11 @@ describe('Performance Debug Splitting Integration', () => {
 
             // モバイルテスト実行のモック
             const mockResults = { passed: 5, failed: 0, total: 5 };
-            jest.spyOn(mobileTestSuite.testRunner, 'runAllTests').mockResolvedValue(mockResults: any);
+            jest.spyOn(mobileTestSuite.testRunner, 'runAllTests').mockResolvedValue(mockResults;
 
             const results = await mobileTestSuite.runAllTests();
             expect(mobileTestSuite.testRunner.runAllTests).toHaveBeenCalled();
-            expect(results: any).toEqual(mockResults: any);
+            expect(results.toEqual(mockResults);
         });
 
         test('should handle device simulation delegation', async () => {
@@ -229,7 +229,7 @@ describe('Performance Debug Splitting Integration', () => {
             testInstances.mobileTestSuite = mobileTestSuite;
 
             // デバイスシミュレーションのモック
-            jest.spyOn(mobileTestSuite.deviceSimulator, 'startSimulation').mockResolvedValue(true: any);
+            jest.spyOn(mobileTestSuite.deviceSimulator, 'startSimulation').mockResolvedValue(true;
 
             await mobileTestSuite.startDeviceSimulation('iPhone 12');
             expect(mobileTestSuite.deviceSimulator.startSimulation).toHaveBeenCalledWith('iPhone 12');
@@ -241,7 +241,7 @@ describe('Performance Debug Splitting Integration', () => {
             const mobileAccessibilityManager = new MobileAccessibilityManager();
             testInstances.mobileAccessibilityManager = mobileAccessibilityManager;
 
-            expect(mobileAccessibilityManager: any).toBeDefined();
+            expect(mobileAccessibilityManager.toBeDefined();
             expect(mobileAccessibilityManager.validator).toBeDefined();
         });
 
@@ -251,11 +251,11 @@ describe('Performance Debug Splitting Integration', () => {
 
             // アクセシビリティ検証のモック
             const mockResults = { overall: 'pass', score: 95, issues: [] };
-            jest.spyOn(mobileAccessibilityManager.validator, 'validateMobileAccessibility').mockResolvedValue(mockResults: any);
+            jest.spyOn(mobileAccessibilityManager.validator, 'validateMobileAccessibility').mockResolvedValue(mockResults;
 
             const results = await mobileAccessibilityManager.validateAccessibility();
             expect(mobileAccessibilityManager.validator.validateMobileAccessibility).toHaveBeenCalled();
-            expect(results: any).toEqual(mockResults: any);
+            expect(results.toEqual(mockResults);
         });
     });
 
@@ -272,15 +272,15 @@ describe('Performance Debug Splitting Integration', () => {
 
             // パフォーマンステストから警告システムへの連携
             const mockMetrics = { fps: 30, memory: 200 }; // 低パフォーマンス
-            jest.spyOn(performanceTestSuite.metricsCollector, 'collectMetrics').mockResolvedValue(mockMetrics: any);
+            jest.spyOn(performanceTestSuite.metricsCollector, 'collectMetrics').mockResolvedValue(mockMetrics;
             jest.spyOn(performanceWarningSystem.thresholdMonitor, 'detectViolations').mockReturnValue([
                 { type: 'fps', severity: 'high', message: 'Low FPS detected' }
             ]);
 
             const metrics = await performanceTestSuite.collectMetrics();
-            const violations = performanceWarningSystem.thresholdMonitor.detectViolations(metrics: any);
+            const violations = performanceWarningSystem.thresholdMonitor.detectViolations(metrics;
 
-            expect(violations: any).toHaveLength(1);
+            expect(violations.toHaveLength(1);
             expect(violations[0].type).toBe('fps');
         });
 
@@ -301,7 +301,7 @@ describe('Performance Debug Splitting Integration', () => {
                 testInstances[`component_${index}`] = component;
                 
                 // 各コンポーネントが正常に初期化されることを確認
-                expect(component: any).toBeDefined();
+                expect(component.toBeDefined();
                 expect(typeof component).toBe('object');
                 
                 // 基本的な公開メソッドの存在確認
@@ -319,10 +319,10 @@ describe('Performance Debug Splitting Integration', () => {
             try {
                 // 失敗をシミュレートするため、無効なコンストラクタ引数を使用
                 const performanceTestSuite = new PerformanceTestSuite();
-                expect(performanceTestSuite: any).toBeDefined();
+                expect(performanceTestSuite.toBeDefined();
             } catch (error) {
                 // エラーハンドリングが適切に動作することを確認
-                expect(error: any).toBeInstanceOf(Error: any);
+                expect(error.toBeInstanceOf(Error;
             }
 
             console.warn = originalConsoleWarn;

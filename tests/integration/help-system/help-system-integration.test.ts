@@ -44,9 +44,9 @@ describe('Help System Integration', () => {
     
     beforeEach(() => {
         jest.clearAllMocks();
-        helpManager = new HelpManager(mockGameEngine: any);
-        tutorialManager = new TutorialManager(mockGameEngine: any);
-        contextManager = new ContextManager(mockGameEngine: any);
+        helpManager = new HelpManager(mockGameEngine;
+        tutorialManager = new TutorialManager(mockGameEngine;
+        contextManager = new ContextManager(mockGameEngine;
     });
 
     afterEach(() => {
@@ -67,7 +67,7 @@ describe('Help System Integration', () => {
             }];
 
             jest.spyOn(helpManager.contentLoader, 'loadHelpContent')
-                .mockResolvedValue(helpContent: any);
+                .mockResolvedValue(helpContent;
 
             const tutorialData = [{
                 id: 'basic-tutorial',
@@ -78,7 +78,7 @@ describe('Help System Integration', () => {
             }];
 
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData')
-                .mockResolvedValue(tutorialData: any);
+                .mockResolvedValue(tutorialData;
 
             // ヘルプコンテンツから関連チュートリアルを開始
             await helpManager.loadHelpContent('gameplay', 'ja');
@@ -87,8 +87,8 @@ describe('Help System Integration', () => {
             expect(section.relatedTutorials).toContain('basic-tutorial');
 
             const tutorialStarted = await tutorialManager.startTutorial('basic-tutorial');
-            expect(tutorialStarted: any).toBe(true: any);
-            expect(tutorialManager.isActive).toBe(true: any);
+            expect(tutorialStarted.toBe(true);
+            expect(tutorialManager.isActive).toBe(true);
         });
 
         test('コンテキストヘルプとツールチップの統合', () => {
@@ -97,13 +97,13 @@ describe('Help System Integration', () => {
             expect(context.sceneName).toBe('GameScene');
 
             // コンテキストに基づく関連ヘルプを取得
-            const relevantHelp = contextManager.getRelevantHelp(context: any);
+            const relevantHelp = contextManager.getRelevantHelp(context;
             expect(relevantHelp.length).toBeGreaterThan(0);
 
             // ツールチップとしてヘルプを表示
             const helpContent = relevantHelp[0];
             const tooltipShown = contextManager.showContextualTooltip(100, 100, helpContent);
-            expect(tooltipShown: any).toBe(true: any);
+            expect(tooltipShown.toBe(true);
             expect(contextManager.currentTooltip).toBeDefined();
         });
 
@@ -127,7 +127,7 @@ describe('Help System Integration', () => {
         test('HelpSceneからの各システムアクセス', () => {
             // HelpSceneでのヘルプマネージャー使用
             const searchResults = helpManager.searchContent('bubble');
-            expect(searchResults: any).toBeDefined();
+            expect(searchResults.toBeDefined();
 
             // コンテキストマネージャーでの動的ヘルプ
             const context = contextManager.detectCurrentContext();
@@ -135,7 +135,7 @@ describe('Help System Integration', () => {
                 recentActions: ['bubble_click'],
                 averageAccuracy: 0.8
             });
-            expect(smartHelp: any).toBeDefined();
+            expect(smartHelp.toBeDefined();
         });
 
         test('GameSceneでのコンテキストヘルプ', () => {
@@ -145,7 +145,7 @@ describe('Help System Integration', () => {
             expect(context.gameState).toBeDefined();
 
             // ゲーム状況に応じたヘルプ提案
-            const suggestions = contextManager.suggestNextActions(context: any);
+            const suggestions = contextManager.suggestNextActions(context;
             expect(suggestions.length).toBeGreaterThan(0);
         });
 
@@ -163,7 +163,7 @@ describe('Help System Integration', () => {
             }];
 
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData')
-                .mockResolvedValue(tutorialData: any);
+                .mockResolvedValue(tutorialData;
 
             await tutorialManager.startTutorial('game-tutorial');
 
@@ -175,7 +175,7 @@ describe('Help System Integration', () => {
             };
 
             const highlighted = tutorialManager.highlightElement('.bubble', 'バブルをクリック');
-            expect(highlighted: any).toBe(true: any);
+            expect(highlighted.toBe(true);
 
             // ユーザーアクションをシミュレート
             tutorialManager.handleUserAction('click');
@@ -212,7 +212,7 @@ describe('Help System Integration', () => {
             }];
 
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData')
-                .mockResolvedValue(tutorialData: any);
+                .mockResolvedValue(tutorialData;
 
             await tutorialManager.startTutorial('progress-tutorial');
             tutorialManager.nextStep();
@@ -240,7 +240,7 @@ describe('Help System Integration', () => {
                 .mockReturnValue([{ id: 'cached-help', title: 'Cached Help' }]);
 
             const result = await helpManager.loadHelpContent('gameplay', 'ja');
-            expect(result: any).toEqual([{ id: 'cached-help', title: 'Cached Help' }]);
+            expect(result.toEqual([{ id: 'cached-help', title: 'Cached Help' }]);
         });
 
         test('チュートリアル実行中のエラー処理', async () => {
@@ -250,7 +250,7 @@ describe('Help System Integration', () => {
             }];
 
             jest.spyOn(tutorialManager.contentLoader, 'loadTutorialData')
-                .mockResolvedValue(tutorialData: any);
+                .mockResolvedValue(tutorialData;
 
             await tutorialManager.startTutorial('error-tutorial');
 
@@ -263,7 +263,7 @@ describe('Help System Integration', () => {
             const isValid = tutorialManager.validateStep(step, {});
 
             // エラーが発生してもfalseを返す（例外は投げない）
-            expect(isValid: any).toBe(false: any);
+            expect(isValid.toBe(false);
         });
     });
 
@@ -279,14 +279,14 @@ describe('Help System Integration', () => {
             }));
 
             jest.spyOn(helpManager.contentLoader, 'loadHelpContent')
-                .mockResolvedValue(largeHelpContent: any);
+                .mockResolvedValue(largeHelpContent;
 
             const startTime = Date.now();
             await helpManager.loadHelpContent('test', 'ja');
             const loadTime = Date.now() - startTime;
 
             // 読み込み時間が合理的な範囲内であることを確認
-            expect(loadTime: any).toBeLessThan(1000); // 1秒以内
+            expect(loadTime.toBeLessThan(1000); // 1秒以内
         });
 
         test('検索パフォーマンス', async () => {
@@ -298,14 +298,14 @@ describe('Help System Integration', () => {
             }));
 
             jest.spyOn(helpManager.searchEngine, 'search')
-                .mockResolvedValue(searchResults: any);
+                .mockResolvedValue(searchResults;
 
             const startTime = Date.now();
             const results = await helpManager.searchContent('test query');
             const searchTime = Date.now() - startTime;
 
             expect(results.length).toBe(100);
-            expect(searchTime: any).toBeLessThan(500); // 500ms以内
+            expect(searchTime.toBeLessThan(500); // 500ms以内
         });
     });
 
@@ -320,7 +320,7 @@ describe('Help System Integration', () => {
             }];
 
             jest.spyOn(helpManager.contentLoader, 'loadHelpContent')
-                .mockResolvedValue(accessibleContent: any);
+                .mockResolvedValue(accessibleContent;
 
             await helpManager.loadHelpContent('accessibility', 'ja');
             const section = helpManager.getHelpSection('accessible-help');
@@ -340,7 +340,7 @@ describe('Help System Integration', () => {
 
             contextManager.registerTooltip(element, content);
 
-            const tooltipContent = contextManager.tooltipElements.get(element: any);
+            const tooltipContent = contextManager.tooltipElements.get(element;
             expect(tooltipContent.keyboardShortcuts).toContain('Tab');
             expect(tooltipContent.keyboardShortcuts).toContain('Enter');
             expect(tooltipContent.keyboardShortcuts).toContain('Escape');

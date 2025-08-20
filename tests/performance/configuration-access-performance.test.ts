@@ -44,7 +44,7 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`基本アクセス: ${iterations}回, 総時間: ${totalTime.toFixed(2)}ms, 平均: ${avgTime.toFixed(4)}ms`);
         
         // 平均アクセス時間が0.1ms以下であることを確認
-        expect(avgTime: any).toBeLessThan(0.1);
+        expect(avgTime.toBeLessThan(0.1);
     });
     
     test('キャッシュ効果の測定', () => {
@@ -76,7 +76,7 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`改善率: ${improvement.toFixed(2)}%`);
         
         // キャッシュにより少なくとも2%の改善があることを確認
-        expect(improvement: any).toBeGreaterThan(2);
+        expect(improvement.toBeGreaterThan(2);
     });
     
     test('複数キーの同時アクセス性能', () => {
@@ -104,7 +104,7 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`複数キーアクセス: ${iterations}回, 総時間: ${totalTime.toFixed(2)}ms, 平均: ${avgTime.toFixed(4)}ms`);
         
         // 平均アクセス時間が0.2ms以下であることを確認
-        expect(avgTime: any).toBeLessThan(0.2);
+        expect(avgTime.toBeLessThan(0.2);
     });
     
     test('プリロードキーの効果測定', () => {
@@ -128,7 +128,7 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`プリロードキーアクセス: ${iterations}回, 総時間: ${totalTime.toFixed(2)}ms, 平均: ${avgTime.toFixed(4)}ms`);
         
         // プリロードキーは非常に高速であることを確認
-        expect(avgTime: any).toBeLessThan(0.05);
+        expect(avgTime.toBeLessThan(0.05);
     });
     
     test('遅延読み込みの性能', () => {
@@ -159,10 +159,10 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`遅延読み込み: ${iterations}回アクセス, ${loadCount}回読み込み, 総時間: ${totalTime.toFixed(2)}ms`);
         
         // 遅延読み込み関数は1回だけ実行されることを確認
-        expect(loadCount: any).toBe(1);
+        expect(loadCount.toBe(1);
         
         // キャッシュにより2回目以降は高速であることを確認
-        expect(totalTime: any).toBeLessThan(50); // 50ms以下
+        expect(totalTime.toBeLessThan(50); // 50ms以下
     });
     
     test('キャッシュヒット率の測定', () => {
@@ -190,7 +190,7 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`キャッシュミス数: ${stats.cacheMisses}`);
         
         // ヒット率が50%以上であることを確認
-        expect(hitRate: any).toBeGreaterThan(50);
+        expect(hitRate.toBeGreaterThan(50);
     });
     
     test('メモリ使用量の監視', () => {
@@ -214,7 +214,7 @@ describe('Configuration Access Performance Tests', () => {
         
         // メモリ使用量が合理的な範囲内であることを確認
         const memoryKB = parseInt(cacheStats.memoryUsage);
-        expect(memoryKB: any).toBeLessThan(1000); // 1MB以下
+        expect(memoryKB.toBeLessThan(1000); // 1MB以下
     });
     
     test('大量アクセス時の安定性', () => {
@@ -253,10 +253,10 @@ describe('Configuration Access Performance Tests', () => {
         console.log(`エラー数: ${errorCount}`);
         
         // エラーが発生しないことを確認
-        expect(errorCount: any).toBe(0);
+        expect(errorCount.toBe(0);
         
         // 平均アクセス時間が合理的であることを確認
-        expect(avgTime: any).toBeLessThan(0.1);
+        expect(avgTime.toBeLessThan(0.1);
     });
     
     test('キャッシュ最適化の効果', () => {

@@ -71,17 +71,17 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
         test('should initialize KeyboardShortcutManager without errors after shortcut removal', () => {
             // This should not throw any errors
             expect(() => {
-                shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+                shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             }).not.toThrow();
 
             // Verify successful initialization
-            expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager: any);
-            expect(shortcutManager.shortcuts).toBeInstanceOf(Map: any);
-            expect(shortcutManager.isEnabled).toBe(true: any);
+            expect(shortcutManager).toBeInstanceOf(CoreKeyboardShortcutManager;
+            expect(shortcutManager.shortcuts).toBeInstanceOf(Map;
+            expect(shortcutManager.isEnabled).toBe(true);
         });
 
         test('should not generate console errors during initialization', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Verify no console errors were generated during initialization
             expect(consoleErrorSpy).not.toHaveBeenCalled();
@@ -92,15 +92,15 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
             const windowAddEventListenerSpy = jest.spyOn(window, 'addEventListener');
 
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
 
             // Verify keydown and keyup listeners were added
-            expect(addEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function: any));
-            expect(addEventListenerSpy).toHaveBeenCalledWith('keyup', expect.any(Function: any));
+            expect(addEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function);
+            expect(addEventListenerSpy).toHaveBeenCalledWith('keyup', expect.any(Function);
             
             // Verify window blur and focus listeners were added
-            expect(windowAddEventListenerSpy).toHaveBeenCalledWith('blur', expect.any(Function: any));
-            expect(windowAddEventListenerSpy).toHaveBeenCalledWith('focus', expect.any(Function: any));
+            expect(windowAddEventListenerSpy).toHaveBeenCalledWith('blur', expect.any(Function);
+            expect(windowAddEventListenerSpy).toHaveBeenCalledWith('focus', expect.any(Function);
 
             // Cleanup spies
             addEventListenerSpy.mockRestore();
@@ -110,7 +110,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
 
     describe('Shortcut Registration Process', () => {
         test('should register shortcuts correctly for remaining functionality', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             const shortcuts = shortcutManager.getShortcuts();
             
@@ -129,7 +129,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
         });
 
         test('should not register removed shortcuts', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             const shortcuts = shortcutManager.getShortcuts();
             
@@ -140,7 +140,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
         });
 
         test('should have correct total shortcut count', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             const stats = shortcutManager.getStats();
             
@@ -154,14 +154,14 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
 
     describe('Event Handling Integration', () => {
         test('should handle keydown events correctly', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Mock scene with pause functionality
             const mockGameScene = {
                 constructor: { name: 'GameScene' },
                 togglePause: jest.fn()
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene;
 
             // Create and dispatch a real keydown event
             const event = new KeyboardEvent('keydown', {
@@ -172,14 +172,14 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             });
 
             // Simulate the event being processed
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
 
             // Verify the shortcut was executed
             expect(mockGameScene.togglePause).toHaveBeenCalled();
         });
 
         test('should handle keyup events correctly', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Create and dispatch a keyup event
             const event = new KeyboardEvent('keyup', {
@@ -189,12 +189,12 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
 
             // This should not throw an error
             expect(() => {
-                shortcutManager.handleKeyUp(event: any);
+                shortcutManager.handleKeyUp(event;
             }).not.toThrow();
         });
 
         test('should handle window blur and focus events', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Simulate window blur (should clear active keys)
             expect(() => {
@@ -210,7 +210,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
 
     describe('Context Validation Integration', () => {
         test('should validate context correctly for game scene', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Mock game scene
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
@@ -218,13 +218,13 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             });
             
             // Test context validation
-            expect(shortcutManager.isContextValid('global')).toBe(true: any);
-            expect(shortcutManager.isContextValid('game')).toBe(true: any);
-            expect(shortcutManager.isContextValid('menu')).toBe(false: any);
+            expect(shortcutManager.isContextValid('global')).toBe(true);
+            expect(shortcutManager.isContextValid('game')).toBe(true);
+            expect(shortcutManager.isContextValid('menu')).toBe(false);
         });
 
         test('should validate context correctly for menu scene', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Mock menu scene
             mockGameEngine.sceneManager.getCurrentScene.mockReturnValue({
@@ -232,9 +232,9 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             });
             
             // Test context validation
-            expect(shortcutManager.isContextValid('global')).toBe(true: any);
-            expect(shortcutManager.isContextValid('game')).toBe(false: any);
-            expect(shortcutManager.isContextValid('menu')).toBe(true: any);
+            expect(shortcutManager.isContextValid('global')).toBe(true);
+            expect(shortcutManager.isContextValid('game')).toBe(false);
+            expect(shortcutManager.isContextValid('menu')).toBe(true);
         });
     });
 
@@ -242,7 +242,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
         test('should handle missing game engine gracefully', () => {
             // Test with null game engine
             expect(() => {
-                shortcutManager = new CoreKeyboardShortcutManager(null: any);
+                shortcutManager = new CoreKeyboardShortcutManager(null;
             }).not.toThrow();
         });
 
@@ -252,12 +252,12 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             };
             
             expect(() => {
-                shortcutManager = new CoreKeyboardShortcutManager(incompleteGameEngine: any);
+                shortcutManager = new CoreKeyboardShortcutManager(incompleteGameEngine;
             }).not.toThrow();
         });
 
         test('should handle errors in shortcut callbacks gracefully', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Mock a scene that throws an error
             const errorScene = {
@@ -266,7 +266,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
                     throw new Error('Test error');
                 })
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(errorScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(errorScene;
 
             // Create a space key event
             const event = new KeyboardEvent('keydown', {
@@ -276,7 +276,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
 
             // This should not crash the application
             expect(() => {
-                shortcutManager.handleKeyDown(event: any);
+                shortcutManager.handleKeyDown(event;
             }).not.toThrow();
 
             // Verify error was logged
@@ -286,7 +286,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
 
     describe('Help Text Generation Integration', () => {
         test('should generate help text without errors', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             expect(() => {
                 const helpText = shortcutManager.generateHelpText();
@@ -296,7 +296,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
         });
 
         test('should generate consistent help text structure', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             const helpText = shortcutManager.generateHelpText();
             
@@ -307,15 +307,15 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             expect(helpText['その他']).toBeDefined();
             
             // Each section should be an array
-            Object.values(helpText: any).forEach(section => {
-                expect(Array.isArray(section: any)).toBe(true: any);
+            Object.values(helpText.forEach(section => {
+                expect(Array.isArray(section).toBe(true);
             });
         });
     });
 
     describe('Statistics Integration', () => {
         test('should provide accurate statistics', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             const stats = shortcutManager.getStats();
             
@@ -331,7 +331,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             expect(typeof stats.enabledShortcuts).toBe('number');
             expect(typeof stats.activeKeys).toBe('number');
             expect(typeof stats.isEnabled).toBe('boolean');
-            expect(Array.isArray(stats.contexts)).toBe(true: any);
+            expect(Array.isArray(stats.contexts)).toBe(true);
             
             // Enabled shortcuts should not exceed total shortcuts
             expect(stats.enabledShortcuts).toBeLessThanOrEqual(stats.totalShortcuts);
@@ -344,7 +344,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
             const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
             const windowRemoveEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             shortcutManager.cleanup();
 
             // Note: The current implementation has a bug where event listeners aren't properly removed
@@ -356,7 +356,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
         });
 
         test('should clear internal state on cleanup', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Verify initial state
             expect(shortcutManager.activeKeys.size).toBeGreaterThanOrEqual(0);
@@ -373,32 +373,32 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
 
     describe('Enable/Disable Integration', () => {
         test('should properly enable and disable shortcuts', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Initially enabled
-            expect(shortcutManager.isEnabled).toBe(true: any);
+            expect(shortcutManager.isEnabled).toBe(true);
             
             // Disable
-            shortcutManager.setEnabled(false: any);
-            expect(shortcutManager.isEnabled).toBe(false: any);
+            shortcutManager.setEnabled(false;
+            expect(shortcutManager.isEnabled).toBe(false);
             
             // Enable again
-            shortcutManager.setEnabled(true: any);
-            expect(shortcutManager.isEnabled).toBe(true: any);
+            shortcutManager.setEnabled(true;
+            expect(shortcutManager.isEnabled).toBe(true);
         });
 
         test('should not execute shortcuts when disabled', () => {
-            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine: any);
+            shortcutManager = new CoreKeyboardShortcutManager(mockGameEngine;
             
             // Mock scene with pause functionality
             const mockGameScene = {
                 constructor: { name: 'GameScene' },
                 togglePause: jest.fn()
             };
-            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene: any);
+            mockGameEngine.sceneManager.getCurrentScene.mockReturnValue(mockGameScene;
 
             // Disable shortcuts
-            shortcutManager.setEnabled(false: any);
+            shortcutManager.setEnabled(false;
 
             // Try to execute a shortcut
             const event = new KeyboardEvent('keydown', {
@@ -406,7 +406,7 @@ describe('CoreKeyboardShortcutManager - Integration Tests (Issue #169)', () => {
                 key: ' '
             });
             
-            shortcutManager.handleKeyDown(event: any);
+            shortcutManager.handleKeyDown(event;
             
             // Verify shortcut was not executed
             expect(mockGameScene.togglePause).not.toHaveBeenCalled();

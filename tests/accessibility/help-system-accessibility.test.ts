@@ -10,7 +10,7 @@ import { TooltipSystem } from '../../src/core/help/TooltipSystem';
 // ARIA属性検証ヘルパー
 const validateARIA = (element) => {
     const requiredAttrs = ['role', 'aria-label', 'aria-describedby'];
-    return requiredAttrs.every(attr => element.hasAttribute && element.hasAttribute(attr: any));
+    return requiredAttrs.every(attr => element.hasAttribute && element.hasAttribute(attr));
 };
 
 // キーボード操作シミュレーター
@@ -22,7 +22,7 @@ const simulateKeyPress = (key, target = document) => {
         which: key.charCodeAt(0),
         bubbles: true
     });
-    target.dispatchEvent(event: any);
+    target.dispatchEvent(event);
     return event;
 };
 
@@ -102,7 +102,7 @@ describe('Help System Accessibility Tests', () => {
         let helpScene: any;
 
         beforeEach(() => {
-            helpScene = new HelpScene(mockGameEngine: any);
+            helpScene = new HelpScene(mockGameEngine;
         });
 
         afterEach(() => {
@@ -118,7 +118,7 @@ describe('Help System Accessibility Tests', () => {
                 hasAttribute: jest.fn(() => true)
             };
 
-            helpScene.setupAccessibility(mockCanvas: any);
+            helpScene.setupAccessibility(mockCanvas;
 
             expect(mockCanvas.setAttribute).toHaveBeenCalledWith('role', 'application');
             expect(mockCanvas.setAttribute).toHaveBeenCalledWith('aria-label', expect.stringContaining('ヘルプ'));
@@ -131,17 +131,17 @@ describe('Help System Accessibility Tests', () => {
 
             // 右矢印キー
             const rightEvent = { key: 'ArrowRight', preventDefault: jest.fn() };
-            const rightHandled = helpScene.handleKeyboard(rightEvent: any);
+            const rightHandled = helpScene.handleKeyboard(rightEvent;
 
-            expect(rightHandled).toBe(true: any);
+            expect(rightHandled).toBe(true);
             expect(helpScene.selectedCategory).toBe(1);
             expect(rightEvent.preventDefault).toHaveBeenCalled();
 
             // 左矢印キー
             const leftEvent = { key: 'ArrowLeft', preventDefault: jest.fn() };
-            const leftHandled = helpScene.handleKeyboard(leftEvent: any);
+            const leftHandled = helpScene.handleKeyboard(leftEvent;
 
-            expect(leftHandled).toBe(true: any);
+            expect(leftHandled).toBe(true);
             expect(helpScene.selectedCategory).toBe(0);
         });
 
@@ -150,9 +150,9 @@ describe('Help System Accessibility Tests', () => {
             helpScene.categories = ['gameplay', 'features', 'troubleshooting'];
 
             const enterEvent = { key: 'Enter', preventDefault: jest.fn() };
-            const handled = helpScene.handleKeyboard(enterEvent: any);
+            const handled = helpScene.handleKeyboard(enterEvent;
 
-            expect(handled).toBe(true: any);
+            expect(handled).toBe(true);
             expect(helpScene.currentCategory).toBe('features');
         });
 
@@ -179,7 +179,7 @@ describe('Help System Accessibility Tests', () => {
                 font: ''
             };
 
-            helpScene.applyAccessibilityStyles(context: any);
+            helpScene.applyAccessibilityStyles(context;
 
             expect(context.fillStyle).toMatch(/#000000|#FFFFFF/); // 高コントラスト色
         });
@@ -188,7 +188,7 @@ describe('Help System Accessibility Tests', () => {
             mockGameEngine.state.accessibilitySettings.largeText = true;
 
             const context = { font: '' };
-            helpScene.applyAccessibilityStyles(context: any);
+            helpScene.applyAccessibilityStyles(context;
 
             expect(context.font).toMatch(/\d+px/);
             const fontSize = parseInt(context.font.match(/(\d+)px/)[1]);
@@ -202,7 +202,7 @@ describe('Help System Accessibility Tests', () => {
                 category: 'gameplay'
             };
 
-            const screenReaderText = helpScene.generateScreenReaderText(helpContent: any);
+            const screenReaderText = helpScene.generateScreenReaderText(helpContent;
 
             expect(screenReaderText).toContain('バブル操作');
             expect(screenReaderText).toContain('ゲームプレイ');
@@ -235,9 +235,9 @@ describe('Help System Accessibility Tests', () => {
                 textContent: ''
             };
 
-            global.document.getElementById.mockReturnValue(liveRegion: any);
+            global.document.getElementById.mockReturnValue(liveRegion;
 
-            tutorialOverlay.announceStep(step: any);
+            tutorialOverlay.announceStep(step;
 
             expect(liveRegion.setAttribute).toHaveBeenCalledWith('aria-live', 'polite');
             expect(liveRegion.textContent).toContain('ステップ1');
@@ -251,7 +251,7 @@ describe('Help System Accessibility Tests', () => {
                 getBoundingClientRect: () => ({ left: 100, top: 100, width: 50, height: 50 })
             };
 
-            global.document.querySelector.mockReturnValue(targetElement: any);
+            global.document.querySelector.mockReturnValue(targetElement;
 
             tutorialOverlay.highlightElement('.bubble', 'このバブルをクリック');
 
@@ -270,17 +270,17 @@ describe('Help System Accessibility Tests', () => {
 
             // 次のステップ（右矢印またはSpaceキー）
             const nextEvent = { key: 'ArrowRight', preventDefault: jest.fn() };
-            const handled = tutorialOverlay.handleKeyboard(nextEvent: any);
+            const handled = tutorialOverlay.handleKeyboard(nextEvent;
 
-            expect(handled).toBe(true: any);
+            expect(handled).toBe(true);
             expect(nextEvent.preventDefault).toHaveBeenCalled();
 
             // 前のステップ（左矢印）
             tutorialOverlay.tutorial.currentStep = 1;
             const prevEvent = { key: 'ArrowLeft', preventDefault: jest.fn() };
-            const prevHandled = tutorialOverlay.handleKeyboard(prevEvent: any);
+            const prevHandled = tutorialOverlay.handleKeyboard(prevEvent;
 
-            expect(prevHandled).toBe(true: any);
+            expect(prevHandled).toBe(true);
         });
 
         test('チュートリアルスキップのアクセシビリティ', () => {
@@ -290,7 +290,7 @@ describe('Help System Accessibility Tests', () => {
                 focus: jest.fn()
             };
 
-            tutorialOverlay.createSkipButton(skipButton: any);
+            tutorialOverlay.createSkipButton(skipButton;
 
             expect(skipButton.setAttribute).toHaveBeenCalledWith('aria-label', 'チュートリアルをスキップ');
             expect(skipButton.setAttribute).toHaveBeenCalledWith('role', 'button');
@@ -316,7 +316,7 @@ describe('Help System Accessibility Tests', () => {
         let tooltipSystem: any;
 
         beforeEach(() => {
-            tooltipSystem = new TooltipSystem(mockGameEngine: any);
+            tooltipSystem = new TooltipSystem(mockGameEngine;
         });
 
         afterEach(() => {
@@ -354,9 +354,9 @@ describe('Help System Accessibility Tests', () => {
 
             // Escapeキーでツールチップを閉じる
             const escapeEvent = { key: 'Escape', preventDefault: jest.fn() };
-            const handled = tooltipSystem.handleKeyboard(escapeEvent: any);
+            const handled = tooltipSystem.handleKeyboard(escapeEvent;
 
-            expect(handled).toBe(true: any);
+            expect(handled).toBe(true);
             expect(tooltipSystem.currentTooltip).toBeNull();
         });
 
@@ -389,7 +389,7 @@ describe('Help System Accessibility Tests', () => {
 
             expect(position.x).toBeLessThan(750); // 左側に調整
             expect(position.y).toBeGreaterThanOrEqual(0); // 画面内
-            expect(position.avoidScreenReader).toBe(false: any); // スクリーンリーダー領域を避けない
+            expect(position.avoidScreenReader).toBe(false); // スクリーンリーダー領域を避けない
         });
 
         test('色覚異常対応のツールチップスタイル', () => {
@@ -414,11 +414,11 @@ describe('Help System Accessibility Tests', () => {
             };
 
             // 各システムのWCAG準拠をチェック
-            expect(wcagCompliance.colorContrast).toBe(true: any); // 4.5:1以上のコントラスト比
-            expect(wcagCompliance.keyboardNavigation).toBe(true: any); // 全機能キーボード操作可能
-            expect(wcagCompliance.ariaLabels).toBe(true: any); // 適切なARIA属性
-            expect(wcagCompliance.focusManagement).toBe(true: any); // フォーカス管理
-            expect(wcagCompliance.textAlternatives).toBe(true: any); // テキスト代替
+            expect(wcagCompliance.colorContrast).toBe(true); // 4.5:1以上のコントラスト比
+            expect(wcagCompliance.keyboardNavigation).toBe(true); // 全機能キーボード操作可能
+            expect(wcagCompliance.ariaLabels).toBe(true); // 適切なARIA属性
+            expect(wcagCompliance.focusManagement).toBe(true); // フォーカス管理
+            expect(wcagCompliance.textAlternatives).toBe(true); // テキスト代替
         });
 
         test('スクリーンリーダーシミュレーション', () => {
@@ -449,7 +449,7 @@ describe('Help System Accessibility Tests', () => {
 
             // Tabキーナビゲーションのシミュレーション
             const simulateTabNavigation = (forward = true) => {
-                const currentIndex = focusableElements.indexOf(focusedElement: any);
+                const currentIndex = focusableElements.indexOf(focusedElement;
                 if (forward) {
                     focusedElement = focusableElements[(currentIndex + 1) % focusableElements.length];
                 } else {
@@ -461,15 +461,15 @@ describe('Help System Accessibility Tests', () => {
             focusedElement = focusableElements[0];
 
             // 順方向ナビゲーション
-            simulateTabNavigation(true: any);
+            simulateTabNavigation(true;
             expect(focusedElement).toBe('category-nav');
 
-            simulateTabNavigation(true: any);
+            simulateTabNavigation(true;
             expect(focusedElement).toBe('content-area');
 
             // 最後の要素から次に進んでも最初に戻る（トラップされない）
             focusedElement = focusableElements[focusableElements.length - 1];
-            simulateTabNavigation(true: any);
+            simulateTabNavigation(true;
             expect(focusedElement).toBe(focusableElements[0]);
         });
 

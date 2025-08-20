@@ -84,7 +84,7 @@ describe('AnalyticsDashboard', () => {
             addEventListener: jest.fn()
         };
 
-        document.getElementById.mockReturnValue(mockContainer: any);
+        document.getElementById.mockReturnValue(mockContainer;
 
         dashboard = new AnalyticsDashboard('test-dashboard', {
             enableRealtime: false, // テスト用に無効化
@@ -103,14 +103,14 @@ describe('AnalyticsDashboard', () => {
         test('正しく初期化される', () => {
             expect(dashboard).toBeDefined();
             expect(dashboard.containerId).toBe('test-dashboard');
-            expect(dashboard.container).toBe(mockContainer: any);
-            expect(dashboard.sections).toBeInstanceOf(Map: any);
-            expect(dashboard.activeCharts).toBeInstanceOf(Map: any);
+            expect(dashboard.container).toBe(mockContainer);
+            expect(dashboard.sections).toBeInstanceOf(Map;
+            expect(dashboard.activeCharts).toBeInstanceOf(Map;
         });
 
         test('コンテナが存在しない場合はエラーログ', () => {
             const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
-            document.getElementById.mockReturnValue(null: any);
+            document.getElementById.mockReturnValue(null;
 
             new AnalyticsDashboard('non-existent-container');
 
@@ -144,9 +144,9 @@ describe('AnalyticsDashboard', () => {
         });
 
         test('セクションが作成される', () => {
-            expect(dashboard.sections.has('basic-stats')).toBe(true: any);
-            expect(dashboard.sections.has('bubble-analysis')).toBe(true: any);
-            expect(dashboard.sections.has('performance-metrics')).toBe(true: any);
+            expect(dashboard.sections.has('basic-stats')).toBe(true);
+            expect(dashboard.sections.has('bubble-analysis')).toBe(true);
+            expect(dashboard.sections.has('performance-metrics')).toBe(true);
         });
 
         test('セクション構造が正しく作成される', () => {
@@ -156,7 +156,7 @@ describe('AnalyticsDashboard', () => {
             expect(section.container).toBeDefined();
             expect(section.content).toBeDefined();
             expect(section.title).toBe('プレイ統計');
-            expect(section.charts).toBeInstanceOf(Map: any);
+            expect(section.charts).toBeInstanceOf(Map;
         });
     });
 
@@ -177,7 +177,7 @@ describe('AnalyticsDashboard', () => {
             };
 
             const dataCallback = jest.fn(() => mockData);
-            dashboard.setupBasicStatistics(dataCallback: any);
+            dashboard.setupBasicStatistics(dataCallback;
 
             expect(dashboard.chartRenderer.createLineChart).toHaveBeenCalledWith(
                 'playtime-chart-canvas',
@@ -200,7 +200,7 @@ describe('AnalyticsDashboard', () => {
                 })
             );
 
-            expect(dashboard.dataCallbacks.has('basic-stats')).toBe(true: any);
+            expect(dashboard.dataCallbacks.has('basic-stats')).toBe(true);
         });
 
         test('データが不足している場合、収集中メッセージが表示される', () => {
@@ -209,7 +209,7 @@ describe('AnalyticsDashboard', () => {
             };
 
             const dataCallback = jest.fn(() => insufficientData);
-            dashboard.setupBasicStatistics(dataCallback: any);
+            dashboard.setupBasicStatistics(dataCallback;
 
             const section = dashboard.sections.get('basic-stats');
             expect(section.content.innerHTML).toContain('データ収集中');
@@ -224,7 +224,7 @@ describe('AnalyticsDashboard', () => {
             };
 
             dashboard.activeCharts.set('playtime-chart', { id: 'mock-chart' });
-            dashboard.updateBasicStatistics(mockData: any);
+            dashboard.updateBasicStatistics(mockData;
 
             expect(dashboard.chartRenderer.updateChartData).toHaveBeenCalledWith(
                 'playtime-chart-canvas',
@@ -247,7 +247,7 @@ describe('AnalyticsDashboard', () => {
             };
 
             const dataCallback = jest.fn(() => mockData);
-            dashboard.setupBubbleAnalysis(dataCallback: any);
+            dashboard.setupBubbleAnalysis(dataCallback;
 
             expect(dashboard.chartRenderer.createPieChart).toHaveBeenCalledWith(
                 'bubble-success-rate-chart-canvas',
@@ -282,7 +282,7 @@ describe('AnalyticsDashboard', () => {
             dashboard.activeCharts.set('bubble-frequency-chart', { id: 'mock-chart' });
             dashboard.activeCharts.set('bubble-score-contribution-chart', { id: 'mock-chart' });
 
-            dashboard.updateBubbleAnalysis(mockData: any);
+            dashboard.updateBubbleAnalysis(mockData;
 
             expect(dashboard.chartRenderer.updateChartData).toHaveBeenCalledTimes(3);
         });
@@ -306,7 +306,7 @@ describe('AnalyticsDashboard', () => {
             };
 
             const dataCallback = jest.fn(() => mockData);
-            dashboard.setupPerformanceMetrics(dataCallback: any);
+            dashboard.setupPerformanceMetrics(dataCallback;
 
             expect(dashboard.chartRenderer.createLineChart).toHaveBeenCalledWith(
                 'fps-chart-canvas',
@@ -334,7 +334,7 @@ describe('AnalyticsDashboard', () => {
             dashboard.activeCharts.set('fps-chart', { id: 'mock-chart' });
             dashboard.activeCharts.set('memory-usage-chart', { id: 'mock-chart' });
 
-            dashboard.updatePerformanceMetrics(mockData: any);
+            dashboard.updatePerformanceMetrics(mockData;
 
             expect(dashboard.chartRenderer.updateChartData).toHaveBeenCalledTimes(2);
         });
@@ -342,17 +342,17 @@ describe('AnalyticsDashboard', () => {
 
     describe('データ不足判定', () => {
         test('データがnullの場合は不足と判定', () => {
-            expect(dashboard.isDataInsufficient(null: any)).toBe(true: any);
+            expect(dashboard.isDataInsufficient(null).toBe(true);
         });
 
         test('特定プロパティが存在しない場合は不足と判定', () => {
             const data = { playtime: [] };
-            expect(dashboard.isDataInsufficient(data, 'bubbleStats')).toBe(true: any);
+            expect(dashboard.isDataInsufficient(data, 'bubbleStats')).toBe(true);
         });
 
         test('配列データがminDataPoints未満の場合は不足と判定', () => {
             const data = { playtime: [{ date: '2023-12-01', minutes: 30 }] };
-            expect(dashboard.isDataInsufficient(data, 'playtime')).toBe(true: any);
+            expect(dashboard.isDataInsufficient(data, 'playtime')).toBe(true);
         });
 
         test('十分なデータがある場合は不足と判定されない', () => {
@@ -363,7 +363,7 @@ describe('AnalyticsDashboard', () => {
                     { date: '2023-12-03', minutes: 25 }
                 ]
             };
-            expect(dashboard.isDataInsufficient(data, 'playtime')).toBe(false: any);
+            expect(dashboard.isDataInsufficient(data, 'playtime')).toBe(false);
         });
     });
 
@@ -420,7 +420,7 @@ describe('AnalyticsDashboard', () => {
                 download: '',
                 click: jest.fn()
             };
-            document.createElement.mockReturnValue(mockAnchor: any);
+            document.createElement.mockReturnValue(mockAnchor;
 
             dashboard.exportData();
 
@@ -438,7 +438,7 @@ describe('AnalyticsDashboard', () => {
             dashboard.dataCallbacks.set('error-section', errorCallback);
 
             const mockAnchor = { click: jest.fn() };
-            document.createElement.mockReturnValue(mockAnchor: any);
+            document.createElement.mockReturnValue(mockAnchor;
 
             dashboard.exportData();
 
@@ -458,12 +458,12 @@ describe('AnalyticsDashboard', () => {
                 height: 0
             };
             
-            document.createElement.mockReturnValue(mockCanvas: any);
+            document.createElement.mockReturnValue(mockCanvas;
 
             const container = dashboard.createChartContainer('test-chart', 'テストチャート', mockParent);
 
             expect(container.id).toBe('container-test-chart');
-            expect(mockParent.appendChild).toHaveBeenCalledWith(container: any);
+            expect(mockParent.appendChild).toHaveBeenCalledWith(container;
             expect(mockCanvas.id).toBe('test-chart-canvas');
             expect(mockCanvas.width).toBe(dashboard.options.chartDefaults.width);
             expect(mockCanvas.height).toBe(dashboard.options.chartDefaults.height);
@@ -484,11 +484,11 @@ describe('AnalyticsDashboard', () => {
             const mockContainer = { appendChild: jest.fn() };
             const mockMessageDiv = { innerHTML: '' };
             
-            document.createElement.mockReturnValue(mockMessageDiv: any);
+            document.createElement.mockReturnValue(mockMessageDiv;
 
-            dashboard.showNoDataMessage(mockContainer: any);
+            dashboard.showNoDataMessage(mockContainer;
 
-            expect(mockContainer.appendChild).toHaveBeenCalledWith(mockMessageDiv: any);
+            expect(mockContainer.appendChild).toHaveBeenCalledWith(mockMessageDiv;
             expect(mockMessageDiv.innerHTML).toContain('データがありません');
         });
     });
@@ -503,7 +503,7 @@ describe('AnalyticsDashboard', () => {
 
             dashboard.startRealtimeUpdate('test-section');
 
-            expect(dashboard.realtimeTimers.has('test-section')).toBe(true: any);
+            expect(dashboard.realtimeTimers.has('test-section')).toBe(true);
 
             jest.advanceTimersByTime(dashboard.options.updateInterval);
             expect(dashboard.updateSection).toHaveBeenCalledWith('test-section');
@@ -519,7 +519,7 @@ describe('AnalyticsDashboard', () => {
 
             dashboard.startRealtimeUpdate('test-section');
 
-            expect(clearIntervalSpy).toHaveBeenCalledWith(mockTimer: any);
+            expect(clearIntervalSpy).toHaveBeenCalledWith(mockTimer;
         });
     });
 
@@ -552,7 +552,7 @@ describe('AnalyticsDashboard', () => {
 
             dashboard.destroy();
 
-            expect(clearIntervalSpy).toHaveBeenCalledWith(mockTimer: any);
+            expect(clearIntervalSpy).toHaveBeenCalledWith(mockTimer;
             expect(dashboard.realtimeTimers.size).toBe(0);
             expect(dashboard.activeCharts.size).toBe(0);
             expect(dashboard.sections.size).toBe(0);
@@ -562,7 +562,7 @@ describe('AnalyticsDashboard', () => {
 
         test('スタイルシートが削除される', () => {
             const mockStyleSheet = { remove: jest.fn() };
-            document.getElementById.mockReturnValue(mockStyleSheet: any);
+            document.getElementById.mockReturnValue(mockStyleSheet;
 
             dashboard.destroy();
 
@@ -581,7 +581,7 @@ describe('AnalyticsDashboard', () => {
 
             expect(consoleSpy).toHaveBeenCalledWith(
                 'Failed to update section error-section:', 
-                expect.any(Error: any)
+                expect.any(Error
             );
 
             consoleSpy.mockRestore();

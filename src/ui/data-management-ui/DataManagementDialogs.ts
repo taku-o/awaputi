@@ -107,6 +107,8 @@ interface BaseDialogData {
  */
 interface Dialog {
     render(data?: any): void;
+    getSelectedButton(): number;
+    setSelectedButton(index: number): void;
 }
 
 /**
@@ -236,12 +238,11 @@ export class DataManagementBaseDialog implements Dialog {
         });
     }
 
-    setSelectedButton(index: number): void {
-        this.selectedButton = index;
-    }
-
     getSelectedButton(): number {
         return this.selectedButton;
+    }
+    setSelectedButton(index: number): void {
+        this.selectedButton = index;
     }
 }
 

@@ -141,7 +141,7 @@ const mockD3 = {
             ease: jest.fn()
         }))
     })),
-    timeParse: jest.fn(() => jest.fn(d => new Date(d: any))),
+    timeParse: jest.fn(() => jest.fn(d => new Date(d)),
     timeFormat: jest.fn(() => jest.fn()),
     interpolateViridis: jest.fn(),
     schemeCategory10: ['#1f77b4', '#ff7f0e', '#2ca02c'],
@@ -185,7 +185,7 @@ describe('DataVisualizer', () => {
             appendChild: jest.fn()
         };
 
-        document.getElementById.mockReturnValue(mockContainer: any);
+        document.getElementById.mockReturnValue(mockContainer;
 
         dataVisualizer = new DataVisualizer({
             animationDuration: 100, // テスト用に短縮
@@ -212,9 +212,9 @@ describe('DataVisualizer', () => {
     describe('初期化', () => {
         test('正しく初期化される', () => {
             expect(dataVisualizer).toBeDefined();
-            expect(dataVisualizer.visualizations).toBeInstanceOf(Map: any);
-            expect(dataVisualizer.svgElements).toBeInstanceOf(Map: any);
-            expect(dataVisualizer.scales).toBeInstanceOf(Map: any);
+            expect(dataVisualizer.visualizations).toBeInstanceOf(Map;
+            expect(dataVisualizer.svgElements).toBeInstanceOf(Map;
+            expect(dataVisualizer.scales).toBeInstanceOf(Map;
         });
 
         test('オプションが正しく設定される', () => {
@@ -227,7 +227,7 @@ describe('DataVisualizer', () => {
 
             expect(customVisualizer.options.defaultWidth).toBe(600);
             expect(customVisualizer.options.defaultHeight).toBe(500);
-            expect(customVisualizer.options.enableInteractivity).toBe(false: any);
+            expect(customVisualizer.options.enableInteractivity).toBe(false);
             expect(customVisualizer.options.colorScheme).toBe('viridis');
 
             customVisualizer.destroy();
@@ -246,7 +246,7 @@ describe('DataVisualizer', () => {
             const fallbackVisualizer = new DataVisualizer();
             fallbackVisualizer.fallbackToCanvasRenderer();
             
-            expect(fallbackVisualizer.useCanvasFallback).toBe(true: any);
+            expect(fallbackVisualizer.useCanvasFallback).toBe(true);
         });
     });
 
@@ -268,7 +268,7 @@ describe('DataVisualizer', () => {
 
             expect(visualization).toBeDefined();
             expect(visualization.type).toBe('scatter');
-            expect(dataVisualizer.visualizations.has('test-scatter')).toBe(true: any);
+            expect(dataVisualizer.visualizations.has('test-scatter')).toBe(true);
             expect(mockD3.scaleLinear).toHaveBeenCalled();
             expect(mockD3.axisBottom).toHaveBeenCalled();
             expect(mockD3.axisLeft).toHaveBeenCalled();
@@ -276,13 +276,13 @@ describe('DataVisualizer', () => {
 
         test('データが空の場合はnullを返す', () => {
             const result = dataVisualizer.createScatterPlot('empty-scatter', []);
-            expect(result).toBe(null: any);
+            expect(result).toBe(null);
         });
 
         test('コンテナが存在しない場合はnullを返す', () => {
-            document.getElementById.mockReturnValue(null: any);
+            document.getElementById.mockReturnValue(null;
             const result = dataVisualizer.createScatterPlot('missing-container', [{ x: 1, y: 2 }]);
-            expect(result).toBe(null: any);
+            expect(result).toBe(null);
         });
     });
 
@@ -299,7 +299,7 @@ describe('DataVisualizer', () => {
 
             expect(visualization).toBeDefined();
             expect(visualization.type).toBe('heatmap');
-            expect(dataVisualizer.visualizations.has('test-heatmap')).toBe(true: any);
+            expect(dataVisualizer.visualizations.has('test-heatmap')).toBe(true);
             expect(mockD3.scaleBand).toHaveBeenCalled();
             expect(mockD3.scaleSequential).toHaveBeenCalled();
         });
@@ -309,7 +309,7 @@ describe('DataVisualizer', () => {
             
             dataVisualizer.createHeatmap('heatmap-color', testData);
             
-            expect(dataVisualizer.scales.has('heatmap-color-color')).toBe(true: any);
+            expect(dataVisualizer.scales.has('heatmap-color-color')).toBe(true);
         });
     });
 
@@ -334,14 +334,14 @@ describe('DataVisualizer', () => {
 
             expect(visualization).toBeDefined();
             expect(visualization.type).toBe('network');
-            expect(dataVisualizer.visualizations.has('test-network')).toBe(true: any);
+            expect(dataVisualizer.visualizations.has('test-network')).toBe(true);
             expect(mockD3.forceSimulation).toHaveBeenCalledWith(testData.nodes);
         });
 
         test('ノードとリンクが欠如している場合はnullを返す', () => {
             const invalidData = { nodes: [] }; // linksがない
             const result = dataVisualizer.createNetworkDiagram('invalid-network', invalidData);
-            expect(result).toBe(null: any);
+            expect(result).toBe(null);
         });
     });
 
@@ -364,7 +364,7 @@ describe('DataVisualizer', () => {
 
             expect(visualization).toBeDefined();
             expect(visualization.type).toBe('timeseries');
-            expect(dataVisualizer.visualizations.has('test-timeseries')).toBe(true: any);
+            expect(dataVisualizer.visualizations.has('test-timeseries')).toBe(true);
             expect(mockD3.scaleTime).toHaveBeenCalled();
             expect(mockD3.line).toHaveBeenCalled();
             expect(mockD3.area).toHaveBeenCalled(); // showArea: true
@@ -381,7 +381,7 @@ describe('DataVisualizer', () => {
             // 数値変換が行われることを確認
             testData.forEach(d => {
                 expect(typeof d.value).toBe('number');
-                expect(d.date).toBeInstanceOf(Date: any);
+                expect(d.date).toBeInstanceOf(Date;
             });
         });
     });
@@ -391,8 +391,8 @@ describe('DataVisualizer', () => {
             const svg = dataVisualizer.createSVG('test-svg', { width: 300, height: 200 });
 
             expect(svg).toBeDefined();
-            expect(dataVisualizer.svgElements.has('test-svg')).toBe(true: any);
-            expect(mockD3.select).toHaveBeenCalledWith(mockContainer: any);
+            expect(dataVisualizer.svgElements.has('test-svg')).toBe(true);
+            expect(mockD3.select).toHaveBeenCalledWith(mockContainer;
         });
 
         test('既存のSVGを削除してから作成する', () => {
@@ -411,7 +411,7 @@ describe('DataVisualizer', () => {
                 }))
             };
             
-            mockD3.select.mockReturnValue(mockSelectChain: any);
+            mockD3.select.mockReturnValue(mockSelectChain;
 
             dataVisualizer.createSVG('cleanup-test', {});
 
@@ -429,9 +429,9 @@ describe('DataVisualizer', () => {
 
             dataVisualizer.addInteractivity(mockSelection, {});
 
-            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function: any));
-            expect(mockSelection.on).toHaveBeenCalledWith('mouseout', expect.any(Function: any));
-            expect(mockSelection.on).toHaveBeenCalledWith('click', expect.any(Function: any));
+            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function);
+            expect(mockSelection.on).toHaveBeenCalledWith('mouseout', expect.any(Function);
+            expect(mockSelection.on).toHaveBeenCalledWith('click', expect.any(Function);
         });
 
         test('インタラクティブ機能が無効な場合、何も追加されない', () => {
@@ -486,7 +486,7 @@ describe('DataVisualizer', () => {
 
             dataVisualizer.addInteractivity(mockSelection, config);
 
-            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function: any));
+            expect(mockSelection.on).toHaveBeenCalledWith('mouseover', expect.any(Function);
         });
     });
 
@@ -502,13 +502,13 @@ describe('DataVisualizer', () => {
             const newData = [{ x: 2, y: 3 }, { x: 4, y: 5 }];
             const result = dataVisualizer.updateVisualization('update-test', newData);
 
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(dataVisualizer.updateScatterPlot).toHaveBeenCalledWith('update-test', newData, {});
         });
 
         test('存在しない可視化の更新は失敗する', () => {
             const result = dataVisualizer.updateVisualization('non-existent', []);
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
         });
 
         test('サポートされていない可視化タイプの警告', () => {
@@ -519,7 +519,7 @@ describe('DataVisualizer', () => {
             
             const result = dataVisualizer.updateVisualization('unsupported-test', []);
 
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
             expect(consoleSpy).toHaveBeenCalledWith(
                 expect.stringContaining('Update not implemented for visualization type: unknown')
             );
@@ -547,7 +547,7 @@ describe('DataVisualizer', () => {
             const container = dataVisualizer.getContainer('test-container');
             
             expect(document.getElementById).toHaveBeenCalledWith('test-container');
-            expect(container).toBe(mockContainer: any);
+            expect(container).toBe(mockContainer);
         });
     });
 
@@ -560,7 +560,7 @@ describe('DataVisualizer', () => {
 
             expect(stats.totalVisualizations).toBe(2);
             expect(stats.visualizationTypes).toEqual({ scatter: 1, heatmap: 1 });
-            expect(stats.d3Available).toBe(true: any);
+            expect(stats.d3Available).toBe(true);
             expect(stats.memoryEstimate).toBeDefined();
         });
 
@@ -579,11 +579,11 @@ describe('DataVisualizer', () => {
         test('個別の可視化を削除できる', () => {
             dataVisualizer.createScatterPlot('destroy-test', [{ x: 1, y: 2 }]);
             
-            expect(dataVisualizer.visualizations.has('destroy-test')).toBe(true: any);
+            expect(dataVisualizer.visualizations.has('destroy-test')).toBe(true);
             
             dataVisualizer.destroyVisualization('destroy-test');
             
-            expect(dataVisualizer.visualizations.has('destroy-test')).toBe(false: any);
+            expect(dataVisualizer.visualizations.has('destroy-test')).toBe(false);
         });
 
         test('ネットワーク図のシミュレーションを停止する', () => {
@@ -642,8 +642,8 @@ describe('DataVisualizer', () => {
             
             const result = dataVisualizer.updateVisualization('error-test', []);
 
-            expect(result).toBe(false: any);
-            expect(consoleSpy).toHaveBeenCalledWith('Visualization update failed:', expect.any(Error: any));
+            expect(result).toBe(false);
+            expect(consoleSpy).toHaveBeenCalledWith('Visualization update failed:', expect.any(Error);
 
             consoleSpy.mockRestore();
         });

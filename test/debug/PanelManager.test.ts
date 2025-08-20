@@ -98,7 +98,7 @@ describe('PanelManager', () => {
         localStorage.clear();
 
         // Create panel manager instance
-        panelManager = new PanelManager(mockDebugInterface: any);
+        panelManager = new PanelManager(mockDebugInterface as any);
 
         // Reset mock calls
         jest.clearAllMocks();
@@ -120,23 +120,23 @@ describe('PanelManager', () => {
 
     describe('Initialization', () => {
         test('should initialize with default values', () => {
-            expect(panelManager.panels).toBeInstanceOf(Map: any);
-            expect(panelManager.panelStates).toBeInstanceOf(Map: any);
-            expect(panelManager.panelConfigs).toBeInstanceOf(Map: any);
+            expect(panelManager.panels).toBeInstanceOf(Map as any);
+            expect(panelManager.panelStates).toBeInstanceOf(Map as any);
+            expect(panelManager.panelConfigs).toBeInstanceOf(Map as any);
             expect(panelManager.lifecycleHooks).toBeDefined();
             expect(panelManager.stateManager).toBeDefined();
         });
 
         test('should setup lifecycle hooks', () => {
             const hooks = panelManager.lifecycleHooks;
-            expect(hooks.beforeCreate).toBeInstanceOf(Set: any);
-            expect(hooks.created).toBeInstanceOf(Set: any);
-            expect(hooks.beforeShow).toBeInstanceOf(Set: any);
-            expect(hooks.shown).toBeInstanceOf(Set: any);
-            expect(hooks.beforeHide).toBeInstanceOf(Set: any);
-            expect(hooks.hidden).toBeInstanceOf(Set: any);
-            expect(hooks.beforeDestroy).toBeInstanceOf(Set: any);
-            expect(hooks.destroyed).toBeInstanceOf(Set: any);
+            expect(hooks.beforeCreate).toBeInstanceOf(Set as any);
+            expect(hooks.created).toBeInstanceOf(Set as any);
+            expect(hooks.beforeShow).toBeInstanceOf(Set as any);
+            expect(hooks.shown).toBeInstanceOf(Set as any);
+            expect(hooks.beforeHide).toBeInstanceOf(Set as any);
+            expect(hooks.hidden).toBeInstanceOf(Set as any);
+            expect(hooks.beforeDestroy).toBeInstanceOf(Set as any);
+            expect(hooks.destroyed).toBeInstanceOf(Set as any);
         });
 
         test('should load panel states from localStorage', () => {
@@ -148,10 +148,10 @@ describe('PanelManager', () => {
                 }
             };
 
-            localStorage.setItem('debug-panel-states', JSON.stringify(savedStates: any));
+            localStorage.setItem('debug-panel-states', JSON.stringify(savedStates as any));
             
-            const newPanelManager = new PanelManager(mockDebugInterface: any);
-            expect(newPanelManager.panelStates.has('test-panel')).toBe(true: any);
+            const newPanelManager = new PanelManager(mockDebugInterface as any);
+            expect(newPanelManager.panelStates.has('test-panel')).toBe(true as any);
             expect(newPanelManager.panelStates.get('test-panel').position).toEqual({ x: 100, y: 200 });
             
             newPanelManager.destroy();
@@ -160,8 +160,8 @@ describe('PanelManager', () => {
         test('should handle corrupted localStorage gracefully', () => {
             localStorage.setItem('debug-panel-states', 'invalid json');
             
-            const newPanelManager = new PanelManager(mockDebugInterface: any);
-            expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load panel states:', expect.any(Error: any));
+            const newPanelManager = new PanelManager(mockDebugInterface as any);
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to load panel states:', expect.any(Error));
             
             newPanelManager.destroy();
         });
@@ -171,10 +171,10 @@ describe('PanelManager', () => {
         test('should register panel successfully', () => {
             const result = panelManager.registerPanel('test', MockPanel);
             
-            expect(result).toBe(true: any);
-            expect(panelManager.panels.has('test')).toBe(true: any);
-            expect(panelManager.panelConfigs.has('test')).toBe(true: any);
-            expect(panelManager.panelStates.has('test')).toBe(true: any);
+            expect(result).toBe(true as any);
+            expect(panelManager.panels.has('test')).toBe(true as any);
+            expect(panelManager.panelConfigs.has('test')).toBe(true as any);
+            expect(panelManager.panelStates.has('test')).toBe(true as any);
             expect(consoleLogSpy).toHaveBeenCalledWith("Panel 'test' registered successfully");
         });
 
@@ -192,15 +192,15 @@ describe('PanelManager', () => {
             expect(panelConfig.title).toBe('Custom Panel');
             expect(panelConfig.icon).toBe('🔧');
             expect(panelConfig.order).toBe(50);
-            expect(panelConfig.lazy).toBe(false: any);
+            expect(panelConfig.lazy).toBe(false as any);
         });
 
         test('should create instance immediately for non-lazy panels', () => {
             panelManager.registerPanel('eager', MockPanel, { lazy: false });
             
             const panelInfo = panelManager.panels.get('eager');
-            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any);
-            expect(panelInfo.created).toBe(true: any);
+            expect(panelInfo.instance).toBeInstanceOf(MockPanel as any);
+            expect(panelInfo.created).toBe(true as any);
         });
 
         test('should not create instance for lazy panels', () => {
@@ -208,23 +208,23 @@ describe('PanelManager', () => {
             
             const panelInfo = panelManager.panels.get('lazy');
             expect(panelInfo.instance).toBeNull();
-            expect(panelInfo.created).toBe(false: any);
+            expect(panelInfo.created).toBe(false as any);
         });
 
         test('should not register duplicate panel', () => {
             panelManager.registerPanel('test', MockPanel);
             const result = panelManager.registerPanel('test', MockPanel);
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
             expect(consoleWarnSpy).toHaveBeenCalledWith("Panel 'test' is already registered");
         });
 
         test('should handle panel creation error', () => {
             const result = panelManager.registerPanel('error', ErrorPanel);
             
-            expect(result).toBe(false: any);
-            expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to register panel 'error':", expect.any(Error: any));
-            expect(panelManager.panels.has('error')).toBe(false: any);
+            expect(result).toBe(false as any);
+            expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to register panel 'error':", expect.any(Error));
+            expect(panelManager.panels.has('error')).toBe(false as any);
         });
     });
 
@@ -236,12 +236,12 @@ describe('PanelManager', () => {
         test('should show panel successfully', () => {
             const result = panelManager.showPanel('test');
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true as any);
             
             const panelInfo = panelManager.panels.get('test');
-            expect(panelInfo.visible).toBe(true: any);
-            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any);
-            expect(panelInfo.instance.visible).toBe(true: any);
+            expect(panelInfo.visible).toBe(true as any);
+            expect(panelInfo.instance).toBeInstanceOf(MockPanel as any);
+            expect(panelInfo.instance.visible).toBe(true as any);
             expect(panelInfo.activationCount).toBe(1);
             expect(panelInfo.lastActivated).toBeDefined();
         });
@@ -255,19 +255,19 @@ describe('PanelManager', () => {
             panelManager.showPanel('lazy');
             
             panelInfo = panelManager.panels.get('lazy');
-            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any);
-            expect(panelInfo.created).toBe(true: any);
+            expect(panelInfo.instance).toBeInstanceOf(MockPanel as any);
+            expect(panelInfo.created).toBe(true as any);
         });
 
         test('should hide panel successfully', () => {
             panelManager.showPanel('test');
             const result = panelManager.hidePanel('test');
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true as any);
             
             const panelInfo = panelManager.panels.get('test');
-            expect(panelInfo.visible).toBe(false: any);
-            expect(panelInfo.instance.visible).toBe(false: any);
+            expect(panelInfo.visible).toBe(false as any);
+            expect(panelInfo.instance.visible).toBe(false as any);
         });
 
         test('should destroy non-cacheable panel instance on hide', () => {
@@ -275,22 +275,22 @@ describe('PanelManager', () => {
             panelManager.showPanel('nocache');
             
             let panelInfo = panelManager.panels.get('nocache');
-            expect(panelInfo.instance).toBeInstanceOf(MockPanel: any);
+            expect(panelInfo.instance).toBeInstanceOf(MockPanel as any);
             
             panelManager.hidePanel('nocache');
             
             panelInfo = panelManager.panels.get('nocache');
             expect(panelInfo.instance).toBeNull();
-            expect(panelInfo.created).toBe(false: any);
+            expect(panelInfo.created).toBe(false as any);
         });
 
         test('should destroy panel completely', () => {
             panelManager.showPanel('test');
             const result = panelManager.destroyPanel('test');
             
-            expect(result).toBe(true: any);
-            expect(panelManager.panels.has('test')).toBe(false: any);
-            expect(panelManager.panelConfigs.has('test')).toBe(false: any);
+            expect(result).toBe(true as any);
+            expect(panelManager.panels.has('test')).toBe(false as any);
+            expect(panelManager.panelConfigs.has('test')).toBe(false as any);
             expect(consoleLogSpy).toHaveBeenCalledWith("Panel 'test' destroyed successfully");
         });
 
@@ -298,18 +298,18 @@ describe('PanelManager', () => {
             panelManager.registerPanel('persistent', MockPanel, { persistent: true });
             panelManager.showPanel('persistent');
             
-            expect(panelManager.panelStates.has('persistent')).toBe(true: any);
+            expect(panelManager.panelStates.has('persistent')).toBe(true as any);
             
             panelManager.destroyPanel('persistent');
             
-            expect(panelManager.panelStates.has('persistent')).toBe(true: any);
+            expect(panelManager.panelStates.has('persistent')).toBe(true as any);
         });
 
         test('should not show disabled panel', () => {
             panelManager.registerPanel('disabled', MockPanel, { enabled: false });
             const result = panelManager.showPanel('disabled');
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
             expect(consoleWarnSpy).toHaveBeenCalledWith("Panel 'disabled' is disabled");
         });
 
@@ -323,8 +323,8 @@ describe('PanelManager', () => {
             panelManager.registerPanel('badshow', BadShowPanel);
             const result = panelManager.showPanel('badshow');
             
-            expect(result).toBe(false: any);
-            expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to show panel 'badshow':", expect.any(Error: any));
+            expect(result).toBe(false as any);
+            expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to show panel 'badshow':", expect.any(Error));
         });
     });
 
@@ -343,10 +343,10 @@ describe('PanelManager', () => {
             panelManager.registerPanel('test', MockPanel);
             panelManager.showPanel('test');
 
-            expect(beforeCreateHook).toHaveBeenCalledWith('test', expect.any(Object: any));
-            expect(createdHook).toHaveBeenCalledWith('test', expect.any(Object: any));
-            expect(beforeShowHook).toHaveBeenCalledWith('test', expect.any(Object: any));
-            expect(shownHook).toHaveBeenCalledWith('test', expect.any(Object: any));
+            expect(beforeCreateHook).toHaveBeenCalledWith('test', expect.any(Object));
+            expect(createdHook).toHaveBeenCalledWith('test', expect.any(Object));
+            expect(beforeShowHook).toHaveBeenCalledWith('test', expect.any(Object));
+            expect(shownHook).toHaveBeenCalledWith('test', expect.any(Object));
         });
 
         test('should remove lifecycle hooks', () => {
@@ -370,7 +370,7 @@ describe('PanelManager', () => {
 
             expect(consoleErrorSpy).toHaveBeenCalledWith(
                 "Error in lifecycle hook 'beforeCreate' for panel 'test':",
-                expect.any(Error: any)
+                expect.any(Error)
             );
         });
 
@@ -406,7 +406,7 @@ describe('PanelManager', () => {
                 const saved = localStorage.getItem('debug-panel-states');
                 expect(saved).toBeTruthy();
                 
-                const stateData = JSON.parse(saved: any);
+                const stateData = JSON.parse(saved as any);
                 expect(stateData.test).toBeDefined();
                 done();
             }, 100);
@@ -421,7 +421,7 @@ describe('PanelManager', () => {
 
             panelManager.autoSavePanelStates();
             
-            expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to auto-save panel states:', expect.any(Error: any));
+            expect(consoleWarnSpy).toHaveBeenCalledWith('Failed to auto-save panel states:', expect.any(Error));
             
             // Restore
             localStorage.setItem = originalSetItem;
@@ -449,8 +449,8 @@ describe('PanelManager', () => {
             
             expect(info).toBeDefined();
             expect(info.name).toBe('panel1');
-            expect(info.visible).toBe(true: any);
-            expect(info.created).toBe(true: any);
+            expect(info.visible).toBe(true as any);
+            expect(info.created).toBe(true as any);
         });
 
         test('should return null for non-existent panel', () => {

@@ -46,14 +46,14 @@ describe('Build Process Integration', () => {
                 </html>
             `;
 
-            const result = htmlChecker.validateHTML(testHTML: any);
+            const result = htmlChecker.validateHTML(testHTML;
 
-            expect(result.isValid).toBe(true: any);
+            expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
             expect(result.scriptBlockCount).toBe(1);
             
             // エスケープされたXSSテストコードの確認
-            expect(result.warnings.some(w => w.type === 'ESCAPED_XSS_TEST')).toBe(true: any);
+            expect(result.warnings.some(w => w.type === 'ESCAPED_XSS_TEST')).toBe(true);
         });
 
         test('LocalizationManager.js should parse correctly', async () => {
@@ -94,14 +94,14 @@ describe('Build Process Integration', () => {
                     setLanguage(language: any) {
                         if (this.currentLanguage !== language) {
                             this.currentLanguage = language;
-                            this.notifyLanguageChange(language: any);
+                            this.notifyLanguageChange(language;
                         }
                     }
                     
                     notifyLanguageChange(language: any) {
                         this.languageChangeListeners.forEach(listener => {
                             try {
-                                listener(language: any);
+                                listener(language;
                             } catch (error) {
                                 console.error('Language change listener error:', error);
                             }
@@ -110,9 +110,9 @@ describe('Build Process Integration', () => {
                 }
             `;
 
-            const result = await moduleValidator.validateModule(localizationManager: any);
+            const result = await moduleValidator.validateModule(localizationManager;
 
-            expect(result.isValid).toBe(true: any);
+            expect(result.isValid).toBe(true);
             expect(result.errors).toHaveLength(0);
             expect(result.statistics.imports).toBe(3);
             expect(result.statistics.exports).toBe(1);
@@ -132,7 +132,7 @@ describe('Build Process Integration', () => {
                 return true;
             };
 
-            expect(mockFaviconCheck()).toBe(true: any);
+            expect(mockFaviconCheck()).toBe(true);
         });
 
         test('should handle 404 errors gracefully', () => {
@@ -161,8 +161,8 @@ describe('Build Process Integration', () => {
             const missingResult = mockResourceLoader.loadResource('missing.ico');
             expect(missingResult.status).toBe(404);
             
-            const handlingResult = mockResourceLoader.handleResourceError(missingResult: any);
-            expect(handlingResult.handled).toBe(true: any);
+            const handlingResult = mockResourceLoader.handleResourceError(missingResult;
+            expect(handlingResult.handled).toBe(true);
         });
     });
 
@@ -202,7 +202,7 @@ describe('Build Process Integration', () => {
             }
 
             // サーバー起動時にエラーがないことを確認
-            expect(mockConsoleErrors: any).toHaveLength(0);
+            expect(mockConsoleErrors.toHaveLength(0);
         });
 
         test('should maintain functionality after fixes', () => {
@@ -226,8 +226,8 @@ describe('Build Process Integration', () => {
             const testInput = '<script>alert("xss")</script>';
             const result = mockErrorHandler.validateInput(testInput, 'string', { escapeHtml: true });
 
-            expect(result.isValid).toBe(true: any);
-            expect(result.sanitizedValue).toBe('&lt;script&gt;alert("xss")&lt;/script&gt;');
+            expect(result.isValid).toBe(true);
+            expect(result.sanitizedValue).toBe('&lt;script&gt);alert("xss")&lt;/script&gt;');
             expect(result.errors).toHaveLength(0);
         });
     });
@@ -294,7 +294,7 @@ describe('Build Process Integration', () => {
             });
 
             // すべてのステップが成功することを確認
-            expect(buildResults.every(result => result.success)).toBe(true: any);
+            expect(buildResults.every(result => result.success)).toBe(true);
             expect(buildResults[buildResults.length - 1].errors).toBe(0);
         });
     });

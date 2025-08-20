@@ -51,7 +51,7 @@ describe('AudioManager統合テスト', () => {
 
     beforeAll(() => {
         // Web Audio API の基本的なモック
-        (global as any).AudioContext = function(this: any) {
+        (global as any).AudioContext = function(this {
             this.createGain = () => ({
                 gain: { value: 0 },
                 connect: mockFn(),

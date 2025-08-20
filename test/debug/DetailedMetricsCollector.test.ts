@@ -94,7 +94,7 @@ describe('DetailedMetricsCollector', () => {
         jest.clearAllMocks();
 
         // Create instance
-        collector = new DetailedMetricsCollector(mockMonitor: any);
+        collector = new DetailedMetricsCollector(mockMonitor as any);
     });
 
     afterEach(() => {
@@ -119,11 +119,11 @@ describe('DetailedMetricsCollector', () => {
         });
 
         test('should initialize profiling data structures', () => {
-            expect(collector.profilingData.renderPipeline).toBeInstanceOf(Map: any);
+            expect(collector.profilingData.renderPipeline).toBeInstanceOf(Map as any);
             expect(collector.profilingData.memoryAllocations).toEqual([]);
-            expect(collector.profilingData.gameLoopBreakdown).toBeInstanceOf(Map: any);
+            expect(collector.profilingData.gameLoopBreakdown).toBeInstanceOf(Map as any);
             expect(collector.profilingData.webGLCalls).toEqual([]);
-            expect(collector.profilingData.audioProcessing).toBeInstanceOf(Map: any);
+            expect(collector.profilingData.audioProcessing).toBeInstanceOf(Map as any);
         });
 
         test('should initialize statistics tracking', () => {
@@ -168,7 +168,7 @@ describe('DetailedMetricsCollector', () => {
         });
 
         test('should handle missing WebGL context', () => {
-            mockMonitor.gameEngine.canvas.getContext.mockReturnValue(null: any);
+            mockMonitor.gameEngine.canvas.getContext.mockReturnValue(null as any);
             
             expect(() => {
                 collector.collectRenderingDetails();
@@ -209,7 +209,7 @@ describe('DetailedMetricsCollector', () => {
                 { used: 50 }, { used: 52 }, { used: 54 }, { used: 56 }, { used: 58 }
             ];
             
-            const trend = collector.calculateMemoryTrend(history: any);
+            const trend = collector.calculateMemoryTrend(history as any);
             expect(trend).toBe('increasing');
         });
 
@@ -219,7 +219,7 @@ describe('DetailedMetricsCollector', () => {
                 { used: 50 }, { used: 51 }, { used: 49 }, { used: 50 }, { used: 50 }
             ];
             
-            const trend = collector.calculateMemoryTrend(history: any);
+            const trend = collector.calculateMemoryTrend(history as any);
             expect(trend).toBe('stable');
         });
     });
@@ -316,9 +316,9 @@ describe('DetailedMetricsCollector', () => {
             collector.collectSystemDetails();
 
             const systemMetrics = collector.extendedMetrics.system;
-            expect(systemMetrics.capabilities.webgl).toBe(true: any);
-            expect(systemMetrics.capabilities.localStorage).toBe(true: any);
-            expect(systemMetrics.capabilities.indexedDB).toBe(true: any);
+            expect(systemMetrics.capabilities.webgl).toBe(true as any);
+            expect(systemMetrics.capabilities.localStorage).toBe(true as any);
+            expect(systemMetrics.capabilities.indexedDB).toBe(true as any);
         });
 
         test('should collect device information', () => {
@@ -336,12 +336,12 @@ describe('DetailedMetricsCollector', () => {
     describe('Platform Detection', () => {
         test('should detect WebGL support', () => {
             const support = collector.detectWebGLSupport();
-            expect(support).toBe(true: any);
+            expect(support).toBe(true as any);
         });
 
         test('should detect WebGL2 support', () => {
             const support = collector.detectWebGL2Support();
-            expect(support).toBe(false: any); // Mock doesn't support WebGL2
+            expect(support).toBe(false as any); // Mock doesn't support WebGL2
         });
 
         test('should detect WebAssembly support', () => {
@@ -351,7 +351,7 @@ describe('DetailedMetricsCollector', () => {
             };
 
             const support = collector.detectWebAssemblySupport();
-            expect(support).toBe(true: any);
+            expect(support).toBe(true as any);
 
             delete global.WebAssembly;
         });
@@ -364,7 +364,7 @@ describe('DetailedMetricsCollector', () => {
             });
 
             const support = collector.detectWebGLSupport();
-            expect(support).toBe(false: any);
+            expect(support).toBe(false as any);
 
             document.createElement = originalCreateElement;
         });

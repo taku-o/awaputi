@@ -51,7 +51,7 @@ describe('SettingsManager統合テスト', () => {
         configManager = getConfigurationManager();
         
         // SettingsManagerを作成
-        settingsManager = new SettingsManager(mockGameEngine: any);
+        settingsManager = new SettingsManager(mockGameEngine;
     });
 
     afterEach(() => {
@@ -70,7 +70,7 @@ describe('SettingsManager統合テスト', () => {
     describe('ConfigurationManagerとの統合', () => {
         test('ConfigurationManagerが正しく初期化される', () => {
             expect(settingsManager.configManager).toBeDefined();
-            expect(settingsManager.configManager).toBe(configManager: any);
+            expect(settingsManager.configManager).toBe(configManager);
         });
 
         test('デフォルト値がConfigurationManagerに設定される', () => {
@@ -87,10 +87,10 @@ describe('SettingsManager統合テスト', () => {
         test('検証ルールがConfigurationManagerに設定される', () => {
             // 無効な値を設定しようとした場合、ConfigurationManagerが拒否する
             const result = configManager.set('audio', 'masterVolume', 2.0); // 範囲外
-            expect(result: any).toBe(false: any);
+            expect(result.toBe(false);
 
             const result2 = configManager.set('ui', 'language', 'invalid'); // 無効な言語
-            expect(result2: any).toBe(false: any);
+            expect(result2.toBe(false);
         });
     });
 
@@ -106,7 +106,7 @@ describe('SettingsManager統合テスト', () => {
         test('SettingsManagerで設定した値がConfigurationManagerに反映される', () => {
             // SettingsManagerで設定
             const result = settingsManager.set('masterVolume', 0.6);
-            expect(result: any).toBe(true: any);
+            expect(result.toBe(true);
             
             // ConfigurationManagerから確認
             expect(configManager.get('audio', 'masterVolume')).toBe(0.6);
@@ -115,13 +115,13 @@ describe('SettingsManager統合テスト', () => {
         test('ネストされた設定が正しく処理される', () => {
             // アクセシビリティ設定
             settingsManager.set('accessibility.highContrast', true);
-            expect(configManager.get('accessibility', 'highContrast')).toBe(true: any);
-            expect(settingsManager.get('accessibility.highContrast')).toBe(true: any);
+            expect(configManager.get('accessibility', 'highContrast')).toBe(true);
+            expect(settingsManager.get('accessibility.highContrast')).toBe(true);
 
             // UI設定
             settingsManager.set('ui.showFPS', true);
-            expect(configManager.get('ui', 'showFPS')).toBe(true: any);
-            expect(settingsManager.get('ui.showFPS')).toBe(true: any);
+            expect(configManager.get('ui', 'showFPS')).toBe(true);
+            expect(settingsManager.get('ui.showFPS')).toBe(true);
         });
     });
 
@@ -136,12 +136,12 @@ describe('SettingsManager統合テスト', () => {
             
             // localStorageに保存されていることを確認
             const savedSettings = localStorage.getItem('bubblePop_settings');
-            expect(savedSettings: any).toBeTruthy();
+            expect(savedSettings.toBeTruthy();
             
             const savedConfig = localStorage.getItem('bubblePop_configManager');
-            expect(savedConfig: any).toBeTruthy();
+            expect(savedConfig.toBeTruthy();
             
-            const parsedConfig = JSON.parse(savedConfig: any);
+            const parsedConfig = JSON.parse(savedConfig;
             expect(parsedConfig.audio.masterVolume).toBe(0.8);
             expect(parsedConfig.ui.language).toBe('ja');
         });
@@ -153,15 +153,15 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.save();
             
             // 新しいインスタンスを作成
-            const newSettingsManager = new SettingsManager(mockGameEngine: any);
+            const newSettingsManager = new SettingsManager(mockGameEngine;
             
             // 設定が復元されることを確認
             expect(newSettingsManager.get('masterVolume')).toBe(0.9);
-            expect(newSettingsManager.get('accessibility.highContrast')).toBe(true: any);
+            expect(newSettingsManager.get('accessibility.highContrast')).toBe(true);
             
             // ConfigurationManagerにも反映されることを確認
             expect(configManager.get('audio', 'masterVolume')).toBe(0.9);
-            expect(configManager.get('accessibility', 'highContrast')).toBe(true: any);
+            expect(configManager.get('accessibility', 'highContrast')).toBe(true);
             
             newSettingsManager.cleanup();
         });
@@ -172,7 +172,7 @@ describe('SettingsManager統合テスト', () => {
             localStorage.setItem('bubblePop_configManager', 'invalid json');
             
             // 新しいインスタンスを作成
-            const newSettingsManager = new SettingsManager(mockGameEngine: any);
+            const newSettingsManager = new SettingsManager(mockGameEngine;
             
             // デフォルト値が使用されることを確認
             expect(newSettingsManager.get('masterVolume')).toBe(0.7);
@@ -193,7 +193,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.5);
             
             // コールバックが呼ばれることを確認
-            expect(callback: any).toHaveBeenCalled();
+            expect(callback.toHaveBeenCalled();
         });
 
         test('ConfigurationManagerの監視機能も使用される', () => {
@@ -206,7 +206,7 @@ describe('SettingsManager統合テスト', () => {
             configManager.set('audio', 'masterVolume', 0.3);
             
             // コールバックが呼ばれることを確認
-            expect(callback: any).toHaveBeenCalled();
+            expect(callback.toHaveBeenCalled();
         });
 
         test('リスナーが正しく削除される', () => {
@@ -222,7 +222,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.4);
             
             // コールバックが呼ばれないことを確認
-            expect(callback: any).not.toHaveBeenCalled();
+            expect(callback.not.toHaveBeenCalled();
         });
     });
 
@@ -251,7 +251,7 @@ describe('SettingsManager統合テスト', () => {
             // 全てデフォルト値に戻ることを確認
             expect(settingsManager.get('masterVolume')).toBe(0.7);
             expect(settingsManager.get('language')).toBe('en');
-            expect(settingsManager.get('accessibility.highContrast')).toBe(false: any);
+            expect(settingsManager.get('accessibility.highContrast')).toBe(false);
         });
     });
 
@@ -259,7 +259,7 @@ describe('SettingsManager統合テスト', () => {
         test('統合状態を取得できる', () => {
             const status = settingsManager.getIntegrationStatus();
             
-            expect(status.configManagerActive).toBe(true: any);
+            expect(status.configManagerActive).toBe(true);
             expect(status.watchersCount).toBe(0);
             expect(status.categoriesInConfig).toHaveLength(5);
             expect(status.legacySettingsCount).toBeGreaterThan(0);
@@ -270,7 +270,7 @@ describe('SettingsManager統合テスト', () => {
             settingsManager.set('masterVolume', 0.5);
             
             const syncStatus = settingsManager.checkSyncStatus();
-            expect(syncStatus.synchronized).toBe(true: any);
+            expect(syncStatus.synchronized).toBe(true);
             expect(syncStatus.differences).toHaveLength(0);
         });
 
@@ -283,11 +283,11 @@ describe('SettingsManager統合テスト', () => {
             
             // 強制同期
             const result = settingsManager.forceSynchronization();
-            expect(result: any).toBe(true: any);
+            expect(result.toBe(true);
             
             // 同期後は一致する
             const afterSync = settingsManager.checkSyncStatus();
-            expect(afterSync.synchronized).toBe(true: any);
+            expect(afterSync.synchronized).toBe(true);
         });
     });
 
@@ -305,7 +305,7 @@ describe('SettingsManager統合テスト', () => {
         test('無効な値を設定しようとした場合の処理', () => {
             // 範囲外の値
             const result = settingsManager.set('masterVolume', 2.0);
-            expect(result: any).toBe(false: any);
+            expect(result.toBe(false);
             
             // 元の値が保持される
             expect(settingsManager.get('masterVolume')).toBe(0.7);
@@ -351,12 +351,12 @@ describe('SettingsManager統合テスト', () => {
             // ハイコントラストモード
             settingsManager.set('accessibility.highContrast', true);
             
-            expect(document.body.classList.contains('high-contrast')).toBe(true: any);
+            expect(document.body.classList.contains('high-contrast')).toBe(true);
             
             // 無効化
             settingsManager.set('accessibility.highContrast', false);
             
-            expect(document.body.classList.contains('high-contrast')).toBe(false: any);
+            expect(document.body.classList.contains('high-contrast')).toBe(false);
         });
     });
 });

@@ -39,12 +39,12 @@ describe('MainMenuRenderer', () => {
             }
         };
         
-        renderer = new MainMenuRenderer(mockGameEngine: any);
+        renderer = new MainMenuRenderer(mockGameEngine;
     });
     
     describe('コンストラクタ', () => {
         test('正しく初期化される', () => {
-            expect(renderer.gameEngine).toBe(mockGameEngine: any);
+            expect(renderer.gameEngine).toBe(mockGameEngine);
             expect(renderer.errorHandler).toBeDefined();
             expect(renderer.coordinateCalculator).toBeNull();
         });
@@ -53,7 +53,7 @@ describe('MainMenuRenderer', () => {
     describe('updateCoordinateCalculator', () => {
         test('初回呼び出しで新しいCoordinateCalculatorが作成される', () => {
             renderer.updateCoordinateCalculator();
-            expect(renderer.coordinateCalculator).toBeInstanceOf(CoordinateCalculator: any);
+            expect(renderer.coordinateCalculator).toBeInstanceOf(CoordinateCalculator;
             expect(renderer.coordinateCalculator.canvasWidth).toBe(1920);
             expect(renderer.coordinateCalculator.canvasHeight).toBe(1080);
         });
@@ -66,7 +66,7 @@ describe('MainMenuRenderer', () => {
             mockCanvas.height = 720;
             renderer.updateCoordinateCalculator();
             
-            expect(renderer.coordinateCalculator).toBe(calculator: any); // 同じインスタンス
+            expect(renderer.coordinateCalculator).toBe(calculator); // 同じインスタンス
             expect(renderer.coordinateCalculator.canvasWidth).toBe(1280);
             expect(renderer.coordinateCalculator.canvasHeight).toBe(720);
         });
@@ -104,8 +104,8 @@ describe('MainMenuRenderer', () => {
             
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 'BubblePop',
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number,
+                expect.any(Number
             );
         });
         
@@ -114,8 +114,8 @@ describe('MainMenuRenderer', () => {
             
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 '泡割りゲーム',
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number,
+                expect.any(Number
             );
         });
         
@@ -124,8 +124,8 @@ describe('MainMenuRenderer', () => {
             
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 'プレイヤー: TestPlayer',
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number,
+                expect.any(Number
             );
         });
         
@@ -145,7 +145,7 @@ describe('MainMenuRenderer', () => {
             renderer.renderMainMenu(mockContext, 0, mockMenuItems);
             
             expect(renderer.renderMenuItems).toHaveBeenCalledWith(mockContext, 0, mockMenuItems);
-            expect(renderer.renderControls).toHaveBeenCalledWith(mockContext: any);
+            expect(renderer.renderControls).toHaveBeenCalledWith(mockContext;
         });
         
         test('エラー発生時もCanvas状態を復元する', () => {
@@ -180,8 +180,8 @@ describe('MainMenuRenderer', () => {
             mockMenuItems.forEach(item => {
                 expect(mockContext.fillText).toHaveBeenCalledWith(
                     item.label,
-                    expect.any(Number: any),
-                    expect.any(Number: any)
+                    expect.any(Number,
+                    expect.any(Number
                 );
             });
         });
@@ -199,7 +199,7 @@ describe('MainMenuRenderer', () => {
                 get() { return this._fillStyle; },
                 set(value: any) {
                     this._fillStyle = value;
-                    fillStyleCalls.push(value: any);
+                    fillStyleCalls.push(value;
                 }
             });
             
@@ -214,18 +214,18 @@ describe('MainMenuRenderer', () => {
     describe('renderControls', () => {
         test('操作説明を画面下部に描画する', () => {
             renderer.updateCoordinateCalculator();
-            renderer.renderControls(mockContext: any);
+            renderer.renderControls(mockContext;
             
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 '↑↓: 選択  Enter: 決定  ESC: 終了',
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number,
+                expect.any(Number
             );
             
             expect(mockContext.fillText).toHaveBeenCalledWith(
                 'クリックでも操作できます',
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number,
+                expect.any(Number
             );
         });
         
@@ -234,7 +234,7 @@ describe('MainMenuRenderer', () => {
             const saveCallsBefore = mockContext.save.mock.calls.length;
             const restoreCallsBefore = mockContext.restore.mock.calls.length;
             
-            renderer.renderControls(mockContext: any);
+            renderer.renderControls(mockContext;
             
             expect(mockContext.save).toHaveBeenCalledTimes(saveCallsBefore + 1);
             expect(mockContext.restore).toHaveBeenCalledTimes(restoreCallsBefore + 1);

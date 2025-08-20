@@ -10,7 +10,7 @@ import { getSettingsNotificationSystem } from '../../src/core/SettingsNotificati
 // 簡単なモック関数
 const mockFn = (returnValue) => {
     const fn = (...args) => {
-        fn.calls.push(args: any);
+        fn.calls.push(args;
         return returnValue;
     };
     fn.calls = [];
@@ -86,7 +86,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
         notificationSystem = getSettingsNotificationSystem();
         
         // SettingsManagerを作成
-        settingsManager = new SettingsManager(mockGameEngine: any);
+        settingsManager = new SettingsManager(mockGameEngine;
     });
 
     afterEach(() => {
@@ -108,7 +108,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
             
             // リスナーを追加
             const listenerId = settingsManager.addListener('masterVolume', callback);
-            expect(listenerId: any).toBeTruthy();
+            expect(listenerId.toBeTruthy();
             
             // 設定を変更
             settingsManager.set('masterVolume', 0.8);
@@ -140,7 +140,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
             
             // 非同期処理を待つ
             setTimeout(() => {
-                expect(executionOrder: any).toEqual(['high', 'normal', 'low']);
+                expect(executionOrder.toEqual(['high', 'normal', 'low']);
                 done();
             }, 10);
         });
@@ -159,11 +159,11 @@ describe('設定変更の動的反映機能統合テスト', () => {
             notificationSystem.notifyChange('masterVolume', 0.3, 0.2);
             
             // デバウンス期間内では呼ばれない
-            expect(callCount: any).toBe(0);
+            expect(callCount.toBe(0);
             
             // デバウンス期間後に1回だけ呼ばれる
             setTimeout(() => {
-                expect(callCount: any).toBe(1);
+                expect(callCount.toBe(1);
                 done();
             }, 100);
         });
@@ -180,9 +180,9 @@ describe('設定変更の動的反映機能統合テスト', () => {
             
             // 履歴の内容を確認
             const lastNotification = history[history.length - 1];
-            expect(lastNotification: any).toHaveProperty('settingKey');
-            expect(lastNotification: any).toHaveProperty('newValue');
-            expect(lastNotification: any).toHaveProperty('timestamp');
+            expect(lastNotification.toHaveProperty('settingKey');
+            expect(lastNotification.toHaveProperty('newValue');
+            expect(lastNotification.toHaveProperty('timestamp');
         });
     });
 
@@ -197,7 +197,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
                 ['masterVolume', 'sfxVolume', 'bgmVolume']
             );
             
-            expect(watcherId: any).toBeTruthy();
+            expect(watcherId.toBeTruthy();
             
             // 通知システムに直接通知（コンポーネント更新をテストするため）
             notificationSystem.notifyChange('masterVolume', 0.7, 0.5);
@@ -224,8 +224,8 @@ describe('設定変更の動的反映機能統合テスト', () => {
                 ['quality']
             );
             
-            expect(audioWatcherId: any).toBeTruthy();
-            expect(perfWatcherId: any).toBeTruthy();
+            expect(audioWatcherId.toBeTruthy();
+            expect(perfWatcherId.toBeTruthy();
             
             // 通知システムに直接通知
             notificationSystem.notifyChange('masterVolume', 0.6, 0.7);
@@ -251,7 +251,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
             
             // onSettingChangeが呼ばれることを確認
             expect(mockComponent.onSettingChange.calls.length).toBeGreaterThan(0);
-            expect(mockComponent.onSettingChange.calls[0]).toEqual(['masterVolume', 0.9, expect.any(Number: any)]);
+            expect(mockComponent.onSettingChange.calls[0]).toEqual(['masterVolume', 0.9, expect.any(Number]);
         });
 
         test('updateSettingメソッドがフォールバックとして使用される', () => {
@@ -301,8 +301,8 @@ describe('設定変更の動的反映機能統合テスト', () => {
             );
             
             // 監視を削除
-            const removed = settingsManager.removeComponentWatcher(watcherId: any);
-            expect(removed: any).toBe(true: any);
+            const removed = settingsManager.removeComponentWatcher(watcherId;
+            expect(removed.toBe(true);
             
             // 設定を変更
             settingsManager.set('masterVolume', 0.4);
@@ -322,9 +322,9 @@ describe('設定変更の動的反映機能統合テスト', () => {
             
             // 統計情報を取得
             const stats = settingsManager.getNotificationStats();
-            expect(stats: any).toHaveProperty('totalNotifications');
-            expect(stats: any).toHaveProperty('successfulNotifications');
-            expect(stats: any).toHaveProperty('activeListeners');
+            expect(stats.toHaveProperty('totalNotifications');
+            expect(stats.toHaveProperty('successfulNotifications');
+            expect(stats.toHaveProperty('activeListeners');
             expect(stats.totalNotifications).toBeGreaterThan(0);
         });
 
@@ -334,7 +334,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
             
             // リスナー情報を取得
             const listeners = settingsManager.getActiveListeners();
-            expect(listeners: any).toHaveProperty('masterVolume');
+            expect(listeners.toHaveProperty('masterVolume');
             expect(listeners.masterVolume).toHaveLength(1);
             expect(listeners.masterVolume[0]).toHaveProperty('context', 'test');
         });
@@ -351,7 +351,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
             
             // 監視情報を取得
             const watchers = settingsManager.getActiveWatchers();
-            expect(watchers: any).toHaveLength(1);
+            expect(watchers.toHaveLength(1);
             expect(watchers[0]).toHaveProperty('componentName', 'AudioManager');
             expect(watchers[0]).toHaveProperty('watchedSettings');
             expect(watchers[0].watchedSettings).toEqual(['masterVolume', 'sfxVolume']);
@@ -367,7 +367,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
 
         test('存在しない監視IDを削除してもエラーにならない', () => {
             const result = settingsManager.removeComponentWatcher('nonexistent');
-            expect(result: any).toBe(false: any);
+            expect(result.toBe(false);
         });
 
         test('リスナーでエラーが発生してもシステムが継続する', () => {
@@ -406,7 +406,7 @@ describe('設定変更の動的反映機能統合テスト', () => {
             const duration = endTime - startTime;
             
             // 1秒以内に完了することを確認
-            expect(duration: any).toBeLessThan(1000);
+            expect(duration.toBeLessThan(1000);
         });
 
         test('通知履歴が適切にトリムされる', () => {

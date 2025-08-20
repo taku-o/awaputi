@@ -96,7 +96,7 @@ describe('AdvancedPerformanceMonitor', () => {
         jest.useFakeTimers();
 
         // Create instance
-        monitor = new AdvancedPerformanceMonitor(mockGameEngine: any);
+        monitor = new AdvancedPerformanceMonitor(mockGameEngine as any);
     });
 
     afterEach(() => {
@@ -113,7 +113,7 @@ describe('AdvancedPerformanceMonitor', () => {
 
     describe('Initialization', () => {
         test('should initialize with default values', () => {
-            expect(monitor.gameEngine).toBe(mockGameEngine: any);
+            expect(monitor.gameEngine).toBe(mockGameEngine as any);
             expect(monitor.performanceOptimizer).toBe(mockGameEngine.performanceOptimizer);
             expect(monitor.metricsCollector).toBeDefined();
             expect(monitor.performanceAnalyzer).toBeDefined();
@@ -136,7 +136,7 @@ describe('AdvancedPerformanceMonitor', () => {
         });
 
         test('should start monitoring automatically', () => {
-            expect(monitor.monitoring.enabled).toBe(true: any);
+            expect(monitor.monitoring.enabled).toBe(true as any);
             expect(monitor.monitoring.intervalId).toBeDefined();
         });
     });
@@ -285,7 +285,7 @@ describe('AdvancedPerformanceMonitor', () => {
 
             monitor.generatePredictions();
 
-            expect(monitor.analysis.predictions.has('fps_trend')).toBe(true: any);
+            expect(monitor.analysis.predictions.has('fps_trend')).toBe(true as any);
             const fpsPrediction = monitor.analysis.predictions.get('fps_trend');
             expect(fpsPrediction.direction).toBe('degrading');
             expect(fpsPrediction.confidence).toBeGreaterThan(0);
@@ -314,9 +314,9 @@ describe('AdvancedPerformanceMonitor', () => {
             const decreasingValues = [30, 25, 20, 15, 10];
             const stableValues = [20, 20, 20, 20, 20];
 
-            expect(monitor.calculateTrend(increasingValues: any)).toBeGreaterThan(0);
-            expect(monitor.calculateTrend(decreasingValues: any)).toBeLessThan(0);
-            expect(monitor.calculateTrend(stableValues: any)).toBeCloseTo(0, 1);
+            expect(monitor.calculateTrend(increasingValues as any)).toBeGreaterThan(0);
+            expect(monitor.calculateTrend(decreasingValues as any)).toBeLessThan(0);
+            expect(monitor.calculateTrend(stableValues as any)).toBeCloseTo(0, 1);
         });
     });
 
@@ -462,7 +462,7 @@ describe('AdvancedPerformanceMonitor', () => {
                 retentionTime: 120000
             };
 
-            monitor.updateSettings(newSettings: any);
+            monitor.updateSettings(newSettings as any);
 
             expect(monitor.monitoring.interval).toBe(200);
             expect(monitor.historyManager.maxSize).toBe(500);
@@ -495,13 +495,13 @@ describe('AdvancedPerformanceMonitor', () => {
             monitor.collectMetrics();
 
             expect(errorHandlerSpy).toHaveBeenCalledWith(
-                expect.any(Error: any),
+                expect.any(Error),
                 'AdvancedPerformanceMonitor.collectMetrics'
             );
         });
 
         test('should handle missing game engine gracefully', () => {
-            const monitorWithoutEngine = new AdvancedPerformanceMonitor(null: any);
+            const monitorWithoutEngine = new AdvancedPerformanceMonitor(null as any);
             
             expect(() => {
                 monitorWithoutEngine.metricsCollector.collectGameMetrics();
@@ -514,7 +514,7 @@ describe('AdvancedPerformanceMonitor', () => {
             const gameEngineWithoutOptimizer = { ...mockGameEngine };
             delete gameEngineWithoutOptimizer.performanceOptimizer;
             
-            const monitorWithoutOptimizer = new AdvancedPerformanceMonitor(gameEngineWithoutOptimizer: any);
+            const monitorWithoutOptimizer = new AdvancedPerformanceMonitor(gameEngineWithoutOptimizer as any);
             
             expect(() => {
                 monitorWithoutOptimizer.metricsCollector.collectFrameMetrics();
@@ -552,7 +552,7 @@ describe('AdvancedPerformanceMonitor', () => {
                 droppedFrames: 1
             };
 
-            monitor.onOptimizerFrameComplete(frameData: any);
+            monitor.onOptimizerFrameComplete(frameData as any);
 
             // Should update frame metrics
             expect(monitor.metrics.frame.currentFPS).toBe(55);

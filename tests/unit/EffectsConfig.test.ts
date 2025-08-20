@@ -6,9 +6,9 @@ import { jest } from '@jest/globals';
 
 // Types
 interface MockConfigManager {
-    get: jest.Mock<(category: string, key: string, defaultValue: any) => any>;
-    set: jest.Mock<(category: string, key: string, value: any) => boolean>;
-    setValidationRule: jest.Mock<(category: string, key: string, rule: any) => void>;
+    get: jest.Mock<(category: string, key: string, defaultValue => any>;
+    set: jest.Mock<(category: string, key: string, value => boolean>;
+    setValidationRule: jest.Mock<(category: string, key: string, rule => void>;
     getCategory: jest.Mock<() => Record<string, any>>;
 }
 
@@ -107,13 +107,13 @@ interface MockEffectManager {
 
 // モックの設定
 let mockGetCalls: MockGetCall[] = [];
-const mockGet = jest.fn((category: string, key: string, defaultValue: any) => {
+const mockGet = jest.fn((category: string, key: string, defaultValue => {
     mockGetCalls.push({ category, key, defaultValue });
     // 戻り値は各テストで設定
     return defaultValue;
 });
 
-const mockSet = jest.fn((category: string, key: string, value: any): boolean => {
+const mockSet = jest.fn((category: string, key: string, value: boolean => {
     return true;
 });
 
@@ -363,7 +363,7 @@ describe('EffectsConfig', () => {
         
         // モック関数をリセット
         mockGetConfigurationManager.mockReturnValue(mockConfigManager);
-        mockGet.mockImplementation((category: string, key: string, defaultValue: any) => {
+        mockGet.mockImplementation((category: string, key: string, defaultValue => {
             mockGetCalls.push({ category, key, defaultValue });
             return defaultValue;
         });
@@ -720,7 +720,7 @@ describe('EffectsConfig', () => {
             };
             
             // パーティクル設定のモック
-            mockConfigManager.get = jest.fn((category: string, key: string, defaultValue: any) => {
+            mockConfigManager.get = jest.fn((category: string, key: string, defaultValue => {
                 if (key === 'particles.maxCount') return 400;
                 if (key === 'particles.poolSize') return 80;
                 return defaultValue;

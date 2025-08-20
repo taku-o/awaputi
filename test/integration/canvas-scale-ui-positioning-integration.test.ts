@@ -80,9 +80,9 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
         const { ScaledCoordinateManager } = await import('../../src/utils/ScaledCoordinateManager.js');
         const { GameUIManager } = await import('../../src/ui/managers/GameUIManager.js');
         
-        responsiveCanvasManager = new ResponsiveCanvasManager(canvas: any);
-        scaledCoordinateManager = new ScaledCoordinateManager(responsiveCanvasManager: any);
-        gameUIManager = new GameUIManager(responsiveCanvasManager: any);
+        responsiveCanvasManager = new ResponsiveCanvasManager(canvas as any);
+        scaledCoordinateManager = new ScaledCoordinateManager(responsiveCanvasManager as any);
+        gameUIManager = new GameUIManager(responsiveCanvasManager as any);
         
         // モックの初期化
         jest.clearAllMocks();
@@ -111,7 +111,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
 
         test('should handle canvas resize events correctly', async () => {
             const onScaleChangeMock = jest.fn() as jest.Mock;
-            scaledCoordinateManager.onScaleChange(onScaleChangeMock: any);
+            scaledCoordinateManager.onScaleChange(onScaleChangeMock as any);
             
             // 複数のリサイズイベントをシミュレート
             const resizeSizes = [
@@ -128,7 +128,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 responsiveCanvasManager.updateCanvasSize();
                 
                 // スケール変更イベントが呼び出されることを確認
-                expect(onScaleChangeMock: any).toHaveBeenCalled();
+                expect(onScaleChangeMock as any).toHaveBeenCalled();
                 
                 // 座標変換が正常に動作することを確認
                 const scaledPos = scaledCoordinateManager.getScaledPosition(100, 100);
@@ -168,7 +168,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             
             // レスポンシブマージンが適用されていることを確認
             const { UIPositionCalculator } = await import('../../src/utils/UIPositionCalculator.js');
-            const positionCalculator = new UIPositionCalculator(scaledCoordinateManager: any);
+            const positionCalculator = new UIPositionCalculator(scaledCoordinateManager as any);
             const margins = positionCalculator.getResponsiveMargins();
             
             expect(margins.top).toBeDefined();
@@ -211,7 +211,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
     describe('Input Handling Accuracy with Scaling', () => {
         test('should convert mouse events correctly across different scales', async () => {
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
-            const inputConverter = new InputCoordinateConverter(scaledCoordinateManager: any);
+            const inputConverter = new InputCoordinateConverter(scaledCoordinateManager as any);
             
             // 異なるスケールでのマウスイベントテスト
             const testScales = [
@@ -229,7 +229,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                     type: 'click'
                 };
                 
-                const convertedEvent = inputConverter.convertMouseEvent(mockEvent: any);
+                const convertedEvent = inputConverter.convertMouseEvent(mockEvent as any);
                 
                 // 座標変換が正常に動作することを確認
                 expect(convertedEvent.canvasX).toBeDefined();
@@ -245,7 +245,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
 
         test('should handle touch events correctly on mobile', async () => {
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
-            const inputConverter = new InputCoordinateConverter(scaledCoordinateManager: any);
+            const inputConverter = new InputCoordinateConverter(scaledCoordinateManager as any);
             
             // モバイルサイズ設定
             simulateScreenSize(375, 812);
@@ -258,7 +258,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
                 type: 'touchstart'
             };
             
-            const convertedEvent = inputConverter.convertTouchEvent(mockTouchEvent: any);
+            const convertedEvent = inputConverter.convertTouchEvent(mockTouchEvent as any);
             
             // タッチイベント変換が正常に動作することを確認
             expect(convertedEvent.canvasX).toBeDefined();
@@ -269,7 +269,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
 
         test('should perform accurate hit testing', async () => {
             const { InputCoordinateConverter } = await import('../../src/utils/InputCoordinateConverter.js');
-            const inputConverter = new InputCoordinateConverter(scaledCoordinateManager: any);
+            const inputConverter = new InputCoordinateConverter(scaledCoordinateManager as any);
             
             // ヒットテストのテストケース
             const testCases = [
@@ -298,12 +298,12 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             for (const testCase of testCases) {
                 if (testCase.rect) {
                     const result = inputConverter.isPointInScaledRect(testCase.point, testCase.rect);
-                    expect(result: any).toBe(testCase.expected);
+                    expect(result as any).toBe(testCase.expected);
                 }
                 
                 if (testCase.circle) {
                     const result = inputConverter.isPointInScaledCircle(testCase.point, testCase.circle, testCase.circle.radius);
-                    expect(result: any).toBe(testCase.expected);
+                    expect(result as any).toBe(testCase.expected);
                 }
             }
         });
@@ -323,7 +323,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             const executionTime = endTime - startTime;
             
             // 座標計算のパフォーマンスが許容範囲内であることを確認
-            expect(executionTime: any).toBeLessThan(100); // 100ms以下
+            expect(executionTime as any).toBeLessThan(100); // 100ms以下
         });
 
         test('should handle rapid resize events without performance degradation', async () => {
@@ -343,7 +343,7 @@ describe('Canvas Scale UI Positioning Integration Tests', () => {
             const executionTime = endTime - startTime;
             
             // 連続リサイズ処理のパフォーマンスが許容範囲内であることを確認
-            expect(executionTime: any).toBeLessThan(200); // 200ms以下
+            expect(executionTime as any).toBeLessThan(200); // 200ms以下
         });
     });
 

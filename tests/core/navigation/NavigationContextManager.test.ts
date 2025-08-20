@@ -16,12 +16,12 @@ describe('NavigationContextManager', () => {
         // Mock GameEngine
         mockGameEngine = {
             sceneManager: {
-                hasScene: jest.fn().mockReturnValue(true: any),
-                switchScene: jest.fn().mockReturnValue(true: any)
+                hasScene: jest.fn().mockReturnValue(true,
+                switchScene: jest.fn().mockReturnValue(true
             }
         };
         
-        navigationManager = new NavigationContextManager(mockGameEngine: any);
+        navigationManager = new NavigationContextManager(mockGameEngine;
     });
     
     afterEach(() => {
@@ -45,7 +45,7 @@ describe('NavigationContextManager', () => {
         test('should push context successfully', () => {
             const result = navigationManager.pushContext('menu', 'keyboard_h');
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
             expect(navigationManager.getStackDepth()).toBe(1);
             
             const currentContext = navigationManager.getCurrentContext();
@@ -72,13 +72,13 @@ describe('NavigationContextManager', () => {
             navigationManager.pushContext('menu', 'keyboard_h', additionalData);
             
             const currentContext = navigationManager.getCurrentContext();
-            expect(currentContext.data).toEqual(additionalData: any);
+            expect(currentContext.data).toEqual(additionalData);
         });
         
         test('should reject invalid parameters', () => {
-            expect(navigationManager.pushContext(null, 'keyboard_h')).toBe(false: any);
-            expect(navigationManager.pushContext('menu', null)).toBe(false: any);
-            expect(navigationManager.pushContext('', 'keyboard_h')).toBe(false: any);
+            expect(navigationManager.pushContext(null, 'keyboard_h')).toBe(false);
+            expect(navigationManager.pushContext('menu', null)).toBe(false);
+            expect(navigationManager.pushContext('', 'keyboard_h')).toBe(false);
         });
         
         test('should manage stack size limit', () => {
@@ -153,7 +153,7 @@ describe('NavigationContextManager', () => {
         });
         
         test('should fallback to default when scene not found', () => {
-            mockGameEngine.sceneManager.hasScene.mockReturnValue(false: any);
+            mockGameEngine.sceneManager.hasScene.mockReturnValue(false;
             navigationManager.pushContext('nonexistent', 'keyboard_h');
             
             const destination = navigationManager.getReturnDestination();
@@ -177,15 +177,15 @@ describe('NavigationContextManager', () => {
         });
         
         test('should check context by method', () => {
-            expect(navigationManager.hasContextByMethod('keyboard_h')).toBe(true: any);
-            expect(navigationManager.hasContextByMethod('keyboard_s')).toBe(true: any);
-            expect(navigationManager.hasContextByMethod('nonexistent')).toBe(false: any);
+            expect(navigationManager.hasContextByMethod('keyboard_h')).toBe(true);
+            expect(navigationManager.hasContextByMethod('keyboard_s')).toBe(true);
+            expect(navigationManager.hasContextByMethod('nonexistent')).toBe(false);
         });
         
         test('should check context from scene', () => {
-            expect(navigationManager.hasContextFromScene('menu')).toBe(true: any);
-            expect(navigationManager.hasContextFromScene('game')).toBe(true: any);
-            expect(navigationManager.hasContextFromScene('nonexistent')).toBe(false: any);
+            expect(navigationManager.hasContextFromScene('menu')).toBe(true);
+            expect(navigationManager.hasContextFromScene('game')).toBe(true);
+            expect(navigationManager.hasContextFromScene('nonexistent')).toBe(false);
         });
         
         test('should get history with limit', () => {
@@ -202,7 +202,7 @@ describe('NavigationContextManager', () => {
     describe('Circular Navigation Detection', () => {
         test('should detect immediate circular navigation', () => {
             navigationManager.pushContext('menu', 'keyboard_h');
-            expect(navigationManager.isCircularNavigation('menu')).toBe(true: any);
+            expect(navigationManager.isCircularNavigation('menu')).toBe(true);
         });
         
         test('should detect frequent circular navigation', () => {
@@ -212,7 +212,7 @@ describe('NavigationContextManager', () => {
             navigationManager.pushContext('settings', 'test4');
             navigationManager.pushContext('menu', 'test5');
             
-            expect(navigationManager.isCircularNavigation('menu')).toBe(true: any);
+            expect(navigationManager.isCircularNavigation('menu')).toBe(true);
         });
         
         test('should allow circular navigation when enabled', () => {
@@ -221,7 +221,7 @@ describe('NavigationContextManager', () => {
             navigationManager.pushContext('menu', 'keyboard_h');
             const result = navigationManager.pushContext('menu', 'keyboard_h');
             
-            expect(result).toBe(true: any);
+            expect(result).toBe(true);
         });
         
         test('should prevent circular navigation when disabled', () => {
@@ -230,7 +230,7 @@ describe('NavigationContextManager', () => {
             navigationManager.pushContext('menu', 'keyboard_h');
             const result = navigationManager.pushContext('menu', 'keyboard_h');
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false);
         });
     });
     
@@ -242,12 +242,12 @@ describe('NavigationContextManager', () => {
                 enableLogging: false
             };
             
-            navigationManager.updateConfig(newConfig: any);
+            navigationManager.updateConfig(newConfig;
             
             const debugInfo = navigationManager.getDebugInfo();
             expect(debugInfo.config.maxStackSize).toBe(5);
             expect(debugInfo.config.defaultReturnScene).toBe('game');
-            expect(debugInfo.config.enableLogging).toBe(false: any);
+            expect(debugInfo.config.enableLogging).toBe(false);
         });
         
         test('should preserve existing config when partially updating', () => {

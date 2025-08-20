@@ -73,7 +73,7 @@ class MockPlayerData {
         return this.data[key];
     }
 
-    set(key: keyof PlayerDataType, value: any): void {
+    set(key: keyof PlayerDataType, value: void {
         (this.data as any)[key] = value;
     }
 
@@ -235,7 +235,7 @@ describe('Achievement System Integration', () => {
 
             // 実績解除リスナーを設定
             let unlockedAchievements: any[] = [];
-            achievementManager.on('achievementUnlocked', (achievement: any) => {
+            achievementManager.on('achievementUnlocked', (achievement => {
                 unlockedAchievements.push(achievement);
                 notificationSystem.showUnlockNotification(achievement);
             });
@@ -271,7 +271,7 @@ describe('Achievement System Integration', () => {
             eventIntegrator.integrateScoreManager(mockScoreManager);
 
             let unlockedAchievements: any[] = [];
-            achievementManager.on('achievementUnlocked', (achievement: any) => {
+            achievementManager.on('achievementUnlocked', (achievement => {
                 unlockedAchievements.push(achievement);
                 notificationSystem.showUnlockNotification(achievement);
             });
@@ -304,7 +304,7 @@ describe('Achievement System Integration', () => {
             eventIntegrator.integrateScoreManager(mockScoreManager);
 
             let unlockedAchievements: any[] = [];
-            achievementManager.on('achievementUnlocked', (achievement: any) => {
+            achievementManager.on('achievementUnlocked', (achievement => {
                 unlockedAchievements.push(achievement);
                 notificationSystem.showUnlockNotification(achievement);
             });
@@ -417,7 +417,7 @@ describe('Achievement System Integration', () => {
             }
 
             // 最大表示数が守られることを確認
-            const visibleNotifications = notificationSystem.notificationQueue.filter((n: any) => n.visible);
+            const visibleNotifications = notificationSystem.notificationQueue.filter((n => n.visible);
             expect(visibleNotifications.length).toBeLessThanOrEqual(notificationSystem.maxVisibleNotifications);
         });
     });
@@ -446,7 +446,7 @@ describe('Achievement System Integration', () => {
             // 各カテゴリの実績を解除
             const categorizedAchievements = achievementManager.getAchievementsByCategory();
             
-            Object.values(categorizedAchievements).forEach((category: any) => {
+            Object.values(categorizedAchievements).forEach((category => {
                 if (category.achievements && category.achievements.length > 0) {
                     category.achievements[0].unlocked = true;
                     category.achievements[0].unlockedDate = new Date().toISOString();
@@ -507,7 +507,7 @@ describe('Achievement System Integration', () => {
             eventIntegrator.integrateGameScene(mockGameScene);
 
             let unlockedAchievements: any[] = [];
-            achievementManager.on('achievementUnlocked', (achievement: any) => {
+            achievementManager.on('achievementUnlocked', (achievement => {
                 unlockedAchievements.push(achievement);
                 notificationSystem.showUnlockNotification(achievement);
             });
@@ -549,7 +549,7 @@ describe('Achievement System Integration', () => {
 
             // ゲームプレイの結果として実績が解除されることを確認
             const totalAchievements = achievementManager.getAchievements();
-            const unlockedCount = totalAchievements.filter((a: any) => a.unlocked).length;
+            const unlockedCount = totalAchievements.filter((a => a.unlocked).length;
             expect(unlockedCount).toBeGreaterThan(0);
 
             // 統計が正しく更新されることを確認

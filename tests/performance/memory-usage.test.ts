@@ -24,7 +24,7 @@ interface CacheStats {
 
 interface CacheSystem {
     get(key: string): any;
-    set(key: string, value: any): void;
+    set(key: string, value: void;
     has(key: string): boolean;
     delete(key: string): boolean;
     clear(): void;

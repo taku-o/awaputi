@@ -8,18 +8,18 @@ import { describe, test, expect, beforeEach, afterEach, jest } from '@jest/globa
 global.jest = {
     fn: (impl) => {
         const mockFn = function(...args) {
-            mockFn.mock.calls.push(args: any);
+            mockFn.mock.calls.push(args;
             mockFn.mock.results.push({ type: 'return', value: impl ? impl(...args) : undefined });
             return impl ? impl(...args) : undefined;
         };
         mockFn.mock = { calls: [], results: [] };
-        mockFn.mockReturnValue = function(value: any) {
+        mockFn.mockReturnValue = function(value {
             const newFn = global.jest.fn(() => value);
             Object.setPrototypeOf(newFn, mockFn);
             return newFn;
         };
-        mockFn.mockResolvedValue = function(value: any) {
-            const newFn = global.jest.fn(() => Promise.resolve(value: any));
+        mockFn.mockResolvedValue = function(value {
+            const newFn = global.jest.fn(() => Promise.resolve(value);
             Object.setPrototypeOf(newFn, mockFn);
             return newFn;
         };
@@ -96,7 +96,7 @@ describe('UserInfoScene Components Integration', () => {
         
         gameEngine = new MockGameEngine();
         eventBus = new ComponentEventBus();
-        sceneState = new SceneState(gameEngine: any);
+        sceneState = new SceneState(gameEngine;
     });
     
     describe('StatisticsTab Component', () => {
@@ -194,7 +194,7 @@ describe('UserInfoScene Components Integration', () => {
             await new Promise(resolve => setTimeout(resolve, 100));
             
             const stats = achievementsTab.getAchievementStats();
-            expect(stats: any).toBeDefined();
+            expect(stats.toBeDefined();
             expect(stats.totalAchievements).toBeGreaterThanOrEqual(0);
         });
         
@@ -230,8 +230,8 @@ describe('UserInfoScene Components Integration', () => {
             // ユーザー名が表示される
             expect(context.fillText).toHaveBeenCalledWith(
                 expect.stringContaining('TestUser'),
-                expect.any(Number: any),
-                expect.any(Number: any)
+                expect.any(Number,
+                expect.any(Number
             );
         });
         
@@ -281,11 +281,11 @@ describe('UserInfoScene Components Integration', () => {
             
             // 次のセクションへ
             helpTab.navigateSection(1);
-            expect(helpTab.currentSection).not.toBe(initialSection: any);
+            expect(helpTab.currentSection).not.toBe(initialSection);
             
             // 前のセクションへ
             helpTab.navigateSection(-1);
-            expect(helpTab.currentSection).toBe(initialSection: any);
+            expect(helpTab.currentSection).toBe(initialSection);
         });
         
         test('should render help content', () => {
@@ -320,11 +320,11 @@ describe('UserInfoScene Components Integration', () => {
             
             // イベントバス経由でデータが共有される
             const statisticsData = sceneState.statisticsData;
-            expect(statisticsData: any).toBeDefined();
+            expect(statisticsData.toBeDefined();
             
             // 実績タブでも同じデータが利用可能
             achievementsTab.activate();
-            expect(sceneState.statisticsData).toBe(statisticsData: any);
+            expect(sceneState.statisticsData).toBe(statisticsData);
         });
         
         test('should synchronize filter settings', () => {
@@ -348,7 +348,7 @@ describe('UserInfoScene Components Integration', () => {
         test('should open username dialog', () => {
             dialogManager.openDialog('username');
             expect(dialogManager.currentDialog).toBe('username');
-            expect(dialogManager.isDialogOpen()).toBe(true: any);
+            expect(dialogManager.isDialogOpen()).toBe(true);
         });
         
         test('should close dialog', () => {
@@ -356,7 +356,7 @@ describe('UserInfoScene Components Integration', () => {
             dialogManager.closeDialog();
             
             expect(dialogManager.currentDialog).toBeNull();
-            expect(dialogManager.isDialogOpen()).toBe(false: any);
+            expect(dialogManager.isDialogOpen()).toBe(false);
         });
         
         test('should handle dialog events', () => {

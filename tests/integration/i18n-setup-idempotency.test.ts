@@ -10,7 +10,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename: any);
+const __dirname = path.dirname(__filename;
 const projectRoot = path.join(__dirname, '..', '..');
 
 describe('i18n:setup Script Idempotency Tests', () => {
@@ -30,7 +30,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
           const content = await fs.readFile(filePath, 'utf-8');
           initialFileStates[lang][category] = {
             content,
-            parsed: JSON.parse(content: any)
+            parsed: JSON.parse(content
           };
         } catch (error) {
           console.warn(`Warning: Could not read ${filePath}:`, error.message);
@@ -68,7 +68,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
           const content = await fs.readFile(filePath, 'utf-8');
           currentStates[lang][category] = {
             content,
-            parsed: JSON.parse(content: any)
+            parsed: JSON.parse(content
           };
         } catch (error) {
           console.warn(`Warning: Could not read ${filePath}:`, error.message);
@@ -154,9 +154,9 @@ describe('i18n:setup Script Idempotency Tests', () => {
       const gitStatus = await new Promise((resolve, reject) => {
         exec('git status --porcelain', { cwd: projectRoot }, (error, stdout) => {
           if (error) {
-            reject(error: any);
+            reject(error;
           } else {
-            resolve(stdout: any);
+            resolve(stdout;
           }
         });
       });
@@ -167,7 +167,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
         line.includes('src/locales/') && line.includes('.json')
       );
       
-      expect(translationFileChanges: any).toHaveLength(0);
+      expect(translationFileChanges.toHaveLength(0);
     }, 15000);
   });
   
@@ -179,11 +179,11 @@ describe('i18n:setup Script Idempotency Tests', () => {
       // デプロイメントレポートが生成されることを確認
       const reportPath = path.join(projectRoot, 'reports', 'i18n-deployment-report.json');
       
-      expect(await fs.access(reportPath: any).then(() => true).catch(() => false)).toBe(true: any);
+      expect(await fs.access(reportPath.then(() => true).catch(() => false)).toBe(true);
       
       // レポート内容を確認
       const reportContent = await fs.readFile(reportPath, 'utf-8');
-      const report = JSON.parse(reportContent: any);
+      const report = JSON.parse(reportContent;
       
       // 最適化情報が含まれていることを確認
       expect(report.optimization).toBeDefined();
@@ -193,7 +193,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
       expect(report.optimization.translationFiles.optimizedAt).toBeDefined();
       
       // タイムスタンプが有効なISO日時形式であることを確認
-      expect(new Date(report.optimization.translationFiles.optimizedAt)).toBeInstanceOf(Date: any);
+      expect(new Date(report.optimization.translationFiles.optimizedAt)).toBeInstanceOf(Date;
     }, 15000);
   });
   
@@ -211,7 +211,7 @@ describe('i18n:setup Script Idempotency Tests', () => {
         
       } catch (error) {
         // 予期しないエラーでない限り失敗
-        expect(error: any).toBeNull();
+        expect(error.toBeNull();
       }
     }, 15000);
   });

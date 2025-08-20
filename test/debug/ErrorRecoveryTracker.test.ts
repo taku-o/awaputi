@@ -66,7 +66,7 @@ describe('ErrorRecoveryTracker', () => {
     
     beforeEach(() => {
         mockErrorReporter = createMockErrorReporter();
-        recoveryTracker = new ErrorRecoveryTracker(mockErrorReporter: any);
+        recoveryTracker = new ErrorRecoveryTracker(mockErrorReporter as any);
         
         // LocalStorageのモック
         (global as any).localStorage = {
@@ -108,20 +108,20 @@ describe('ErrorRecoveryTracker', () => {
             expect(recoveryTracker).toBeDefined();
             expect(recoveryTracker.recoveryStrategies.size).toBeGreaterThan(0);
             expect(recoveryTracker.recoveryAttempts).toEqual([]);
-            expect(recoveryTracker.recoveryConfig.enabled).toBe(true: any);
+            expect(recoveryTracker.recoveryConfig.enabled).toBe(true as any);
         });
         
         test('復旧戦略が正しく登録される', () => {
-            expect(recoveryTracker.recoveryStrategies.has('memory_cleanup')).toBe(true: any);
-            expect(recoveryTracker.recoveryStrategies.has('canvas_reset')).toBe(true: any);
-            expect(recoveryTracker.recoveryStrategies.has('audio_restart')).toBe(true: any);
-            expect(recoveryTracker.recoveryStrategies.has('safe_mode')).toBe(true: any);
+            expect(recoveryTracker.recoveryStrategies.has('memory_cleanup')).toBe(true as any);
+            expect(recoveryTracker.recoveryStrategies.has('canvas_reset')).toBe(true as any);
+            expect(recoveryTracker.recoveryStrategies.has('audio_restart')).toBe(true as any);
+            expect(recoveryTracker.recoveryStrategies.has('safe_mode')).toBe(true as any);
         });
         
         test('復旧設定が正しく初期化される', () => {
             const config = recoveryTracker.recoveryConfig;
             
-            expect(config.enabled).toBe(true: any);
+            expect(config.enabled).toBe(true as any);
             expect(config.maxAttemptsPerError).toBe(3);
             expect(config.maxAttemptsPerStrategy).toBe(2);
             expect(config.cooldownPeriod).toBe(300000); // 5分
@@ -141,7 +141,7 @@ describe('ErrorRecoveryTracker', () => {
             const strategies = recoveryTracker.selectRecoveryStrategies(memoryError, {});
             
             expect(strategies.length).toBeGreaterThan(0);
-            expect(strategies.some(s => s.id === 'memory_cleanup')).toBe(true: any);
+            expect(strategies.some(s => s.id === 'memory_cleanup')).toBe(true as any);
         });
         
         test('レンダリングエラーにCanvasリセット戦略が選択される', () => {
@@ -155,7 +155,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const strategies = recoveryTracker.selectRecoveryStrategies(renderingError, {});
             
-            expect(strategies.some(s => s.id === 'canvas_reset')).toBe(true: any);
+            expect(strategies.some(s => s.id === 'canvas_reset')).toBe(true as any);
         });
         
         test('戦略が優先度順に並べられる', () => {
@@ -187,7 +187,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await strategy.action(testError, {});
             
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true as any);
             expect(window.gc).toHaveBeenCalled();
             expect(mockErrorReporter.gameEngine.cacheSystem.clearCache).toHaveBeenCalled();
         });
@@ -202,7 +202,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await strategy.action(testError, {});
             
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true as any);
             expect(mockErrorReporter.gameEngine.canvas.getContext).toHaveBeenCalled();
         });
         
@@ -216,7 +216,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await strategy.action(testError, {});
             
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true as any);
             expect(mockErrorReporter.gameEngine.audioManager.stop).toHaveBeenCalled();
             expect(mockErrorReporter.gameEngine.audioManager.initialize).toHaveBeenCalled();
         });
@@ -231,7 +231,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await strategy.action(testError, {});
             
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true as any);
             expect(mockErrorReporter.gameEngine.enableSafeMode).toHaveBeenCalled();
             expect(mockErrorReporter.gameEngine.effectManager.disable).toHaveBeenCalled();
         });
@@ -262,7 +262,7 @@ describe('ErrorRecoveryTracker', () => {
                 session
             );
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
         });
     });
     
@@ -281,7 +281,7 @@ describe('ErrorRecoveryTracker', () => {
             expect(session.id).toMatch(/^recovery_/);
             expect(session.error.id).toBe('session_test');
             expect(session.strategiesAttempted).toEqual([]);
-            expect(recoveryTracker.activeRecoveries.get(session.id)).toBe(session: any);
+            expect(recoveryTracker.activeRecoveries.get(session.id)).toBe(session as any);
         });
         
         test('復旧セッションが正しく完了される', () => {
@@ -296,10 +296,10 @@ describe('ErrorRecoveryTracker', () => {
             const session = recoveryTracker.startRecoverySession(testError, {});
             const result = recoveryTracker.completeRecoverySession(session, true, 'Test success');
             
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true as any);
             expect(result.result).toBe('Test success');
-            expect(recoveryTracker.recoveryAttempts).toContain(session: any);
-            expect(recoveryTracker.activeRecoveries.has(session.id)).toBe(false: any);
+            expect(recoveryTracker.recoveryAttempts).toContain(session as any);
+            expect(recoveryTracker.activeRecoveries.has(session.id)).toBe(false as any);
         });
         
         test('復旧統計が正しく更新される', () => {
@@ -335,7 +335,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await recoveryTracker.attemptRecovery(testError, {});
             
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true as any);
             expect(result.sessionId).toBeDefined();
             expect(result.duration).toBeGreaterThan(0);
         });
@@ -353,7 +353,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await recoveryTracker.attemptRecovery(testError, {});
             
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false as any);
             expect(result.reason).toBe('Recovery disabled');
         });
         
@@ -368,7 +368,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await recoveryTracker.attemptRecovery(testError, {});
             
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false as any);
             expect(result.reason).toBe('No applicable strategies');
         });
     });
@@ -388,14 +388,14 @@ describe('ErrorRecoveryTracker', () => {
             
             // 同じ戦略が冷却期間中かチェック
             const isCooledDown = recoveryTracker.isStrategyCooledDown('memory_cleanup', 'cooldown_fingerprint');
-            expect(isCooledDown).toBe(false: any);
+            expect(isCooledDown).toBe(false as any);
             
             // 時間を進める
             jest.advanceTimersByTime(300000); // 5分進める
             
             // 冷却期間が終了したかチェック
             const isCooledDownAfter = recoveryTracker.isStrategyCooledDown('memory_cleanup', 'cooldown_fingerprint');
-            expect(isCooledDownAfter).toBe(true: any);
+            expect(isCooledDownAfter).toBe(true as any);
         });
         
         test('戦略の最大試行回数制限が適用される', async () => {
@@ -411,11 +411,11 @@ describe('ErrorRecoveryTracker', () => {
             
             // 最初の試行
             const firstResult = await recoveryTracker.attemptRecovery(testError, {});
-            expect(firstResult.success).toBe(true: any);
+            expect(firstResult.success).toBe(true as any);
             
             // 2回目の試行（制限に達している）
             const secondResult = await recoveryTracker.attemptRecovery(testError, {});
-            expect(secondResult.success).toBe(false: any);
+            expect(secondResult.success).toBe(false as any);
         });
     });
     
@@ -476,7 +476,7 @@ describe('ErrorRecoveryTracker', () => {
                 ]
             };
             
-            recoveryTracker.recoveryAttempts.push(testRecovery: any);
+            recoveryTracker.recoveryAttempts.push(testRecovery as any);
         });
         
         test('復旧レポートが正しく生成される', () => {
@@ -491,9 +491,9 @@ describe('ErrorRecoveryTracker', () => {
         
         test('戦略分析が正しく実行される', () => {
             const recoveries = recoveryTracker.recoveryAttempts;
-            const analysis = recoveryTracker.analyzeStrategyPerformance(recoveries: any);
+            const analysis = recoveryTracker.analyzeStrategyPerformance(recoveries as any);
             
-            expect(Array.isArray(analysis: any)).toBe(true: any);
+            expect(Array.isArray(analysis as any)).toBe(true as any);
             if (analysis.length > 0) {
                 expect(analysis[0]).toHaveProperty('strategyId');
                 expect(analysis[0]).toHaveProperty('attempts');
@@ -504,9 +504,9 @@ describe('ErrorRecoveryTracker', () => {
         
         test('カテゴリ別分析が正しく実行される', () => {
             const recoveries = recoveryTracker.recoveryAttempts;
-            const analysis = recoveryTracker.analyzeCategoryPerformance(recoveries: any);
+            const analysis = recoveryTracker.analyzeCategoryPerformance(recoveries as any);
             
-            expect(Array.isArray(analysis: any)).toBe(true: any);
+            expect(Array.isArray(analysis as any)).toBe(true as any);
             if (analysis.length > 0) {
                 expect(analysis[0]).toHaveProperty('category');
                 expect(analysis[0]).toHaveProperty('attempts');
@@ -522,7 +522,7 @@ describe('ErrorRecoveryTracker', () => {
                 cooldownPeriod: 600000
             };
             
-            recoveryTracker.updateConfiguration(newConfig: any);
+            recoveryTracker.updateConfiguration(newConfig as any);
             
             expect(recoveryTracker.recoveryConfig.maxAttemptsPerError).toBe(5);
             expect(recoveryTracker.recoveryConfig.cooldownPeriod).toBe(600000);
@@ -533,7 +533,7 @@ describe('ErrorRecoveryTracker', () => {
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_recovery_data',
-                expect.any(String: any)
+                expect.any(String as any)
             );
         });
         
@@ -545,9 +545,9 @@ describe('ErrorRecoveryTracker', () => {
                 }
             };
             
-            localStorage.getItem.mockReturnValue(JSON.stringify(testData: any));
+            localStorage.getItem.mockReturnValue(JSON.stringify(testData as any));
             
-            const newTracker = new ErrorRecoveryTracker(mockErrorReporter: any);
+            const newTracker = new ErrorRecoveryTracker(mockErrorReporter as any);
             
             expect(newTracker.recoveryStats.totalAttempts).toBe(10);
             expect(newTracker.recoveryStats.successfulRecoveries).toBe(7);
@@ -583,7 +583,7 @@ describe('ErrorRecoveryTracker', () => {
                 session
             );
             
-            expect(result).toBe(false: any);
+            expect(result).toBe(false as any);
             expect(session.strategiesAttempted[0].error).toBe('Strategy error');
         });
         
@@ -601,7 +601,7 @@ describe('ErrorRecoveryTracker', () => {
             
             const result = await recoveryTracker.attemptRecovery(testError, {});
             
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false as any);
             expect(result.reason).toBe('No applicable strategies');
         });
     });
@@ -623,7 +623,7 @@ describe('ErrorRecoveryTracker', () => {
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'error_recovery_data',
-                expect.any(String: any)
+                expect.any(String as any)
             );
             expect(recoveryTracker.activeRecoveries.size).toBe(0);
             expect(recoveryTracker.cooldownTimers.size).toBe(0);

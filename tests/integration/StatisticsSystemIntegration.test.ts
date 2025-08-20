@@ -49,8 +49,8 @@ const mockPlayerData = {
         totalGames: 50,
         totalScore: 125000
     }),
-    save: jest.fn().mockResolvedValue(true: any),
-    load: jest.fn().mockResolvedValue(true: any)
+    save: jest.fn().mockResolvedValue(true,
+    load: jest.fn().mockResolvedValue(true
 };
 
 const mockUserInfoScene = {
@@ -168,15 +168,15 @@ describe('統計システム統合テスト', () => {
             const StatisticsExporterModule = await import('../../src/core/StatisticsExporter.js');
 
             // インスタンス作成
-            statisticsManager = new StatisticsManagerModule.StatisticsManager(mockGameEngine: any);
-            statisticsCollector = new StatisticsCollectorModule.StatisticsCollector(statisticsManager: any);
-            statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager: any);
-            chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas: any);
+            statisticsManager = new StatisticsManagerModule.StatisticsManager(mockGameEngine;
+            statisticsCollector = new StatisticsCollectorModule.StatisticsCollector(statisticsManager;
+            statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager;
+            chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas;
             timeSeriesDataManager = new TimeSeriesDataManagerModule.TimeSeriesDataManager();
-            statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager: any);
+            statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager;
 
             // 統計データの初期化
-            statisticsManager.statistics = JSON.parse(JSON.stringify(sampleStatisticsData: any));
+            statisticsManager.statistics = JSON.parse(JSON.stringify(sampleStatisticsData);
         } catch (error) {
             console.error('Failed to import modules:', error);
         }
@@ -184,7 +184,7 @@ describe('統計システム統合テスト', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
-        window.localStorage.getItem.mockReturnValue(null: any);
+        window.localStorage.getItem.mockReturnValue(null;
         window.localStorage.setItem.mockImplementation(() => {});
     });
 
@@ -200,12 +200,12 @@ describe('統計システム統合テスト', () => {
 
     describe('コンポーネント初期化テスト', () => {
         test('全コンポーネントが正常に初期化される', () => {
-            expect(statisticsManager: any).toBeDefined();
-            expect(statisticsCollector: any).toBeDefined();
-            expect(statisticsAnalyzer: any).toBeDefined();
-            expect(chartRenderer: any).toBeDefined();
-            expect(timeSeriesDataManager: any).toBeDefined();
-            expect(statisticsExporter: any).toBeDefined();
+            expect(statisticsManager.toBeDefined();
+            expect(statisticsCollector.toBeDefined();
+            expect(statisticsAnalyzer.toBeDefined();
+            expect(chartRenderer.toBeDefined();
+            expect(timeSeriesDataManager.toBeDefined();
+            expect(statisticsExporter.toBeDefined();
         });
 
         test('StatisticsManagerが統計データを持っている', () => {
@@ -217,16 +217,16 @@ describe('統計システム統合テスト', () => {
         });
 
         test('コンポーネント間の依存関係が設定されている', () => {
-            expect(statisticsCollector.statisticsManager).toBe(statisticsManager: any);
-            expect(statisticsAnalyzer.statisticsManager).toBe(statisticsManager: any);
-            expect(statisticsExporter.statisticsManager).toBe(statisticsManager: any);
+            expect(statisticsCollector.statisticsManager).toBe(statisticsManager);
+            expect(statisticsAnalyzer.statisticsManager).toBe(statisticsManager);
+            expect(statisticsExporter.statisticsManager).toBe(statisticsManager);
         });
     });
 
     describe('データ収集フローテスト', () => {
         test('ゲームイベントから統計データ収集までの完全フロー', async () => {
             // 1. イベント受信
-            await statisticsCollector.collectEvent(sampleGameplayEvent: any);
+            await statisticsCollector.collectEvent(sampleGameplayEvent;
 
             // 2. バッチ処理の実行
             await statisticsCollector.processBatch();
@@ -248,7 +248,7 @@ describe('統計システム統合テスト', () => {
 
             // バッチでイベント収集
             for (const event of events) {
-                await statisticsCollector.collectEvent(event: any);
+                await statisticsCollector.collectEvent(event;
             }
 
             // バッチ処理実行
@@ -270,7 +270,7 @@ describe('統計システム統合テスト', () => {
                 }
             };
 
-            await statisticsCollector.collectEvent(gameEndEvent: any);
+            await statisticsCollector.collectEvent(gameEndEvent;
             await statisticsCollector.processBatch();
 
             // 時系列データの更新確認
@@ -283,7 +283,7 @@ describe('統計システム統合テスト', () => {
         test('トレンド分析の実行', async () => {
             const trendAnalysis = await statisticsAnalyzer.analyzeTrends();
 
-            expect(trendAnalysis: any).toBeDefined();
+            expect(trendAnalysis.toBeDefined();
             expect(trendAnalysis.scoreTrend).toBeDefined();
             expect(trendAnalysis.accuracyTrend).toBeDefined();
             expect(trendAnalysis.playtimeTrend).toBeDefined();
@@ -296,7 +296,7 @@ describe('統計システム統合テスト', () => {
                 endDate: Date.now()
             });
 
-            expect(comparison: any).toBeDefined();
+            expect(comparison.toBeDefined();
             expect(comparison.scoreComparison).toBeDefined();
             expect(comparison.accuracyComparison).toBeDefined();
             expect(typeof comparison.scoreComparison.percentageChange).toBe('number');
@@ -305,10 +305,10 @@ describe('統計システム統合テスト', () => {
         test('洞察生成の実行', async () => {
             const insights = await statisticsAnalyzer.generateInsights();
 
-            expect(insights: any).toBeDefined();
-            expect(Array.isArray(insights.strengths)).toBe(true: any);
-            expect(Array.isArray(insights.improvements)).toBe(true: any);
-            expect(Array.isArray(insights.recommendations)).toBe(true: any);
+            expect(insights.toBeDefined();
+            expect(Array.isArray(insights.strengths)).toBe(true);
+            expect(Array.isArray(insights.improvements)).toBe(true);
+            expect(Array.isArray(insights.recommendations)).toBe(true);
         });
     });
 
@@ -323,7 +323,7 @@ describe('統計システム統合テスト', () => {
                 }]
             };
 
-            await chartRenderer.renderBarChart(chartData: any);
+            await chartRenderer.renderBarChart(chartData;
 
             const ctx = mockCanvas.getContext();
             expect(ctx.fillRect).toHaveBeenCalled();
@@ -341,7 +341,7 @@ describe('統計システム統合テスト', () => {
                 }]
             };
 
-            await chartRenderer.renderLineChart(timeSeriesData: any);
+            await chartRenderer.renderLineChart(timeSeriesData;
 
             const ctx = mockCanvas.getContext();
             expect(ctx.beginPath).toHaveBeenCalled();
@@ -359,7 +359,7 @@ describe('統計システム統合テスト', () => {
                 }]
             };
 
-            await chartRenderer.renderPieChart(pieData: any);
+            await chartRenderer.renderPieChart(pieData;
 
             const ctx = mockCanvas.getContext();
             expect(ctx.beginPath).toHaveBeenCalled();
@@ -372,7 +372,7 @@ describe('統計システム統合テスト', () => {
         test('JSON形式でのデータエクスポート', async () => {
             const exportResult = await statisticsExporter.exportData('json');
 
-            expect(exportResult.success).toBe(true: any);
+            expect(exportResult.success).toBe(true);
             expect(exportResult.format).toBe('json');
             expect(typeof exportResult.data).toBe('string');
 
@@ -384,7 +384,7 @@ describe('統計システム統合テスト', () => {
         test('CSV形式でのデータエクスポート', async () => {
             const exportResult = await statisticsExporter.exportData('csv');
 
-            expect(exportResult.success).toBe(true: any);
+            expect(exportResult.success).toBe(true);
             expect(exportResult.format).toBe('csv');
             expect(typeof exportResult.data).toBe('string');
             expect(exportResult.data).toContain('totalGames');
@@ -401,7 +401,7 @@ describe('統計システム統合テスト', () => {
             // インポート
             const importResult = await statisticsExporter.importData(exportResult.data, 'json');
             
-            expect(importResult.success).toBe(true: any);
+            expect(importResult.success).toBe(true);
             expect(statisticsManager.statistics.gamePlayStats.totalGames).toBe(25);
         });
     });
@@ -414,7 +414,7 @@ describe('統計システム統合テスト', () => {
                 data: mockGameEngine.getPerformanceMetrics()
             };
 
-            await statisticsCollector.collectEvent(gameEvent: any);
+            await statisticsCollector.collectEvent(gameEvent;
             await statisticsCollector.processBatch();
 
             expect(mockGameEngine.getPerformanceMetrics).toHaveBeenCalled();
@@ -449,7 +449,7 @@ describe('統計システム統合テスト', () => {
                 await statisticsManager.load();
             } catch (error) {
                 // エラーハンドリングが機能することを確認
-                expect(error: any).toBeDefined();
+                expect(error.toBeDefined();
             }
 
             // 復旧処理の実行
@@ -468,7 +468,7 @@ describe('統計システム統合テスト', () => {
             const saveResult = await statisticsManager.save();
             
             // エラーが適切に処理されることを確認
-            expect(saveResult: any).toBe(false: any);
+            expect(saveResult.toBe(false);
         });
 
         test('計算エラーの処理', async () => {
@@ -481,10 +481,10 @@ describe('統計システム統合テスト', () => {
                 }
             };
 
-            const result = await statisticsCollector.collectEvent(invalidEvent: any);
+            const result = await statisticsCollector.collectEvent(invalidEvent;
             
             // エラーが適切に処理され、システムが継続動作することを確認
-            expect(result: any).toBeDefined();
+            expect(result.toBeDefined();
         });
     });
 
@@ -504,7 +504,7 @@ describe('統計システム統合テスト', () => {
 
             // バッチで処理
             for (const event of events) {
-                await statisticsCollector.collectEvent(event: any);
+                await statisticsCollector.collectEvent(event;
             }
             
             await statisticsCollector.processBatch();
@@ -513,7 +513,7 @@ describe('統計システム統合テスト', () => {
             const processingTime = endTime - startTime;
 
             // 処理時間が1秒以内であることを確認
-            expect(processingTime: any).toBeLessThan(1000);
+            expect(processingTime.toBeLessThan(1000);
         });
 
         test('メモリ使用量の監視', async () => {
@@ -533,7 +533,7 @@ describe('統計システム統合テスト', () => {
             const memoryIncrease = finalMemory - initialMemory;
             
             // メモリ増加が10MB以内であることを確認
-            expect(memoryIncrease: any).toBeLessThan(10 * 1024 * 1024);
+            expect(memoryIncrease.toBeLessThan(10 * 1024 * 1024);
         });
 
         test('レンダリングパフォーマンス', async () => {
@@ -550,13 +550,13 @@ describe('統計システム統合テスト', () => {
                 
                 switch (type) {
                     case 'bar':
-                        await chartRenderer.renderBarChart(data: any);
+                        await chartRenderer.renderBarChart(data;
                         break;
                     case 'line':
-                        await chartRenderer.renderLineChart(data: any);
+                        await chartRenderer.renderLineChart(data;
                         break;
                     case 'pie':
-                        await chartRenderer.renderPieChart(data: any);
+                        await chartRenderer.renderPieChart(data;
                         break;
                 }
             }
@@ -565,7 +565,7 @@ describe('統計システム統合テスト', () => {
             const renderTime = endTime - startTime;
             
             // レンダリング時間が500ms以内であることを確認
-            expect(renderTime: any).toBeLessThan(500);
+            expect(renderTime.toBeLessThan(500);
         });
     });
 
@@ -641,12 +641,12 @@ describe('統計システム統合テスト', () => {
             await statisticsCollector.processBatch();
             
             // 更新イベントが発行されることを確認
-            expect(updateCount: any).toBeGreaterThan(0);
+            expect(updateCount.toBeGreaterThan(0);
         });
 
         test('UI更新の連携', async () => {
             // 統計更新
-            await statisticsCollector.collectEvent(sampleGameplayEvent: any);
+            await statisticsCollector.collectEvent(sampleGameplayEvent;
             await statisticsCollector.processBatch();
             
             // UI更新の確認（モック経由）
@@ -661,7 +661,7 @@ describe('統計システム統合テスト', () => {
     describe('統合テスト総合評価', () => {
         test('システム全体の正常動作確認', async () => {
             // 1. データ収集
-            await statisticsCollector.collectEvent(sampleGameplayEvent: any);
+            await statisticsCollector.collectEvent(sampleGameplayEvent;
             await statisticsCollector.processBatch();
             
             // 2. 分析
@@ -672,16 +672,16 @@ describe('統計システム統合テスト', () => {
                 labels: ['Test'],
                 datasets: [{ data: [100] }]
             };
-            await chartRenderer.renderBarChart(chartData: any);
+            await chartRenderer.renderBarChart(chartData;
             
             // 4. エクスポート
             const exportResult = await statisticsExporter.exportData('json');
             
             // 5. 各ステップの成功確認
             expect(statisticsManager.getStatistics()).toBeDefined();
-            expect(analysis: any).toBeDefined();
+            expect(analysis.toBeDefined();
             expect(mockCanvas.getContext().fillRect).toHaveBeenCalled();
-            expect(exportResult.success).toBe(true: any);
+            expect(exportResult.success).toBe(true);
         });
 
         test('長時間動作の安定性', async () => {

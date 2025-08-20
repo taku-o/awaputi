@@ -8,7 +8,7 @@ class MockStorageManager {
     }
 
     async getData(storeName, query) {
-        const storeData = this.data.get(storeName: any) || [];
+        const storeData = this.data.get(storeName || [];
         if (!query) return storeData;
 
         return storeData.filter(item => {
@@ -31,13 +31,13 @@ describe('TrendAnalyzer', () => {
 
     beforeEach(() => {
         mockStorageManager = new MockStorageManager();
-        trendAnalyzer = new TrendAnalyzer(mockStorageManager: any);
+        trendAnalyzer = new TrendAnalyzer(mockStorageManager;
     });
 
     describe('コンストラクタ', () => {
         test('正しく初期化される', () => {
-            expect(trendAnalyzer.storageManager).toBe(mockStorageManager: any);
-            expect(trendAnalyzer.analysisCache).toBeInstanceOf(Map: any);
+            expect(trendAnalyzer.storageManager).toBe(mockStorageManager);
+            expect(trendAnalyzer.analysisCache).toBeInstanceOf(Map;
             expect(trendAnalyzer.cacheExpiration).toBe(5 * 60 * 1000);
             expect(trendAnalyzer.ANOMALY_THRESHOLD).toBe(2.0);
             expect(trendAnalyzer.MIN_DATA_POINTS).toBe(7);
@@ -70,7 +70,7 @@ describe('TrendAnalyzer', () => {
 
             const result = await trendAnalyzer.analyzeWeeklyTrend('score', baseDate);
 
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true);
             expect(result.period).toBe('weekly');
             expect(result.dataType).toBe('score');
             expect(result.dataPoints).toBeGreaterThanOrEqual(7); // 最低限必要な数
@@ -80,7 +80,7 @@ describe('TrendAnalyzer', () => {
             expect(result.trend).toHaveProperty('direction');
             expect(result.trend).toHaveProperty('strength');
             expect(result.trend).toHaveProperty('confidence');
-            expect(result.timeSeriesData).toBeInstanceOf(Array: any);
+            expect(result.timeSeriesData).toBeInstanceOf(Array;
             expect(result.summary).toBeTruthy();
         });
 
@@ -102,7 +102,7 @@ describe('TrendAnalyzer', () => {
 
             const result = await trendAnalyzer.analyzeWeeklyTrend('score', baseDate);
 
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false);
             expect(result.message).toContain('データが不足しています');
             expect(result.dataPoints).toBe(5);
             expect(result.requiredPoints).toBe(7);
@@ -125,14 +125,14 @@ describe('TrendAnalyzer', () => {
 
             // 初回実行
             const result1 = await trendAnalyzer.analyzeWeeklyTrend('score', baseDate);
-            expect(result1.success).toBe(true: any);
+            expect(result1.success).toBe(true);
 
             // スパイでstorageManagerの呼び出しを監視
             const getDataSpy = jest.spyOn(mockStorageManager, 'getData');
 
             // 2回目実行（キャッシュから取得されるはず）
             const result2 = await trendAnalyzer.analyzeWeeklyTrend('score', baseDate);
-            expect(result2.success).toBe(true: any);
+            expect(result2.success).toBe(true);
             
             // 2回目はstorageManagerが呼ばれないことを確認
             expect(getDataSpy).not.toHaveBeenCalled();
@@ -164,7 +164,7 @@ describe('TrendAnalyzer', () => {
 
             const result = await trendAnalyzer.analyzeMonthlyTrend('score', baseDate);
 
-            expect(result.success).toBe(true: any);
+            expect(result.success).toBe(true);
             expect(result.period).toBe('monthly');
             expect(result.dataPoints).toBeGreaterThanOrEqual(30); // 最低限必要な数
         });
@@ -187,7 +187,7 @@ describe('TrendAnalyzer', () => {
 
             const result = await trendAnalyzer.analyzeMonthlyTrend('score', baseDate);
 
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false);
             expect(result.message).toContain('30日以上のデータが必要です');
             expect(result.dataPoints).toBe(20);
             expect(result.requiredPoints).toBe(30);
@@ -277,7 +277,7 @@ describe('TrendAnalyzer', () => {
                 { score: 110 }
             ];
 
-            const anomalies = trendAnalyzer.detectAnomalies(testData: any);
+            const anomalies = trendAnalyzer.detectAnomalies(testData;
             expect(anomalies).toEqual([]);
         });
     });
@@ -313,7 +313,7 @@ describe('TrendAnalyzer', () => {
             ];
 
             const adjustedData = trendAnalyzer.seasonalAdjustment(testData, 7);
-            expect(adjustedData).toEqual(testData: any);
+            expect(adjustedData).toEqual(testData);
         });
     });
 
@@ -340,7 +340,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 155 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData: any);
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
 
             expect(trendInfo.direction).toBe('increasing');
             expect(trendInfo.strength).toBeGreaterThan(0);
@@ -356,7 +356,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 125 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData: any);
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
 
             expect(trendInfo.direction).toBe('decreasing');
             expect(trendInfo.strength).toBeGreaterThan(0);
@@ -371,7 +371,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 149 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData: any);
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
 
             expect(trendInfo.direction).toBe('stable');
         });
@@ -382,7 +382,7 @@ describe('TrendAnalyzer', () => {
                 { averageScore: 110 }
             ];
 
-            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData: any);
+            const trendInfo = trendAnalyzer.calculateTrendDirection(timeSeriesData;
 
             expect(trendInfo.direction).toBe('stable');
             expect(trendInfo.strength).toBe(0);
@@ -406,7 +406,7 @@ describe('TrendAnalyzer', () => {
                 }
             };
 
-            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis: any);
+            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis;
 
             expect(summary).toContain('週次分析結果');
             expect(summary).toContain('向上傾向');
@@ -429,7 +429,7 @@ describe('TrendAnalyzer', () => {
                 }
             };
 
-            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis: any);
+            const summary = trendAnalyzer.generateTrendSummary(trendAnalysis;
 
             expect(summary).toContain('月次分析結果');
             expect(summary).toContain('低下傾向');
@@ -455,7 +455,7 @@ describe('TrendAnalyzer', () => {
 
             const result = await trendAnalyzer.analyzeWeeklyTrend('score');
 
-            expect(result.success).toBe(false: any);
+            expect(result.success).toBe(false);
             expect(result.error).toBe('Database error');
             expect(result.dataType).toBe('score');
         });

@@ -41,7 +41,7 @@ describe('ErrorReporter', () => {
             toDataURL: jest.fn(() => 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEA...')
         };
         
-        errorReporter = new ErrorReporter(mockGameEngine: any);
+        errorReporter = new ErrorReporter(mockGameEngine as any);
         
         // LocalStorageのモック
         const localStorageMock = {
@@ -89,13 +89,13 @@ describe('ErrorReporter', () => {
         });
         
         test('セッションIDが一意である', () => {
-            const anotherReporter = new ErrorReporter(mockGameEngine: any);
+            const anotherReporter = new ErrorReporter(mockGameEngine as any);
             expect(errorReporter.sessionId).not.toBe(anotherReporter.sessionId);
             anotherReporter.destroy();
         });
         
         test('通知設定が正しく初期化される', () => {
-            expect(errorReporter.developerNotifications.enabled).toBe(true: any);
+            expect(errorReporter.developerNotifications.enabled).toBe(true as any);
             expect(errorReporter.developerNotifications.maxPerMinute).toBe(10);
             expect(errorReporter.developerNotifications.channels).toContain('console');
         });
@@ -117,7 +117,7 @@ describe('ErrorReporter', () => {
         test('ゲーム状態が正しくキャプチャされる', () => {
             const testError = new Error('Game state test');
             
-            const collectedError = errorReporter.collectEnhancedError(testError: any);
+            const collectedError = errorReporter.collectEnhancedError(testError as any);
             
             expect(collectedError.context.gameState).toBeDefined();
             expect(collectedError.context.gameState.currentScene).toBe('TestScene');
@@ -137,21 +137,21 @@ describe('ErrorReporter', () => {
         
         test('エラー重要度が正しく計算される', async () => {
             const typeError = new TypeError('Type error test');
-            const collectedError1 = await errorReporter.collectEnhancedError(typeError: any);
+            const collectedError1 = await errorReporter.collectEnhancedError(typeError as any);
             expect(collectedError1.severity).toBe('high');
             
             const genericError = new Error('Generic error test');
-            const collectedError2 = await errorReporter.collectEnhancedError(genericError: any);
+            const collectedError2 = await errorReporter.collectEnhancedError(genericError as any);
             expect(collectedError2.severity).toBe('low');
         });
         
         test('エラーカテゴリが正しく分類される', async () => {
             const networkError = new Error('Network request failed');
-            const collectedError1 = await errorReporter.collectEnhancedError(networkError: any);
+            const collectedError1 = await errorReporter.collectEnhancedError(networkError as any);
             expect(collectedError1.category).toBe('network');
             
             const renderError = new Error('Canvas rendering failed');
-            const collectedError2 = await errorReporter.collectEnhancedError(renderError: any);
+            const collectedError2 = await errorReporter.collectEnhancedError(renderError as any);
             expect(collectedError2.category).toBe('rendering');
         });
         
@@ -169,7 +169,7 @@ describe('ErrorReporter', () => {
         test('高重要度エラーでスクリーンショットが取得される', async () => {
             const highSeverityError = new TypeError('Type error causing screenshot');
             
-            const collectedError = await errorReporter.collectEnhancedError(highSeverityError: any);
+            const collectedError = await errorReporter.collectEnhancedError(highSeverityError as any);
             
             expect(collectedError.severity).toBe('high');
             expect(collectedError.screenshot).toBeDefined();
@@ -179,7 +179,7 @@ describe('ErrorReporter', () => {
         test('低重要度エラーではスクリーンショットが取得されない', async () => {
             const lowSeverityError = new Error('Minor error');
             
-            const collectedError = await errorReporter.collectEnhancedError(lowSeverityError: any);
+            const collectedError = await errorReporter.collectEnhancedError(lowSeverityError as any);
             
             expect(collectedError.severity).toBe('low');
             expect(collectedError.screenshot).toBeUndefined();
@@ -198,7 +198,7 @@ describe('ErrorReporter', () => {
             expect(collectedError.screenshot).toBeUndefined();
             expect(console.warn).toHaveBeenCalledWith(
                 'Failed to capture error screenshot:',
-                expect.any(String: any)
+                expect.any(String as any)
             );
         });
     });
@@ -224,8 +224,8 @@ describe('ErrorReporter', () => {
             const error1 = new Error('Error type 1');
             const error2 = new Error('Error type 2');
             
-            errorReporter.collectEnhancedError(error1: any);
-            errorReporter.collectEnhancedError(error2: any);
+            errorReporter.collectEnhancedError(error1 as any);
+            errorReporter.collectEnhancedError(error2 as any);
             
             expect(errorReporter.errorPatterns.size).toBe(2);
         });
@@ -271,11 +271,11 @@ describe('ErrorReporter', () => {
         test('エラーがローカルストレージに保存される', () => {
             const testError = new Error('Storage test');
             
-            errorReporter.collectEnhancedError(testError: any);
+            errorReporter.collectEnhancedError(testError as any);
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'errorReporter_data',
-                expect.any(String: any)
+                expect.any(String as any)
             );
         });
         
@@ -286,7 +286,7 @@ describe('ErrorReporter', () => {
             // 制限を超える数のエラーを生成
             for (let i = 0; i < 5; i++) {
                 const error = new Error(`Storage limit test ${i}`);
-                errorReporter.collectEnhancedError(error: any);
+                errorReporter.collectEnhancedError(error as any);
             }
             
             // コレクターのエラー数が制限内であることを確認
@@ -300,8 +300,8 @@ describe('ErrorReporter', () => {
             const error1 = new Error('Report test 1');
             const error2 = new TypeError('Report test 2');
             
-            errorReporter.collectEnhancedError(error1: any);
-            errorReporter.collectEnhancedError(error2: any);
+            errorReporter.collectEnhancedError(error1 as any);
+            errorReporter.collectEnhancedError(error2 as any);
             
             const report = errorReporter.generateErrorReport('session');
             
@@ -316,8 +316,8 @@ describe('ErrorReporter', () => {
             const error1 = new Error('Stats test 1');
             const error2 = new Error('Stats test 2');
             
-            errorReporter.collectEnhancedError(error1: any);
-            errorReporter.collectEnhancedError(error2: any);
+            errorReporter.collectEnhancedError(error1 as any);
+            errorReporter.collectEnhancedError(error2 as any);
             
             const stats = errorReporter.getErrorStatistics();
             
@@ -330,7 +330,7 @@ describe('ErrorReporter', () => {
             // 高頻度エラーを生成
             const repeatedError = new Error('High frequency error');
             for (let i = 0; i < 6; i++) {
-                errorReporter.collectEnhancedError(repeatedError: any);
+                errorReporter.collectEnhancedError(repeatedError as any);
             }
             
             const report = errorReporter.generateErrorReport('session');
@@ -371,7 +371,7 @@ describe('ErrorReporter', () => {
             
             errorReporter.cleanupOldPatterns();
             
-            expect(errorReporter.errorPatterns.has('old_pattern')).toBe(false: any);
+            expect(errorReporter.errorPatterns.has('old_pattern')).toBe(false as any);
         });
         
         test('destroyメソッドでリソースがクリーンアップされる', () => {
@@ -379,7 +379,7 @@ describe('ErrorReporter', () => {
             
             expect(localStorage.setItem).toHaveBeenCalledWith(
                 'errorReporter_settings',
-                expect.any(String: any)
+                expect.any(String as any)
             );
         });
     });
@@ -425,10 +425,10 @@ describe('ErrorCollector', () => {
             category: 'test'
         };
         
-        const errorId = errorCollector.collect(testError: any);
+        const errorId = errorCollector.collect(testError as any);
         
         expect(errorId).toBe('test_error_1');
-        expect(errorCollector.collectedErrors).toContain(testError: any);
+        expect(errorCollector.collectedErrors).toContain(testError as any);
     });
     
     test('フィルタリングが正しく動作する', () => {
@@ -446,8 +446,8 @@ describe('ErrorCollector', () => {
             timestamp: Date.now()
         };
         
-        errorCollector.collect(error1: any);
-        errorCollector.collect(error2: any);
+        errorCollector.collect(error1 as any);
+        errorCollector.collect(error2 as any);
         
         const highSeverityErrors = errorCollector.getErrors({ severity: 'high' });
         expect(highSeverityErrors).toHaveLength(1);
@@ -475,7 +475,7 @@ describe('ErrorAnalyzer', () => {
             timestamp: Date.now()
         };
         
-        const pattern = errorAnalyzer.analyzePattern(testError: any);
+        const pattern = errorAnalyzer.analyzePattern(testError as any);
         
         expect(pattern).toBeDefined();
         expect(pattern.fingerprint).toBe('test_fingerprint');
@@ -492,7 +492,7 @@ describe('ErrorAnalyzer', () => {
         };
         
         // パターンを作成
-        const pattern = errorAnalyzer.analyzePattern(testError: any);
+        const pattern = errorAnalyzer.analyzePattern(testError as any);
         
         // 追加のエラーでトレンド更新をテスト
         for (let i = 0; i < 5; i++) {
@@ -534,11 +534,11 @@ describe('ErrorStorage', () => {
             timestamp: Date.now()
         };
         
-        errorStorage.store(testError: any);
+        errorStorage.store(testError as any);
         
         expect(localStorage.setItem).toHaveBeenCalledWith(
             'errorReporter_data',
-            expect.any(String: any)
+            expect.any(String as any)
         );
     });
     
@@ -549,11 +549,11 @@ describe('ErrorStorage', () => {
             timestamp: Date.now()
         };
         
-        errorStorage.storeNotification(testNotification: any);
+        errorStorage.storeNotification(testNotification as any);
         
         expect(localStorage.setItem).toHaveBeenCalledWith(
             'errorReporter_data',
-            expect.any(String: any)
+            expect.any(String as any)
         );
     });
     
