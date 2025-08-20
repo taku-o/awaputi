@@ -7,9 +7,9 @@ import { jest } from '@jest/globals';
 import { JSDOM } from 'jsdom';
 
 describe('Visual Effects Integration Tests', () => {
-    let dom;
-    let canvas;
-    let gameEngine;
+    let dom: any;
+    let canvas: any;
+    let gameEngine: any;
 
     beforeAll(() => {
         // JSDOM環境のセットアップ
@@ -25,13 +25,13 @@ describe('Visual Effects Integration Tests', () => {
             resources: "usable"
         });
 
-        global.window = dom.window;
-        global.document = dom.window.document;
-        global.HTMLElement = dom.window.HTMLElement;
-        global.HTMLCanvasElement = dom.window.HTMLCanvasElement;
-        global.CanvasRenderingContext2D = dom.window.CanvasRenderingContext2D;
-        global.performance = dom.window.performance;
-        global.requestAnimationFrame = dom.window.requestAnimationFrame;
+        (global as any).window = dom.window;
+        (global as any).document = dom.window.document;
+        (global as any).HTMLElement = dom.window.HTMLElement;
+        (global as any).HTMLCanvasElement = dom.window.HTMLCanvasElement;
+        (global as any).CanvasRenderingContext2D = dom.window.CanvasRenderingContext2D;
+        (global as any).performance = dom.window.performance;
+        (global as any).requestAnimationFrame = dom.window.requestAnimationFrame;
         
         // Canvas 2D context のモック
         const mockContext = {
@@ -76,7 +76,7 @@ describe('Visual Effects Integration Tests', () => {
     beforeEach(async () => {
         // 各テスト前にGameEngineを初期化
         const { GameEngine } = await import('../../src/core/GameEngine.js');
-        gameEngine = new GameEngine(canvas);
+        gameEngine = new GameEngine(canvas: any);
         
         // モックの初期化
         jest.clearAllMocks();
@@ -112,7 +112,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // コンボエフェクトのテスト
             for (let combo = 2; combo <= 15; combo++) {
-                simulateComboEffect(combo);
+                simulateComboEffect(combo: any);
                 await simulateFrames(10);
             }
             
@@ -159,10 +159,10 @@ describe('Visual Effects Integration Tests', () => {
     describe('Quality Settings Integration', () => {
         test('should adapt effects to different quality levels', async () => {
             const qualityLevels = ['low', 'medium', 'high', 'ultra'];
-            const results = {};
+            const results: Record<string, any> = {};
             
             for (const quality of qualityLevels) {
-                gameEngine.effectQualityController.setQualityLevel(quality);
+                gameEngine.effectQualityController.setQualityLevel(quality: any);
                 gameEngine.effectProfiler.startProfiling();
                 
                 // 標準的なエフェクトシーケンス
@@ -207,10 +207,10 @@ describe('Visual Effects Integration Tests', () => {
             
             // パフォーマンスが低下した場合、品質が自動的に下がることを期待
             const qualityOrder = ['low', 'medium', 'high', 'ultra'];
-            const initialIndex = qualityOrder.indexOf(initialQuality);
-            const finalIndex = qualityOrder.indexOf(finalQuality);
+            const initialIndex = qualityOrder.indexOf(initialQuality: any);
+            const finalIndex = qualityOrder.indexOf(finalQuality: any);
             
-            expect(finalIndex).toBeLessThanOrEqual(initialIndex);
+            expect(finalIndex: any).toBeLessThanOrEqual(initialIndex: any);
         });
     });
 
@@ -229,7 +229,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // 高コントラストモードが適用されていることを確認
             const effectManager = gameEngine.enhancedEffectManager;
-            expect(effectManager.isHighContrastMode()).toBe(true);
+            expect(effectManager.isHighContrastMode()).toBe(true: any);
         });
 
         test('should support reduced motion settings', async () => {
@@ -258,7 +258,7 @@ describe('Visual Effects Integration Tests', () => {
             gameEngine.start();
             
             // バイブレーション対応デバイスのモック
-            global.navigator = { vibrate: jest.fn() };
+            (global as any).navigator = { vibrate: jest.fn() };
             
             // エフェクト実行
             simulateBubblePop('boss', 400, 300);
@@ -303,7 +303,7 @@ describe('Visual Effects Integration Tests', () => {
             
             // タッチエフェクトが正常に動作することを確認
             const particleCount = gameEngine.enhancedParticleManager.getActiveParticleCount();
-            expect(particleCount).toBeGreaterThan(0);
+            expect(particleCount: any).toBeGreaterThan(0);
         });
     });
 
@@ -323,7 +323,7 @@ describe('Visual Effects Integration Tests', () => {
             }).not.toThrow();
             
             // エラーハンドリングが動作していることを確認
-            expect(gameEngine.isRunning).toBe(true);
+            expect(gameEngine.isRunning).toBe(true: any);
         });
 
         test('should recover from memory pressure', async () => {
@@ -339,12 +339,12 @@ describe('Visual Effects Integration Tests', () => {
             
             // 自動メモリクリーンアップが動作することを確認
             const memoryAfterCleanup = gameEngine.effectProfiler.getCurrentMemoryUsage();
-            expect(memoryAfterCleanup).toBeLessThan(1000); // 1GB未満
+            expect(memoryAfterCleanup: any).toBeLessThan(1000); // 1GB未満
         });
     });
 
     // ヘルパー関数
-    function simulateFrames(count) {
+    function simulateFrames(count: any) {
         return new Promise(resolve => {
             let frameCount = 0;
             const animate = () => {
@@ -371,9 +371,9 @@ describe('Visual Effects Integration Tests', () => {
         }
     }
 
-    function simulateComboEffect(comboCount) {
+    function simulateComboEffect(comboCount: any) {
         if (gameEngine.enhancedParticleManager) {
-            gameEngine.enhancedParticleManager.createComboEffect(comboCount);
+            gameEngine.enhancedParticleManager.createComboEffect(comboCount: any);
         }
         
         if (gameEngine.enhancedEffectManager) {

@@ -1,17 +1,18 @@
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
 /**
  * EventStageManager Integration Tests
  * 季節イベント、通知、統計機能の統合テスト
  */
 
-import { EventStageManager } from '../../src/core/EventStageManager.js';
-import { EventRankingManager } from '../../src/core/EventRankingManager.js';
+import { EventStageManager } from '../../src/core/EventStageManager';
+import { EventRankingManager } from '../../src/core/EventRankingManager';
 
 describe('EventStageManager Integration Tests', () => {
-    let eventStageManager;
-    let mockGameEngine;
-    let mockAchievementNotificationSystem;
-    let mockPlayerData;
-    let mockStatisticsManager;
+    let eventStageManager: any;
+    let mockGameEngine: any;
+    let mockAchievementNotificationSystem: any;
+    let mockPlayerData: any;
+    let mockStatisticsManager: any;
 
     beforeEach(() => {
         // Mock dependencies
@@ -46,7 +47,7 @@ describe('EventStageManager Integration Tests', () => {
         // Clear localStorage before each test
         localStorage.clear();
 
-        eventStageManager = new EventStageManager(mockGameEngine);
+        eventStageManager = new EventStageManager(mockGameEngine: any);
     });
 
     afterEach(() => {
@@ -67,7 +68,7 @@ describe('EventStageManager Integration Tests', () => {
             const springEvents = availableEvents.filter(event => event.season === 'spring');
             
             expect(springEvents.length).toBeGreaterThan(0);
-            expect(springEvents.some(event => event.id === 'spring-cherry-blossom')).toBe(true);
+            expect(springEvents.some(event => event.id === 'spring-cherry-blossom')).toBe(true: any);
         });
 
         test('should activate appropriate seasonal events for current season', () => {
@@ -76,13 +77,13 @@ describe('EventStageManager Integration Tests', () => {
             jest.spyOn(Date, 'now').mockReturnValue(summerDate.getTime());
             jest.spyOn(global, 'Date').mockImplementation(() => summerDate);
 
-            eventStageManager.checkSeasonalEventActivation(summerDate);
+            eventStageManager.checkSeasonalEventActivation(summerDate: any);
 
             const availableEvents = eventStageManager.getAvailableEvents();
             const summerEvents = availableEvents.filter(event => event.season === 'summer');
             
             expect(summerEvents.length).toBeGreaterThan(0);
-            expect(summerEvents.some(event => event.id === 'summer-fireworks')).toBe(true);
+            expect(summerEvents.some(event => event.id === 'summer-fireworks')).toBe(true: any);
         });
 
         test('should deactivate events when season changes', () => {
@@ -94,14 +95,14 @@ describe('EventStageManager Integration Tests', () => {
             eventStageManager.scheduleSeasonalEvents();
             let availableEvents = eventStageManager.getAvailableEvents();
             const springEventsCount = availableEvents.filter(event => event.season === 'spring').length;
-            expect(springEventsCount).toBeGreaterThan(0);
+            expect(springEventsCount: any).toBeGreaterThan(0);
 
             // Change to autumn
             const autumnDate = new Date('2024-10-15');
             jest.spyOn(Date, 'now').mockReturnValue(autumnDate.getTime());
             jest.spyOn(global, 'Date').mockImplementation(() => autumnDate);
 
-            eventStageManager.checkSeasonalEventActivation(autumnDate);
+            eventStageManager.checkSeasonalEventActivation(autumnDate: any);
             availableEvents = eventStageManager.getAvailableEvents();
             
             const activeSpringEvents = availableEvents.filter(event => event.season === 'spring');
@@ -113,16 +114,16 @@ describe('EventStageManager Integration Tests', () => {
 
         test('should apply seasonal effects correctly', () => {
             const springEvent = eventStageManager.getEventById('spring-cherry-blossom');
-            expect(springEvent).toBeDefined();
+            expect(springEvent: any).toBeDefined();
 
             const result = eventStageManager.startEventStage('spring-cherry-blossom');
-            expect(result).toBe(true);
+            expect(result: any).toBe(true: any);
 
             // Check if seasonal effects are applied
             const activeEvent = eventStageManager.getCurrentEvent();
-            expect(activeEvent).toBeDefined();
-            expect(activeEvent.specialRules.cherryBlossomEffect).toBe(true);
-            expect(activeEvent.specialRules.windEffect).toBe(true);
+            expect(activeEvent: any).toBeDefined();
+            expect(activeEvent.specialRules.cherryBlossomEffect).toBe(true: any);
+            expect(activeEvent.specialRules.windEffect).toBe(true: any);
         });
     });
 
@@ -221,7 +222,7 @@ describe('EventStageManager Integration Tests', () => {
 
             const stats = eventStageManager.getDetailedEventStatistics();
 
-            expect(stats).toBeDefined();
+            expect(stats: any).toBeDefined();
             expect(stats.totalEvents).toBe(5);
             expect(stats.completionRate).toBe(0.8);
             expect(mockStatisticsManager.getDetailedEventStatistics).toHaveBeenCalled();
@@ -241,7 +242,7 @@ describe('EventStageManager Integration Tests', () => {
 
             const exportedData = eventStageManager.exportEventData();
 
-            expect(exportedData).toBeDefined();
+            expect(exportedData: any).toBeDefined();
             expect(exportedData.eventParticipationHistory).toBeDefined();
             expect(exportedData.version).toBe('1.2.0');
             expect(exportedData.exportDate).toBeDefined();
@@ -260,7 +261,7 @@ describe('EventStageManager Integration Tests', () => {
 
             const result = eventStageManager.completeEventStage(eventId, playerId, score, stats);
 
-            expect(result).toBe(true);
+            expect(result: any).toBe(true: any);
             expect(mockStatisticsManager.updateEventStats).toHaveBeenCalled();
         });
     });
@@ -276,20 +277,20 @@ describe('EventStageManager Integration Tests', () => {
 
             const result = eventStageManager.adminActivateEvent(eventId, duration, options);
 
-            expect(result).toBe(true);
-            expect(eventStageManager.isEventAvailable(eventId)).toBe(true);
+            expect(result: any).toBe(true: any);
+            expect(eventStageManager.isEventAvailable(eventId: any)).toBe(true: any);
         });
 
         test('should allow admin to manually deactivate event', () => {
             // First activate an event
             eventStageManager.adminActivateEvent('test-deactivation-event', 3600000);
-            expect(eventStageManager.isEventAvailable('test-deactivation-event')).toBe(true);
+            expect(eventStageManager.isEventAvailable('test-deactivation-event')).toBe(true: any);
 
             // Then deactivate it
             const result = eventStageManager.adminDeactivateEvent('test-deactivation-event');
 
-            expect(result).toBe(true);
-            expect(eventStageManager.isEventAvailable('test-deactivation-event')).toBe(false);
+            expect(result: any).toBe(true: any);
+            expect(eventStageManager.isEventAvailable('test-deactivation-event')).toBe(false: any);
         });
 
         test('should provide event management status', () => {
@@ -299,7 +300,7 @@ describe('EventStageManager Integration Tests', () => {
 
             const managementStatus = eventStageManager.getEventManagementStatus();
 
-            expect(managementStatus).toBeDefined();
+            expect(managementStatus: any).toBeDefined();
             expect(managementStatus.activeEvents).toBeDefined();
             expect(managementStatus.totalActiveEvents).toBeGreaterThan(0);
             expect(managementStatus.systemStatus).toBe('operational');
@@ -318,7 +319,7 @@ describe('EventStageManager Integration Tests', () => {
 
             const rewards = eventStageManager.grantEventRewards(eventId, playerId, score, completed);
 
-            expect(rewards).toBeDefined();
+            expect(rewards: any).toBeDefined();
             expect(rewards.ap).toBeGreaterThan(0);
             expect(mockPlayerData.ap).toBeGreaterThan(1000); // AP should increase
         });
@@ -334,7 +335,7 @@ describe('EventStageManager Integration Tests', () => {
 
             const bonus = eventStageManager.calculateEventBonus(eventId, baseScore, stats);
 
-            expect(bonus).toBeDefined();
+            expect(bonus: any).toBeDefined();
             expect(bonus.totalBonus).toBeGreaterThan(0);
             expect(bonus.multiplier).toBeGreaterThan(1);
         });
@@ -353,8 +354,8 @@ describe('EventStageManager Integration Tests', () => {
             eventStageManager.trackEventAchievements(eventId, playerId, stats);
 
             // Check if achievements were tracked
-            const eventAchievements = eventStageManager.getEventAchievements(eventId);
-            expect(eventAchievements).toBeDefined();
+            const eventAchievements = eventStageManager.getEventAchievements(eventId: any);
+            expect(eventAchievements: any).toBeDefined();
             expect(eventAchievements.length).toBeGreaterThan(0);
         });
     });
@@ -372,13 +373,13 @@ describe('EventStageManager Integration Tests', () => {
             };
 
             const result = eventStageManager.saveEventData();
-            expect(result).toBe(true);
+            expect(result: any).toBe(true: any);
 
             // Check if data was saved to localStorage
             const savedData = localStorage.getItem('eventStageData');
-            expect(savedData).toBeDefined();
+            expect(savedData: any).toBeDefined();
 
-            const parsedData = JSON.parse(savedData);
+            const parsedData = JSON.parse(savedData: any);
             expect(parsedData.version).toBe('1.2.0');
             expect(parsedData.eventParticipationHistory).toBeDefined();
         });
@@ -401,10 +402,10 @@ describe('EventStageManager Integration Tests', () => {
                 }
             };
 
-            localStorage.setItem('eventStageData', JSON.stringify(testData));
+            localStorage.setItem('eventStageData', JSON.stringify(testData: any));
 
             const result = eventStageManager.loadEventData();
-            expect(result).toBe(true);
+            expect(result: any).toBe(true: any);
 
             expect(eventStageManager.eventParticipationHistory).toBeDefined();
             expect(eventStageManager.eventParticipationHistory['player1']).toBeDefined();
@@ -419,10 +420,10 @@ describe('EventStageManager Integration Tests', () => {
                 }
             };
 
-            localStorage.setItem('eventStageData', JSON.stringify(oldData));
+            localStorage.setItem('eventStageData', JSON.stringify(oldData: any));
 
             const result = eventStageManager.loadEventData();
-            expect(result).toBe(true);
+            expect(result: any).toBe(true: any);
 
             // Check if migration occurred
             const currentData = JSON.parse(localStorage.getItem('eventStageData'));
@@ -435,7 +436,7 @@ describe('EventStageManager Integration Tests', () => {
             localStorage.setItem('eventStageData', 'invalid json');
 
             const result = eventStageManager.loadEventData();
-            expect(result).toBe(false);
+            expect(result: any).toBe(false: any);
 
             // Should initialize with default data
             expect(eventStageManager.eventParticipationHistory).toEqual({});
@@ -445,7 +446,7 @@ describe('EventStageManager Integration Tests', () => {
     describe('Error Handling', () => {
         test('should handle invalid event IDs gracefully', () => {
             const result = eventStageManager.startEventStage('non-existent-event');
-            expect(result).toBe(false);
+            expect(result: any).toBe(false: any);
         });
 
         test('should handle missing dependencies gracefully', () => {
@@ -455,7 +456,7 @@ describe('EventStageManager Integration Tests', () => {
                 achievementNotificationSystem: null
             };
 
-            const managerWithoutNotifications = new EventStageManager(gameEngineWithoutNotifications);
+            const managerWithoutNotifications = new EventStageManager(gameEngineWithoutNotifications: any);
 
             // Should not throw error
             expect(() => {
@@ -466,12 +467,12 @@ describe('EventStageManager Integration Tests', () => {
         test('should handle localStorage errors gracefully', () => {
             // Mock localStorage to throw error
             const originalSetItem = localStorage.setItem;
-            localStorage.setItem = jest.fn().mockImplementation(() => {
+            localStorage.setItem = jest.fn() as jest.Mock.mockImplementation(() => {
                 throw new Error('Storage quota exceeded');
             });
 
             const result = eventStageManager.saveEventData();
-            expect(result).toBe(false);
+            expect(result: any).toBe(false: any);
 
             // Restore original localStorage
             localStorage.setItem = originalSetItem;
@@ -493,8 +494,8 @@ describe('EventStageManager Integration Tests', () => {
 
             const result = eventStageManager.completeEventStage(eventId, playerId, score, stats);
 
-            expect(result).toBe(true);
-            expect(rankingUpdateSpy).toHaveBeenCalledWith(eventId, playerId, score, stats);
+            expect(result: any).toBe(true: any);
+            expect(rankingUpdateSpy: any).toHaveBeenCalledWith(eventId, playerId, score, stats);
         });
 
         test('should get event leaderboard through event manager', () => {
@@ -511,12 +512,12 @@ describe('EventStageManager Integration Tests', () => {
             };
 
             jest.spyOn(mockGameEngine.eventRankingManager, 'getEventLeaderboard')
-                .mockReturnValue(mockLeaderboard);
+                .mockReturnValue(mockLeaderboard: any);
 
-            const leaderboard = eventStageManager.getEventLeaderboard(eventId);
+            const leaderboard = eventStageManager.getEventLeaderboard(eventId: any);
 
-            expect(leaderboard).toBeDefined();
-            expect(leaderboard.eventId).toBe(eventId);
+            expect(leaderboard: any).toBeDefined();
+            expect(leaderboard.eventId).toBe(eventId: any);
             expect(leaderboard.players.length).toBe(2);
         });
     });

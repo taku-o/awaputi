@@ -211,11 +211,12 @@
 
 - [x] 30. 統合テストの移行 ✅ 2025-08-20完了
   - ✅ tests/integration/内の全46個の.jsテストファイルを.tsに変換完了
+  - ✅ test/integration/内の追加4個の.jsテストファイルも.tsに変換完了
   - ✅ GameEngineモッククラスの型定義追加
   - ✅ 統合テストシナリオの型定義を追加（MockPlayerData, MockAudioManager等）
   - ✅ Jestインポート文の追加と型安全性の確保
-  - **詳細**: モックファイル1個、テストファイル45個を完全TypeScript化
-  - **成果**: tests/integration/内のJavaScriptファイル0個達成
+  - **詳細**: モックファイル1個、テストファイル49個（tests/45個 + test/4個）を完全TypeScript化
+  - **成果**: tests/integration/とtest/integration/内のJavaScriptファイル0個達成
   - _要件: 3.1, 3.2, 3.3_
 
 - [ ] 31. パフォーマンステストの移行
