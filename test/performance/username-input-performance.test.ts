@@ -6,14 +6,14 @@
 import { jest } from '@jest/globals';
 
 describe('Username Input Performance Tests', () => {
-    let usernameInputManager;
-    let mockGameEngine;
-    let mockResponsiveCanvasManager;
-    let performanceObserver;
+    let usernameInputManager: any;
+    let mockGameEngine: any;
+    let mockResponsiveCanvasManager: any;
+    let performanceObserver: any;
 
     // Enhanced UsernameInputManager with caching for performance testing
     class PerformanceOptimizedUsernameInputManager {
-        constructor(gameEngine) {
+        constructor(gameEngine: any) {
             this.gameEngine = gameEngine;
             this.errorHandler = { handleError: jest.fn() };
             this.usernameInput = '';
@@ -67,8 +67,8 @@ describe('Username Input Performance Tests', () => {
             const cacheKey = `${baseX},${baseY},${canvasInfo.scale}`;
             
             // Check cache first
-            if (this._coordinateCache.has(cacheKey)) {
-                return this._coordinateCache.get(cacheKey);
+            if (this._coordinateCache.has(cacheKey: any)) {
+                return this._coordinateCache.get(cacheKey: any);
             }
 
             // Calculate transformation
@@ -82,7 +82,7 @@ describe('Username Input Performance Tests', () => {
             if (this._coordinateCache.size >= this._maxCacheSize) {
                 // Remove oldest entry (first added)
                 const firstKey = this._coordinateCache.keys().next().value;
-                this._coordinateCache.delete(firstKey);
+                this._coordinateCache.delete(firstKey: any);
             }
             this._coordinateCache.set(cacheKey, result);
 
@@ -97,7 +97,7 @@ describe('Username Input Performance Tests', () => {
 
         // Batch coordinate transformation for performance
         transformCoordinatesBatch(coordinates, canvasInfo) {
-            if (!canvasInfo || !Array.isArray(coordinates)) return [];
+            if (!canvasInfo || !Array.isArray(coordinates: any)) return [];
             
             return coordinates.map(coord => 
                 this.transformCoordinates(coord.x, coord.y, canvasInfo)
@@ -148,7 +148,7 @@ describe('Username Input Performance Tests', () => {
             debug: false
         };
 
-        usernameInputManager = new PerformanceOptimizedUsernameInputManager(mockGameEngine);
+        usernameInputManager = new PerformanceOptimizedUsernameInputManager(mockGameEngine: any);
     });
 
     describe('Canvas Info Caching', () => {
@@ -160,10 +160,10 @@ describe('Username Input Performance Tests', () => {
             // Second call within cache duration should use cache
             const canvasInfo2 = usernameInputManager.getCanvasInfo();
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
-            expect(canvasInfo2).toEqual(canvasInfo1);
+            expect(canvasInfo2: any).toEqual(canvasInfo1: any);
             
             const stats = usernameInputManager.getCacheStats();
-            expect(stats.canvasInfoCached).toBe(true);
+            expect(stats.canvasInfoCached).toBe(true: any);
             expect(stats.canvasInfoCacheAge).toBeLessThan(100);
         });
 
@@ -174,7 +174,7 @@ describe('Username Input Performance Tests', () => {
             
             // Wait for cache to expire (mock timing)
             const originalNow = performance.now;
-            performance.now = jest.fn().mockReturnValue(originalNow() + 20);
+            performance.now = jest.fn() as jest.Mock.mockReturnValue(originalNow() + 20);
             
             // Second call should refresh cache
             usernameInputManager.getCanvasInfo();
@@ -191,12 +191,12 @@ describe('Username Input Performance Tests', () => {
             
             // First transformation should calculate
             const result1 = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
-            expect(result1).toEqual({ x: 600, y: 450 });
+            expect(result1: any).toEqual({ x: 600, y: 450 });
             
             // Second identical transformation should use cache
             const result2 = usernameInputManager.transformCoordinates(400, 300, canvasInfo);
-            expect(result2).toEqual(result1);
-            expect(result2).toBe(result1); // Should be same object reference (from cache)
+            expect(result2: any).toEqual(result1: any);
+            expect(result2: any).toBe(result1: any); // Should be same object reference (from cache)
             
             const stats = usernameInputManager.getCacheStats();
             expect(stats.coordinateCacheSize).toBe(1);
@@ -222,14 +222,14 @@ describe('Username Input Performance Tests', () => {
             usernameInputManager.transformCoordinates(400, 300, canvasInfo);
             
             let stats = usernameInputManager.getCacheStats();
-            expect(stats.canvasInfoCached).toBe(true);
+            expect(stats.canvasInfoCached).toBe(true: any);
             expect(stats.coordinateCacheSize).toBe(1);
             
             // Clear cache
             usernameInputManager.clearCache();
             
             stats = usernameInputManager.getCacheStats();
-            expect(stats.canvasInfoCached).toBe(false);
+            expect(stats.canvasInfoCached).toBe(false: any);
             expect(stats.coordinateCacheSize).toBe(0);
         });
     });
@@ -247,7 +247,7 @@ describe('Username Input Performance Tests', () => {
             const results = usernameInputManager.transformCoordinatesBatch(coordinates, canvasInfo);
             const endTime = performance.now();
             
-            expect(results).toHaveLength(3);
+            expect(results: any).toHaveLength(3);
             expect(results[0]).toEqual({ x: 200, y: 400 });
             expect(results[1]).toEqual({ x: 600, y: 800 });
             expect(results[2]).toEqual({ x: 1000, y: 1200 });
@@ -279,7 +279,7 @@ describe('Username Input Performance Tests', () => {
             const endTime = performance.now();
             const duration = endTime - startTime;
             
-            expect(duration).toBeLessThan(1); // Should complete in < 1ms
+            expect(duration: any).toBeLessThan(1); // Should complete in < 1ms
         });
 
         it('should handle rapid getCanvasInfo calls efficiently', () => {
@@ -293,7 +293,7 @@ describe('Username Input Performance Tests', () => {
             const endTime = performance.now();
             const duration = endTime - startTime;
             
-            expect(duration).toBeLessThan(5); // Should complete in < 5ms
+            expect(duration: any).toBeLessThan(5); // Should complete in < 5ms
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1); // Only first call hits manager
         });
 
@@ -316,8 +316,8 @@ describe('Username Input Performance Tests', () => {
             const endTime = performance.now();
             const duration = endTime - startTime;
             
-            expect(duration).toBeLessThan(10); // Should complete in < 10ms
-            expect(validCount).toBeGreaterThan(0);
+            expect(duration: any).toBeLessThan(10); // Should complete in < 10ms
+            expect(validCount: any).toBeGreaterThan(0);
         });
     });
 
@@ -335,7 +335,7 @@ describe('Username Input Performance Tests', () => {
             
             // Memory usage should be bounded by max cache size
             const approximateMemoryUsage = stats.coordinateCacheSize * 32; // rough estimate: 32 bytes per entry
-            expect(approximateMemoryUsage).toBeLessThan(2000); // Should use < 2KB for coordinate cache
+            expect(approximateMemoryUsage: any).toBeLessThan(2000); // Should use < 2KB for coordinate cache
         });
 
         it('should handle cache overflow gracefully', () => {
@@ -349,7 +349,7 @@ describe('Username Input Performance Tests', () => {
             }
             
             const finalStats = usernameInputManager.getCacheStats();
-            expect(finalStats.coordinateCacheSize).toBe(initialCacheSize);
+            expect(finalStats.coordinateCacheSize).toBe(initialCacheSize: any);
             
             // Verify cache still works for recent entries
             const recentResult = usernameInputManager.transformCoordinates(
@@ -357,7 +357,7 @@ describe('Username Input Performance Tests', () => {
                 initialCacheSize + 19 + 1000, 
                 canvasInfo
             );
-            expect(recentResult).toBeDefined();
+            expect(recentResult: any).toBeDefined();
         });
     });
 
@@ -391,7 +391,7 @@ describe('Username Input Performance Tests', () => {
             const averageFrameTime = totalDuration / 10;
             
             // Should maintain 60fps (< 16.67ms per frame)
-            expect(averageFrameTime).toBeLessThan(frameTime);
+            expect(averageFrameTime: any).toBeLessThan(frameTime: any);
             
             // ResponsiveCanvasManager should only be called once (rest from cache)
             expect(mockResponsiveCanvasManager.getCanvasInfo).toHaveBeenCalledTimes(1);
@@ -423,7 +423,7 @@ describe('Username Input Performance Tests', () => {
             
             const endTime = performance.now();
             
-            expect(newCoordinates).toEqual({ x: 800, y: 600 });
+            expect(newCoordinates: any).toEqual({ x: 800, y: 600 });
             expect(endTime - startTime).toBeLessThan(1); // Should handle resize quickly
         });
     });

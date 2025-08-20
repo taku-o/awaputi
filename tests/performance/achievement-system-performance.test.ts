@@ -1,11 +1,12 @@
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
 /**
  * 実績システムパフォーマンステスト
  */
 
-import { AchievementManager } from '../../src/core/AchievementManager.js';
-import { AchievementEventIntegrator } from '../../src/core/AchievementEventIntegrator.js';
-import { AchievementNotificationSystem } from '../../src/core/achievements/AchievementNotificationSystem.js';
-import { AchievementStatsUI } from '../../src/core/AchievementStatsUI.js';
+import { AchievementManager } from '../../src/core/AchievementManager';
+import { AchievementEventIntegrator } from '../../src/core/AchievementEventIntegrator';
+import { AchievementNotificationSystem } from '../../src/core/achievements/AchievementNotificationSystem';
+import { AchievementStatsUI } from '../../src/core/AchievementStatsUI';
 
 // Performance testing utilities
 class PerformanceMonitor {
@@ -13,18 +14,18 @@ class PerformanceMonitor {
         this.measurements = {};
     }
 
-    start(label) {
+    start(label: any) {
         this.measurements[label] = { start: performance.now() };
     }
 
-    end(label) {
+    end(label: any) {
         if (this.measurements[label]) {
             this.measurements[label].end = performance.now();
             this.measurements[label].duration = this.measurements[label].end - this.measurements[label].start;
         }
     }
 
-    getDuration(label) {
+    getDuration(label: any) {
         return this.measurements[label]?.duration || 0;
     }
 
@@ -50,7 +51,7 @@ class MockPlayerData {
         };
     }
 
-    get(key) {
+    get(key: any) {
         return this.data[key];
     }
 
@@ -95,23 +96,23 @@ class MockAudioManager {
 }
 
 describe('Achievement System Performance Tests', () => {
-    let monitor;
-    let achievementManager;
-    let eventIntegrator;
-    let notificationSystem;
-    let statsUI;
-    let mockPlayerData;
-    let mockAudioManager;
+    let monitor: any;
+    let achievementManager: any;
+    let eventIntegrator: any;
+    let notificationSystem: any;
+    let statsUI: any;
+    let mockPlayerData: any;
+    let mockAudioManager: any;
 
     beforeEach(() => {
         monitor = new PerformanceMonitor();
         mockPlayerData = new MockPlayerData();
         mockAudioManager = new MockAudioManager();
         
-        achievementManager = new AchievementManager(mockPlayerData);
+        achievementManager = new AchievementManager(mockPlayerData: any);
         eventIntegrator = new AchievementEventIntegrator(achievementManager, mockPlayerData);
-        notificationSystem = new AchievementNotificationSystem(mockAudioManager);
-        statsUI = new AchievementStatsUI(achievementManager);
+        notificationSystem = new AchievementNotificationSystem(mockAudioManager: any);
+        statsUI = new AchievementStatsUI(achievementManager: any);
     });
 
     describe('AchievementManager Performance', () => {
@@ -129,11 +130,11 @@ describe('Achievement System Performance Tests', () => {
             const duration = monitor.getDuration('bulk_progress_updates');
             
             // 10,000回の更新が100ms以下で完了することを確認
-            expect(duration).toBeLessThan(100);
+            expect(duration: any).toBeLessThan(100);
             
             // スループットを計算（更新/ms）
             const throughput = updateCount / duration;
-            expect(throughput).toBeGreaterThan(50); // 最低50更新/ms
+            expect(throughput: any).toBeGreaterThan(50); // 最低50更新/ms
         });
 
         test('バッチ更新処理性能', () => {
@@ -145,14 +146,14 @@ describe('Achievement System Performance Tests', () => {
             
             monitor.start('batch_updates');
             
-            achievementManager.batchUpdateProgress(updates);
+            achievementManager.batchUpdateProgress(updates: any);
             
             monitor.end('batch_updates');
             
             const duration = monitor.getDuration('batch_updates');
             
             // バッチ処理が効率的であることを確認（50ms以下）
-            expect(duration).toBeLessThan(50);
+            expect(duration: any).toBeLessThan(50);
         });
 
         test('実績検索性能', () => {
@@ -171,7 +172,7 @@ describe('Achievement System Performance Tests', () => {
             const duration = monitor.getDuration('achievement_searches');
             
             // 1,000回の検索が20ms以下で完了することを確認
-            expect(duration).toBeLessThan(20);
+            expect(duration: any).toBeLessThan(20);
         });
 
         test('キャッシュ効果のパフォーマンス向上', () => {
@@ -196,7 +197,7 @@ describe('Achievement System Performance Tests', () => {
             const durationWithCache = monitor.getDuration('with_cache');
             
             // キャッシュにより性能が向上することを確認（CI環境対応の現実的な閾値）
-            expect(durationWithCache).toBeLessThan(durationWithoutCache * 0.8);  // キャッシュで20%向上を期待
+            expect(durationWithCache: any).toBeLessThan(durationWithoutCache * 0.8);  // キャッシュで20%向上を期待
         });
 
         test('データ永続化性能', () => {
@@ -221,8 +222,8 @@ describe('Achievement System Performance Tests', () => {
             const loadDuration = monitor.getDuration('data_load');
             
             // 保存・読み込みが合理的な時間で完了することを確認
-            expect(saveDuration).toBeLessThan(50);
-            expect(loadDuration).toBeLessThan(30);
+            expect(saveDuration: any).toBeLessThan(50);
+            expect(loadDuration: any).toBeLessThan(30);
         });
     });
 
@@ -247,10 +248,10 @@ describe('Achievement System Performance Tests', () => {
             const duration = monitor.getDuration('event_processing');
             
             // 5,000イベントが200ms以下で処理されることを確認
-            expect(duration).toBeLessThan(200);
+            expect(duration: any).toBeLessThan(200);
             
             const eventsPerMs = eventCount / duration;
-            expect(eventsPerMs).toBeGreaterThan(20); // 最低20イベント/ms
+            expect(eventsPerMs: any).toBeGreaterThan(20); // 最低20イベント/ms
         });
 
         test('スロットリング効果の測定', () => {
@@ -276,7 +277,7 @@ describe('Achievement System Performance Tests', () => {
             const withThrottling = monitor.getDuration('with_throttling');
             
             // スロットリングにより処理が軽減されることを確認
-            expect(withThrottling).toBeLessThan(withoutThrottling * 1.5);
+            expect(withThrottling: any).toBeLessThan(withoutThrottling * 1.5);
         });
     });
 
@@ -292,7 +293,7 @@ describe('Achievement System Performance Tests', () => {
                     reward: { ap: 10 },
                     rarity: i % 4 === 0 ? 'legendary' : 'common'
                 };
-                notificationSystem.showUnlockNotification(achievement);
+                notificationSystem.showUnlockNotification(achievement: any);
             }
             
             // Mock canvas context
@@ -336,10 +337,10 @@ describe('Achievement System Performance Tests', () => {
             const duration = monitor.getDuration('notification_rendering');
             
             // 60フレームのレンダリングが500ms以下で完了することを確認
-            expect(duration).toBeLessThan(500);
+            expect(duration: any).toBeLessThan(500);
             
             const frameTime = duration / 60;
-            expect(frameTime).toBeLessThan(16); // 60FPS維持
+            expect(frameTime: any).toBeLessThan(16); // 60FPS維持
         });
 
         test('通知キュー管理性能', () => {
@@ -355,7 +356,7 @@ describe('Achievement System Performance Tests', () => {
                     icon: '🏆',
                     rarity: 'common'
                 };
-                notificationSystem.showUnlockNotification(achievement);
+                notificationSystem.showUnlockNotification(achievement: any);
             }
             
             // キュー処理をシミュレート
@@ -368,7 +369,7 @@ describe('Achievement System Performance Tests', () => {
             const duration = monitor.getDuration('notification_queue_management');
             
             // キュー管理が効率的であることを確認
-            expect(duration).toBeLessThan(100);
+            expect(duration: any).toBeLessThan(100);
         });
     });
 
@@ -396,7 +397,7 @@ describe('Achievement System Performance Tests', () => {
             const duration = monitor.getDuration('stats_calculation');
             
             // 100回の統計計算が50ms以下で完了することを確認
-            expect(duration).toBeLessThan(50);
+            expect(duration: any).toBeLessThan(50);
         });
 
         test('統計キャッシュ効果', () => {
@@ -420,7 +421,7 @@ describe('Achievement System Performance Tests', () => {
             const withCache = monitor.getDuration('stats_with_cache');
             
             // キャッシュにより性能向上があることを確認（CI環境対応の現実的な閾値）
-            expect(withCache).toBeLessThan(withoutCache * 0.7);  // キャッシュで30%向上を期待
+            expect(withCache: any).toBeLessThan(withoutCache * 0.7);  // キャッシュで30%向上を期待
         });
     });
 
@@ -437,7 +438,7 @@ describe('Achievement System Performance Tests', () => {
                     name: `Temp ${i}`,
                     icon: '🏆'
                 };
-                notificationSystem.showUnlockNotification(achievement);
+                notificationSystem.showUnlockNotification(achievement: any);
                 
                 if (i % 100 === 0) {
                     notificationSystem.update(16);
@@ -453,7 +454,7 @@ describe('Achievement System Performance Tests', () => {
             const memoryIncrease = finalMemory - initialMemory;
             
             // メモリ増加が合理的な範囲内であることを確認（10MB以下）
-            expect(memoryIncrease).toBeLessThan(10 * 1024 * 1024);
+            expect(memoryIncrease: any).toBeLessThan(10 * 1024 * 1024);
         });
 
         test('ガベージコレクション効果の確認', () => {
@@ -470,7 +471,7 @@ describe('Achievement System Performance Tests', () => {
                 }));
                 
                 // 統計計算で一時オブジェクトを使用
-                statsUI.calculateOverallStats(tempAchievements);
+                statsUI.calculateOverallStats(tempAchievements: any);
                 
                 if (i % 100 === 0 && global.gc) {
                     global.gc();
@@ -482,13 +483,13 @@ describe('Achievement System Performance Tests', () => {
             const duration = monitor.getDuration('gc_test');
             
             // ガベージコレクションを含めても合理的な時間で完了することを確認
-            expect(duration).toBeLessThan(1000);
+            expect(duration: any).toBeLessThan(1000);
         });
     });
 
     describe('Concurrent Performance', () => {
         test('並行処理での性能維持', async () => {
-            const promises = [];
+            const promises: any[] = [];
             const operationsPerThread = 500;
             
             monitor.start('concurrent_operations');
@@ -508,17 +509,17 @@ describe('Achievement System Performance Tests', () => {
                         resolve();
                     }, 0);
                 });
-                promises.push(promise);
+                promises.push(promise: any);
             }
             
-            await Promise.all(promises);
+            await Promise.all(promises: any);
             
             monitor.end('concurrent_operations');
             
             const duration = monitor.getDuration('concurrent_operations');
             
             // 並行処理が効率的に実行されることを確認
-            expect(duration).toBeLessThan(500);
+            expect(duration: any).toBeLessThan(500);
         });
     });
 
@@ -533,29 +534,29 @@ describe('Achievement System Performance Tests', () => {
                 () => notificationSystem.update(16)
             ];
             
-            const benchmarks = {};
+            const benchmarks: Record<string, any> = {};
             
             operations.forEach((operation, index) => {
                 const label = `operation_${index}`;
                 
-                monitor.start(label);
+                monitor.start(label: any);
                 
                 // 各操作を複数回実行
                 for (let i = 0; i < 100; i++) {
                     operation();
                 }
                 
-                monitor.end(label);
+                monitor.end(label: any);
                 
-                benchmarks[label] = monitor.getDuration(label);
+                benchmarks[label] = monitor.getDuration(label: any);
             });
             
             // ベースライン性能を記録
             console.log('Performance Benchmarks:', benchmarks);
             
             // 各操作が合理的な時間で完了することを確認
-            Object.values(benchmarks).forEach(duration => {
-                expect(duration).toBeLessThan(100); // 100操作が100ms以下
+            Object.values(benchmarks: any).forEach(duration => {
+                expect(duration: any).toBeLessThan(100); // 100操作が100ms以下
             });
         });
     });

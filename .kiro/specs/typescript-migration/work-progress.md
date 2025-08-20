@@ -634,6 +634,25 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
 
 ### 2025-08-20
 
+#### Task 31完了: パフォーマンステストの移行
+- ✅ **tests/performance/内の全15個のJavaScriptファイルをTypeScript変換完了**
+- ✅ **test/performance/内の全3個のJavaScriptファイルをTypeScript変換完了**
+- ✅ **変換内容**:
+  - achievement-system-performance.test.ts
+  - AnalyticsPerformance.test.ts
+  - calculation-performance.test.ts
+  - canvas-scale-ui-positioning-performance.test.ts
+  - configuration-access-performance.test.ts
+  - data-management-cloud-performance.test.ts
+  - I18nPerformance.test.ts
+  - phase-g-performance.test.ts
+  - StatisticsPerformance.test.ts
+  - username-input-performance.test.ts
+  - visual-effects-performance.test.ts
+  - statistics-performance-tests/内の4個のユーティリティファイル
+- ✅ **型定義追加**: performance.now()等のパフォーマンス測定APIの型対応
+- ✅ **成果**: 両ディレクトリ内のJavaScriptファイル0個達成、完全TypeScript化完了
+
 #### Task 30完了: 統合テストの移行
 - ✅ **tests/integration/内の全46個のJavaScriptファイルをTypeScript変換完了**
 - ✅ **変換内容**:

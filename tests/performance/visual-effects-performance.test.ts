@@ -1,3 +1,4 @@
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
 /**
  * @jest-environment jsdom
  */
@@ -47,7 +48,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
 }));
 
 // Enhanced performance API mock
-global.performance = {
+(global as any).performance = {
     now: jest.fn(() => Date.now() + Math.random() * 10),
     memory: {
         usedJSHeapSize: 1000000,
@@ -61,18 +62,18 @@ global.performance = {
     clearMeasures: jest.fn()
 };
 
-import { EnhancedParticleManager } from '../../src/effects/EnhancedParticleManager.js';
-import { EnhancedEffectManager } from '../../src/effects/EnhancedEffectManager.js';
-import { AnimationManager } from '../../src/effects/AnimationManager.js';
-import { EffectQualityController } from '../../src/effects/EffectQualityController.js';
+import { EnhancedParticleManager } from '../../src/effects/EnhancedParticleManager';
+import { EnhancedEffectManager } from '../../src/effects/EnhancedEffectManager';
+import { AnimationManager } from '../../src/effects/AnimationManager';
+import { EffectQualityController } from '../../src/effects/EffectQualityController';
 
 describe('Visual Effects Performance Tests', () => {
-    let canvas;
-    let context;
-    let particleManager;
-    let effectManager;
-    let animationManager;
-    let qualityController;
+    let canvas: any;
+    let context: any;
+    let particleManager: any;
+    let effectManager: any;
+    let animationManager: any;
+    let qualityController: any;
 
     beforeEach(() => {
         // Reset performance counters
@@ -86,9 +87,9 @@ describe('Visual Effects Performance Tests', () => {
         context = canvas.getContext('2d');
 
         // Initialize managers
-        particleManager = new EnhancedParticleManager(canvas);
-        effectManager = new EnhancedEffectManager(canvas);
-        animationManager = new AnimationManager(canvas);
+        particleManager = new EnhancedParticleManager(canvas: any);
+        effectManager = new EnhancedEffectManager(canvas: any);
+        animationManager = new AnimationManager(canvas: any);
         qualityController = new EffectQualityController();
     });
 
@@ -131,7 +132,7 @@ describe('Visual Effects Performance Tests', () => {
             const averageFrameTime = totalTime / frames;
 
             // Should maintain frame rate
-            expect(averageFrameTime).toBeLessThan(frameTime * 2); // 100% tolerance for CI
+            expect(averageFrameTime: any).toBeLessThan(frameTime * 2); // 100% tolerance for CI
             expect(particleManager.particles?.length || 0).toBeGreaterThan(0);
         }, PERFORMANCE_TIMEOUT);
 
@@ -164,11 +165,11 @@ describe('Visual Effects Performance Tests', () => {
 
             // Performance benchmarks
             const timePerIteration = totalTime / iterations;
-            expect(timePerIteration).toBeLessThan(10); // Less than 10ms per iteration
+            expect(timePerIteration: any).toBeLessThan(10); // Less than 10ms per iteration
 
             // Memory should not grow excessively (object pooling should help)
             const maxMemoryGrowth = 50 * 1024 * 1024; // 50MB tolerance
-            expect(memoryGrowth).toBeLessThan(maxMemoryGrowth);
+            expect(memoryGrowth: any).toBeLessThan(maxMemoryGrowth: any);
         }, PERFORMANCE_TIMEOUT);
 
         test('should scale particle count based on performance', async () => {
@@ -202,9 +203,9 @@ describe('Visual Effects Performance Tests', () => {
 
                 // Lower quality should be faster
                 if (quality === 'low') {
-                    expect(updateTime).toBeLessThan(100); // Very fast
+                    expect(updateTime: any).toBeLessThan(100); // Very fast
                 } else if (quality === 'ultra') {
-                    expect(updateTime).toBeLessThan(500); // Acceptable
+                    expect(updateTime: any).toBeLessThan(500); // Acceptable
                 }
 
                 // Clear for next test
@@ -231,7 +232,7 @@ describe('Visual Effects Performance Tests', () => {
             const startTime = performance.now();
 
             for (let frame = 0; frame < frames; frame++) {
-                effectManager.update(frameTime);
+                effectManager.update(frameTime: any);
             }
 
             const endTime = performance.now();
@@ -239,7 +240,7 @@ describe('Visual Effects Performance Tests', () => {
             const averageFrameTime = totalTime / frames;
 
             // Should maintain reasonable performance
-            expect(averageFrameTime).toBeLessThan(frameTime * 3); // 200% tolerance
+            expect(averageFrameTime: any).toBeLessThan(frameTime * 3); // 200% tolerance
             expect(effectManager.effects?.length || 0).toBeGreaterThan(0);
         }, PERFORMANCE_TIMEOUT);
 
@@ -270,16 +271,16 @@ describe('Visual Effects Performance Tests', () => {
             const timePerFrame = totalTime / testFrames;
 
             // Lighting calculations should be efficient
-            expect(timePerFrame).toBeLessThan(5); // Less than 5ms per frame
-            expect(effectManager.lightSources?.length).toBe(lightCount);
+            expect(timePerFrame: any).toBeLessThan(5); // Less than 5ms per frame
+            expect(effectManager.lightSources?.length).toBe(lightCount: any);
         }, PERFORMANCE_TIMEOUT);
 
         test('should optimize rendering based on quality settings', async () => {
             const qualityLevels = ['low', 'medium', 'high', 'ultra'];
-            const renderTimes = {};
+            const renderTimes: Record<string, any> = {};
 
             for (const quality of qualityLevels) {
-                effectManager.setQualityLevel(quality);
+                effectManager.setQualityLevel(quality: any);
 
                 // Create standard set of effects
                 effectManager.addTransitionEffect('fade', 1000);
@@ -291,7 +292,7 @@ describe('Visual Effects Performance Tests', () => {
                 // Render multiple frames
                 for (let frame = 0; frame < 60; frame++) {
                     effectManager.update(16);
-                    effectManager.render(context);
+                    effectManager.render(context: any);
                 }
 
                 const endTime = performance.now();
@@ -311,7 +312,7 @@ describe('Visual Effects Performance Tests', () => {
         test('should handle multiple UI element animations', async () => {
             const elementCount = 30;
             const animationDuration = 1000;
-            const elements = [];
+            const elements: any[] = [];
 
             // Create UI elements
             for (let i = 0; i < elementCount; i++) {
@@ -319,7 +320,7 @@ describe('Visual Effects Performance Tests', () => {
                 element.style.position = 'absolute';
                 element.style.left = `${i * 20}px`;
                 element.style.top = `${i * 15}px`;
-                elements.push(element);
+                elements.push(element: any);
             }
 
             const startTime = performance.now();
@@ -341,12 +342,12 @@ describe('Visual Effects Performance Tests', () => {
             const timePerFrame = totalTime / frames;
 
             // Should handle animations efficiently
-            expect(timePerFrame).toBeLessThan(10); // Less than 10ms per frame
+            expect(timePerFrame: any).toBeLessThan(10); // Less than 10ms per frame
         }, PERFORMANCE_TIMEOUT);
 
         test('should optimize bubble spawn animations', async () => {
             const bubbleCount = 100;
-            const bubbles = [];
+            const bubbles: any[] = [];
 
             // Create bubble objects
             for (let i = 0; i < bubbleCount; i++) {
@@ -374,14 +375,14 @@ describe('Visual Effects Performance Tests', () => {
             const totalTime = endTime - startTime;
 
             // Should handle many spawn animations efficiently
-            expect(totalTime).toBeLessThan(500); // Less than 0.5 seconds total
+            expect(totalTime: any).toBeLessThan(500); // Less than 0.5 seconds total
         }, PERFORMANCE_TIMEOUT);
     });
 
     describe('Memory Performance', () => {
         test('should maintain stable memory usage with object pooling', async () => {
             const iterations = 50;
-            const memorySnapshots = [];
+            const memorySnapshots: any[] = [];
 
             for (let i = 0; i < iterations; i++) {
                 // Create effects
@@ -416,7 +417,7 @@ describe('Visual Effects Performance Tests', () => {
                 const memoryGrowthRate = (secondAvg - firstAvg) / firstAvg;
                 
                 // Memory growth should be minimal (less than 50%)
-                expect(memoryGrowthRate).toBeLessThan(0.5);
+                expect(memoryGrowthRate: any).toBeLessThan(0.5);
             }
         }, PERFORMANCE_TIMEOUT);
 
@@ -469,7 +470,7 @@ describe('Visual Effects Performance Tests', () => {
             }
 
             // Cleanup should be fast
-            expect(cleanupTime).toBeLessThan(100); // Less than 100ms
+            expect(cleanupTime: any).toBeLessThan(100); // Less than 100ms
         }, PERFORMANCE_TIMEOUT);
     });
 
@@ -491,7 +492,7 @@ describe('Visual Effects Performance Tests', () => {
             const frameCount = 60;
             for (let frame = 0; frame < frameCount; frame++) {
                 particleManager.render?.(context);
-                effectManager.render(context);
+                effectManager.render(context: any);
                 animationManager.render?.(context);
             }
 
@@ -503,8 +504,8 @@ describe('Visual Effects Performance Tests', () => {
             const avgRenderCallsPerFrame = renderCallCount / frameCount;
 
             // Should maintain efficient rendering
-            expect(avgFrameRenderTime).toBeLessThan(10); // Less than 10ms per frame
-            expect(avgRenderCallsPerFrame).toBeLessThan(1000); // Reasonable call count
+            expect(avgFrameRenderTime: any).toBeLessThan(10); // Less than 10ms per frame
+            expect(avgRenderCallsPerFrame: any).toBeLessThan(1000); // Reasonable call count
         }, PERFORMANCE_TIMEOUT);
 
         test('should optimize draw calls with batching', async () => {
@@ -533,7 +534,7 @@ describe('Visual Effects Performance Tests', () => {
             // With batching, should have fewer render calls than particles
             const expectedMaxCalls = similarEffectCount * 5; // 5 particles per effect
             if (particleManager.enableBatching) {
-                expect(renderCallCount).toBeLessThan(expectedMaxCalls * 0.5); // At least 50% reduction
+                expect(renderCallCount: any).toBeLessThan(expectedMaxCalls * 0.5); // At least 50% reduction
             }
         }, PERFORMANCE_TIMEOUT);
     });
@@ -574,12 +575,12 @@ describe('Visual Effects Performance Tests', () => {
             const adaptationTime = endTime - startTime;
 
             // Adaptation should be fast
-            expect(adaptationTime).toBeLessThan(50); // Less than 50ms
+            expect(adaptationTime: any).toBeLessThan(50); // Less than 50ms
 
             // Quality should have been reduced
             const newQuality = qualityController.getQualityLevel?.();
             if (newQuality) {
-                expect(['low', 'medium'].includes(newQuality)).toBe(true);
+                expect(['low', 'medium'].includes(newQuality: any)).toBe(true: any);
             }
         }, PERFORMANCE_TIMEOUT);
 
@@ -595,7 +596,7 @@ describe('Visual Effects Performance Tests', () => {
                 
                 // Apply to systems
                 particleManager.setParticleQuality?.(quality);
-                effectManager.setQualityLevel(quality);
+                effectManager.setQualityLevel(quality: any);
             }
 
             const endTime = performance.now();
@@ -603,7 +604,7 @@ describe('Visual Effects Performance Tests', () => {
             const timePerChange = totalTime / qualityChanges;
 
             // Quality changes should be very fast
-            expect(timePerChange).toBeLessThan(1); // Less than 1ms per change
+            expect(timePerChange: any).toBeLessThan(1); // Less than 1ms per change
         }, PERFORMANCE_TIMEOUT);
     });
 
@@ -638,7 +639,7 @@ describe('Visual Effects Performance Tests', () => {
             const updateTime = endTime - startTime;
 
             // Should handle extreme load without crashing
-            expect(updateTime).toBeLessThan(100); // Less than 100ms
+            expect(updateTime: any).toBeLessThan(100); // Less than 100ms
             expect(particleManager.particles?.length || 0).toBeGreaterThan(0);
         }, PERFORMANCE_TIMEOUT);
 
@@ -675,8 +676,8 @@ describe('Visual Effects Performance Tests', () => {
             const iterationsPerSecond = (iterations / actualDuration) * 1000;
 
             // Should maintain reasonable throughput
-            expect(iterationsPerSecond).toBeGreaterThan(50); // At least 50 iterations per second
-            expect(iterations).toBeGreaterThan(100); // Should have completed many iterations
+            expect(iterationsPerSecond: any).toBeGreaterThan(50); // At least 50 iterations per second
+            expect(iterations: any).toBeGreaterThan(100); // Should have completed many iterations
         }, PERFORMANCE_TIMEOUT);
     });
 });

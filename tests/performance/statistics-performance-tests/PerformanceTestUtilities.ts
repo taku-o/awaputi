@@ -5,7 +5,7 @@
 
 // パフォーマンス測定ユーティリティ
 export class PerformanceMeasurement {
-    constructor(name) {
+    constructor(name: any) {
         this.name = name;
         this.measurements = [];
         this.memoryBaseline = null;
@@ -29,7 +29,7 @@ export class PerformanceMeasurement {
             timestamp: Date.now()
         };
 
-        this.measurements.push(measurement);
+        this.measurements.push(measurement: any);
         return measurement;
     }
 
@@ -45,7 +45,7 @@ export class PerformanceMeasurement {
                 min: Math.min(...durations),
                 max: Math.max(...durations),
                 average: durations.reduce((a, b) => a + b, 0) / durations.length,
-                median: this.calculateMedian(durations),
+                median: this.calculateMedian(durations: any),
                 p95: this.calculatePercentile(durations, 95),
                 p99: this.calculatePercentile(durations, 99)
             },
@@ -58,7 +58,7 @@ export class PerformanceMeasurement {
         };
     }
 
-    calculateMedian(arr) {
+    calculateMedian(arr: any) {
         const sorted = [...arr].sort((a, b) => a - b);
         const mid = Math.floor(sorted.length / 2);
         return sorted.length % 2 === 0 
@@ -75,9 +75,9 @@ export class PerformanceMeasurement {
 
 // 大量データ生成ユーティリティ
 export class DataGenerator {
-    static generateGameplayEvents(count) {
+    static generateGameplayEvents(count: any) {
         const bubbleTypes = ['normal', 'stone', 'iron', 'diamond', 'rainbow', 'pink', 'clock', 'electric', 'boss'];
-        const events = [];
+        const events: any[] = [];
 
         for (let i = 0; i < count; i++) {
             events.push({
@@ -99,13 +99,13 @@ export class DataGenerator {
         return events;
     }
 
-    static generateTimeSeriesData(days) {
+    static generateTimeSeriesData(days: any) {
         const data = new Map();
         const startDate = new Date();
         startDate.setDate(startDate.getDate() - days);
 
         for (let i = 0; i < days; i++) {
-            const date = new Date(startDate);
+            const date = new Date(startDate: any);
             date.setDate(date.getDate() + i);
             const dateStr = date.toISOString().split('T')[0];
 
@@ -171,7 +171,7 @@ export const PerformanceTestHelper = {
     /**
      * CPU集約的な処理をシミュレーション
      */
-    simulateCpuIntensiveTask(durationMs) {
+    simulateCpuIntensiveTask(durationMs: any) {
         const start = Date.now();
         while (Date.now() - start < durationMs) {
             Math.random() * Math.random();
@@ -181,23 +181,23 @@ export const PerformanceTestHelper = {
     /**
      * メモリ集約的な処理をシミュレーション
      */
-    simulateMemoryIntensiveTask(sizeInMB) {
+    simulateMemoryIntensiveTask(sizeInMB: any) {
         const arraySize = sizeInMB * 1024 * 1024 / 8; // 8 bytes per number
-        const largeArray = new Array(arraySize).fill(0);
+        const largeArray = new Array(arraySize: any).fill(0);
         return largeArray.map(() => Math.random());
     },
 
     /**
      * ネットワーク遅延をシミュレーション
      */
-    async simulateNetworkDelay(delayMs) {
+    async simulateNetworkDelay(delayMs: any) {
         return new Promise(resolve => setTimeout(resolve, delayMs));
     },
 
     /**
      * パフォーマンス統計の計算
      */
-    calculatePerformanceStats(measurements) {
+    calculatePerformanceStats(measurements: any) {
         if (measurements.length === 0) return null;
 
         const sorted = [...measurements].sort((a, b) => a - b);
@@ -208,17 +208,17 @@ export const PerformanceTestHelper = {
             median: sorted[Math.floor(sorted.length / 2)],
             p95: sorted[Math.floor(sorted.length * 0.95)],
             p99: sorted[Math.floor(sorted.length * 0.99)],
-            standardDeviation: this.calculateStandardDeviation(measurements)
+            standardDeviation: this.calculateStandardDeviation(measurements: any)
         };
     },
 
     /**
      * 標準偏差の計算
      */
-    calculateStandardDeviation(values) {
+    calculateStandardDeviation(values: any) {
         const mean = values.reduce((a, b) => a + b, 0) / values.length;
         const squareDiffs = values.map(value => Math.pow(value - mean, 2));
         const avgSquareDiff = squareDiffs.reduce((a, b) => a + b, 0) / squareDiffs.length;
-        return Math.sqrt(avgSquareDiff);
+        return Math.sqrt(avgSquareDiff: any);
     }
 };

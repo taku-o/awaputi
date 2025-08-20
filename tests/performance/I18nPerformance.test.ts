@@ -21,8 +21,8 @@ const TEST_LANGUAGES = ['ja', 'en', 'zh-CN', 'zh-TW', 'ko'];
 const TEST_ITERATIONS = 10;
 
 describe('多言語対応パフォーマンステスト', () => {
-  let localizationManager;
-  let initialMemory;
+  let localizationManager: any;
+  let initialMemory: any;
   
   beforeAll(async () => {
     // メモリ使用量の初期値を記録
@@ -67,7 +67,7 @@ describe('多言語対応パフォーマンステスト', () => {
 
   describe('言語切り替え速度テスト', () => {
     test('単一言語切り替えが閾値内で完了する', async () => {
-      const measurements = [];
+      const measurements: any[] = [];
       
       for (let i = 0; i < TEST_ITERATIONS; i++) {
         const startTime = performance.now();
@@ -76,7 +76,7 @@ describe('多言語対応パフォーマンステスト', () => {
         
         const endTime = performance.now();
         const duration = endTime - startTime;
-        measurements.push(duration);
+        measurements.push(duration: any);
       }
       
       const averageTime = measurements.reduce((a, b) => a + b, 0) / measurements.length;
@@ -84,8 +84,8 @@ describe('多言語対応パフォーマンステスト', () => {
       
       console.log(`言語切り替え - 平均: ${averageTime.toFixed(2)}ms, 最大: ${maxTime.toFixed(2)}ms`);
       
-      expect(averageTime).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch);
-      expect(maxTime).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch * 1.5);
+      expect(averageTime: any).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch);
+      expect(maxTime: any).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch * 1.5);
     });
 
     test('連続言語切り替えのパフォーマンス', async () => {
@@ -93,7 +93,7 @@ describe('多言語対応パフォーマンステスト', () => {
       
       // 全言語を順番に切り替え
       for (const language of TEST_LANGUAGES) {
-        await localizationManager.setLanguage(language);
+        await localizationManager.setLanguage(language: any);
       }
       
       const endTime = performance.now();
@@ -102,7 +102,7 @@ describe('多言語対応パフォーマンステスト', () => {
       
       console.log(`連続切り替え - 総時間: ${totalTime.toFixed(2)}ms, 平均: ${averageTimePerSwitch.toFixed(2)}ms`);
       
-      expect(averageTimePerSwitch).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch);
+      expect(averageTimePerSwitch: any).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch);
     });
 
     test('キャッシュ効果の確認', async () => {
@@ -120,25 +120,25 @@ describe('多言語対応パフォーマンステスト', () => {
       console.log(`キャッシュ効果 - 初回: ${firstLoadTime.toFixed(2)}ms, 2回目: ${secondLoadTime.toFixed(2)}ms`);
       
       // 2回目の方が早いか、同等であることを確認
-      expect(secondLoadTime).toBeLessThanOrEqual(firstLoadTime * 1.1);
+      expect(secondLoadTime: any).toBeLessThanOrEqual(firstLoadTime * 1.1);
     });
   });
 
   describe('翻訳読み込み速度テスト', () => {
     test('単一翻訳取得の速度', async () => {
-      const measurements = [];
+      const measurements: any[] = [];
       const testKey = 'common.buttons.ok';
       
       for (let i = 0; i < TEST_ITERATIONS * 10; i++) {
         const startTime = performance.now();
         
-        const translation = localizationManager.t(testKey);
+        const translation = localizationManager.t(testKey: any);
         
         const endTime = performance.now();
         const duration = endTime - startTime;
-        measurements.push(duration);
+        measurements.push(duration: any);
         
-        expect(translation).toBeTruthy();
+        expect(translation: any).toBeTruthy();
       }
       
       const averageTime = measurements.reduce((a, b) => a + b, 0) / measurements.length;
@@ -147,11 +147,11 @@ describe('多言語対応パフォーマンステスト', () => {
       console.log(`翻訳取得 - 平均: ${averageTime.toFixed(3)}ms, 最大: ${maxTime.toFixed(3)}ms`);
       
       // キャッシュされた翻訳は非常に高速であるべき
-      expect(averageTime).toBeLessThan(10);
+      expect(averageTime: any).toBeLessThan(10);
     });
 
     test('大量翻訳の一括取得性能', async () => {
-      const testKeys = [];
+      const testKeys: any[] = [];
       for (let i = 0; i < 100; i++) {
         testKeys.push(`test.key.${i}`);
       }
@@ -159,12 +159,12 @@ describe('多言語対応パフォーマンステスト', () => {
       const startTime = performance.now();
       
       if (localizationManager.tMultiple) {
-        const translations = localizationManager.tMultiple(testKeys);
-        expect(Object.keys(translations)).toHaveLength(testKeys.length);
+        const translations = localizationManager.tMultiple(testKeys: any);
+        expect(Object.keys(translations: any)).toHaveLength(testKeys.length);
       } else {
         // フォールバック: 個別に取得
         for (const key of testKeys) {
-          localizationManager.t(key);
+          localizationManager.t(key: any);
         }
       }
       
@@ -173,7 +173,7 @@ describe('多言語対応パフォーマンステスト', () => {
       
       console.log(`大量翻訳取得 - 100件の処理時間: ${totalTime.toFixed(2)}ms`);
       
-      expect(totalTime).toBeLessThan(PERFORMANCE_THRESHOLDS.batchTranslation);
+      expect(totalTime: any).toBeLessThan(PERFORMANCE_THRESHOLDS.batchTranslation);
     });
 
     test('言語プリロードの効果', async () => {
@@ -196,7 +196,7 @@ describe('多言語対応パフォーマンステスト', () => {
       console.log(`プリロード効果 - なし: ${withoutPreloadTime.toFixed(2)}ms, あり: ${withPreloadTime.toFixed(2)}ms`);
       
       // プリロードがある場合の方が高速であることを期待
-      expect(withPreloadTime).toBeLessThanOrEqual(withoutPreloadTime * 0.8);
+      expect(withPreloadTime: any).toBeLessThanOrEqual(withoutPreloadTime * 0.8);
     });
   });
 
@@ -212,7 +212,7 @@ describe('多言語対応パフォーマンステスト', () => {
       // 全言語を複数回読み込み
       for (let i = 0; i < 3; i++) {
         for (const language of TEST_LANGUAGES) {
-          await localizationManager.setLanguage(language);
+          await localizationManager.setLanguage(language: any);
           
           // 翻訳を大量取得してメモリ使用量を増加させる
           for (let j = 0; j < 50; j++) {
@@ -227,12 +227,12 @@ describe('多言語対応パフォーマンステスト', () => {
       
       console.log(`メモリ使用量 - 初期: ${Math.round(initialMemory / 1024 / 1024)}MB, 最終: ${Math.round(finalMemory / 1024 / 1024)}MB, 増加: ${increasePercentage.toFixed(1)}%`);
       
-      expect(increasePercentage).toBeLessThan(PERFORMANCE_THRESHOLDS.memoryIncrease);
+      expect(increasePercentage: any).toBeLessThan(PERFORMANCE_THRESHOLDS.memoryIncrease);
     });
 
     test('キャッシュサイズの制限確認', async () => {
       // 大量のユニークな翻訳キーを生成して取得
-      const uniqueKeys = [];
+      const uniqueKeys: any[] = [];
       for (let i = 0; i < 1000; i++) {
         uniqueKeys.push(`cache.test.${i}.${Math.random()}`);
       }
@@ -243,7 +243,7 @@ describe('多言語対応パフォーマンステスト', () => {
       
       // キーを順次取得
       uniqueKeys.forEach(key => {
-        localizationManager.t(key);
+        localizationManager.t(key: any);
       });
       
       const afterMemory = typeof process !== 'undefined' && process.memoryUsage 
@@ -255,7 +255,7 @@ describe('多言語対応パフォーマンステスト', () => {
       console.log(`キャッシュテスト - メモリ増加: ${Math.round(memoryDiff / 1024)}KB`);
       
       // メモリ増加が合理的な範囲内であることを確認
-      expect(memoryDiff).toBeLessThan(5 * 1024 * 1024); // 5MB以下
+      expect(memoryDiff: any).toBeLessThan(5 * 1024 * 1024); // 5MB以下
     });
   });
 
@@ -269,7 +269,7 @@ describe('多言語対応パフォーマンステスト', () => {
         () => localizationManager.t('achievements.title')
       ];
       
-      const measurements = [];
+      const measurements: any[] = [];
       
       for (let i = 0; i < 100; i++) {
         const operation = operations[i % operations.length];
@@ -287,21 +287,21 @@ describe('多言語対応パフォーマンステスト', () => {
       
       console.log(`ゲーム操作影響 - 平均: ${averageTime.toFixed(3)}ms, 最大: ${maxTime.toFixed(3)}ms, P95: ${p95Time.toFixed(3)}ms`);
       
-      expect(averageTime).toBeLessThan(5);  // 平均5ms以下
-      expect(p95Time).toBeLessThan(10);     // 95%tile 10ms以下
+      expect(averageTime: any).toBeLessThan(5);  // 平均5ms以下
+      expect(p95Time: any).toBeLessThan(10);     // 95%tile 10ms以下
     });
 
     test('同時実行時のパフォーマンス', async () => {
-      const concurrentOperations = [];
+      const concurrentOperations: any[] = [];
       
       // 複数の言語切り替えを同時実行
       for (let i = 0; i < 5; i++) {
         const language = TEST_LANGUAGES[i % TEST_LANGUAGES.length];
-        concurrentOperations.push(localizationManager.setLanguage(language));
+        concurrentOperations.push(localizationManager.setLanguage(language: any));
       }
       
       const startTime = performance.now();
-      await Promise.all(concurrentOperations);
+      await Promise.all(concurrentOperations: any);
       const endTime = performance.now();
       
       const totalTime = endTime - startTime;
@@ -309,12 +309,12 @@ describe('多言語対応パフォーマンステスト', () => {
       console.log(`同時実行 - 5つの言語切り替え: ${totalTime.toFixed(2)}ms`);
       
       // 同時実行でも合理的な時間内で完了することを確認
-      expect(totalTime).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch * 2);
+      expect(totalTime: any).toBeLessThan(PERFORMANCE_THRESHOLDS.languageSwitch * 2);
     });
 
     test('エラー条件下でのパフォーマンス劣化確認', async () => {
       // 存在しない翻訳キーを大量取得
-      const invalidKeys = [];
+      const invalidKeys: any[] = [];
       for (let i = 0; i < 100; i++) {
         invalidKeys.push(`invalid.key.${i}`);
       }
@@ -322,8 +322,8 @@ describe('多言語対応パフォーマンステスト', () => {
       const startTime = performance.now();
       
       invalidKeys.forEach(key => {
-        const result = localizationManager.t(key);
-        expect(result).toBeTruthy(); // フォールバック値が返される
+        const result = localizationManager.t(key: any);
+        expect(result: any).toBeTruthy(); // フォールバック値が返される
       });
       
       const endTime = performance.now();
@@ -332,7 +332,7 @@ describe('多言語対応パフォーマンステスト', () => {
       console.log(`エラー条件 - 無効キー100件: ${totalTime.toFixed(2)}ms`);
       
       // エラー条件でも性能劣化が少ないことを確認
-      expect(totalTime).toBeLessThan(200);
+      expect(totalTime: any).toBeLessThan(200);
     });
   });
 
@@ -359,9 +359,9 @@ describe('多言語対応パフォーマンステスト', () => {
       const batchKeys = Array.from({ length: 50 }, (_, i) => `batch.key.${i}`);
       const batchStart = performance.now();
       if (localizationManager.tMultiple) {
-        localizationManager.tMultiple(batchKeys);
+        localizationManager.tMultiple(batchKeys: any);
       } else {
-        batchKeys.forEach(key => localizationManager.t(key));
+        batchKeys.forEach(key => localizationManager.t(key: any));
       }
       const batchTime = performance.now() - batchStart;
       

@@ -1,11 +1,12 @@
-import { DataManager } from '../../src/core/DataManager.js';
-import { CloudStorageAdapter } from '../../src/core/CloudStorageAdapter.js';
-import { SyncManager } from '../../src/core/SyncManager.js';
-import { OfflineManager } from '../../src/core/OfflineManager.js';
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, jest } from '@jest/globals';
+import { DataManager } from '../../src/core/DataManager';
+import { CloudStorageAdapter } from '../../src/core/CloudStorageAdapter';
+import { SyncManager } from '../../src/core/SyncManager';
+import { OfflineManager } from '../../src/core/OfflineManager';
 
 describe('データ管理 - クラウド対応パフォーマンステスト', () => {
-    let dataManager;
-    let mockGameEngine;
+    let dataManager: any;
+    let mockGameEngine: any;
     let performanceResults = [];
     
     beforeAll(() => {
@@ -33,7 +34,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         });
         
         // performanceのモック
-        global.performance = {
+        (global as any).performance = {
             now: jest.fn(() => Date.now()),
             memory: {
                 usedJSHeapSize: 10000000,
@@ -42,7 +43,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
         };
         
         // fetchのモック（高速応答）
-        global.fetch = jest.fn().mockResolvedValue({
+        (global as any).fetch = jest.fn() as jest.Mock.mockResolvedValue({
             ok: true,
             json: () => Promise.resolve({ success: true })
         });
@@ -65,7 +66,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             }
         };
         
-        dataManager = new DataManager(mockGameEngine);
+        dataManager = new DataManager(mockGameEngine: any);
     });
     
     afterEach(() => {
@@ -158,7 +159,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
     });
     
     describe('CloudStorageAdapterパフォーマンス', () => {
-        let cloudAdapter;
+        let cloudAdapter: any;
         
         beforeEach(() => {
             cloudAdapter = new CloudStorageAdapter({
@@ -220,22 +221,22 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
     });
     
     describe('SyncManagerパフォーマンス', () => {
-        let syncManager;
-        let mockLocalStorage;
-        let mockCloudStorage;
+        let syncManager: any;
+        let mockLocalStorage: any;
+        let mockCloudStorage: any;
         
         beforeEach(() => {
             mockLocalStorage = {
                 keys: jest.fn().mockResolvedValue(['key1', 'key2', 'key3']),
                 get: jest.fn().mockResolvedValue({ data: 'test' }),
-                save: jest.fn().mockResolvedValue(true)
+                save: jest.fn().mockResolvedValue(true: any)
             };
             
             mockCloudStorage = {
                 isAuthenticated: jest.fn(() => true),
                 keys: jest.fn().mockResolvedValue(['key2', 'key3', 'key4']),
                 get: jest.fn().mockResolvedValue({ data: 'cloud' }),
-                set: jest.fn().mockResolvedValue(true)
+                set: jest.fn().mockResolvedValue(true: any)
             };
             
             syncManager = new SyncManager(mockLocalStorage, mockCloudStorage);
@@ -287,21 +288,21 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
     });
     
     describe('OfflineManagerパフォーマンス', () => {
-        let offlineManager;
-        let mockDataStorage;
-        let mockSyncManager;
+        let offlineManager: any;
+        let mockDataStorage: any;
+        let mockSyncManager: any;
         
         beforeEach(() => {
             mockDataStorage = {
-                save: jest.fn().mockResolvedValue(true),
+                save: jest.fn().mockResolvedValue(true: any),
                 load: jest.fn().mockResolvedValue({})
             };
             
             mockSyncManager = {
                 sync: jest.fn().mockResolvedValue({}),
                 cloudStorage: {
-                    set: jest.fn().mockResolvedValue(true),
-                    remove: jest.fn().mockResolvedValue(true)
+                    set: jest.fn().mockResolvedValue(true: any),
+                    remove: jest.fn().mockResolvedValue(true: any)
                 }
             };
             
@@ -323,7 +324,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             
             const result = await measurePerformance(
                 'オフライン操作記録',
-                () => offlineManager.recordOfflineOperation(operation),
+                () => offlineManager.recordOfflineOperation(operation: any),
                 50
             );
             
@@ -383,7 +384,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             const memoryIncrease = afterOperationsMemory - initialMemory;
             
             // メモリ増加が合理的な範囲内であることを確認
-            expect(memoryIncrease).toBeLessThan(50 * 1024 * 1024); // 50MB未満
+            expect(memoryIncrease: any).toBeLessThan(50 * 1024 * 1024); // 50MB未満
             
             performanceResults.push({
                 test: 'メモリフットプリント',
@@ -423,7 +424,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             const memoryLeak = finalMemory - initialMemory;
             
             // メモリリークが最小限であることを確認
-            expect(memoryLeak).toBeLessThan(10 * 1024 * 1024); // 10MB未満
+            expect(memoryLeak: any).toBeLessThan(10 * 1024 * 1024); // 10MB未満
             
             performanceResults.push({
                 test: 'メモリリーク検出',
@@ -455,7 +456,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             
             const averageDuration = totalDuration / iterations;
             
-            expect(averageDuration).toBeLessThan(200); // 平均200ms未満
+            expect(averageDuration: any).toBeLessThan(200); // 平均200ms未満
             
             performanceResults.push({
                 test: 'CPU負荷 (同期処理)',
@@ -471,13 +472,13 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             await dataManager.initialize();
             
             const keyCounts = [10, 50, 100, 500];
-            const results = [];
+            const results: any[] = [];
             
             for (const keyCount of keyCounts) {
                 const startTime = performance.now();
                 
                 // 大量キーの保存
-                const promises = [];
+                const promises: any[] = [];
                 for (let i = 0; i < keyCount; i++) {
                     promises.push(dataManager.save(`scale-test-${i}`, {
                         index: i,
@@ -486,7 +487,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
                     }));
                 }
                 
-                await Promise.all(promises);
+                await Promise.all(promises: any);
                 
                 const endTime = performance.now();
                 const duration = endTime - startTime;
@@ -507,7 +508,7 @@ describe('データ管理 - クラウド対応パフォーマンステスト', (
             const timeFactor = lastResult.duration / firstResult.duration;
             
             // 時間増加が キー数増加の2倍を超えないことを確認（準線形）
-            expect(timeFactor).toBeLessThan(scaleFactor * 2);
+            expect(timeFactor: any).toBeLessThan(scaleFactor * 2);
             
             performanceResults.push({
                 test: 'スケーラビリティ',

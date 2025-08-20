@@ -7,9 +7,9 @@ import { jest } from '@jest/globals';
 import { performance } from 'perf_hooks';
 
 // 分割後のクラス
-import { AudioAccessibilitySupport } from '../../src/audio/accessibility/AudioAccessibilitySupport.js';
-import { VisualFocusManager } from '../../src/core/VisualFocusManager.js';
-import { VisualFeedbackManager } from '../../src/core/VisualFeedbackManager.js';
+import { AudioAccessibilitySupport } from '../../src/audio/accessibility/AudioAccessibilitySupport';
+import { VisualFocusManager } from '../../src/core/VisualFocusManager';
+import { VisualFeedbackManager } from '../../src/core/VisualFeedbackManager';
 
 describe('Phase G Performance Tests', () => {
     const iterations = 1000;
@@ -25,7 +25,7 @@ describe('Phase G Performance Tests', () => {
         }
 
         // 測定
-        const measurements = [];
+        const measurements: any[] = [];
         let totalMemoryBefore = 0;
         let totalMemoryAfter = 0;
 
@@ -65,7 +65,7 @@ describe('Phase G Performance Tests', () => {
                 p99: parseFloat(p99.toFixed(3)),
                 min: parseFloat(min.toFixed(3)),
                 max: parseFloat(max.toFixed(3)),
-                avgMemoryDelta: Math.round(avgMemoryDelta)
+                avgMemoryDelta: Math.round(avgMemoryDelta: any)
             }
         };
     };
@@ -112,7 +112,7 @@ describe('Phase G Performance Tests', () => {
         };
 
         // 削減率計算
-        Object.keys(fileSizes).forEach(className => {
+        Object.keys(fileSizes: any).forEach(className => {
             const data = fileSizes[className];
             data.reduction = {
                 words: ((data.before.words - data.after.words) / data.before.words * 100).toFixed(1),
@@ -126,7 +126,7 @@ describe('Phase G Performance Tests', () => {
     };
 
     describe('AudioAccessibilitySupport Performance', () => {
-        let instance;
+        let instance: any;
 
         beforeEach(() => {
             // Canvas mock
@@ -139,19 +139,19 @@ describe('Phase G Performance Tests', () => {
                     measureText: jest.fn(() => ({ width: 100 }))
                 }))
             };
-            global.document = {
+            (global as any).document = {
                 createElement: jest.fn(() => mockCanvas),
                 getElementById: jest.fn(),
                 body: { appendChild: jest.fn(), removeChild: jest.fn() }
             };
-            global.window = { 
+            (global as any).window = { 
                 speechSynthesis: {
                     speak: jest.fn(),
                     cancel: jest.fn(),
                     getVoices: jest.fn(() => [])
                 }
             };
-            global.AudioContext = jest.fn(() => ({
+            (global as any).AudioContext = jest.fn(() => ({
                 createOscillator: jest.fn(() => ({
                     connect: jest.fn(),
                     start: jest.fn(),
@@ -225,7 +225,7 @@ describe('Phase G Performance Tests', () => {
     });
 
     describe('VisualFocusManager Performance', () => {
-        let instance;
+        let instance: any;
 
         beforeEach(() => {
             // Canvas mock
@@ -248,7 +248,7 @@ describe('Phase G Performance Tests', () => {
                 height: 600
             };
             
-            global.document = {
+            (global as any).document = {
                 getElementById: jest.fn(() => mockCanvas),
                 addEventListener: jest.fn(),
                 removeEventListener: jest.fn()
@@ -314,7 +314,7 @@ describe('Phase G Performance Tests', () => {
     });
 
     describe('VisualFeedbackManager Performance', () => {
-        let instance;
+        let instance: any;
 
         beforeEach(() => {
             // Canvas mock
@@ -337,11 +337,11 @@ describe('Phase G Performance Tests', () => {
                 height: 600
             };
             
-            global.document = {
+            (global as any).document = {
                 getElementById: jest.fn(() => mockCanvas)
             };
             
-            global.requestAnimationFrame = jest.fn(cb => setTimeout(cb, 16));
+            (global as any).requestAnimationFrame = jest.fn(cb => setTimeout(cb, 16));
         });
 
         test('インスタンス化パフォーマンス', async () => {
@@ -408,7 +408,7 @@ describe('Phase G Performance Tests', () => {
             
             console.log('\n=== ファイルサイズ削減効果 ===');
             
-            Object.entries(fileSizes).forEach(([className, data]) => {
+            Object.entries(fileSizes: any).forEach(([className, data]) => {
                 console.log(`\n${className}:`);
                 console.log(`  分割前: ${data.before.words}語 (推定${data.before.estimatedBytes}バイト)`);
                 console.log(`  分割後: ${data.after.words}語 (推定${data.after.estimatedBytes}バイト)`);
@@ -443,8 +443,8 @@ describe('Phase G Performance Tests', () => {
             console.log(`メソッド実行時間劣化: ${methodDegradation.toFixed(1)}%`);
             
             // 5%以内の確認
-            expect(instantiationDegradation).toBeLessThan(5);
-            expect(methodDegradation).toBeLessThan(5);
+            expect(instantiationDegradation: any).toBeLessThan(5);
+            expect(methodDegradation: any).toBeLessThan(5);
         });
     });
 });

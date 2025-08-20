@@ -7,17 +7,17 @@
  */
 
 import { jest } from '@jest/globals';
-import { MockFactory } from '../mocks/MockFactory.js';
-import { PerformanceTestUtils } from '../utils/PerformanceTestUtils.js';
-import { performanceErrorRecovery } from '../utils/PerformanceErrorRecovery.js';
+import { MockFactory } from '../mocks/MockFactory';
+import { PerformanceTestUtils } from '../utils/PerformanceTestUtils';
+import { performanceErrorRecovery } from '../utils/PerformanceErrorRecovery';
 
 // Import sub-components
-import { DataCollectionPerformanceTests } from './statistics-performance-tests/DataCollectionPerformanceTests.js';
-import { AnalysisRenderingPerformanceTests } from './statistics-performance-tests/AnalysisRenderingPerformanceTests.js';
-import { ExportMemoryOptimizationTests } from './statistics-performance-tests/ExportMemoryOptimizationTests.js';
+import { DataCollectionPerformanceTests } from './statistics-performance-tests/DataCollectionPerformanceTests';
+import { AnalysisRenderingPerformanceTests } from './statistics-performance-tests/AnalysisRenderingPerformanceTests';
+import { ExportMemoryOptimizationTests } from './statistics-performance-tests/ExportMemoryOptimizationTests';
 
 // Export utility classes for compatibility
-export { PerformanceMeasurement, DataGenerator, PerformanceTestHelper } from './statistics-performance-tests/PerformanceTestUtilities.js';
+export { PerformanceMeasurement, DataGenerator, PerformanceTestHelper } from './statistics-performance-tests/PerformanceTestUtilities';
 
 // 環境対応パフォーマンス設定を取得
 const performanceConfig = PerformanceTestUtils.createPerformanceTestConfig();
@@ -28,17 +28,17 @@ const mockCanvas = MockFactory.createCanvasMock();
 const mockGameEngine = MockFactory.createGameEngineMock();
 
 describe('統計システムパフォーマンステスト', () => {
-    let statisticsManager;
-    let statisticsCollector;
-    let statisticsAnalyzer;
-    let chartRenderer;
-    let statisticsExporter;
-    let statisticsPerformanceOptimizer;
+    let statisticsManager: any;
+    let statisticsCollector: any;
+    let statisticsAnalyzer: any;
+    let chartRenderer: any;
+    let statisticsExporter: any;
+    let statisticsPerformanceOptimizer: any;
     
     // Test suite components
-    let dataCollectionTests;
-    let analysisRenderingTests;
-    let exportMemoryOptimizationTests;
+    let dataCollectionTests: any;
+    let analysisRenderingTests: any;
+    let exportMemoryOptimizationTests: any;
 
     beforeAll(async () => {
         // MockFactoryからの標準化されたモック適用
@@ -47,8 +47,8 @@ describe('統計システムパフォーマンステスト', () => {
         
         // グローバルAPIのモック設定
         if (typeof global !== 'undefined') {
-            global.performance = performanceMock;
-            global.localStorage = storageMock;
+            (global as any).performance = performanceMock;
+            (global as any).localStorage = storageMock;
         }
         if (typeof window !== 'undefined') {
             window.performance = performanceMock;
@@ -65,12 +65,12 @@ describe('統計システムパフォーマンステスト', () => {
             const StatisticsPerformanceOptimizerModule = await import('../../src/core/StatisticsPerformanceOptimizer.js');
 
             // インスタンス作成
-            statisticsManager = new StatisticsManagerModule.StatisticsManager(mockGameEngine);
-            statisticsCollector = new StatisticsCollectorModule.StatisticsCollector(statisticsManager);
-            statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager);
-            chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas);
-            statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager);
-            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager);
+            statisticsManager = new StatisticsManagerModule.StatisticsManager(mockGameEngine: any);
+            statisticsCollector = new StatisticsCollectorModule.StatisticsCollector(statisticsManager: any);
+            statisticsAnalyzer = new StatisticsAnalyzerModule.StatisticsAnalyzer(statisticsManager: any);
+            chartRenderer = new ChartRendererModule.ChartRenderer(mockCanvas: any);
+            statisticsExporter = new StatisticsExporterModule.StatisticsExporter(statisticsManager: any);
+            statisticsPerformanceOptimizer = new StatisticsPerformanceOptimizerModule.StatisticsPerformanceOptimizer(statisticsManager: any);
         } catch (error) {
             console.error('Failed to import modules:', error);
         }
@@ -89,9 +89,9 @@ describe('統計システムパフォーマンステスト', () => {
         };
         
         // Initialize sub-components with dependency injection
-        dataCollectionTests = new DataCollectionPerformanceTests(mainTestSuite);
-        analysisRenderingTests = new AnalysisRenderingPerformanceTests(mainTestSuite);
-        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite);
+        dataCollectionTests = new DataCollectionPerformanceTests(mainTestSuite: any);
+        analysisRenderingTests = new AnalysisRenderingPerformanceTests(mainTestSuite: any);
+        exportMemoryOptimizationTests = new ExportMemoryOptimizationTests(mainTestSuite: any);
         
         console.log('[StatisticsPerformance] Main test controller initialized successfully');
     });
@@ -164,7 +164,7 @@ describe('統計システムパフォーマンステスト', () => {
      * Configure test suite settings
      * @param {Object} config - Test configuration
      */
-    function configureTestSuite(config) {
+    function configureTestSuite(config: any) {
         if (config.performanceConfig) {
             Object.assign(performanceConfig, config.performanceConfig);
         }
@@ -195,9 +195,9 @@ describe('統計システムパフォーマンステスト', () => {
     }
     
     // Make helper functions available globally for compatibility
-    global.getStatisticsPerformanceTestComponents = getTestComponents;
-    global.configureStatisticsPerformanceTestSuite = configureTestSuite;
-    global.getStatisticsPerformanceTestSuiteStatus = getTestSuiteStatus;
+    (global as any).getStatisticsPerformanceTestComponents = getTestComponents;
+    (global as any).configureStatisticsPerformanceTestSuite = configureTestSuite;
+    (global as any).getStatisticsPerformanceTestSuiteStatus = getTestSuiteStatus;
 });
 
 console.log('[StatisticsPerformance] Performance test suite loaded successfully');
