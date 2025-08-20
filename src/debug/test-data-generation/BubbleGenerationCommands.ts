@@ -12,6 +12,6 @@ export class BubbleGenerationCommands {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

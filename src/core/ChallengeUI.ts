@@ -49,12 +49,12 @@ export interface ChallengeUIConfig { // 表示設定
  */
 interface UIState { visible: boolean,
     challenges: Challenge[],
-    selectedChallenge: Challenge | null,';
+    selectedChallenge: Challenge | null,
     focusedIndex: number,'';
     sortBy: 'priority' | 'difficulty' | 'progress' | 'deadline','';
     filterBy: 'all' | 'daily' | 'weekly' | 'completed' | 'active',
     loading: boolean,
-    error: string | null; };
+    error: string | null };
 }
 /**
  * UI統計インターフェース
@@ -65,7 +65,7 @@ interface UIStats { views: number,
     filterChanges: number,
     sortChanges: number,
     keyboardInteractions: number,
-    announcementsMade: number; };
+    announcementsMade: number };
 }
 /**
  * DOM要素インターフェース
@@ -80,7 +80,7 @@ interface UIElements { container: HTMLElement | null,
     footer: HTMLElement | null,
     announcer: HTMLElement | null,
     loadingIndicator: HTMLElement | null,
-    errorMessage: HTMLElement | null; };
+    errorMessage: HTMLElement | null };
 }
 export class ChallengeUI {
     private challengeSystem: ChallengeSystem;
@@ -94,7 +94,7 @@ export class ChallengeUI {
         animations: {
             enabled: boolean,
             duration: number,
-            easing: string ;
+            easing: string 
 }
         },
         accessibility: { enabled: boolean,
@@ -104,7 +104,7 @@ export class ChallengeUI {
             reducedMotion: boolean,
             progressAnnouncements: boolean,
             rewardAnnouncements: boolean,
-            screenReaderOptimized: boolean ;
+            screenReaderOptimized: boolean 
 }
         },
         styles: { backgroundColor: string,
@@ -112,7 +112,7 @@ export class ChallengeUI {
             accentColor: string,
             borderRadius: string,
             fontSize: string,
-            fontFamily: string; }
+            fontFamily: string }
         };
     };
     
@@ -122,7 +122,7 @@ export class ChallengeUI {
     // サブコンポーネント
     public renderer: ChallengeUIRenderer,
     public interactionHandler: ChallengeInteractionHandler,
-    public dataController: ChallengeDataController,';
+    public dataController: ChallengeDataController,
     '';
     constructor(challengeSystem: ChallengeSystem, options: ChallengeUIConfig = { )') {
         this.challengeSystem = challengeSystem;
@@ -139,9 +139,9 @@ export class ChallengeUI {
             
             // アニメーション設定
             animations: {
-                enabled: options.animations !== false,';
+                enabled: options.animations !== false,
                 duration: options.animationDuration || 300,'';
-                easing: options.animationEasing || 'ease-in-out' ;
+                easing: options.animationEasing || 'ease-in-out' 
 }
             },
             
@@ -153,11 +153,11 @@ export class ChallengeUI {
                 reducedMotion: options.reducedMotion === true,
                 progressAnnouncements: options.progressAnnouncements !== false,
                 rewardAnnouncements: options.rewardAnnouncements !== false,
-                screenReaderOptimized: options.screenReaderOptimized !== false ;
+                screenReaderOptimized: options.screenReaderOptimized !== false 
 }
             },
             
-            // スタイル設定'
+            // スタイル設定
             styles: { ''
                 backgroundColor: options.backgroundColor || '#FFFFFF','';
                 textColor: options.textColor || '#333333','';
@@ -171,12 +171,12 @@ export class ChallengeUI {
         // 状态管理
         this.state = { visible: false,
             challenges: [],
-            selectedChallenge: null,';
+            selectedChallenge: null,
             focusedIndex: 0,'';
             sortBy: 'priority','';
             filterBy: 'all',
             loading: false,
-            error: null ;
+            error: null 
 }
         },
         
@@ -191,7 +191,7 @@ export class ChallengeUI {
             footer: null,
             announcer: null,
             loadingIndicator: null,
-            errorMessage: null ;
+            errorMessage: null 
 }
         },
         
@@ -202,17 +202,17 @@ export class ChallengeUI {
             filterChanges: 0,
             sortChanges: 0,
             keyboardInteractions: 0,
-            announcementsMade: 0 ;
+            announcementsMade: 0 
 }
         },
         
         // サブコンポーネントの初期化（依存注入）
-        this.renderer = new ChallengeUIRenderer(this);'
+        this.renderer = new ChallengeUIRenderer(this);
         this.interactionHandler = new ChallengeInteractionHandler(this);''
         this.dataController = new ChallengeDataController(this');'
         '';
         console.log('[ChallengeUI] Main Controller initialized with sub-components');''
-        this.initialize('')';
+        this.initialize()';
         this.log('ChallengeUI初期化完了');
     }
     
@@ -235,9 +235,9 @@ export class ChallengeUI {
             }
                 this.interactionHandler.setupAccessibility(); };
 }
-            // 自動更新の設定（データコントローラーに委譲）'
+            // 自動更新の設定（データコントローラーに委譲）
             if (this.config.autoRefresh) { this.dataController.startAutoRefresh();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.handleError('CHALLENGE_UI_INITIALIZATION_FAILED', error as Error); };
 }
     }
@@ -255,21 +255,21 @@ export class ChallengeUI {
             
             // チャレンジデータの読み込み（データコントローラーに委譲）
             await this.dataController.loadChallenges();
-            ';
-            // コンテナの表示''
+            ;
+            // コンテナの表示
             if(this.elements.container') {'
-                ';
+                ';'
             }'
                 this.elements.container.style.display = 'flex'; };
 }
             ';
-            // 初期フォーカスの設定（インタラクションハンドラーに委譲）''
-            this.interactionHandler.setInitialFocus('')';
+            // 初期フォーカスの設定（インタラクションハンドラーに委譲）
+            this.interactionHandler.setInitialFocus()';
             this.announce('チャレンジ一覧を表示しました'');'
             '';
             this.log('ChallengeUI表示');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('CHALLENGE_UI_SHOW_FAILED', error as Error); };
 }
     }
@@ -278,10 +278,10 @@ export class ChallengeUI {
      * チャレンジの非表示
      */
     hide(): void { if (!this.state.visible) return;
-        ';
+        ';'
         this.state.visible = false;''
         if(this.elements.container') {'
-            ';
+            ';'
         }'
             this.elements.container.style.display = 'none'; }
         }'
@@ -323,14 +323,14 @@ export class ChallengeUI {
     // ========== アナウンス機能 ==========
     
     /**
-     * アナウンス'
+     * アナウンス
      */''
     announce(message: string, priority: 'polite' | 'assertive' = 'polite'): void { ''
         if (!this.config.accessibility.announcements || !this.elements.announcer') return;
         
         this.stats.announcementsMade++;
         ';
-        // 一度クリアしてから新しいメッセージを設定''
+        // 一度クリアしてから新しいメッセージを設定
         this.elements.announcer.textContent = '';
         setTimeout(() => { 
             if (this.elements.announcer) { }
@@ -360,9 +360,9 @@ export class ChallengeUI {
         this.renderer.applyStyles();
         
         // 自動更新の再設定（データコントローラーに委譲）
-        if (this.config.autoRefresh) { this.dataController.startAutoRefresh(); }'
+        if (this.config.autoRefresh) { this.dataController.startAutoRefresh(); }
         } else {  ''
-            this.dataController.stopAutoRefresh('') }'
+            this.dataController.stopAutoRefresh() }'
         this.log('ChallengeUI設定更新', newConfig); };
 }
     // ========== 状態取得 ==========
@@ -376,7 +376,7 @@ export class ChallengeUI {
         loading: boolean,
         error: string | null,
         sortBy: string,
-        filterBy: string; }
+        filterBy: string }
     } { return { visible: this.state.visible,
             challenges: this.state.challenges.length,
             selectedChallenge: this.state.selectedChallenge? .id || null, : undefined;
@@ -392,7 +392,7 @@ export class ChallengeUI {
      * 統計の取得
      */
     getStats(): { main: UIStats,
-        challenge: any; }
+        challenge: any }
     } { return { }
             main: { ...this.stats },
             challenge: this.dataController.getChallengeStatistics(),
@@ -429,7 +429,7 @@ export class ChallengeUI {
     // ========== ユーティリティ ==========
     
     /**
-     * 要素の可視性チェック'
+     * 要素の可視性チェック
      */''
     isVisible(''';
                this.elements.container.style.display !== 'none';
@@ -474,8 +474,8 @@ export class ChallengeUI {
         if (this.interactionHandler) { this.interactionHandler.destroy(); };
 }
         // DOM要素の削除
-        if(this.elements.container && this.elements.container.parentNode) {'
-            ';
+        if(this.elements.container && this.elements.container.parentNode) {
+            ';'
         }'
             this.elements.container.parentNode.removeChild(this.elements.container'); }
         }'
@@ -494,11 +494,11 @@ export class ChallengeUI {
             type,
             error: error.message || error,
             context,
-            timestamp: Date.now(); }
-        };'
+            timestamp: Date.now() }
+        };
         '';
         if(ErrorHandler') {'
-            ';
+            ';'
         }'
             ErrorHandler.handleError(error, 'ChallengeUI', context'); }
         }'

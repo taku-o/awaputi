@@ -2,9 +2,9 @@ import { getErrorHandler } from '../ErrorHandler.js';''
 import fs from 'fs';''
 import path from 'path';
 
-// Type definitions'
+// Type definitions
 interface ErrorHandler { ''
-    handleError: (error: Error, context?: any') => void; }
+    handleError: (error: Error, context?: any') => void }
 }
 
 interface ReportConfig { projectRoot?: string;
@@ -18,12 +18,12 @@ interface ReportConfig { projectRoot?: string;
 interface ResolvedItem { name: string,
     resolution: string,';
     files: string[],'';
-    impact: 'Low' | 'Medium' | 'High'; }
+    impact: 'Low' | 'Medium' | 'High' }
 }
 
 interface ResolvedDuplication { taskId: string,
     category: string,
-    items: ResolvedItem[];
+    items: ResolvedItem[]
     }
 }
 
@@ -33,7 +33,7 @@ interface ReportMetadata { title: string,
     generatedBy: string,
     projectRoot: string,
     branch: string,
-    version: string; }
+    version: string }
 }
 
 interface ProjectSummary { objective: string,
@@ -43,12 +43,12 @@ interface ProjectSummary { objective: string,
     tasksCompleted: number,
     totalTasks: number,
     completionPercentage: number,
-    keyAchievements: string[]; }
+    keyAchievements: string[] }
 }
 
 interface DuplicationCategory { [categoryName: string]: number, }
 }
-';
+';'
 interface NamingStrategies { ''
     'Domain-based': number;''
     'Function-level': number;''
@@ -57,12 +57,12 @@ interface NamingStrategies { ''
 
 interface FilesModified { renamed: number,
     updated: number,
-    created: number; }
+    created: number }
 }
 
 interface DuplicationsResolved { totalClasses: number,
     totalFiles: number,
-    byCategory: DuplicationCategory;
+    byCategory: DuplicationCategory
     }
 }
 
@@ -71,66 +71,66 @@ interface Statistics { duplicationsResolved: DuplicationsResolved,
     namingStrategies: NamingStrategies,
     gitCommits: number,
     testsPassing: boolean,
-    buildSuccessful: boolean; }
+    buildSuccessful: boolean }
 }
 
 interface ChangeItem { name: string,
     action: string,
     files: string[],
     impact: string,
-    reasoning: string; }
+    reasoning: string }
 }
 
 interface ChangePhase { taskId: string,
     phase: string,
     category: string,
     description: string,
-    items: ChangeItem[];
+    items: ChangeItem[]
     }
 }
 
 interface ChangeLog { overview: string,
-    phases: ChangePhase[];
+    phases: ChangePhase[]
     }
 }
 
 interface SystemImpactArea { maintainability: string,
     readability: string,
     debuggability: string,
-    onboardingExperience: string; }
+    onboardingExperience: string }
 }
 
 interface DevelopmentImpactArea { namingConfusion: string,
     importErrors: string,
     codeNavigation: string,
-    toolSupport: string; }
+    toolSupport: string }
 }
 
 interface PerformanceImpactArea { runtime: string,
     buildTime: string,
-    bundleSize: string; }
+    bundleSize: string }
 }
 
 interface SystemImpacts { codebase: SystemImpactArea,
     development: DevelopmentImpactArea,
-    performance: PerformanceImpactArea;
+    performance: PerformanceImpactArea
     }
 }
 
 interface RiskAssessment { breakingChanges: string,
     backwardCompatibility: string,
     regressionRisk: string,
-    rollbackComplexity: string; }
+    rollbackComplexity: string }
 }
 
 interface Beneficiaries { developers: string,
     codeReviewers: string,
-    newTeamMembers: string; }
+    newTeamMembers: string }
 }
 
 interface ImpactAnalysis { systemImpacts: SystemImpacts,
     riskAssessment: RiskAssessment,
-    beneficiaries: Beneficiaries;
+    beneficiaries: Beneficiaries
     }
 }
 
@@ -152,7 +152,7 @@ interface ValidationArea { status: string,
 interface ValidationResults { syntaxValidation: ValidationArea,
     importValidation: ValidationArea,
     testSuite: ValidationArea,
-    buildValidation: ValidationArea;
+    buildValidation: ValidationArea
     }
 }
 
@@ -160,43 +160,43 @@ interface Recommendation { category: string,
     priority: string,
     recommendation: string,
     rationale: string,
-    implementation: string; }
+    implementation: string }
 }
 
 interface AutomaticValidation { description: string,
     implementation: string,
     integration: string,
-    coverage: string; }
+    coverage: string }
 }
 
 interface DevelopmentGuidelines { description: string,
     domainBased: string,
     functionalLevel: string,
-    contextSpecific: string; }
+    contextSpecific: string }
 }
 
 interface ToolingSupport { description: string,
     cliTools: string,
     validation: string,
-    integration: string; }
+    integration: string }
 }
 
 interface ProcessImprovements { description: string,
     codeReview: string,
     onboarding: string,
-    refactoring: string; }
+    refactoring: string }
 }
 
 interface PreventionMeasures { automaticValidation: AutomaticValidation,
     developmentGuidelines: DevelopmentGuidelines,
     toolingSupport: ToolingSupport,
-    processImprovements: ProcessImprovements;
+    processImprovements: ProcessImprovements
     }
 }
 
 interface FileAnalysisResult { renamedFiles: number,
     updatedFiles: number,
-    createdFiles: number; }
+    createdFiles: number }
 }
 
 interface OutputFiles { json?: string;
@@ -210,7 +210,7 @@ interface ComprehensiveReport { metadata: ReportMetadata,
     impactAnalysis: ImpactAnalysis,
     validationResults: ValidationResults,
     recommendations: Recommendation[],
-    futurePreventionMeasures: PreventionMeasures;
+    futurePreventionMeasures: PreventionMeasures
     }
 }
 
@@ -224,7 +224,7 @@ export class ReportGenerator {
     private reportConfig: Required<ReportConfig>;
     private resolvedDuplications: ResolvedDuplication[];
     constructor(config: ReportConfig = {) {
-';
+';'
         this.errorHandler = getErrorHandler();''
         this.projectRoot = config.projectRoot || process.cwd('';
     }
@@ -232,7 +232,7 @@ export class ReportGenerator {
             outputFormat: config.outputFormat || 'both' // 'json', 'markdown', 'both' }
         };
         
-        // 解決済みの重複情報'
+        // 解決済みの重複情報
         this.resolvedDuplications = [{ ''
                 taskId: '6','';
                 category: 'Configuration Files',
@@ -456,7 +456,7 @@ export class ReportGenerator {
     /**
      * 包括的なプロジェクトレポートを生成'
      */''
-    async generateComprehensiveReport('')';
+    async generateComprehensiveReport()';
         console.log('[ReportGenerator] Generating comprehensive project report...');
         
         try { const report: ComprehensiveReport = {
@@ -469,10 +469,10 @@ export class ReportGenerator {
                 recommendations: this.generateRecommendations(),
                 futurePreventionMeasures: this.generatePreventionMeasures(), };
             };
-            ';
+            ';'
             return report;''
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ReportGenerator.generateComprehensiveReport'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ReportGenerator.generateComprehensiveReport') }
             });
             throw error;
         }
@@ -499,7 +499,7 @@ export class ReportGenerator {
             objective: 'Resolve JavaScript class name duplications to improve codebase maintainability and prevent developer confusion','';
             scope: 'Entire src/ directory with focus on core, debug, analytics, audio, ui, and rendering systems','';
             approach: 'Domain-based and function-level naming strategies with systematic file renaming and import updates','';
-            completionStatus: 'Completed',);
+            completionStatus: 'Completed');
             tasksCompleted: 13)';
             totalTasks: 17,')';
             completionPercentage: Math.round((13 / 17) * 100'),';
@@ -516,7 +516,7 @@ export class ReportGenerator {
     /**
      * 統計情報を生成
      */'
-    async generateStatistics(): Promise<Statistics> { // 実際のファイル数を調査''
+    async generateStatistics(): Promise<Statistics> { // 実際のファイル数を調査
         const stats = await this.analyzeProjectFiles(''';
                     'Configuration Files': 1,'';
                     'Core System': 2,'';
@@ -533,8 +533,8 @@ export class ReportGenerator {
                 created: stats.createdFiles }
             },'
             namingStrategies: { ''
-                'Domain-based': 18, // Core*, Debug*, Utils*, Analytics*'';
-                'Function-level': 6,  // Advanced*, Basic*'';
+                'Domain-based': 18, // Core*, Debug*, Utils*, Analytics*;
+                'Function-level': 6,  // Advanced*, Basic*;
                 'Context-specific': 7 // Scenes*, DataManagement*, MainMenu* }
             },
             gitCommits: 8,
@@ -544,7 +544,7 @@ export class ReportGenerator {
     }
     
     /**
-     * 変更ログを生成'
+     * 変更ログを生成
      */''
     async generateChangeLog(''';
             overview: 'Systematic resolution of JavaScript class name duplications',
@@ -570,7 +570,7 @@ export class ReportGenerator {
             
             }
                     impact: item.impact, }
-                    reasoning: this.generateReasoningForItem(item}),;
+                    reasoning: this.generateReasoningForItem(item}),
                 });
             }
             
@@ -581,7 +581,7 @@ export class ReportGenerator {
     }
     
     /**
-     * 影響分析を生成'
+     * 影響分析を生成
      */''
     async generateImpactAnalysis(''';
                     maintainability: 'Significantly Improved','';
@@ -728,7 +728,7 @@ export class ReportGenerator {
     }
     
     /**
-     * アイテムの理由を生成'
+     * アイテムの理由を生成
      */''
     generateReasoningForItem(item: ResolvedItem'): string { const reasonings: Record<string, string> = {''
             'PerformanceConfig': 'Merged backup configuration with main file to eliminate redundancy','';
@@ -761,11 +761,11 @@ export class ReportGenerator {
      */''
     async saveReport(report: ComprehensiveReport, outputDir: string = '.'): Promise<OutputFiles> {
         const outputs: OutputFiles = {}'
-        try { ''
+        try {'
             const timestamp = new Date().toISOString(').replace(/[:.]/g, '-''); }
             const baseFileName = `javascript-class-deduplication-report-${timestamp}`;
             ';
-            // JSON形式で保存''
+            // JSON形式で保存
             if(this.reportConfig.outputFormat === 'json' || this.reportConfig.outputFormat === 'both') {
                 const jsonPath = path.join(outputDir, `${baseFileName).json`);
                 await fs.promises.writeFile(jsonPath, JSON.stringify(report, null, 2);
@@ -774,7 +774,7 @@ export class ReportGenerator {
                 console.log(`[ReportGenerator] JSON report saved: ${jsonPath)`'});
             }
             ';
-            // Markdown形式で保存''
+            // Markdown形式で保存
             if(this.reportConfig.outputFormat === 'markdown' || this.reportConfig.outputFormat === 'both') {
                 const markdownContent = this.generateMarkdownReport(report);
                 const mdPath = path.join(outputDir, `${baseFileName).md`);
@@ -783,10 +783,10 @@ export class ReportGenerator {
                 outputs.markdown = mdPath; }
                 console.log(`[ReportGenerator] Markdown report saved: ${mdPath)`});
             }
-            ';
+            ';'
             return outputs;''
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ReportGenerator.saveReport'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ReportGenerator.saveReport') }
             });
             throw error;
         }
@@ -797,18 +797,18 @@ export class ReportGenerator {
      */
     generateMarkdownReport(report: ComprehensiveReport): string { const md: string[] = [],
         
-        // ヘッダー'
+        // ヘッダー
         md.push(`# ${report.metadata.title)`);''
         md.push(`## ${report.metadata.subtitle)`');''
-        md.push(''); }
+        md.push(); }
         md.push(`**Generated:** ${new Date(report.metadata.generatedAt).toLocaleString(})}`);'
         md.push(`**Branch: ** ${ report.metadata.branch)`),''
         md.push(`**Version: ** ${report.metadata.version)`'),''
         md.push(''');
         ';
-        // 概要''
+        // 概要
         md.push('## Project Summary'');''
-        md.push('');''
+        md.push();''
         md.push(`**Objective: ** ${report.summary.objective)`'),' }'
         md.push(''});'
         md.push(`**Completion Status:** ✅ ${report.summary.completionStatus} (${report.summary.completionPercentage)%)`});''
@@ -820,7 +820,7 @@ export class ReportGenerator {
         }');''
         md.push(''');
         ';
-        // 統計''
+        // 統計
         md.push('## Statistics'');''
         md.push(''');''
         md.push('### Duplications Resolved');'
@@ -833,12 +833,12 @@ export class ReportGenerator {
         }''
         md.push(''');
         ';
-        // 変更ログ''
+        // 変更ログ
         md.push('## Change Log'');''
-        md.push('');'
+        md.push();'
         for (const phase of report.changeLog.phases) { ' }'
             md.push(`### Task ${phase.taskId}: ${ phase.category)`');''
-            md.push('');
+            md.push();
             for(const item of phase.items) {
                 md.push(`#### ${item.name)`);
                 md.push(`**Resolution: ** ${item.action)`),'
@@ -854,9 +854,9 @@ export class ReportGenerator {
             }
         }
         ';
-        // 推奨事項''
+        // 推奨事項
         md.push('## Recommendations'');''
-        md.push('');
+        md.push();
         for(const rec of report.recommendations) {
             
         }
@@ -867,7 +867,7 @@ export class ReportGenerator {
             md.push('''});
         }
         ';
-        // 将来の防止措置''
+        // 将来の防止措置
         md.push('## Future Prevention Measures'');''
         md.push(''');''
         md.push('### Automatic Validation');
@@ -882,7 +882,7 @@ export class ReportGenerator {
         md.push(`- **Context-specific:** ${report.futurePreventionMeasures.developmentGuidelines.contextSpecific}`');''
         md.push(''');
         ';
-        // フッター''
+        // フッター
         md.push('---');''
         md.push(`*Report generated by ${ report.metadata.generatedBy)*`');''
         md.push(''');'

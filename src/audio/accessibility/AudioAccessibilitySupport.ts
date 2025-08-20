@@ -11,7 +11,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';''
 import { getConfigurationManager } from '../../core/ConfigurationManager';''
 import { getLocalizationManager } from '../../core/LocalizationManager';
 ';
-// Import sub-components''
+// Import sub-components
 import { AudioDescriptionManager } from './AudioDescriptionManager';''
 import { AudioCueManager } from './AudioCueManager';''
 import { AudioFeedbackManager } from './AudioFeedbackManager';''
@@ -73,7 +73,7 @@ interface ComponentStatus { descriptionManager: any,
     feedbackManager: any,
     settingsManager: any,
     eventManager: any,
-    legacyAdapter: any; }
+    legacyAdapter: any }
 }
 
 /**
@@ -83,7 +83,7 @@ interface SystemStatus { initialized: boolean,
     components: ComponentStatus,
     eventHistorySize: number,
     capabilities: any,
-    settings: any; }
+    settings: any }
 }
 
 /**
@@ -114,7 +114,7 @@ interface AudioManager { // AudioManager specific methods }
  * ConfigurationManager インターフェース（型定義用）
  */
 interface ConfigurationManager { get(category: string): any,
-    set(category: string, key: string, value: any): void; }
+    set(category: string, key: string, value: any): void }
 }
 
 /**
@@ -126,7 +126,7 @@ interface LocalizationManager { get(key: string): string, }
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler { handleError(error: any, context: any): void; }
+interface ErrorHandler { handleError(error: any, context: any): void }
 }
 
 /**
@@ -177,10 +177,10 @@ export class ComponentAudioAccessibilitySupport {
         this.settingsManager = new AudioSettingsManager(this);
         this.eventManager = new AudioEventManager(this);
         this.legacyAdapter = new AudioLegacyAdapter(this);
-        ';
-        // Legacy compatibility properties''
-        this.vibrationManager = this.legacyAdapter.getVibrationManager('');
-    }
+        ;
+        // Legacy compatibility properties
+        this.vibrationManager = this.legacyAdapter.getVibrationManager();
+    }'
     }'
         console.log('AudioAccessibilitySupport initialized with Main Controller Pattern'); }
     }
@@ -191,16 +191,16 @@ export class ComponentAudioAccessibilitySupport {
     async initialize(): Promise<boolean> { try {
             // Settings initialization
             await this.settingsManager.initializeSettings();
-            ';
-            // Setup event listeners''
-            this.setupEventListeners('')';
+            ;
+            // Setup event listeners
+            this.setupEventListeners()';
             console.log('Audio accessibility support fully initialized');
             
             return true;'
             ' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
+        } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'AudioAccessibilitySupport.initialize',')';
-                severity: 'high'); }
+                severity: 'high') }
             });
             return false;
         }
@@ -214,9 +214,9 @@ export class ComponentAudioAccessibilitySupport {
             this.legacyAdapter.handleSettingsChange(event); }
         });
     }
-';
-    // ========================================''
-    // Public API Methods (delegation to sub-components')
+;
+    // ========================================
+    // Public API Methods (delegation to sub-components)
     // ========================================
 
     /**
@@ -228,7 +228,7 @@ export class ComponentAudioAccessibilitySupport {
     showVisualNotification(message: string, type: NotificationType = 'info', options: NotificationOptions = { ): void {''
         this.feedbackManager.showVisualNotification(message, type, options');
         ';
-        // イベント履歴に記録''
+        // イベント履歴に記録
         this.eventManager.recordEvent('visual_notification', { message, type, options ); }
     }
 
@@ -352,7 +352,7 @@ export class ComponentAudioAccessibilitySupport {
     /**
      * 音声説明の有効化
      * @param enabled - 有効化フラグ
-     */'
+     */
     enableAudioDescriptions(enabled: boolean = true): void { ''
         this.descriptionManager.setEnabled(enabled');''
         this.eventManager.recordEvent('audio_descriptions_enabled', { enabled ); }
@@ -466,9 +466,9 @@ export class ComponentAudioAccessibilitySupport {
         }
         
         if(this.legacyAdapter) {
-        ';
+        ';'
             '';
-            this.legacyAdapter.destroy('');
+            this.legacyAdapter.destroy();
         }'
         console.log('AudioAccessibilitySupport destroyed'); }
     }

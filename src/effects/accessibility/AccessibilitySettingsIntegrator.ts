@@ -3,7 +3,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 // Type definitions for accessibility settings integration
 interface AccessibilitySettingsState { initialized: boolean,
     syncEnabled: boolean,
-    profilesAvailable: string[]; }
+    profilesAvailable: string[] }
 }
 
 interface SettingsManager { registerSection?(sectionId: string, config: SettingsSectionConfig): void,
@@ -16,7 +16,7 @@ interface SettingsManager { registerSection?(sectionId: string, config: Settings
 }
 
 interface AccessibilityManager { getConfiguration(): AccessibilityConfiguration;
-    applyConfiguration(config: AccessibilityConfiguration): Promise<void>,';
+    applyConfiguration(config: AccessibilityConfiguration): Promise<void>,
     addEventListener?(event: string, handler: (event: any) => void): void;''
     removeEventListener?(event: string'): void, }
 }
@@ -24,9 +24,9 @@ interface AccessibilityManager { getConfiguration(): AccessibilityConfiguration;
 interface SettingsSectionConfig { name: string,
     description: string,
     icon: string,
-    priority: number; }
+    priority: number }
 }
-';
+';'
 interface SettingConfig { name: string,''
     type: 'boolean' | 'select' | 'range' | 'text' | 'number',
     default: any,
@@ -35,42 +35,42 @@ interface SettingConfig { name: string,''
     min?: number;
     max?: number;'
     step?: number;''
-    onChange?: (value: any') => void; }
+    onChange?: (value: any') => void }
 }
 
 // Comprehensive accessibility configuration types
 interface AccessibilityConfiguration { visual: VisualAccessibilitySettings,
     audio: AudioAccessibilitySettings,
     keyboard: KeyboardAccessibilitySettings,
-    cognitive: CognitiveAccessibilitySettings;
+    cognitive: CognitiveAccessibilitySettings
     }
 }
 
 interface VisualAccessibilitySettings { highContrast: HighContrastSettings,
     colorBlindness: ColorBlindnessSettings,
     motion: MotionSettings,
-    textScaling: TextScalingSettings;
+    textScaling: TextScalingSettings
     }
 }
 
 interface AudioAccessibilitySettings { visualFeedback: VisualFeedbackSettings,
     captions: CaptionSettings,
-    vibration: VibrationSettings;
+    vibration: VibrationSettings
     }
 }
-';
+';'
 interface KeyboardAccessibilitySettings { ''
     navigationMode: '1d' | '2d' | 'custom',
     focusVisible: boolean,
     skipLinks: boolean,
-    customShortcuts: Map<string, string>; }
+    customShortcuts: Map<string, string> }
 }
 
 interface CognitiveAccessibilitySettings { simplification: SimplificationSettings,
-    help: HelpSettings;
+    help: HelpSettings
     }
 }
-';
+';'
 interface HighContrastSettings { enabled: boolean,''
     level: 'aa' | 'aaa',
     customColors: {
@@ -79,67 +79,67 @@ interface HighContrastSettings { enabled: boolean,''
         accent?: string; }
     } | null;
 }
-';
+';'
 interface ColorBlindnessSettings { enabled: boolean,''
     type: 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia',
     usePatterns: boolean,
-    useShapes: boolean; }
+    useShapes: boolean }
 }
-';
+';'
 interface MotionSettings { reduced: boolean,''
     level: 'none' | 'minimal' | 'basic',
-    alternativeEffects: boolean; }
+    alternativeEffects: boolean }
 }
 
 interface TextScalingSettings { enabled: boolean,
     scale: number,
     minScale: number,
-    maxScale: number; }
+    maxScale: number }
 }
-';
+';'
 interface VisualFeedbackSettings { enabled: boolean,''
     intensity: 'low' | 'medium' | 'high','';
-    type: 'flash' | 'border' | 'fill'; }
+    type: 'flash' | 'border' | 'fill' }
 }
-';
+';'
 interface CaptionSettings { enabled: boolean,''
     position: 'top' | 'bottom' | 'left' | 'right','';
     size: 'small' | 'medium' | 'large',
-    background: boolean; }
+    background: boolean }
 }
 
 interface VibrationSettings { enabled: boolean,
     intensity: number,
-    customPatterns: Map<string, number[]>; }
+    customPatterns: Map<string, number[]> }
 }
-';
+';'
 interface SimplificationSettings { enabled: boolean,''
-    level: 'basic' | 'intermediate' | 'advanced'; }
+    level: 'basic' | 'intermediate' | 'advanced' }
 }
 
 interface HelpSettings { contextual: boolean,
     tooltips: boolean,
-    tutorials: boolean; }
+    tutorials: boolean }
 }
 
 interface AccessibilityProfile { name: string,
     displayName: string,
-    description: string; }
+    description: string }
 }
 
 interface ProfileExportData { name: string,
     version: string,
     created: string,
-    profile: AccessibilityConfiguration;
+    profile: AccessibilityConfiguration
     }
 }
 
 interface SettingChangeEvent { key: string,
     newValue: any,
-    oldValue?: any; }
+    oldValue?: any }
 }
 
-interface AccessibilityConfigChangeEvent { config: AccessibilityConfiguration;
+interface AccessibilityConfigChangeEvent { config: AccessibilityConfiguration
     }
 }
 
@@ -152,7 +152,7 @@ interface AccessibilitySettingsReport { component: string,
         settingsManager: boolean,
         accessibilityManager: boolean,
         initialized: boolean,
-        syncEnabled: boolean; }
+        syncEnabled: boolean }
     };
 }
 
@@ -173,7 +173,7 @@ export class AccessibilitySettingsIntegrator {
     // アクセシビリティ設定のデフォルト値
     private readonly defaultAccessibilitySettings: AccessibilityConfiguration = { // 視覚アクセシビリティ
         visual: {
-            highContrast: {'
+            highContrast: {
                 enabled: false,'';
                 level: 'aa',
                 customColors: null }
@@ -195,7 +195,7 @@ export class AccessibilitySettingsIntegrator {
         },
         
         // 音響アクセシビリティ
-        audio: { visualFeedback: {'
+        audio: { visualFeedback: {
                 enabled: false,'';
                 intensity: 'medium','';
                 type: 'flash' }
@@ -221,22 +221,22 @@ export class AccessibilitySettingsIntegrator {
         })
     })
     // 設定プロファイル
-    private accessibilityProfiles: Map<string, AccessibilityConfiguration>;'
+    private accessibilityProfiles: Map<string, AccessibilityConfiguration>;
 '';
     constructor(settingsManager: SettingsManager | null, accessibilityManager: AccessibilityManager | null') {
         this.settingsManager = settingsManager;
         this.accessibilityManager = accessibilityManager;
-        ';
+        ';'
         this.accessibilityProfiles = new Map([']';
             ['default', this.defaultAccessibilitySettings],'';
             ['high-contrast', this.createHighContrastProfile(''';
             ['motion-sensitive', this.createMotionSensitiveProfile(''';
             ['color-blind-friendly', this.createColorBlindFriendlyProfile(''])';
-            ['hearing-impaired', this.createHearingImpairedProfile('')]';
+            ['hearing-impaired', this.createHearingImpairedProfile()]';
             ['motor-impaired', this.createMotorImpairedProfile()]'';
         ]');'
         ';
-    }
+    }'
     }'
         console.log('AccessibilitySettingsIntegrator initialized'); }
     }
@@ -244,7 +244,7 @@ export class AccessibilitySettingsIntegrator {
     /**
      * 初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('Initializing accessibility settings integration...');
             
             // 設定システムとの統合
@@ -255,16 +255,16 @@ export class AccessibilitySettingsIntegrator {
             
             // イベントリスナーの設定
             this.setupEventListeners();
-            ';
-            // プロファイルの初期化''
-            await this.initializeProfiles('');'
+            ;
+            // プロファイルの初期化
+            await this.initializeProfiles();'
             console.log('Accessibility settings integration initialized successfully');
             
             return true;'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {')'
                 operation: 'initialize',')';
-                component: 'AccessibilitySettingsIntegrator'); }
+                component: 'AccessibilitySettingsIntegrator') }
             });
             return false;
         }
@@ -281,7 +281,7 @@ export class AccessibilitySettingsIntegrator {
             return; }
         }
         ';
-        // アクセシビリティ設定セクションを登録''
+        // アクセシビリティ設定セクションを登録
         this.settingsManager.registerSection? .('accessibility', { : undefined''
             name: 'アクセシビリティ','';
             description: 'アクセシビリティ機能の設定','';
@@ -294,7 +294,7 @@ export class AccessibilitySettingsIntegrator {
     }
     
     /**
-     * アクセシビリティ設定項目の登録'
+     * アクセシビリティ設定項目の登録
      */''
     private registerAccessibilitySettings(''';
                 name: 'ハイコントラストモード','';
@@ -331,7 +331,7 @@ export class AccessibilitySettingsIntegrator {
                 description: 'テキストの拡大率' }
             },
             
-            // 音響設定'
+            // 音響設定
             { ''
                 name: '視覚的音響フィードバック','';
                 type: 'boolean',';
@@ -354,7 +354,7 @@ export class AccessibilitySettingsIntegrator {
                 description: 'バイブレーションの強度' }
             },
             
-            // キーボード設定'
+            // キーボード設定
             { ''
                 name: 'フォーカス表示','';
                 type: 'boolean',';
@@ -369,7 +369,7 @@ export class AccessibilitySettingsIntegrator {
                 description: 'キーボードナビゲーションのモード' }
             })
         ]);
-        // 各設定項目を登録'
+        // 各設定項目を登録
         const settingKeys = ['';
             'accessibility.visual.highContrast.enabled','';
             'accessibility.visual.colorBlindness.enabled','';
@@ -417,15 +417,15 @@ export class AccessibilitySettingsIntegrator {
             );
             
             // AccessibilityManagerに設定を適用
-            if(this.accessibilityManager) {'
-                ';
+            if(this.accessibilityManager) {
+                ';'
             }'
                 await this.accessibilityManager.applyConfiguration(accessibilitySettings'); }
             }'
             '';
             console.log('Existing accessibility settings loaded and applied');''
-        } catch (error') { : undefined''
-            console.warn('Failed to load existing settings:', error); }
+        } catch (error) { : undefined''
+            console.warn('Failed to load existing settings:', error) }
         }
     }
     
@@ -433,7 +433,7 @@ export class AccessibilitySettingsIntegrator {
      * 設定のマージ
      */
     private mergeSettings(defaultSettings: AccessibilityConfiguration, userSettings: any): AccessibilityConfiguration { const merged = JSON.parse(JSON.stringify(defaultSettings);
-        ';
+        ';'
         const mergeObject = (target: any, source: any): void => { ''
             for (const key in source') {' }'
                 if(source[key] && typeof source[key] === 'object' && !Array.isArray(source[key]) { }
@@ -452,11 +452,11 @@ export class AccessibilitySettingsIntegrator {
      * 設定変更の処理
      */
     private async handleSettingChange(settingKey: string, newValue: any): Promise<void> { if (!this.state.syncEnabled) return;
-        ';
-        try {' }'
+        ';'
+        try { }'
             console.log(`Accessibility setting changed: ${settingKey} = ${ newValue)`');
             ';
-            // 設定キーを解析してアクセシビリティ設定を更新''
+            // 設定キーを解析してアクセシビリティ設定を更新
             const keyParts = settingKey.split('.'');''
             if (keyParts[0] !== 'accessibility') return;
             
@@ -468,7 +468,7 @@ export class AccessibilitySettingsIntegrator {
             
             // 設定変更イベントを発行 }
             this.emitSettingChangeEvent(settingKey, newValue});
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {')'
                 operation: 'handleSettingChange');
@@ -498,7 +498,7 @@ export class AccessibilitySettingsIntegrator {
     }
     
     /**
-     * アクセシビリティプロファイルの作成'
+     * アクセシビリティプロファイルの作成
      */''
     private createHighContrastProfile(''';
                     level: 'aaa',';
@@ -543,9 +543,9 @@ export class AccessibilitySettingsIntegrator {
                     size: 'large',
                     background: true }
                 },
-                vibration: { enabled: true,)
+                vibration: { enabled: true)
                     intensity: 0.8);
-                    customPatterns: new Map(); }
+                    customPatterns: new Map() }
                 }
             }
         };
@@ -590,7 +590,7 @@ export class AccessibilitySettingsIntegrator {
             }
             
             console.log(`Accessibility profile applied: ${profileName)`});
-            return true;'
+            return true;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {')'
                 operation: 'applyProfile',);
@@ -621,8 +621,8 @@ export class AccessibilitySettingsIntegrator {
         const flatProfile = flattenSettings(profile, 'accessibility');
         
         for(const [key, value] of Object.entries(flatProfile) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.settingsManager!.set? .(key, value'); }
         }
@@ -649,7 +649,7 @@ export class AccessibilitySettingsIntegrator {
      */'
     exportProfile(profileName: string): ProfileExportData | null { const profile = this.accessibilityProfiles.get(profileName);''
         if (!profile') return null;
-        ';
+        ';'
         return { name: profileName,''
             version: '1.0',
             created: new Date().toISOString(), };
@@ -660,9 +660,9 @@ export class AccessibilitySettingsIntegrator {
     /**
      * プロファイルのインポート
      */'
-    importProfile(profileData: ProfileExportData): boolean { try {''
+    importProfile(profileData: ProfileExportData): boolean { try {'
             if(!profileData.name || !profileData.profile') {'
-                ';
+                ';'
             }'
                 throw new Error('Invalid profile data format'); }
             }
@@ -670,7 +670,7 @@ export class AccessibilitySettingsIntegrator {
             this.accessibilityProfiles.set(profileData.name, profileData.profile);
             console.log(`Accessibility profile imported: ${profileData.name)`});'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to import profile:', error);
             return false; }
         }
@@ -679,7 +679,7 @@ export class AccessibilitySettingsIntegrator {
     /**
      * イベントリスナーの設定
      */'
-    private setupEventListeners(): void { // SettingsManagerからの設定変更通知''
+    private setupEventListeners(): void { // SettingsManagerからの設定変更通知
         if(this.settingsManager') {'
             '';
             this.settingsManager.addEventListener?.('settingChanged', (event: SettingChangeEvent') => { '
@@ -690,9 +690,9 @@ export class AccessibilitySettingsIntegrator {
             });
         }
         ';
-        // AccessibilityManagerからの設定変更通知''
+        // AccessibilityManagerからの設定変更通知
         if(this.accessibilityManager') {'
-            ';
+            ';'
         }'
             this.accessibilityManager.addEventListener?.('configurationApplied', (event: AccessibilityConfigChangeEvent) => {  }
                 this.handleAccessibilityConfigChange(event.config); }
@@ -712,7 +712,7 @@ export class AccessibilitySettingsIntegrator {
     }
     
     /**
-     * 設定のSettingsManagerへの同期'
+     * 設定のSettingsManagerへの同期
      */''
     private syncConfigToSettings(config: AccessibilityConfiguration'): void { ''
         const flatten = (obj: any, prefix = 'accessibility'): void => { ' }'
@@ -732,13 +732,13 @@ export class AccessibilitySettingsIntegrator {
      */ : undefined'
     private async initializeProfiles(): Promise<void> { ''
         this.state.profilesAvailable = Array.from(this.accessibilityProfiles.keys()');''
-        console.log('Available accessibility profiles:', this.state.profilesAvailable); }
+        console.log('Available accessibility profiles:', this.state.profilesAvailable) }
     }
     
     /**
      * 設定変更イベントの発行'
      */''
-    private emitSettingChangeEvent(settingKey: string, newValue: any'): void { // カスタムイベントを発行''
+    private emitSettingChangeEvent(settingKey: string, newValue: any'): void { // カスタムイベントを発行
         const event = new CustomEvent('accessibilitySettingChanged', { }
             detail: { key: settingKey, value: newValue })
         );
@@ -759,7 +759,7 @@ export class AccessibilitySettingsIntegrator {
     getAvailableProfiles(): AccessibilityProfile[] { return Array.from(this.accessibilityProfiles.keys().map(name => ({)
             name);
             displayName: this.getProfileDisplayName(name),
-            description: this.getProfileDescription(name); }
+            description: this.getProfileDescription(name) }
         });
     }
     
@@ -814,7 +814,7 @@ export class AccessibilitySettingsIntegrator {
      */''
     generateReport(''';
             component: 'AccessibilitySettingsIntegrator',
-            state: { ...this.state },)
+            state: { ...this.state })
             profilesCount: this.accessibilityProfiles.size);
             availableProfiles: this.getAvailableProfiles(),
             currentSettings: this.getCurrentSettings(),
@@ -829,26 +829,26 @@ export class AccessibilitySettingsIntegrator {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying AccessibilitySettingsIntegrator...');
         ';
-        // イベントリスナーの削除''
+        // イベントリスナーの削除
         if(this.settingsManager') {'
-            ';
+            ';'
         }'
             this.settingsManager.removeEventListener? .('settingChanged'); }
         }'
         '';
         if(this.accessibilityManager') {'
-            ';
+            ';'
         }'
             this.accessibilityManager.removeEventListener?.('configurationApplied'); }
         }
         
         // 参照のクリア
-        this.settingsManager = null;'
+        this.settingsManager = null;
         this.accessibilityManager = null;''
-        this.accessibilityProfiles.clear('')';
+        this.accessibilityProfiles.clear()';
         console.log('AccessibilitySettingsIntegrator destroyed'');'
     }''
 } : undefined

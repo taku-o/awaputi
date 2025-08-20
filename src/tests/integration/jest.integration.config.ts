@@ -5,24 +5,24 @@
 
 import type { Config } from 'jest';
 ';
-const config: Config = { // テスト環境''
+const config: Config = { // テスト環境
     testEnvironment: 'jsdom',
     
-    // テストファイルのパターン'
+    // テストファイルのパターン
     testMatch: [']';
         '**/src/tests/integration/**/*.test.ts'];
     ],
     
-    // モジュール解決'
+    // モジュール解決
     moduleNameMapping: {''
         '^@/(.*')$': '<rootDir>/src/$1','';
         '^@tests/(.*')$': '<rootDir>/src/tests/$1' }
     },
     ';
-    // ES6モジュールサポート''
+    // ES6モジュールサポート
     extensionsToTreatAsEsm: ['.ts'],
     
-    // トランスフォーム設定'
+    // トランスフォーム設定
     transform: { ''
         '^.+\\.ts$': ['ts-jest', {
             useESM: true,';
@@ -34,13 +34,13 @@ const config: Config = { // テスト環境''
         }]
     },
     
-    // セットアップファイル'
+    // セットアップファイル
     setupFilesAfterEnv: [']';
         '<rootDir>/src/tests/integration/setup.ts'];
     ],
     
     // カバレッジ設定
-    collectCoverage: true,';
+    collectCoverage: true,
     collectCoverageFrom: ['';
         'src/core/SocialSharingManager.ts','';
         'src/core/ShareContentGenerator.ts','';
@@ -52,7 +52,7 @@ const config: Config = { // テスト環境''
         'src/scenes/components/ChallengesTab.ts',']';
         '!src/tests/**'];
     ],
-    ';
+    ';'
     coverageReporters: ['';
         'text','';
         'html','';
@@ -73,15 +73,15 @@ const config: Config = { // テスト環境''
     
     // テストタイムアウト
     testTimeout: 30000,
-    ';
-    // 並列実行設定''
+    ;
+    // 並列実行設定
     maxWorkers: '50%',
     
     // モック設定
     clearMocks: true,
     restoreMocks: true,
     
-    // グローバル設定'
+    // グローバル設定
     globals: { ''
         'process.env.NODE_ENV': 'test','';
         'process.env.JEST_ENVIRONMENT': 'integration' }
@@ -97,7 +97,7 @@ const config: Config = { // テスト環境''
     detectOpenHandles: true,
     detectLeaks: true,
     
-    // テスト結果のレポート'
+    // テスト結果のレポート
     reporters: ['';
         'default','';
         ['jest-html-reporters', { ''

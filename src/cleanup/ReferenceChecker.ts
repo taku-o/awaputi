@@ -5,14 +5,14 @@ import { glob } from 'glob';
 interface Reference { file: string,
     line: number,';
     context: string,'';
-    type: 'import' | 'string'; }
+    type: 'import' | 'string' }
 }
 
 export interface ReferenceResult { filePath: string,
     references: Reference[],
     hasReferences: boolean,
     importCount: number,
-    stringCount: number; }
+    stringCount: number }
 }
 
 export class ReferenceChecker {
@@ -25,7 +25,7 @@ export class ReferenceChecker {
     async checkImportReferences(filePath: string, rootPath: string = process.cwd(): Promise<Reference[]> { const fileName = path.basename(filePath);'
         const fileNameWithoutExt = path.basename(filePath, path.extname(filePath);''
         const relativeFromRoot = path.relative(rootPath, filePath');
-        ';
+        ';'
         const patterns = [' }]'
             `import.*from.*['"\`][^'"\`]*${fileNameWithoutExt}[^'"\`]*['"\`]`,""
             `import.*['"\`][^'"\`]*${fileNameWithoutExt}[^'"\`]*['"\`]`,""
@@ -62,7 +62,7 @@ export class ReferenceChecker {
         const references: Reference[] = [],';
 '';
         for(const file of searchableFiles') {'
-            try {''
+            try {'
                 const content = await fs.promises.readFile(file, 'utf8'');''
                 const lines = content.split('\n');
 
@@ -103,7 +103,7 @@ export class ReferenceChecker {
         
         const allReferences = [...importReferences, ...stringReferences];
         const uniqueReferences = this.removeDuplicateReferences(allReferences);
-';
+';'
         return { ''
             filePath: path.relative(rootPath, filePath'),
             references: uniqueReferences,';

@@ -19,20 +19,20 @@ interface CleanupResults { scanReport: ScanReport | null,
     referenceReport: ReferenceReport | null,
     safetyReport: SafetyReport | null,
     deletionReport: DeletionReport | null,
-    summaryReport: SummaryReport | null; }
+    summaryReport: SummaryReport | null }
 }'
 '';
 type LogLevel = 'info' | 'warn' | 'error';
 
 interface ValidationOnlyResult { safeToDelete: any[],
     unsafeToDelete: any[],
-    summary: any; }
+    summary: any }
 }
 
 interface TargetFileInfo { fileName: string,
     filePath: string,
     size: string,
-    lastModified: string; }
+    lastModified: string }
 }
 
 export class CleanupOrchestrator {
@@ -59,7 +59,7 @@ export class CleanupOrchestrator {
         this.referenceChecker = new ReferenceChecker();
         this.safetyValidator = new SafetyValidator();'
         this.fileRemover = new FileRemover();''
-        this.reportGenerator = new ReportGenerator('')';
+        this.reportGenerator = new ReportGenerator()';
     private log(message: string, level: LogLevel = 'info''): void { ''
         if(this.options.verbose || level === 'error') {'
             '';
@@ -70,7 +70,7 @@ export class CleanupOrchestrator {
         }
     }'
 '';
-    async executeCleanup('')';
+    async executeCleanup()';
         this.log('Starting file cleanup process...', 'info');
         
         try { // Step 1: Scan for files
@@ -83,33 +83,33 @@ export class CleanupOrchestrator {
             await this.validateSafety();
             
             // Step 4: Execute deletion (if not dry run);
-            if(!this.options.dryRun) {'
+            if(!this.options.dryRun) {
                 '';
-                await this.executeDelection('');
+                await this.executeDelection();
             }'
                 this.log('Dry run mode: Skipping actual file deletion', 'info'); }
             }
             ';
-            // Step 5: Generate reports''
-            await this.generateReports('');'
+            // Step 5: Generate reports
+            await this.generateReports();'
             this.log('File cleanup process completed successfully', 'info');'
             '';
             if(!this.results.summaryReport') {'
-                ';
+                ';'
             }'
                 throw new Error('Summary report was not generated'); }
             }
             
             return this.results.summaryReport;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',' }'
             this.log(`Error during cleanup process: ${errorMessage}`, 'error');
             throw error;
         }
     }'
 '';
-    async scanFiles('')';
+    async scanFiles()';
         this.log(`Scanning for files with patterns: ${this.options.patterns.join(', ''})}`, 'info');
         
         const scannedFiles = await this.fileScanner.scanWithInfo(;
@@ -135,11 +135,11 @@ export class CleanupOrchestrator {
         return scannedFiles;
     }'
 '';
-    async checkReferences('')';
+    async checkReferences()';
         this.log('Checking file references...', 'info');'
         '';
         if(!this.results.scanReport') {'
-            ';
+            ';'
         }'
             throw new Error('Scan report is not available'); }
         }
@@ -153,7 +153,7 @@ export class CleanupOrchestrator {
                 fileInfo.filePath: this.findActualFilePath(fileInfo.fileName),
                 
             const referenceResult = await this.referenceChecker.generateReferenceReport(;
-                originalPath,);
+                originalPath);
                 this.options.rootPath);
             
             referenceResults.push(referenceResult);
@@ -166,18 +166,18 @@ export class CleanupOrchestrator {
         }
 
         this.results.referenceReport = this.reportGenerator.generateReferenceReport(referenceResults);
-        ';
+        ';'
         const totalWithRefs = referenceResults.filter(r => r.hasReferences).length;''
         this.log(`Reference check completed: ${totalWithRefs}/${referenceResults.length') files have references`, 'info'});
 
         return referenceResults;
     }'
 '';
-    async validateSafety('')';
+    async validateSafety()';
         this.log('Validating file safety for deletion...', 'info');'
         '';
         if(!this.results.scanReport || !this.results.referenceReport') {'
-            ';
+            ';'
         }'
             throw new Error('Scan or reference report is not available'); }
         }
@@ -191,11 +191,11 @@ export class CleanupOrchestrator {
         this.results.safetyReport = this.reportGenerator.generateSafetyReport(safetyResults);'
 '';
         this.log(`Safety validation completed: ${safetyResults.safeToDelete}/${ safetyResults.totalFiles') files safe to delete`, 'info');
-        ';
+        ';'
         if (safetyResults.totalErrors > 0) {' }'
             this.log(`Found ${safetyResults.totalErrors') safety errors`, 'warn'});
         }
-        ';
+        ';'
         if (safetyResults.totalWarnings > 0) { ' }'
             this.log(`Found ${safetyResults.totalWarnings') safety warnings`, 'warn'});
         }
@@ -203,11 +203,11 @@ export class CleanupOrchestrator {
         return safetyResults;
     }'
 '';
-    async executeDelection('')';
+    async executeDelection()';
         this.log('Executing file deletion...', 'info');'
         '';
         if(!this.results.safetyReport') {'
-            ';
+            ';'
         }'
             throw new Error('Safety report is not available'); }
         }
@@ -218,7 +218,7 @@ export class CleanupOrchestrator {
             '';
             this.log('No files are safe to delete', 'warn');
             this.results.deletionReport = this.reportGenerator.generateDeletionReport({
-                results: [],);
+                results: []);
                 totalFiles: 0);
                 successCount: 0,);
                 failureCount: 0),
@@ -253,13 +253,13 @@ export class CleanupOrchestrator {
         return deletionResults;
     }'
 '';
-    async generateReports('')';
+    async generateReports()';
         this.log('Generating cleanup reports...', 'info');
         
         this.results.summaryReport = this.reportGenerator.generateSummaryReport(this.results);
 
         if(this.options.autoSaveReports) {
-';
+';'
             '';
             const timestamp = new Date().toISOString(').replace(/[:.]/g, '-');
             
@@ -270,7 +270,7 @@ export class CleanupOrchestrator {
             );
             
 
-        }'
+        }
             if (jsonResult.saved) {' }'
                 this.log(`Summary report saved: ${jsonResult.filePath')`, 'info'});'
             } else { ' }'
@@ -283,7 +283,7 @@ export class CleanupOrchestrator {
                 textSummary);
                 `cleanup-summary-${ timestamp)`;
             );
-            ';
+            ';'
             if (textResult.saved) {' }'
                 this.log(`Text report saved: ${textResult.filePath')`, 'info'});'
             } else { ' }'
@@ -304,9 +304,9 @@ export class CleanupOrchestrator {
             `src/utils/${fileName}`,
             `src/scenes/${fileName}`,
             `src/${fileName}`,
-            `./${fileName}`,]
+            `./${fileName}`]
             fileName];
-        ];'
+        ];
 '';
         for(const possiblePath of possiblePaths') {'
             '';
@@ -330,17 +330,17 @@ export class CleanupOrchestrator {
             fileName: file.fileName,);
             filePath: file.filePath),
             size: this.reportGenerator.formatBytes(file.fileSize),
-            lastModified: file.lastModified.toISOString(); }
+            lastModified: file.lastModified.toISOString() }
         });
     }
 
     async validateOnly(): Promise<ValidationOnlyResult> { await this.scanFiles();
         await this.checkReferences();
         await this.validateSafety();
-        await this.generateReports();'
+        await this.generateReports();
         '';
         if(!this.results.safetyReport || !this.results.summaryReport') {'
-            ';
+            ';'
         }'
             throw new Error('Safety or summary report is not available'); }
         }

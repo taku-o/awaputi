@@ -25,7 +25,7 @@ export interface RegionalUISettings { textDirection: TextDirection,
     fontSize: string,
     lineHeight: number,
     spacing: SpacingMode,
-    preferredInputMethod: InputMethod;
+    preferredInputMethod: InputMethod
     }
 }
 
@@ -33,14 +33,14 @@ export interface TimeFormatSettings { time12: boolean,
     dateFormat: string,
     timeFormat: string,
     weekStart: number,
-    era: CalendarEra;
+    era: CalendarEra
     }
 }
 
 export interface NumberFormatSettings { decimal: string,
     thousands: string,
     currency: string,
-    currencyPosition: CurrencyPosition;
+    currencyPosition: CurrencyPosition
     }
 }
 
@@ -51,7 +51,7 @@ export interface CulturalAdaptationStats { supportedRTLLanguages: number,
     supportedGestureConventions: number,
     regionalUILanguages: number,
     timeFormatLanguages: number,
-    numberFormatLanguages: number; }
+    numberFormatLanguages: number }
 }
 
 export interface CulturalDebugInfo { language: string,
@@ -62,12 +62,12 @@ export interface CulturalDebugInfo { language: string,
     uiSettings: RegionalUISettings,
     timeFormat: TimeFormatSettings,
     numberFormat: NumberFormatSettings,
-    stats: CulturalAdaptationStats;
+    stats: CulturalAdaptationStats
     }
 }
 
 export interface NumberFormatOptions { style: NumberFormatType,
-    currency?: string; }
+    currency?: string }
 }
 
 // 列挙型
@@ -113,7 +113,7 @@ export class CulturalAdaptationHandler {
             }
         };
         
-        // 地域固有の UI 設定'
+        // 地域固有の UI 設定
         this.regionalUISettings = { ''
             'ja': {''
                 textDirection: 'ltr','';
@@ -149,30 +149,30 @@ export class CulturalAdaptationHandler {
             }
         },
         
-        // 時刻・日付フォーマット'
+        // 時刻・日付フォーマット
         this.timeFormats = { ''
             'ja': {'
                 time12: false,'';
                 dateFormat: 'YYYY/MM/DD','';
                 timeFormat: 'HH:mm',';
-                weekStart: 1, // Monday'';
+                weekStart: 1, // Monday;
                 era: 'ad' }'
             },''
             'en': { time12: true,''
                 dateFormat: 'MM/DD/YYYY','';
                 timeFormat: 'h:mm A',';
-                weekStart: 0, // Sunday'';
+                weekStart: 0, // Sunday;
                 era: 'ad' }'
             },''
             'ar': { time12: true,''
                 dateFormat: 'DD/MM/YYYY','';
                 timeFormat: 'h:mm A',';
-                weekStart: 6, // Saturday'';
+                weekStart: 6, // Saturday;
                 era: 'hijri' // イスラム暦オプション }
             }
         },
         
-        // 数値・通貨フォーマット'
+        // 数値・通貨フォーマット
         this.numberFormats = { ''
             'ja': {''
                 decimal: '.','';
@@ -256,7 +256,7 @@ export class CulturalAdaptationHandler {
      * @returns ジェスチャーの適切性'
      */''
     getGestureConvention(language: string, gesture: string'): GestureAppropriateness { const gestureConventions = this.culturalAdaptation.gestureConventions[language];''
-        return gestureConventions ? gestureConventions[gesture] as GestureAppropriateness: 'acceptable'; }
+        return gestureConventions ? gestureConventions[gesture] as GestureAppropriateness: 'acceptable' }
     }
     
     /**
@@ -295,17 +295,17 @@ export class CulturalAdaptationHandler {
     formatDate(date: Date, language: string): string { const format = this.getDateFormat(language);''
         const timeSettings = this.getTimeFormat(language');
         
-        try {'
+        try {
             return new Intl.DateTimeFormat(language, {''
                 year: 'numeric','';
                 month: '2-digit',')';
                 day: '2-digit',')';
-                calendar: timeSettings.era === 'hijri' ? 'islamic' : 'gregory')).format(date); }
-        } catch (error) { // フォールバック'
+                calendar: timeSettings.era === 'hijri' ? 'islamic' : 'gregory')).format(date) }
+        } catch (error) { // フォールバック
             const year = date.getFullYear();''
             const month = String(date.getMonth() + 1').padStart(2, '0');''
             const day = String(date.getDate()').padStart(2, '0'');
-            ';
+            ';'
             return format'';
                 .replace('YYYY', year.toString()')'';
                 .replace('MM', month')'';
@@ -322,14 +322,14 @@ export class CulturalAdaptationHandler {
     formatTime(date: Date, language: string): string { ''
         const timeSettings = this.getTimeFormat(language');
         
-        try {'
+        try {
             return new Intl.DateTimeFormat(language, {''
                 hour: '2-digit',')';
                 minute: '2-digit',);
-                hour12: timeSettings.time12)).format(date); }
+                hour12: timeSettings.time12)).format(date) }
         } catch (error) { // フォールバック
             const hours = timeSettings.time12 ;
-                ? date.getHours() % 12 || 12';
+                ? date.getHours() % 12 || 12;
                 : date.getHours();''
             const minutes = String(date.getMinutes()').padStart(2, '0');'
             const ampm = timeSettings.time12 '';
@@ -347,9 +347,9 @@ export class CulturalAdaptationHandler {
             const options: NumberFormatOptions = { style: type }''
             if (type === 'currency') { options.currency = this.getCurrencyCode(language); }
             }
-            ';
+            ';'
             return new Intl.NumberFormat(language, options).format(number);''
-        } catch (error') { // フォールバック''
+        } catch (error) { // フォールバック
             const formatted = number.toLocaleString('en', {')'
                 style: type === 'currency' ? 'decimal' : type),' }'
             }');'
@@ -507,10 +507,10 @@ export class CulturalAdaptationHandler {
      * @returns 全設定のJSON表現
      */
     exportSettings(): string { return JSON.stringify({
-            culturalAdaptation: this.culturalAdaptation,);
+            culturalAdaptation: this.culturalAdaptation);
             regionalUISettings: this.regionalUISettings);
             timeFormats: this.timeFormats,);
-            numberFormats: this.numberFormats), null, 2); }
+            numberFormats: this.numberFormats), null, 2) }
     }
     
     /**
@@ -535,9 +535,9 @@ export class CulturalAdaptationHandler {
             }
             if(settings.numberFormats) {
                 
-            }'
+            }
                 this.numberFormats = { ...this.numberFormats, ...settings.numberFormats };''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to import cultural adaptation settings:', error');''
             throw new Error('Invalid JSON format for cultural adaptation settings'); }
         }
@@ -546,7 +546,7 @@ export class CulturalAdaptationHandler {
     /**
      * リソースの解放'
      */''
-    destroy('')';
+    destroy()';
         console.log('Cultural Adaptation Handler destroyed'');'
     }''
 }

@@ -15,7 +15,7 @@ export class AnalyticsErrorNotificationSystem {
             enableStackTrace: true,
             enableUserFeedback: true,
             notificationTimeout: 8000, // 8秒;
-            criticalErrorTimeout: 15000, // 15秒;
+            criticalErrorTimeout: 15000, // 15秒
     }
     }
             ...options }
@@ -98,7 +98,7 @@ export class AnalyticsErrorNotificationSystem {
             icon: '🛡️','';
             color: '#d32f2f',')';
             severity: 'critical')';
-            recoverable: false,');
+            recoverable: false,')
     }'
             actions: ['詳細表示', 'レポート送信', 'セキュリティヘルプ']); }
     }
@@ -106,11 +106,11 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 通知コンテナの作成'
      */''
-    createNotificationContainer('')';
+    createNotificationContainer()';
         this.notificationContainer = document.createElement('div'');''
         this.notificationContainer.id = 'error-notification-container';''
         this.notificationContainer.className = 'error-notification-container';
-        ';
+        ';'
         Object.assign(this.notificationContainer.style, { ''
             position: 'fixed','';
             bottom: '20px','';
@@ -129,12 +129,12 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * 通知スタイルの適用'
      */''
-    applyNotificationStyles('')';
+    applyNotificationStyles()';
         const style = document.createElement('style');
         style.textContent = `;
             .error-notification-container { display: flex,
                 flex-direction: column,
-                gap: 12px; }
+                gap: 12px }
             }
             .error-notification { background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%),
                 border-radius: 12px,
@@ -149,9 +149,9 @@ export class AnalyticsErrorNotificationSystem {
             }
             .error-notification.critical { animation: slideInError 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) forwards,
                           pulseError 2s infinite 0.4s;
-                box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4); }
+                box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4) }
             }
-            .error-notification.dismissing { animation: slideOutError 0.3s ease-in forwards; }
+            .error-notification.dismissing { animation: slideOutError 0.3s ease-in forwards }
             }
             .error-header { display: flex,
                 justify-content: space-between,
@@ -202,7 +202,7 @@ export class AnalyticsErrorNotificationSystem {
                 margin-bottom: 12px,
                 display: grid,
                 grid-template-columns: 1fr 1fr,
-                gap: 8px; }
+                gap: 8px }
             }
             .context-item { display: flex,
                 justify-content: space-between, }
@@ -223,7 +223,7 @@ export class AnalyticsErrorNotificationSystem {
                 font-weight: 500, }
             }
             .error-action:hover { background: rgba(255, 255, 255, 0.25),
-                transform: translateY(-1px); }
+                transform: translateY(-1px) }
             }
             .error-action.primary { background: linear-gradient(135deg, #2196f3, #1976d2), }
             }
@@ -241,10 +241,10 @@ export class AnalyticsErrorNotificationSystem {
                 display: flex,
                 align-items: center,
                 justify-content: center,
-                transition: all 0.2s; }
+                transition: all 0.2s }
             }
             .error-close:hover { background: rgba(255, 255, 255, 0.2),
-                color: white; }
+                color: white }
             }
             .error-progress { position: absolute,
                 bottom: 0,
@@ -271,7 +271,7 @@ export class AnalyticsErrorNotificationSystem {
                 border: 2px solid rgba(76, 175, 80, 0.3),
                 border-top-color: #4caf50,
                 border-radius: 50%,
-                animation: spin 1s linear infinite; }
+                animation: spin 1s linear infinite }
             }
             @keyframes slideInError { from {  }
                     transform: translateX(100%}
@@ -292,13 +292,13 @@ export class AnalyticsErrorNotificationSystem {
                 }
             );
             @keyframes pulseError { 0%, 100% { 
-                    box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4);  }
+                    box-shadow: 0 8px 32px rgba(255, 0, 0, 0.4)  }
                 }
-                50% { box-shadow: 0 8px 32px rgba(255, 0, 0, 0.7);  }
+                50% { box-shadow: 0 8px 32px rgba(255, 0, 0, 0.7)  }
                 }
             }
             @keyframes spin {
-                to { transform: rotate(360deg); }
+                to { transform: rotate(360deg) }
             }
         `;
         document.head.appendChild(style);
@@ -307,23 +307,23 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * グローバルエラーハンドラーの設定'
      */''
-    setupGlobalErrorHandlers('')';
+    setupGlobalErrorHandlers()';
         window.addEventListener('error', (event') => {  this.handleError({''
                 type: 'javascript',
                 message: event.message,
                 filename: event.filename,
-                lineno: event.lineno,);
+                lineno: event.lineno);
                 colno: event.colno);
                 error: event.error,)';
                 stack: event.error? .stack), : undefined'';
-                timestamp: Date.now('')';
+                timestamp: Date.now()';
         window.addEventListener('unhandledrejection', (event') => {'
             this.handleError({''
                 type: 'javascript','';
                 message: event.reason? .message || 'Unhandled Promise Rejection', : undefined);
                 error: event.reason,)';
                 stack: event.reason? .stack), : undefined'';
-                timestamp: Date.now('')';
+                timestamp: Date.now()';
         window.addEventListener('error', (event) => {''
             if(event.target !== window && event.target.tagName') {
                 
@@ -366,7 +366,7 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * エラーの処理と拡張
      */
-    processError(errorData) {'
+    processError(errorData) {
         '';
         const errorType = this.errorTypes.get(errorData.type') || this.errorTypes.get('javascript');
         
@@ -421,11 +421,11 @@ export class AnalyticsErrorNotificationSystem {
                 online: navigator.onLine,
                 memory: performance.memory ? { : undefined
                     used: Math.round(performance.memory.usedJSHeapSize / 1024 / 1024),
-                    total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024); }
+                    total: Math.round(performance.memory.totalJSHeapSize / 1024 / 1024) }
                 } : null,
                 storage: this.getStorageInfo(),';
             };''
-        } catch (e') { ' }'
+        } catch (e) { ' }'
             return { error: 'Failed to collect context' }
         }
     }
@@ -451,9 +451,9 @@ export class AnalyticsErrorNotificationSystem {
                     localStorage.usage = Math.round(estimate.usage / 1024 / 1024); }
                 };
             }
-';
+';'
             return localStorage;''
-        } catch (e') { ' }'
+        } catch (e) { ' }'
             return { error: 'Storage info unavailable' }
         }
     }
@@ -475,7 +475,7 @@ export class AnalyticsErrorNotificationSystem {
      * エラー通知の表示
      */
     showErrorNotification(errorData) {
-        if (!this.notificationContainer) return;'
+        if (!this.notificationContainer) return;
 '';
         const errorType = this.errorTypes.get(errorData.type');'
     }'
@@ -486,7 +486,7 @@ export class AnalyticsErrorNotificationSystem {
 '';
         const timeout = errorData.severity === 'critical' ?   : undefined;
             this.options.criticalErrorTimeout: this.options.notificationTimeout,
-';
+';'
         notification.innerHTML = `'';
             <div class="error-progress" style="width: 100%"></div>"";
             <div class="error-header">"";
@@ -565,7 +565,7 @@ export class AnalyticsErrorNotificationSystem {
 
     /**
      * エラー詳細のフォーマット
-     */'
+     */
     formatErrorDetails(details) { return Object.entries(details) : undefined' }'
             .map(([key, value]) => `${key}: ${value}`')''
             .join('<br>');
@@ -584,7 +584,7 @@ export class AnalyticsErrorNotificationSystem {
 
     /**
      * 自動復旧の試行
-     */'
+     */
     async attemptAutoRecovery(errorData) { const attempts = (this.recoveryAttempts.get(errorData.type) || 0) + 1;''
         this.recoveryAttempts.set(errorData.type, attempts');'
 '';
@@ -613,12 +613,12 @@ export class AnalyticsErrorNotificationSystem {
             if(recovered') {'
                 '';
                 this.showRecoveryStatus(errorData.id, 'success');'
-                // 成功時はカウンターをリセット'
+                // 成功時はカウンターをリセット
             }'
                 this.recoveryAttempts.delete(errorData.type'); }'
             } else {  ' }'
                 this.showRecoveryStatus(errorData.id, 'failed');' }'
-            } catch (e') { ''
+            } catch (e) { ''
             this.showRecoveryStatus(errorData.id, 'failed'); }
         }
     }
@@ -631,7 +631,7 @@ export class AnalyticsErrorNotificationSystem {
     }'
         const statusElement = document.getElementById(`recovery-status-${errorId}`);''
         if (!statusElement') return;
-';
+';'
         const statusTexts = { ''
             attempting: '<div class="recovery-status"><div class="recovery-spinner"></div>復旧を試行中...</div>','';
             success: '<div class="recovery-status">✅ 自動復旧に成功しました</div>','';
@@ -644,9 +644,9 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * ネットワークエラーからの復旧'
      */''
-    async recoverFromNetworkError(errorData') { // 簡単な接続テスト'
-        try {''
-            const response = await fetch('/', { method: 'HEAD' ),;
+    async recoverFromNetworkError(errorData') { // 簡単な接続テスト
+        try {'
+            const response = await fetch('/', { method: 'HEAD' ),
             return response.ok; }
         } catch (e) { return false; }
         }
@@ -655,10 +655,10 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * リソースエラーからの復旧
      */'
-    async recoverFromResourceError(errorData) { // リソースの再読み込みを試行''
+    async recoverFromResourceError(errorData) { // リソースの再読み込みを試行
         if(errorData.details.source') {'
-            try {''
-                const response = await fetch(errorData.details.source, { method: 'HEAD' ),;
+            try {'
+                const response = await fetch(errorData.details.source, { method: 'HEAD' ),
         }
                 return response.ok; }
             } catch (e) { return false; }
@@ -670,8 +670,8 @@ export class AnalyticsErrorNotificationSystem {
     /**
      * ストレージエラーからの復旧'
      */''
-    async recoverFromStorageError(errorData') { try {'
-            // ストレージテスト''
+    async recoverFromStorageError(errorData') { try {
+            // ストレージテスト
             const testKey = '__storage_test__';''
             localStorage.setItem(testKey, 'test');
             localStorage.removeItem(testKey);
@@ -694,11 +694,11 @@ export class AnalyticsErrorNotificationSystem {
 
     /**
      * エラーレポートの送信
-     */'
+     */
     async sendErrorReport(errorData) { ''
         if (!this.options.errorReportingEndpoint') return;
 
-        try {'
+        try {
             await fetch(this.options.errorReportingEndpoint, {')'
                 method: 'POST')';
                 headers: {''
@@ -707,11 +707,11 @@ export class AnalyticsErrorNotificationSystem {
                 body: JSON.stringify({)
                     error: errorData,);
                     userAgent: navigator.userAgent),
-                    timestamp: Date.now(); }
+                    timestamp: Date.now() }
                 };'
             };''
-        } catch (e') { ''
-            console.warn('Failed to send error report:', e); }
+        } catch (e) { ''
+            console.warn('Failed to send error report:', e) }
         }
     }
 
@@ -731,7 +731,7 @@ export class AnalyticsErrorNotificationSystem {
                 this.showUserFeedback(errorId');'
                 break;''
             case '再読み込み':'';
-                window.location.reload('')';
+                window.location.reload()';
             case '再試行':')';
                 this.attemptAutoRecovery(errorData');'
                 break;''
@@ -748,7 +748,7 @@ export class AnalyticsErrorNotificationSystem {
             case '品質設定':'';
                 this.showQualitySettings(''';
             case '最適化':'';
-                this.optimizePerformance('')';
+                this.optimizePerformance()';
             case 'ヘルプ':')';
                 this.showHelp(errorData.type');'
                 break;''
@@ -775,7 +775,7 @@ export class AnalyticsErrorNotificationSystem {
             details.push('スタックトレース:');''
             details.push(errorData.stack');'
         }'
-            details.push(''); }
+            details.push(); }
         }'
 '';
         if(errorData.context') {'
@@ -807,7 +807,7 @@ export class AnalyticsErrorNotificationSystem {
     }
 
     /**
-     * エラーの削除'
+     * エラーの削除
      */''
     dismissError(errorId') {'
         '';
@@ -890,12 +890,12 @@ export class AnalyticsErrorNotificationSystem {
         // グローバル参照を削除
         if (window.errorNotificationSystem === this) { delete window.errorNotificationSystem; }
         }
-        ';
+        ';'
         this.errorHistory = [];''
-        this.recoveryAttempts.clear('')';
+        this.recoveryAttempts.clear()';
         console.log('ErrorNotificationSystem destroyed'');
     }
 }
 ';
-// グローバルアクセス用''
+// グローバルアクセス用
 window.errorNotificationSystem = null;

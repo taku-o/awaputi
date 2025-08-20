@@ -20,7 +20,7 @@ interface UserData { id: string,
     statistics: { totalPlayTime: number,
         bubblesPopped: number,
         perfectShots: number,
-        powerUpsUsed: number; }
+        powerUpsUsed: number }
     };
 }
 
@@ -34,7 +34,7 @@ export class MockUserDataGenerator {
     private usernameTemplates = ['Player', 'Gamer', 'BubbleMaster', 'PopKing', 'ArcadeHero',']';
         'SkillShot', 'Champion', 'Pro', 'Expert', 'Legend'];
     ];
-    ';
+    ';'
     private achievements = ['';
         'first_win', 'bubble_master', 'perfect_shot', 'speed_demon','';
         'combo_king', 'level_crusher', 'power_user', 'perfectionist',']';
@@ -69,12 +69,12 @@ export class MockUserDataGenerator {
             statistics: { totalPlayTime: gamesPlayed * (300 + Math.random() * 600), // 5-15 min per game
                 bubblesPopped: gamesPlayed * (50 + Math.random() * 200),
                 perfectShots: Math.floor(gamesPlayed * Math.random() * 0.1),
-                powerUpsUsed: Math.floor(gamesPlayed * Math.random() * 5); }
+                powerUpsUsed: Math.floor(gamesPlayed * Math.random() * 5) }
             }
         };
     }
 
-    public generateUsers(count: number): UserData[] { return Array.from({ length: count ), () => this.generateUser(); }
+    public generateUsers(count: number): UserData[] { return Array.from({ length: count ), () => this.generateUser() }
     }
 
     public generateLeaderboard(count: number): UserData[] { const users = this.generateUsers(count);
@@ -107,7 +107,7 @@ export class MockUserDataGenerator {
         const shuffled = [...this.achievements].sort(() => Math.random() - 0.5);
         return shuffled.slice(0, count); }
     }
-';
+';'
     private generateId(): string { ' }'
         return `user_${Date.now(})}_${Math.random().toString(36).substr(2, 9'})}`;'
     }''

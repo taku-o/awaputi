@@ -20,7 +20,7 @@ export class SocialErrorHandler {'
                 debugInfo: ['timeout', 'url', 'startTime'] }
             },
             
-            // API関連'
+            // API関連
             WEB_SHARE_NOT_SUPPORTED: { ''
                 severity: 'low',';
                 recoverable: true,'';
@@ -34,7 +34,7 @@ export class SocialErrorHandler {'
                 debugInfo: ['shareData', 'error'] }
             },
             
-            // スクリーンショット関連'
+            // スクリーンショット関連
             SCREENSHOT_CAPTURE_FAILED: { ''
                 severity: 'high',';
                 recoverable: true,'';
@@ -48,7 +48,7 @@ export class SocialErrorHandler {'
                 debugInfo: ['size', 'maxSize', 'dimensions'] }
             },
             
-            // ソーシャルメディア関連'
+            // ソーシャルメディア関連
             TWITTER_URL_GENERATION_FAILED: { ''
                 severity: 'low',';
                 recoverable: true,'';
@@ -62,7 +62,7 @@ export class SocialErrorHandler {'
                 debugInfo: ['shareData', 'ogTags'] }
             },
             
-            // データ関連'
+            // データ関連
             INVALID_SHARE_DATA: { ''
                 severity: 'high',';
                 recoverable: false,'';
@@ -76,7 +76,7 @@ export class SocialErrorHandler {'
                 debugInfo: ['quota', 'usage'] }
             },
             
-            // システム関連'
+            // システム関連
             INITIALIZATION_FAILED: { ''
                 severity: 'critical',';
                 recoverable: false,'';
@@ -110,15 +110,14 @@ export class SocialErrorHandler {'
             recoveredErrors: 0,
             failedRecoveries: 0, }
             errorsByType: {},
-            errorsByComponent: {}
-        },
+            errorsByComponent: {},
     }
     
     /**
-     * エラーの処理'
+     * エラーの処理
      */''
     async handleError(errorType, error, context = { '), component = 'Unknown'') {
-        try {'
+        try {
             const errorCategory = this.errorCategories[errorType] || {''
                 severity: 'unknown',';
                 recoverable: false,'';
@@ -136,7 +135,7 @@ export class SocialErrorHandler {'
                 timestamp: Date.now(),
                 environment: this.getEnvironmentInfo(),
                 stackTrace: this.getStackTrace(error),
-                debugData: this.collectDebugData(errorType, error, context, errorCategory.debugInfo); }
+                debugData: this.collectDebugData(errorType, error, context, errorCategory.debugInfo) }
             };
             
             // エラー履歴に記録
@@ -168,9 +167,9 @@ export class SocialErrorHandler {'
                 }
             }
             
-            return { recovered: false, errorInfo };'
+            return { recovered: false, errorInfo };
             '';
-        } catch (handlingError') { ''
+        } catch (handlingError) { ''
             console.error('[SocialErrorHandler] エラーハンドリング中にエラー:', handlingError); }
             return { recovered: false, error: handlingError }
         }
@@ -192,8 +191,8 @@ export class SocialErrorHandler {'
         }
         
         this.recoveryAttempts.set(recoveryKey, attempts + 1);
-        ';
-        try { ''
+        ';'
+        try {'
             switch(errorType') {'
                 '';
                 case 'NETWORK_ERROR':'';
@@ -223,14 +222,14 @@ export class SocialErrorHandler {'
     /**
      * ネットワークエラーからの復旧
      */'
-    async recoverFromNetworkError(error, context) { // ネットワーク状態の確認''
-        if(!navigator.onLine') {
+    async recoverFromNetworkError(error, context) { // ネットワーク状態の確認
+        if(!navigator.onLine) {
             // オフライン時は復旧を延期
         }
             return false; }
         }
         ';
-        // リトライ遅延''
+        // リトライ遅延
         const delay = Math.min(1000 * Math.pow(2, this.recoveryAttempts.get('NETWORK_ERROR') || 0), 10000);
         await new Promise(resolve => setTimeout(resolve, delay);
         
@@ -239,8 +238,8 @@ export class SocialErrorHandler {'
     
     /**
      * 大きなスクリーンショットからの復旧
-     */'
-    async recoverFromLargeScreenshot(error, context) { // 品質を下げて再試行するフラグを設定''
+     */
+    async recoverFromLargeScreenshot(error, context) { // 品質を下げて再試行するフラグを設定
         if(context.screenshotOptions') {'
             '';
             context.screenshotOptions.quality = 'low';
@@ -264,10 +263,10 @@ export class SocialErrorHandler {'
     }
     
     /**
-     * メモリエラーからの復旧'
+     * メモリエラーからの復旧
      */''
-    async recoverFromMemoryError(error, context') { try {'
-            // ガベージコレクションのヒント''
+    async recoverFromMemoryError(error, context') { try {
+            // ガベージコレクションのヒント
             if(typeof window.gc === 'function') {
                 
             }
@@ -283,9 +282,9 @@ export class SocialErrorHandler {'
     }
     
     /**
-     * Web Share API失敗からの復旧'
+     * Web Share API失敗からの復旧
      */''
-    async recoverFromWebShareFailure(error, context') { // フォールバック方法の提案''
+    async recoverFromWebShareFailure(error, context') { // フォールバック方法の提案
         context.fallbackMethod = 'dialog';
         return true; }
     }
@@ -298,7 +297,7 @@ export class SocialErrorHandler {'
     }
         const { category, type } = errorInfo;
         ';
-        // 重要度に応じて通知方法を変更''
+        // 重要度に応じて通知方法を変更
         switch(category.severity') {'
             '';
             case 'critical':'';
@@ -326,10 +325,10 @@ export class SocialErrorHandler {'
      * エラーモーダルの表示'
      */''
     showErrorModal(message, errorInfo') {'
-        // 既存のモーダルがあれば削除''
+        // 既存のモーダルがあれば削除
         const existingModal = document.getElementById('social-error-modal');'
         if (existingModal) {''
-            existingModal.remove('')';
+            existingModal.remove()';
         const modal = document.createElement('div'');''
         modal.id = 'social-error-modal';''
         modal.className = 'social-error-modal';'
@@ -362,7 +361,7 @@ export class SocialErrorHandler {'
         const closeBtn = modal.querySelector('.social-error-btn-close'');'
         '';
         retryBtn? .addEventListener('click', () => {  ' }'
-            modal.remove('') }'
+            modal.remove() }'
             this.notifyCallbacks({ ...errorInfo, action: 'retry' });''
         }');'
         '';
@@ -374,14 +373,14 @@ export class SocialErrorHandler {'
      * エラートーストの表示'
      */''
     showErrorToast(message, type = 'error', duration = 3000') {'
-        // トーストコンテナの作成または取得''
+        // トーストコンテナの作成または取得
         let toastContainer = document.getElementById('social-error-toast-container');''
         if (!toastContainer') {''
             toastContainer = document.createElement('div'');''
             toastContainer.id = 'social-error-toast-container';''
             toastContainer.className = 'social-error-toast-container';'
             document.body.appendChild(toastContainer);''
-            this.addErrorStyles('');
+            this.addErrorStyles();
     }'
         const toast = document.createElement('div''); }
         toast.className = `social-error-toast social-error-toast-${type}`;'
@@ -400,7 +399,7 @@ export class SocialErrorHandler {'
         // アニメーション""
         setTimeout((") => toast.classList.add('social-error-toast-show'), 10);
         ';
-        // 自動削除''
+        // 自動削除
         const removeToast = (') => {  ''
             toast.classList.remove('social-error-toast-show'); }
             setTimeout(() => toast.remove(), 300); }
@@ -408,7 +407,7 @@ export class SocialErrorHandler {'
         '';
         const timeout = setTimeout(removeToast, duration');
         ';
-        // 閉じるボタン''
+        // 閉じるボタン
         const closeBtn = toast.querySelector('.social-error-toast-close'');''
         closeBtn? .addEventListener('click', () => {  clearTimeout(timeout); }
             removeToast(); }
@@ -418,7 +417,7 @@ export class SocialErrorHandler {'
     /**
      * エラースタイルの追加'
      */''
-    addErrorStyles('')';
+    addErrorStyles()';
         if (document.getElementById('social-error-styles')') return;'
         '';
         const style = document.createElement('style'');''
@@ -436,7 +435,7 @@ export class SocialErrorHandler {'
                 align-items: center,
                 justify-content: center,
                 z-index: 10000,
-                animation: fadeIn 0.3s ease; }
+                animation: fadeIn 0.3s ease }
             }
             
             .social-error-modal-content { background: white,
@@ -447,7 +446,7 @@ export class SocialErrorHandler {'
                 max-height: 80vh,
                 overflow-y: auto,
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-                animation: slideIn 0.3s ease; }
+                animation: slideIn 0.3s ease }
             }
             
             .social-error-icon { font-size: 48px,
@@ -457,7 +456,7 @@ export class SocialErrorHandler {'
             
             .social-error-modal-content h3 { margin: 0 0 16px 0,
                 text-align: center,
-                color: #333; }
+                color: #333 }
             }
             
             .social-error-modal-content p { margin: 0 0 20px 0,
@@ -474,13 +473,13 @@ export class SocialErrorHandler {'
             
             .social-error-details summary { cursor: pointer,
                 font-weight: bold,
-                color: #666; }
+                color: #666 }
             }
             
             .social-error-details pre { margin: 12px 0 0 0,
                 font-size: 12px,
                 overflow-x: auto,
-                color: #444; }
+                color: #444 }
             }
             
             .social-error-actions { display: flex,
@@ -495,21 +494,21 @@ export class SocialErrorHandler {'
                 font-size: 14px,
                 font-weight: bold,
                 cursor: pointer,
-                transition: background 0.2s; }
+                transition: background 0.2s }
             }
             
             .social-error-btn-retry { background: #007AFF,
-                color: white; }
+                color: white }
             }
             
-            .social-error-btn-retry:hover { background: #0051D5; }
+            .social-error-btn-retry:hover { background: #0051D5 }
             }
             
             .social-error-btn-close { background: #E0E0E0,
-                color: #333; }
+                color: #333 }
             }
             
-            .social-error-btn-close:hover { background: #D0D0D0; }
+            .social-error-btn-close:hover { background: #D0D0D0 }
             }
             
             /* エラートースト */
@@ -528,11 +527,11 @@ export class SocialErrorHandler {'
                 margin-bottom: 12px,
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
                 max-width: 350px, }
-                transform: translateX(400px},)
+                transform: translateX(400px})
                 transition: transform 0.3s ease);
                 pointer-events: auto;
             );
-            .social-error-toast-show { transform: translateX(0); }
+            .social-error-toast-show { transform: translateX(0) }
             }
             
             .social-error-toast-error { border-left: 4px solid #FF3B30, }
@@ -565,17 +564,17 @@ export class SocialErrorHandler {'
                 justify-content: center, }
             }
             
-            .social-error-toast-close:hover { color: #666; }
+            .social-error-toast-close:hover { color: #666 }
             }
             
             @keyframes fadeIn {
                 from { opacity: 0, }
-                to { opacity: 1; }
+                to { opacity: 1 }
             }
             
             @keyframes slideIn {
                 from { transform: translateY(-20px); opacity: 0, }
-                to { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(0); opacity: 1 }
             }
         `;
         
@@ -616,9 +615,9 @@ export class SocialErrorHandler {'
      * メモリ情報の取得
      */
     getMemoryInfo() {
-        if (performance.memory) {'
+        if (performance.memory) {
             return { ''
-                usedJSHeapSize: Math.round(performance.memory.usedJSHeapSize / 1048576') + 'MB',';
+                usedJSHeapSize: Math.round(performance.memory.usedJSHeapSize / 1048576') + 'MB','
     }'
                 totalJSHeapSize: Math.round(performance.memory.totalJSHeapSize / 1048576') + 'MB',' };'
                 jsHeapSizeLimit: Math.round(performance.memory.jsHeapSizeLimit / 1048576') + 'MB' }
@@ -650,7 +649,7 @@ export class SocialErrorHandler {'
     /**
      * ブラウザの検出'
      */''
-    detectBrowser('')';
+    detectBrowser()';
         if (ua.includes('Chrome')') return 'Chrome';''
         if (ua.includes('Firefox')') return 'Firefox';''
         if (ua.includes('Safari'') && !ua.includes('Chrome')') return 'Safari';''
@@ -662,7 +661,7 @@ export class SocialErrorHandler {'
     /**
      * OSの検出'
      */''
-    detectOS('')';
+    detectOS()';
         if (ua.includes('Windows')') return 'Windows';''
         if (ua.includes('Mac')') return 'macOS';''
         if (ua.includes('Linux')') return 'Linux';''
@@ -692,8 +691,8 @@ export class SocialErrorHandler {'
             return error.stack; }
         }
         
-        // エラーオブジェクトがない場合は新しいエラーからスタックトレースを取得'
-        try { ''
+        // エラーオブジェクトがない場合は新しいエラーからスタックトレースを取得
+        try {'
             throw new Error('Stack trace'); }
         } catch (e) { return e.stack; }
         }
@@ -735,7 +734,7 @@ export class SocialErrorHandler {'
         console[logLevel](logMessage, errorInfo);
         
         // デバッグモードの場合は詳細を表示
-        if(this.debugMode) {'
+        if(this.debugMode) {
             '';
             console.groupCollapsed(`Error Details: ${errorInfo.id)`'),''
             console.log('Error Info:', errorInfo');''
@@ -800,9 +799,9 @@ export class SocialErrorHandler {'
     sanitizeContext(context) {
         try {
             // 循環参照を除去してJSONシリアライズ可能にする
-    }'
+    }
             return JSON.parse(JSON.stringify(context);' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             return { error: 'Context serialization failed' }
         }
     }
@@ -843,8 +842,8 @@ export class SocialErrorHandler {'
     }
             try {); }'
                 callback(errorInfo);' }'
-            } catch (error') { ''
-                console.error('Error notification callback failed:', error); }
+            } catch (error) { ''
+                console.error('Error notification callback failed:', error) }
             }
         });
     }
@@ -853,7 +852,7 @@ export class SocialErrorHandler {'
      * 古いデータのクリーンアップ
      */
     async cleanupOldData() { try {
-            // ローカルストレージの古いデータを削除'
+            // ローカルストレージの古いデータを削除
             const keys = Object.keys(localStorage);''
             const oldDataKeys = keys.filter(key => { ');''
                 if (key.startsWith('social_'') || key.startsWith('screenshot_') {
@@ -868,9 +867,9 @@ export class SocialErrorHandler {'
             });
             
             oldDataKeys.forEach(key => localStorage.removeItem(key);
-            ';
+            ';'
             return oldDataKeys.length > 0;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Cleanup failed:', error);
             return false; }
         }
@@ -939,7 +938,7 @@ export class SocialErrorHandler {'
     }
     
     /**
-     * デバッグモードの切り替え'
+     * デバッグモードの切り替え
      */''
     setDebugMode(enabled') { this.debugMode = enabled;' }'
         console.log(`[SocialErrorHandler] デバッグモード: ${enabled ? 'ON' : 'OFF')`});
@@ -958,7 +957,7 @@ export class SocialErrorHandler {'
             errorsByType: {},
             errorsByComponent: {}'
         };''
-        this.recoveryAttempts.clear('')';
+        this.recoveryAttempts.clear()';
         console.log('[SocialErrorHandler] エラー履歴をクリアしました');
     }
     
@@ -986,5 +985,5 @@ export class SocialErrorHandler {'
     }
 }
 ';
-// シングルトンインスタンス''
+// シングルトンインスタンス
 export const socialErrorHandler = new SocialErrorHandler(');

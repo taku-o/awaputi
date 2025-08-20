@@ -8,12 +8,12 @@ export interface LocalizationManager { getCurrentLanguage(): string; }
 }
 
 export interface HitRatio { hits: number,
-    misses: number; }
+    misses: number }
 }
 
 export interface LoadQueueItem { category: string,
     priority: number,
-    callback?: () => void; }
+    callback?: () => void }
 }
 
 export class ContentLoader {
@@ -47,14 +47,14 @@ export class ContentLoader {
         this.preloadPriority = ['gameplay', 'basic']; // 優先読み込みカテゴリ
         this.loadingQueue = [];
         this.isLoading = false;
-        ';
-        // パフォーマンス監視'
+        ';'
+        // パフォーマンス監視
 
     }
     }'
         this.loadTimes = new Map<string, number>('); }
         this.hitRatio = { hits: 0, misses: 0 }'
-        // バージョン管理''
+        // バージョン管理
         this.contentVersion = '1.0.0';
         this.versionCheck = true;
         
@@ -72,10 +72,10 @@ export class ContentLoader {
                 await this.preloadEssentialContent(); }
             }
             
-            // バージョンチェック'
+            // バージョンチェック
             if (this.versionCheck) { await this.checkContentVersion();' }'
-            } catch (error') { ''
-            console.warn('ContentLoader initialization warning:', error); }
+            } catch (error) { ''
+            console.warn('ContentLoader initialization warning:', error) }
         }
     }
     
@@ -101,7 +101,7 @@ export class ContentLoader {
      * ヘルプコンテンツを読み込み
      * @param {string} category - カテゴリ
      * @param {string} language - 言語
-     * @returns {Promise<Array>} - ヘルプコンテンツ配列'
+     * @returns {Promise<Array>} - ヘルプコンテンツ配列
      */''
     async loadHelpContent(category, language = 'ja') { const startTime = performance.now(); }
         const cacheKey = `help_${category}_${language}`;
@@ -116,10 +116,10 @@ export class ContentLoader {
             }
             
             this.hitRatio.misses++;
-            ';
-            // 遅延読み込み対応''
+            ;
+            // 遅延読み込み対応
             if(this.lazyLoadingEnabled && this.isLoading') {'
-                ';
+                ';'
             }'
                 return this.queueLoad('help', category, language); }
             }
@@ -142,9 +142,9 @@ export class ContentLoader {
             // フォールバック: キャッシュされた古いコンテンツまたはデフォルトコンテンツ
             const fallbackContent = this.getFallbackContent(category, language);
             return fallbackContent || [];
-            ';
+            ';'
         } finally { this.isLoading = false;''
-            this.processLoadingQueue('')';
+            this.processLoadingQueue()';
     async loadTutorialData(language = 'ja') {
         const startTime = performance.now(); }
         const cacheKey = `tutorial_${language}`;
@@ -165,9 +165,9 @@ export class ContentLoader {
             
             return data;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to load tutorial data:', error);''
-            return this.getDefaultTutorialData('')';
+            return this.getDefaultTutorialData()';
     async loadFAQData(language = 'ja') { }
         const cacheKey = `faq_${language}`;
         
@@ -185,7 +185,7 @@ export class ContentLoader {
             
             return data;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to load FAQ data:', error);
             return []; }
         }
@@ -275,9 +275,9 @@ export class ContentLoader {
     }
     
     /**
-     * コンテンツバージョンをチェック'
+     * コンテンツバージョンをチェック
      */''
-    async checkContentVersion('')';
+    async checkContentVersion()';
             const response = await fetch('/data/help/version.json');
             const versionData = await response.json();'
             '';
@@ -287,8 +287,8 @@ export class ContentLoader {
                 this.clearCache();
             }'
                 this.contentVersion = versionData.version;' }'
-            } catch (error') { ''
-            console.warn('Version check failed:', error); }
+            } catch (error) { ''
+            console.warn('Version check failed:', error) }
         }
     }
     
@@ -303,7 +303,7 @@ export class ContentLoader {
         return new Promise((resolve, reject) => { 
             this.loadingQueue.push({
                 type,
-                category,);
+                category);
                 language);
                 resolve,);
     }
@@ -324,8 +324,8 @@ export class ContentLoader {
         
         for(const item of batch) {
         
-            try {'
-                let result;''
+            try {
+                let result;
                 switch (item.type') {''
                     case 'help':'';
                         result = await this.loadHelpContent(item.category, item.language');'
@@ -378,14 +378,14 @@ export class ContentLoader {
     
     /**
      * 実際のヘルプコンテンツを取得（実装固有）
-     * @private'
+     * @private
      */''
     async fetchHelpContent(category, language') { // 実際の実装では外部ファイルまたはAPIから読み込み
         const mockContent = [{ }
                 id: `${category}-help-1`,
                 category: category,
                 title: `${category}ヘルプ`,
-                content: `${category}に関するヘルプコンテンツです。`,]'
+                content: `${category}に関するヘルプコンテンツです。`]
                 language: language,']';
                 searchKeywords: [category, 'help', 'ヘルプ'],
                 lastUpdated: new Date().toISOString(),
@@ -400,7 +400,7 @@ export class ContentLoader {
     
     /**
      * チュートリアルデータを取得（実装固有）
-     * @private'
+     * @private
      */''
     async fetchTutorialData(language') { const mockData = [{''
                 id: 'basic-tutorial','';
@@ -433,7 +433,7 @@ export class ContentLoader {
                 answer: '回答1','';
                 category: 'basic',
                 language: language,
-                lastUpdated: new Date().toISOString(); }]
+                lastUpdated: new Date().toISOString() }]
             }]
         ];
         
@@ -448,12 +448,12 @@ export class ContentLoader {
     getFallbackContent(category, language) { // キャッシュから期限切れでも利用可能なコンテンツを探す }
         const fallbackKey = `help_${category}_${language}`;
         
-        // 期限切れでもキャッシュから取得'
+        // 期限切れでもキャッシュから取得
         const cached = this.contentCache.get(fallbackKey);''
         if (cached') { return cached; }
         }
         ';
-        // デフォルト言語のコンテンツを試す''
+        // デフォルト言語のコンテンツを試す
         if(language !== 'ja') {
             
         }
@@ -536,7 +536,7 @@ export class ContentLoader {
      * クリーンアップ
      */
     cleanup() {
-        this.clearCache();'
+        this.clearCache();
         this.imageCache.clear();'
     }'
         this.loadTimes.clear(') }

@@ -9,12 +9,12 @@ import { AchievementHelpSystem } from '../../../ui/AchievementHelpSystem.js';
 // ヘルプセクションのインターフェース
 interface HelpSection { id: string,
     name: string,
-    icon: string; }
+    icon: string }
 }
 
 // ヘルプコンテンツのインターフェース
 interface HelpContent { title: string,
-    content: string[] | string; }
+    content: string[] | string }
 }
 
 // ヘルプコンテンツマップのインターフェース
@@ -27,23 +27,23 @@ interface HelpSystemStatus { isActive: boolean,
     currentSection: string,
     hasContent: boolean,
     availableSections: number,
-    systemType: string; }
+    systemType: string }
 }
 
 // ゲームエンジンのインターフェース
 interface GameEngine { canvas: HTMLCanvasElement,
-    achievementManager?: any; }
+    achievementManager?: any }
 }
 
 // イベントバスのインターフェース
 interface EventBus { on(event: string, callback: (data?: any) => void): void;
     off(event: string, callback?: (data?: any) => void): void;
-    emit(event: string, data?: any): void; }
+    emit(event: string, data?: any): void }
 }
 
-// シーン状態のインターフェース'
+// シーン状態のインターフェース
 interface SceneState { get(key: string): any,''
-    set(key: string, value: any'): void; }
+    set(key: string, value: any'): void }
 }
 
 export class UserHelpIntegration {
@@ -53,12 +53,12 @@ export class UserHelpIntegration {
     // ヘルプシステム
     private helpSystem: AchievementHelpSystem | null = null;
     private achievementHelpSystem: AchievementHelpSystem | null = null;
-    ';
-    // ヘルプ状態''
+    ;
+    // ヘルプ状態
     private currentHelpSection: string = 'overview';
     private helpContent: HelpContentMap | null = null;
     private isHelpSystemActive: boolean = false;
-    // ヘルプセクション定義'
+    // ヘルプセクション定義
     private helpSections: HelpSection[] = [' }'
         { id: 'overview', name: '概要', icon: '📋' },''
         { id: 'categories', name: 'カテゴリ', icon: '📁' },''
@@ -92,10 +92,10 @@ export class UserHelpIntegration {
     
     /**
      * イベントリスナーをセットアップ
-     */'
+     */
     private setupEventListeners(): void { ''
         if(this.eventBus') {'
-            ';
+            ';'
         }'
             this.eventBus.on('helpSectionChanged', (section: string) => {  }'
                 this.changeHelpSection(section);' }'
@@ -114,18 +114,18 @@ export class UserHelpIntegration {
      */
     private initializeHelpSystem(): void { try {
             // 実績マネージャーが利用可能な場合のみヘルプシステムを初期化
-            if(this.gameEngine.achievementManager) {'
+            if(this.gameEngine.achievementManager) {
                 '';
                 this.achievementHelpSystem = new AchievementHelpSystem(this.gameEngine.achievementManager');
                 this.helpSystem = this.achievementHelpSystem;
                 this.isHelpSystemActive = true;'
-                ';
+                ';'
             }'
                 console.log('Help system initialized successfully''); }'
             } else {  ''
                 console.warn('Achievement manager not available, help system disabled'); }'
                 this.isHelpSystemActive = false;' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('Failed to initialize help system:', error);
             this.helpSystem = null;
             this.isHelpSystemActive = false; }
@@ -141,13 +141,13 @@ export class UserHelpIntegration {
             } else {  // フォールバック: 基本的なヘルプコンテンツを生成 }
                 this.helpContent = this.generateBasicHelpContent(); }
             }
-            ';
-            // イベントバスに通知''
+            ;
+            // イベントバスに通知
             if(this.eventBus') {'
-                ';
+                ';'
             }'
                 this.eventBus.emit('helpContentLoaded', this.helpContent);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to load help content:', error);
             this.helpContent = this.generateErrorHelpContent(); }
         }
@@ -158,7 +158,7 @@ export class UserHelpIntegration {
      */
     public renderHelpWithComponent(;
         context: CanvasRenderingContext2D,
-        y: number, );
+        y: number );
         height: number);
         helpTabComponent?: any;
     ): void { const canvas = this.gameEngine.canvas;
@@ -183,8 +183,8 @@ export class UserHelpIntegration {
         const contentWidth = canvas.width - this.contentPadding * 2;
         
         let currentY = y + this.contentPadding;
-        ';
-        // ヘルプシステムが利用可能かチェック''
+        ;
+        // ヘルプシステムが利用可能かチェック
         if(!this.isHelpSystemActive || !this.helpContent') {'
             '';
             context.fillStyle = '#cccccc';''
@@ -208,28 +208,28 @@ export class UserHelpIntegration {
      */
     private renderHelpSectionSelector(;
         context: CanvasRenderingContext2D,
-        x: number, );
+        x: number );
         y: number);
         width: number;
     ): number { const buttonWidth = Math.min(100, width / this.helpSections.length - 10);
         const buttonHeight = 35;
         
-        let currentX = x;'
+        let currentX = x;
         '';
         for(let i = 0; i < this.helpSections.length; i++') {
             const section = this.helpSections[i];
             const isActive = this.currentHelpSection === section.id;
             ';
-            // ボタン背景''
+            // ボタン背景
             context.fillStyle = isActive ? '#4CAF50' : '#2196F3';''
             context.fillRect(currentX, y, buttonWidth, buttonHeight');
             ';
-            // ボタン枠線''
+            // ボタン枠線
             context.strokeStyle = '#333';'
             context.lineWidth = 1;''
             context.strokeRect(currentX, y, buttonWidth, buttonHeight');
             ';
-            // ボタンテキスト''
+            // ボタンテキスト
             context.fillStyle = '#ffffff';''
             context.font = '12px Arial';''
             context.textAlign = 'center';
@@ -254,31 +254,31 @@ export class UserHelpIntegration {
     private renderHelpContent(;
         context: CanvasRenderingContext2D,
         x: number, ;
-        y: number, );
+        y: number );
         width: number);
         height: number;
     ): void { if (!this.helpContent) return,
         
-        const content = this.helpContent[this.currentHelpSection];'
+        const content = this.helpContent[this.currentHelpSection];
         '';
         if (!content') return;
         ';
-        // セクション背景''
+        // セクション背景
         context.fillStyle = '#16213e';''
         context.fillRect(x, y, width, height');
         ';
-        // セクション枠線''
+        // セクション枠線
         context.strokeStyle = '#333';'
         context.lineWidth = 1;''
         context.strokeRect(x, y, width, height');
         ';
-        // セクションタイトル''
+        // セクションタイトル
         context.fillStyle = '#ffffff';''
         context.font = 'bold 18px Arial';''
         context.textAlign = 'left';''
         context.fillText(content.title || 'ヘルプ', x + 15, y + 25');
         ';
-        // コンテンツ描画''
+        // コンテンツ描画
         context.fillStyle = '#cccccc';''
         context.font = '14px Arial';
         
@@ -289,7 +289,7 @@ export class UserHelpIntegration {
         const maxY = y + height - padding;
         
         if(content.content && Array.isArray(content.content) {
-        ';
+        ';'
             for (const line of content.content) {''
                 if (currentY + lineHeight > maxY') break;'
                 '';
@@ -300,7 +300,7 @@ export class UserHelpIntegration {
                     continue; }
                 }
                 ';
-                // 特別なスタイリング''
+                // 特別なスタイリング
                 if (line.startsWith('🎯 '') || line.startsWith('⏰ '') || '';
                     line.startsWith('💡 '') || line.startsWith('🏆 ')') { ''
                     context.fillStyle = '#FFD700';' }'
@@ -326,7 +326,7 @@ export class UserHelpIntegration {
         context: CanvasRenderingContext2D,
         text: string, ;
         x: number, ;
-        y: number, );
+        y: number );
         maxWidth: number)';
         lineHeight: number'';
     '): void { ''
@@ -338,8 +338,8 @@ export class UserHelpIntegration {
             '';
             const testLine = line + words[n] + ' ';
             const metrics = context.measureText(testLine);
-            const testWidth = metrics.width;
-            ';
+            const testWidth = metrics.width;'
+            ';'
             if (testWidth > maxWidth && n > 0) {''
                 context.fillText(line.trim(), x, currentY');''
                 line = words[n] + ' ';
@@ -417,9 +417,9 @@ export class UserHelpIntegration {
                 (this.helpSystem as any).changeHelpSection(sectionId); }
             }
             ';
-            // イベントバスに通知''
+            // イベントバスに通知
             if(this.eventBus') {'
-                ';
+                ';'
             }'
                 this.eventBus.emit('helpSectionChanged', sectionId); }
             }
@@ -567,7 +567,7 @@ export class UserHelpIntegration {
     /**
      * エラー時のヘルプコンテンツを生成'
      */''
-    private generateErrorHelpContent('')';
+    private generateErrorHelpContent()';
                 title: 'エラー')';
                 content: ['';
                     'ヘルプコンテンツの読み込みに失敗しました。',']';
@@ -642,6 +642,6 @@ export class UserHelpIntegration {
         // リソースのクリーンアップ
         this.helpSystem = null;
         this.achievementHelpSystem = null;
-        this.helpContent = null;'
+        this.helpContent = null;
     }''
 }

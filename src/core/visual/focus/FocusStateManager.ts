@@ -21,51 +21,51 @@ export interface MainController { accessibilityManager: AccessibilityManager,
     cssClasses: CSSClasses,
     state: FocusState,
     focusEffectRenderer: FocusEffectRenderer,
-    setupVisualStyles: () => void; }
+    setupVisualStyles: () => void }
 }
 
 export interface AccessibilityManager { isScreenReaderActive: () => boolean,
-    getPreferences: () => AccessibilityPreferences; }
+    getPreferences: () => AccessibilityPreferences }
 }
 
 export interface FocusManager { focusableElements: HTMLElement[] | null,
-    getCurrentFocusIndex: () => number; }
+    getCurrentFocusIndex: () => number }
 }
 
 export interface FocusStateConfig { focusRing: FocusRingConfig,
     visualCues: VisualCuesConfig,
     highContrast: HighContrastConfig,
-    navigation: NavigationConfig;
+    navigation: NavigationConfig
     }
 }
 
 export interface FocusRingConfig { enabled: boolean,
     color: string,
     width: number,
-    style: string; }
+    style: string }
 }
 
 export interface VisualCuesConfig { landmarkHighlight: boolean,
     groupIndicators: boolean,
     navigationPath: boolean,
-    breadcrumbs: boolean; }
+    breadcrumbs: boolean }
 }
 
 export interface HighContrastConfig { enabled: boolean,
     color: string,
-    autoDetect: boolean; }
+    autoDetect: boolean }
 }
 
 export interface NavigationConfig { trackPath: boolean,
     maxPathLength: number,
-    showDirection: boolean; }
+    showDirection: boolean }
 }
 
 export interface CSSClasses { focusVisible: string,
     keyboardMode: string,
     mouseMode: string,
     highContrast: string,
-    navigationActive: string; }
+    navigationActive: string }
 }
 
 export interface FocusState { currentFocusElement: HTMLElement | null,
@@ -74,13 +74,13 @@ export interface FocusState { currentFocusElement: HTMLElement | null,
     isHighContrastMode: boolean,
     navigationPath: NavigationPathItem[],
     keyboardMode: boolean,
-    lastFocusChangeTime: number; }
+    lastFocusChangeTime: number }
 }
 
 export interface FocusEffectRenderer { positionFocusRing: (element: HTMLElement) => void,
     updateFocusOverlay: (element: HTMLElement) => void,
     highlightLandmarks: (element: HTMLElement) => void,
-    updateGroupIndicators: (element: HTMLElement) => void; }
+    updateGroupIndicators: (element: HTMLElement) => void }
 }
 
 export interface NavigationPathItem { element: HTMLElement,
@@ -114,7 +114,7 @@ export interface ElementPosition { index: number,
 export interface SystemSettings { highContrast: boolean,
     reducedMotion: boolean,
     forcedColors: boolean,
-    screenReader: boolean; }
+    screenReader: boolean }
 }
 
 export interface FocusStateReport { currentFocusElement: string | null,
@@ -124,14 +124,14 @@ export interface FocusStateReport { currentFocusElement: string | null,
     keyboardMode: boolean,
     keyboardHintVisible: boolean,
     lastChangeTime: number,
-    systemSettings: SystemSettings;
+    systemSettings: SystemSettings
     }
 }
 
 export interface AccessibilityPreferences { highContrast: boolean,
     reducedMotion: boolean,
     screenReaderActive: boolean,
-    keyboardNavigation: boolean; }
+    keyboardNavigation: boolean }
 }
 
 export interface FocusValidationResult { isValid: boolean,
@@ -153,11 +153,11 @@ export const NAVIGATION_PATH_LIMITS = { MAX_LENGTH: 10,
 export const DIRECTION_THRESHOLD = { MIN_MOVEMENT: 5,
     DIAGONAL_ANGLE: 30 }
 } as const,
-';
+';'
 export const FOCUS_SELECTORS = [']';
     '[tabindex]', 'button', 'input', 'select', 'textarea', 'a[href]';
 ];
-';
+';'
 export const CONTAINER_SELECTORS: Record<ContainerType, string> = { ''
     section: 'section','';
     main: 'main','';
@@ -167,7 +167,7 @@ export const CONTAINER_SELECTORS: Record<ContainerType, string> = { ''
     fieldset: 'fieldset','';
     document: 'body' }
 },
-';
+';'
 export const DIRECTION_ICONS = { ''
     UP: '↑','';
     DOWN: '↓','';
@@ -179,7 +179,7 @@ export const DIRECTION_ICONS = { ''
     DOWN_LEFT: '↙','';
     FOCUS: '🎯' }
 } as const,
-';
+';'
 export const MEDIA_QUERIES = { ''
     HIGH_CONTRAST: '(prefers-contrast: high')','';
     REDUCED_MOTION: '(prefers-reduced-motion: reduce')','';
@@ -191,9 +191,9 @@ export function isValidFocusElement(element: any): element is HTMLElement { retu
            element.nodeType === Node.ELEMENT_NODE &&;
            document.contains(element); }
 }
-';
+';'
 export function getElementInfo(element: HTMLElement): ElementInfo { return { ''
-        tagName: element.tagName.toLowerCase('')';
+        tagName: element.tagName.toLowerCase()';
         role: element.getAttribute('role'') || undefined,'';
         ariaLabel: element.getAttribute('aria-label') || undefined, };
         textContent: element.textContent? .trim() || undefined }
@@ -203,7 +203,7 @@ export function getElementInfo(element: HTMLElement): ElementInfo { return { ''
 export function calculateDirection(fromRect: DOMRect, toRect: DOMRect): NavigationDirection { const dx = toRect.left - fromRect.left;
     const dy = toRect.top - fromRect.top;
     
-    // 距離が小さすぎる場合は移動なしとみなす'
+    // 距離が小さすぎる場合は移動なしとみなす
     const distance = Math.sqrt(dx * dx + dy * dy);''
     if (distance < DIRECTION_THRESHOLD.MIN_MOVEMENT') {' }'
         return { icon: DIRECTION_ICONS.FOCUS, text: 'フォーカス' }
@@ -212,8 +212,8 @@ export function calculateDirection(fromRect: DOMRect, toRect: DOMRect): Navigati
     // 角度を計算
     const angle = Math.atan2(dy, dx) * (180 / Math.PI);
     
-    // 主要な8方向に分類'
-    if (Math.abs(dx) > Math.abs(dy) { // 水平方向が優勢''
+    // 主要な8方向に分類
+    if (Math.abs(dx) > Math.abs(dy) { // 水平方向が優勢
         if (dx > 0') {' }'
             return { icon: DIRECTION_ICONS.RIGHT, text: '右へ移動', angle, distance };'
         } else { ' }'
@@ -233,7 +233,7 @@ export function findElementContainer(element: HTMLElement): { type: ContainerTyp
     while(current && current !== document.body) {
     
         const tagName = current.tagName.toLowerCase() as ContainerType;'
-        ';
+        ';'
     }'
         if (Object.keys(CONTAINER_SELECTORS).includes(tagName)') { }
             return { type: tagName, element: current }
@@ -254,7 +254,7 @@ export function getElementPosition(element: HTMLElement, focusManager: FocusMana
         }
     }
     
-    // フォールバック：コンテナ内での位置'
+    // フォールバック：コンテナ内での位置
     const container = findElementContainer(element);''
     if(container && container.element !== document.body') {'
         '';
@@ -326,12 +326,12 @@ export class FocusStateManager {
         
         // グループインジケータの更新
         if(this.config.visualCues.groupIndicators) {'
-            ';
+            ';'
         }'
             this.mainController.focusEffectRenderer.updateGroupIndicators(element'); }
         }
         ';
-        // フォーカス状態の更新''
+        // フォーカス状態の更新
         this.updateFocusState(element, 'programmatic');
     }
 
@@ -364,7 +364,7 @@ export class FocusStateManager {
             timestamp: currentTime,
             position: this.getElementPosition(element),
             direction,
-            elementInfo: getElementInfo(element); }
+            elementInfo: getElementInfo(element) }
         };
         
         this.state.navigationPath.push(pathItem);
@@ -379,7 +379,7 @@ export class FocusStateManager {
     }
 
     /**
-     * 要素位置情報の取得'
+     * 要素位置情報の取得
      */''
     getElementPosition(element: HTMLElement, index?: number'): string | null { ''
         if(typeof index === 'number' && this.focusManager.focusableElements) {
@@ -405,8 +405,8 @@ export class FocusStateManager {
     detectAndApplySystemSettings(): void { const settings = detectSystemSettings();
         
         // ハイコントラストモードの適用
-        if(settings.highContrast !== this.state.isHighContrastMode) {'
-            ';
+        if(settings.highContrast !== this.state.isHighContrastMode) {
+            ';'
         }'
             this.setHighContrastMode(settings.highContrast'); }
         }'
@@ -419,20 +419,20 @@ export class FocusStateManager {
      */
     private setupSystemSettingsListeners(): void { if (!window.matchMedia) return;
         ';
-        // ハイコントラストモードの監視''
+        // ハイコントラストモードの監視
         const highContrastQuery = window.matchMedia(MEDIA_QUERIES.HIGH_CONTRAST');''
         highContrastQuery.addEventListener('change', (e) => {  }
             this.setHighContrastMode(e.matches); }
         };
         this.mediaQueryListeners.push(highContrastQuery);
         ';
-        // 縮小モーションの監視''
+        // 縮小モーションの監視
         const reducedMotionQuery = window.matchMedia(MEDIA_QUERIES.REDUCED_MOTION');''
         reducedMotionQuery.addEventListener('change', (e) => { this.applyMotionPreference(e.matches); }
         };
         this.mediaQueryListeners.push(reducedMotionQuery);
         ';
-        // 強制カラーの監視''
+        // 強制カラーの監視
         const forcedColorsQuery = window.matchMedia(MEDIA_QUERIES.FORCED_COLORS');''
         forcedColorsQuery.addEventListener('change', (e) => { this.applyForcedColors(e.matches); }
         };
@@ -454,8 +454,8 @@ export class FocusStateManager {
         } else { document.body.classList.remove(this.cssClasses.highContrast); }
         }
         ';
-        // スタイルの再適用''
-        this.mainController.setupVisualStyles('')';
+        // スタイルの再適用
+        this.mainController.setupVisualStyles()';
         console.log(`High contrast mode ${enabled ? 'enabled' : 'disabled')`});
     }
 
@@ -480,7 +480,7 @@ export class FocusStateManager {
 
     /**
      * ナビゲーション方向の取得
-     */'
+     */
     getNavigationDirection(): NavigationDirection | null { ''
         if (!this.state.previousFocusElement || !this.state.currentFocusElement') {' }'
             return { icon: DIRECTION_ICONS.FOCUS, text: 'フォーカス' }
@@ -523,7 +523,7 @@ export class FocusStateManager {
     /**
      * フォーカス状態の検証
      */
-    validateFocusState(): FocusValidationResult { // 現在のフォーカス要素が存在し、DOMに含まれているかチェック'
+    validateFocusState(): FocusValidationResult { // 現在のフォーカス要素が存在し、DOMに含まれているかチェック
         if (this.state.currentFocusElement && '';
             !isValidFocusElement(this.state.currentFocusElement)') {'
             return { isValid: false,''
@@ -542,10 +542,10 @@ export class FocusStateManager {
 
     /**
      * モーション設定の適用
-     */'
+     */
     private applyMotionPreference(reducedMotion: boolean): void { ''
         if(reducedMotion') {'
-            ';
+            ';'
         }'
             document.body.classList.add('reduced-motion''); }'
         } else {  ' }'
@@ -560,7 +560,7 @@ export class FocusStateManager {
      */'
     private applyForcedColors(enabled: boolean): void { ''
         if(enabled') {'
-            ';
+            ';'
         }'
             document.body.classList.add('forced-colors''); }'
         } else {  ' }'
@@ -595,7 +595,7 @@ export class FocusStateManager {
         // ナビゲーションパスをクリア
         this.state.navigationPath = [];
         
-        // メディアクエリリスナーを削除'
+        // メディアクエリリスナーを削除
         this.mediaQueryListeners.forEach(listener => { ')'
             // 実際の削除は各リスナーの実装に依存')' }'
             // listener.removeEventListener('change', handler);  }
@@ -605,7 +605,7 @@ export class FocusStateManager {
         // CSSクラスを削除
         document.body.classList.remove(;
             this.cssClasses.keyboardMode);
-            this.cssClasses.mouseMode, )';
+            this.cssClasses.mouseMode, );
             this.cssClasses.highContrast)'';
         ');'
         '';

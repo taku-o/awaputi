@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface LineChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement;
+export interface LineChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement
     }
 }
 
@@ -73,19 +73,19 @@ export interface LineThemeColors { primary: string,
     text: string,
     grid: string,
     axis: string,
-    point: string; }
+    point: string }
 }
 
 export interface LineFontTheme { family: string,
     size: number,
     weight: string,
-    color: string; }
+    color: string }
 }
 
 export interface LineStyleTheme { defaultWidth: number,
     defaultColor: string,
     defaultStyle: LineStyle,
-    pointRadius: number; }
+    pointRadius: number }
 }
 
 export interface LineStyleOptions { width?: number;
@@ -113,11 +113,11 @@ export interface PointShadowOptions { enabled: boolean,
     color: string,
     blur: number,
     offsetX: number,
-    offsetY: number; }
+    offsetY: number }
 }
 
 export interface LineAxesOptions { x: LineAxisOptions,
-    y: LineAxisOptions;
+    y: LineAxisOptions
     }
 }
 
@@ -135,7 +135,7 @@ export interface LineTickOptions { show?: boolean;
     length?: number;
     color?: string;
     width?: number;
-    format?: (value: number) => string; }
+    format?: (value: number) => string }
 }
 
 export interface LineLabelOptions { show?: boolean;
@@ -143,7 +143,7 @@ export interface LineLabelOptions { show?: boolean;
     color?: string;
     rotation?: number;
     offset?: number;
-    format?: (value: number) => string; }
+    format?: (value: number) => string }
 }
 
 export interface LineAxisTitleOptions { text?: string;
@@ -224,7 +224,7 @@ export interface LineHoverOptions { enabled?: boolean;
 export interface LineClickOptions { enabled?: boolean;
     selectPoint?: boolean;
     selectLine?: boolean;
-    callback?: (data: ProcessedLineData, event: MouseEvent) => void; }
+    callback?: (data: ProcessedLineData, event: MouseEvent) => void }
 }
 
 export interface LineTooltipOptions { enabled?: boolean;
@@ -254,7 +254,7 @@ export interface CrosshairOptions { enabled?: boolean;
 export interface LineChartArea { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface LineChartScales { xScale: number,
@@ -264,18 +264,18 @@ export interface LineChartScales { xScale: number,
     yMin: number,
     yMax: number,
     xRange: number,
-    yRange: number; }
+    yRange: number }
 }
 
 export interface LineSegment { start: Point2D,
     end: Point2D,
     control1?: Point2D;
     control2?: Point2D;
-    length: number; }
+    length: number }
 }
 
 export interface Point2D { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface LineRenderResult { type: ChartType,
@@ -305,7 +305,7 @@ export interface LineData { path: ProcessedLineData[],
     width: number,
     style: LineStyle,
     series?: string;
-    segments: LineSegment[];
+    segments: LineSegment[]
     }
 }
 
@@ -317,42 +317,42 @@ export interface PointData { x: number,
     color: string,
     borderColor?: string;
     shape: PointShape,
-    data: ProcessedLineData;
+    data: ProcessedLineData
     }
 }
 
 export interface LineValidationResult { isValid: boolean,
     errors: LineValidationError[],
-    warnings: LineValidationWarning[];
+    warnings: LineValidationWarning[]
     }
 }
 
 export interface LineValidationError { field: string,
     message: string,
-    code: string; }
+    code: string }
 }
 
 export interface LineValidationWarning { field: string,
     message: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 export interface LineBounds { minX: number,
     maxX: number,
     minY: number,
-    maxY: number; }
+    maxY: number }
 }
 
 export interface InterpolationResult { points: Point2D[],
     segments: LineSegment[],
-    smoothness: number; }
+    smoothness: number }
 }
 
 export interface TrendAnalysis { slope: number,
     intercept: number,
     correlation: number,
     trend: TrendDirection,
-    confidence: number; }
+    confidence: number }
 }
 
 // 列挙型
@@ -374,11 +374,11 @@ export const DEFAULT_LINE_OPTIONS: Partial<LineChartOptions> = { padding: 20,
     showGrid: true,
     showPoints: true,
     lineWidth: 2,
-    pointRadius: 4,';
+    pointRadius: 4,
     fontSize: 12,'';
     fontFamily: 'Arial, sans-serif' }
 } as const;
-';
+';'
 export const DEFAULT_LINE_THEME: LineChartTheme = { colors: {''
         primary: '#3B82F6','';
         secondary: '#10B981','';
@@ -423,13 +423,13 @@ export const INTERPOLATION_CONFIG = { CUBIC_SEGMENTS: 50,
 
 // ユーティリティ関数
 export function validateLineData(data: any[]): LineValidationResult { const errors: LineValidationError[] = [],
-    const warnings: LineValidationWarning[] = [],';
+    const warnings: LineValidationWarning[] = [],
     '';
     if (!Array.isArray(data)') {'
         errors.push({''
             field: 'data',')';
             message: 'Line chart data must be an array',')';
-            code: 'INVALID_DATA_TYPE'); }
+            code: 'INVALID_DATA_TYPE') }
         });
         return { isValid: false, errors, warnings };
     }'
@@ -441,7 +441,7 @@ export function validateLineData(data: any[]): LineValidationResult { const erro
             message: `Line chart requires at least ${LINE_CONFIG.MIN_POINTS} data points`,')'
             code: 'INSUFFICIENT_DATA')'),
     }
-    ';
+    ';'
     const hasInvalidValues = data.some(item => {  ')'
         const value = typeof item === 'number' ? item: item? .value'),' }'
         return typeof value !== 'number' || !isFinite(value); }
@@ -450,12 +450,12 @@ export function validateLineData(data: any[]): LineValidationResult { const erro
     if(hasInvalidValues') {'
         errors.push({ : undefined''
             field: 'data.value',')';
-            message: 'All data items must have valid numeric values',');
+            message: 'All data items must have valid numeric values',')
     }'
             code: 'INVALID_VALUES'),' }'
         }');
     }
-    ';
+    ';'
     const hasInvalidX = data.some(item => {  ')'
         const x = typeof item === 'object' ? item?.x: undefined'),' }'
         return x !== undefined && (typeof x !== 'number' || !isFinite(x); }
@@ -464,7 +464,7 @@ export function validateLineData(data: any[]): LineValidationResult { const erro
     if(hasInvalidX') {'
         errors.push({''
             field: 'data.x',')';
-            message: 'X coordinates must be valid numbers when specified',');
+            message: 'X coordinates must be valid numbers when specified',')
     }'
             code: 'INVALID_X_VALUES'); }
         });
@@ -514,12 +514,12 @@ export function calculateBezierPoint(p0: Point2D, p1: Point2D, p2: Point2D, p3: 
         y: mt3 * p0.y + 3 * mt2 * t * p1.y + 3 * mt * t2 * p2.y + t3 * p3.y }
     },
 }
-';
+';'
 export function calculateTrendLine(data: ProcessedLineData[]): TrendAnalysis { const n = data.length;''
     if(n < 2') {
         return { slope: 0,
             intercept: 0,';
-            correlation: 0,';
+            correlation: 0,'
     }'
             trend: 'flat', };
             confidence: 0 }
@@ -534,7 +534,7 @@ export function calculateTrendLine(data: ProcessedLineData[]): TrendAnalysis { c
     
     const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
     const intercept = (sumY - slope * sumX) / n;
-    ';
+    ';'
     const correlation = (n * sumXY - sumX * sumY) / '';
         Math.sqrt((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY)');'
     '';
@@ -556,7 +556,7 @@ export function calculateTrendLine(data: ProcessedLineData[]): TrendAnalysis { c
 
 export function formatLineValue(value: number, decimals: number = 2): string { return value.toLocaleString(undefined, {)
         minimumFractionDigits: 0,);
-        maximumFractionDigits: decimals); }
+        maximumFractionDigits: decimals) }
     });
 }
 
@@ -582,7 +582,7 @@ export class LineChartRenderer {
             const startTime = performance.now();
             
             // データの検証
-            const validation = validateLineData(data);'
+            const validation = validateLineData(data);
             if (!validation.isValid) {' }'
                 throw new Error(`Data validation failed: ${validation.errors.map(e => e.message').join(', '})}`);
             }
@@ -630,7 +630,7 @@ export class LineChartRenderer {
                 performance: { ...this.performance })
             })'
             ')';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Line chart rendering failed:', error');'
             return { ''
                 type: 'line', ;
@@ -709,7 +709,7 @@ export class LineChartRenderer {
      * 軸の描画
      */
     private renderAxes(context: LineChartContext, chartArea: LineChartArea, scales: LineChartScales, options: LineChartOptions): void {
-        const axesOptions = options.axes || { x: {}, y: {} }
+        const axesOptions = options.axes || { x: {}, y: {}
         const color = options.theme.colors.dark;
         const width = 1;
         
@@ -736,7 +736,7 @@ export class LineChartRenderer {
     }
 
     /**
-     * グリッドの描画'
+     * グリッドの描画
      */''
     private renderGrid(context: LineChartContext, chartArea: LineChartArea, scales: LineChartScales, options: LineChartOptions'): void {'
         const gridOptions = options.grid || {};''
@@ -775,7 +775,7 @@ export class LineChartRenderer {
 
     /**
      * 線の描画
-     */ : undefined'
+     */ : undefined
     private renderLines(context: LineChartContext, data: ProcessedLineData[], chartArea: LineChartArea, scales: LineChartScales, options: LineChartOptions): LineData[] { ''
         if (data.length < 2') return [];
          }
@@ -815,9 +815,9 @@ export class LineChartRenderer {
                     length: calculateDistance({ x: prevX, y: prevY }, { x, y ); }
                 });
             }
-        });'
+        });
         '';
-        context.stroke('')';
+        context.stroke()';
             style: 'solid');
             segments;
         }];
@@ -848,7 +848,7 @@ export class LineChartRenderer {
             
             // ポイントの枠線
             if(borderWidth > 0) {
-                context.strokeStyle = borderColor;'
+                context.strokeStyle = borderColor;
                 context.lineWidth = borderWidth;''
                 context.stroke('';
             })'
@@ -876,7 +876,7 @@ export class LineChartRenderer {
             errors.push({''
                 field: 'padding',')';
                 message: 'Padding must be between 0 and 100',')';
-                code: 'INVALID_PADDING'); }
+                code: 'INVALID_PADDING') }
         }'
         '';
         if (options.lineWidth && (options.lineWidth < 0 || options.lineWidth > LINE_CONFIG.MAX_LINE_WIDTH)') { errors.push({''

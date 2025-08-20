@@ -8,7 +8,7 @@ interface SubmissionConfig { endpoint: string,
     batchSize: number,
     retryAttempts: number,
     retryDelay: number,
-    enableCompression: boolean; }
+    enableCompression: boolean }
 }
 
 interface ErrorSubmission { id: string,
@@ -16,13 +16,13 @@ interface ErrorSubmission { id: string,
     timestamp: number,
     status: 'pending' | 'submitting' | 'success' | 'failed',
     attempts: number,
-    lastAttempt?: number; }
+    lastAttempt?: number }
 }
 
 interface SubmissionResult { success: boolean,
     submissionId: string,
     errorCount: number,
-    message?: string; }
+    message?: string }
 }
 
 export class ErrorSubmissionManager {
@@ -56,7 +56,7 @@ export class ErrorSubmissionManager {
         this.submissionQueue.push(submission);
         
         if(!this.isProcessing) {
-        ';
+        ';'
             '';
             this.processQueue('';
         }'
@@ -141,13 +141,13 @@ export class ErrorSubmissionManager {
         let body = JSON.stringify(payload);'
         '';
         if(this.config.enableCompression') {'
-            // Compression would be implemented here'
+            // Compression would be implemented here
         }'
             headers['Content-Encoding'] = 'gzip'; }
         }
-';
+';'
         return fetch(this.config.endpoint, { ''
-            method: 'POST',);
+            method: 'POST');
             headers);
             body;
         ); }
@@ -156,7 +156,7 @@ export class ErrorSubmissionManager {
     private async handleSubmissionError(submission: ErrorSubmission, error: any): Promise<SubmissionResult> { console.warn(`[ErrorSubmissionManager] Submission failed:`, error);'
 '';
         if(submission.attempts < this.config.retryAttempts') {'
-            // Re-queue for retry''
+            // Re-queue for retry
             submission.status = 'pending';
             this.submissionQueue.unshift(submission);
             
@@ -165,7 +165,7 @@ export class ErrorSubmissionManager {
             this.rateLimitDelay = delay;
 
             return { success: false }
-                submissionId: submission.id, };'
+                submissionId: submission.id, };
                 errorCount: submission.errors.length,' }'
                 message: `Failed, will retry (attempt ${submission.attempts}/${this.config.retryAttempts)'})`
             };'
@@ -180,7 +180,7 @@ export class ErrorSubmissionManager {
         }
     }'
 '';
-    public getQueueStatus('')';
+    public getQueueStatus()';
         const pending = this.submissionQueue.filter(s => s.status === 'pending'').length;''
         const submitting = this.submissionQueue.filter(s => s.status === 'submitting'').length;''
         const failed = this.submissionQueue.filter(s => s.status === 'failed').length;
@@ -192,16 +192,16 @@ export class ErrorSubmissionManager {
         },
     }'
 '';
-    public clearFailedSubmissions('')';
+    public clearFailedSubmissions()';
         const failedCount = this.submissionQueue.filter(s => s.status === 'failed'').length;''
         this.submissionQueue = this.submissionQueue.filter(s => s.status !== 'failed');
         return failedCount;
     }
-';
+';'
     public retryFailedSubmissions(): void { ''
         this.submissionQueue.forEach(submission => { ');''
             if(submission.status === 'failed'') {'
-                ';
+                ';'
             }'
                 submission.status = 'pending'; }
                 submission.attempts = 0; }
@@ -218,7 +218,7 @@ export class ErrorSubmissionManager {
     private generateSubmissionId(): string {
         return `submission_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
     }
-';
+';'
     private delay(ms: number): Promise<void> { ''
         return new Promise(resolve => setTimeout(resolve, ms)'); }'
     }''

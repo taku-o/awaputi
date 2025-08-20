@@ -17,7 +17,7 @@ interface LightSourceBase { x: number,
     y: number,
     intensity: number,
     color: string,
-    radius: number; }
+    radius: number }
 }
 
 /**
@@ -32,7 +32,7 @@ interface LightSource extends LightSourceBase { id: number,
     type: LightSourceType,
     animated: boolean,
     animation: any | null,
-    created: number; }
+    created: number }
 }
 
 /**
@@ -46,7 +46,7 @@ interface ShadowEffect { id: number,''
     blur: number,
     direction: number,
     distance: number,
-    created: number; }
+    created: number }
 }
 
 /**
@@ -69,7 +69,7 @@ interface WaterRipple { x: number,
     maxRadius: number,
     speed: number,
     intensity: number,
-    lifetime: number; }
+    lifetime: number }
 }
 
 /**
@@ -82,7 +82,7 @@ interface ReflectionEffect { id: number,''
     intensity: number,
     distortion: number,
     ripples: WaterRipple[],
-    created: number; }
+    created: number }
 }
 
 /**
@@ -109,7 +109,7 @@ interface BackgroundEffect { id: number,
     options: BackgroundEffectOptions,
     particles: any[],
     active: boolean,
-    created: number; }
+    created: number }
 }
 
 /**
@@ -126,13 +126,13 @@ interface TransitionEffect { id: number,
 interface PerformanceMetrics { effectCount: number,
     renderTime: number,
     memoryUsage: number,
-    lastFrameTime: number; }
+    lastFrameTime: number }
 }
 
 /**
  * Error handler interface
  */
-interface ErrorHandler { handleError(error: any, details?: any): void; }
+interface ErrorHandler { handleError(error: any, details?: any): void }
 }
 
 /**
@@ -150,7 +150,7 @@ export class EnhancedEffectController {
     private effectId: number;
     private performanceMetrics: PerformanceMetrics;
     constructor(canvas: HTMLCanvasElement) {
-';
+';'
         this.canvas = canvas;''
         this.errorHandler = getErrorHandler('';
     }
@@ -171,14 +171,14 @@ export class EnhancedEffectController {
                 blur: 2,
                 direction: this._calculateShadowDirection(shadowObject, lightSource),
                 distance: this._calculateShadowDistance(shadowObject, lightSource),
-                created: Date.now(); }
+                created: Date.now() }
             };
             
             this.shadowCasters.push(shadowEffect);
             console.log(`[EnhancedEffectController] 影効果を追加: ID ${shadowEffect.id)`});'
             return shadowEffect.id;''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EnhancedEffectController.addShadowEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EnhancedEffectController.addShadowEffect') }
             });
             return -1;
         }
@@ -196,14 +196,14 @@ export class EnhancedEffectController {
                 intensity: intensity,
                 distortion: distortion,
                 ripples: [],
-                created: Date.now(); }
+                created: Date.now() }
             };
             
             this.reflectionSurfaces.push(reflectionEffect);
             console.log(`[EnhancedEffectController] 反射効果を追加: ID ${reflectionEffect.id)`});'
             return reflectionEffect.id;''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EnhancedEffectController.addReflectionEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EnhancedEffectController.addReflectionEffect') }
             });
             return -1;
         }
@@ -219,16 +219,16 @@ export class EnhancedEffectController {
                     surface.ripples.push({
                         x, y,
                         radius: 0,
-                        maxRadius,);
+                        maxRadius);
                         speed);
                         intensity,) }
                         lifetime: 0); }
                     });
                 }
             });
-            ';
+            ';'
             console.log(`[EnhancedEffectController] 水面リップル効果を追加: (${x}, ${y)`});''
-        } catch (error') { this.errorHandler.handleError(error, {')'
+        } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'EnhancedEffectController.addWaterRipple'),' }'
             }');
         }
@@ -247,14 +247,14 @@ export class EnhancedEffectController {
                 type, // 'point', 'directional', 'spot';
                 animated: false,
                 animation: null,
-                created: Date.now(); }
+                created: Date.now() }
             };
             
             this.lightSources.push(lightSource);
             console.log(`[EnhancedEffectController] 光源を追加: ${type} at (${x}, ${y)`});'
             return lightSource.id;''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EnhancedEffectController.addLightSource'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EnhancedEffectController.addLightSource') }
             });
             return -1;
         }
@@ -284,8 +284,8 @@ export class EnhancedEffectController {
             this.backgroundEffects.push(backgroundEffect);
             console.log(`[EnhancedEffectController] 背景効果を追加: ${type)`});'
             return backgroundEffect.id;''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EnhancedEffectController.addBackgroundEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EnhancedEffectController.addBackgroundEffect') }
             });
             return -1;
         }
@@ -301,10 +301,10 @@ export class EnhancedEffectController {
             this.backgroundEffects = this.backgroundEffects.filter(bg => bg.id !== effectId);
             this.shadowCasters = this.shadowCasters.filter(shadow => shadow.id !== effectId);
             this.reflectionSurfaces = this.reflectionSurfaces.filter(reflection => reflection.id !== effectId);
-             }'
+             }
             console.log(`[EnhancedEffectController] 効果を削除: ID ${effectId)`});''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EnhancedEffectController.removeEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EnhancedEffectController.removeEffect') }
             });
         }
     }
@@ -312,10 +312,10 @@ export class EnhancedEffectController {
     /**
      * すべての効果をクリア'
      */''
-    clearAllEffects('')';
+    clearAllEffects()';
             console.log('[EnhancedEffectController] すべての効果をクリアしました');''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EnhancedEffectController.clearAllEffects'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EnhancedEffectController.clearAllEffects') }
             });
         }
     }
@@ -335,10 +335,10 @@ export class EnhancedEffectController {
             this.performanceMetrics.lastFrameTime = Date.now();
             
             // メモリ使用量の概算
-            this.performanceMetrics.memoryUsage = this.performanceMetrics.effectCount * 1024; // 簡易計算'
+            this.performanceMetrics.memoryUsage = this.performanceMetrics.effectCount * 1024; // 簡易計算
             ' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EnhancedEffectController.updatePerformanceMetrics'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EnhancedEffectController.updatePerformanceMetrics') }
             });
         }
     }
@@ -357,6 +357,6 @@ export class EnhancedEffectController {
     private _calculateShadowDistance(shadowObject: ShadowObject, lightSource: LightSourceBase): number { const dx = shadowObject.x - lightSource.x;
         const dy = shadowObject.y - lightSource.y;'
         const distance = Math.sqrt(dx * dx + dy * dy);''
-        return Math.min(distance * 0.1, 20'); // 最大20ピクセル }'
+        return Math.min(distance * 0.1, 20'); // 最大20ピクセル }
     }''
 }

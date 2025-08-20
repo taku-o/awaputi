@@ -8,36 +8,36 @@ export interface FontLoadingConfigData { enabledSources: string[],
     timeouts: {
         google: number,
         local: number,
-        system: number ;
+        system: number 
 }
     },
     fallbackBehavior: { useSystemFonts: boolean,
         suppressErrors: boolean,
-        maxRetries: number ;
+        maxRetries: number 
 }
     },
     logging: { level: string,
         suppressRepeated: boolean,
-        maxErrorsPerSource: number ;
+        maxErrorsPerSource: number 
 }
     },
     development: { disableExternalFonts: boolean,
-        verboseLogging: boolean ;
+        verboseLogging: boolean 
 }
     },
     fontSources: { google: {
             baseUrl: string,
             weights: string[],
-            display: string ;
+            display: string 
 }
         },
         local: { fontDirectory: string,
-            formats: string[]; }
+            formats: string[] }
         };
     };
     performance: { preloadCommonFonts: boolean,
         cacheFontResults: boolean,
-        maxCacheSize: number; }
+        maxCacheSize: number }
     };
 }
 
@@ -65,28 +65,28 @@ export class FontLoadingConfig {
             timeouts: {
                 google: 3000,
                 local: 1000,
-                system: 500 ;
+                system: 500 
 }
             },
             fallbackBehavior: { useSystemFonts: true,
                 suppressErrors: true,
-                maxRetries: 1 ;
+                maxRetries: 1 
 }
             },'
             logging: { ''
                 level: 'warn',
                 suppressRepeated: true,
-                maxErrorsPerSource: 3 ;
+                maxErrorsPerSource: 3 
 }
             },
             development: { disableExternalFonts: false,
-                verboseLogging: false ;
+                verboseLogging: false 
 }
             },'
             fontSources: { google: {''
                     baseUrl: 'https://fonts.googleapis.com/css2','';
                     weights: ['400', '500', '700'],'';
-                    display: 'swap' ;
+                    display: 'swap' 
 }
                 },'
                 local: { ''
@@ -96,7 +96,7 @@ export class FontLoadingConfig {
             },
             performance: { preloadCommonFonts: true,
                 cacheFontResults: true,
-                maxCacheSize: 50 ;
+                maxCacheSize: 50 
 };
 }
         },
@@ -108,14 +108,14 @@ export class FontLoadingConfig {
         const result = { ...target };
         
         for(const key in source) {
-        ';
+        ';'
             '';
             if (source.hasOwnProperty(key)') {''
                 if(typeof source[key] === 'object' && source[key] !== null && !Array.isArray(source[key]) {
         
         }
                     result[key] = this._deepMerge(target[key] || {), source[key]); }
-                } else { result[key] = source[key]; };
+                } else { result[key] = source[key]; }
 }
             };
 }
@@ -141,7 +141,7 @@ export class FontLoadingConfig {
                 allowedValues: ['error', 'warn', 'info', 'debug'] }'
             }],''
             ['logging.maxErrorsPerSource', { ''
-                type: 'number',);
+                type: 'number');
                 min: 1)];
                 max: 10];
             )];
@@ -178,7 +178,7 @@ export class FontLoadingConfig {
         }'
 '';
         if (Object.keys(errors).length > 0') { ''
-            console.warn('[FontLoadingConfig] Some updates failed:', errors); };
+            console.warn('[FontLoadingConfig] Some updates failed:', errors) };
 }
         return { success: Object.values(results).every(r => r),
             results: results, };
@@ -210,7 +210,7 @@ export class FontLoadingConfig {
         let current = obj;'
         '';
         for(const key of keys') {'
-            ';
+            ';'
         }'
             if (!current[key] || typeof current[key] !== 'object') { }
                 current[key] = {};
@@ -246,7 +246,7 @@ export class FontLoadingConfig {
             
 
         }
-            return { valid: false, error: `Value must be at least ${rule.min}` }
+            return { valid: false, error: `Value must be at least ${rule.min}` }'
         }'
 '';
         if(rule.max !== undefined && value > rule.max') {
@@ -303,22 +303,22 @@ export class FontLoadingConfig {
     removeConfigListener(listener: ConfigChangeListener): void { this.listeners.delete(listener); };
 }
     private _notifyListeners(path: string, newValue: any, oldValue: any): void { for (const listener of this.listeners) {
-            try {'
+            try {
                 listener(this.config);' }'
-            } catch (error') { ''
-                console.error('[FontLoadingConfig] Listener error:', error); };
+            } catch (error) { ''
+                console.error('[FontLoadingConfig] Listener error:', error) };
 }
         };
 }
     export(): FontLoadingConfigData { return JSON.parse(JSON.stringify(this.config); }
     }'
 '';
-    import(configData: string | FontLoadingConfigData'): boolean { try {''
+    import(configData: string | FontLoadingConfigData'): boolean { try {'
             const parsedConfig = typeof configData === 'string' ? JSON.parse(configData) : configData;''
             this.config = this._mergeWithDefaults(parsedConfig');''
             this._notifyListeners('*', this.config, null);'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[FontLoadingConfig] Import failed:', error);
             return false; };
 }
@@ -335,7 +335,7 @@ export class FontLoadingConfig {
             if (!validation.valid) {
                 errors.push({)
                     path: path);
-                    value: value,);
+                    value: value,)
         }
                     error: validation.error!); };
 }
@@ -346,13 +346,13 @@ export class FontLoadingConfig {
 }
         },
     }
-';
+';'
     reset(): void { ''
         this.config = this._mergeWithDefaults({)');''
         this._notifyListeners('*', this.config, null); }
     }'
 '';
-    getStats('')';
+    getStats()';
             enabledSources: this.get('enabledSources'').length,'';
             totalTimeouts: Object.keys(this.get('timeouts')').length,'';
             developmentMode: this.get('development.verboseLogging''),'';
@@ -363,5 +363,5 @@ export class FontLoadingConfig {
     };
 }
 ';
-// デフォルト設定インスタンス''
+// デフォルト設定インスタンス
 export const defaultFontLoadingConfig = new FontLoadingConfig(');

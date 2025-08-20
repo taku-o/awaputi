@@ -4,7 +4,7 @@ import { SceneState } from './SceneState';
 
 interface SectionChangeData { oldSection: string,
     newSection: string,
-    buttonIndex: number; }
+    buttonIndex: number }
 }
 
 /**
@@ -16,7 +16,7 @@ export class HelpSectionSelector {
     private eventBus: ComponentEventBus;
     private state: SceneState;
     ';
-    // セクション設定''
+    // セクション設定
     private readonly sections: string[] = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];''
     private readonly sectionLabels: string[] = ['概要', 'カテゴリ', '進捗', '報酬', 'ヒント', 'FAQ'];''
     private currentSection: string = 'overview';
@@ -72,7 +72,7 @@ export class HelpSectionSelector {
                 buttonX,
                 buttonY,
                 buttonWidth,
-                this.buttonHeight,);
+                this.buttonHeight);
                 this.sections[i]);
                 this.sectionLabels[i],);
         }
@@ -88,13 +88,13 @@ export class HelpSectionSelector {
      * @param x - X座標
      * @param y - Y座標
      * @param width - 幅
-     * @param height - 高さ'
+     * @param height - 高さ
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number'): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';''
         context.fillRect(x, y, width, height');
         ';
-        // 下部の境界線''
+        // 下部の境界線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#000000' : '#DEE2E6';
         context.lineWidth = 1;
         context.beginPath();
@@ -120,7 +120,7 @@ export class HelpSectionSelector {
         y: number, ;
         width: number, ;
         height: number, ;
-        section: string, );
+        section: string );
         label: string);
         index: number;
     ): void { const isActive = this.currentSection === section,
@@ -142,7 +142,7 @@ export class HelpSectionSelector {
         }
         
         // ボタンの色を決定
-        let backgroundColor: string, textColor: string, borderColor: string,';
+        let backgroundColor: string, textColor: string, borderColor: string,
         '';
         if(isActive') {'
             '';
@@ -160,7 +160,7 @@ export class HelpSectionSelector {
             borderColor = '#DEE2E6'; }
         }
         ';
-        // 高コントラストモードの調整''
+        // 高コントラストモードの調整
         if(this.accessibilitySettings.highContrast') {'
             '';
             backgroundColor = isActive ? '#000000' : '#FFFFFF';''
@@ -179,8 +179,8 @@ export class HelpSectionSelector {
         context.lineWidth = isActive || isFocused ? 2 : 1;
         this.roundRect(context, x, y, width, height, this.cornerRadius);
         context.stroke();
-        ';
-        // フォーカス時の追加視覚効果''
+        ;
+        // フォーカス時の追加視覚効果
         if(isFocused && !isActive') {'
             '';
             context.strokeStyle = '#007BFF';
@@ -192,13 +192,13 @@ export class HelpSectionSelector {
             context.setLineDash([]'); }
         }
         
-        // ボタンテキストを描画'
+        // ボタンテキストを描画
         context.fillStyle = textColor;''
         context.font = this.accessibilitySettings.largeText ? '14px bold sans-serif' : '12px bold sans-serif';''
         context.textAlign = 'center';''
         context.textBaseline = 'middle';
         ';
-        // テキストのシャドウ効果（アクティブ時）''
+        // テキストのシャドウ効果（アクティブ時）
         if(isActive && !this.accessibilitySettings.highContrast') {'
             '';
             context.shadowColor = 'rgba(0, 0, 0, 0.3')';
@@ -210,7 +210,7 @@ export class HelpSectionSelector {
         '';
         context.fillText(label, x + width / 2, y + height / 2');
         ';
-        // シャドウをリセット''
+        // シャドウをリセット
         context.shadowColor = 'transparent';
         context.shadowBlur = 0;
         context.shadowOffsetX = 0;
@@ -228,7 +228,7 @@ export class HelpSectionSelector {
      * @param y - Y座標
      * @param width - 幅
      * @param height - 高さ
-     */'
+     */
     private renderActiveIndicator(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         const gradient = context.createLinearGradient(x, y, x + width, y');''
         gradient.addColorStop(0, '#1976D2'');''
@@ -295,7 +295,7 @@ export class HelpSectionSelector {
      * キーボード処理
      * @param event - キーボードイベント
      * @returns イベントが処理された場合true
-     */'
+     */
     handleKeyboard(event: KeyboardEvent): boolean { ''
         switch(event.key') {'
             '';
@@ -316,7 +316,7 @@ export class HelpSectionSelector {
                 return true;'
                 '';
             case 'Home':'';
-                event.preventDefault('')';
+                event.preventDefault()';
             case 'End':);
                 event.preventDefault();
                 this.focusedButton = this.sections.length - 1;
@@ -369,15 +369,15 @@ export class HelpSectionSelector {
             const oldSection = this.currentSection;
             this.currentSection = section;
             this.focusedButton = buttonIndex;
-            ';
-            // アニメーション開始''
+            ;
+            // アニメーション開始
             this.startSectionAnimation(section');
             
             // イベント通知
             const eventData: SectionChangeData = {
                 oldSection,
                 newSection: section,
-                buttonIndex }'
+                buttonIndex }
             };''
             this.eventBus.emit('help-section-changed', eventData);
             
@@ -425,7 +425,7 @@ export class HelpSectionSelector {
         return result ? { : undefined
             r: parseInt(result[1], 16),
             g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16); }
+            b: parseInt(result[3], 16) }
         } : null;
     }
     
@@ -480,6 +480,6 @@ export class HelpSectionSelector {
     }
     
     /**
-     * クリーンアップ'
+     * クリーンアップ
      */''
     cleanup(');

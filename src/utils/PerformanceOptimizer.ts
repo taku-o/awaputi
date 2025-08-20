@@ -5,7 +5,7 @@
  */
 
 // Type definitions
-interface ErrorHandler { handleError(error: any, type: string, context?: any): void; }
+interface ErrorHandler { handleError(error: any, type: string, context?: any): void }
 }
 
 interface PerformanceConfig { getOptimizationConfig(): OptimizationConfig | null;
@@ -32,7 +32,7 @@ interface OptimizationConfig { targetFPS?: number;
     adaptiveMode?: boolean;
     optimizationInterval?: number;
     maxBubbles: number,
-    maxParticles: number; }
+    maxParticles: number }
 }
 
 interface QualityConfig { renderQuality: number,
@@ -60,11 +60,11 @@ interface PerformanceAnalyzer { recordFrameTime(frameTime: number): void,
 interface PerformanceAdaptiveController { setPerformanceLevel(level: string): void,
     setAdaptiveMode(enabled: boolean): void,
     calculateAdjustments?(analysis: any): any,
-    getStats?(): any; }
+    getStats?(): any }
 }
 
 interface PerformanceStabilizerIntegrator { integrateWithStabilizer?(stabilizer: any, analysis: any): void,
-    getStats?(): any; }
+    getStats?(): any }
 }
 
 // Dummy implementations for missing dependencies
@@ -97,10 +97,10 @@ class DummyPerformanceAdaptiveController implements PerformanceAdaptiveControlle
         return { adaptiveAdjustments: 0 }
     }
 }
-';
+';'
 class DummyPerformanceStabilizerIntegrator implements PerformanceStabilizerIntegrator { ''
     integrateWithStabilizer(stabilizer: any, analysis: any'): void {''
-        console.log('[PerformanceStabilizerIntegrator] Integration completed'); }
+        console.log('[PerformanceStabilizerIntegrator] Integration completed') }
     }'
     '';
     getStats(''';
@@ -127,12 +127,12 @@ interface PerformanceStats { currentFPS: number,
     updateTime: number,
     totalProcessingTime: number,
     memoryPressureLevel: number,
-    ';
-    // トレンド''
+    ;
+    // トレンド
     performanceTrend: 'improving' | 'stable' | 'degrading','';
     stabilityTrend: 'improving' | 'stable' | 'degrading',
     issuesPredicted: number,
-    issuesActual: number; }
+    issuesActual: number }
 }
 
 interface PerformanceSettings { maxBubbles: number,
@@ -142,12 +142,12 @@ interface PerformanceSettings { maxBubbles: number,
     shadowsEnabled: boolean,
     antialiasing: boolean,
     backgroundEffects: boolean,
-    audioProcessing: boolean; }
+    audioProcessing: boolean }
 }
 );
 interface ComponentConfig { maxHistorySize: number)'
     targetFPS: number,'';
-    performanceLevel: 'low' | 'medium' | 'high'; }
+    performanceLevel: 'low' | 'medium' | 'high' }
 }'
 '';
 type PerformanceLevel = 'low' | 'medium' | 'high';
@@ -215,9 +215,9 @@ export class PerformanceOptimizer {
             
             // 基本統計（サブコンポーネントから集約）
             this.stats = this._initializeStats();
-            ';
-            // 設定変更の監視''
-            this._setupConfigWatchers('')';
+            ;
+            // 設定変更の監視
+            this._setupConfigWatchers()';
             console.log('[PerformanceOptimizer] サブコンポーネント統合版で初期化完了');
     
     }
@@ -227,7 +227,7 @@ export class PerformanceOptimizer {
             if(this.errorHandler && this.errorHandler.handleError') {'
                 '';
                 this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {')'
-                    component: 'PerformanceOptimizer',');
+                    component: 'PerformanceOptimizer',')
             }'
                     operation: 'constructor'),' }'
                 }');'
@@ -255,16 +255,16 @@ export class PerformanceOptimizer {
             this.adaptiveController = new PerformanceAdaptiveController(componentConfig);
             this.adaptiveController.setPerformanceLevel(this.performanceLevel);
             this.adaptiveController.setAdaptiveMode(this.adaptiveMode);
-            ';
-            // 安定化統合コンポーネント''
+            ;
+            // 安定化統合コンポーネント
             this.stabilizerIntegrator = new PerformanceStabilizerIntegrator(componentConfig');'
             '';
             console.log('[PerformanceOptimizer] All sub-components initialized successfully');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {')'
                 component: 'PerformanceOptimizer',')';
-                operation: 'initializeSubComponents'); }
+                operation: 'initializeSubComponents') }
             });
             throw error;
         }
@@ -284,7 +284,7 @@ export class PerformanceOptimizer {
     /**
      * 設定から初期値を設定
      */
-    private _initializeFromConfig(): void { try {'
+    private _initializeFromConfig(): void { try {
             const optimizationConfig = this.performanceConfig.getOptimizationConfig();''
             const qualityConfig = this.performanceConfig.getQualityConfig(');
             
@@ -309,7 +309,7 @@ export class PerformanceOptimizer {
         } catch (error") { ""
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {')'
                 component: 'PerformanceOptimizer',')';
-                operation: 'initializeFromConfig'); }
+                operation: 'initializeFromConfig') }
             });
             this._setFallbackSettings();
         }
@@ -365,9 +365,9 @@ export class PerformanceOptimizer {
             }
                 this.lastOptimizationTime = currentTime; }
             }
-            ';
+            ';'
             this.__lastFrameTime = frameTime;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {''
                 component: 'PerformanceOptimizer',')';
                 operation: 'recordFrameTime',);
@@ -393,15 +393,15 @@ export class PerformanceOptimizer {
             if ((this.stabilizerIntegrator as any).integrateWithStabilizer) { (this.stabilizerIntegrator as any).integrateWithStabilizer(this.frameStabilizer, analysis); }
             }
             
-            // 統計更新'
+            // 統計更新
             this.stats.optimizationCount++;''
-            this.stats.lastOptimization = new Date('')';
+            this.stats.lastOptimization = new Date()';
             console.log('[PerformanceOptimizer] Optimization completed', adjustments);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PERFORMANCE_ERROR', {')'
                 component: 'PerformanceOptimizer',')';
-                operation: 'optimize'); }
+                operation: 'optimize') }
             });
         }
     }
@@ -470,8 +470,8 @@ export class PerformanceOptimizer {
         }
             return false; }
         }
-        ';
-        // エフェクトタイプ別の制限''
+        ;
+        // エフェクトタイプ別の制限
         switch(effectType') {'
             '';
             case 'bubble_effect':';
@@ -523,6 +523,6 @@ let performanceOptimizerInstance: PerformanceOptimizer | null = null,
 /**
  * Get singleton PerformanceOptimizer instance
  * @returns PerformanceOptimizer instance
- */'
+ */
 export function getPerformanceOptimizer(): PerformanceOptimizer { if (!performanceOptimizerInstance) {''
         performanceOptimizerInstance = new PerformanceOptimizer(' })

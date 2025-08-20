@@ -6,12 +6,12 @@ interface ListenerOptions { once?: boolean;
 interface ListenerInfo { callback: EventCallback,
     once: boolean,
     priority: number,
-    id: string; }
+    id: string }
 }
 
 interface EventHistoryEntry { event: string,
     data: any,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ErrorInfo { type: 'listener_error' | 'emit_error',
@@ -19,13 +19,13 @@ interface ErrorInfo { type: 'listener_error' | 'emit_error',
     event: string,
     listenerId?: string;
     data?: any;
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface DebugInfo { eventNames: string[],
     listenerCounts: Record<string, number>;
     recentEvents: EventHistoryEntry[],
-    totalEvents: number; }
+    totalEvents: number }
 }
 
 type EventCallback = (data: any, event: string) => boolean | void;
@@ -66,11 +66,11 @@ export class ComponentEventBus {
      * @param event - イベント名
      * @param callback - コールバック関数
      * @param options - オプション設定
-     * @returns リスナー削除用の関数'
+     * @returns リスナー削除用の関数
      */''
     on(event: string, callback: EventCallback, options: ListenerOptions = { )'): UnsubscribeFunction {''
         if(typeof event !== 'string' || typeof callback !== 'function'') {'
-            ';
+            ';'
         }'
             throw new Error('Invalid event or callback'); }
         }
@@ -81,7 +81,7 @@ export class ComponentEventBus {
         const listenerInfo: ListenerInfo = { callback,
             once: options.once || false,
             priority: options.priority || 0,
-            id: this.generateListenerId(); }
+            id: this.generateListenerId() }
         };
         
         this.listeners.get(event)!.push(listenerInfo);
@@ -99,7 +99,7 @@ export class ComponentEventBus {
      * @param callback - コールバック関数
      * @returns リスナー削除用の関数
      */
-    once(event: string, callback: EventCallback): UnsubscribeFunction { return this.on(event, callback, { once: true ); }
+    once(event: string, callback: EventCallback): UnsubscribeFunction { return this.on(event, callback, { once: true ) }
     }
     
     /**
@@ -203,7 +203,7 @@ export class ComponentEventBus {
     
     /**
      * エラーハンドラーを登録
-     * @param handler - エラーハンドラー関数'
+     * @param handler - エラーハンドラー関数
      */''
     onError(handler: ErrorHandler'): void { ''
         if(typeof handler === 'function') {
@@ -217,7 +217,7 @@ export class ComponentEventBus {
      * デバッグ情報を取得
      * @returns デバッグ情報
      */
-    getDebugInfo(): DebugInfo { return { eventNames: this.getEventNames(,)
+    getDebugInfo(): DebugInfo { return { eventNames: this.getEventNames()
             listenerCounts: Object.fromEntries(),
                 this.getEventNames().map(event => [event, this.getListenerCount(event)]);
             ),
@@ -230,7 +230,7 @@ export class ComponentEventBus {
      * リスナーIDを生成
      * @returns ユニークなリスナーID'
      */''
-    private generateListenerId('')';
+    private generateListenerId()';
         return 'listener_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
     }
     
@@ -241,8 +241,8 @@ export class ComponentEventBus {
      */
     private addToHistory(event: string, data: any): void { this.eventHistory.push({)
             event);
-            data: this.safeClone(data,);
-            timestamp: Date.now(); }
+            data: this.safeClone(data);
+            timestamp: Date.now() }
         });
         
         // 履歴サイズを制限
@@ -254,23 +254,23 @@ export class ComponentEventBus {
      * リスナーエラーを処理
      * @param error - 発生したエラー
      * @param event - イベント名
-     * @param listener - リスナー情報'
+     * @param listener - リスナー情報
      */''
     private handleListenerError(error: Error, event: string, listener: ListenerInfo'): void { const errorInfo: ErrorInfo = {''
             type: 'listener_error',
             error,
             event,
             listenerId: listener.id,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
             try {
-        }'
+        }
                 handler(errorInfo);' }'
-            } catch (handlerError') { ''
-                console.error('Error in error handler:', handlerError'); }
+            } catch (handlerError) { ''
+                console.error('Error in error handler:', handlerError') }
             }
         }'
         '';
@@ -287,17 +287,17 @@ export class ComponentEventBus {
             type: 'emit_error',
             error,
             event,
-            data: this.safeClone(data,);
-            timestamp: Date.now(); }
+            data: this.safeClone(data);
+            timestamp: Date.now() }
         };
         
         // エラーハンドラーに通知
         for(const handler of this.errorHandlers) {
             try {
-        }'
+        }
                 handler(errorInfo);' }'
-            } catch (handlerError') { ''
-                console.error('Error in error handler:', handlerError'); }
+            } catch (handlerError) { ''
+                console.error('Error in error handler:', handlerError') }
             }
         }'
         '';
@@ -309,14 +309,14 @@ export class ComponentEventBus {
      * @param obj - クローン対象
      * @returns クローンされたオブジェクト'
      */''
-    private safeClone(obj: any'): any { try {''
+    private safeClone(obj: any'): any { try {'
             if(obj === null || typeof obj !== 'object') {
                 
             }
                 return obj; }
             }'
             return JSON.parse(JSON.stringify(obj);''
-        } catch (error') { ''
+        } catch (error) { ''
             return '[Uncloneable Object]'; }
         }
     }

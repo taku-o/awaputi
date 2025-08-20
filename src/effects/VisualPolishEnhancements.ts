@@ -28,7 +28,7 @@ interface PolishSettings { smoothTransitions: boolean,
     enhancedTiming: boolean,
     refinedColors: boolean,
     improvedPhysics: boolean,
-    subtleAnimations: boolean; }
+    subtleAnimations: boolean }
 }
 
 interface TimingProfile { duration: number,
@@ -50,7 +50,7 @@ interface ScreenEffectsProfile {
 
 interface TimingProfiles { bubble_pop: TimingProfile,
     combo_effect: ComboTimingProfile,
-    screen_effects: ScreenEffectsProfile;
+    screen_effects: ScreenEffectsProfile
     }
 }
 
@@ -60,7 +60,7 @@ interface EasingFunction { (t: number): number, }
 interface EasingFunctions { easeOutQuart: EasingFunction,
     easeInOutCubic: EasingFunction,
     easeOutElastic: EasingFunction,
-    easeOutBounce: EasingFunction;
+    easeOutBounce: EasingFunction
     }
 }
 
@@ -78,18 +78,18 @@ interface ColorPalettes { bubble_effects: {
     seasonal: { spring: string[],
         summer: string[],
         autumn: string[],
-        winter: string[]; }
+        winter: string[] }
     };
 }
 
 interface GradientProfile { type: 'radial' | 'linear',
     colors: string[],
-    stops: number[]; }
+    stops: number[] }
 }
 
 interface GradientProfiles { bubble_destruction: GradientProfile,
     combo_glow: GradientProfile,
-    screen_flash: GradientProfile;
+    screen_flash: GradientProfile
     }
 }
 
@@ -108,7 +108,7 @@ interface PhysicsProfile { gravity?: number;
 
 interface PhysicsEnhancements { particle_physics: PhysicsProfile,
     bubble_physics: PhysicsProfile,
-    effect_physics: PhysicsProfile;
+    effect_physics: PhysicsProfile
     }
 }
 
@@ -127,7 +127,7 @@ interface SubtleAnimation { enabled: boolean,
 interface SubtleAnimations { idle_floating: SubtleAnimation,
     breathing_effect: SubtleAnimation,
     shimmer_effect: SubtleAnimation,
-    glow_pulse: SubtleAnimation;
+    glow_pulse: SubtleAnimation
     }
 }'
 '';
@@ -137,7 +137,7 @@ interface QualityProfile { smoothTransitions: boolean,
     enhancedTiming: boolean,
     refinedColors: boolean,
     improvedPhysics: boolean,
-    subtleAnimations: boolean; }
+    subtleAnimations: boolean }
 }
 
 export class VisualPolishEnhancements {
@@ -242,12 +242,12 @@ export class VisualPolishEnhancements {
         if (this.gameEngine.animationManager) { this.gameEngine.animationManager.setEasingFunctions(easingFunctions); }
         }
     }
-';
+';'
     private setupColorRefinements(): void { ''
         if (!this.polishSettings.refinedColors') return;
         
         // 洗練されたカラーパレット
-        const refinedColorPalettes: ColorPalettes = {'
+        const refinedColorPalettes: ColorPalettes = {
             bubble_effects: {''
                 normal: ['#4A90E2', '#7B68EE', '#9370DB'],'';
                 rainbow: ['#FF6B6B', '#4ECDC4', '#45B7D1', '#F39C12', '#E74C3C', '#9B59B6'],'';
@@ -274,7 +274,7 @@ export class VisualPolishEnhancements {
         
         // グラデーション効果の改善
         this.setupGradientEnhancements();
-    }'
+    }
 '';
     private setupGradientEnhancements(''';
                 type: 'radial',')';
@@ -322,7 +322,7 @@ export class VisualPolishEnhancements {
         if (this.gameEngine.enhancedParticleManager) { this.gameEngine.enhancedParticleManager.setPhysicsEnhancements(physicsEnhancements); }
         }
     }
-';
+';'
     private setupSubtleAnimations(): void { ''
         if (!this.polishSettings.subtleAnimations') return;
         
@@ -344,7 +344,7 @@ export class VisualPolishEnhancements {
                 delay: 500 }
             },
             glow_pulse: { enabled: true,
-                intensity_range: [0.5, 1.2],';
+                intensity_range: [0.5, 1.2],;
                 duration: 1500,'';
                 easing: 'easeInOutSine' }
             }
@@ -454,6 +454,6 @@ export class VisualPolishEnhancements {
         }
             this.optimizeForPerformance(); }
         }
-    }'
+    }
 '';
     public isEnabled(');

@@ -9,7 +9,7 @@ export interface LeaderboardConfig { maxEntries: number,
     cacheMaxAge: number,
     dataVersion: string,
     validationEnabled: boolean,
-    backupEnabled: boolean; }
+    backupEnabled: boolean }
 }
 
 export interface LeaderboardEntry { id: string,
@@ -32,8 +32,8 @@ export class LeaderboardManager {'
         this.config = {
             maxEntries: 100,
             maxPeriodEntries: 50,
-            maxCacheSize: 100,';
-            cacheMaxAge: 300000, // 5分'';
+            maxCacheSize: 100,
+            cacheMaxAge: 300000, // 5分;
             dataVersion: '1.0.0',
             validationEnabled: true,
     }
@@ -58,11 +58,11 @@ export class LeaderboardManager {'
             saveCount: 0,
             validationErrors: 0,
             operationCount: 0,
-            lastReset: Date.now(); }
+            lastReset: Date.now() }
         };
         
         // サブコンポーネントの初期化
-        this.dataProcessor = new LeaderboardDataProcessor(this);'
+        this.dataProcessor = new LeaderboardDataProcessor(this);
         this.rankingManager = new LeaderboardRankingManager(this);''
         this.storageManager = new LeaderboardStorageManager(this');'
         '';
@@ -72,7 +72,7 @@ export class LeaderboardManager {'
     /**
      * システム初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('[LeaderboardManager] Initializing...');
             const startTime = performance.now();
             
@@ -90,9 +90,9 @@ export class LeaderboardManager {'
             
             this.stats.dataLoadTime = performance.now() - startTime;
             
-            console.log(`[LeaderboardManager] Initialized successfully in ${this.stats.dataLoadTime.toFixed(2})}ms`);'
+            console.log(`[LeaderboardManager] Initialized successfully in ${this.stats.dataLoadTime.toFixed(2})}ms`);
             return loadSuccess;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError(error, 'INITIALIZATION_ERROR');
             return false; }
         }
@@ -108,11 +108,11 @@ export class LeaderboardManager {'
             
             // データ処理と検証
             const processedEntry = this.dataProcessor.processScoreEntry(scoreData);
-            ';
-            // プレイヤー履歴の管理''
+            ;
+            // プレイヤー履歴の管理
             this.dataProcessor.managePlayerHistory(processedEntry.playerName, processedEntry');
             ';
-            // ランキングの更新''
+            // ランキングの更新
             const leaderboardKey = scoreData.leaderboardType || 'global';
             this.rankingManager.updateLeaderboards(leaderboardKey, processedEntry);
             
@@ -122,9 +122,9 @@ export class LeaderboardManager {'
             // データの保存
             await this.storageManager.saveAsync();
              }
-            console.log(`[LeaderboardManager] Score recorded: ${processedEntry.score} for ${processedEntry.playerName)`});'
+            console.log(`[LeaderboardManager] Score recorded: ${processedEntry.score} for ${processedEntry.playerName)`});
             return true;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.handleError(error, 'RECORD_SCORE_ERROR', { scoreData });
             return false;
         }
@@ -173,9 +173,9 @@ export class LeaderboardManager {'
             
             // 結果をキャッシュ
             this.storageManager.cacheLeaderboard(cacheKey, result);
-            ';
+            ';'
             return result;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.handleError(error, 'GET_LEADERBOARD_ERROR', { leaderboardType, limit });
             return [];
         }
@@ -198,9 +198,9 @@ export class LeaderboardManager {'
                     rankings[boardType] = playerIndex >= 0 ? playerIndex + 1 : null; }
                 }
             }
-            ';
+            ';'
             return rankings;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.handleError(error, 'GET_PLAYER_RANKINGS_ERROR', { playerName });
             return {};
         }
@@ -230,7 +230,7 @@ export class LeaderboardManager {'
         try {
     }'
             return this.rankingManager.getPeriodRanking(period, limit);' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.handleError(error, 'GET_PERIOD_RANKING_ERROR', { period, limit });
             return [];
         }
@@ -245,7 +245,7 @@ export class LeaderboardManager {'
         try {
     }'
             return this.rankingManager.getPeriodStats(period);' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.handleError(error, 'GET_PERIOD_STATS_ERROR', { period });
             return { totalPlayers: 0, totalScores: 0, averageScore: 0, highestScore: 0, period };
         }
@@ -258,7 +258,7 @@ export class LeaderboardManager {'
     async save() { try {
             this.stats.saveCount++;'
             return await this.storageManager.save();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError(error, 'SAVE_ERROR');
             return false; }
         }
@@ -268,9 +268,9 @@ export class LeaderboardManager {'
      * データのロード
      * @returns {Promise<boolean>} ロード成功可否
      */
-    async load() { try {'
+    async load() { try {
             return await this.storageManager.load();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError(error, 'LOAD_ERROR');
             return false; }
         }
@@ -284,9 +284,9 @@ export class LeaderboardManager {'
         try {
     }'
             return this.dataProcessor.performIntegrityCheck(this.data);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError(error, 'INTEGRITY_CHECK_ERROR'');' }'
-            return { isValid: false, errors: ['Integrity check failed'], warnings: [], statistics: {} }
+            return { isValid: false, errors: ['Integrity check failed'], warnings: [], statistics: {}
         }
     }
 
@@ -310,10 +310,10 @@ export class LeaderboardManager {'
     async reset() { try {
             this.storageManager.initializeEmptyData();'
             await this.storageManager.save();''
-            this.resetStats('')';
+            this.resetStats()';
             console.log('[LeaderboardManager] System reset completed');'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError(error, 'RESET_ERROR');
             return false; }
         }
@@ -329,7 +329,7 @@ export class LeaderboardManager {'
         if (!this.data.leaderboards[boardType]) {
                 this.data.leaderboards[boardType] = { : undefined'
                     entries: [],'';
-                    lastUpdated: Date.now('');
+                    lastUpdated: Date.now()
     }'
         console.log('[LeaderboardManager] Default leaderboards initialized'), }
     }
@@ -383,9 +383,9 @@ export class LeaderboardManager {'
     /**
      * クリーンアップ
      */
-    cleanup() {'
+    cleanup() {
         '';
-        this.storageManager.optimizeCache('');
+        this.storageManager.optimizeCache();
     }'
         console.log('[LeaderboardManager] Cleanup completed'); }
     }
@@ -398,11 +398,11 @@ export class LeaderboardManager {'
      */
     handleError(error, context, data = { ) {
         this.stats.validationErrors++;
-        ';
+        ';'
         const errorHandler = getErrorHandler();''
         if (errorHandler') {'
             errorHandler.handleError(error, context, {')'
-                component: 'LeaderboardManager',);
+                component: 'LeaderboardManager',)
     }
                 ...data); }
         } else {  }
@@ -416,6 +416,6 @@ let leaderboardManagerInstance = null;
 
 /**
  * LeaderboardManagerシングルトンインスタンスの取得
- */'
+ */
 export function getLeaderboardManager() { if (!leaderboardManagerInstance) {''
         leaderboardManagerInstance = new LeaderboardManager(' })

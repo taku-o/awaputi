@@ -5,7 +5,7 @@
 interface DebugInterface { gameEngine?: GameEngine;
     panelManager?: PanelManager;
     activePanel?: string;
-    panelHistory: string[]; }
+    panelHistory: string[] }
 }
 
 interface GameEngine { // Game engine interface }
@@ -25,13 +25,13 @@ interface ComponentConfig { path: string,
     className: string,
     priority: 'high' | 'medium' | 'low',
     preload: boolean,
-    dependencies: string[]; }
+    dependencies: string[] }
 }
 
 interface LoadedComponent { name: string,
     class: any,
     instance: ComponentInstance,
-    config: ComponentConfig;
+    config: ComponentConfig
     }
 }
 
@@ -41,13 +41,13 @@ interface LoadingStats { total: number,
     unloaded: number,
     loadedComponents: string[],
     loadingComponents: string[],
-    loadPercentage: number; }
+    loadPercentage: number }
 }
-';
+';'
 interface PerformanceEvaluation { ''
     efficiency: 'good' | 'moderate' | 'poor','';
     memoryImpact: 'low' | 'medium' | 'high',
-    recommendations: string[]; }
+    recommendations: string[] }
 }
 
 interface DebugInfo { stats: LoadingStats,
@@ -59,7 +59,7 @@ interface DebugInfo { stats: LoadingStats,
         preload: boolean,
         dependencies: string[],
         loaded: boolean,
-        loading: boolean; }
+        loading: boolean }
     }>;
     performance: PerformanceEvaluation,
     }
@@ -96,7 +96,7 @@ export class LazyLoadManager {
     }
 
     /**
-     * デフォルトコンポーネントを登録'
+     * デフォルトコンポーネントを登録
      */''
     private registerDefaultComponents(''';
         this.componentRegistry.set('overview', { ''
@@ -134,7 +134,7 @@ export class LazyLoadManager {
             preload: false,')';
             dependencies: [])'),
 ';
-        // 管理系コンポーネント''
+        // 管理系コンポーネント
         this.componentRegistry.set('theme-manager', {''
             path: './ThemeManager.js','';
             className: 'ThemeManager',')';
@@ -147,7 +147,7 @@ export class LazyLoadManager {
             className: 'AccessibilityManager',')';
             priority: 'high');
             preload: true,);
-            dependencies: []); }
+            dependencies: []) }
     }
 
     /**
@@ -171,10 +171,10 @@ export class LazyLoadManager {
     }
 
     /**
-     * コンポーネントを登録'
+     * コンポーネントを登録
      */''
     public registerComponent(name: string, config: Partial<ComponentConfig>'): void { this.componentRegistry.set(name, {''
-            priority: 'medium',);
+            priority: 'medium');
             preload: false)';
             dependencies: [],'';
             path: '','';
@@ -195,7 +195,7 @@ export class LazyLoadManager {
         // 読み込み中の場合は既存のPromiseを返す
         if(this.loadingComponents.has(name) { return this.loadingComponents.get(name)!; }
         }
-';
+';'
         const config = this.componentRegistry.get(name);''
         if (!config') { ' }'
             throw new Error(`Component '${name')' not registered`});
@@ -210,7 +210,7 @@ export class LazyLoadManager {
             this.loadingComponents.delete(name);
              }
             console.log(`Lazy loaded component: ${name)`});
-            return component;'
+            return component;
         } catch (error) { ''
             this.loadingComponents.delete(name');' }'
             console.error(`Failed to lazy load component '${name}':`, error);
@@ -231,7 +231,7 @@ export class LazyLoadManager {
 
         // モジュールをインポート
         try { const module = await import(config.path);
-            const ComponentClass = module[config.className];'
+            const ComponentClass = module[config.className];
             '';
             if (!ComponentClass') {' }'
                 throw new Error(`Class '${config.className')' not found in module`});
@@ -291,7 +291,7 @@ export class LazyLoadManager {
 
     /**
      * 優先度の数値変換
-     */'
+     */
     private getPriorityValue(priority: string): number { ''
         switch(priority') {'
             '';
@@ -395,8 +395,8 @@ export class LazyLoadManager {
      */
     public optimizeMemoryUsage(): void { // 最近使用されていないコンポーネントをアンロード
         this.unloadUnusedComponents();
-';
-        // ガベージコレクションを促進（可能な場合）''
+;
+        // ガベージコレクションを促進（可能な場合）
         if ((window as any).gc && typeof (window as any').gc === 'function') {
             (window as any).gc(); }
         }
@@ -413,13 +413,13 @@ export class LazyLoadManager {
         })'
 ')';
         if(stats.loadPercentage > 70') {'
-            ';
+            ';'
         }'
             evaluation.recommendations.push('Consider unloading unused components'); }
         }'
 '';
         if(stats.loaded > 5') {'
-            ';
+            ';'
         }'
             evaluation.recommendations.push('Enable automatic memory optimization'); }
         }
@@ -456,6 +456,6 @@ export class LazyLoadManager {
         }
 
         // 読み込み中の処理をキャンセル
-        this.loadingComponents.clear();'
+        this.loadingComponents.clear();
         this.componentRegistry.clear();''
         this.loadedComponents.clear(');

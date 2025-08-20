@@ -74,7 +74,7 @@ export class PerformanceWarningSystem {
             name: 'ネットワーク','';
             color: '#2196f3',')';
             icon: '🌐')';
-            priority: 1,');
+            priority: 1,')
     }'
             actions: ['再試行', '詳細表示']); }
     }
@@ -82,12 +82,12 @@ export class PerformanceWarningSystem {
     /**
      * 警告コンテナの作成'
      */''
-    createWarningContainer('')';
+    createWarningContainer()';
         this.warningContainer = document.createElement('div'');''
         this.warningContainer.id = 'performance-warning-container';''
         this.warningContainer.className = 'warning-container';
         
-        // スタイルを設定'
+        // スタイルを設定
         Object.assign(this.warningContainer.style, { ''
             position: 'fixed','';
             top: '70px','';
@@ -106,12 +106,12 @@ export class PerformanceWarningSystem {
     /**
      * 警告スタイルの適用'
      */''
-    applyWarningStyles('')';
+    applyWarningStyles()';
         const style = document.createElement('style');
         style.textContent = `;
             .warning-container { display: flex,
                 flex-direction: column,
-                gap: 10px; }
+                gap: 10px }
             }
             .warning-item { background: rgba(0, 0, 0, 0.9),
                 border-radius: 8px,
@@ -123,9 +123,9 @@ export class PerformanceWarningSystem {
                 animation: slideInWarning 0.3s ease-out forwards,
                 transition: all 0.3s ease,
             }
-            .warning-item.critical { animation: pulseWarning 1s infinite alternate; }
+            .warning-item.critical { animation: pulseWarning 1s infinite alternate }
             }
-            .warning-item.dismissing { animation: slideOutWarning 0.3s ease-in forwards; }
+            .warning-item.dismissing { animation: slideOutWarning 0.3s ease-in forwards }
             }
             .warning-header { display: flex,
                 justify-content: space-between,
@@ -134,9 +134,9 @@ export class PerformanceWarningSystem {
             }
             .warning-title { display: flex,
                 align-items: center,
-                gap: 8px,);
+                gap: 8px);
                 font-weight: bold);
-                color: white; }
+                color: white }
             }
             .warning-icon { font-size: 16px
             );
@@ -171,7 +171,7 @@ export class PerformanceWarningSystem {
                 border-radius: 4px,
                 cursor: pointer,
                 font-size: 12px,
-                transition: background 0.2s; }
+                transition: background 0.2s }
             }
             .warning-action:hover { background: rgba(255, 255, 255, 0.3), }
             }
@@ -191,14 +191,14 @@ export class PerformanceWarningSystem {
                 justify-content: center, }
             }
             .warning-close:hover { background: rgba(255, 255, 255, 0.2),
-                color: white; }
+                color: white }
             }
             .warning-progress { position: absolute,
                 bottom: 0,
                 left: 0,
                 height: 3px,
                 background: rgba(255, 255, 255, 0.5),
-                transition: width 0.1s linear; }
+                transition: width 0.1s linear }
             }
             .warning-timestamp { font-size: 11px,
                 color: #999,
@@ -206,15 +206,15 @@ export class PerformanceWarningSystem {
             }
             @keyframes slideInWarning {
                 from { transform: translateX(100%); opacity: 0, }
-                to { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(0); opacity: 1 }
             }
             @keyframes slideOutWarning {
                 from { transform: translateX(0); opacity: 1, }
-                to { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(100%); opacity: 0 }
             }
             @keyframes pulseWarning {
-                from { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); }
-                to { box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4); }
+                from { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) }
+                to { box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4) }
             }
         `;
         document.head.appendChild(style);
@@ -223,19 +223,19 @@ export class PerformanceWarningSystem {
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         window.addEventListener('realtime-alert', (event) => {  ' }'
             this.processAlert(event.detail'); }
         };
 ';
-        // パフォーマンス警告イベントリスナー''
+        // パフォーマンス警告イベントリスナー
         window.addEventListener('performance-warning', (event) => {  ' }'
             this.processPerformanceWarning(event.detail'); }
         };
 ';
-        // ウィンドウフォーカスイベント''
+        // ウィンドウフォーカスイベント
         window.addEventListener('focus', () => {  ''
-            this.onWindowFocus('')';
+            this.onWindowFocus()';
         window.addEventListener('blur', () => { }
             this.onWindowBlur(); }
         };
@@ -246,13 +246,13 @@ export class PerformanceWarningSystem {
      */
     processAlert(alertData) {'
         const warningData = {''
-            id: alertData.id || this.generateWarningId('')';
+            id: alertData.id || this.generateWarningId()';
             type: alertData.type || 'performance',);
             severity: this.determineSeverity(alertData),
             title: this.generateTitle(alertData),
             message: alertData.message,';
             details: alertData.details,'';
-            timestamp: alertData.timestamp || Date.now('')';
+            timestamp: alertData.timestamp || Date.now()';
             source: alertData.source || 'unknown',);
             category: this.determineCategory(alertData),
     }
@@ -274,7 +274,7 @@ export class PerformanceWarningSystem {
             message: warningData.message || 'パフォーマンスの問題が検出されました',';
             details: warningData.details,'';
             timestamp: Date.now(''';
-            source: 'performance_monitor',';
+            source: 'performance_monitor','
     }'
             category: 'performance' })
         })
@@ -327,7 +327,7 @@ export class PerformanceWarningSystem {
         if (!this.warningContainer) {
     }
             return; }
-        }'
+        }
         '';
         const category = this.warningCategories.get(warningData.category') || this.warningCategories.get('performance'');'
         '';
@@ -338,7 +338,7 @@ export class PerformanceWarningSystem {
 '';
         const duration = warningData.severity === 'critical' ?   : undefined;
             this.options.criticalWarningDuration: this.options.warningDisplayDuration,
-';
+';'
         warningElement.innerHTML = `'';
             <div class="warning-progress" style="width: 100%"></div>"";
             <div class="warning-header">"";
@@ -398,7 +398,7 @@ export class PerformanceWarningSystem {
     }
 
     /**
-     * 警告詳細のフォーマット'
+     * 警告詳細のフォーマット
      */''
     formatWarningDetails(details') {'
         '';
@@ -426,11 +426,11 @@ export class PerformanceWarningSystem {
             const ctx = new audioContext();
             const oscillator = ctx.createOscillator();
             const gainNode = ctx.createGain();
-';
+';'
             oscillator.connect(gainNode);''
             gainNode.connect(ctx.destination');
 
-            // 警告レベルに応じた音程と長さ'
+            // 警告レベルに応じた音程と長さ
             const frequencies = {''
                 'info': 440,'';
                 'warning': 660,'';
@@ -448,8 +448,8 @@ export class PerformanceWarningSystem {
 
             oscillator.start(ctx.currentTime);'
             oscillator.stop(ctx.currentTime + 0.3);''
-        } catch (error') { ''
-            console.warn('Failed to play warning sound:', error); }
+        } catch (error) { ''
+            console.warn('Failed to play warning sound:', error) }
         }
     }
 
@@ -472,11 +472,11 @@ export class PerformanceWarningSystem {
                 notification.close(); }
             };
 
-            // 自動で閉じる'
+            // 自動で閉じる
             setTimeout(() => { notification.close();' }'
             }, 5000');''
         } else if (Notification.permission === 'default') { ''
-            const permission = await Notification.requestPermission('')';
+            const permission = await Notification.requestPermission()';
             if(permission === 'granted') {
                 ;
             }
@@ -501,14 +501,14 @@ export class PerformanceWarningSystem {
     /**
      * 重要度の決定
      */
-    determineSeverity(alertData) {'
+    determineSeverity(alertData) {
         '';
         if (alertData.severity') return alertData.severity;'
         '';
         if (alertData.type === 'error'') return 'error';''
         if (alertData.details? .currentFPS && alertData.details.currentFPS < 15') return 'critical';''
         if (alertData.details?.usagePercent && alertData.details.usagePercent > 90') return 'critical';'
-        ';
+        ';'
     }'
         return 'warning'; }
     }
@@ -553,7 +553,7 @@ export class PerformanceWarningSystem {
      * 自動確認の判定'
      */''
     shouldAutoAcknowledge(alertData') {'
-        ';
+        ';'
     }'
         return alertData.severity === 'info' || alertData.type === 'network'; }
     }
@@ -601,7 +601,7 @@ export class PerformanceWarningSystem {
                 this.showOptimizationSuggestions(warningData');'
                 break;''
             case 'メモリクリア':'';
-                this.triggerMemoryCleanup('')';
+                this.triggerMemoryCleanup()';
             case '品質調整':')';
                 this.suggestQualityAdjustment(warningData');'
                 break;''
@@ -631,7 +631,7 @@ export class PerformanceWarningSystem {
      * 最適化提案の表示
      */
     showOptimizationSuggestions(warningData) {'
-        ';
+        ';'
     }'
         const suggestions = this.generateOptimizationSuggestions(warningData');' }'
         alert(`最適化提案:\n\n${suggestions.join('\n'})}`);
@@ -712,7 +712,7 @@ export class PerformanceWarningSystem {
      * ウィンドウフォーカス時の処理
      */
     onWindowFocus() {'
-        // フォーカス時に未確認の重要な警告をハイライト''
+        // フォーカス時に未確認の重要な警告をハイライト
         this.activeWarnings.forEach((warning, id') => { '
     }'
             if(warning.severity === 'critical' && !this.acknowledgements.has(id) { }
@@ -728,10 +728,10 @@ export class PerformanceWarningSystem {
     }
 
     /**
-     * 警告のハイライト'
+     * 警告のハイライト
      */''
     highlightWarning(warningId') {'
-        ';
+        ';'
     }'
         const warningElement = document.querySelector(`[data-warning-id="${warningId")"]`);" }"
         if(warningElement"}) {"
@@ -756,8 +756,7 @@ export class PerformanceWarningSystem {
     }
             acknowledgedWarnings: this.acknowledgements.size, }
             warningsByType: {},
-            warningsBySeverity: {}
-        },
+            warningsBySeverity: {},
         
         recentWarnings.forEach(warning => {  );
             statistics.warningsByType[warning.type] = (statistics.warningsByType[warning.type] || 0) + 1; }
@@ -797,7 +796,7 @@ export class PerformanceWarningSystem {
             this.warningContainer = null; }
         }
         ';
-        // グローバル参照を削除''
+        // グローバル参照を削除
         if (window.performanceWarningSystem === this') { delete window.performanceWarningSystem; }
         }'
         '';
@@ -805,5 +804,5 @@ export class PerformanceWarningSystem {
     }
 }
 ';
-// グローバルアクセス用''
+// グローバルアクセス用
 window.performanceWarningSystem = null;

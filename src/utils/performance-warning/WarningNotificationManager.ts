@@ -8,21 +8,21 @@ import { getErrorHandler } from '../../core/ErrorHandler.js';
 // 型定義
 interface WarningConfig { enabled: boolean,
     displayDuration: number,
-    maxConcurrentWarnings: number,';
+    maxConcurrentWarnings: number,
     cooldownPeriod: number,'';
     position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right','';
     style: 'modern' | 'minimal' | 'classic',
-    priorities: Record<string, PriorityConfig>; }
+    priorities: Record<string, PriorityConfig> }
 }
 
 interface PriorityConfig { color: string,
     icon: string,
-    sound: boolean; }
+    sound: boolean }
 }
 
 interface NotificationAction { label: string,
     action: () => void,
-    type: string; }
+    type: string }
 }
 
 interface NotificationConfig { title?: string;
@@ -36,11 +36,11 @@ interface NotificationConfig { title?: string;
 interface Notification extends NotificationConfig { id: string,
     priority: string,
     timestamp: number,
-    dismissed: boolean; }
+    dismissed: boolean }
 }
 
 interface NotificationHistoryEntry extends Notification { dismissedAt: number,
-    dismissReason: string; }
+    dismissReason: string }
 }
 
 interface NotificationStats { totalNotifications: number,
@@ -51,12 +51,12 @@ interface NotificationStats { totalNotifications: number,
     userActions: number,
     activeNotifications: number,
     recentNotifications: NotificationHistoryEntry[],
-    notificationsEnabled: boolean; }
+    notificationsEnabled: boolean }
 }
 
 interface UIState { container: HTMLElement | null,
     notificationElements: Map<string, HTMLElement>;
-    isInitialized: boolean; }
+    isInitialized: boolean }
 }
 
 interface SuggestionData { title?: string;'
@@ -77,7 +77,7 @@ export class WarningNotificationManager {
     private audioContext?: AudioContext;
 
     constructor(performanceWarningSystem: any) {
-';
+';'
         this.performanceWarningSystem = performanceWarningSystem;''
         this.errorHandler = getErrorHandler(''';
             position: 'top-right', // 'top-left', 'top-right', 'bottom-left', 'bottom-right''';
@@ -85,7 +85,7 @@ export class WarningNotificationManager {
             // Warning priorities
 
     }
-    }'
+    }
             priorities: {' }'
                 critical: { color: '#ff4444', icon: '⚠️', sound: true },''
                 high: { color: '#ff8800', icon: '⚡', sound: false },''
@@ -112,9 +112,9 @@ export class WarningNotificationManager {
         this.ui = { container: null,
             notificationElements: new Map(),
             isInitialized: false }
-        },'
+        },
         '';
-        this.initializeNotificationSystem('')';
+        this.initializeNotificationSystem()';
         console.log('[WarningNotificationManager] Notification management component initialized');
     }
     
@@ -129,24 +129,24 @@ export class WarningNotificationManager {
     }
     
     /**
-     * Initialize UI components for notifications'
+     * Initialize UI components for notifications
      */''
-    initializeUI('')';
+    initializeUI()';
             this.ui.container = document.createElement('div'');''
             this.ui.container.id = 'performance-warnings-container';
             this.ui.container.className = `perf-warnings perf-warnings-${this.warningConfig.position}`;
             
             // Add CSS styles
             this.injectNotificationStyles();
-            ';
-            // Append to body''
+            ;
+            // Append to body
             document.body.appendChild(this.ui.container');
-            ';
+            ';'
             this.ui.isInitialized = true;''
             console.log('[WarningNotificationManager] UI initialized');'
             '';
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'WarningNotificationManager.initializeUI'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'WarningNotificationManager.initializeUI') }
             });
         }
     }
@@ -156,7 +156,7 @@ export class WarningNotificationManager {
      */''
     injectNotificationStyles(''';
         const styleId = 'performance-warning-styles';
-        ';
+        ';'
         // Check if styles already exist')'
         if (document.getElementById(styleId)') return;
         
@@ -164,23 +164,23 @@ export class WarningNotificationManager {
             .perf-warnings { position: fixed,
                 z-index: 10000,';
                 pointer-events: none,'';
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif }
             }
             
             .perf-warnings-top-right { top: 20px,
-                right: 20px; }
+                right: 20px }
             }
             
             .perf-warnings-top-left { top: 20px,
-                left: 20px; }
+                left: 20px }
             }
             
             .perf-warnings-bottom-right { bottom: 20px,
-                right: 20px; }
+                right: 20px }
             }
             
             .perf-warnings-bottom-left { bottom: 20px,
-                left: 20px; }
+                left: 20px }
             }
             
             .perf-warning { pointer-events: auto,
@@ -199,22 +199,22 @@ export class WarningNotificationManager {
             
             .perf-warning.critical { background: rgba(255, 68, 68, 0.95),
                 border-color: #ff4444,
-                color: white; }
+                color: white }
             }
             
             .perf-warning.high { background: rgba(255, 136, 0, 0.95),
                 border-color: #ff8800,
-                color: white; }
+                color: white }
             }
             
             .perf-warning.medium { background: rgba(255, 170, 0, 0.95),
                 border-color: #ffaa00,
-                color: #333; }
+                color: #333 }
             }
             
             .perf-warning.low { background: rgba(68, 136, 255, 0.95),
                 border-color: #4488ff,
-                color: white; }
+                color: white }
             }
             
             .perf-warning-header { display: flex,
@@ -227,7 +227,7 @@ export class WarningNotificationManager {
                 font-size: 16px, }
             }
             
-            .perf-warning-title { flex: 1; }
+            .perf-warning-title { flex: 1 }
             }
             
             .perf-warning-close { background: none,
@@ -238,14 +238,14 @@ export class WarningNotificationManager {
                 padding: 0,
                 margin-left: 8px,
                 opacity: 0.7,
-                transition: opacity 0.2s; }
+                transition: opacity 0.2s }
             }
             
-            .perf-warning-close:hover { opacity: 1; }
+            .perf-warning-close:hover { opacity: 1 }
             }
             
             .perf-warning-message { margin-bottom: 8px,
-                opacity: 0.9; }
+                opacity: 0.9 }
             }
             
             .perf-warning-details { font-size: 12px,
@@ -265,7 +265,7 @@ export class WarningNotificationManager {
                 color: inherit,
                 cursor: pointer,
                 font-size: 12px,
-                transition: background 0.2s; }
+                transition: background 0.2s }
             }
             
             .perf-warning-action:hover { background: rgba(255, 255, 255, 0.3), }
@@ -276,7 +276,7 @@ export class WarningNotificationManager {
                 left: 0,
                 height: 2px,
                 background: rgba(255, 255, 255, 0.3),
-                transition: width linear; }
+                transition: width linear }
             }
             
             @keyframes slideIn { from { }
@@ -289,7 +289,7 @@ export class WarningNotificationManager {
                 }
             }
             
-            .perf-warning.fade-out { animation: fadeOut 0.3s ease-in forwards; }
+            .perf-warning.fade-out { animation: fadeOut 0.3s ease-in forwards }
             }
             
             @keyframes fadeOut { from { }
@@ -300,7 +300,7 @@ export class WarningNotificationManager {
                     transform: translateX(100%})
                     opacity: 0)';
                 }''
-            ');
+            ');'
         `;'
         '';
         const styleElement = document.createElement('style');
@@ -355,8 +355,8 @@ export class WarningNotificationManager {
         this.displayNotification(notification);
         
         // Schedule auto-dismiss
-        if(notification.autoResolve) {'
-            ';
+        if(notification.autoResolve) {
+            ';'
         }'
             setTimeout((') => { ' }'
                 this.dismissNotification(id, 'auto'); }
@@ -380,8 +380,8 @@ export class WarningNotificationManager {
         suggestions.forEach(suggestionId => { );
             const suggestion = this.getSuggestion(suggestionId);
             if(suggestion) {
-                actions.push({)'
-                    label: suggestion.actionLabel || suggestion.title || suggestionId),';
+                actions.push({)
+                    label: suggestion.actionLabel || suggestion.title || suggestionId),'
             }'
                     action: suggestion.action || (() => this.applySuggestion(suggestionId)'),' }'
                     type: suggestion.type || 'primary' }
@@ -406,10 +406,10 @@ export class WarningNotificationManager {
             // Animate progress bar
             if(notification.autoResolve) {
                 
-            }'
+            }
                 this.animateNotificationProgress(element, this.warningConfig.displayDuration);' }'
-            } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'WarningNotificationManager.displayNotification'); }
+            } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'WarningNotificationManager.displayNotification') }
             });
         }
     }
@@ -425,7 +425,7 @@ export class WarningNotificationManager {
         element.dataset.notificationId = notification.id;
         
         const priorityConfig = this.warningConfig.priorities[notification.priority];
-        ';
+        ';'
         element.innerHTML = `'';
             <div class="perf-warning-header">"";
                 <span class="perf-warning-icon">${priorityConfig.icon}</span>""
@@ -445,7 +445,7 @@ export class WarningNotificationManager {
         `;
         
         // Add event listeners for actions
-        if(notification.actions) {'
+        if(notification.actions) {
             '';
             notification.actions.forEach(action => { ');''
                 const button = element.querySelector(`[data-action="${action.label")"]`) as HTMLButtonElement;"
@@ -458,10 +458,10 @@ export class WarningNotificationManager {
             }');
         }
         ';
-        // Add close button listener''
+        // Add close button listener
         const closeButton = element.querySelector('.perf-warning-close') as HTMLButtonElement;''
         if(closeButton') {'
-            ';
+            ';'
         }'
             closeButton.addEventListener('click', (') => { ' }'
                 this.dismissNotification(notification.id, 'user'); }
@@ -483,7 +483,7 @@ export class WarningNotificationManager {
         progressBar.style.width = '100%'; }
         progressBar.style.transition = `width ${duration}ms linear`;
         ';
-        // Trigger animation''
+        // Trigger animation
         setTimeout((') => {  ' }'
             progressBar.style.width = '0%'; }
         }, 10);
@@ -494,16 +494,16 @@ export class WarningNotificationManager {
      * @param {string} notificationId - Notification ID
      * @param {object} action - Action configuration'
      */''
-    executeNotificationAction(notificationId: string, action: NotificationAction'): void { try {''
+    executeNotificationAction(notificationId: string, action: NotificationAction'): void { try {'
             if(typeof action.action === 'function') {'
                 '';
-                action.action('')';
+                action.action()';
             this.dismissNotification(notificationId, 'action');
             }
              }
             console.log(`[WarningNotificationManager] Action executed: ${action.label)`});'
             '';
-        } catch (error') { this.errorHandler.handleError(error, {')'
+        } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'WarningNotificationManager.executeNotificationAction'),' }'
             }');
         }
@@ -517,10 +517,10 @@ export class WarningNotificationManager {
     dismissNotification(notificationId: string, reason: string = 'manual'): void { const notification = this.activeNotifications.get(notificationId);
         if (!notification) return;
         ';
-        // Remove from active notifications''
+        // Remove from active notifications
         this.activeNotifications.delete(notificationId');
         ';
-        // Update statistics''
+        // Update statistics
         if(reason === 'auto'') {
             
         }'
@@ -528,7 +528,7 @@ export class WarningNotificationManager {
         } else if (reason === 'user') { this.stats.dismissedNotifications++; }
         }
         
-        // Remove UI element'
+        // Remove UI element
         const element = this.ui.notificationElements.get(notificationId);''
         if(element') {'
             '';
@@ -577,13 +577,13 @@ export class WarningNotificationManager {
      */
     playNotificationSound(priority: string): void { try {
             // Create audio context if not exists
-            if(!this.audioContext) {'
-                ';
+            if(!this.audioContext) {
+                ';'
             }'
                 this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)('); }
             }
             ';
-            // Generate notification sound based on priority''
+            // Generate notification sound based on priority
             const freq = priority === 'critical' ? 800 : 600;''
             const duration = priority === 'critical' ? 0.2 : 0.1;
             
@@ -602,7 +602,7 @@ export class WarningNotificationManager {
             oscillator.start();
             oscillator.stop(this.audioContext.currentTime + duration);'
             '';
-        } catch (error') { // Audio not available or failed''
+        } catch (error) { // Audio not available or failed
             console.warn('[WarningNotificationManager] Audio notification failed'); }
         }
     }
@@ -634,16 +634,16 @@ export class WarningNotificationManager {
     }
     
     /**
-     * Setup event listeners'
+     * Setup event listeners
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseNotifications(); }
             } else { this.resumeNotifications(); }'
             }''
         }');
         ';
-        // Listen for window focus/blur''
+        // Listen for window focus/blur
         window.addEventListener('blur', () => this.pauseNotifications()');''
         window.addEventListener('focus', () => this.resumeNotifications();
     }
@@ -651,14 +651,14 @@ export class WarningNotificationManager {
     /**
      * Pause notification delivery'
      */''
-    pauseNotifications('')';
+    pauseNotifications()';
         console.log('[WarningNotificationManager] Notifications paused');
     }
     
     /**
      * Resume notification delivery'
      */''
-    resumeNotifications('')';
+    resumeNotifications()';
         console.log('[WarningNotificationManager] Notifications resumed');
     }
     
@@ -691,7 +691,7 @@ export class WarningNotificationManager {
      * Configure notification system
      * @param {object} config - Configuration options
      */'
-    configure(config: Partial<WarningConfig>): void { // Update configuration''
+    configure(config: Partial<WarningConfig>): void { // Update configuration
         Object.assign(this.warningConfig, config');'
         '';
         console.log('[WarningNotificationManager] Configuration updated'); }
@@ -718,9 +718,9 @@ export class WarningNotificationManager {
         }
         
         // Clear data
-        this.activeNotifications.clear();'
+        this.activeNotifications.clear();
         this.cooldowns.clear();''
-        this.ui.notificationElements.clear('')';
+        this.ui.notificationElements.clear()';
         console.log('[WarningNotificationManager] Notification system destroyed'');'
     }''
 }

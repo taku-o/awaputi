@@ -5,11 +5,11 @@
 
 // Basic geometric types
 export interface Position { x: number,
-  y: number; }
+  y: number }
 }
 
 export interface Size { width: number,
-  height: number; }
+  height: number }
 }
 
 export interface Dimensions extends Position, Size {}
@@ -17,13 +17,13 @@ export interface Dimensions extends Position, Size {}
 export interface Rectangle { x: number,
   y: number,
   width: number,
-  height: number; }
+  height: number }
 }
 
 export interface Color { r: number,
   g: number,
   b: number,
-  a?: number; }
+  a?: number }
 }
 
 // Event and callback types
@@ -59,7 +59,7 @@ export interface GameState { isRunning: boolean,
   score: number,
   level: number,
   lives: number,
-  time?: number; }
+  time?: number }
 }
 
 export interface PlayerData { name: string,
@@ -106,7 +106,7 @@ export interface AudioResource extends ResourceLoader { url: string,
 export interface ImageResource extends ResourceLoader { url: string,
   image?: HTMLImageElement;
   width: number,
-  height: number; }
+  height: number }
 }
 
 // Animation and timing types
@@ -114,13 +114,13 @@ export interface Animation { duration: number,
   elapsed: number,
   isComplete: boolean,
   update(deltaTime: number): void,
-  reset(): void; }
+  reset(): void }
 }
 
 export interface Tween extends Animation { from: number,
   to: number,
   current: number,
-  easing: (t: number) => number; }
+  easing: (t: number) => number }
 }
 
 // Utility types
@@ -140,15 +140,15 @@ export type Mixin<T extends Constructor> = InstanceType<T>;
 
 // Math and physics types
 export interface Vector2 { x: number,
-  y: number; }
+  y: number }
 }
 
-export interface Vector3 extends Vector2 { z: number; }
+export interface Vector3 extends Vector2 { z: number }
 }
 
 export interface Transform { position: Vector2,
   rotation: number,
-  scale: Vector2;
+  scale: Vector2
     }
 }
 
@@ -158,7 +158,7 @@ declare global { const __DEV__: boolean,
   const __VERSION__: string,
   const __BUILD_TIME__: string,
   const __ANALYTICS_ID__: string,
-  const __SENTRY_DSN__: string; }
+  const __SENTRY_DSN__: string }
 }
 
 // DOM extensions
@@ -174,7 +174,7 @@ export interface CanvasContext { canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D,
   width: number,
   height: number,
-  devicePixelRatio: number; }
+  devicePixelRatio: number }
 }
 
 export interface RenderOptions { alpha?: boolean;

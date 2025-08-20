@@ -16,7 +16,7 @@ export class SyncManager {'
         this.cloudStorage = cloudStorage;
         
         this.config = {'
-            autoSyncInterval: 5 * 60 * 1000, // 5分間隔'';
+            autoSyncInterval: 5 * 60 * 1000, // 5分間隔;
             conflictResolutionStrategy: 'timestamp', // 'timestamp', 'manual', 'local', 'cloud';
             maxSyncRetries: 3,
             syncBatchSize: 10,
@@ -41,7 +41,7 @@ export class SyncManager {'
     /**
      * 同期マネージャーの初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('SyncManager: 同期マネージャーを初期化中...'),
             
             // 保存された同期状態の復元
@@ -49,14 +49,14 @@ export class SyncManager {'
             
             // 自動同期の開始
             this.startAutoSync();
-            ';
-            // イベントリスナーの設定''
-            this.setupEventListeners('')';
+            ;
+            // イベントリスナーの設定
+            this.setupEventListeners()';
             console.log('SyncManager: 初期化が完了しました'),
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'SYNC_MANAGER_INITIALIZATION_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -68,10 +68,10 @@ export class SyncManager {'
         if(this.syncState.isInProgress') {'
             '';
             console.warn('SyncManager: Sync already in progress'),'';
-            return this.getSyncStatus('')';
+            return this.getSyncStatus()';
         this.emitEvent('syncStarted'');
-        ';
-        try {''
+        ';'
+        try {'
             console.log('SyncManager: Starting manual sync...'),
             
             const syncResult = await this.performSync(options);
@@ -79,8 +79,8 @@ export class SyncManager {'
             this.syncState.lastSyncTime = Date.now();
             this.syncState.isInProgress = false;
             ';
-            // 同期状態の保存''
-            await this.saveSyncState('');'
+            // 同期状態の保存
+            await this.saveSyncState();'
             this.emitEvent('syncCompleted', syncResult');'
             '';
             console.log('SyncManager: Manual sync completed', syncResult);
@@ -89,7 +89,7 @@ export class SyncManager {'
              }
         } catch (error) { this.syncState.isInProgress = false;'
             this.syncState.syncErrors.push({);''
-                timestamp: Date.now('')';
+                timestamp: Date.now()';
                 operation: 'manual_sync') }
             }),'
             '';
@@ -114,14 +114,14 @@ export class SyncManager {'
             details: [] }
         },
         ';
-        try { // クラウドストレージの認証確認''
+        try { // クラウドストレージの認証確認
             if (!this.cloudStorage.isAuthenticated()') {''
                 throw new Error('Cloud storage not authenticated'); }
             }
             ';
-            // オンライン状態の確認''
+            // オンライン状態の確認
             if(!navigator.onLine && !options.forceOffline') {'
-                ';
+                ';'
             }'
                 throw new Error('Offline - cannot sync'); }
             }
@@ -142,11 +142,11 @@ export class SyncManager {'
                 
                 syncResult.synchronized += batchResult.synchronized;
                 syncResult.conflicts += batchResult.conflicts;
-                syncResult.errors += batchResult.errors;'
+                syncResult.errors += batchResult.errors;
                 syncResult.skipped += batchResult.skipped;''
                 syncResult.details.push(...batchResult.details');
-                ';
-                // 進捗の通知'
+                ';'
+                // 進捗の通知
             }'
                 this.emitEvent('syncProgress', {); }
                     progress: Math.min(100, ((i + batch.length) / allKeys.length) * 100}),
@@ -160,10 +160,10 @@ export class SyncManager {'
             }
             
             return syncResult;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'SYNC_PERFORM_ERROR', {')'
-                operation: 'performSync'); }
+                operation: 'performSync') }
             });
             throw error;
         }
@@ -195,7 +195,7 @@ export class SyncManager {'
                     message: itemResult.message }
                 }),'
                 '';
-            } catch (error') { batchResult.errors++;
+            } catch (error) { batchResult.errors++;
                 batchResult.details.push({)'
                     key,')';
                     action: 'error'),
@@ -220,15 +220,15 @@ export class SyncManager {'
         // データの存在パターンによる処理
         if(localData && cloudData) {
             // 両方に存在する場合 - 競合の可能性
-        }'
+        }
             return await this.handleDataConflict(key, localData, cloudData, direction);' }'
-        } else if (localData && !cloudData') { // ローカルのみに存在''
+        } else if (localData && !cloudData') { // ローカルのみに存在
             if (direction === 'down'') {' }'
                 return { action: 'skipped', message: 'Local only, direction is down' };'
             }''
             await this.cloudStorage.set(key, localData');''
             return { action: 'synchronized', message: 'Uploaded to cloud' }''
-        } else if (!localData && cloudData') { // クラウドのみに存在''
+        } else if (!localData && cloudData') { // クラウドのみに存在
             if (direction === 'up'') {' }'
                 return { action: 'skipped', message: 'Cloud only, direction is up' };'
             }''
@@ -242,7 +242,7 @@ export class SyncManager {'
     /**
      * データ競合の処理
      */'
-    async handleDataConflict(key, localData, cloudData, direction) { // データの比較''
+    async handleDataConflict(key, localData, cloudData, direction) { // データの比較
         if (this.isDataEqual(localData, cloudData)') {' }'
             return { action: 'skipped', message: 'Data is identical' }
         }
@@ -253,7 +253,7 @@ export class SyncManager {'
         
         let resolutionAction;
         let winningData;
-        let losingStorage;'
+        let losingStorage;
         '';
         switch(this.config.conflictResolutionStrategy') {'
             '';
@@ -286,7 +286,7 @@ export class SyncManager {'
                 // 手動解決のため競合キューに追加
                 this.syncState.conflicts.push({ key)
                     localData,);
-                    cloudData);'
+                    cloudData);
                     timestamp: Date.now(),' }'
                 }');''
                 return { action: 'conflicts', message: 'Manual resolution required' },
@@ -296,11 +296,11 @@ export class SyncManager {'
         }
         
         // 勝者のデータで負けた側を更新
-        if (losingStorage === this.localStorage) { await this.localStorage.save(key, winningData); }'
+        if (losingStorage === this.localStorage) { await this.localStorage.save(key, winningData); }
         } else {  ' }'
             await this.cloudStorage.set(key, winningData'); }
         }
-        ';
+        ';'
         return { ' };'
             action: 'synchronized',  }
             message: `Conflict resolved: ${resolutionAction}` 
@@ -336,7 +336,7 @@ export class SyncManager {'
     }
     
     /**
-     * メタデータの除去'
+     * メタデータの除去
      */''
     removeMetadata(data') {'
         '';
@@ -389,13 +389,13 @@ export class SyncManager {'
             this.stopAutoSync(); }
         }
         
-        this.autoSyncTimer = setInterval(async () => {  try {'
-                // オンライン状態とクラウド認証の確認''
+        this.autoSyncTimer = setInterval(async () => {  try {
+                // オンライン状態とクラウド認証の確認
                 if (navigator.onLine && this.cloudStorage.isAuthenticated()') {''
                     console.log('SyncManager: Running auto sync...''),' }'
                     await this.sync({ direction: 'bidirectional' ),' }'
-                } catch (error') { ';'
-                console.warn('SyncManager: Auto sync failed:', error.message); }
+                } catch (error) { ';'
+                console.warn('SyncManager: Auto sync failed:', error.message) }
             }
         }, this.config.autoSyncInterval);
         
@@ -422,40 +422,40 @@ export class SyncManager {'
                 lastSyncTime: this.syncState.lastSyncTime,';
                 conflicts: this.syncState.conflicts,'';
                 syncErrors: this.syncState.syncErrors.slice(-10') // 最新10件のみ保存 }
-            },'
+            },
             '';
             await this.localStorage.save('_syncState', stateData);''
-        } catch (error') { ''
-            console.warn('SyncManager: Failed to save sync state:', error); }
+        } catch (error) { ''
+            console.warn('SyncManager: Failed to save sync state:', error) }
         }
     }
     
     /**
      * 同期状態の復元'
      */''
-    async restoreSyncState('')';
+    async restoreSyncState()';
             const stateData = await this.localStorage.load('_syncState');''
             if(stateData') {
                 this.syncState.lastSyncTime = stateData.lastSyncTime;
                 this.syncState.conflicts = stateData.conflicts || [];
                 this.syncState.syncErrors = stateData.syncErrors || [];'
-                ';
+                ';'
             }'
                 console.log('SyncManager: Sync state restored'),' }'
-            } catch (error') { ''
-            console.warn('SyncManager: Failed to restore sync state:', error); }
+            } catch (error) { ''
+            console.warn('SyncManager: Failed to restore sync state:', error) }
         }
     }
     
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         window.addEventListener('online', (') => {  ''
             console.log('SyncManager: Back online, triggering sync...');'
             setTimeout(() => {''
                 if (this.cloudStorage.isAuthenticated()') {' }'
-                    this.sync({ direction: 'bidirectional' ); }
+                    this.sync({ direction: 'bidirectional' ) }
                 }
             }, 1000); // 1秒後に同期実行
         });
@@ -486,9 +486,9 @@ export class SyncManager {'
         this.config = { ...this.config, ...newConfig };
         
         // 自動同期間隔が変更された場合は再起動
-        if(newConfig.autoSyncInterval && newConfig.autoSyncInterval !== oldInterval) {'
+        if(newConfig.autoSyncInterval && newConfig.autoSyncInterval !== oldInterval) {
             '';
-            this.startAutoSync('');
+            this.startAutoSync();
         }'
         console.log('SyncManager: Configuration updated', this.config); }
     }
@@ -541,9 +541,9 @@ export class SyncManager {'
             
             // イベントリスナーの削除
             this.eventListeners.clear();
-            ';
-            // 同期状態の最終保存''
-            this.saveSyncState('')';
+            ;
+            // 同期状態の最終保存
+            this.saveSyncState()';
             console.log('SyncManager: Destroyed'),
     }
              }'

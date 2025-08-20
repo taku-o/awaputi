@@ -5,24 +5,24 @@
 
 // 型定義
 interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 interface Margins { top: number,
     right: number,
     bottom: number,
-    left: number; }
+    left: number }
 }
 
 interface Breakpoints { mobile: number,
     tablet: number,
-    desktop: number; }
+    desktop: number }
 }
 
 interface CanvasInfo { baseWidth: number,
     baseHeight: number,
     displayWidth: number,
-    displayHeight: number; }
+    displayHeight: number }
 }
 
 interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
@@ -31,7 +31,7 @@ interface ScaledCoordinateManager { getCanvasInfo(): CanvasInfo;
 
 interface UIElement { type: string,
     name: string,
-    offset?: Position;
+    offset?: Position
     }
 }
 
@@ -42,7 +42,7 @@ interface Container { x?: number;
 }
 
 interface LayoutResult { element: UIElement,
-    position: Position;
+    position: Position
     }
 }
 
@@ -79,7 +79,7 @@ export class UIPositionCalculator {
         this.statusVerticalSpacing = 40;
     }
     
-    /**'
+    /**
      * ステータス要素の位置を取得''
      * @param element - 要素名 ('score', 'time', 'hp')
      * @returns ベース座標系の位置
@@ -88,7 +88,7 @@ export class UIPositionCalculator {
             const margins = this.getResponsiveMargins();
             let baseY = margins.top;
             ';
-            // 要素タイプに応じてY座標を調整''
+            // 要素タイプに応じてY座標を調整
             switch(element') {'
                 '';
                 case 'score':;
@@ -106,10 +106,10 @@ export class UIPositionCalculator {
                     baseY = margins.top;
             }
             
-            // ベース座標をそのまま返す（他のメソッドとの一貫性のため）'
+            // ベース座標をそのまま返す（他のメソッドとの一貫性のため）
             return { x: margins.left, y: baseY }''
-        } catch (error') { ''
-            console.warn('UIPositionCalculator: Status position calculation failed, using fallback', error'); }
+        } catch (error) { ''
+            console.warn('UIPositionCalculator: Status position calculation failed, using fallback', error') }
             return { x: 20, y: 20 }
         }
     }
@@ -129,10 +129,10 @@ export class UIPositionCalculator {
             const baseY = margins.top + (index * 42); // ボタン間隔も縮小（36px + 6px余白）
             
             // ベース座標をそのまま返す（GameControlButtonsがスケーリングを行うため）
-             }'
+             }
             return { x: baseX, y: baseY }''
-        } catch (error') { ''
-            console.warn('UIPositionCalculator: Button position calculation failed, using fallback', error); }
+        } catch (error) { ''
+            console.warn('UIPositionCalculator: Button position calculation failed, using fallback', error) }
             return { x: 600, y: 20 + (index * 50) }
         }
     }
@@ -149,10 +149,10 @@ export class UIPositionCalculator {
             const baseX = canvasInfo.baseWidth / 2;
             const baseY = canvasInfo.baseHeight / 2;
             
-            // ベース座標をそのまま返す（他のメソッドとの一貫性のため） }'
+            // ベース座標をそのまま返す（他のメソッドとの一貫性のため） }
             return { x: baseX, y: baseY }''
-        } catch (error') { ''
-            console.warn('UIPositionCalculator: Dialog position calculation failed, using fallback', error); }
+        } catch (error) { ''
+            console.warn('UIPositionCalculator: Dialog position calculation failed, using fallback', error) }
             return { x: 400, y: 300 }
         }
     }
@@ -172,17 +172,17 @@ export class UIPositionCalculator {
                         right: 5,
             }
                         bottom: 15, };
-                        left: 15 }'
+                        left: 15 }
                     };''
                 case 'tablet':;
                     return { top: 5,   // すべてのデバイスで右上端配置
                         right: 5,
                         bottom: 18, };
-                        left: 18 }'
+                        left: 18 }
                     };''
                 case 'desktop':';
                 default: return this.defaultMargins,'';
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('UIPositionCalculator: Responsive margins calculation failed, using defaults', error);
             return this.defaultMargins; }
         }
@@ -212,12 +212,12 @@ export class UIPositionCalculator {
                     position = { x: baseX, y: baseY }
                 }
                 
-                positions.push({ element: element,)
-                    position: position); }
+                positions.push({ element: element)
+                    position: position) }
             });
-            ';
+            ';'
             return positions;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('UIPositionCalculator: Layout calculation failed', error');
             return []; }
         }
@@ -259,9 +259,9 @@ export class UIPositionCalculator {
                     baseY = canvasInfo.baseHeight / 2;
             }
             
-            // ベース座標をそのまま返す（一貫性のため）'
+            // ベース座標をそのまま返す（一貫性のため）
             return { x: baseX, y: baseY }''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('UIPositionCalculator: Edge alignment failed, using center', error);
             // フォールバック: ベース座標 }
             return { x: 400, y: 300 }
@@ -286,9 +286,9 @@ export class UIPositionCalculator {
             const baseX = containerX + (containerWidth / 2);
             const baseY = containerY + (containerHeight / 2);
             
-            // ベース座標をそのまま返す（一貫性のため） : undefined }'
+            // ベース座標をそのまま返す（一貫性のため） : undefined }
             return { x: baseX, y: baseY }''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('UIPositionCalculator: Center alignment failed, using default center', error');
             // フォールバック: ベース座標 }
             return { x: 400, y: 300 }
@@ -296,13 +296,13 @@ export class UIPositionCalculator {
     }
     
     /**
-     * デバイスタイプを判定'
+     * デバイスタイプを判定
      * @param width - 表示幅''
      * @returns デバイスタイプ ('mobile', 'tablet', 'desktop')
      */'
     getDeviceType(width: number): DeviceType { ''
         if(width < this.breakpoints.mobile') {'
-            ';
+            ';'
         }'
             return 'mobile';' }'
         } else if (width < this.breakpoints.tablet') { ''

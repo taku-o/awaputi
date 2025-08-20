@@ -12,11 +12,11 @@ interface NotificationSettings { enableNotifications: boolean,
     maxActiveNotifications: number,
     notificationDuration: number,
     animationDuration: number,
-    maxDisplayCount?: number; }
+    maxDisplayCount?: number }
 }
 
 interface NotificationAction { text: string,
-    action: () => void; }
+    action: () => void }
 }
 
 interface NotificationData { id: string,
@@ -44,22 +44,22 @@ interface NotificationInput { type?: string;
     category?: string; }
 }
 
-interface NotificationHistoryEntry extends NotificationData { status: string; }
+interface NotificationHistoryEntry extends NotificationData { status: string }
 }
 
 interface Event { id: string,
     name: string,
-    icon?: string; }
+    icon?: string }
 }
 
-interface EventResults { rank: number; }
+interface EventResults { rank: number }
 }
 
-interface Achievement { name: string; }
+interface Achievement { name: string }
 }
 
 interface RankingData { improvement: number,
-    currentRank: number; }
+    currentRank: number }
 }
 
 export class EventNotificationSystem {
@@ -119,15 +119,15 @@ export class EventNotificationSystem {
     addNotification(notification: NotificationInput): string | undefined { if (!this.settings.enableNotifications) {
             return; }
         }
-        ';
-        // notification が null または undefined の場合は早期リターン''
+        ;
+        // notification が null または undefined の場合は早期リターン
         if(!notification') {'
             '';
             console.warn('[EventNotificationSystem] Invalid notification object');
         }
             return; }
         }
-        ';
+        ';'
         const notificationData: NotificationData = { ''
             id: this.generateNotificationId(''';
             type: notification.type || 'info','';
@@ -154,10 +154,10 @@ export class EventNotificationSystem {
     
     /**
      * イベント開始通知
-     */'
+     */
     notifyEventStart(event: Event): void { ''
         if (!this.settings.eventStartNotifications') return;
-        ';
+        ';'
         this.addNotification({')'
             type: 'event-start',')';
             title: 'イベント開始！'),'';
@@ -171,7 +171,7 @@ export class EventNotificationSystem {
                 },'
                 { ''
                     text: '詳細を見る',
-                    action: () => this.showEventDetails(event.id); }]
+                    action: () => this.showEventDetails(event.id) }]
                 }]
             ];
         });
@@ -186,7 +186,7 @@ export class EventNotificationSystem {
         const message = results ?   : undefined }
             `${event.name}が終了しました。結果: ${results.rank}位` :
             `${event.name}が終了しました`;
-        ';
+        ';'
         this.addNotification({ ''
             type: 'event-end','';
             title: 'イベント終了',';
@@ -196,7 +196,7 @@ export class EventNotificationSystem {
             category: 'event')';
             actions: results ? [{ : undefined')'
                     text: '結果を見る'),
-                    action: () => this.showEventResults(event.id); }]
+                    action: () => this.showEventResults(event.id) }]
                 }]
             ] : [];
         });
@@ -207,7 +207,7 @@ export class EventNotificationSystem {
      */'
     notifyAchievementUnlocked(achievement: Achievement): void { ''
         if (!this.settings.achievementNotifications') return;
-        ';
+        ';'
         this.addNotification({')'
             type: 'achievement',')';
             title: '実績解除！'),'';
@@ -217,7 +217,7 @@ export class EventNotificationSystem {
             category: 'achievement',';
             actions: [{''
                     text: '実績を見る', }
-                    action: () => this.showAchievements(}),]
+                    action: () => this.showAchievements(})]
                 }]
             ];
         });
@@ -232,7 +232,7 @@ export class EventNotificationSystem {
         const message = rankingData.improvement > 0 ? }
             `ランキングが${rankingData.improvement}位上昇しました！` :
             `現在のランキング: ${rankingData.currentRank}位`;
-        ';
+        ';'
         this.addNotification({ ''
             type: 'ranking','';
             title: 'ランキング更新',';
@@ -242,7 +242,7 @@ export class EventNotificationSystem {
             category: 'ranking')';
             actions: [{')'
                     text: 'ランキングを見る'),
-                    action: () => this.showRanking(); }]
+                    action: () => this.showRanking() }]
                 }]
             ];
         });
@@ -286,13 +286,13 @@ export class EventNotificationSystem {
         this.activeNotifications.set(notification.id, notification);
         
         // UIに通知表示を要求
-        if(this.gameEngine.uiManager) {'
-            ';
+        if(this.gameEngine.uiManager) {
+            ';'
         }'
             this.gameEngine.uiManager.showNotification(notification'); }
         }
         
-        // 履歴に記録'
+        // 履歴に記録
         this.notificationHistory.push({ ...notification,')'
             status: 'shown'),
         
@@ -364,7 +364,7 @@ export class EventNotificationSystem {
     
     /**
      * 通知IDを生成
-     */'
+     */
     private generateNotificationId(): string { ' }'
         return `notification_${Date.now(})}_${Math.random().toString(36).substr(2, 9'})}`;
     }
@@ -402,7 +402,7 @@ export class EventNotificationSystem {
      */'
     private showEventDetails(eventId: string): void { ''
         if(this.gameEngine.sceneManager') {'
-            ';
+            ';'
         }'
             this.gameEngine.sceneManager.switchToScene('EventDetailsScene', { eventId ); }
         }
@@ -413,7 +413,7 @@ export class EventNotificationSystem {
      */'
     private showEventResults(eventId: string): void { ''
         if(this.gameEngine.sceneManager') {'
-            ';
+            ';'
         }'
             this.gameEngine.sceneManager.switchToScene('EventResultsScene', { eventId ); }
         }
@@ -424,9 +424,9 @@ export class EventNotificationSystem {
      */'
     private showAchievements(): void { ''
         if(this.gameEngine.sceneManager') {'
-            ';
+            ';'
         }'
-            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'achievements' ); }
+            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'achievements' ) }
         }
     }
     
@@ -435,9 +435,9 @@ export class EventNotificationSystem {
      */'
     private showRanking(): void { ''
         if(this.gameEngine.sceneManager') {'
-            ';
+            ';'
         }'
-            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'leaderboard' ); }
+            this.gameEngine.sceneManager.switchToScene('UserInfoScene', { tab: 'leaderboard' ) }
         }
     }
     
@@ -446,7 +446,7 @@ export class EventNotificationSystem {
      */'
     updateSettings(newSettings: Partial<NotificationSettings>): void { ''
         Object.assign(this.settings, newSettings');''
-        console.log('Notification settings updated:', newSettings); }
+        console.log('Notification settings updated:', newSettings) }
     }
     
     /**
@@ -512,9 +512,9 @@ export class EventNotificationSystem {
             return { activeCount: this.activeNotifications.size,
                 queueCount: this.notificationQueue.length, };
                 expiredCount: expiredNotifications.length }
-            },'
+            },
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[EventNotificationSystem] checkNotifications error:', error);
             return { activeCount: 0,
                 queueCount: 0, };
@@ -537,7 +537,7 @@ export class EventNotificationSystem {
             this.notificationCheckInterval = null; }
         }'
         '';
-        this.clearAllNotifications('')';
+        this.clearAllNotifications()';
         console.log('EventNotificationSystem disposed'');'
     }''
 }

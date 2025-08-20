@@ -19,7 +19,7 @@ export interface UndoRedoConfig { enabled: boolean,
     maxHistory: number,
     maxRedoSteps: number,
     ignoredActions: Set<string>,
-    criticalActions: Set<string>;
+    criticalActions: Set<string>
     }
 }
 
@@ -30,7 +30,7 @@ export interface ActionRecord { id: string,
     stateBefore: GameStateSnapshot,
     stateAfter: GameStateSnapshot | null,
     data: Record<string, any>,
-    metadata: ActionMetadata;
+    metadata: ActionMetadata
     }
 }
 
@@ -48,7 +48,7 @@ export interface GameStateSnapshot { game?: any;
     scene?: SceneState;
     bubbles?: BubbleState;
     score?: ScoreState;
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface PlayerState { id?: string;
@@ -65,7 +65,7 @@ export interface PlayerStatistics { gamesPlayed: number,
     bestScore: number,
     averageScore: number,
     playtime: number,
-    achievements: string[]; }
+    achievements: string[] }
 }
 
 export interface SceneState { current: string,
@@ -78,13 +78,13 @@ export interface SceneState { current: string,
 export interface TransitionState { from: string,
     to: string,
     progress: number,
-    startTime: number; }
+    startTime: number }
 }
 
 export interface BubbleState { bubbles: BubbleData[],
     grid: GridData,
     physics: PhysicsData,
-    effects: EffectData[];
+    effects: EffectData[]
     }
 }
 
@@ -94,27 +94,27 @@ export interface BubbleData { id: string,
     velocity?: Velocity;
     color: BubbleColor,
     size: number,
-    state: BubbleElementState;
+    state: BubbleElementState
     }
 }
 
 export interface GridData { width: number,
     height: number,
     cellSize: number,
-    occupied: boolean[][]; }
+    occupied: boolean[][] }
 }
 
 export interface PhysicsData { gravity: number,
     friction: number,
     bounce: number,
-    timeStep: number; }
+    timeStep: number }
 }
 
 export interface EffectData { id: string,
     type: EffectType,
     position: Position,
     duration: number,
-    progress: number; }
+    progress: number }
 }
 
 export interface ScoreState { current: number,
@@ -122,15 +122,15 @@ export interface ScoreState { current: number,
     combo: number,
     multiplier: number,
     level: number,
-    progress: number; }
+    progress: number }
 }
 
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface Velocity { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface UndoRedoSystemState { isRecording: boolean,
@@ -138,12 +138,12 @@ export interface UndoRedoSystemState { isRecording: boolean,
     actionCount: number,
     undoCount: number,
     redoCount: number,
-    operationInProgress: boolean; }
+    operationInProgress: boolean }
 }
 
 export interface UIElements { undoButton: HTMLButtonElement | null,
     redoButton: HTMLButtonElement | null,
-    statusIndicator?: HTMLElement | null; }
+    statusIndicator?: HTMLElement | null }
 }
 
 export interface GameEngineInterface { gameState?: any;
@@ -173,7 +173,7 @@ export interface ScoreManagerInterface { getState(): ScoreState;
 }
 
 export interface EventEmitterInterface { on(event: string, callback: Function): void,
-    emit(event: string, data?: any): void; }
+    emit(event: string, data?: any): void }
 }
 
 export interface ActionData { type: string,
@@ -207,7 +207,7 @@ export interface KeyboardShortcut { key: string,
     ctrlKey?: boolean;
     shiftKey?: boolean;
     altKey?: boolean;
-    description: string; }
+    description: string }
 }
 
 export interface FeedbackOptions { message: string,
@@ -248,12 +248,12 @@ export type FeedbackPosition = 'center' | 'top' | 'bottom' | 'topRight' | 'botto
 
 // 定数
 export const DEFAULT_UNDO_REDO_CONFIG: UndoRedoConfig = { enabled: true,
-    maxHistory: 10,';
+    maxHistory: 10,
     maxRedoSteps: 10,'';
     ignoredActions: new Set(['move', 'hover', 'focus', 'scroll', 'mouseover', 'mouseout']'),'';
-    criticalActions: new Set(['reset', 'newGame', 'delete', 'clear', 'restart', 'quit']'); }
+    criticalActions: new Set(['reset', 'newGame', 'delete', 'clear', 'restart', 'quit']') }
 } as const;
-';
+';'
 export const KEYBOARD_SHORTCUTS: Record<string, KeyboardShortcut> = { UNDO: {''
         key: 'z',';
         ctrlKey: true,'';
@@ -271,7 +271,7 @@ export const KEYBOARD_SHORTCUTS: Record<string, KeyboardShortcut> = { UNDO: {''
         description: 'やり直し (Ctrl+Shift+Z')' }
     }
 } as const,
-';
+';'
 export const BUTTON_STYLES: Record<string, ButtonStyle> = { base: {''
         position: 'fixed','';
         width: '45px','';
@@ -319,12 +319,12 @@ export const BUTTON_STYLES: Record<string, ButtonStyle> = { base: {''
         right: '20px' }
     }
 } as const,
-';
+';'
 export const BUTTON_SYMBOLS = { ''
     UNDO: '↶','';
     REDO: '↷' }
 } as const,
-';
+';'
 export const FEEDBACK_MESSAGES = { ''
     UNDO_SUCCESS: '元に戻しました','';
     UNDO_FAILED: '元に戻せません','';
@@ -333,7 +333,7 @@ export const FEEDBACK_MESSAGES = { ''
     REDO_FAILED: 'やり直せません','';
     REDO_ERROR: 'Redo操作に失敗しました' }
 } as const,
-';
+';'
 export const CSS_CLASSES = { ''
     UNDO_REDO_BTN: 'undo-redo-btn','';
     UNDO_BTN: 'undo-btn','';
@@ -346,7 +346,7 @@ export const DEFAULT_FEEDBACK_DURATION = 2000;
 // ユーティリティ関数
 export function generateActionId(): string {
     return `action_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
-}'
+}
 '';
 export function deepClone<T>(obj: T'): T { ''
     if (obj === null || typeof obj !== 'object') return obj;
@@ -494,16 +494,16 @@ export class UndoRedoSystem {
 
     /**
      * システムを初期化
-     */'
+     */
     private initialize(): void { this.createUndoRedoButtons();''
-        this.setupEventListeners('')';
+        this.setupEventListeners()';
         console.log('[UndoRedoSystem] Component initialized'); }
     }
 
     /**
      * Undo/Redoボタンを作成'
      */''
-    private createUndoRedoButtons('')';
+    private createUndoRedoButtons()';
         const undoBtn = document.createElement('button'');''
         undoBtn.id = 'undo-btn';
         undoBtn.className = `${CSS_CLASSES.UNDO_REDO_BTN} ${CSS_CLASSES.UNDO_BTN}`;
@@ -512,7 +512,7 @@ export class UndoRedoSystem {
         undoBtn.setAttribute('aria-label', '元に戻す'');
         undoBtn.disabled = true;
         ';
-        // Redoボタン''
+        // Redoボタン
         const redoBtn = document.createElement('button'');''
         redoBtn.id = 'redo-btn';
         redoBtn.className = `${CSS_CLASSES.UNDO_REDO_BTN} ${CSS_CLASSES.REDO_BTN}`;
@@ -521,8 +521,8 @@ export class UndoRedoSystem {
         redoBtn.setAttribute('aria-label', 'やり直し');
         redoBtn.disabled = true;
         ';
-        // スタイルを適用''
-        this.applyUndoRedoStyles('')';
+        // スタイルを適用
+        this.applyUndoRedoStyles()';
         undoBtn.addEventListener('click', () => this.undo()');''
         redoBtn.addEventListener('click', () => this.redo();
         
@@ -536,7 +536,7 @@ export class UndoRedoSystem {
     /**
      * Undo/Redoボタンのスタイルを適用'
      */''
-    private applyUndoRedoStyles('')';
+    private applyUndoRedoStyles()';
         if(document.getElementById('undo-redo-styles') return;
         
         const styles = `;
@@ -556,20 +556,20 @@ export class UndoRedoSystem {
             }
             
             .${CSS_CLASSES.UNDO_BTN} { bottom: 80px,
-                right: 20px; }
+                right: 20px }
             }
             
             .${CSS_CLASSES.REDO_BTN} { bottom: 135px,
-                right: 20px; }
+                right: 20px }
             }
             
             .${CSS_CLASSES.UNDO_REDO_BTN}:not(:disabled):hover { background: #6c757d,'
                 color: white,'';
-                transform: scale(1.1'); }
+                transform: scale(1.1') }
             }
             
             .${CSS_CLASSES.UNDO_REDO_BTN}:disabled { opacity: 0.3,
-                cursor: not-allowed; }
+                cursor: not-allowed }
             }
             
             .${CSS_CLASSES.UNDO_REDO_BTN}:focus { outline: 2px solid #007bff,
@@ -586,10 +586,10 @@ export class UndoRedoSystem {
     /**
      * イベントリスナーを設定'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         document.addEventListener('keydown', this.keydownHandler);
         ';
-        // ゲームエンジンイベント''
+        // ゲームエンジンイベント
         if(this.gameEngine.eventEmitter') {'
             '';
             this.gameEngine.eventEmitter.on('gameAction', this.gameActionHandler');'
@@ -604,10 +604,10 @@ export class UndoRedoSystem {
     private handleKeydown(event: KeyboardEvent): void { ''
         if (this.state.operationInProgress') return;
         ';
-        // Ctrl+Z で Undo''
+        // Ctrl+Z で Undo
         if(event.ctrlKey && event.key === 'z' && !event.shiftKey) {'
             event.preventDefault();''
-            this.undo('')';
+            this.undo()';
         else if ((event.ctrlKey && event.key === 'y'') || '';
                  (event.ctrlKey && event.shiftKey && event.key === 'z') {
             event.preventDefault();
@@ -630,11 +630,11 @@ export class UndoRedoSystem {
 
     /**
      * 状態変更を処理
-     */'
-    private handleStateChange(stateChange: StateChangeData): void { // 状態変更に基づくアクション記録''
+     */
+    private handleStateChange(stateChange: StateChangeData): void { // 状態変更に基づくアクション記録
         if(stateChange.significant && this.state.isRecording') {'
             this.recordAction({')'
-                type: 'stateChange');
+                type: 'stateChange')
         }
                 subtype: stateChange.type,) }
                 data: stateChange.data || {}
@@ -656,14 +656,14 @@ export class UndoRedoSystem {
             // アクション前の状態をキャプチャ
             const stateBefore = this.captureGameState();
             
-            // アクションオブジェクトを作成'
+            // アクションオブジェクトを作成
             const actionRecord: ActionRecord = { ''
-                id: generateActionId('')';
+                id: generateActionId()';
                 subtype: action.subtype || 'default');
                 timestamp: Date.now(),
                 stateBefore: stateBefore,
                 stateAfter: null, // 後で設定 }
-                data: { ...action.data },'
+                data: { ...action.data },
                 metadata: { ''
                     isCritical: isActionCritical(action.type, this.config.criticalActions'),
                     canUndo: action.canUndo !== false, }'
@@ -698,10 +698,10 @@ export class UndoRedoSystem {
             // UI更新
             this.updateButtons();
             
-            console.log(`[UndoRedoSystem] Action recorded: ${actionRecord.id)`});'
+            console.log(`[UndoRedoSystem] Action recorded: ${actionRecord.id)`});
             '';
-        } catch (error') { ''
-            console.error('[UndoRedoSystem] Action recording error:', error); }
+        } catch (error) { ''
+            console.error('[UndoRedoSystem] Action recording error:', error) }
         }
     }
 
@@ -735,7 +735,7 @@ export class UndoRedoSystem {
      * ゲーム状態をキャプチャ
      */
     private captureGameState(): GameStateSnapshot { const gameState: GameStateSnapshot = {
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         
         try { // ゲームエンジンから状態を取得
@@ -761,10 +761,10 @@ export class UndoRedoSystem {
             if (this.gameEngine.bubbleManager) { gameState.bubbles = this.gameEngine.bubbleManager.exportState(); }
             }
             
-            // スコア状態'
+            // スコア状態
             if (this.gameEngine.scoreManager) { gameState.score = this.gameEngine.scoreManager.getState();' }'
-            } catch (error') { ''
-            console.warn('[UndoRedoSystem] State capture error:', error); }
+            } catch (error) { ''
+            console.warn('[UndoRedoSystem] State capture error:', error) }
         }
         
         return gameState;
@@ -775,7 +775,7 @@ export class UndoRedoSystem {
      */
     undo(): boolean { if (!this.canUndo() || this.state.operationInProgress) {
             this.showUndoFeedback({ message: FEEDBACK_MESSAGES.UNDO_FAILED ),
-            return false; }
+            return false }
         }
         
         try { this.state.operationInProgress = true;
@@ -790,9 +790,9 @@ export class UndoRedoSystem {
             
             this.currentIndex--;
             this.state.undoCount++;
-            ';
-            // UI更新''
-            this.updateButtons('')';
+            ;
+            // UI更新
+            this.updateButtons()';
             this.emitEvent('actionUndone', action');
             
             this.showUndoFeedback({ )'
@@ -802,13 +802,13 @@ export class UndoRedoSystem {
             console.log(`[UndoRedoSystem] Undo completed: ${action.id)`});
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[UndoRedoSystem] Undo error:', error');
             this.state.isRecording = true;
             this.state.operationInProgress = false;
             this.showUndoFeedback({ )'
                 message: FEEDBACK_MESSAGES.UNDO_ERROR,')';
-                type: 'error'); }
+                type: 'error') }
             });
             return false;
         }
@@ -819,7 +819,7 @@ export class UndoRedoSystem {
      */
     redo(): boolean { if (!this.canRedo() || this.state.operationInProgress) {
             this.showUndoFeedback({ message: FEEDBACK_MESSAGES.REDO_FAILED ),
-            return false; }
+            return false }
         }
         
         try { this.state.operationInProgress = true;
@@ -838,24 +838,24 @@ export class UndoRedoSystem {
             }
             
             this.state.redoCount++;
-            ';
-            // UI更新''
-            this.updateButtons('')';
+            ;
+            // UI更新
+            this.updateButtons()';
             this.emitEvent('actionRedone', action');
-            ';
+            ';'
             this.showUndoFeedback({ message: FEEDBACK_MESSAGES.REDO_SUCCESS,')'
                 type: 'success'),
              }
             console.log(`[UndoRedoSystem] Redo completed: ${action.id)`});
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[UndoRedoSystem] Redo error:', error');
             this.state.isRecording = true;
             this.state.operationInProgress = false;
             this.showUndoFeedback({ )'
                 message: FEEDBACK_MESSAGES.REDO_ERROR,')';
-                type: 'error'); }
+                type: 'error') }
             });
             return false;
         }
@@ -909,9 +909,9 @@ export class UndoRedoSystem {
             if (state.score && this.gameEngine.scoreManager) { this.gameEngine.scoreManager.setState(state.score); }
             }
             
-            // UIを更新'
+            // UIを更新
             if (this.gameEngine.render) { this.gameEngine.render();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('[UndoRedoSystem] State restoration error:', error);
             throw error; }
         }
@@ -967,7 +967,7 @@ export class UndoRedoSystem {
         this.state.redoCount = 0;
         this.state.lastAction = null;'
         '';
-        this.updateButtons('')';
+        this.updateButtons()';
         console.log('[UndoRedoSystem] History cleared'); }
     }
 
@@ -1017,7 +1017,7 @@ export class UndoRedoSystem {
      */
     updateSettings(newSettings: Partial<UndoRedoConfig>): void {'
         this.config = { ...this.config, ...newSettings };''
-        this.updateButtons('')';
+        this.updateButtons()';
         console.log('[UndoRedoSystem] Settings updated:', newSettings);
     }
 
@@ -1032,7 +1032,7 @@ export class UndoRedoSystem {
      * システムの有効/無効を切り替え
      */'
     setEnabled(enabled: boolean): void { this.config.enabled = enabled;''
-        this.updateButtons('') }'
+        this.updateButtons() }'
         console.log(`[UndoRedoSystem] System ${enabled ? 'enabled' : 'disabled')`});
     }
 
@@ -1047,38 +1047,38 @@ export class UndoRedoSystem {
         }
         
         if(this.ui.redoButton && this.ui.redoButton.parentNode) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.ui.redoButton.parentNode.removeChild(this.ui.redoButton'); }
         }
         ';
-        // スタイルシートを削除''
+        // スタイルシートを削除
         const styleSheet = document.getElementById('undo-redo-styles');
         if(styleSheet && styleSheet.parentNode) {'
-            ';
+            ';'
         }'
             styleSheet.parentNode.removeChild(styleSheet'); }
         }
         ';
-        // イベントリスナーを削除''
+        // イベントリスナーを削除
         document.removeEventListener('keydown', this.keydownHandler);
         
         if(this.gameEngine.eventEmitter) {
         
-            // Note: eventEmitterにremoveListenerメソッドがあると仮定'
-            try {''
+            // Note: eventEmitterにremoveListenerメソッドがあると仮定
+            try {'
                 (this.gameEngine.eventEmitter as any').removeListener? .('gameAction', this.gameActionHandler);'
         
         }'
                 (this.gameEngine.eventEmitter as any').removeListener?.('stateChange', this.stateChangeHandler);' }'
-            } catch (error') { : undefined''
-                console.warn('[UndoRedoSystem] Failed to remove event listeners:', error); }
+            } catch (error) { : undefined''
+                console.warn('[UndoRedoSystem] Failed to remove event listeners:', error) }
             }
         }
         ';
-        // 履歴をクリア''
-        this.clearHistory('')';
+        // 履歴をクリア
+        this.clearHistory()';
         console.log('[UndoRedoSystem] Component destroyed'');'
     }''
 }

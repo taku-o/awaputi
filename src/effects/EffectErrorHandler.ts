@@ -22,7 +22,7 @@ interface GameEngine { canvas?: HTMLCanvasElement;
 }
 
 interface ErrorHandler { handleError(error: Error, context: string | ErrorContext): void,
-    logError(error: Error, context: ErrorContext): void; }
+    logError(error: Error, context: ErrorContext): void }
 }
 
 interface ErrorContext { component?: string;
@@ -66,7 +66,7 @@ interface SeasonalEffectManager { setEnabled(enabled: boolean): void, }
 }
 
 interface AnimationManager { setEnabled(enabled: boolean): void,
-    clearAllAnimations(): void; }
+    clearAllAnimations(): void }
 }
 
 interface PoolManager { cleanup(): void; }
@@ -79,7 +79,7 @@ interface ParticleManager { setEnabled(enabled: boolean): void,
 interface EffectManager { setEnabled(enabled: boolean): void,
     setSimpleMode(enabled: boolean): void, }
 }
-';
+';'
 interface EffectDebugInterface { ''
     showWarning(message: string'): void, }
 }
@@ -87,7 +87,7 @@ interface EffectDebugInterface { ''
 interface ErrorInfo { error: Error,
     source: string,
     timestamp: number,
-    context: ErrorContextInfo;
+    context: ErrorContextInfo
     }
 }
 
@@ -96,13 +96,13 @@ interface ErrorContextInfo { fallbackMode: boolean,
     particleCount: number,
     effectCount: number,
     memoryUsage: number,
-    qualityLevel: string; }
+    qualityLevel: string }
 }
 
 interface ErrorStats { totalErrors: number,
     fallbackMode: boolean,
     recentErrors: ErrorInfo[],
-    healthStatus: HealthStatus;
+    healthStatus: HealthStatus
     }
 }'
 '';
@@ -138,16 +138,16 @@ export class EffectErrorHandler {
         
         // パフォーマンスエラーハンドリング
         this.setupPerformanceErrorHandling(); }
-    }'
+    }
 '';
-    private setupGlobalErrorHandling('')';
+    private setupGlobalErrorHandling()';
         window.addEventListener('error', (event) => {  ''
             if (this.isEffectRelatedError(event.error)') {' }'
                 this.handleEffectError(event.error, 'global'); }'
             }''
         }');
 ';
-        // Promise リジェクションのハンドリング''
+        // Promise リジェクションのハンドリング
         window.addEventListener('unhandledrejection', (event) => {  ''
             if (this.isEffectRelatedError(event.reason)') {''
                 this.handleEffectError(event.reason, 'promise'); }
@@ -155,18 +155,18 @@ export class EffectErrorHandler {
             }
         });
     }
-';
+';'
     private setupCanvasErrorHandling(): void { const canvas = this.gameEngine.canvas;''
         if (!canvas') return;
 ';
-        // Context lost イベント''
+        // Context lost イベント
         canvas.addEventListener('webglcontextlost', (event') => { ''
             console.warn('Canvas context lost');
             event.preventDefault(); }'
             this.handleContextLoss();' }'
         }');
 ';
-        // Context restored イベント''
+        // Context restored イベント
         canvas.addEventListener('webglcontextrestored', (') => {  ''
             console.log('Canvas context restored'); }
             this.handleContextRestore(); }
@@ -179,7 +179,7 @@ export class EffectErrorHandler {
         }, 5000); // 5秒毎
     }
 
-    private isEffectRelatedError(error: any): boolean { if (!error) return false;'
+    private isEffectRelatedError(error: any): boolean { if (!error) return false;
         '';
         const errorMessage = error.message || error.toString(''';
             'particle', 'effect', 'rendering', 'canvas', 'context','';
@@ -196,8 +196,8 @@ export class EffectErrorHandler {
         const errorInfo: ErrorInfo = {
             error: error,
             source: source,
-            timestamp: Date.now(,);
-            context: this.getErrorContext(); }
+            timestamp: Date.now();
+            context: this.getErrorContext() }
         };
         
         this.errorHistory.push(errorInfo);
@@ -221,7 +221,7 @@ export class EffectErrorHandler {
     private getErrorContext(): ErrorContextInfo { return { fallbackMode: this.fallbackMode,
             fps: this.gameEngine.performanceOptimizer? .getCurrentFPS() || 0, : undefined;
             particleCount: this.gameEngine.enhancedParticleManager? .getActiveParticleCount() || 0, : undefined;
-            effectCount: this.gameEngine.enhancedEffectManager? .getActiveEffectCount() || 0, : undefined';
+            effectCount: this.gameEngine.enhancedEffectManager? .getActiveEffectCount() || 0, : undefined;
             memoryUsage: performance.memory ? performance.memory.usedJSHeapSize / 1024 / 1024 : 0,' };'
             qualityLevel: this.gameEngine.effectQualityController? .getCurrentQualityLevel(') || 'unknown' }
         },
@@ -237,29 +237,29 @@ export class EffectErrorHandler {
             }
                 this.recoverFromMemoryError(); }
             } else if(this.isRenderingError(errorInfo.error) { this.recoverFromRenderingError(); }
-            } else if(this.isParticleError(errorInfo.error) { this.recoverFromParticleError(); }'
+            } else if(this.isParticleError(errorInfo.error) { this.recoverFromParticleError(); }
             } else {  ''
-                this.genericRecovery('') }'
+                this.genericRecovery() }'
             console.log('Error recovery completed');' }'
-        } catch (recoveryError') { ''
+        } catch (recoveryError) { ''
             console.error('Recovery failed:', recoveryError);
             this.enableFallbackMode(); }
         }
     }
-';
+';'
     private isMemoryError(error: Error): boolean { ''
-        const message = error.message || error.toString('')';
+        const message = error.message || error.toString()';
         return message.includes('memory'') || message.includes('heap'); }
     }
-';
+';'
     private isRenderingError(error: Error): boolean { ''
-        const message = error.message || error.toString('')';
+        const message = error.message || error.toString()';
         return message.includes('render'') || message.includes('canvas'') || '';
                message.includes('context'') || message.includes('WebGL'); }
     }
-';
+';'
     private isParticleError(error: Error): boolean { ''
-        const message = error.message || error.toString('')';
+        const message = error.message || error.toString()';
         return message.includes('particle'') || message.includes('effect'); }
     }
 
@@ -278,9 +278,9 @@ export class EffectErrorHandler {
         }
         
         // 品質レベルを下げる
-        if(this.gameEngine.effectQualityController) {'
+        if(this.gameEngine.effectQualityController) {
             '';
-            const currentQuality = this.gameEngine.effectQualityController.getCurrentQualityLevel('')';
+            const currentQuality = this.gameEngine.effectQualityController.getCurrentQualityLevel()';
             const qualityLevels = ['low', 'medium', 'high', 'ultra'];)
             const currentIndex = qualityLevels.indexOf(currentQuality);
             
@@ -292,8 +292,8 @@ export class EffectErrorHandler {
     }
 
     private recoverFromRenderingError(): void { // レンダリングコンテキストの再初期化試行
-        try {'
-            const canvas = this.gameEngine.canvas;''
+        try {
+            const canvas = this.gameEngine.canvas;
             if(canvas') {'
                 '';
                 const context = canvas.getContext('2d');
@@ -304,10 +304,10 @@ export class EffectErrorHandler {
                     context.setTransform(1, 0, 0, 1, 0, 0);
                     context.clearRect(0, 0, canvas.width, canvas.height);
             }
-                    context.restore(); }'
+                    context.restore(); }
                 }''
-            } catch (contextError') { ''
-            console.error('Context recovery failed:', contextError); }
+            } catch (contextError) { ''
+            console.error('Context recovery failed:', contextError) }
         }
         
         // エフェクト設定をリセット
@@ -328,17 +328,17 @@ export class EffectErrorHandler {
         }
                 maxParticlesPerFrame: 100); }
         }
-    }'
+    }
 '';
-    private genericRecovery('')';
+    private genericRecovery()';
         console.log('Applying generic recovery measures');
         
         // 全エフェクトをクリア
         this.clearAllEffects();
-        ';
-        // 最低品質に設定''
+        ;
+        // 最低品質に設定
         if(this.gameEngine.effectQualityController') {'
-            ';
+            ';'
         }'
             this.gameEngine.effectQualityController.setQualityLevel('low'); }
         }
@@ -347,7 +347,7 @@ export class EffectErrorHandler {
         if (this.gameEngine.effectPerformanceOptimizer) { this.gameEngine.effectPerformanceOptimizer.manualOptimization(); }
         }
     }
-';
+';'
     private enableFallbackMode(): void { ''
         if (this.fallbackMode') return;'
         '';
@@ -376,10 +376,10 @@ export class EffectErrorHandler {
             
             if (this.gameEngine.seasonalEffectManager) { this.gameEngine.seasonalEffectManager.setEnabled(false); }
             }
-            ';
+            ';'
             if (this.gameEngine.animationManager) { this.gameEngine.animationManager.setEnabled(false);' }'
-            } catch (disableError') { ''
-            console.error('Error disabling effects:', disableError); }
+            } catch (disableError) { ''
+            console.error('Error disabling effects:', disableError) }
         }
     }
 
@@ -395,26 +395,26 @@ export class EffectErrorHandler {
             
                 this.gameEngine.effectManager.setEnabled(true);
             
-            }'
+            }
                 this.gameEngine.effectManager.setSimpleMode(true);' }'
-            } catch (fallbackError') { ''
-            console.error('Error enabling fallback mode:', fallbackError); }
+            } catch (fallbackError) { ''
+            console.error('Error enabling fallback mode:', fallbackError) }
         }
     }
 ';
-    private notifyFallbackMode(): void { // デバッグインターフェースが利用可能な場合、警告を表示''
+    private notifyFallbackMode(): void { // デバッグインターフェースが利用可能な場合、警告を表示
         if(this.gameEngine.effectDebugInterface') {
-            try {'
+            try {
                 this.gameEngine.effectDebugInterface.showWarning(');
         }'
                     'エフェクトシステムがフォールバックモードで動作しています。');' }'
-            } catch (notifyError') { ''
-                console.error('Error showing fallback notification:', notifyError); }
+            } catch (notifyError) { ''
+                console.error('Error showing fallback notification:', notifyError) }
             }
         }
     }'
 '';
-    private handleContextLoss('')';
+    private handleContextLoss()';
         console.warn('Handling canvas context loss');
         
         // エフェクトを一時停止
@@ -422,9 +422,9 @@ export class EffectErrorHandler {
         
         // リソースを解放
         this.releaseResources();
-    }'
+    }
 '';
-    private handleContextRestore('')';
+    private handleContextRestore()';
         console.log('Handling canvas context restore');
         
         // エフェクトシステムを再初期化
@@ -440,10 +440,10 @@ export class EffectErrorHandler {
             }
                 this.gameEngine.enhancedParticleManager.pause(); }
             }
-            ';
+            ';'
             if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.pause();' }'
-            } catch (pauseError') { ''
-            console.error('Error pausing effects:', pauseError); }
+            } catch (pauseError) { ''
+            console.error('Error pausing effects:', pauseError) }
         }
     }
 
@@ -453,10 +453,10 @@ export class EffectErrorHandler {
             }
                 this.gameEngine.enhancedParticleManager.resume(); }
             }
-            ';
+            ';'
             if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.resume();' }'
-            } catch (resumeError') { ''
-            console.error('Error resuming effects:', resumeError); }
+            } catch (resumeError) { ''
+            console.error('Error resuming effects:', resumeError) }
         }
     }
 
@@ -471,10 +471,10 @@ export class EffectErrorHandler {
             }
                 this.gameEngine.enhancedParticleManager.reinitialize(); }
             }
-            ';
+            ';'
             if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.reinitialize();' }'
-            } catch (reinitError') { ''
-            console.error('Error reinitializing effects:', reinitError); }
+            } catch (reinitError) { ''
+            console.error('Error reinitializing effects:', reinitError) }
         }
     }
 
@@ -487,17 +487,17 @@ export class EffectErrorHandler {
             
             if (this.gameEngine.enhancedEffectManager) { this.gameEngine.enhancedEffectManager.clearAllEffects(); }
             }
-            ';
+            ';'
             if (this.gameEngine.animationManager) { this.gameEngine.animationManager.clearAllAnimations();' }'
-            } catch (clearError') { ''
-            console.error('Error clearing effects:', clearError); }
+            } catch (clearError) { ''
+            console.error('Error clearing effects:', clearError) }
         }
     }
 
     private checkPerformanceHealth(): void { const fps = this.gameEngine.performanceOptimizer? .getCurrentFPS() || 60; : undefined
         const memoryUsage = performance.memory ? performance.memory.usedJSHeapSize / 1024 / 1024 : 0;
         ';
-        // 危険なパフォーマンス状態の検出''
+        // 危険なパフォーマンス状態の検出
         if(fps < 10 || memoryUsage > 1000') {'
             '';
             console.warn('Critical performance detected, applying emergency measures');
@@ -507,10 +507,10 @@ export class EffectErrorHandler {
     }
 
     private handleCriticalPerformance(): void { // 緊急パフォーマンス対策
-        this.clearAllEffects();'
+        this.clearAllEffects();
         '';
         if(this.gameEngine.effectQualityController') {'
-            ';
+            ';'
         }'
             this.gameEngine.effectQualityController.setQualityLevel('low'); }
         }
@@ -519,22 +519,22 @@ export class EffectErrorHandler {
         }
     }'
 '';
-    private reportError(errorInfo: ErrorInfo'): void { // エラーの統計とレポート'
+    private reportError(errorInfo: ErrorInfo'): void { // エラーの統計とレポート
         this.errorHandler.logError(errorInfo.error, {')'
             component: 'EffectSystem',);
             source: errorInfo.source),
-            context: JSON.stringify(errorInfo.context); }
+            context: JSON.stringify(errorInfo.context) }
         });
     }
 
     // API メソッド
     public getErrorStats(): ErrorStats { return { totalErrors: this.errorCount,
             fallbackMode: this.fallbackMode,
-            recentErrors: this.errorHistory.slice(-10,) };
+            recentErrors: this.errorHistory.slice(-10) };
             healthStatus: this.getHealthStatus(); }
         };
     }
-';
+';'
     private getHealthStatus(): HealthStatus { ''
         if (this.fallbackMode') return 'fallback';''
         if (this.errorCount > this.maxErrors * 0.7') return 'warning';''
@@ -542,10 +542,10 @@ export class EffectErrorHandler {
         return 'healthy'; }
     }'
 '';
-    public resetErrorCount('')';
+    public resetErrorCount()';
         console.log('Error count reset');
     }
-';
+';'
     public exitFallbackMode(): void { ''
         if (!this.fallbackMode') return;'
         '';
@@ -553,11 +553,11 @@ export class EffectErrorHandler {
         this.fallbackMode = false;
         this.resetErrorCount();
         
-        // エフェクトシステムを再有効化'
-        try {''
-            this.enableBasicEffects('')';
+        // エフェクトシステムを再有効化
+        try {'
+            this.enableBasicEffects()';
             console.log('Successfully exited fallback mode');' }'
-        } catch (exitError') { ''
+        } catch (exitError) { ''
             console.error('Failed to exit fallback mode:', exitError);
             this.fallbackMode = true; }
         }
@@ -568,8 +568,8 @@ export class EffectErrorHandler {
         }
         
         if(this.gameEngine.enhancedEffectManager) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.gameEngine.enhancedEffectManager.setEnabled(true'); }
         }
@@ -578,8 +578,8 @@ export class EffectErrorHandler {
 
 // グローバルアクセス用
 declare global { interface Window {
-        EffectErrorHandler: typeof EffectErrorHandler; }
+        EffectErrorHandler: typeof EffectErrorHandler }
     }
-}'
+}
 '';
 window.EffectErrorHandler = EffectErrorHandler;

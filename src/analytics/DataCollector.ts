@@ -32,19 +32,19 @@ export interface SessionData { sessionId: string,
     playerSettings: {
         difficulty: string,
         soundEnabled: boolean,
-        effectsEnabled: boolean; }
+        effectsEnabled: boolean }
     };
 }
 
 export interface BubblePosition { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface BubbleContextInfo { remainingBubbles: number,
     currentHP: number,
-    timeRemaining: number; }
+    timeRemaining: number }
 }
-';
+';'
 export interface BubbleData { bubbleType: string,''
     action: 'popped' | 'missed' | 'expired',
     reactionTime?: number | null;
@@ -64,18 +64,18 @@ export interface BubbleInteractionData { sessionId: string,
     position: BubblePosition | null,
     scoreGained: number,
     comboCount: number,
-    contextInfo: BubbleContextInfo;
+    contextInfo: BubbleContextInfo
     }
 }
 
 export interface MemoryUsage { used: number,
     total: number,
-    limit: number; }
+    limit: number }
 }
 
 export interface LoadTimes { assets: number,
     scripts: number,
-    total: number; }
+    total: number }
 }
 
 export interface PerformanceMetrics { fps?: number | null;
@@ -89,7 +89,7 @@ export interface PerformanceData { sessionId: string | null,
     fps: number | null,
     memoryUsage: MemoryUsage | null,
     loadTimes: LoadTimes | null,
-    errors: string[]; }
+    errors: string[] }
 }
 
 export interface GameBalanceData { [key: string]: any, }
@@ -97,9 +97,9 @@ export interface GameBalanceData { [key: string]: any, }
 
 export interface ScoreContextInfo { comboCount: number,
     timeRemaining: number,
-    activeItems: string[]; }
+    activeItems: string[] }
 }
-';
+';'
 export interface ScoreData { ''
     type: 'bubble' | 'combo' | 'bonus' | 'penalty',
     amount: number,
@@ -118,15 +118,15 @@ export interface ScoreEventData { sessionId: string,'
     totalScore: number,
     multiplier: number,
     source: string,
-    contextInfo: ScoreContextInfo;
+    contextInfo: ScoreContextInfo
     }
 }
 
 export interface ItemContextInfo { playerAP: number,
     stageProgress: number,
-    currentScore: number; }
+    currentScore: number }
 }
-';
+';'
 export interface ItemData { itemType: string,''
     action: 'purchased' | 'used' | 'expired',
     cost?: number;
@@ -144,27 +144,27 @@ export interface ItemUsageEventData { sessionId: string,
     cost: number,
     duration: number | null,
     effectiveness: number | null,
-    contextInfo: ItemContextInfo;
+    contextInfo: ItemContextInfo
     }
 }
-';
+';'
 export interface AnalyticsEvent { ''
     type: 'session' | 'bubbleInteraction' | 'performance' | 'gameBalance' | 'score' | 'itemUsage',
     timestamp: number,
     sessionId?: string;
-    data: SessionData | BubbleInteractionData | PerformanceData | GameBalanceData | ScoreEventData | ItemUsageEventData; }
+    data: SessionData | BubbleInteractionData | PerformanceData | GameBalanceData | ScoreEventData | ItemUsageEventData }
 }
 
 export interface EventStats { collected: number,
     processed: number,
     errors: number,
-    dropped: number; }
+    dropped: number }
 }
 
 export interface EventStatsExtended extends EventStats { queueSize: number,
     currentSessionId: string | null,
     isEnabled: boolean,
-    isPaused: boolean; }
+    isPaused: boolean }
 }
 
 export interface PrivacyManager { checkConsent(): boolean;
@@ -172,9 +172,9 @@ export interface PrivacyManager { checkConsent(): boolean;
     anonymizeData(event: AnalyticsEvent): AnalyticsEvent,
     }
 }
-';
+';'
 export interface StorageManager { ''
-    saveData(storeName: string, data: any[]'): Promise<void>;
+    saveData(storeName: string, data: any[]'): Promise<void>
     }
 }'
 '';
@@ -254,7 +254,7 @@ export class DataCollector {
     
     /**
      * セッション開始
-     */'
+     */
     startSession(sessionInfo: SessionInfo): void { this.currentSessionId = this.generateSessionId();''
         this.sessionStartTime = Date.now(''';
             stageId: sessionInfo.stageId || 'unknown',
@@ -284,7 +284,7 @@ export class DataCollector {
             finalScore: endInfo.finalScore || 0,
             bubblesPopped: endInfo.bubblesPopped || 0,
             bubblesMissed: endInfo.bubblesMissed || 0,
-            maxCombo: endInfo.maxCombo || 0,';
+            maxCombo: endInfo.maxCombo || 0,
             completed: endInfo.completed || false,'';
             exitReason: endInfo.exitReason || 'unknown',';
             playerSettings: {''
@@ -302,11 +302,11 @@ export class DataCollector {
     }
     
     /**
-     * セッションデータ収集'
+     * セッションデータ収集
      */''
     private collectSessionData(sessionInfo: SessionData'): void { ''
         if (!this.shouldCollectData('sessionTracking')') return;
-        ';
+        ';'
         const event: AnalyticsEvent = {''
             type: 'session',
             timestamp: Date.now(),
@@ -325,7 +325,7 @@ export class DataCollector {
         
         const interactionData: BubbleInteractionData = {'
             sessionId: this.currentSessionId,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             type: 'bubbleInteraction',);
             timestamp: Date.now(),
             data: interactionData }
@@ -343,7 +343,7 @@ export class DataCollector {
         
         const performanceData: PerformanceData = {'
             sessionId: this.currentSessionId,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             type: 'performance',);
             timestamp: Date.now(),
             data: performanceData }
@@ -358,7 +358,7 @@ export class DataCollector {
     collectGameBalanceData(balanceData: GameBalanceData'): void { ''
         if(!this.shouldCollectData('behaviorAnalysis') return;''
         if (!this.currentSessionId') return;
-        ';
+        ';'
         const event: AnalyticsEvent = {''
             type: 'gameBalance',
             timestamp: Date.now(),
@@ -378,7 +378,7 @@ export class DataCollector {
         
         const scoreEvent: ScoreEventData = {'
             sessionId: this.currentSessionId,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             type: 'score',);
             timestamp: Date.now(),
             data: scoreEvent }
@@ -396,7 +396,7 @@ export class DataCollector {
         
         const itemEvent: ItemUsageEventData = {'
             sessionId: this.currentSessionId,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             type: 'itemUsage',);
             timestamp: Date.now(),
             data: itemEvent }
@@ -426,9 +426,9 @@ export class DataCollector {
             // バッチサイズに達したら即座に処理
             if(this.eventQueue.length >= this.batchSize) {
                 
-            }'
+            }
                 this.processBatch();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to add event to queue:', error);
             this.eventStats.errors++; }
         }
@@ -444,7 +444,7 @@ export class DataCollector {
         try {
             await this.saveBatchToStorage(batch);'
             this.eventStats.processed += batch.length;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to process batch:', error);
             this.eventStats.errors += batch.length;
             
@@ -488,14 +488,14 @@ export class DataCollector {
     }
     
     /**
-     * イベントタイプに対応するストア名を取得'
+     * イベントタイプに対応するストア名を取得
      */''
     private getStoreNameForEventType(eventType: EventType'): string | null { const storeMap: Record<EventType, string> = {''
             'session': 'sessions','';
             'bubbleInteraction': 'bubbleInteractions','';
             'performance': 'performance','';
-            'gameBalance': 'bubbleInteractions', // バブルインタラクションと統合'';
-            'score': 'bubbleInteractions', // スコアイベントも統合'';
+            'gameBalance': 'bubbleInteractions', // バブルインタラクションと統合;
+            'score': 'bubbleInteractions', // スコアイベントも統合;
             'itemUsage': 'bubbleInteractions' // アイテム使用も統合 }
         };
         
@@ -504,7 +504,7 @@ export class DataCollector {
     
     /**
      * バッチリトライ処理
-     */'
+     */
     private async retryBatch(batch: AnalyticsEvent[], retryCount: number = 0): Promise<void> { ''
         if(retryCount >= this.maxRetries') {'
             '';
@@ -597,6 +597,6 @@ export class DataCollector {
     
     /**
      * データコレクターの破棄
-     */'
+     */
     destroy(): void { this.stopBatchProcessing();''
         this.flushQueue(') }')

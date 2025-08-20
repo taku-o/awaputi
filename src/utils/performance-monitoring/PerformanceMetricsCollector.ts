@@ -4,7 +4,7 @@ interface PerformanceDataAnalyzer { errorHandler: any,
     calibrationTarget: number,
     performanceBaseline: Map<string, number>;
     analysisConfig: {
-        adaptiveThresholds: boolean; }
+        adaptiveThresholds: boolean }
     };
 }
 
@@ -19,7 +19,7 @@ interface CollectionStats { historySize: number,
     calibrationComplete: boolean,
     calibrationProgress: number,
     oldestDataPoint: number | null,
-    newestDataPoint: number | null; }
+    newestDataPoint: number | null }
 }
 
 interface ExportData { exportedAt: number,
@@ -27,13 +27,13 @@ interface ExportData { exportedAt: number,
     dataPoints: number,
     data: Array<{
         timestamp: number,
-        metrics: Record<string, any>; }
+        metrics: Record<string, any> }
     }>;
 }
 
 interface ImportDataFormat { data: Array<{
         timestamp: number,
-        metrics: Record<string, any>; }
+        metrics: Record<string, any> }
     }>;
 }
 
@@ -90,7 +90,7 @@ export class PerformanceMetricsCollector {
      */
     addToAnalysisHistory(timestamp: number, metrics: Map<string, any>): void { const dataPoint: DataPoint = {
             timestamp,
-            metrics: new Map(metrics); }
+            metrics: new Map(metrics) }
         };
         
         this.analysisHistory.push(dataPoint);
@@ -135,7 +135,7 @@ export class PerformanceMetricsCollector {
         const metricCounts = new Map<string, number>();
         
         // Calculate average values for each metric
-        for(const sample of this.calibrationSamples) {'
+        for(const sample of this.calibrationSamples) {
             '';
             for (const [metricId, value] of sample') {''
                 if (typeof value === 'number') {
@@ -148,7 +148,7 @@ export class PerformanceMetricsCollector {
         
         // Set baseline values
         for(const [metricId, sum] of metricSums) {
-            const count = metricCounts.get(metricId);'
+            const count = metricCounts.get(metricId);
             if (count) {'
         }'
                 this.mainController.performanceBaseline.set(metricId, sum / count'); }
@@ -156,7 +156,7 @@ export class PerformanceMetricsCollector {
         }
         
         this.mainController.baselineCalibrated = true;
-        this.calibrationSamples = []; // Free memory'
+        this.calibrationSamples = []; // Free memory
         '';
         console.log('[PerformanceMetricsCollector] Performance baseline calibrated');
     }
@@ -164,7 +164,7 @@ export class PerformanceMetricsCollector {
     /**
      * Update adaptive baseline
      */
-    updateAdaptiveBaseline(metrics: Map<string, any>): void { const alpha = 0.1; // Smoothing factor'
+    updateAdaptiveBaseline(metrics: Map<string, any>): void { const alpha = 0.1; // Smoothing factor
         '';
         for(const [metricId, value] of metrics') {'
             '';
@@ -185,7 +185,7 @@ export class PerformanceMetricsCollector {
             console.warn('[PerformanceMetricsCollector] Invalid metrics format - expected Map');
             return false; }
         }
-        ';
+        ';'
         let hasValidMetrics = false;''
         for(const [metricId, value] of metrics') {'
             '';
@@ -215,27 +215,27 @@ export class PerformanceMetricsCollector {
             '';
             if(typeof value === 'number' && !isNaN(value) {
                 // Apply metric-specific normalization
-                let normalizedValue = value;'
+                let normalizedValue = value;
                 '';
                 switch (metricId') {''
                     case 'fps':';
-                        // Ensure FPS is within reasonable bounds''
+                        // Ensure FPS is within reasonable bounds
                         normalizedValue = Math.max(0, Math.min(240, value)');'
                         break;''
                     case 'memory_used':';
-                        // Ensure memory is positive''
+                        // Ensure memory is positive
                         normalizedValue = Math.max(0, value');'
                         break;''
                     case 'frame_time':';
-                        // Ensure frame time is positive''
+                        // Ensure frame time is positive
                         normalizedValue = Math.max(0, value');'
                         break;''
                     case 'network_latency':';
-                        // Ensure latency is positive''
-                        normalizedValue = Math.max(0, value');
+                        // Ensure latency is positive
+                        normalizedValue = Math.max(0, value);
                         break;'
                     default:'';
-                        // Default normalization - just ensure it's a valid number
+                        // Default normalization - just ensure its a valid number
         }
                         normalizedValue = isFinite(value) ? value: 0; }
                 }
@@ -272,7 +272,7 @@ export class PerformanceMetricsCollector {
     /**
      * Clear collection data'
      */''
-    clearData('')';
+    clearData()';
         console.log('[PerformanceMetricsCollector] Collection data cleared');
     }
     
@@ -308,7 +308,7 @@ export class PerformanceMetricsCollector {
     /**
      * Import metrics data
      */'
-    importData(importData: ImportDataFormat): boolean { try {''
+    importData(importData: ImportDataFormat): boolean { try {'
             if (!importData.data || !Array.isArray(importData.data)') {''
                 console.warn('[PerformanceMetricsCollector] Invalid import data format');
                 return false; }
@@ -316,7 +316,7 @@ export class PerformanceMetricsCollector {
             
             const importedPoints: DataPoint[] = importData.data.map(point => ({ )
                 timestamp: point.timestamp),
-                metrics: new Map(Object.entries(point.metrics); }
+                metrics: new Map(Object.entries(point.metrics) }
             });
             
             this.analysisHistory.push(...importedPoints);
@@ -330,9 +330,9 @@ export class PerformanceMetricsCollector {
             }
             
             console.log(`[PerformanceMetricsCollector] Imported ${importedPoints.length) data points`});
-            return true;'
+            return true;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PerformanceMetricsCollector] Import failed:', error);
             return false; }
         }
@@ -341,7 +341,7 @@ export class PerformanceMetricsCollector {
     /**
      * Cleanup collector resources'
      */''
-    destroy('')';
+    destroy()';
         console.log('[PerformanceMetricsCollector] Collector destroyed'');'
     }''
 }

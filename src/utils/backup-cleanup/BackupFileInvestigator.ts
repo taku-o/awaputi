@@ -5,37 +5,37 @@ import path from 'path';
 interface TargetFile { filePath: string,
     currentFilePath: string,
     expectedWordCount: number,
-    description: string; }
+    description: string }
 }
 
 interface GitCommit { commit: string,
-    message: string; }
+    message: string }
 }
 
 interface GitHistoryError { error: string,
-    gitHistoryFailed: boolean; }
+    gitHistoryFailed: boolean }
 }
 
 interface SizeAnalysis { bytes: number,
     wordCount: number,
     lineCount: number,
     characters: number,
-    lastModified: string; }
+    lastModified: string }
 }
 
 interface SizeAnalysisError { error: string,
-    analyzeFailed: boolean; }
+    analyzeFailed: boolean }
 }
 
 interface FileComparison { identical: boolean,
     backupLines: number,
     currentLines: number,
     sizeDifference: number,
-    comparedAt: string; }
+    comparedAt: string }
 }
 
 interface ComparisonError { error: string,
-    comparisonFailed: boolean; }
+    comparisonFailed: boolean }
 }
 
 interface InvestigationResult extends TargetFile { exists: boolean,
@@ -52,24 +52,24 @@ interface ReportSummary { totalFiles: number,
     existingFiles: number,
     missingFiles: number,
     currentFilesExist: number,
-    investigationErrors: number; }
+    investigationErrors: number }
 }
 
 interface SizeEstimate { bytes: number,
-    words: number; }
+    words: number }
 }
-';
+';'
 interface Recommendation { ''
     type: 'safe_deletion' | 'needs_attention',
     message: string,
-    files: string[]; }
+    files: string[] }
 }
 
 interface InvestigationReport { summary: ReportSummary,
     files: InvestigationResult[],
     totalSizeEstimate: SizeEstimate,
     recommendations: Recommendation[],
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 /**
@@ -120,7 +120,7 @@ export class BackupFileInvestigator {
         for(const targetFile of this.targetFiles) {
         
             try {
-                const investigation = await this.investigateFile(targetFile);
+                const investigation = await this.investigateFile(targetFile)
         
         }
                 results.push(investigation); }
@@ -196,8 +196,8 @@ export class BackupFileInvestigator {
 
     /**
      * ファイルサイズの分析
-     */'
-    async analyzeFileSize(filePath: string): Promise<SizeAnalysis | SizeAnalysisError> { try {''
+     */
+    async analyzeFileSize(filePath: string): Promise<SizeAnalysis | SizeAnalysisError> { try {'
             const stats = await fs.stat(filePath');''
             const content = await fs.readFile(filePath, 'utf8');'
             '';
@@ -219,12 +219,12 @@ export class BackupFileInvestigator {
     /**
      * Git履歴の取得'
      */''
-    async getGitHistory(filePath: string'): Promise<GitCommit[] | GitHistoryError[]> { try {' }'
+    async getGitHistory(filePath: string'): Promise<GitCommit[] | GitHistoryError[]> { try { }'
             const { exec } = await import('child_process'');''
             const { promisify } = await import('util');''
             const execAsync = promisify(exec');
             
-            // Git log for specific file'
+            // Git log for specific file
             const { stdout } = await execAsync(')'
                 `git log --oneline -10 -- "${ filePath")"`, };
                 { cwd: process.cwd(}) };
@@ -239,16 +239,16 @@ export class BackupFileInvestigator {
                 };
             });
         } catch (error) { return [{
-                error: (error as Error).message,];
+                error: (error as Error).message];
                 gitHistoryFailed: true }]
             }],
         }
     }
 
-    /**
+    /**'
      * 現在ファイルとの比較'
      */''
-    async compareWithCurrentFile(targetFile: TargetFile'): Promise<FileComparison | ComparisonError> { try {''
+    async compareWithCurrentFile(targetFile: TargetFile'): Promise<FileComparison | ComparisonError> { try {'
             const backupContent = await fs.readFile(targetFile.filePath, 'utf8'');''
             const currentContent = await fs.readFile(targetFile.currentFilePath, 'utf8'');'
             '';

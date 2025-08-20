@@ -6,15 +6,15 @@ interface CanvasInfo { scale: number,
     displayHeight: number,
     actualWidth: number,
     actualHeight: number,
-    pixelRatio?: number; }
+    pixelRatio?: number }
 }
 
 interface Coordinates { x: number,
-    y: number; }
+    y: number }
 }
 
 interface BaseCoordinates { x: number,
-    y: number; }
+    y: number }
 }
 
 interface Layout { title: Coordinates,
@@ -34,7 +34,7 @@ interface Layout { title: Coordinates,
         cancel: { x: number,
             y: number,
             width: number,
-            height: number; }
+            height: number }
         };
     };
     helpText: Coordinates,
@@ -43,7 +43,7 @@ interface Layout { title: Coordinates,
 interface CacheStats { canvasInfoCached: boolean,
     canvasInfoCacheAge: number,
     coordinateCacheSize: number,
-    coordinateCacheMaxSize: number; }
+    coordinateCacheMaxSize: number }
 }
 
 /**
@@ -64,7 +64,7 @@ export class UsernameInputManager {
     private _coordinateCache: Map<string, Coordinates>;
     private _maxCacheSize: number;
     constructor(gameEngine: any) {
-';
+';'
         this.gameEngine = gameEngine;''
         this.errorHandler = getErrorHandler(''';
         this.usernameInput = '';
@@ -86,26 +86,26 @@ export class UsernameInputManager {
      * ResponsiveCanvasManagerから座標情報を安全に取得
      */
     getCanvasInfo(): CanvasInfo | null { const now = performance.now();
-        ';
-        // Return cached canvas info if still valid''
+        ;
+        // Return cached canvas info if still valid
         if (this._canvasInfoCache && (now - this._canvasInfoCacheTime) < this._cacheValidDuration') {
             return this._canvasInfoCache; }
         }
-';
+';'
         try { const responsiveCanvasManager = this.gameEngine.responsiveCanvasManager;''
             if(responsiveCanvasManager && typeof responsiveCanvasManager.getCanvasInfo === 'function') {'
                 '';
-                const canvasInfo = responsiveCanvasManager.getCanvasInfo('')';
+                const canvasInfo = responsiveCanvasManager.getCanvasInfo()';
                 if (canvasInfo && typeof canvasInfo.scale === 'number' && canvasInfo.scale > 0) {
                     // Cache the canvas info
                     this._canvasInfoCache = canvasInfo;
                     this._canvasInfoCacheTime = now;
             }
                     return canvasInfo; }
-                }'
+                }
             } catch (error) { ''
             if(this.gameEngine.debug') {'
-                ';
+                ';'
             }'
                 console.warn('ResponsiveCanvasManager access failed:', error); }
             }
@@ -158,7 +158,7 @@ export class UsernameInputManager {
 
     /**
      * デバッグ用座標情報ログ
-     */'
+     */
     logCoordinateDebug(context: string, canvasInfo: CanvasInfo | null, transformedCoords: any): void { ''
         if(this.gameEngine.debug') {'
             '';
@@ -215,9 +215,9 @@ export class UsernameInputManager {
             }
                 this.renderWithResponsiveCoordinates(context, canvasInfo); }'
             } else { this.renderWithFallbackCoordinates(context);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'UsernameInputManager.renderUsernameInput'); }
+                context: 'UsernameInputManager.renderUsernameInput') }
             });
         }
     }
@@ -227,7 +227,7 @@ export class UsernameInputManager {
      */'
     renderWithResponsiveCoordinates(context: CanvasRenderingContext2D, canvasInfo: CanvasInfo): void { ''
         if(this.gameEngine.debug') {'
-            ';
+            ';'
         }'
             console.log('Using ResponsiveCanvasManager coordinate system''); }
         }
@@ -245,16 +245,16 @@ export class UsernameInputManager {
             },
             helpText: { x: 400, y: 450 }
         };
-';
-        // デバッグログ出力''
+;
+        // デバッグログ出力
         this.logCoordinateDebug('context', canvasInfo, LAYOUT);
 ';
-        // 半透明オーバーレイ（Canvas全体をカバー）''
-        context.save('')';
+        // 半透明オーバーレイ（Canvas全体をカバー）
+        context.save()';
         context.fillStyle = 'rgba(0,0,0,0.8')';
         context.fillRect(0, 0, canvasInfo.actualWidth, canvasInfo.actualHeight);
 
-        // タイトルの描画'
+        // タイトルの描画
         const titleCoords = this.transformCoordinates(LAYOUT.title.x, LAYOUT.title.y, canvasInfo);''
         if (titleCoords && this.validateCoordinates(titleCoords.x, titleCoords.y, canvasInfo)') { ''
             context.fillStyle = '#FFFFFF'; }'
@@ -266,7 +266,7 @@ export class UsernameInputManager {
             context.fillText(title, titleCoords.x, titleCoords.y);
         }
 
-        // 説明文の描画'
+        // 説明文の描画
         const descCoords = this.transformCoordinates(LAYOUT.description.x, LAYOUT.description.y, canvasInfo);''
         if (descCoords && this.validateCoordinates(descCoords.x, descCoords.y, canvasInfo)') {'
             context.font = `${18 * canvasInfo.scale}px Arial`;''
@@ -282,7 +282,7 @@ export class UsernameInputManager {
         // ボタンの描画（新しいResponsive座標システム使用）
         this.renderButtonsWithResponsiveCoords(context, canvasInfo, LAYOUT);
 
-        // ヘルプテキストの描画'
+        // ヘルプテキストの描画
         const helpCoords = this.transformCoordinates(LAYOUT.helpText.x, LAYOUT.helpText.y, canvasInfo);''
         if (helpCoords && this.validateCoordinates(helpCoords.x, helpCoords.y, canvasInfo)') { ''
             context.fillStyle = '#AAAAAA'; }'
@@ -300,7 +300,7 @@ export class UsernameInputManager {
      */'
     renderWithFallbackCoordinates(context: CanvasRenderingContext2D): void { ''
         if(this.gameEngine.debug') {'
-            ';
+            ';'
         }'
             console.warn('ResponsiveCanvasManager not available, using fallback coordinates'); }
         }
@@ -318,13 +318,13 @@ export class UsernameInputManager {
         // ベース座標系でのレイアウト
         const baseWidth = 800;
         const baseHeight = 600;
-        ';
-        // 半透明オーバーレイ''
-        context.save('')';
+        ;
+        // 半透明オーバーレイ
+        context.save()';
         context.fillStyle = 'rgba(0,0,0,0.8')';''
         context.fillRect(0, 0, canvasWidth, canvasHeight');
         ';
-        // タイトル''
+        // タイトル
         context.fillStyle = '#FFFFFF';''
         context.font = `bold ${32 * Math.min(scaleX, scaleY'})}px Arial`;''
         context.textAlign = 'center';''
@@ -333,18 +333,18 @@ export class UsernameInputManager {
         const title = this.isEditingUsername ? 'ユーザー名変更' : 'ユーザー名登録';
         context.fillText(title, (baseWidth / 2) * scaleX, 200 * scaleY);
         ';
-        // 説明文''
+        // 説明文
         context.font = `${18 * Math.min(scaleX, scaleY'})}px Arial`;''
         context.fillStyle = '#CCCCCC';''
         context.fillText('ユーザー名を入力してください（最大10文字）', (baseWidth / 2) * scaleX, 240 * scaleY);
         
         // 入力ボックス
         this.renderInputBox(context, scaleX, scaleY);
-        ';
-        // ボタン''
+        ;
+        // ボタン
         this.renderUsernameInputButtons(context, scaleX, scaleY');
         ';
-        // 操作説明''
+        // 操作説明
         context.fillStyle = '#AAAAAA';''
         context.font = `${14 * Math.min(scaleX, scaleY'})}px Arial`;''
         context.textAlign = 'center';''
@@ -367,7 +367,7 @@ export class UsernameInputManager {
             const scaledInputX = inputX * scaleX;
             const scaledInputY = inputY * scaleY;
             const scaledInputWidth = inputWidth * scaleX;
-            const scaledInputHeight = inputHeight * scaleY;'
+            const scaledInputHeight = inputHeight * scaleY;
             '';
             context.fillStyle = '#FFFFFF';''
             context.fillRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight');'
@@ -376,16 +376,16 @@ export class UsernameInputManager {
             context.lineWidth = 3 * Math.min(scaleX, scaleY);''
             context.strokeRect(scaledInputX, scaledInputY, scaledInputWidth, scaledInputHeight');
             ';
-            // 入力テキスト''
+            // 入力テキスト
             context.fillStyle = '#000000';' }'
             context.font = `${20 * Math.min(scaleX, scaleY'})}px Arial`;''
             context.textAlign = 'left';''
             context.textBaseline = 'middle';''
-            const displayText = this.usernameInput + (Date.now(') % 1000 < 500 ? '|' : ''); // カーソル点滅'
+            const displayText = this.usernameInput + (Date.now(') % 1000 < 500 ? '|' : ''); // カーソル点滅
             context.fillText(displayText, scaledInputX + 10 * scaleX, scaledInputY + scaledInputHeight / 2);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'UsernameInputManager.renderInputBox'); }
+                context: 'UsernameInputManager.renderInputBox') }
             });
         }
     }
@@ -399,7 +399,7 @@ export class UsernameInputManager {
             const inputHeight = layout.inputBox.height * canvasInfo.scale;
             
             if(!inputCoords || !this.validateCoordinates(inputCoords.x, inputCoords.y, canvasInfo) {
-            ';
+            ';'
                 '';
                 if (this.gameEngine.debug') {'
             
@@ -409,16 +409,16 @@ export class UsernameInputManager {
                 return;
             }
             ';
-            // 入力ボックス背景''
+            // 入力ボックス背景
             context.fillStyle = '#FFFFFF';''
             context.fillRect(inputCoords.x, inputCoords.y, inputWidth, inputHeight');
             ';
-            // 入力ボックス枠線''
+            // 入力ボックス枠線
             context.strokeStyle = '#0066CC';'
             context.lineWidth = 3 * canvasInfo.scale;''
             context.strokeRect(inputCoords.x, inputCoords.y, inputWidth, inputHeight');
             ';
-            // 入力テキスト''
+            // 入力テキスト
             context.fillStyle = '#000000';'
             context.font = `${20 * canvasInfo.scale}px Arial`;''
             context.textAlign = 'left';''
@@ -427,11 +427,11 @@ export class UsernameInputManager {
             const displayText = this.usernameInput + (Date.now(') % 1000 < 500 ? '|' : ''); // カーソル点滅
             const textX = inputCoords.x + (10 * canvasInfo.scale);
             const textY = inputCoords.y + inputHeight / 2;
-            ';
+            ';'
             context.fillText(displayText, textX, textY);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'UsernameInputManager.renderInputBoxWithResponsiveCoords'); }
+                context: 'UsernameInputManager.renderInputBoxWithResponsiveCoords') }
             });
         }
     }
@@ -450,8 +450,8 @@ export class UsernameInputManager {
             const scaledButtonWidth = buttonWidth * scaleX;
             const scaledButtonHeight = buttonHeight * scaleY;
             const scaledButtonY = buttonY * scaleY;
-            ';
-            // OKボタン（Canvas座標系）''
+            ;
+            // OKボタン（Canvas座標系）
             const okButtonX = (baseWidth / 2 - buttonWidth - 10') * scaleX;''
             context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666';''
             context.fillRect(okButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight');'
@@ -466,7 +466,7 @@ export class UsernameInputManager {
             context.textBaseline = 'middle';''
             context.fillText('OK', okButtonX + scaledButtonWidth / 2, scaledButtonY + scaledButtonHeight / 2);
             ';
-            // キャンセルボタン（Canvas座標系）''
+            // キャンセルボタン（Canvas座標系）
             const cancelButtonX = (baseWidth / 2 + 10') * scaleX;''
             context.fillStyle = '#AA0000';''
             context.fillRect(cancelButtonX, scaledButtonY, scaledButtonWidth, scaledButtonHeight');'
@@ -477,9 +477,9 @@ export class UsernameInputManager {
             '';
             context.fillStyle = '#FFFFFF';''
             context.fillText('キャンセル', cancelButtonX + scaledButtonWidth / 2, scaledButtonY + scaledButtonHeight / 2);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'UsernameInputManager.renderUsernameInputButtons'); }
+                context: 'UsernameInputManager.renderUsernameInputButtons') }
             });
         }
     }
@@ -491,19 +491,19 @@ export class UsernameInputManager {
             // OKボタンの描画
             const okCoords = this.transformCoordinates(layout.buttons.ok.x, layout.buttons.ok.y, canvasInfo);
             const okWidth = layout.buttons.ok.width * canvasInfo.scale;
-            const okHeight = layout.buttons.ok.height * canvasInfo.scale;'
+            const okHeight = layout.buttons.ok.height * canvasInfo.scale;
             '';
             if (okCoords && this.validateCoordinates(okCoords.x, okCoords.y, canvasInfo)') {'
-                // OKボタン背景''
+                // OKボタン背景
                 context.fillStyle = this.usernameInput.length > 0 ? '#00AA00' : '#666666';''
                 context.fillRect(okCoords.x, okCoords.y, okWidth, okHeight');
                 ';
-                // OKボタン枠線''
+                // OKボタン枠線
                 context.strokeStyle = '#FFFFFF';'
                 context.lineWidth = 2 * canvasInfo.scale;''
                 context.strokeRect(okCoords.x, okCoords.y, okWidth, okHeight');
                 ';
-                // OKボタンテキスト''
+                // OKボタンテキスト
                 context.fillStyle = '#FFFFFF'; }'
                 context.font = `bold ${16 * canvasInfo.scale}px Arial`;''
                 context.textAlign = 'center';''
@@ -514,26 +514,26 @@ export class UsernameInputManager {
             // キャンセルボタンの描画
             const cancelCoords = this.transformCoordinates(layout.buttons.cancel.x, layout.buttons.cancel.y, canvasInfo);
             const cancelWidth = layout.buttons.cancel.width * canvasInfo.scale;
-            const cancelHeight = layout.buttons.cancel.height * canvasInfo.scale;'
+            const cancelHeight = layout.buttons.cancel.height * canvasInfo.scale;
             '';
-            if (cancelCoords && this.validateCoordinates(cancelCoords.x, cancelCoords.y, canvasInfo)') { // キャンセルボタン背景''
+            if (cancelCoords && this.validateCoordinates(cancelCoords.x, cancelCoords.y, canvasInfo)') { // キャンセルボタン背景
                 context.fillStyle = '#AA0000';''
                 context.fillRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight');
                 ';
-                // キャンセルボタン枠線''
+                // キャンセルボタン枠線
                 context.strokeStyle = '#FFFFFF';'
                 context.lineWidth = 2 * canvasInfo.scale;''
                 context.strokeRect(cancelCoords.x, cancelCoords.y, cancelWidth, cancelHeight');
                 ';
-                // キャンセルボタンテキスト''
+                // キャンセルボタンテキスト
                 context.fillStyle = '#FFFFFF'; }'
                 context.font = `bold ${16 * canvasInfo.scale}px Arial`;''
                 context.textAlign = 'center';''
                 context.textBaseline = 'middle';''
                 context.fillText('キャンセル', cancelCoords.x + cancelWidth / 2, cancelCoords.y + cancelHeight / 2);''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'UsernameInputManager.renderButtonsWithResponsiveCoords'); }
+                context: 'UsernameInputManager.renderButtonsWithResponsiveCoords') }
             });
         }
     }
@@ -577,7 +577,7 @@ export class UsernameInputManager {
     }
     
     /**
-     * 入力をクリア'
+     * 入力をクリア
      */''
     clearInput(''';
         this.usernameInput = '';

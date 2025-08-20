@@ -14,7 +14,7 @@ interface ErrorStats { totalErrors: number,
     errorsByType: Map<string, number>;
     errorsByComponent: Map<string, number>;
     recoveredErrors: number,
-    unrecoverableErrors: number; }
+    unrecoverableErrors: number }
 }
 
 interface ErrorMetadata { [key: string]: any,
@@ -35,7 +35,7 @@ interface ErrorStatsOutput { mainErrorHandler: any,
         errorsByComponent: Record<string, number>;
         recoveredErrors: number,
         unrecoverableErrors: number,
-        recoveryRate: number; }
+        recoveryRate: number }
     };
 }
 
@@ -45,23 +45,23 @@ interface InitializationErrorConfig { enableDeveloperGuidance?: boolean;
 
 interface InitializationGuidanceOptions { component: string,
     error: string,
-    suggestions: string[]; }
+    suggestions: string[] }
 }
 
 interface ErrorInfo { error: string,
     stack?: string;
     context: string,
     metadata: ErrorMetadata,
-    timestamp: string; }
+    timestamp: string }
 }
 
 export default class LocalModeErrorHandler { /**
      * エラー統計
      */
     private static _errorStats: ErrorStats = {
-        totalErrors: 0,';
+        totalErrors: 0,
         errorsByType: new Map(),'';
-        errorsByComponent: new Map('')';
+        errorsByComponent: new Map()';
     static handleError(error: Error, context: string = 'GENERAL', metadata: ErrorMetadata = {)'): void {'
         this._errorStats.totalErrors++;''
         this._updateErrorStats('type', error.name || 'UnknownError'');''
@@ -75,9 +75,9 @@ export default class LocalModeErrorHandler { /**
             }
             
             // 回復可能なエラーの場合は統計更新
-            if(this._isRecoverableError(error) { this._errorStats.recoveredErrors++; }'
+            if(this._isRecoverableError(error) { this._errorStats.recoveredErrors++; }
             } else { this._errorStats.unrecoverableErrors++;' }'
-            } catch (handlingError') { ''
+            } catch (handlingError) { ''
             console.error('Error in error handling:', handlingError);
             this._errorStats.unrecoverableErrors++; }
         }
@@ -110,7 +110,7 @@ export default class LocalModeErrorHandler { /**
     /**
      * セキュリティエラーハンドリング
      * @param error - セキュリティエラー
-     * @param policy - セキュリティポリシー'
+     * @param policy - セキュリティポリシー
      */''
     static handleSecurityError(error: Error, policy: string'): void { ''
         this.handleError(error, 'SECURITY', { policy );
@@ -132,7 +132,7 @@ export default class LocalModeErrorHandler { /**
      * 初期化エラーハンドリング
      * @param error - 初期化エラー
      * @param component - コンポーネント名
-     * @param config - 設定'
+     * @param config - 設定
      */''
     static handleInitializationError(error: Error, component: string, config: InitializationErrorConfig'): void { ''
         this.handleError(error, 'INITIALIZATION', { component, config );
@@ -190,11 +190,11 @@ export default class LocalModeErrorHandler { /**
      * @private
      */
     private static _delegateToLocalExecutionErrorHandler(error: Error, context: string, metadata: ErrorMetadata): void { const enhancedMetadata: ErrorMetadata = {
-            ...metadata,';
+            ...metadata,
             localModeContext: true,'';
-            timestamp: new Date().toISOString('')';
+            timestamp: new Date().toISOString()';
         if(context.includes('RESOURCE') {'
-            ';
+            ';'
         }'
             (LocalExecutionErrorHandler as any').handleResourceError(error, metadata.resource || 'unknown'');' }'
         } else if(context.includes('COMPATIBILITY') { ''
@@ -215,8 +215,8 @@ export default class LocalModeErrorHandler { /**
             stack: error.stack,
             context,
             metadata,
-            timestamp: new Date().toISOString(); }
-        };'
+            timestamp: new Date().toISOString() }
+        };
         '';
         console.group(`🚨 LocalMode Error (${ context)`');''
         console.error('Error:', error.message');''
@@ -225,10 +225,10 @@ export default class LocalModeErrorHandler { /**
         if (error.stack') {' }'
             console.error('Stack:', error.stack});'
         }''
-        console.groupEnd('')';
+        console.groupEnd()';
     private static _updateErrorStats(category: 'type' | 'component', key: string'): void { ''
         const statsMap = category === 'type' ? this._errorStats.errorsByType: this._errorStats.errorsByComponent,
-        statsMap.set(key, (statsMap.get(key) || 0) + 1); }
+        statsMap.set(key, (statsMap.get(key) || 0) + 1) }
     }
     
     /**
@@ -254,7 +254,7 @@ export default class LocalModeErrorHandler { /**
     private static _applyCompatibilityFallback(feature: string): void { const fallbacks: Record<string, () => void> = {''
             canvas: (') => console.warn('Canvas API not available, using SVG fallback'),'';
             localStorage: (') => console.warn('localStorage not available, using memory storage'),'';
-            modules: (') => console.warn('ES6 modules not supported, using legacy loading'); }
+            modules: (') => console.warn('ES6 modules not supported, using legacy loading') }
         };
         
         const fallback = fallbacks[feature];
@@ -329,7 +329,7 @@ export default class LocalModeErrorHandler { /**
      */
     private static _getMainErrorHandlerStats(): any { try { }'
             return (LocalExecutionErrorHandler as any).errorHandlerInstance? .getErrorStats?.() || {};''
-        } catch (error') { : undefined' }'
+        } catch (error) { : undefined' }'
             return { error: 'Stats unavailable' }
         }
     }
@@ -340,7 +340,7 @@ export default class LocalModeErrorHandler { /**
      */
     private static _getLocalErrorHandlerStats(): any { try { }'
             return (LocalExecutionErrorHandler as any).getDebugInfo? .() || {};''
-        } catch (error') { : undefined' }'
+        } catch (error) { : undefined' }'
             return { error: 'Debug info unavailable' }
         }
     }

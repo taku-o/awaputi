@@ -20,23 +20,23 @@ export interface SimplificationRules { hideElements: HideElementsRules,
     effects: EffectRules,
     typography: TypographyRules,
     colors: ColorRules,
-    layout: LayoutRules;
+    layout: LayoutRules
     }
 }
 
 export interface HideElementsRules { decorative: string[],
     secondary: string[],
     advanced: string[],
-    nonEssential: string[]; }
+    nonEssential: string[] }
 }
 
 export interface AnimationRules { disable: string[],
-    reduce: AnimationReductionConfig;
+    reduce: AnimationReductionConfig
     }
 }
 
 export interface AnimationReductionConfig { duration: string,
-    easing: string; }
+    easing: string }
 }
 
 export interface EffectRules { disable: string[],
@@ -77,7 +77,7 @@ export interface SimplificationOperation { type: OperationType,
 export interface ActiveSimplification { level: SimplificationLevel,
     options: SimplificationOptions,
     operations: OperationResult[],
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface OperationResult { success: boolean,
@@ -91,7 +91,7 @@ export interface OperationResult { success: boolean,
 
 export interface OriginalState { element: HTMLElement,
     property: string,
-    value: string; }
+    value: string }
 }
 
 export interface SimplificationResult { success: boolean,
@@ -108,50 +108,50 @@ export interface RevertResult { success: boolean,
 
 export interface RevertAllResult { success: boolean,
     revertedSimplifications: number,
-    results: RevertResult[];
+    results: RevertResult[]
     }
 }
 
 export interface SimplificationStats { activeSimplifications: number,
     totalOperations: number,
     originalStatesStored: number,
-    observedElements: number; }
+    observedElements: number }
 }
 
 export interface StyleInjection { id: string,
     css: string,
     element: HTMLStyleElement,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface ElementMatch { element: HTMLElement,
     selector: string,
     category: ElementCategory,
-    affectedProperties: string[]; }
+    affectedProperties: string[] }
 }
 
 export interface TransformationContext { level: SimplificationLevel,
     options: SimplificationOptions,
     targetElements: Set<HTMLElement>,
     appliedStyles: Map<string, StyleInjection>,
-    preservedElements: Set<HTMLElement>;
+    preservedElements: Set<HTMLElement>
     }
 }
 
 export interface ValidationResult { isValid: boolean,
     errors: ValidationError[],
-    warnings: ValidationWarning[];
+    warnings: ValidationWarning[]
     }
 }
 
 export interface ValidationError { field: string,
     message: string,
-    code: string; }
+    code: string }
 }
 
 export interface ValidationWarning { field: string,
     message: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 // 列挙型
@@ -171,7 +171,7 @@ export type OperationType = '';
 export type ElementCategory = 'decorative' | 'secondary' | 'advanced' | 'nonEssential';
 
 // 定数
-export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements: {'
+export const DEFAULT_SIMPLIFICATION_RULES: SimplificationRules = { hideElements: {
         decorative: ['';
             '.decoration', '.ornament', '.fancy-border',']';
             '.background-pattern', '.visual-flair', '.aesthetic-element'];
@@ -278,7 +278,7 @@ export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
     REDUCE_EFFECTS: `;
         * { box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
             text-shadow: none !important,
-            filter: none !important; }
+            filter: none !important }
         }
     `,
     SIMPLIFY_TYPOGRAPHY: `;
@@ -296,7 +296,7 @@ export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
     SIMPLIFY_LAYOUT: `;
         * { border-radius: 0 !important,
             padding: 8px !important,
-            margin: 4px !important; }
+            margin: 4px !important }
         }
     `,
     HIGH_CONTRAST: `;
@@ -305,14 +305,14 @@ export const CSS_TEMPLATES = { DISABLE_ANIMATIONS: `
             border-color: #666666 !important, }
         }
         
-        a, button { color: #0000ff !important; }
+        a, button { color: #0000ff !important }
         }
         
-        a:visited { color: #800080 !important; }
+        a:visited { color: #800080 !important }
         }
     `,
     MONOCHROME: `;
-        * { filter: grayscale(100%) !important; }
+        * { filter: grayscale(100%) !important }
         }
     `,
     LARGE_TEXT: `;
@@ -334,9 +334,9 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
     if(options.customSelectors) {
         options.customSelectors.forEach((selector, index) => { 
     }
-            try { }'
+            try { }
                 document.querySelector(selector);' }'
-            } catch (error') { errors.push({ })
+            } catch (error) { errors.push({ })
                     field: `customSelectors[${index}]`)'
                     message: `Invalid CSS selector: ${selector}`,')'
                     code: 'INVALID_SELECTOR'),
@@ -349,9 +349,9 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
     if(options.preserveElements) {
         options.preserveElements.forEach((selector, index) => { 
     }
-            try { }'
+            try { }
                 document.querySelector(selector);' }'
-            } catch (error') { errors.push({ })
+            } catch (error) { errors.push({ })
                     field: `preserveElements[${index}]`)'
                     message: `Invalid CSS selector: ${selector}`,')'
                     code: 'INVALID_PRESERVE_SELECTOR'),
@@ -360,11 +360,11 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
         });
     }
     ';
-    // オプションの組み合わせチェック''
+    // オプションの組み合わせチェック
     if(options.highContrast && options.monochrome') {'
         warnings.push({''
             field: 'options',')';
-            message: 'High contrast and monochrome options may conflict',');
+            message: 'High contrast and monochrome options may conflict',')
     }'
             suggestion: 'Consider using only one color modification option'); }
     }
@@ -374,7 +374,7 @@ export function validateSimplificationOptions(options: Partial<SimplificationOpt
         warnings }
     };
 }
-';
+';'
 export function generateStyleId(operationType: OperationType): string { ' }'
     return `simplification-${operationType.toLowerCase().replace(/([A-Z]')/g, '-$1'})}`;
 }
@@ -385,7 +385,7 @@ export function sortOperationsByPriority(operations: SimplificationOperation[]):
         return priorityA - priorityB; }
     });
 }
-';
+';'
 export function isElementVisible(element: HTMLElement): boolean { ''
     const style = window.getComputedStyle(element');''
     return style.display !== 'none' && '';
@@ -457,7 +457,7 @@ export class InterfaceSimplifier {
 '';
         if(typeof document !== 'undefined') {
             this.mutationObserver.observe(document.body, {)
-                childList: true,);
+                childList: true,)
         }
                 subtree: true); }
         }
@@ -470,7 +470,7 @@ export class InterfaceSimplifier {
         const simplificationId = `simplification_${Date.now(})}`;
         
         try { // オプションの検証
-            const validation = validateSimplificationOptions(options);'
+            const validation = validateSimplificationOptions(options);
             if (!validation.isValid) {' }'
                 throw new Error(`Invalid options: ${validation.errors.map(e => e.message').join(', '})}`);
             }
@@ -490,7 +490,7 @@ export class InterfaceSimplifier {
             this.activeSimplifications.set(simplificationId, { level)
                 options,);
                 operations: appliedOperations),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
 
             return { success: true,
@@ -499,7 +499,7 @@ export class InterfaceSimplifier {
                 details: appliedOperations }
             },'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Simplification failed:', error);
             return { success: false, };
                 error: (error as Error).message }
@@ -519,7 +519,7 @@ export class InterfaceSimplifier {
                 operations.push(') }'
                     { type: 'hideElements', target: 'decorative' }')''
                     { type: 'reduceAnimations' )''
-                ');
+                ');'
                 break;'
 '';
             case 'moderate':';
@@ -528,7 +528,7 @@ export class InterfaceSimplifier {
                     { type: 'hideElements', target: 'secondary' },')'
                     { type: 'disableAnimations' }')''
                     { type: 'reduceEffects' )''
-                ');
+                ');'
                 break;'
 '';
             case 'significant':';
@@ -539,7 +539,7 @@ export class InterfaceSimplifier {
                     { type: 'disableAnimations' },')'
                     { type: 'disableEffects' }')''
                     { type: 'simplifyTypography' )''
-                ');
+                ');'
                 break;'
 '';
             case 'extreme':';
@@ -557,23 +557,23 @@ export class InterfaceSimplifier {
                 break; }
         }
 ';
-        // カスタムオプションを追加''
+        // カスタムオプションを追加
         if(options.highContrast') {'
-            ';
+            ';'
         }'
-            operations.push({ type: 'applyHighContrast' ); }
+            operations.push({ type: 'applyHighContrast' ) }
         }'
 '';
         if(options.monochrome') {'
-            ';
+            ';'
         }'
-            operations.push({ type: 'applyMonochrome' ); }
+            operations.push({ type: 'applyMonochrome' ) }
         }'
 '';
         if(options.largeText') {'
-            ';
+            ';'
         }'
-            operations.push({ type: 'increaseFontSize' ); }
+            operations.push({ type: 'increaseFontSize' ) }
         }
 
         return operations;
@@ -582,7 +582,7 @@ export class InterfaceSimplifier {
     /**
      * 操作を実行
      */'
-    private executeOperation(operation: SimplificationOperation): OperationResult { try {''
+    private executeOperation(operation: SimplificationOperation): OperationResult { try {'
             switch(operation.type') {'
                 '';
                 case 'hideElements':'';
@@ -605,7 +605,7 @@ export class InterfaceSimplifier {
                 case 'applyHighContrast':'';
                     return this.applyHighContrast(''';
                 case 'applyMonochrome':'';
-                    return this.applyMonochrome('')';
+                    return this.applyMonochrome()';
                 case 'increaseFontSize':);
                     return this.increaseFontSize();
 
@@ -641,7 +641,7 @@ export class InterfaceSimplifier {
                 }'
             });''
         }');
-';
+';'
         return { success: true,''
             operation: 'hideElements',
             category,
@@ -653,9 +653,9 @@ export class InterfaceSimplifier {
     /**
      * アニメーションを無効化'
      */''
-    private disableAnimations('')';
+    private disableAnimations()';
         const styleElement = this.createOrUpdateGlobalStyle('disable-animations', CSS_TEMPLATES.DISABLE_ANIMATIONS');
-';
+';'
         return { success: true,''
             operation: 'disableAnimations', };
             styleElement }
@@ -665,9 +665,9 @@ export class InterfaceSimplifier {
     /**
      * アニメーションを軽減'
      */''
-    private reduceAnimations('')';
+    private reduceAnimations()';
         const styleElement = this.createOrUpdateGlobalStyle('reduce-animations', CSS_TEMPLATES.REDUCE_ANIMATIONS');
-';
+';'
         return { success: true,''
             operation: 'reduceAnimations', };
             styleElement }
@@ -677,9 +677,9 @@ export class InterfaceSimplifier {
     /**
      * 視覚効果を無効化'
      */''
-    private disableEffects('')';
+    private disableEffects()';
         const styleElement = this.createOrUpdateGlobalStyle('disable-effects', CSS_TEMPLATES.DISABLE_EFFECTS');
-';
+';'
         return { success: true,''
             operation: 'disableEffects', };
             styleElement }
@@ -689,9 +689,9 @@ export class InterfaceSimplifier {
     /**
      * 視覚効果を軽減'
      */''
-    private reduceEffects('')';
+    private reduceEffects()';
         const styleElement = this.createOrUpdateGlobalStyle('reduce-effects', CSS_TEMPLATES.REDUCE_EFFECTS');
-';
+';'
         return { success: true,''
             operation: 'reduceEffects', };
             styleElement }
@@ -701,9 +701,9 @@ export class InterfaceSimplifier {
     /**
      * タイポグラフィを簡素化'
      */''
-    private simplifyTypography('')';
+    private simplifyTypography()';
         const styleElement = this.createOrUpdateGlobalStyle('simplify-typography', CSS_TEMPLATES.SIMPLIFY_TYPOGRAPHY');
-';
+';'
         return { success: true,''
             operation: 'simplifyTypography', };
             styleElement }
@@ -713,9 +713,9 @@ export class InterfaceSimplifier {
     /**
      * 色彩を簡素化'
      */''
-    private simplifyColors('')';
+    private simplifyColors()';
         const styleElement = this.createOrUpdateGlobalStyle('simplify-colors', CSS_TEMPLATES.SIMPLIFY_COLORS');
-';
+';'
         return { success: true,''
             operation: 'simplifyColors', };
             styleElement }
@@ -725,9 +725,9 @@ export class InterfaceSimplifier {
     /**
      * レイアウトを簡素化'
      */''
-    private simplifyLayout('')';
+    private simplifyLayout()';
         const styleElement = this.createOrUpdateGlobalStyle('simplify-layout', CSS_TEMPLATES.SIMPLIFY_LAYOUT');
-';
+';'
         return { success: true,''
             operation: 'simplifyLayout', };
             styleElement }
@@ -737,9 +737,9 @@ export class InterfaceSimplifier {
     /**
      * 高コントラストを適用'
      */''
-    private applyHighContrast('')';
+    private applyHighContrast()';
         const styleElement = this.createOrUpdateGlobalStyle('high-contrast', CSS_TEMPLATES.HIGH_CONTRAST');
-';
+';'
         return { success: true,''
             operation: 'applyHighContrast', };
             styleElement }
@@ -749,9 +749,9 @@ export class InterfaceSimplifier {
     /**
      * モノクロームを適用'
      */''
-    private applyMonochrome('')';
+    private applyMonochrome()';
         const styleElement = this.createOrUpdateGlobalStyle('monochrome', CSS_TEMPLATES.MONOCHROME');
-';
+';'
         return { success: true,''
             operation: 'applyMonochrome', };
             styleElement }
@@ -761,9 +761,9 @@ export class InterfaceSimplifier {
     /**
      * フォントサイズを拡大'
      */''
-    private increaseFontSize('')';
+    private increaseFontSize()';
         const styleElement = this.createOrUpdateGlobalStyle('large-text', CSS_TEMPLATES.LARGE_TEXT');
-';
+';'
         return { success: true,''
             operation: 'increaseFontSize', };
             styleElement }
@@ -790,7 +790,7 @@ export class InterfaceSimplifier {
         this.appliedStyles.set(styleId, { id: styleId)
             css,);
             element: styleElement),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         return styleElement;
@@ -813,7 +813,7 @@ export class InterfaceSimplifier {
 
     /**
      * 簡素化を元に戻す
-     */'
+     */
     revertSimplification(simplificationId: string): RevertResult { const simplification = this.activeSimplifications.get(simplificationId);''
         if (!simplification') {' }'
             return { success: false, error: 'Simplification not found' }
@@ -842,11 +842,11 @@ export class InterfaceSimplifier {
     /**
      * 操作を元に戻す
      */'
-    private revertOperation(operation: OperationResult): boolean { try {''
+    private revertOperation(operation: OperationResult): boolean { try {'
             switch(operation.operation') {'
                 '';
                 case 'hideElements':';
-                    operation.elements? .forEach(element => { ')
+                    operation.elements? .forEach(element => { ')'
             }'
                         element.style.display = ''); }
                         this.observedElements.delete(element); }
@@ -861,9 +861,9 @@ export class InterfaceSimplifier {
                         this.appliedStyles.delete(styleId);
                     }
                         return true; }
-                    }'
+                    }
                     return false;''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to revert operation:', error);
             return false; }
         }
@@ -875,11 +875,11 @@ export class InterfaceSimplifier {
     revertAllSimplifications(): RevertAllResult { const simplificationIds = Array.from(this.activeSimplifications.keys();
         const results: RevertResult[] = [],
 
-        simplificationIds.forEach(id => { ); }'
+        simplificationIds.forEach(id => { ) }'
             results.push(this.revertSimplification(id);' }'
         }');
 ';
-        // グローバルスタイルを全て削除''
+        // グローバルスタイルを全て削除
         document.querySelectorAll('style[id^="simplification-"]').forEach(style => {  ); }
             style.remove(); }
         });
@@ -896,7 +896,7 @@ export class InterfaceSimplifier {
 
     /**
      * アクティブな簡素化に新しい要素を適用
-     */'
+     */
     private applyActiveSimplifications(element: HTMLElement): void { this.activeSimplifications.forEach(simplification => { ')'
             simplification.operations.forEach(operation => {');''
                 if(operation.operation === 'hideElements' && operation.category) {

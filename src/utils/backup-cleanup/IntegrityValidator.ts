@@ -9,46 +9,46 @@ interface BuildIntegrityValidation { packageJsonValid: boolean,
     passed: boolean,
     errors: string[],
     warnings: string[],
-    validatedAt?: string; }
+    validatedAt?: string }
 }
 
 interface SyntaxTestResult { passed: boolean,
     filesChecked: number,
     errors: SyntaxError[],
-    error?: string; }
+    error?: string }
 }
 
 interface SyntaxError { file: string,
-    issue: string; }
+    issue: string }
 }
 
 interface ImportTestResult { passed: boolean,
     importsChecked: number,
     brokenImports: number,
-    error?: string; }
+    error?: string }
 }
 
 interface ModuleValidationResult { path: string,
     accessible: boolean,
     hasContent: boolean,
     hasExports: boolean,
-    error?: string; }
+    error?: string }
 }
 
 interface CoreModuleTestResult { passed: boolean,
-    modulesChecked: ModuleValidationResult[];
+    modulesChecked: ModuleValidationResult[]
     }
 }
 
 interface ConfigurationTestResult { passed: boolean,
     configurations: ModuleValidationResult[],
-    error?: string; }
+    error?: string }
 }
 
 interface TestDetails { syntax: SyntaxTestResult,
     import: ImportTestResult,
     coreModule: CoreModuleTestResult,
-    configuration: ConfigurationTestResult;
+    configuration: ConfigurationTestResult
     }
 }
 
@@ -65,18 +65,18 @@ interface BasicTestResults { syntaxTests: boolean,
 interface ImportInfo { line: number,
     statement: string,
     path: string,
-    type?: string; }
+    type?: string }
 }
 
 interface BrokenImport { file: string,
     import: ImportInfo,
     resolvedPath?: string;
-    reason: string; }
+    reason: string }
 }
 
 interface SuspiciousImport { file: string,
     import: ImportInfo,
-    reason: string; }
+    reason: string }
 }
 
 interface ImportResolutionResult { brokenImports: BrokenImport[],
@@ -88,19 +88,19 @@ interface ImportResolutionResult { brokenImports: BrokenImport[],
 }
 
 interface ConfigurationAccess { accessible: boolean,
-    configs: ModuleValidationResult[];
+    configs: ModuleValidationResult[]
     }
 }
 
 interface UtilsAccess { accessible: boolean,
     utils: ModuleValidationResult[],
-    error?: string; }
+    error?: string }
 }
 
 interface CoreFeatureDetails { gameEngine: ModuleValidationResult,
     sceneManager: ModuleValidationResult,
     configuration: ConfigurationAccess,
-    utils: UtilsAccess;
+    utils: UtilsAccess
     }
 }
 
@@ -125,19 +125,19 @@ interface IntegritySummary { buildIntegrity: boolean,
     basicTests: boolean,
     importResolution: boolean,
     coreFeatures: boolean,
-    overallIntegrity: boolean; }
+    overallIntegrity: boolean }
 }
 
 interface IntegrityIssue { category: string,
     severity: string,
     message: string,
-    details: any; }
+    details: any }
 }
 
 interface IntegrityRecommendation { type: string,
     message: string,
     priority: string,
-    issues?: IntegrityIssue[];
+    issues?: IntegrityIssue[]
     }
 }
 
@@ -145,11 +145,11 @@ interface IntegrityReport { summary: IntegritySummary,
     details: ValidationResults,
     issues: IntegrityIssue[],
     recommendations: IntegrityRecommendation[],
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 interface ConfigFile { path: string,
-    required: boolean; }
+    required: boolean }
 }
 
 /**
@@ -265,23 +265,23 @@ export class IntegrityValidator {
                 const imports = await this.extractImports(file);
                 resolution.totalImportsChecked += imports.length;
                 
-                for (const importInfo of imports) {'
-                    // 削除されたバックアップファイルへの参照チェック''
+                for (const importInfo of imports) {
+                    // 削除されたバックアップファイルへの参照チェック
                     if (this.isSuspiciousImport(importInfo.path)') {
                         resolution.suspiciousImports.push({)
                             file)';
-                            import: importInfo,');
+                            import: importInfo,')
             }'
                             reason: 'References potentially deleted backup file'); }
                     }
                     
-                    // インポートファイルの存在確認'
+                    // インポートファイルの存在確認
                     const resolvedPath = await this.resolveImportPath(importInfo.path, file);''
                     if (resolvedPath && !await this.fileExists(resolvedPath)') { resolution.brokenImports.push({
-                            file,);
+                            file);
                             import: importInfo)';
                             resolvedPath,')';
-                            reason: 'Imported file does not exist'); }
+                            reason: 'Imported file does not exist') }
                     }
                 }
             }
@@ -300,11 +300,11 @@ export class IntegrityValidator {
     /**
      * コア機能の検証'
      */''
-    async validateCoreFeatures('')';
+    async validateCoreFeatures()';
             validation.featureDetails.gameEngine = await this.validateCoreModule('src/core/GameEngine.js'');
             validation.gameEngineAccessible = validation.featureDetails.gameEngine.accessible;
             ';
-            // SceneManager確認''
+            // SceneManager確認
             validation.featureDetails.sceneManager = await this.validateCoreModule('src/core/SceneManager.js');
             validation.sceneManagerAccessible = validation.featureDetails.sceneManager.accessible;
             
@@ -363,9 +363,9 @@ export class IntegrityValidator {
     // Private helper methods
 
     /**
-     * package.jsonの確認'
+     * package.jsonの確認
      */''
-    private async validatePackageJson('')';
+    private async validatePackageJson()';
             const content = await fs.readFile('./package.json', 'utf8');
             const packageJson = JSON.parse(content);
             return packageJson.name && packageJson.version;
@@ -449,17 +449,17 @@ export class IntegrityValidator {
         try { const jsFiles = await this.findJavaScriptFiles();
             result.filesChecked = jsFiles.length;'
 '';
-            for (const file of jsFiles.slice(0, 20)') { // 最大20ファイルをチェック''
+            for (const file of jsFiles.slice(0, 20)') { // 最大20ファイルをチェック
                 const content = await fs.readFile(file, 'utf8'');
                 ';
-                // 明らかな構文エラーチェック''
+                // 明らかな構文エラーチェック
                 if (content.includes('SyntaxError'') || '';
                     content.includes('Unexpected token'') ||'';
                     content.match(/\bimport\s+.*\s+from\s+['"][^'"]*(?:_old|_original|_backup")\.js['"]/)") {
                     result.errors.push({)"
                         file,")";
                         issue: 'Potential syntax error or backup file reference'),
-                    result.passed = false; }
+                    result.passed = false }
                 }
             } catch (error) { result.error = (error as Error).message;
             result.passed = false; }
@@ -514,7 +514,7 @@ export class IntegrityValidator {
     /**
      * 設定テストの実行'
      */''
-    private async runConfigurationTests('')';
+    private async runConfigurationTests()';
             const gameBalance = await this.validateCoreModule('src/config/GameBalance.js');
             result.configurations.push(gameBalance);
             
@@ -548,15 +548,15 @@ export class IntegrityValidator {
                     const fullPath = path.join(dir, entry.name);
                     
                     if(entry.isDirectory() {
-                    ';
-                        ';
+                    ';'
+                        ';'
                     }'
                         await scanDir(fullPath');' }'
                     } else if(entry.name.endsWith('.js') { jsFiles.push(fullPath); }'
                     }''
-                } catch (error') { // ディレクトリアクセスエラーは無視 }
+                } catch (error) { // ディレクトリアクセスエラーは無視 }
             }
-        };'
+        };
         '';
         await scanDir('./src');
         return jsFiles;
@@ -566,20 +566,20 @@ export class IntegrityValidator {
      * ファイルからimport文を抽出'
      */''
     private async extractImports(filePath: string'): Promise<ImportInfo[]> { const imports: ImportInfo[] = [],
-        ';
-        try {''
+        ';'
+        try {'
             const content = await fs.readFile(filePath, 'utf8'');''
             const lines = content.split('\n');
             
             for(let i = 0; i < lines.length; i++) {
-            ';
+            ';'
                 '';
-                const line = lines[i].trim('')';
+                const line = lines[i].trim()';
                 const importMatch = line.match(/import\s+.*\s+from\s+['"]([^'"]+")['"]/);
                 if (importMatch) {
                     imports.push({)
                         line: i + 1)";
-                        statement: line,");
+                        statement: line,")
             }"
                         path: importMatch[1])"); }
                 }
@@ -588,9 +588,9 @@ export class IntegrityValidator {
                 const requireMatch = line.match(/require\(['"]([^'"]+")['"]\)/);""
                 if(requireMatch") {
                     imports.push({
-                        line: i + 1,);
+                        line: i + 1);
                         statement: line)";
-                        path: requireMatch[1],");
+                        path: requireMatch[1],")
                 }"
                         type: 'require'); }
                 }
@@ -607,21 +607,21 @@ export class IntegrityValidator {
     }
 
     /**
-     * インポートパスの解決'
+     * インポートパスの解決
      */''
-    private async resolveImportPath(importPath: string, fromFile: string'): Promise<string | null> { try {''
+    private async resolveImportPath(importPath: string, fromFile: string'): Promise<string | null> { try {'
             if (importPath.startsWith('./'') || importPath.startsWith('../') {
                 // 相対パス
                 const fromDir = path.dirname(fromFile);
                 let resolved = path.resolve(fromDir, importPath);
-                ';
-                // .js拡張子の追加''
+                ;
+                // .js拡張子の追加
                 if (!path.extname(resolved)') {''
                     resolved += '.js'; }
                 }
-                ';
+                ';'
                 return resolved;''
-            } else if (importPath.startsWith('/')') { // 絶対パス''
+            } else if (importPath.startsWith('/')') { // 絶対パス
                 let resolved = path.resolve('.', importPath.substring(1);''
                 if (!path.extname(resolved)') {''
                     resolved += '.js'; }
@@ -653,13 +653,13 @@ export class IntegrityValidator {
             hasContent: false,
             hasExports: false }
         },
-';
-        try { ''
+';'
+        try {'
             if (await this.fileExists(modulePath)') {;
                 result.accessible = true;'
                 '';
                 const content = await fs.readFile(modulePath, 'utf8');''
-                result.hasContent = content.trim('')';
+                result.hasContent = content.trim()';
                 result.hasExports = content.includes('export'') || content.includes('module.exports'); }
             } catch (error) { result.error = (error as Error).message; }
         }
@@ -696,7 +696,7 @@ export class IntegrityValidator {
             ;
             let accessibleUtils = 0;
             for(const entry of entries.slice(0, 5) {'
-                // 最大5個チェック''
+                // 最大5個チェック
                 if (entry.isFile(') && entry.name.endsWith('.js') {
                     const utilPath = path.join(utilsDir, entry.name);
                     const utilResult = await this.validateCoreModule(utilPath);
@@ -724,14 +724,14 @@ export class IntegrityValidator {
             issues.push({''
                 category: 'build','';
                 severity: 'high',')';
-                message: 'Build integrity validation failed',);
+                message: 'Build integrity validation failed',)
         }
                 details: validationResults.buildIntegrity.errors); }
         }'
 '';
         if(validationResults.importResolution && validationResults.importResolution.brokenImports? .length > 0') {'
             issues.push({ : undefined''
-                category: 'imports',';
+                category: 'imports','
         }'
                 severity: 'critical', })
                 message: `${validationResults.importResolution.brokenImports.length} broken imports found`,)
@@ -742,7 +742,7 @@ export class IntegrityValidator {
             issues.push({''
                 category: 'tests','';
                 severity: 'medium',')';
-                message: 'Basic tests failed',);
+                message: 'Basic tests failed',)
         }
                 details: validationResults.basicTests.testDetails); }
         }
@@ -758,7 +758,7 @@ export class IntegrityValidator {
         if(issues.length === 0') {'
             recommendations.push({''
                 type: 'success',')';
-                message: 'All integrity checks passed',');
+                message: 'All integrity checks passed',')
         }'
                 priority: 'info')'); }'
         } else {  ''
@@ -766,7 +766,7 @@ export class IntegrityValidator {
             if(criticalIssues.length > 0') {'
                 recommendations.push({''
                     type: 'fix_critical','';
-                    message: 'Fix critical issues before proceeding',';
+                    message: 'Fix critical issues before proceeding','
             })'
                     priority: 'high',') }'
                     issues: criticalIssues)'); }
@@ -777,7 +777,7 @@ export class IntegrityValidator {
                 recommendations.push({''
                     type: 'fix_high','';
                     message: 'Address high severity issues',')';
-                    priority: 'medium',');
+                    priority: 'medium',')
             }'
                     issues: highIssues)'); }
             }

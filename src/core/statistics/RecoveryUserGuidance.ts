@@ -5,14 +5,14 @@
 
 // 型定義
 export interface DataRecovery { statisticsManager: StatisticsManager,
-    errorHandler: ErrorHandler;
+    errorHandler: ErrorHandler
     }
 }
 
 export interface StatisticsManager { [key: string]: any, }
 }
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void; }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
 }
 
 export interface NotificationConfig { showRecoveryProgress: boolean,
@@ -20,7 +20,7 @@ export interface NotificationConfig { showRecoveryProgress: boolean,
     showFailureMessage: boolean,
     autoCloseDelay: number,
     position: NotificationPosition,
-    maxNotifications: number; }
+    maxNotifications: number }
 }
 
 export interface ProgressTracking { currentStep: string | null,
@@ -28,11 +28,11 @@ export interface ProgressTracking { currentStep: string | null,
     completedSteps: number,
     progress: number,
     startTime: number | null,
-    estimatedTimeRemaining: number | null; }
+    estimatedTimeRemaining: number | null }
 }
 
 export interface LocalizedMessages { ja: MessageSet,
-    en: MessageSet;
+    en: MessageSet
     }
 }
 
@@ -45,7 +45,7 @@ export interface MessageSet { recovery_started: string,
     recovery_partial: string,
     corruption_detected: string,
     backup_restored: string,
-    default_initialized: string; }
+    default_initialized: string }
 }
 
 export interface RecoveryPlan { totalSteps?: number;
@@ -65,7 +65,7 @@ export interface RecoveryResult { success: boolean,
 export interface RepairLogEntry { timestamp: number,
     action: string,
     result: string,
-    details?: any; }
+    details?: any }
 }
 
 export interface NotificationData { type: NotificationType,
@@ -81,7 +81,7 @@ export interface ProgressNotificationData { type: 'progress',
     step: string,
     progress: number,
     details: any,
-    tracking: ProgressTracking;
+    tracking: ProgressTracking
     }
 }
 
@@ -91,7 +91,7 @@ export interface ErrorMessageResult { type: ErrorType,
     suggestions: string[],
     technicalDetails: TechnicalDetails,
     severity: ErrorSeverity,
-    recoverable: boolean; }
+    recoverable: boolean }
 }
 
 export interface TechnicalDetails { error: string,
@@ -114,13 +114,13 @@ export interface CorruptionAnalysis { corruptionLevel: CorruptionLevel,
 export interface IntegrityAnalysis { validFieldsRatio: number,
     missingFields: string[],
     invalidFields: string[],
-    structureValid: boolean; }
+    structureValid: boolean }
 }
 
 export interface RecoveryGuidance { recommended: GuidanceAction[],
     optional: GuidanceAction[],
     warnings: GuidanceWarning[],
-    estimatedTime: string; }
+    estimatedTime: string }
 }
 
 export interface GuidanceAction { action: ActionType,
@@ -134,33 +134,33 @@ export interface GuidanceAction { action: ActionType,
 export interface GuidanceWarning { type: WarningType,
     message: string,
     severity: WarningSeverity,
-    recoverable?: boolean; }
+    recoverable?: boolean }
 }
 
 export interface RecoveryHistoryEntry { timestamp: string,
     success: boolean,
     method?: RecoveryMethod;
     details: RepairLogEntry[],
-    duration: number | null; }
+    duration: number | null }
 }
 
 export interface GuidanceStats { historyCount: number,
     callbackCount: number,
     currentLanguage: SupportedLanguage,
     config: NotificationConfig,
-    progress: ProgressTracking;
+    progress: ProgressTracking
     }
 }
 
 export interface UserFriendlyMessage { title: string,
     message: string,
-    suggestions: string[]; }
+    suggestions: string[] }
 }
 ';
-// コールバック型''
+// コールバック型
 export type NotificationCallback = (notification: NotificationData | ProgressNotificationData') => void;
 ';
-// 列挙型''
+// 列挙型
 export type NotificationPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center';''
 export type NotificationType = 'info' | 'success' | 'warning' | 'error' | 'progress';''
 export type SupportedLanguage = 'ja' | 'en';''
@@ -195,7 +195,7 @@ export class RecoveryUserGuidance {
         this.notificationConfig = {
             showRecoveryProgress: true,
             showSuccessMessage: true,
-            showFailureMessage: true,';
+            showFailureMessage: true,
             autoCloseDelay: 5000,'';
             position: 'top-right',
     }
@@ -203,7 +203,7 @@ export class RecoveryUserGuidance {
             maxNotifications: 5 }
         },
         ';
-        // 通知コールバック''
+        // 通知コールバック
         this.notificationCallbacks = new Set<NotificationCallback>(');
         
         // 復旧履歴
@@ -218,7 +218,7 @@ export class RecoveryUserGuidance {
             estimatedTimeRemaining: null }
         },
         
-        // 多言語メッセージ'
+        // 多言語メッセージ
         this.messages = { ja: {''
                 recovery_started: '統計データの復旧を開始しています...','';
                 recovery_analyzing: 'データを分析しています...','';
@@ -281,10 +281,10 @@ export class RecoveryUserGuidance {
             // 進捗通知
             this._notifyProgressUpdate(step, progress, details);
             
-            console.log(`[RecoveryUserGuidance] Progress updated: ${step} (${progress)%)`});'
+            console.log(`[RecoveryUserGuidance] Progress updated: ${step} (${progress)%)`});
             '';
-        } catch (error') { ''
-            console.error('[RecoveryUserGuidance] Progress update failed:', error); }
+        } catch (error) { ''
+            console.error('[RecoveryUserGuidance] Progress update failed:', error) }
         }
     }
     
@@ -292,9 +292,9 @@ export class RecoveryUserGuidance {
      * 復旧開始を通知
      * @param recoveryPlan 復旧計画'
      */''
-    notifyRecoveryStart(recoveryPlan: RecoveryPlan'): void { try {''
+    notifyRecoveryStart(recoveryPlan: RecoveryPlan'): void { try {'
             const message = this._getMessage('recovery_started'');
-            ';
+            ';'
             this.progressTracking = {''
                 currentStep: 'initializing',
                 totalSteps: recoveryPlan.totalSteps || 5,
@@ -303,14 +303,14 @@ export class RecoveryUserGuidance {
                 startTime: Date.now(''';
                 type: 'info','';
                 title: 'データ復旧',
-                message,);
+                message);
                 details: recoveryPlan)';
                 showProgress: true,')';
                 autoClose: false)'),';
             '';
             console.log('[RecoveryUserGuidance] Recovery start notification sent');'
             ' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error as Error, 'RECOVERY_START_NOTIFICATION_ERROR', { recoveryPlan });
         }
     }
@@ -326,7 +326,7 @@ export class RecoveryUserGuidance {
             let notificationType: NotificationType = success ? 'success' : 'error',
             
             // 復旧方法に応じてメッセージを調整
-            if(success && recoveryMethod) {'
+            if(success && recoveryMethod) {
                 '';
                 switch (recoveryMethod') {''
                     case 'backup_restore':'';
@@ -344,9 +344,9 @@ export class RecoveryUserGuidance {
             }'
             '';
             const message = this._getMessage(messageKey');
-            ';
+            ';'
             this._sendNotification({ type: notificationType,''
-                title: 'データ復旧完了',);
+                title: 'データ復旧完了');
                 message);
                 details: {
                     method: recoveryMethod,);
@@ -359,12 +359,12 @@ export class RecoveryUserGuidance {
             
             // 履歴に記録
             this._recordRecoveryInHistory(result);
-            ';
-            // 進捗をリセット''
-            this._resetProgress('')';
+            ;
+            // 進捗をリセット
+            this._resetProgress()';
             console.log('[RecoveryUserGuidance] Recovery complete notification sent');'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error as Error, 'RECOVERY_COMPLETE_NOTIFICATION_ERROR', { result });
         }
     }
@@ -393,9 +393,9 @@ export class RecoveryUserGuidance {
                 recoverable: this._isRecoverable(errorType),
             };'
             '';
-        } catch (generationError') { ''
+        } catch (generationError) { ''
             console.error('[RecoveryUserGuidance] Error message generation failed:', generationError');
-            ';
+            ';'
             return { ''
                 type: 'unknown_error','';
                 title: 'エラーが発生しました','';
@@ -421,7 +421,7 @@ export class RecoveryUserGuidance {
                 estimatedTime: '不明' }
             },
             ';
-            // 分析結果に基づいてガイダンスを生成''
+            // 分析結果に基づいてガイダンスを生成
             if(analysis.corruption') {
                 
             }
@@ -431,7 +431,7 @@ export class RecoveryUserGuidance {
                     guidance.recommended.push({''
                         action: 'automatic_repair','';
                         title: '自動修復',')';
-                        description: '破損したデータを自動的に修復します',');
+                        description: '破損したデータを自動的に修復します',')
                 }'
                         estimatedTime: '1-2分')');' }'
                 } else if (repairability === 'medium'') { guidance.recommended.push({''
@@ -439,17 +439,17 @@ export class RecoveryUserGuidance {
                         title: 'バックアップから復元',')';
                         description: '最新のバックアップからデータを復元します',')';
                         estimatedTime: '2-3分')'),
-                    ';
+                    ';'
                     guidance.optional.push({''
                         action: 'manual_review',')';
                         title: '手動確認',')';
-                        description: '復元後にデータを手動で確認することをお勧めします')'); }'
+                        description: '復元後にデータを手動で確認することをお勧めします')') }'
                 } else {  guidance.recommended.push({''
                         action: 'reset_to_default','';
                         title: 'デフォルトに初期化',')';
                         description: '統計データをリセットして新しく開始します',')';
                         estimatedTime: '1分未満')'),
-                    ';
+                    ';'
                     guidance.warnings.push({''
                         type: 'data_loss',')';
                         message: '既存の統計データは失われます',') }'
@@ -460,16 +460,16 @@ export class RecoveryUserGuidance {
             if(analysis.integrity && analysis.integrity.validFieldsRatio < 0.5') {'
                 guidance.warnings.push({''
                     type: 'partial_recovery',')';
-                    message: 'データの一部のみ復旧可能な可能性があります',');
+                    message: 'データの一部のみ復旧可能な可能性があります',')
             }'
                     severity: 'medium'); }
             }
             
             return guidance;'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error as Error, 'RECOVERY_GUIDANCE_GENERATION_ERROR', { analysis }');
-            ';
+            ';'
             return { recommended: [{''
                     action: 'contact_support','';
                     title: 'サポートに連絡',' };]'
@@ -520,7 +520,7 @@ export class RecoveryUserGuidance {
      * 復旧履歴をクリア
      */'
     clearRecoveryHistory(): void { this.recoveryHistory = [];''
-        this._saveRecoveryHistory('')';
+        this._saveRecoveryHistory()';
         console.log('[RecoveryUserGuidance] Recovery history cleared'); }
     }
     
@@ -560,10 +560,10 @@ export class RecoveryUserGuidance {
      * @private
      */
     private _sendNotification(notification: NotificationData): void { for (const callback of this.notificationCallbacks) {
-            try {'
+            try {
                 callback(notification);' }'
-            } catch (error') { ''
-                console.error('[RecoveryUserGuidance] Notification callback error:', error); }
+            } catch (error) { ''
+                console.error('[RecoveryUserGuidance] Notification callback error:', error) }
             }
         }
     }
@@ -576,15 +576,15 @@ export class RecoveryUserGuidance {
      */'
     private _notifyStepChange(step: string, details: Record<string, any>): void { ''
         if (!this.notificationConfig.showRecoveryProgress') return;
-        ';
+        ';'
         const stepMessages: Record<string, string> = {''
             analyzing: this._getMessage('recovery_analyzing''),'';
             repairing: this._getMessage('recovery_repairing''),'';
-            validating: this._getMessage('recovery_validating''); }
+            validating: this._getMessage('recovery_validating'') }
         };
         
         const message = stepMessages[step] || `処理中: ${step}`;
-        ';
+        ';'
         this._sendNotification({ ''
             type: 'info','';
             title: 'データ復旧',
@@ -605,19 +605,19 @@ export class RecoveryUserGuidance {
      * @param details 詳細情報
      * @private
      */'
-    private _notifyProgressUpdate(step: string, progress: number, details: Record<string, any>): void { // 進捗更新は頻繁なのでコールバックのみ実行''
-        for(const callback of this.notificationCallbacks') {
-            try {'
+    private _notifyProgressUpdate(step: string, progress: number, details: Record<string, any>): void { // 進捗更新は頻繁なのでコールバックのみ実行
+        for(const callback of this.notificationCallbacks) {
+            try {
                 callback({''
                     type: 'progress',
-                    step,);
+                    step);
                     progress);
         }
                     details, }
                     tracking: { ...this.progressTracking }'
                 );''
-            } catch (error') { ''
-                console.error('[RecoveryUserGuidance] Progress callback error:', error); }
+            } catch (error) { ''
+                console.error('[RecoveryUserGuidance] Progress callback error:', error) }
             }
         }
     }
@@ -642,7 +642,7 @@ export class RecoveryUserGuidance {
      * @private
      */'
     private _categorizeError(error: Error, context: Record<string, any>): ErrorType { ''
-        const message = error.message.toLowerCase('')';
+        const message = error.message.toLowerCase()';
         if (message.includes('corruption'') || message.includes('checksum')') {''
             return 'data_corruption'; }'
         }''
@@ -751,9 +751,9 @@ export class RecoveryUserGuidance {
     
     /**
      * 復旧履歴を保存
-     * @private'
+     * @private
      */''
-    private _saveRecoveryHistory('')';
+    private _saveRecoveryHistory()';
             localStorage.setItem('bubblePop_recoveryHistory', JSON.stringify(this.recoveryHistory);
         } catch (error) { // ストレージエラーは無視（履歴保存はオプション） }
         }
@@ -761,9 +761,9 @@ export class RecoveryUserGuidance {
     
     /**
      * 復旧履歴を読み込み
-     * @private'
+     * @private
      */''
-    private _loadRecoveryHistory('')';
+    private _loadRecoveryHistory()';
             const stored = localStorage.getItem('bubblePop_recoveryHistory');
             if (stored) { this.recoveryHistory = JSON.parse(stored); }
             } catch (error) { this.recoveryHistory = []; }
@@ -800,7 +800,7 @@ export class RecoveryUserGuidance {
      * 初期化時に履歴を読み込み
      */'
     initialize(): void { ''
-        this._loadRecoveryHistory('')';
+        this._loadRecoveryHistory()';
         console.log('[RecoveryUserGuidance] Initialization completed''); }'
     }''
 }

@@ -17,7 +17,7 @@ interface Achievement { id: string,
         ap?: number; }
     };
     progress?: { current: number,
-        target: number; }
+        target: number }
     };
     unlockedDate?: string;
 }
@@ -28,7 +28,7 @@ interface TextSettings { font: string,
     backgroundColor: string,
     activeBackgroundColor: string,
     borderColor: string,
-    activeBorderColor: string; }
+    activeBorderColor: string }
 }
 
 export class AchievementsTab extends TabComponent { // サブコンポーネント
@@ -42,7 +42,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
     private progressAchievements: Achievement[] = [];
     private lastDataUpdate: number = 0;
     // UI状態
-    private scrollPosition: number = 0';
+    private scrollPosition: number = 0;
     private maxScrollPosition: number = 0'';
     private currentCategory: string = 'all';
     // レイアウト設定
@@ -50,8 +50,8 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
     private readonly sectionSpacing: number = 20,
     private readonly achievementHeight: number = 80,
     private readonly achievementSpacing: number = 10,
-    ';
-    // フィルター設定''
+    ;
+    // フィルター設定
     private readonly categories: string[] = ['all', 'score', 'play', 'technique', 'collection', 'special'];''
     private readonly categoryLabels: string[] = ['全て', 'スコア系', 'プレイ系', 'テクニック系', 'コレクション系', '特殊系'];
     
@@ -85,21 +85,21 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
     }
     
     /**
-     * イベントリスナーを設定'
+     * イベントリスナーを設定
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         this.eventBus.on('achievement-category-changed', (data: { category: string ) => { 
             this.currentCategory = data.category;
-            this.scrollPosition = 0; // スクロール位置をリセット }'
+            this.scrollPosition = 0; // スクロール位置をリセット }
             this.updateFilteredAchievements();' }'
         }');
         ';
-        // 実績データ更新''
+        // 実績データ更新
         this.eventBus.on('achievements-data-updated', (data: { achievements: Achievement[] }) => {  this.achievementsData = data.achievements; }'
             this.updateFilteredAchievements();' }'
         }');
         ';
-        // エラーハンドリング''
+        // エラーハンドリング
         this.eventBus.on('component-error', (error: Error') => {  ' }'
             console.error('AchievementsTab error:', error); }
         });
@@ -115,9 +115,9 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
             }
                 this.updateFilteredAchievements(); }
             }
-            ';
+            ';'
             this.lastDataUpdate = Date.now();''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to load achievements data:', error);
             this.achievementsData = [];
             this.filteredAchievements = []; }
@@ -162,7 +162,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
                 context, ;
                 x, ;
                 currentY, ;
-                width, );
+                width );
                 this.currentCategory);
                 this.categories,);
                 this.categoryLabels);
@@ -180,7 +180,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
     }
     
     /**
-     * 背景を描画'
+     * 背景を描画
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number'): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';''
@@ -209,7 +209,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         if(this.unlockedAchievements && this.unlockedAchievements.length > 0) {
             const unlockedHeight = this.achievementsRenderer!.renderUnlockedSection(;
                 context,
-                contentX,);
+                contentX);
                 currentY);
                 contentWidth,);
                 this.unlockedAchievements);
@@ -221,7 +221,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         if(this.progressAchievements && this.progressAchievements.length > 0) {
             const progressHeight = this.achievementsRenderer!.renderProgressSection(;
                 context,
-                contentX,);
+                contentX);
                 currentY);
                 contentWidth,);
                 this.progressAchievements);
@@ -234,7 +234,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
     }
     
     /**
-     * 実績データなしメッセージを描画'
+     * 実績データなしメッセージを描画
      */''
     private renderNoAchievementsMessage(context: CanvasRenderingContext2D, x: number, y: number, width: number'): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#6C757D';''
@@ -269,22 +269,22 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
     
     /**
      * スクロールバーを描画
-     */'
+     */
     private renderScrollbar(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         if (this.maxScrollPosition <= 0') return;
         ';
-        // スクロールバー背景''
+        // スクロールバー背景
         context.fillStyle = '#E9ECEF';
         context.fillRect(x, y, width, height);
         
-        // スクロールバートラック'
+        // スクロールバートラック
         const trackHeight = height * (height / (height + this.maxScrollPosition));''
         const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight');'
         '';
         context.fillStyle = '#6C757D';''
         context.fillRect(x + 2, trackY, width - 4, trackHeight');
         ';
-        // スクロールバー枠線''
+        // スクロールバー枠線
         context.strokeStyle = '#CED4DA';
         context.lineWidth = 1;
         context.strokeRect(x, y, width, height); }
@@ -309,7 +309,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
     
     /**
      * 入力処理
-     */'
+     */
     handleInput(event: Event): boolean { ''
         if (!this.isActive') return false;'
         '';
@@ -340,7 +340,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
                     keyEvent.preventDefault(''';
                 case 'End':';
         })'
-                    keyEvent.preventDefault('') }'
+                    keyEvent.preventDefault() }'
         } else if (event.type === 'wheel') { const wheelEvent = event as WheelEvent;
             wheelEvent.preventDefault();
             this.scroll(wheelEvent.deltaY);
@@ -395,7 +395,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         }
         
         if(this.achievementsRenderer) {
-        ';
+        ';'
             '';
             this.achievementsRenderer.cleanup(''';
         font: '12px sans-serif''';
@@ -403,7 +403,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         activeTextColor: '#FFFFFF','';
         backgroundColor: '#F8F9FA','';
         activeBackgroundColor: '#007BFF','';
-        borderColor: '#DEE2E6',';
+        borderColor: '#DEE2E6','
         }'
         activeBorderColor: '#0056B3' })
     })
@@ -431,7 +431,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         const settings = this.state.accessibilitySettings || {};'
         '';
         if(settings.largeText') {'
-            ';
+            ';'
         }'
             this.textSettings.font = '14px sans-serif'; }
         }'
@@ -464,7 +464,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         x: number, ;
         y: number, ;
         width: number, ;
-        currentCategory: string, );
+        currentCategory: string );
         categories: string[]);
         categoryLabels: string[];
     ): number { const filterHeight = 40,
@@ -495,7 +495,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
                 currentX,
                 buttonY,
                 buttonWidth,
-                this.buttonHeight,);
+                this.buttonHeight);
                 label);
                 isActive,);
                 isHovered);
@@ -522,7 +522,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         y: number, ;
         width: number, ;
         height: number, ;
-        label: string, );
+        label: string );
         isActive: boolean);
         isHovered: boolean;
     ): void { // ボタン背景色を決定
@@ -535,7 +535,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
             backgroundColor = this.textSettings.activeBackgroundColor;
             textColor = this.textSettings.activeTextColor;
         
-        }'
+        }
             borderColor = this.textSettings.activeBorderColor;' }'
         } else if (isHovered') { ''
             backgroundColor = '#E9ECEF'; }
@@ -546,12 +546,12 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         context.fillRect(x, y, width, height);
         
         // ボタン枠線
-        context.strokeStyle = borderColor;'
+        context.strokeStyle = borderColor;
         context.lineWidth = isActive ? 2 : 1;''
         context.strokeRect(x, y, width, height');
         
         // ボタンテキスト
-        context.fillStyle = textColor;'
+        context.fillStyle = textColor;
         context.font = this.textSettings.font;''
         context.textAlign = 'center';''
         context.textBaseline = 'middle';
@@ -572,7 +572,7 @@ export class AchievementsTab extends TabComponent { // サブコンポーネン�
         if(y >= buttonY && y <= buttonY + this.buttonHeight) {
         
             let currentX = 10;
-            ';
+            ';'
             for (let i = 0; i < categories.length; i++) {''
                 if (x >= currentX && x <= currentX + buttonWidth') {''
                     this.eventBus.emit('achievement-category-changed', {)
@@ -668,29 +668,29 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
     renderEnhancedProgressBar(;
         context: CanvasRenderingContext2D,
         x: number, ;
-        y: number, );
+        y: number );
         width: number);
         progress: { current: number; target: number ): void {
         const barHeight = 8;
         const current = progress.current || 0;
         const target = progress.target || 1;
         const percentage = Math.min(100, (current / target) * 100);
-        ';
-        // 背景（グラデーション）''
+        ;
+        // 背景（グラデーション）
         const bgGradient = context.createLinearGradient(x, y, x, y + barHeight');''
         bgGradient.addColorStop(0, '#2a2a2a'');''
         bgGradient.addColorStop(1, '#1a1a1a');'
         context.fillStyle = bgGradient;''
         context.fillRect(x, y, width, barHeight');
         ';
-        // 枠線''
+        // 枠線
         context.strokeStyle = '#555';
         context.lineWidth = 1;
         context.strokeRect(x, y, width, barHeight);
         
         // 進捗（グラデーション）
         const fillWidth = (percentage / 100) * width;
-        if(fillWidth > 0) {'
+        if(fillWidth > 0) {
             const progressGradient = context.createLinearGradient(x, y, x, y + barHeight);''
             if (percentage >= 100') {''
                 progressGradient.addColorStop(0, '#4CAF50'');'
@@ -704,7 +704,7 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
             context.fillRect(x, y, fillWidth, barHeight');
         }
         ';
-        // 進捗テキスト''
+        // 進捗テキスト
         context.fillStyle = '#ffffff';''
         context.font = '11px Arial';''
         context.textAlign = 'center';''
@@ -723,7 +723,7 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
     renderProgressBar(;
         context: CanvasRenderingContext2D,
         x: number, ;
-        y: number, );
+        y: number );
         width: number);
         progress: { current: number; target: number ): void {
         const barHeight = 6;
@@ -731,16 +731,16 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
         const target = progress.target || 1;''
         const percentage = Math.min(100, (current / target) * 100');
         ';
-        // 背景''
+        // 背景
         context.fillStyle = '#333';
         context.fillRect(x, y, width, barHeight);
         ';
-        // 進捗''
+        // 進捗
         const fillWidth = (percentage / 100') * width;''
         context.fillStyle = percentage >= 100 ? '#00aa00' : '#4a90e2';''
         context.fillRect(x, y, fillWidth, barHeight');
         ';
-        // 進捗テキスト''
+        // 進捗テキスト
         context.fillStyle = '#ffffff';''
         context.font = '11px Arial';''
         context.textAlign = 'center';''
@@ -755,7 +755,7 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
     }
     
     /**
-     * クリーンアップ'
+     * クリーンアップ
      */''
     cleanup(''';
         sectionTitleFont: '20px bold sans-serif','';
@@ -829,7 +829,7 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
     renderUnlockedSection(;
         context: CanvasRenderingContext2D,
         x: number, ;
-        y: number, );
+        y: number );
         width: number)';
         achievements: Achievement[]'';
     '): number { let currentY = y,
@@ -864,8 +864,8 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
     renderProgressSection(;
         context: CanvasRenderingContext2D,
         x: number, ;
-        y: number, );
-        width: number)';
+        y: number );
+        width: number);
         achievements: Achievement[]'';
     '): number { let currentY = y,
         
@@ -901,29 +901,29 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
         context: CanvasRenderingContext2D,
         x: number, ;
         y: number, ;
-        width: number, );
-        achievement: Achievement)';
+        width: number );
+        achievement: Achievement);
         isUnlocked: boolean'';
-    '): number { // 背景''
+    '): number { // 背景
         context.fillStyle = isUnlocked ? '#2E7D32' : '#1976D2';''
         if(this.state.accessibilitySettings.highContrast') {'
-            ';
+            ';'
         }'
             context.fillStyle = isUnlocked ? '#000000' : '#FFFFFF'; }
         }
         context.fillRect(x, y, width, this.itemHeight);
         
-        // 枠線'
+        // 枠線
         context.strokeStyle = isUnlocked ? this.textSettings.unlockedColor: this.textSettings.progressColor,'';
         if(this.state.accessibilitySettings.highContrast') {'
-            ';
+            ';'
         }'
             context.strokeStyle = '#000000'; }
         }'
         context.lineWidth = 2;''
         context.strokeRect(x, y, width, this.itemHeight');
         
-        // アイコン'
+        // アイコン
         context.fillStyle = this.textSettings.textColor;''
         context.font = '24px Arial';''
         context.textAlign = 'center';''
@@ -931,7 +931,7 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
         context.fillText(achievement.icon || '🏆', x + 30, y + this.itemHeight / 2');
         
         // 実績名
-        context.fillStyle = this.textSettings.textColor;'
+        context.fillStyle = this.textSettings.textColor;
         context.font = this.textSettings.achievementNameFont;''
         context.textAlign = 'left';''
         context.textBaseline = 'top';
@@ -941,8 +941,8 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
         context.fillStyle = this.textSettings.subTextColor;
         context.font = this.textSettings.achievementDescFont;
         context.fillText(achievement.description, x + 60, y + 35);
-        ';
-        // 報酬AP''
+        ;
+        // 報酬AP
         if(achievement.reward && achievement.reward.ap') {'
             '';
             context.fillStyle = '#FFD700';''
@@ -959,14 +959,14 @@ class AchievementProgressRenderer { private gameEngine: GameEngine
         if(!isUnlocked && achievement.progress) {
             this.progressRenderer!.renderEnhancedProgressBar(;
                 context, ;
-                x + 60, );
+                x + 60 );
                 y + 55);
                 width - 150, );
         }
                 achievement.progress); }
         }
-        ';
-        // 獲得日時（解除済み実績のみ）''
+        ;
+        // 獲得日時（解除済み実績のみ）
         if(isUnlocked && achievement.unlockedDate') {
             context.fillStyle = this.textSettings.subTextColor;'
             context.font = this.textSettings.dateFont;''

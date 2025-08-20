@@ -3,23 +3,23 @@ import { VisualEffectAccessibilityManager } from './VisualEffectAccessibilityMan
 import { AlternativeFeedbackManager } from './AlternativeFeedbackManager.js';
 
 // Type definitions for accessibility effect integration
-interface AccessibilityIntegrationState { initialized: boolean,'
+interface AccessibilityIntegrationState { initialized: boolean,
     enabled: boolean,'';
-    integrationLevel: 'minimal' | 'partial' | 'full'; }
+    integrationLevel: 'minimal' | 'partial' | 'full' }
 }
 
 interface AccessibilityIntegrationConfig { autoDetectSettings: boolean,
     overrideVisualEffects: boolean,
     provideFeedbackAlternatives: boolean,
     announceImportantEffects: boolean,
-    adaptToUserPreferences: boolean; }
+    adaptToUserPreferences: boolean }
 }
 
 interface GameEngine { effectManager?: EffectManager;
     accessibilityManager?: AccessibilityManager;
     audioManager?: AudioManager;
     canvas?: HTMLCanvasElement;
-    addEventListener?(event: string, handler: (event: any) => void): void; }
+    addEventListener?(event: string, handler: (event: any) => void): void }
 }
 
 interface EffectManager { enhancedParticleManager?: EnhancedParticleManager;
@@ -30,18 +30,18 @@ interface EffectManager { enhancedParticleManager?: EnhancedParticleManager;
 }
 
 interface EnhancedParticleManager { createAdvancedBubbleEffect?: (x: number, y: number, bubbleType: string, bubbleSize: number, options?: ParticleEffectOptions) => any;
-    createEnhancedComboEffect?: (x: number, y: number, comboCount: number, comboType: string) => any; }
+    createEnhancedComboEffect?: (x: number, y: number, comboCount: number, comboType: string) => any }
 }
 
 interface EnhancedEffectManager { addScreenEffect?: (effectType: string, options?: ScreenEffectOptions) => any;
-    addLightingEffect?: (x: number, y: number, intensity: number, color: string, radius: number) => any; }
+    addLightingEffect?: (x: number, y: number, intensity: number, color: string, radius: number) => any }
 }
 
 interface AnimationManager { animateUIElement?: (element: any, animationType: string, duration: number, options?: AnimationOptions) => any;
-    animateBubbleSpawn?: (bubble: any, spawnType: string) => any; }
+    animateBubbleSpawn?: (bubble: any, spawnType: string) => any }
 }
 
-interface SeasonalEffectManager { applySeasonalTheme?: (theme: SeasonalTheme) => any; }
+interface SeasonalEffectManager { applySeasonalTheme?: (theme: SeasonalTheme) => any }
 }
 
 interface AccessibilityManager { getConfiguration(): AccessibilityConfiguration;
@@ -62,7 +62,7 @@ interface ParticleEffectOptions {
     count?: number;
     lifetime?: number;
     movement?: { type: string,
-        speed: number; }
+        speed: number }
     };
     [key: string]: any,
 }
@@ -85,7 +85,7 @@ interface LightingEffectOptions { x: number,
     y: number,
     intensity: number,
     color: string,
-    radius: number; }
+    radius: number }
 }
 
 interface SeasonalTheme { name?: string;
@@ -106,14 +106,14 @@ interface AccessibilityConfiguration { visual?: {
             customColors?: any; }
         };
         colorBlindness?: { enabled: boolean,
-            type?: string; }
+            type?: string }
         };
         motion?: { reduced: boolean,
             level?: string;
             alternativeEffects?: boolean; }
         };
         textScaling?: { enabled: boolean,
-            scale?: number; }
+            scale?: number }
         };
     };
     audio?: { visualFeedback?: {
@@ -122,9 +122,9 @@ interface AccessibilityConfiguration { visual?: {
             type?: string; }
         };
         vibration?: { enabled: boolean,
-            intensity?: number; }
+            intensity?: number }
         };
-        captions?: { enabled: boolean; }
+        captions?: { enabled: boolean }
         };
     };
     keyboard?: { navigationMode?: string;
@@ -133,7 +133,7 @@ interface AccessibilityConfiguration { visual?: {
     };
     cognitive?: { simplification?: {
             enabled: boolean,
-            level?: string; }
+            level?: string }
         };
         help?: { contextual?: boolean;
             tooltips?: boolean;
@@ -155,11 +155,11 @@ interface FeedbackOptions { hapticIntensity?: number;
 }
 
 interface SceneChangeEvent { newScene: string,
-    oldScene?: string; }
+    oldScene?: string }
 }
 
 interface SystemPreferenceChangeEvent { preference: string,
-    value: any; }
+    value: any }
 }
 
 interface IntegrationStatus { initialized: boolean,
@@ -194,7 +194,7 @@ export class AccessibilityEffectIntegrator {
     private visualAccessibilityManager: VisualEffectAccessibilityManager | null = null;
     private alternativeFeedbackManager: AlternativeFeedbackManager | null = null;
     private state: AccessibilityIntegrationState = {
-        initialized: false';
+        initialized: false;
         enabled: true,'';
         integrationLevel: 'full' // 'minimal', 'partial', 'full' }
     };
@@ -205,7 +205,7 @@ export class AccessibilityEffectIntegrator {
         provideFeedbackAlternatives: true,
         announceImportantEffects: true,
         adaptToUserPreferences: true }
-    },'
+    },
 '';
     constructor(gameEngine: GameEngine') {'
         this.gameEngine = gameEngine;'
@@ -217,7 +217,7 @@ export class AccessibilityEffectIntegrator {
     /**
      * 初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('Initializing accessibility effect integration...');
             
             // 必要なシステムの取得
@@ -231,16 +231,16 @@ export class AccessibilityEffectIntegrator {
             
             // イベントリスナーの設定
             this.setupEventListeners();
-            ';
-            // 初期設定の適用''
-            await this.applyInitialSettings('');'
+            ;
+            // 初期設定の適用
+            await this.applyInitialSettings();'
             console.log('Accessibility effect integration initialized successfully');
             
             return true;'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {')'
                 operation: 'initialize',')';
-                component: 'AccessibilityEffectIntegrator'); }
+                component: 'AccessibilityEffectIntegrator') }
             });
             return false;
         }
@@ -251,10 +251,10 @@ export class AccessibilityEffectIntegrator {
      */
     private async getRequiredSystems(): Promise<void> { // GameEngineから必要なシステムを取得
         this.effectManager = this.gameEngine.effectManager || null;
-        this.accessibilityManager = this.gameEngine.accessibilityManager || null;'
+        this.accessibilityManager = this.gameEngine.accessibilityManager || null;
         '';
         if(!this.effectManager') {'
-            ';
+            ';'
         }'
             throw new Error('EffectManager not found in GameEngine'); }
         }'
@@ -262,7 +262,7 @@ export class AccessibilityEffectIntegrator {
         if(!this.accessibilityManager') {'
             '';
             console.warn('AccessibilityManager not found, creating basic instance'');'
-            // 基本的なアクセシビリティ機能のみ提供'
+            // 基本的なアクセシビリティ機能のみ提供
         }'
             this.state.integrationLevel = 'minimal'; }
         }
@@ -281,9 +281,9 @@ export class AccessibilityEffectIntegrator {
         // 代替フィードバックマネージャー
         this.alternativeFeedbackManager = new AlternativeFeedbackManager(;
             this.accessibilityManager!);
-            this.gameEngine.audioManager!';
+            this.gameEngine.audioManager!;
         );''
-        await this.alternativeFeedbackManager.initialize('');'
+        await this.alternativeFeedbackManager.initialize();'
         console.log('Accessibility managers initialized'); }
     }
     
@@ -308,9 +308,9 @@ export class AccessibilityEffectIntegrator {
         }
         
         // SeasonalEffectManagerとの統合
-        if(this.effectManager.seasonalEffectManager) {'
+        if(this.effectManager.seasonalEffectManager) {
             '';
-            this.integrateWithSeasonalEffectManager('');
+            this.integrateWithSeasonalEffectManager();
         }'
         console.log('Integration with effect systems completed'); }
     }
@@ -323,7 +323,7 @@ export class AccessibilityEffectIntegrator {
         // 元のメソッドを保存
         const originalCreateBubbleEffect = particleManager.createAdvancedBubbleEffect? .bind(particleManager);
         const originalCreateComboEffect = particleManager.createEnhancedComboEffect?.bind(particleManager);
-        ';
+        ';'
         // アクセシビリティ統合版に置き換え : undefined' }'
         particleManager.createAdvancedBubbleEffect = (x: number, y: number, bubbleType: string, bubbleSize: number, options: ParticleEffectOptions = {}'): any => {  // アクセシビリティチェック' }'
             const accessibleOptions = this.processParticleEffect('bubble-pop', options, { })
@@ -332,10 +332,10 @@ export class AccessibilityEffectIntegrator {
                 size: bubbleSize),'';
             }');
             ';
-            // 代替フィードバックの提供''
+            // 代替フィードバックの提供
             this.provideFeedbackForEffect('bubble-pop', { );
                 hapticIntensity: this.getBubbleHapticIntensity(bubbleType),
-                description: this.getBubbleEffectDescription(bubbleType); }
+                description: this.getBubbleEffectDescription(bubbleType) }
             });
             
             if (originalCreateBubbleEffect) { return originalCreateBubbleEffect(x, y, bubbleType, bubbleSize, accessibleOptions); }
@@ -350,10 +350,10 @@ export class AccessibilityEffectIntegrator {
                 type: comboType),'';
             }');
             ';
-            // コンボレベルに応じた代替フィードバック''
+            // コンボレベルに応じた代替フィードバック
             this.provideFeedbackForEffect('combo-start', { );
                 hapticIntensity: this.getComboHapticIntensity(comboCount),
-                description: this.getComboEffectDescription(comboCount); }
+                description: this.getComboEffectDescription(comboCount) }
             });
             
             if (originalCreateComboEffect) { return originalCreateComboEffect(x, y, comboCount, comboType); }
@@ -393,7 +393,7 @@ export class AccessibilityEffectIntegrator {
                 return originalAddLightingEffect(;
                     accessibleOptions.x,
                     accessibleOptions.y,
-                    accessibleOptions.intensity,);
+                    accessibleOptions.intensity);
                     accessibleOptions.color);
                     accessibleOptions.radius;
             }
@@ -503,10 +503,10 @@ export class AccessibilityEffectIntegrator {
     /**
      * バブルスポーンアニメーションの処理
      */
-    private processBubbleSpawnAnimation(spawnType: string): string { const config = this.visualAccessibilityManager? .getConfiguration();'
+    private processBubbleSpawnAnimation(spawnType: string): string { const config = this.visualAccessibilityManager? .getConfiguration();
         '';
         if(config?.motionReduced') {
-            // アニメーションを簡素化 : undefined'
+            // アニメーションを簡素化 : undefined
             const simplifiedTypes: Record<string, string> = {''
                 'bounce': 'fade','';
                 'spiral': 'scale',';
@@ -527,9 +527,9 @@ export class AccessibilityEffectIntegrator {
         '';
         if(config?.highContrastActive') {
             // ハイコントラスト版のテーマを適用
-            return { ...theme, : undefined'
+            return { ...theme, : undefined
                 colorScheme: {''
-                    primary: ['#FFFFFF', '#000000'],';
+                    primary: ['#FFFFFF', '#000000'],'
         }'
                     secondary: ['#FFFF00', '#FF0000'],' };'
                     accent: ['#00FF00', '#0000FF'] }
@@ -547,19 +547,19 @@ export class AccessibilityEffectIntegrator {
     }
     
     /**
-     * 色覚異常対応テーマの適用'
+     * 色覚異常対応テーマの適用
      */ : undefined''
-    private adaptThemeForColorBlindness(theme: SeasonalTheme, colorBlindnessType: string'): SeasonalTheme { // 色覚異常タイプに応じたテーマ調整 }'
+    private adaptThemeForColorBlindness(theme: SeasonalTheme, colorBlindnessType: string'): SeasonalTheme { // 色覚異常タイプに応じたテーマ調整 }
         const adaptations: Record<string, { avoidColors: string[]; preferColors: string[] }> = { ''
-            'protanopia': { // 赤色盲''
+            'protanopia': { // 赤色盲
                 avoidColors: ['#FF0000', '#FF4500'],'';
                 preferColors: ['#0000FF', '#00FF00', '#FFFF00'] }'
             },''
-            'deuteranopia': { // 緑色盲''
+            'deuteranopia': { // 緑色盲
                 avoidColors: ['#00FF00', '#32CD32'],'';
                 preferColors: ['#FF0000', '#0000FF', '#FFFF00'] }'
             },''
-            'tritanopia': { // 青色盲''
+            'tritanopia': { // 青色盲
                 avoidColors: ['#0000FF', '#4169E1'],'';
                 preferColors: ['#FF0000', '#00FF00', '#FF8000'] }
             }
@@ -676,20 +676,20 @@ export class AccessibilityEffectIntegrator {
      */'
     private setupEventListeners(): void { ''
         if(this.accessibilityManager') {'
-            // アクセシビリティ設定変更の監視'
+            // アクセシビリティ設定変更の監視
         }'
             this.accessibilityManager.addEventListener('configurationApplied', (event: any) => {  }'
                 this.handleAccessibilityConfigChange(event.config);' }'
             }');
             ';
-            // システム設定変更の監視''
+            // システム設定変更の監視
             this.accessibilityManager.addEventListener('systemPreferenceChanged', (event: SystemPreferenceChangeEvent) => { this.handleSystemPreferenceChange(event); }
             });
         }
         ';
-        // GameEngineイベントの監視''
+        // GameEngineイベントの監視
         if(this.gameEngine') {'
-            ';
+            ';'
         }'
             this.gameEngine.addEventListener?.('sceneChanged', (event: SceneChangeEvent) => {  }
                 this.handleSceneChange(event); }
@@ -718,12 +718,12 @@ export class AccessibilityEffectIntegrator {
     }
     
     /**
-     * システム設定変更の処理'
+     * システム設定変更の処理
      */''
     private handleSystemPreferenceChange(event: SystemPreferenceChangeEvent'): void { ''
         console.log('System preference changed:', event.preference');
         ';
-        // 必要に応じて統合設定を調整''
+        // 必要に応じて統合設定を調整
         if(event.preference === 'reducedMotion' && event.value') {'
             this.integrationConfig.overrideVisualEffects = true;'
         }'
@@ -739,7 +739,7 @@ export class AccessibilityEffectIntegrator {
     }
     
     /**
-     * 統合レベルの調整'
+     * 統合レベルの調整
      */''
     private adjustIntegrationLevel(config: AccessibilityConfiguration'): void { ''
         let integrationLevel: 'minimal' | 'partial' | 'full' = 'full',
@@ -748,12 +748,12 @@ export class AccessibilityEffectIntegrator {
         const accessibilityFeatures = [config.visual? .highContrast?.enabled,
             config.visual?.colorBlindness?.enabled,
             config.visual?.motion?.reduced,
-            config.audio?.visualFeedback?.enabled,];
+            config.audio?.visualFeedback?.enabled];
             config.audio?.vibration?.enabled];
-        ].filter(Boolean).length;'
+        ].filter(Boolean).length;
         '';
         if(accessibilityFeatures === 0') {'
-            ';
+            ';'
         }'
             integrationLevel = 'minimal';' }'
         } else if (accessibilityFeatures < 3') { ''
@@ -767,7 +767,7 @@ export class AccessibilityEffectIntegrator {
     /**
      * シーン固有設定の適用'
      */''
-    private applySceneSpecificSettings(sceneName: string'): void { // シーンに応じたアクセシビリティ設定の調整'
+    private applySceneSpecificSettings(sceneName: string'): void { // シーンに応じたアクセシビリティ設定の調整
         const sceneSettings: Record<string, Partial<AccessibilityIntegrationConfig>> = {''
             'GameScene': {
                 announceImportantEffects: true,
@@ -822,8 +822,8 @@ export class AccessibilityEffectIntegrator {
         }
         
         if(this.alternativeFeedbackManager) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             (this.alternativeFeedbackManager as any).setEnabled?.(enabled'); }
         }'
@@ -836,7 +836,7 @@ export class AccessibilityEffectIntegrator {
      */''
     generateReport(''';
             component: 'AccessibilityEffectIntegrator',
-            state: { ...this.state },)
+            state: { ...this.state })
             configuration: { ...this.integrationConfig })
             managers: { visual: (this.visualAccessibilityManager as any)? .generateReport?.() || null, : undefined
                 alternativeFeedback: (this.alternativeFeedbackManager as any)? .generateReport?.() || null }
@@ -848,7 +848,7 @@ export class AccessibilityEffectIntegrator {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying AccessibilityEffectIntegrator...');
         
         // マネージャーのクリーンアップ
@@ -859,9 +859,9 @@ export class AccessibilityEffectIntegrator {
         }
         
         if(this.alternativeFeedbackManager) {
-        ';
+        ';'
             '';
-            this.alternativeFeedbackManager.destroy('');
+            this.alternativeFeedbackManager.destroy();
         }'
         console.log('AccessibilityEffectIntegrator destroyed''); }'
     }''

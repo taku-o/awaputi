@@ -25,7 +25,7 @@ interface MetadataContext { title?: string;
     pageKey?: string;
     pageType?: string;
     type?: string;
-    path?: string;'
+    path?: string;
     image?: string;''
     imageVariant?: 'default' | 'landscape' | 'portrait' | 'summary' | 'summaryLarge';
     twitterImage?: string;
@@ -79,7 +79,7 @@ interface LocalizedMetadata { language: string,
     siteName: string,
     locale: string,
     direction: string,
-    charset: string; }
+    charset: string }
 }
 
 // LocalizationManager インターフェース
@@ -99,7 +99,7 @@ interface ValidationReport { timestamp: string,
     issues: string[],
     warnings: string[],
     metadata: Record<string, string>;
-    isValid: boolean; }
+    isValid: boolean }
 }
 
 // 動的メタハンドラー型
@@ -154,14 +154,14 @@ export class SEOMetaManager {
                     this.updateMetaTags({ language: newLang });
                 });
                 
-                this.currentLang = normalizeLanguageCode(';
+                this.currentLang = normalizeLanguageCode(;
                     this.localizationManager.getCurrentLanguage()'';
                 ');
-            }
-            ';
+            }'
+            ';'
             this.initialized = true;''
             seoLogger.info('SEOMetaManager initialized successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'metaManagerInit'); }
         }
     }
@@ -183,8 +183,8 @@ export class SEOMetaManager {
 
     /**
      * ゲーム状態に基づいた動的コンテンツでメタタグを更新
-     */'
-    async updateDynamicContent(dynamicContent: DynamicContent): Promise<void> { try {''
+     */
+    async updateDynamicContent(dynamicContent: DynamicContent): Promise<void> { try {'
             if(!this.initialized') {'
                 '';
                 seoLogger.warn('SEOMetaManager not initialized'');
@@ -193,7 +193,7 @@ export class SEOMetaManager {
             }
 
             // ゲーム状態をコンテキストに統合
-            const enhancedContext: MetadataContext = { ...dynamicContent,'
+            const enhancedContext: MetadataContext = { ...dynamicContent,
                 gameState: {''
                     scene: dynamicContent.gameState || 'menu',
                     score: dynamicContent.currentScore || 0,
@@ -210,14 +210,14 @@ export class SEOMetaManager {
             await this.updateMetaTags(metadata);
 
             // ソーシャルメディア用の画像URL更新
-            if(dynamicContent.currentScore && dynamicContent.currentScore > 0) {'
-                ';
+            if(dynamicContent.currentScore && dynamicContent.currentScore > 0) {
+                ';'
             }'
                 await this._updateSocialImageForScore(dynamicContent.currentScore'); }
             }'
 '';
             seoLogger.info('Dynamic content updated successfully', enhancedContext);''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             seoErrorHandler.handle(error as Error, 'updateDynamicContent', { dynamicContent });
         }
     }
@@ -227,7 +227,7 @@ export class SEOMetaManager {
      */
     private async _generateDynamicMetadata(context: MetadataContext): Promise<MetadataContext> { const gameSession = context.gameState!;
         
-        // 動的タイトル生成'
+        // 動的タイトル生成
         let dynamicTitle = await this._getLocalizedTitle();''
         if(gameSession.score && gameSession.score > 0') {
             
@@ -238,13 +238,13 @@ export class SEOMetaManager {
             dynamicTitle = `${dynamicTitle} - ${scoreText}`;
         }
 ';
-        // 動的説明文生成''
+        // 動的説明文生成
         let dynamicDescription = await this._getLocalizedDescription(context');''
         if(gameSession.scene === 'game' && gameSession.score && gameSession.score > 0') {'
             '';
             const gameplayText = this.localizationManager ? this.localizationManager.get('seo.gameplayDescription', {); : undefined'
                     score: gameSession.score.toLocaleString(,')';
-                    bubbles: gameSession.bubblesPopped? .toLocaleString(') || '0', : undefined;
+                    bubbles: gameSession.bubblesPopped? .toLocaleString(') || '0', : undefined
         }
                     level: gameSession.level || 1 }
                 }) :
@@ -262,12 +262,12 @@ export class SEOMetaManager {
     /**
      * スコアに基づいたソーシャル画像の更新'
      */''
-    private async _updateSocialImageForScore(score: number'): Promise<void> { try {'
-            // スコアランクに基づいて画像を選択''
-            let imageUrl = '/assets/social/og-image.png'; // デフォルト'
+    private async _updateSocialImageForScore(score: number'): Promise<void> { try {
+            // スコアランクに基づいて画像を選択
+            let imageUrl = '/assets/social/og-image.png'; // デフォルト
             '';
             if(score >= 100000') {'
-                ';
+                ';'
             }'
                 imageUrl = '/assets/social/og-image-champion.png';' }'
             } else if (score >= 50000') { ''
@@ -276,12 +276,12 @@ export class SEOMetaManager {
                 imageUrl = '/assets/social/og-image-pro.png'; }
             }
 ';
-            // Open Graph画像の更新''
+            // Open Graph画像の更新
             this._updateMetaTag('property', 'og:image', imageUrl');''
             this._updateMetaTag('name', 'twitter:image', imageUrl');'
 '';
             seoLogger.debug('Social image updated for score', { score, imageUrl );' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             seoErrorHandler.handle(error as Error, '_updateSocialImageForScore', { score });
         }
     }
@@ -296,9 +296,9 @@ export class SEOMetaManager {
             this.metaCache.clear();
             
             // メタタグを再生成・更新
-            this.updateMetaTags({ forceRefresh: true ) }'
+            this.updateMetaTags({ forceRefresh: true ) }
             seoLogger.info(`SEOMetaManager language updated to ${newLanguage)`});''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             seoErrorHandler.handle(error as Error, 'updateLanguage', { newLanguage });
         }
     }
@@ -316,15 +316,15 @@ export class SEOMetaManager {
             const currentLang = this.localizationManager.getCurrentLanguage();
             
             return { language: currentLang,
-                title: await this._getLocalizedTitle(context,);
+                title: await this._getLocalizedTitle(context);
                 description: await this._getLocalizedDescription(context);
-                keywords: await this._getLocalizedKeywords(context,);
+                keywords: await this._getLocalizedKeywords(context);
                 siteName: await this._getLocalizedSiteName(),';
                 locale: this._getOGLocale(),';'
                 direction: this._getTextDirection('' };'
                 charset: 'UTF-8' })'
             };')'
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error as Error, 'getLocalizedMetadata', context); }
         }
     }
@@ -334,7 +334,7 @@ export class SEOMetaManager {
      */'
     private async _getLocalizedTitle(context: MetadataContext = {}): Promise<string> { ''
         if(!this.localizationManager') {'
-            ';
+            ';'
         }'
             return context.title || 'BubblePop - 泡割りゲーム'; }
         }
@@ -347,7 +347,7 @@ export class SEOMetaManager {
         if(context.pageType) {
             
         }
-            const titleKey = `seo.titles.${context.pageType}`;'
+            const titleKey = `seo.titles.${context.pageType}`;
             const pageTitle = this.localizationManager.t(titleKey);''
             if(pageTitle !== titleKey') {
                 // 翻訳が存在する場合
@@ -355,8 +355,8 @@ export class SEOMetaManager {
                 return pageTitle; }
             }
         }
-        ';
-        // デフォルトタイトル''
+        ;
+        // デフォルトタイトル
         const baseTitle = this.localizationManager.t('seo.title'') || 'BubblePop';''
         const subtitle = this.localizationManager.t('seo.subtitle'') || '泡割りゲーム';
         
@@ -368,7 +368,7 @@ export class SEOMetaManager {
      */'
     private async _getLocalizedDescription(context: MetadataContext = { ): Promise<string> {''
         if(!this.localizationManager') {'
-            ';
+            ';'
         }'
             return context.description || 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！'; }
         }
@@ -391,13 +391,13 @@ export class SEOMetaManager {
         }
         
         // ゲーム状態による動的説明
-        if(context.gameState) {'
-            ';
+        if(context.gameState) {
+            ';'
         }'
             return await this._enhanceDescriptionWithGameState(context.gameState'); }
         }
         ';
-        // デフォルト説明''
+        // デフォルト説明
         return this.localizationManager.t('seo.description'') || '';
             'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！';
     }
@@ -407,24 +407,24 @@ export class SEOMetaManager {
      */'
     private async _getLocalizedKeywords(context: MetadataContext): Promise<string> { ''
         if(!this.localizationManager') {'
-            ';
+            ';'
         }'
             return context.keywords || 'バブルポップ,ゲーム,HTML5,ブラウザゲーム,無料'; }
         }'
         '';
-        const lang = this.localizationManager.getCurrentLanguage('')';
+        const lang = this.localizationManager.getCurrentLanguage()';
         const baseKeywords = this.localizationManager.t('seo.keywords'') || '';
         ';
-        // 言語固有のキーワード''
+        // 言語固有のキーワード
         const langKeywords = this.localizationManager.t(`seo.keywords.${ lang)`') || '';
         ';
-        // ページタイプ固有のキーワード''
+        // ページタイプ固有のキーワード
         let pageKeywords = '';'
         if (context.pageType) {' }'
             pageKeywords = this.localizationManager.t(`seo.keywords.${context.pageType)`'}) || '';
         }
         ';
-        // キーワードの結合''
+        // キーワードの結合
         const keywordParts = [baseKeywords, langKeywords, pageKeywords].filter(k => k');''
         return keywordParts.join(',');
     }
@@ -434,11 +434,11 @@ export class SEOMetaManager {
      */'
     private _getTextDirection(): string { ''
         if(!this.localizationManager') {'
-            ';
+            ';'
         }'
             return 'ltr'; }
         }
-        ';
+        ';'
         return this.localizationManager.getTextDirection ?   : undefined'';
             this.localizationManager.getTextDirection(') : 'ltr';
     }
@@ -483,14 +483,14 @@ export class SEOMetaManager {
             this._updateHreflangTags(metadata);
             
             // キャッシュの更新
-            this._updateCache(metadata);'
+            this._updateCache(metadata);
             '';
-            const duration = performance.now('')';
+            const duration = performance.now()';
             seoLogger.performance('metaTagUpdate', duration, {);
                 tagsUpdated: Object.keys(metadata).length }
             }),'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'metaTagUpdate', context); }
         }
     }
@@ -527,7 +527,7 @@ export class SEOMetaManager {
     }
     
     /**
-     * タイトルの生成'
+     * タイトルの生成
      */''
     private async _generateTitle(context: MetadataContext'): Promise<string> { ''
         let title = '';
@@ -557,7 +557,7 @@ export class SEOMetaManager {
     }
     
     /**
-     * 説明文の生成'
+     * 説明文の生成
      */''
     private async _generateDescription(context: MetadataContext'): Promise<string> { ''
         let description = '';
@@ -588,7 +588,7 @@ export class SEOMetaManager {
      * キーワードの生成
      */
     private async _generateKeywords(context: MetadataContext): Promise<string> { const baseKeywords = SEOConfig.metadata.keywords[this.currentLang] || 
-                           SEOConfig.metadata.keywords.ja;'
+                           SEOConfig.metadata.keywords.ja;
         '';
         if (context.additionalKeywords') {' }'
             return `${baseKeywords},${context.additionalKeywords.join(','})}`;
@@ -601,13 +601,13 @@ export class SEOMetaManager {
      * ソーシャル画像の選択
      */
     private async _selectSocialImage(context: MetadataContext): Promise<string> { // カスタム画像が指定されている場合
-        if(context.image) {'
-            ';
+        if(context.image) {
+            ';'
         }'
             return normalizeUrl(context.image'); }
         }
         ';
-        // ゲーム状態に基づく動的画像生成''
+        // ゲーム状態に基づく動的画像生成
         if (context.gameState && this.dynamicMetaHandlers.has('socialImage')') { ''
             const handler = this.dynamicMetaHandlers.get('socialImage')!;'
             const dynamicImage = await handler(context.gameState);''
@@ -618,7 +618,7 @@ export class SEOMetaManager {
             }
         }
         ';
-        // デフォルト画像の選択''
+        // デフォルト画像の選択
         const variant = context.imageVariant || 'default';''
         return getSocialImageUrl('openGraph', variant);
     }
@@ -626,19 +626,19 @@ export class SEOMetaManager {
     /**
      * 基本メタタグの更新'
      */''
-    private _updateBasicMetaTags(metadata: Metadata'): void { // タイトル''
+    private _updateBasicMetaTags(metadata: Metadata'): void { // タイトル
         document.title = metadata.title || 'BubblePop - 泡を割って高スコアを目指そう！';
         ';
-        // 説明''
+        // 説明
         this._updateMetaTag('name', 'description', metadata.description');
         ';
-        // キーワード''
+        // キーワード
         this._updateMetaTag('name', 'keywords', metadata.keywords');
         ';
-        // 作者''
+        // 作者
         this._updateMetaTag('name', 'author', metadata.author');
         
-        // 言語'
+        // 言語
         document.documentElement.lang = metadata.language;''
         this._updateMetaTag('name', 'language', metadata.language); }
     }
@@ -654,19 +654,19 @@ export class SEOMetaManager {
             'og:url': metadata.url,'';
             'og:type': metadata.type,'';
             'og:site_name': metadata.siteName,'';
-            'og: locale': this._getOGLocale('')';
+            'og: locale': this._getOGLocale()';
         if (metadata.image.includes('og-image')') { ''
             ogTags['og: image:width'] = SEOConfig.socialImages.openGraph.width,'';
-            ogTags['og: image:height'] = SEOConfig.socialImages.openGraph.height; }
+            ogTags['og: image:height'] = SEOConfig.socialImages.openGraph.height }
         }
         
         // 代替言語
         const altLocales = SEOConfig.supportedLanguages;
             .filter(lang => lang !== this.currentLang);
-            .map(lang => this._getOGLocale(lang);'
+            .map(lang => this._getOGLocale(lang);
         '';
         if(altLocales.length > 0') {'
-            ';
+            ';'
         }'
             ogTags['og: locale:alternate'] = altLocales; }
         }
@@ -675,7 +675,7 @@ export class SEOMetaManager {
         Object.entries(ogTags).forEach(([property, content]) => {  if(Array.isArray(content) {
                 // 複数値の場合は既存を削除して追加
                 this._removeMetaTags(property);
-                content.forEach(value => {); }'
+                content.forEach(value => {); }
                     this._addMetaTag(property, String(value);' }'
                 }');'
             } else {  ' }'
@@ -689,18 +689,18 @@ export class SEOMetaManager {
      */''
     private _updateTwitterCardTags(metadata: Metadata'): void { const twitterTags: Record<string, string> = {''
             'twitter:card': 'summary_large_image','';
-            'twitter:title': truncateText(metadata.title, 70'), // Twitter制限'';
-            'twitter:description': truncateText(metadata.description, 200'), // Twitter制限'';
+            'twitter:title': truncateText(metadata.title, 70'), // Twitter制限;
+            'twitter:description': truncateText(metadata.description, 200'), // Twitter制限;
             'twitter:image': this._getTwitterImage(metadata'),' }'
             'twitter:image:alt': `${metadata.siteName} - ${metadata.title}`
         };
         ';
-        // サイトのTwitterアカウントがある場合''
+        // サイトのTwitterアカウントがある場合
         if ((SEOConfig as any).socialAccounts? .twitter') { : undefined''
             twitterTags['twitter: site'] = (SEOConfig as any).socialAccounts.twitter, }
         }
         ';
-        // タグの更新''
+        // タグの更新
         Object.entries(twitterTags).forEach(([property, content]') => {  ' }'
             this._updateMetaTag('name', property, content); }
         });
@@ -726,11 +726,11 @@ export class SEOMetaManager {
     /**
      * hreflangタグの更新'
      */''
-    private _updateHreflangTags(metadata: Metadata'): void { // 既存のhreflangタグを削除''
+    private _updateHreflangTags(metadata: Metadata'): void { // 既存のhreflangタグを削除
         const existing = document.querySelectorAll('link[rel="alternate"][hreflang]');
         existing.forEach(tag => tag.remove();
         ';
-        // 各言語のhreflangタグを追加''
+        // 各言語のhreflangタグを追加
         SEOConfig.supportedLanguages.forEach(lang => { ');''
             const link = document.createElement('link'');''
             link.rel = 'alternate';'
@@ -739,7 +739,7 @@ export class SEOMetaManager {
             document.head.appendChild(link);' }'
         }');
         ';
-        // x-defaultタグ''
+        // x-defaultタグ
         const defaultLink = document.createElement('link'');''
         defaultLink.rel = 'alternate';''
         defaultLink.hreflang = 'x-default';''
@@ -809,26 +809,26 @@ export class SEOMetaManager {
         }');'
         '';
         seoLogger.info('Collected existing meta tags', { )
-            count: this.metaCache.size); }
+            count: this.metaCache.size) }
     }
     
     /**
      * 動的メタハンドラーの登録'
      */''
-    private _registerDynamicHandlers('')';
+    private _registerDynamicHandlers()';
         this.registerDynamicHandler('socialImage', async (gameState: GameState) => {  if (!gameState || !gameState.score) return null;
             ';
-            // スコアに基づく画像選択のロジック''
+            // スコアに基づく画像選択のロジック
             if (gameState.score > 100000') {' }'
                 return getSocialImageUrl('openGraph', 'default');' }'
             } else if (gameState.combo && gameState.combo > 50') { ''
                 return getSocialImageUrl('openGraph', 'default'); }
             }
-            ';
+            ';'
             return null;''
         }');
         ';
-        // タイトルの動的生成ハンドラー''
+        // タイトルの動的生成ハンドラー
         this.registerDynamicHandler('title', async (gameState: GameState) => {  if (!gameState) return null;
              }
             if (gameState.achievement) { }
@@ -850,7 +850,7 @@ export class SEOMetaManager {
      */'
     private async _getLocalizedSiteName(): Promise<string> { ''
         if(this.localizationManager') {'
-            ';
+            ';'
         }'
             return this.localizationManager.t('seo.siteName', SEOConfig.siteName'); }
         }'
@@ -862,11 +862,11 @@ export class SEOMetaManager {
      */'
     private async _getTagline(): Promise<string> { ''
         if(this.localizationManager') {'
-            ';
+            ';'
         }'
             return this.localizationManager.t('seo.tagline''); }
         }
-        ';
+        ';'
         const taglines: Record<string, string> = { ''
             ja: '泡を割って高スコアを目指そう！','';
             en: 'Pop bubbles and aim for high scores!' }
@@ -905,7 +905,7 @@ export class SEOMetaManager {
      */''
     private _generateUrl(context: MetadataContext = { )'): string {''
         const path = context.path || (typeof window !== 'undefined' ? window.location.pathname: '/'),
-        return getLocalizedUrl(this.currentLang, path); }
+        return getLocalizedUrl(this.currentLang, path) }
     }
     
     /**
@@ -925,14 +925,14 @@ export class SEOMetaManager {
     /**
      * Twitter用画像の取得
      */'
-    private _getTwitterImage(metadata: Metadata): string { // Twitter専用画像がある場合''
-        if(metadata.twitterImage') {
+    private _getTwitterImage(metadata: Metadata): string { // Twitter専用画像がある場合
+        if(metadata.twitterImage) {
             
         }
             return metadata.twitterImage; }
         }
         ';
-        // Twitter Card用の画像を使用''
+        // Twitter Card用の画像を使用
         const twitterImageUrl = getSocialImageUrl('twitter', 'summaryLarge');
         
         // Open Graph画像をフォールバック
@@ -941,7 +941,7 @@ export class SEOMetaManager {
     
     /**
      * キャッシュの更新
-     */'
+     */
     private _updateCache(metadata: Metadata): void { ''
         Object.entries(metadata).forEach(([key, value]') => { ''
             if (typeof value === 'string') { }
@@ -971,7 +971,7 @@ export class SEOMetaManager {
         });
         
         // 長さチェック
-        const title = document.title;'
+        const title = document.title;
         if (title.length > 60) { ' }'
             report.warnings.push(`Title too long: ${title.length) characters (recommended: 60)`'});
         }'
@@ -995,8 +995,8 @@ export class SEOMetaManager {
         this.dynamicMetaHandlers.clear();
         
         if(this.debouncedUpdate) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             (this.debouncedUpdate as any).cancel? .('); }
         }'

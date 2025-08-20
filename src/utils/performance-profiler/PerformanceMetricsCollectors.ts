@@ -8,7 +8,7 @@ interface FrameMetrics { frameNumber: number,
     timestamp: number,
     frameTime: number,
     fps: number,
-    jank: number; }
+    jank: number }
 }
 
 interface FrameMetricsData { current: {
@@ -34,7 +34,7 @@ interface MemoryMetrics { timestamp: number,
     available: number,
     gc: {
         detected: boolean,
-        reclaimed: number; }
+        reclaimed: number }
     };
 }
 
@@ -61,7 +61,7 @@ interface RenderMetrics { timestamp: number,
     name: string,
     startTime: number,
     endTime?: number;
-    duration: number; }
+    duration: number }
 }
 
 interface RenderMetricsData { recent: RenderMetrics[],
@@ -71,7 +71,7 @@ interface RenderMetricsData { recent: RenderMetrics[],
         customMeasures: number,
         averageDuration: number,
         maxDuration: number,
-        minDuration: number; }
+        minDuration: number }
     };
 }
 
@@ -81,7 +81,7 @@ interface NetworkTiming { dns: number,
     ssl: number,
     request: number,
     response: number,
-    total: number; }
+    total: number }
 }
 
 interface NetworkMetrics { timestamp: number,
@@ -92,13 +92,13 @@ interface NetworkMetrics { timestamp: number,
     transferSize: number,
     encodedBodySize: number,
     decodedBodySize: number,
-    timing: NetworkTiming;
+    timing: NetworkTiming
     }
 }
 
 interface NetworkResourceType { count: number,
     totalSize: number,
-    totalTime: number; }
+    totalTime: number }
 }
 
 interface NetworkMetricsData { recent: NetworkMetrics[],
@@ -106,30 +106,30 @@ interface NetworkMetricsData { recent: NetworkMetrics[],
         totalRequests: number,
         totalTransfer: number,
         averageDuration: number,
-        byType: Record<string, NetworkResourceType>; }
+        byType: Record<string, NetworkResourceType> }
     };
     timing: { averageDNS: number,
         averageTCP: number,
         averageRequest: number,
-        averageResponse: number; }
+        averageResponse: number }
     };
 }
 
 // User interaction types
 interface Coordinates { x: number,
-    y: number; }
+    y: number }
 }
 
 interface InteractionMetrics { timestamp: number,
     type: string,
     target: string,
     responseTime: number,
-    coordinates: Coordinates | null; }
+    coordinates: Coordinates | null }
 }
 
 interface InteractionTypeStats { count: number,
     totalResponseTime: number,
-    averageResponseTime: number; }
+    averageResponseTime: number }
 }
 
 interface InteractionMetricsData { recent: InteractionMetrics[],
@@ -138,7 +138,7 @@ interface InteractionMetricsData { recent: InteractionMetrics[],
         averageResponseTime: number,
         maxResponseTime: number,
         minResponseTime: number,
-        byType: Record<string, InteractionTypeStats>; }
+        byType: Record<string, InteractionTypeStats> }
     };
 }
 
@@ -146,7 +146,7 @@ interface InteractionMetricsData { recent: InteractionMetrics[],
 interface DOMMetrics { nodes: number,
     images: number,
     scripts: number,
-    stylesheets: number; }
+    stylesheets: number }
 }
 
 interface StorageMetric { used?: number;
@@ -155,17 +155,17 @@ interface StorageMetric { used?: number;
 }
 
 interface StorageMetrics { localStorage: StorageMetric,
-    sessionStorage: StorageMetric;
+    sessionStorage: StorageMetric
     }
 }
 
-interface CacheMetrics { estimated: string; }
+interface CacheMetrics { estimated: string }
 }
 
 interface ResourceMetrics { timestamp: number,
     dom: DOMMetrics,
     storage: StorageMetrics,
-    cache: CacheMetrics;
+    cache: CacheMetrics
     }
 }
 
@@ -181,19 +181,19 @@ interface ResourceMetricsData { current: ResourceMetrics,
 interface CustomMetric { timestamp: number,
     name: string,
     value: number,
-    metadata: Record<string, any>; }
+    metadata: Record<string, any> }
 }
 
 interface CustomMetricStats { min: number,
     max: number,
     average: number,
-    sum: number; }
+    sum: number }
 }
 
 interface CustomMetricSummary { current: number,
     count: number,
     recent: CustomMetric[],
-    statistics: CustomMetricStats;
+    statistics: CustomMetricStats
     }
 }
 
@@ -251,7 +251,7 @@ export class FrameMetricsCollector {
             this.frameHistory.push(frameMetrics);
             if(this.frameHistory.length > this.maxHistorySize) {'
                 '';
-                this.frameHistory.shift('')';
+                this.frameHistory.shift()';
             this.notifyCallbacks('frame', frameMetrics);
 
             }
@@ -290,10 +290,10 @@ export class FrameMetricsCollector {
     }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }'
+            try {); }
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('Frame metrics callback error:', error); }
+            } catch (error) { ''
+                console.error('Frame metrics callback error:', error) }
             }
         });
     }
@@ -324,7 +324,7 @@ export class MemoryMetricsCollector {
         this.callbacks = []; }
     }'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('Memory Metrics Collector initialized');
         this.collecting = true;
         this.startCollection();
@@ -338,13 +338,13 @@ export class MemoryMetricsCollector {
                 this.memoryHistory.push(memoryMetrics);'
                 if (this.memoryHistory.length > this.maxHistorySize) {'
             }'
-                    this.memoryHistory.shift('') }'
+                    this.memoryHistory.shift() }'
                 this.notifyCallbacks('memory', memoryMetrics); }
             }
         }, 1000); // Collect every second
-    }'
+    }
 '';
-    private collectMemoryMetrics('')';
+    private collectMemoryMetrics()';
         if (!('memory' in performance) || !(performance as any).memory) { return null; }
         }
 
@@ -419,10 +419,10 @@ export class MemoryMetricsCollector {
     }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }'
+            try {); }
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('Memory metrics callback error:', error); }
+            } catch (error) { ''
+                console.error('Memory metrics callback error:', error) }
             }
         });
     }
@@ -458,12 +458,12 @@ export class RenderMetricsCollector {
         this.paintObserver = null; }
     }'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('Render Metrics Collector initialized');
         this.setupPaintObserver();
     }'
 '';
-    private setupPaintObserver('')';
+    private setupPaintObserver()';
         if('PerformanceObserver' in window) {
             this.paintObserver = new PerformanceObserver((list) => { 
         }
@@ -471,11 +471,11 @@ export class RenderMetricsCollector {
                     this.handlePaintEntry(entry); }'
                 });''
             }');
-';
-            try { ' }'
+';'
+            try { }'
                 this.paintObserver.observe({ entryTypes: ['paint', 'measure'] });''
-            } catch (error') { ''
-                console.warn('Paint observer setup failed:', error); }
+            } catch (error) { ''
+                console.warn('Paint observer setup failed:', error) }
             }
         }
     }
@@ -491,7 +491,7 @@ export class RenderMetricsCollector {
         this.renderHistory.push(renderMetrics);
         if(this.renderHistory.length > this.maxHistorySize) {'
             '';
-            this.renderHistory.shift('');
+            this.renderHistory.shift();
         }'
         this.notifyCallbacks('render', renderMetrics'); }
     }'
@@ -506,12 +506,12 @@ export class RenderMetricsCollector {
              }
             performance.mark(`${label)-end`});
             performance.measure(label, `${label}-start`, `${ label)-end`);
-            ';
+            ';'
             const renderMetrics: RenderMetrics = {''
                 timestamp: Date.now(''';
                 type: 'custom',
                 name: label,
-                startTime: this.renderStartTime,);
+                startTime: this.renderStartTime);
                 endTime);
                 duration }
             };
@@ -519,7 +519,7 @@ export class RenderMetricsCollector {
             this.renderHistory.push(renderMetrics);
             if(this.renderHistory.length > this.maxHistorySize) {'
                 '';
-                this.renderHistory.shift('')';
+                this.renderHistory.shift()';
             this.notifyCallbacks('render', renderMetrics);
             }
             this.renderStartTime = null; }
@@ -553,8 +553,8 @@ export class RenderMetricsCollector {
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
             try {); }'
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('Render metrics callback error:', error); }
+            } catch (error) { ''
+                console.error('Render metrics callback error:', error) }
             }
         });
     }
@@ -586,12 +586,12 @@ export class NetworkMetricsCollector {
         this.resourceObserver = null; }
     }'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('Network Metrics Collector initialized');
         this.setupResourceObserver();
     }'
 '';
-    private setupResourceObserver('')';
+    private setupResourceObserver()';
         if('PerformanceObserver' in window) {
             this.resourceObserver = new PerformanceObserver((list) => { 
         }
@@ -599,11 +599,11 @@ export class NetworkMetricsCollector {
                     this.handleResourceEntry(entry); }'
                 });''
             }');
-';
-            try { ' }'
+';'
+            try { }'
                 this.resourceObserver.observe({ entryTypes: ['resource'] });''
-            } catch (error') { ''
-                console.warn('Resource observer setup failed:', error); }
+            } catch (error) { ''
+                console.warn('Resource observer setup failed:', error) }
             }
         }
     }
@@ -633,7 +633,7 @@ export class NetworkMetricsCollector {
         this.networkHistory.push(networkMetrics);
         if(this.networkHistory.length > this.maxHistorySize) {'
             '';
-            this.networkHistory.shift('');
+            this.networkHistory.shift();
         }'
         this.notifyCallbacks('network', networkMetrics); }
     }'
@@ -694,10 +694,10 @@ export class NetworkMetricsCollector {
     }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }'
+            try {); }
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('Network metrics callback error:', error); }
+            } catch (error) { ''
+                console.error('Network metrics callback error:', error) }
             }
         });
     }
@@ -730,7 +730,7 @@ export class UserInteractionCollector {
         this.eventListeners = new Map(); }
     }'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('User Interaction Collector initialized');
         this.setupEventListeners();
     }'
@@ -753,7 +753,7 @@ export class UserInteractionCollector {
             const responseTime = performance.now() - startTime;
             
             const interactionMetrics: InteractionMetrics = {
-                timestamp,';
+                timestamp,
                 type,'';
                 target: (event.target as Element)? .tagName?.toLowerCase(') || 'unknown',
                 responseTime, : undefined }
@@ -763,7 +763,7 @@ export class UserInteractionCollector {
             this.interactionHistory.push(interactionMetrics);
             if(this.interactionHistory.length > this.maxHistorySize) {'
                 '';
-                this.interactionHistory.shift('');
+                this.interactionHistory.shift();
             }'
             this.notifyCallbacks('interaction', interactionMetrics); }
         });
@@ -826,10 +826,10 @@ export class UserInteractionCollector {
     }
 
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
-            try {); }'
+            try {); }
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('Interaction metrics callback error:', error); }
+            } catch (error) { ''
+                console.error('Interaction metrics callback error:', error) }
             }
         });
     }
@@ -861,7 +861,7 @@ export class ResourceMetricsCollector {
         this.collectionInterval = null; }
     }'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('Resource Metrics Collector initialized');
         this.startCollection();
     }
@@ -872,14 +872,14 @@ export class ResourceMetricsCollector {
                 this.resourceHistory.push(resourceMetrics);'
                 if (this.resourceHistory.length > this.maxHistorySize) {'
             }'
-                    this.resourceHistory.shift('') }'
+                    this.resourceHistory.shift() }'
                 this.notifyCallbacks('resource', resourceMetrics); }
             }
         }, 5000); // Collect every 5 seconds
     }
-';
+';'
     private collectResourceMetrics(): ResourceMetrics { ''
-        const timestamp = Date.now('')';
+        const timestamp = Date.now()';
                 nodes: document.querySelectorAll('*').length,
                 images: document.images.length,
                 scripts: document.scripts.length,
@@ -894,28 +894,27 @@ export class ResourceMetricsCollector {
 
     private getStorageMetrics(): StorageMetrics { const storage: StorageMetrics = { }
             localStorage: {},
-            sessionStorage: {}
-        },
-        ';
+            sessionStorage: {},
+        ';'
         try { storage.localStorage = {''
                 used: JSON.stringify(localStorage').length,'';
-                available: 'unknown' // Browser-dependent }'
+                available: 'unknown' // Browser-dependent }
             };''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             storage.localStorage = { error: 'Access denied' }
         }
-';
+';'
         try { storage.sessionStorage = {''
                 used: JSON.stringify(sessionStorage').length,'';
                 available: 'unknown' }'
             };''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             storage.sessionStorage = { error: 'Access denied' }
         }
 
         return storage;
     }
-';
+';'
     private getCacheMetrics(): CacheMetrics { ''
         // Simplified cache metrics (would need more specific implementation');'
         return { ''
@@ -925,7 +924,7 @@ export class ResourceMetricsCollector {
     }
 
     getMetrics(): ResourceMetricsData | null { if (this.resourceHistory.length === 0) return null;
-';
+';'
         const current = this.resourceHistory[this.resourceHistory.length - 1];''
         const recent = this.resourceHistory.slice(-10');
 
@@ -948,8 +947,8 @@ export class ResourceMetricsCollector {
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
             try {); }'
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('Resource metrics callback error:', error); }
+            } catch (error) { ''
+                console.error('Resource metrics callback error:', error) }
             }
         });
     }
@@ -977,7 +976,7 @@ export class CustomMetricsCollector {
         this.callbacks = []; }
     }'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('Custom Metrics Collector initialized');
     }
 
@@ -997,13 +996,13 @@ export class CustomMetricsCollector {
         history.push(metric);
 
         // Keep only last 100 entries per metric
-        if(history.length > 100) {'
+        if(history.length > 100) {
             '';
-            history.shift('');
+            history.shift();
         }'
         this.notifyCallbacks('custom', metric); }
     }
-';
+';'
     incrementCounter(name: string, amount: number = 1, metadata: Record<string, any> = { ): void {''
         const current = this.getLatestValue(name') || 0;'
         this.recordMetric(name, current + amount, { ')'
@@ -1014,7 +1013,7 @@ export class CustomMetricsCollector {
 '';
     recordTiming(name: string, startTime: number, endTime: number = performance.now(), metadata: Record<string, any> = {}'): void { const duration = endTime - startTime;'
         this.recordMetric(name, duration, { ''
-            type: 'timing', );
+            type: 'timing' );
             startTime);
             endTime,);
             ...metadata ); }
@@ -1054,8 +1053,8 @@ export class CustomMetricsCollector {
     private notifyCallbacks(type: string, data: any): void { this.callbacks.forEach(callback => { )
             try {); }'
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('Custom metrics callback error:', error); }
+            } catch (error) { ''
+                console.error('Custom metrics callback error:', error) }
             }
         });
     }

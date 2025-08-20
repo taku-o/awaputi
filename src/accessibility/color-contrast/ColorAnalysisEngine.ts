@@ -8,7 +8,7 @@ interface AnalysisEngineConfig { enableDetailedAnalysis: boolean,
     includeImages: boolean,
     autoGenerateRecommendations: boolean,
     analysisDepth: 'quick' | 'standard' | 'comprehensive',
-    saveAnalysisHistory: boolean; }
+    saveAnalysisHistory: boolean }
 }
 
 interface AnalysisStatistics { totalElements: number,
@@ -16,19 +16,19 @@ interface AnalysisStatistics { totalElements: number,
     contrastIssues: number,
     colorBlindnessIssues: number,
     averageContrast: number,
-    wcagComplianceRate: number; }
+    wcagComplianceRate: number }
 }
 
 interface PerformanceMetrics { analysisTimes: number[],
     elementProcessingRate: number,
-    cacheHitRate: number; }
+    cacheHitRate: number }
 }
 
 interface RGB { r: number,
     g: number,
-    b: number; }
+    b: number }
 }
-';
+';'
 interface ColorPalette { ''
     colors: (RGB | null')[],
     colorUsage: Record<string, number>;
@@ -36,28 +36,28 @@ interface ColorPalette { ''
     dominantColors: DominantColor[],
     colorHarmony: ColorHarmony,
     diversity: ColorDiversity,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface DominantColor { color: string,
-    count: number; }
+    count: number }
 }
 
 interface ColorHarmony { harmonyType: string,
     harmonyScore: number,
-    suggestions: string[]; }
+    suggestions: string[] }
 }
 
 interface ColorDiversity { uniqueColors: number,'
     diversityScore: number,'';
-    complexity: 'low' | 'medium' | 'high'; }
+    complexity: 'low' | 'medium' | 'high' }
 }
 
 interface AccessibilityResults { compliantElements: ElementAnalysis[],
     nonCompliantElements: ElementAnalysis[],
     warnings: Warning[],
     statistics: AccessibilityStatistics,
-    recommendations: Recommendation[];
+    recommendations: Recommendation[]
     }
 }
 
@@ -71,12 +71,12 @@ interface ElementAnalysis { element: HTMLElement,
     isLargeText: boolean,
     warnings: Warning[],
     recommendations?: string[];
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface Warning { type: string,'
     message: string,'';
-    severity: 'info' | 'warning' | 'error' | 'critical'; }
+    severity: 'info' | 'warning' | 'error' | 'critical' }
 }
 
 interface AccessibilityStatistics { totalElements: number,
@@ -84,27 +84,27 @@ interface AccessibilityStatistics { totalElements: number,
     nonCompliantElements: number,
     complianceRate: number,
     averageContrast: number,
-    warningCount: number; }
+    warningCount: number }
 }
-';
+';'
 interface Recommendation { category: string,''
     priority: 'low' | 'medium' | 'high',
     title: string,
     description: string,
-    actions: string[]; }
+    actions: string[] }
 }
 
 interface UsageAnalysis { patterns: any[],
     contexts: Map<string, Set<string>>;
     semanticUsage: Map<string, any>;
     inconsistencies: any[],
-    recommendations: any[]; }
+    recommendations: any[] }
 }
 
 interface AnalysisHistoryEntry { type: string,
     results: any,
     timestamp: number,
-    duration: number; }
+    duration: number }
 }
 
 interface ColorAnalysisOptions { groupSimilarColors?: boolean;
@@ -122,7 +122,7 @@ interface ContrastResult { contrastRatio: number,
         passes: boolean,
         level: string }
     },
-    textProperties: { isLargeText: boolean; }
+    textProperties: { isLargeText: boolean }
     };
     recommendations?: string[];
 }
@@ -140,7 +140,7 @@ interface ContrastCalculator { analyzeColorPair: (
 interface ColorSuggestion { foreground?: string;
     background?: string;
     contrastRatio: number,
-    improvement: number; }
+    improvement: number }
 }
 
 export class ColorAnalysisEngine {
@@ -149,7 +149,7 @@ export class ColorAnalysisEngine {
     private analysisHistory: AnalysisHistoryEntry[];
     private statistics: AnalysisStatistics;
     private performanceMetrics: PerformanceMetrics;
-    private initialized: boolean';
+    private initialized: boolean;
 '';
     constructor(config: Partial<AnalysisEngineConfig> = {)') {
         this.config = {
@@ -185,17 +185,17 @@ export class ColorAnalysisEngine {
 
     /**
      * Initialize analysis engine
-     */'
+     */
     initialize(): boolean { ''
         if (this.initialized') return true;'
 '';
         console.log('ColorAnalysisEngine: Initializing...'),
-        ';
-        try {''
-            this.resetAnalysisData('')';
+        ';'
+        try {'
+            this.resetAnalysisData()';
             console.log('ColorAnalysisEngine: Initialized successfully'),';
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ColorAnalysisEngine: Initialization error:', error);
             return false; }
         }
@@ -206,7 +206,7 @@ export class ColorAnalysisEngine {
      */'
     async analyzeColorPalette(elements: HTMLElement[], options: ColorAnalysisOptions = {}): Promise<ColorPalette> { ''
         if(!this.initialized') {'
-            ';
+            ';'
         }'
             throw new Error('ColorAnalysisEngine must be initialized first'); }
         }
@@ -253,16 +253,16 @@ export class ColorAnalysisEngine {
                 dominantColors: this.findDominantColors(colorUsage, 10),
                 colorHarmony: this.analyzeColorHarmony(Array.from(colorMap.values()),
                 diversity: this.calculateColorDiversity(colorMap),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };
 
             // 分析時間を記録
             const analysisTime = performance.now() - analysisStartTime;
             this.performanceMetrics.analysisTimes.push(analysisTime);
 
-            return palette;'
+            return palette;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ColorAnalysisEngine: Palette analysis error:', error);
             throw error; }
         }
@@ -340,8 +340,8 @@ export class ColorAnalysisEngine {
             }
                     accessibilityResults); }
             }
-';
-            // 分析履歴に保存''
+;
+            // 分析履歴に保存
             if(this.config.saveAnalysisHistory') {'
                 this.analysisHistory.push({')'
                     type: 'accessibility_evaluation');
@@ -354,7 +354,7 @@ export class ColorAnalysisEngine {
 
             return accessibilityResults;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ColorAnalysisEngine: Accessibility evaluation error:', error);
             throw error; }
         }
@@ -414,9 +414,9 @@ export class ColorAnalysisEngine {
             // 使用パターンに基づく推奨事項
             usageAnalysis.recommendations = this.generateUsageRecommendations(usageAnalysis);
 
-            return usageAnalysis;'
+            return usageAnalysis;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ColorAnalysisEngine: Usage assessment error:', error);
             throw error; }
         }
@@ -425,7 +425,7 @@ export class ColorAnalysisEngine {
     /**
      * Suggest colors for better contrast
      */'
-    suggestColors(foreground: string, background: string, requiredRatio: number): ColorSuggestion | undefined { try {''
+    suggestColors(foreground: string, background: string, requiredRatio: number): ColorSuggestion | undefined { try {'
             // Simple color suggestion logic (placeholder');'
             return { ''
                 foreground: '#000000','';
@@ -433,7 +433,7 @@ export class ColorAnalysisEngine {
                 contrastRatio: 21, };
                 improvement: 100 }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ColorAnalysisEngine: Color suggestion error:', error);
             return undefined; }
         }
@@ -443,38 +443,38 @@ export class ColorAnalysisEngine {
 
     /**
      * Extract colors from element and styles
-     */'
+     */
     private extractElementColors(element: HTMLElement, styles: CSSStyleDeclaration): (RGB | null)[] { ''
         const colors: (RGB | null')[] = [],
         
         try {
-            // テキスト色'
+            // テキスト色
             const textColor = styles.color;''
             if(textColor && textColor !== 'transparent') {'
-                ';
+                ';'
             }'
                 colors.push(this.parseColor(textColor)'); }
             }
 
-            // 背景色'
+            // 背景色
             const bgColor = styles.backgroundColor;''
             if (bgColor && bgColor !== 'transparent' && bgColor !== 'rgba(0, 0, 0, 0')') { ''
                 colors.push(this.parseColor(bgColor)'); }
             }
 
-            // ボーダー色'
+            // ボーダー色
             const borderColor = styles.borderColor;''
             if(borderColor && borderColor !== 'transparent') {'
-                ';
+                ';'
             }'
                 colors.push(this.parseColor(borderColor)'); }
             }
 
-            // その他の装飾色（アウトライン、シャドウなど）'
+            // その他の装飾色（アウトライン、シャドウなど）
             const outlineColor = styles.outlineColor;''
             if (outlineColor && outlineColor !== 'transparent') { colors.push(this.parseColor(outlineColor);' }'
-            } catch (error') { ''
-            console.warn('Color extraction failed for element:', error); }
+            } catch (error) { ''
+            console.warn('Color extraction failed for element:', error) }
         }
 
         return colors.filter(color => color !== null);
@@ -494,7 +494,7 @@ export class ColorAnalysisEngine {
 
             // コントラスト分析
             const contrastResult = contrastCalculator.analyzeColorPair(;
-                foregroundColor,);
+                foregroundColor);
                 backgroundColor);
                 parseFloat(styles.fontSize),
                 this.parseFontWeight(styles.fontWeight);
@@ -510,9 +510,9 @@ export class ColorAnalysisEngine {
                 warnings: this.generateElementWarnings(contrastResult),
                 recommendations: contrastResult.recommendations, };
                 timestamp: Date.now(); }
-            };'
+            };
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Element color analysis failed:', error);
             return null; }
         }
@@ -524,8 +524,8 @@ export class ColorAnalysisEngine {
     private parseColor(colorStr: string'): RGB | null { ''
         if (!colorStr || colorStr === 'transparent'') return null;
 
-        try {'
-            // 簡略化された色パーサー''
+        try {
+            // 簡略化された色パーサー
             if (colorStr.startsWith('#')') {''
                 const hex = colorStr.replace('#', '');
                 if(hex.length === 6) {
@@ -546,9 +546,9 @@ export class ColorAnalysisEngine {
                     b: parseInt(rgbMatch[3]); }
                 };
             }
-';
+';'
             return null;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Color parsing failed:', colorStr, error);
             return null; }
         }
@@ -594,7 +594,7 @@ export class ColorAnalysisEngine {
     /**
      * Analyze color harmony'
      */''
-    private analyzeColorHarmony(colors: (RGB | null)[]'): ColorHarmony { // 色調和の基本分析（簡略版）'
+    private analyzeColorHarmony(colors: (RGB | null)[]'): ColorHarmony { // 色調和の基本分析（簡略版）
         return { ''
             harmonyType: 'mixed',';
             harmonyScore: 0.75,' };'
@@ -645,7 +645,7 @@ export class ColorAnalysisEngine {
         if(contrastResult.contrastRatio < 3.0') {'
             warnings.push({''
                 type: 'critical_contrast',')';
-                message: 'Critically low contrast ratio',');
+                message: 'Critically low contrast ratio',')
         }'
                 severity: 'critical'); }
         }
@@ -661,7 +661,7 @@ export class ColorAnalysisEngine {
         if(results.statistics.complianceRate < 80') {'
             recommendations.push({''
                 category: 'Critical',')';
-                priority: 'high',');
+                priority: 'high',')
         }'
                 title: 'Improve overall color contrast'),' }'
                 description: `Only ${results.statistics.complianceRate.toFixed(1'})}% of elements meet WCAG standards`,'
@@ -676,7 +676,7 @@ export class ColorAnalysisEngine {
         if(results.warnings.length > 10') {'
             recommendations.push({''
                 category: 'Warnings','';
-                priority: 'medium',';
+                priority: 'medium','
         }'
                 title: 'Address color accessibility warnings', })
                 description: `${results.warnings.length} warnings found`)'
@@ -726,7 +726,7 @@ export class ColorAnalysisEngine {
     private generateUsageRecommendations(usageAnalysis: UsageAnalysis): any[] { return [], }
 
     /**
-     * Update configuration'
+     * Update configuration
      */''
     updateConfig(newConfig: Partial<AnalysisEngineConfig>'): void { this.config = {
             ...this.config,
@@ -739,7 +739,7 @@ export class ColorAnalysisEngine {
      * Destroy and cleanup
      */'
     destroy(): void { ''
-        this.resetAnalysisData('')';
+        this.resetAnalysisData()';
         console.log('ColorAnalysisEngine: Destroyed''), }'
     }''
 }

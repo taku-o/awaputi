@@ -19,11 +19,11 @@ interface NotificationConfig { autoHide: boolean,
     maxConcurrentNotifications: number,
     position: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center',
     showReloadButton: boolean,
-    showCloseButton: boolean; }
+    showCloseButton: boolean }
 }
-';
+';'
 interface MainController { ''
-    determineSeverity?: (errorInfo: ErrorInfo') => string; }
+    determineSeverity?: (errorInfo: ErrorInfo') => string }
 }'
 '';
 type NotificationAction = 'dismiss' | 'reload' | 'report';''
@@ -48,7 +48,7 @@ export class UtilsErrorReporter {
         // Notification configuration
         this.notificationConfig = {
             autoHide: true,
-            hideDelay: 10000, // 10 seconds';
+            hideDelay: 10000, // 10 seconds;
             maxConcurrentNotifications: 3,'';
             position: 'top-right',
             showReloadButton: true,
@@ -57,8 +57,8 @@ export class UtilsErrorReporter {
             showCloseButton: true }
         },
         ';
-        // Active notifications tracking''
-        this.activeNotifications = new Set('')';
+        // Active notifications tracking
+        this.activeNotifications = new Set()';
         console.log('[ErrorReporter] Error reporting component initialized');
     }
     
@@ -77,28 +77,28 @@ export class UtilsErrorReporter {
     /**
      * Determine if user should be notified
      * @param errorInfo - Error information
-     * @returns Whether to notify user'
+     * @returns Whether to notify user
      */''
     private shouldNotifyUser(errorInfo: ErrorInfo'): boolean {
         const { context, message } = errorInfo;
         ';
-        // Canvas-related critical errors''
+        // Canvas-related critical errors
         if (context === 'CANVAS_ERROR' && message.includes('Canvas')') { return true; }
         }
         ';
-        // Browser compatibility issues''
+        // Browser compatibility issues
         if (message.includes('not supported'') || message.includes('not available')') { return true; }
         }
         ';
-        // Network-related issues''
+        // Network-related issues
         if (message.includes('network'') || message.includes('fetch')') { return true; }
         }
         ';
-        // Memory issues''
+        // Memory issues
         if (context === 'MEMORY_WARNING' && message.includes('memory')') { return true; }
         }
         ';
-        // Performance issues''
+        // Performance issues
         if(context === 'PERFORMANCE_WARNING' && message.includes('FPS') { return true; }
         }
         
@@ -137,7 +137,7 @@ export class UtilsErrorReporter {
     /**
      * Create notification DOM element
      * @param errorInfo - Error information
-     * @returns Notification element'
+     * @returns Notification element
      */''
     private createNotificationElement(errorInfo: ErrorInfo'): HTMLElement { const notificationId = ++this.notificationId;''
         const notification = document.createElement('div''); }'
@@ -147,7 +147,7 @@ export class UtilsErrorReporter {
         '';
         const severity = this.mainController.determineSeverity? .(errorInfo') || 'MEDIUM';
         notification.dataset.severity = severity;
-        ';
+        ';'
         notification.innerHTML = `'';
             <div class="error-notification-content">"";
                 <div class="error-notification-header">"";
@@ -215,43 +215,43 @@ export class UtilsErrorReporter {
         const { context, message } = errorInfo;'
         '';
         if(context === 'CANVAS_ERROR'') {'
-            ';
+            ';'
         }'
             return 'グラフィック機能に問題が発生しました。ブラウザを更新してください。'; }
         }'
         '';
         if(context === 'AUDIO_ERROR'') {'
-            ';
+            ';'
         }'
             return '音声機能が利用できません。ゲームは音声なしで続行されます。'; }
         }'
         '';
         if(context === 'STORAGE_ERROR'') {'
-            ';
+            ';'
         }'
             return 'データの保存に問題が発生しました。進行状況が保存されない可能性があります。'; }
         }'
         '';
         if(context === 'MEMORY_WARNING'') {'
-            ';
+            ';'
         }'
             return 'メモリ使用量が多くなっています。パフォーマンスが低下する可能性があります。'; }
         }'
         '';
         if(context === 'PERFORMANCE_WARNING'') {'
-            ';
+            ';'
         }'
             return 'パフォーマンスが低下しています。設定を調整することをお勧めします。'; }
         }'
         '';
         if(context === 'NETWORK_ERROR'') {'
-            ';
+            ';'
         }'
             return 'ネットワーク接続に問題があります。インターネット接続を確認してください。'; }
         }'
         '';
         if(context === 'BROWSER_COMPATIBILITY'') {'
-            ';
+            ';'
         }'
             return 'お使いのブラウザでは一部機能が制限される可能性がありますが、ゲームは続行できます。'; }
         }'
@@ -282,31 +282,31 @@ export class UtilsErrorReporter {
         
         notification.style.cssText = baseStyles;
         ';
-        // Content styles''
+        // Content styles
         const content = notification.querySelector('.error-notification-content') as HTMLElement;''
         if(content') {'
-            ';
+            ';'
         }'
             content.style.cssText = 'padding: 16px;'; }
         }
         ';
-        // Header styles''
+        // Header styles
         const header = notification.querySelector('.error-notification-header') as HTMLElement;''
         if(header') {'
-            ';
+            ';'
         }'
             header.style.cssText = 'display: flex; align-items: center; gap: 8px; margin-bottom: 12px;'; }
         }
         ';
-        // Title styles''
+        // Title styles
         const title = notification.querySelector('.error-notification-title') as HTMLElement;''
         if(title') {'
-            ';
+            ';'
         }'
             title.style.cssText = 'margin: 0; font-size: 16px; font-weight: 600; color: #333; flex: 1;'; }
         }
         ';
-        // Close button styles''
+        // Close button styles
         const closeBtn = notification.querySelector('.error-notification-close') as HTMLElement;''
         if(closeBtn') {
             closeBtn.style.cssText = `;
@@ -325,23 +325,23 @@ export class UtilsErrorReporter {
             `; }
         }
         ';
-        // Message styles''
+        // Message styles
         const messageEl = notification.querySelector('.error-notification-message') as HTMLElement;''
         if(messageEl') {'
-            ';
+            ';'
         }'
             messageEl.style.cssText = 'margin: 0 0 16px 0; color: #555; line-height: 1.4;'; }
         }
         ';
-        // Actions styles''
+        // Actions styles
         const actions = notification.querySelector('.error-notification-actions') as HTMLElement;''
         if(actions') {'
-            ';
+            ';'
         }'
             actions.style.cssText = 'display: flex; gap: 8px; justify-content: flex-end;'; }
         }
         ';
-        // Button styles''
+        // Button styles
         notification.querySelectorAll('.error-btn').forEach(btn => {  ')'
             const button = btn as HTMLElement');''
             const isPrimary = button.classList.contains('error-btn-primary');
@@ -395,15 +395,15 @@ export class UtilsErrorReporter {
      * Attach event listeners to notification
      * @param notification - Notification element'
      */''
-    private attachNotificationEventListeners(notification: HTMLElement'): void { // Close button''
+    private attachNotificationEventListeners(notification: HTMLElement'): void { // Close button
         const closeBtn = notification.querySelector('.error-notification-close') as HTMLElement;''
         if(closeBtn') {'
-            ';
+            ';'
         }'
             closeBtn.addEventListener('click', () => this.dismissNotification(notification)'); }
         }
         ';
-        // Action buttons''
+        // Action buttons
         notification.querySelectorAll('[data-action]').forEach(btn => {  ');''
             btn.addEventListener('click', (e) => {
                 const target = e.target as HTMLElement;
@@ -412,7 +412,7 @@ export class UtilsErrorReporter {
             });''
         }');
         ';
-        // Hover effects''
+        // Hover effects
         notification.addEventListener('mouseenter', (') => {  ' }'
             notification.style.transform = 'translateX(0) scale(1.02')';' }'
         }');'
@@ -430,7 +430,7 @@ export class UtilsErrorReporter {
     private displayNotification(notification: HTMLElement, errorInfo: ErrorInfo): void { document.body.appendChild(notification);
         this.activeNotifications.add(notification);
         ';
-        // Trigger animation''
+        // Trigger animation
         requestAnimationFrame((') => { ''
             notification.style.opacity = '1';' }'
             notification.style.transform = 'translateX(0')'; }
@@ -450,7 +450,7 @@ export class UtilsErrorReporter {
      * Handle notification action
      * @param action - Action type
      * @param notification - Notification element
-     */'
+     */
     private handleNotificationAction(action: NotificationAction, notification: HTMLElement): void { ''
         switch(action') {'
             '';
@@ -459,7 +459,7 @@ export class UtilsErrorReporter {
                 break;''
             case 'reload':'';
                 if(confirm('ページを再読み込みしますか？未保存の変更は失われる可能性があります。') {''
-                    location.reload('')';
+                    location.reload()';
             case 'report':')';
                 this.showReportDialog(notification.dataset.errorId || '');
                 break;
@@ -480,7 +480,7 @@ export class UtilsErrorReporter {
     /**
      * Dismiss notification with animation
      * @param notification - Notification element
-     */'
+     */
     private dismissNotification(notification: HTMLElement): void { ''
         if (!notification || !notification.parentNode') return;'
         '';
@@ -528,7 +528,7 @@ export class UtilsErrorReporter {
     /**
      * Show fallback UI for compatibility issues'
      */''
-    showFallbackUI('')';
+    showFallbackUI()';
         const fallbackDiv = document.createElement('div'');''
         fallbackDiv.id = 'fallbackUI';'
         fallbackDiv.innerHTML = `'';
@@ -628,7 +628,7 @@ export class UtilsErrorReporter {
      * Cleanup reporter resources
      */'
     destroy(): void { ''
-        this.clearAllNotifications('')';
+        this.clearAllNotifications()';
         console.log('[ErrorReporter] Reporter destroyed''); }'
     }''
 }

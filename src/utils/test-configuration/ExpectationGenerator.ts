@@ -37,18 +37,18 @@ interface TestTemplates { [testType: string]: TemplateFunction,
 interface CacheEntry { testType: string,
     expectations: TestExpectations,
     testCode: string,
-    generatedAt: number; }
+    generatedAt: number }
 }
 
 interface ValidationResult { valid: boolean,
     issues: string[],
-    warnings: string[]; }
+    warnings: string[] }
 }
 
 interface GenerationStatistics { totalGenerated: number,
     templates: string[],
     cacheSize: number,
-    lastOptimized: number | null; }
+    lastOptimized: number | null }
 }
 
 /**
@@ -57,7 +57,7 @@ interface GenerationStatistics { totalGenerated: number,
 export class ExpectationGenerator extends BaseComponent { private expectationCache: Map<string, CacheEntry>;
     private templateCache: Map<string, any>;
     private testTemplates!: TestTemplates;
-    private lastOptimized?: number;'
+    private lastOptimized?: number;
 '';
     constructor(mainController: MainController') {'
         '';
@@ -77,7 +77,7 @@ export class ExpectationGenerator extends BaseComponent { private expectationCac
     private setupTestTemplates(): void { this.testTemplates = {
             bubble: this.getBubbleTestTemplate(),
             gameBalance: this.getGameBalanceTestTemplate(),
-            bubbleManager: this.getBubbleManagerTestTemplate(); }
+            bubbleManager: this.getBubbleManagerTestTemplate() }
         };
     }
 
@@ -105,12 +105,12 @@ jest.mock('../../src/core/ConfigurationManager.js', () => ({ : undefined
     getConfigurationManager: jest.fn(() => ({
         get: jest.fn(),
         watch: jest.fn(),
-        set: jest.fn(); }'
+        set: jest.fn() }'
     });''
 }');'
 '';
 jest.mock('../../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({
-        handleError: jest.fn(); }
+        handleError: jest.fn() }
     });
 });
 
@@ -122,7 +122,7 @@ const createMockGameEngine = () => ({
         stroke: jest.fn(),
         fillText: jest.fn(),
         save: jest.fn(),
-        restore: jest.fn(),';
+        restore: jest.fn(),
         translate: jest.fn(),'';
         scale: jest.fn(''';
         fillStyle: '','';
@@ -130,16 +130,16 @@ const createMockGameEngine = () => ({
         lineWidth: 1 })
     })
     particleManager: { )
-        createParticle: jest.fn(); }
+        createParticle: jest.fn() }
     },'
     soundManager: { ''
-        playSound: jest.fn('')';
+        playSound: jest.fn()';
 describe('Bubble Class Configuration Tests', () => { 
     let mockGameEngine;
     
     beforeEach(() => {'
         mockGameEngine = createMockGameEngine();''
-        jest.clearAllMocks('') }'
+        jest.clearAllMocks() }'
     describe('Bubble Type Configuration', () => {' }'
 ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]') => `        test('should create ${bubbleType} bubble with expected configuration', (') => { ' }'
             const bubble = new Bubble(mockGameEngine, 100, 100, '${bubbleType}');'
@@ -149,7 +149,7 @@ ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]') => 
             expect(bubble.y).toBe(100);
             
             // Test configuration values
-            const bubbleConfig = bubble.getTypeConfig();'
+            const bubbleConfig = bubble.getTypeConfig();
             expect(bubbleConfig).toBeDefined();''
             ${config.health ? `expect(bubbleConfig.health).toBe(${config.health)'});` : ''}''
             ${config.score ? `expect(bubbleConfig.score).toBe(${config.score)'});` : ''}''
@@ -186,7 +186,7 @@ ${Object.entries(expectations.bubbleTypes || {}).map(([bubbleType, config]') => 
                 if (expectedConfig.size !== undefined) { expect(actualConfig.size).toBe(expectedConfig.size); }
                 }
                 if(expectedConfig.maxAge !== undefined) {'
-                    ';
+                    ';'
                 }'
                     expect(actualConfig.maxAge).toBe(expectedConfig.maxAge'); }
                 }
@@ -263,7 +263,7 @@ describe('GameBalance Configuration Tests', (') => {  ''
                 if (expectedConfig.size !== undefined) { expect(actualConfig.size).toBe(expectedConfig.size); }
                 }
                 if(expectedConfig.maxAge !== undefined) {'
-                    ';
+                    ';'
                 }'
                     expect(actualConfig.maxAge).toBe(expectedConfig.maxAge'); }
                 }
@@ -325,12 +325,12 @@ jest.mock('../../src/core/ConfigurationManager.js', () => ({ : undefined
     getConfigurationManager: jest.fn(() => ({
         get: jest.fn(),
         watch: jest.fn(),
-        set: jest.fn(); }'
+        set: jest.fn() }'
     });''
 }');'
 '';
 jest.mock('../../src/utils/ErrorHandler.js', () => ({ getErrorHandler: jest.fn(() => ({
-        handleError: jest.fn(); }'
+        handleError: jest.fn() }'
     });''
 }');'
 '';
@@ -345,11 +345,11 @@ describe('BubbleManager Configuration Tests', () => {  let bubbleManager;
                 stroke: jest.fn(),
                 fillText: jest.fn(),
                 save: jest.fn(),
-                restore: jest.fn(); }
+                restore: jest.fn() }
             },
-            particleManager: { createParticle: jest.fn(); }
+            particleManager: { createParticle: jest.fn() }
             },
-            soundManager: { playSound: jest.fn(); }
+            soundManager: { playSound: jest.fn() }
             },
             inputManager: {
                 getMousePosition: jest.fn(() => ({ x: 0, y: 0 });
@@ -358,11 +358,11 @@ describe('BubbleManager Configuration Tests', () => {  let bubbleManager;
         
         bubbleManager = new BubbleManager(mockGameEngine);'
         '';
-        jest.clearAllMocks('')';
+        jest.clearAllMocks()';
     describe('Bubble Creation with Configurations', () => { ' }'
 ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('should create ${bubbleType} bubble with correct configuration', (') => { ' }'
             const bubble = bubbleManager.createBubble(100, 100, '${bubbleType}');
-            ';
+            ';'
             expect(bubble).toBeDefined();''
             expect(bubble.type').toBe('${bubbleType}');
             
@@ -390,7 +390,7 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
             normalBubble.takeDamage(1);
             bossBubble.takeDamage(1);
             
-            expect(normalBubble.currentHealth).toBe(normalHealth - 1); }'
+            expect(normalBubble.currentHealth).toBe(normalHealth - 1); }
             expect(bossBubble.currentHealth).toBe(bossHealth - 1);' }'
         }');'
         '';
@@ -418,7 +418,7 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
             
             // Test aging
             bubble.age = maxAge + 1000; // Exceed max age
-            bubble.update(16.67); // One frame'
+            bubble.update(16.67); // One frame
             ' }'
             expect(bubble.shouldBeRemoved().toBe(true'); }
         };
@@ -460,12 +460,12 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
             this.expectationCache.set(cacheKey, { testType)
                 expectations,);
                 testCode);
-                generatedAt: Date.now(); }
+                generatedAt: Date.now() }
             };
 
-            return testCode;'
+            return testCode;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('test code generation', error);
             return null; }
         }
@@ -502,7 +502,7 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
     /**
      * 期待値の妥当性を検証
      * @param expectations - 期待値
-     * @returns 検証結果'
+     * @returns 検証結果
      */''
     validateExpectations(expectations: TestExpectations'): ValidationResult { const validation: ValidationResult = {
             valid: true,
@@ -517,9 +517,9 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
             return validation; }
         }
 ';
-        // メタデータ検証''
+        // メタデータ検証
         if(!expectations.metadata') {'
-            ';
+            ';'
         }'
             validation.warnings.push('Missing metadata'); }'
         } else {  ''
@@ -532,7 +532,7 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
         }
 
         // バブルタイプ検証
-        if(expectations.bubbleTypes) {'
+        if(expectations.bubbleTypes) {
             '';
             for (const [bubbleType, config] of Object.entries(expectations.bubbleTypes)') {'
         }'
@@ -542,7 +542,7 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
                     continue;
                 }
 ';
-                // 必須プロパティの検証''
+                // 必須プロパティの検証
                 const requiredProps = ['health', 'score', 'size', 'maxAge'];'
                 for (const prop of requiredProps) { if (config[prop] === undefined || config[prop] === null) {' }'
                         validation.warnings.push(`Missing ${prop} for bubble type: ${bubbleType)`'});''
@@ -572,7 +572,7 @@ ${Object.keys(expectations.bubbleTypes || {}').map(bubbleType => `        test('
      * キャッシュをクリア
      */'
     clearCache(): void { this.expectationCache.clear();''
-        this.templateCache.clear('')';
+        this.templateCache.clear()';
         console.log('[ExpectationGenerator] キャッシュをクリアしました'); }
     }
 

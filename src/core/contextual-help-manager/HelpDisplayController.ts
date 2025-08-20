@@ -21,7 +21,7 @@ export interface HelpDisplayConfig { position: HelpPosition,
     dismissible: boolean,
     persistent: boolean,
     maxWidth: number,
-    fontSize: FontSize;
+    fontSize: FontSize
     }
 }
 
@@ -61,14 +61,14 @@ export interface BubbleTypeInfo { name: string,
     points: number,
     strategy: string,
     visual: string,
-    warning?: boolean; }
+    warning?: boolean }
 }
 
 export interface StrategyInfo { name: string,
     description: string,
     techniques: string[],
     difficulty: HelpDifficulty,
-    effectiveness: EffectivenessLevel;
+    effectiveness: EffectivenessLevel
     }
 }
 
@@ -90,69 +90,69 @@ export interface HelpDisplayOptions { targetElement?: HTMLElement;
 
 export interface ActiveHelp { content: HelpContent,
     options: HelpDisplayOptions,
-    timestamp: Date;
+    timestamp: Date
     }
 }
 
 export interface HelpQueue { content: HelpContent,
     options: HelpDisplayOptions,
     priority: DisplayPriority,
-    id: string; }
+    id: string }
 }
 
 export interface DisplayElementsConfig { container: HTMLElement,
     overlay: HTMLElement,
-    closeButton?: HTMLButtonElement;
+    closeButton?: HTMLButtonElement
     }
 }
 
 export interface ResponsiveBreakpoints { mobile: number,
     tablet: number,
-    desktop: number; }
+    desktop: number }
 }
 
 export interface AnimationConfig { duration: number,
     easing: string,
-    delay?: number; }
+    delay?: number }
 }
 
 export interface PositionConstraints { minDistance: number,
     maxDistance: number,
     preferredSide: PositionSide,
-    fallbackSides: PositionSide[];
+    fallbackSides: PositionSide[]
     }
 }
 
 export interface FontSizeMap { small: string,
     medium: string,
     large: string,
-    xl: string; }
+    xl: string }
 }
 
 export interface MediaQueryHandler { query: MediaQueryList,
-    handler: () => void; }
+    handler: () => void }
 }
 
 export interface TabNavigationState { focusableElements: HTMLElement[],
     currentIndex: number,
-    trapped: boolean; }
+    trapped: boolean }
 }
 
 export interface AutoHideTimer { id: number | null,
     duration: number,
-    paused: boolean; }
+    paused: boolean }
 }
 
 export interface HelpDimensions { width: number,
     height: number,
     maxWidth: number,
-    maxHeight: number; }
+    maxHeight: number }
 }
 
 export interface ViewportConstraints { width: number,
     height: number,
     scrollX: number,
-    scrollY: number; }
+    scrollY: number }
 }
 
 export interface ElementBounds { top: number,
@@ -160,13 +160,13 @@ export interface ElementBounds { top: number,
     bottom: number,
     right: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface CalculatedPosition { top: number,
     left: number,
     transform?: string;
-    side: PositionSide;
+    side: PositionSide
     }
 }
 
@@ -186,7 +186,7 @@ export type EffectivenessLevel = 'low' | 'medium' | 'high' | 'very high';''
 export type DisplayPriority = 'low' | 'normal' | 'high' | 'urgent';''
 export type PositionSide = 'top' | 'right' | 'bottom' | 'left';
 
-// 定数'
+// 定数
 export const DEFAULT_DISPLAY_CONFIG: HelpDisplayConfig = { ''
     position: 'contextual','';
     animation: 'slide',
@@ -201,14 +201,14 @@ export const RESPONSIVE_BREAKPOINTS: ResponsiveBreakpoints = { mobile: 768,
     tablet: 1024,
     desktop: 1200 }
 } as const,
-';
+';'
 export const FONT_SIZES: FontSizeMap = { ''
     small: '12px','';
     medium: '14px','';
     large: '16px','';
     xl: '18px' }
 } as const,
-';
+';'
 export const ANIMATION_CONFIGS: Record<AnimationType, AnimationConfig> = { ' }'
     slide: { duration: 300, easing: 'ease-out' },''
     fade: { duration: 300, easing: 'ease-out' },''
@@ -251,12 +251,12 @@ export const HELP_OVERLAY_STYLES = `;
 
 // ユーティリティ関数
 export function calculateOptimalPosition(;
-    targetRect: DOMRect,
+    targetRect: DOMRect
     );
-    helpDimensions: HelpDimensions)';
+    helpDimensions: HelpDimensions);
     viewport: ViewportConstraints'';
 '): CalculatedPosition { const positions = {
-        bottom: {
+        bottom: {'
             top: targetRect.bottom + POSITION_CONSTRAINTS.minDistance,';
             left: targetRect.left,'';
             side: 'bottom' as PositionSide }
@@ -281,7 +281,7 @@ export function calculateOptimalPosition(;
     }
 
     // フォールバック位置をチェック
-    for(const side of POSITION_CONSTRAINTS.fallbackSides) {'
+    for(const side of POSITION_CONSTRAINTS.fallbackSides) {
         const position = positions[side];''
         if (isPositionValid(position, helpDimensions, viewport)') {
     }
@@ -290,7 +290,7 @@ export function calculateOptimalPosition(;
     }
 
     // すべて失敗した場合は中央に配置
-    return { top: viewport.height / 2,'
+    return { top: viewport.height / 2,
         left: viewport.width / 2,'';
         transform: 'translate(-50%, -50%')',' };'
         side: 'center' as PositionSide }
@@ -298,7 +298,7 @@ export function calculateOptimalPosition(;
 }
 
 export function isPositionValid(;
-    position: CalculatedPosition,
+    position: CalculatedPosition
     );
     dimensions: HelpDimensions);
     viewport: ViewportConstraints;
@@ -309,7 +309,7 @@ export function isPositionValid(;
 }
 
 export function adjustPositionForViewport(;
-    position: CalculatedPosition,
+    position: CalculatedPosition
     );
     dimensions: HelpDimensions);
     viewport: ViewportConstraints;
@@ -395,9 +395,9 @@ export class HelpDisplayController {
         // デバウンスされたメソッド
         this.debouncedUpdatePosition = debounce(this.updatePosition.bind(this), 100);
         this.debouncedHandleResize = debounce(this.handleResponsiveChange.bind(this), 150);
-        ';
+        ';'
         this.initializeDisplayElements();''
-        this.setupEventListeners('')';
+        this.setupEventListeners()';
         console.log('[HelpDisplayController] Component initialized');
     }
 
@@ -412,7 +412,7 @@ export class HelpDisplayController {
     /**
      * ヘルプコンテナを作成'
      */''
-    private createHelpContainer('')';
+    private createHelpContainer()';
         this.helpContainer = document.createElement('div'');''
         this.helpContainer.className = 'contextual-help-container';''
         this.helpContainer.setAttribute('role', 'dialog'');''
@@ -430,7 +430,7 @@ export class HelpDisplayController {
     /**
      * ヘルプオーバーレイを作成'
      */''
-    private createHelpOverlay('')';
+    private createHelpOverlay()';
         this.helpOverlay = document.createElement('div'');''
         this.helpOverlay.className = 'contextual-help-overlay';
         this.helpOverlay.style.cssText = HELP_OVERLAY_STYLES;'
@@ -446,12 +446,12 @@ export class HelpDisplayController {
     /**
      * イベントリスナーを設定'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         document.addEventListener('keydown', (e: KeyboardEvent) => {  ''
             if(this.isDisplaying') {'
                 '';
                 if (e.key === 'Escape' && this.displayConfig.dismissible) {''
-                    this.hideHelp('');
+                    this.hideHelp();
             }'
                 if (e.key === 'Tab') {' }'
                     this.handleTabNavigation(e'); }
@@ -459,10 +459,10 @@ export class HelpDisplayController {
             }
         };
 ';
-        // リサイズイベント''
+        // リサイズイベント
         window.addEventListener('resize', this.debouncedHandleResize');
 ';
-        // スクロールイベント''
+        // スクロールイベント
         window.addEventListener('scroll', (') => {  ''
             if (this.isDisplaying && this.displayConfig.position === 'contextual') { }
                 this.debouncedUpdatePosition(); }
@@ -498,7 +498,7 @@ export class HelpDisplayController {
         const isTablet = window.innerWidth <= RESPONSIVE_BREAKPOINTS.tablet;
         
         if(isMobile) {
-        ';
+        ';'
             '';
             this.displayConfig.maxWidth = Math.min(320, window.innerWidth - 32');'
         
@@ -535,7 +535,7 @@ export class HelpDisplayController {
 
         const helpData: ActiveHelp = { content,
             options,
-            timestamp: new Date(); }
+            timestamp: new Date() }
         };
 
         this.activeHelp = helpData;
@@ -561,10 +561,10 @@ export class HelpDisplayController {
             }
             
             // フォーカストラップの設定
-            this.setupFocusTrap();'
+            this.setupFocusTrap();
             '';
-        } catch (error') { ''
-            console.error('[HelpDisplayController] Failed to show help:', error); }
+        } catch (error) { ''
+            console.error('[HelpDisplayController] Failed to show help:', error) }
         } finally { this.animationInProgress = false;
             this.animationState.inProgress = false;
             this.animationState.type = null; }
@@ -578,7 +578,7 @@ export class HelpDisplayController {
             content,';
             options,'';
             priority: options.priority || 'normal',
-            id: generateUniqueId(); }
+            id: generateUniqueId() }
         };
 
         // 優先度順でソート
@@ -590,12 +590,12 @@ export class HelpDisplayController {
     }
 
     /**
-     * ヘルプコンテンツをレンダリング'
+     * ヘルプコンテンツをレンダリング
      */''
     private renderHelpContent(content: HelpContent, options: HelpDisplayOptions'): void { ''
         let html = '';
         ';
-        // タイトル''
+        // タイトル
         if (content.title') {' }'
             html += `<h3 style="margin: 0 0 12px 0; font-size: 1.2em; color: #fff;">${this.escapeHtml(content.title})}</h3>`;
         }
@@ -632,7 +632,7 @@ export class HelpDisplayController {
             html += '</ol>';
         }
         ';
-        // セクション''
+        // セクション
         if (content.sections && content.sections.length > 0') { content.sections.forEach(section => { ') }'
                 html += `<div style="margin-bottom: 12px;">")" }"
                     <h4 style="margin: 0 0 4px 0; color: #fff;">${this.escapeHtml(section.title"})}</h4>""
@@ -661,7 +661,7 @@ export class HelpDisplayController {
             };
         }
 ';
-        // バブル種類''
+        // バブル種類
         if(content.bubbleTypes && content.bubbleTypes.length > 0') {'
             '';
             html += '<div style="margin-bottom: 12px;">';
@@ -677,7 +677,7 @@ export class HelpDisplayController {
             html += '</div>';
         }
 ';
-        // 戦略''
+        // 戦略
         if(content.strategies && content.strategies.length > 0') {'
             '';
             html += '<div style="margin-bottom: 12px;">';
@@ -698,7 +698,7 @@ export class HelpDisplayController {
             html += '</div>';
         }
 ';
-        // アクセシビリティ機能''
+        // アクセシビリティ機能
         if(content.features && content.features.length > 0') {'
             '';
             html += '<div style="margin-bottom: 12px;">';
@@ -741,7 +741,7 @@ export class HelpDisplayController {
             html += '</div>';
         }
         ';
-        // 閉じるボタン''
+        // 閉じるボタン
         if(this.displayConfig.dismissible || options.dismissible') {'
             html += `<button '';
                 class="help-close-button""";
@@ -757,7 +757,7 @@ export class HelpDisplayController {
         // 閉じるボタンのイベントリスナーを設定""
         const closeButton = this.helpContainer.querySelector('.help-close-button') as HTMLButtonElement;''
         if(closeButton') {'
-            ';
+            ';'
         }'
             closeButton.addEventListener('click', () => this.hideHelp(); }
         }
@@ -777,9 +777,9 @@ export class HelpDisplayController {
      */''
     private calculatePosition(targetElement?: HTMLElement'): void { ''
         if(this.displayConfig.position === 'fixed') {'
-            ';
+            ';'
         }'
-            this.setFixedPosition('') }'
+            this.setFixedPosition() }'
         } else if (this.displayConfig.position === 'contextual' && targetElement) { ''
             this.setContextualPosition(targetElement');' }'
         } else if (this.displayConfig.position === 'overlay') { this.setOverlayPosition(); }
@@ -816,7 +816,7 @@ export class HelpDisplayController {
             scrollX: window.scrollX,
             scrollY: window.scrollY }
         },
-        ';
+        ';'
         let position = calculateOptimalPosition(targetRect, helpDimensions, viewport);''
         position = adjustPositionForViewport(position, helpDimensions, viewport');
         
@@ -853,7 +853,7 @@ export class HelpDisplayController {
         this.helpContainer.style.display = 'block';'
         ')';
         if(this.displayConfig.position === 'overlay'') {'
-            ';
+            ';'
         }'
             this.helpOverlay.style.display = 'block'; }
         }
@@ -876,10 +876,10 @@ export class HelpDisplayController {
     /**
      * スライドイン アニメーション'
      */')'
-    private async slideInAnimation('');'
+    private async slideInAnimation();'
         this.helpContainer.style.transform += ' translateY(-20px')';''
         this.helpContainer.style.opacity = '0';
-        ';
+        ';'
         return new Promise<void>(resolve => {  ' }'
             requestAnimationFrame((') => { }'
                 this.helpContainer.style.transition = `all ${config.duration}ms ${config.easing}`;''
@@ -895,7 +895,7 @@ export class HelpDisplayController {
      */''
     private async fadeInAnimation(''';
         this.helpContainer.style.opacity = '0';
-        ';
+        ';'
         return new Promise<void>(resolve => {  ' })'
             requestAnimationFrame((') => { }'
                 this.helpContainer.style.transition = `opacity ${config.duration}ms ${config.easing}`;''
@@ -908,10 +908,10 @@ export class HelpDisplayController {
     /**
      * スケールイン アニメーション'
      */''
-    private async scaleInAnimation('')';
+    private async scaleInAnimation()';
         this.helpContainer.style.transform += ' scale(0.8')';''
         this.helpContainer.style.opacity = '0';
-        ';
+        ';'
         return new Promise<void>(resolve => {  ' }'
             requestAnimationFrame((') => { }'
                 this.helpContainer.style.transition = `all ${config.duration}ms ${config.easing}`;''
@@ -944,10 +944,10 @@ export class HelpDisplayController {
             // キューの次のヘルプを表示)
             if(this.helpQueue.length > 0) {
                 const next = this.helpQueue.shift()!;
-            }'
+            }
                 setTimeout(() => this.showHelp(next.content, next.options), 100);' }'
-            } catch (error') { ''
-            console.error('[HelpDisplayController] Failed to hide help:', error); }
+            } catch (error) { ''
+            console.error('[HelpDisplayController] Failed to hide help:', error) }
         } finally { this.animationInProgress = false;
             this.animationState.inProgress = false; }
         }
@@ -1014,7 +1014,7 @@ export class HelpDisplayController {
      */
     private updateFocusableElements(): void { const elements = Array.from();
             this.helpContainer.querySelectorAll(FOCUSABLE_SELECTOR) as HTMLElement[];
-        ';
+        ';'
         this.tabNavigationState.focusableElements = elements.filter(element => { ')'
             return element.offsetParent !== null && ')'';
                    !element.hasAttribute('disabled') && }
@@ -1119,12 +1119,12 @@ export class HelpDisplayController {
         this.clearQueue();
         this.releaseFocusTrap();
         
-        // メディアクエリハンドラーの削除'
+        // メディアクエリハンドラーの削除
         this.mediaQueryHandlers.forEach(({ query, handler ) => { ' }'
             query.removeListener(handler'); }
         };
         ';
-        // イベントリスナーの削除''
+        // イベントリスナーの削除
         window.removeEventListener('resize', this.debouncedHandleResize);
         
         // DOM要素の削除
@@ -1132,9 +1132,9 @@ export class HelpDisplayController {
         }
         
         if(this.helpOverlay) {
-        ';
+        ';'
             '';
-            this.helpOverlay.remove('');
+            this.helpOverlay.remove();
         }'
         console.log('[HelpDisplayController] Component destroyed''); }'
     }''

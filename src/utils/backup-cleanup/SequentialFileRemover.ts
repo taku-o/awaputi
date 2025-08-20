@@ -11,7 +11,7 @@ interface DeletionSummary { totalFiles: number,
     attempted: number,
     succeeded: number,
     failed: number,
-    skipped: number; }
+    skipped: number }
 }
 
 interface SafetyCheck { overallSafety: boolean,
@@ -21,23 +21,23 @@ interface SafetyCheck { overallSafety: boolean,
 interface BackupFileInfo { size: number,
     lastModified: string,
     contentHash: string,
-    lineCount: number; }
+    lineCount: number }
 }
 
 interface GitCommitInfo { hash: string,
-    message: string; }
+    message: string }
 }
 
 interface GitInfo { hasHistory: boolean,
     lastCommit: GitCommitInfo | null,
     branch: string | null,
-    error?: string; }
+    error?: string }
 }
-';
+';'
 interface RecoveryInstructions { ''
     method: 'git_history' | 'manual',
     commands: string[],
-    notes: string[]; }
+    notes: string[] }
 }
 
 interface BackupRecord { filePath: string,
@@ -52,26 +52,26 @@ interface BackupRecord { filePath: string,
 interface DeletionResult { filePath: string,
     success: boolean,
     deletedAt: string | null,
-    error: string | null; }
+    error: string | null }
 }
 
 interface VerificationResult { filePath: string,
     deleted: boolean,
     verifiedAt: string,
-    error?: string; }
+    error?: string }
 }
 
 interface TestResults { basicImportTest: boolean,
     buildTest: boolean,
-    syntaxTest: boolean; }
+    syntaxTest: boolean }
 }
 
 interface PostDeletionTestResult { passed: boolean,
     tests: TestResults,
     errors: string[],
-    executedAt: string; }
+    executedAt: string }
 }
-';
+';'
 interface DeletionRecord { filePath: string,''
     status: 'deleted' | 'skipped' | 'failed',
     backupRecord?: BackupRecord;
@@ -102,7 +102,7 @@ interface DeletionResults { summary: DeletionSummary,
 }
 
 interface SizeReduction { filesDeleted: number,
-    estimatedBytesFreed: number; }
+    estimatedBytesFreed: number }
 }
 
 interface DeletionReport { summary: DeletionSummary,
@@ -158,7 +158,7 @@ export class SequentialFileRemover {
                 results.summary.attempted++;
                 
                 // 事前安全性確認
-                const finalSafetyCheck = await this.safetyVerifier.verifyDeletionSafety(fileInfo.filePath);'
+                const finalSafetyCheck = await this.safetyVerifier.verifyDeletionSafety(fileInfo.filePath);
                 '';
                 if (!finalSafetyCheck.overallSafety') {
                     results.summary.skipped++;
@@ -185,12 +185,12 @@ export class SequentialFileRemover {
                     // 削除確認
                     const verificationResult = await this.verifyDeletion(fileInfo.filePath);
                     
-                    if (verificationResult.deleted) {'
-                        // 削除後テスト実行''
+                    if (verificationResult.deleted) {
+                        // 削除後テスト実行
                         const testResult = await this.runPostDeletionTests(''';
                             status: 'deleted',
                             backupRecord,
-                            deletionResult,);
+                            deletionResult);
                             verificationResult);
                             testResult,);
                 }
@@ -222,7 +222,7 @@ export class SequentialFileRemover {
                 results.errors.push({)
                     filePath: fileInfo.filePath),
                     error: (error as Error).message,
-                    timestamp: new Date().toISOString(); }
+                    timestamp: new Date().toISOString() }
                 });
             }
         }
@@ -238,7 +238,7 @@ export class SequentialFileRemover {
      */
     async createDeletionBackup(filePath: string): Promise<BackupRecord> { const backup: BackupRecord = {'
             filePath,'';
-            createdAt: new Date().toISOString('')';
+            createdAt: new Date().toISOString()';
             const content = await fs.readFile(filePath, 'utf8');
             const stats = await fs.stat(filePath);
             
@@ -246,7 +246,7 @@ export class SequentialFileRemover {
             const gitInfo = await this.getGitFileInfo(filePath);
             
             backup.fileInfo = {
-                size: stats.size,';
+                size: stats.size,
                 lastModified: stats.mtime.toISOString(),'';
                 contentHash: this.calculateHash(content'),'';
                 lineCount: content.split('\n').length }
@@ -298,10 +298,10 @@ export class SequentialFileRemover {
     async verifyDeletion(filePath: string): Promise<VerificationResult> { const verification: VerificationResult = {
             filePath,
             deleted: false,
-            verifiedAt: new Date().toISOString(); }
+            verifiedAt: new Date().toISOString() }
         };
-';
-        try { // ファイルが存在しないことを確認''
+;
+        try { // ファイルが存在しないことを確認
             await fs.access(filePath');'
             verification.deleted = false;''
             verification.error = 'File still exists'; }
@@ -346,7 +346,7 @@ export class SequentialFileRemover {
     }
 
     /**
-     * 基本インポートテストの実行'
+     * 基本インポートテストの実行
      */''
     async runBasicImportTest(''';
                 'src/core/GameEngine.js','';
@@ -354,12 +354,12 @@ export class SequentialFileRemover {
             ];
             );
             for(const coreFile of coreFiles) {
-            ';
-                try {''
+            ';'
+                try {'
                     await fs.access(coreFile');''
                     const content = await fs.readFile(coreFile, 'utf8'');
                     ';
-                    // 基本的な構文チェック''
+                    // 基本的な構文チェック
                     if (content.includes('SyntaxError') || content.length === 0) {
             
             }
@@ -375,12 +375,12 @@ export class SequentialFileRemover {
     }
 
     /**
-     * 基本ビルドテストの実行'
+     * 基本ビルドテストの実行
      */''
-    async runBasicBuildTest('')';
+    async runBasicBuildTest()';
             await fs.access('./package.json'');
             ';
-            // 基本的なプロジェクト構造の確認''
+            // 基本的なプロジェクト構造の確認
             const requiredDirs = ['src', 'src/core', 'src/scenes'];
             
             for(const dir of requiredDirs) {
@@ -406,14 +406,14 @@ export class SequentialFileRemover {
     async runBasicSyntaxTest(): Promise<boolean> { try {
             // プロジェクト内のJSファイルの基本構文チェック
             const jsFiles = await this.findJavaScriptFiles();
-            const sampleSize = Math.min(jsFiles.length, 10); // 最大10ファイルをサンプル'
+            const sampleSize = Math.min(jsFiles.length, 10); // 最大10ファイルをサンプル
             '';
             for(let i = 0; i < sampleSize; i++') {
                 const file = jsFiles[i];'
-                try {''
+                try {'
                     const content = await fs.readFile(file, 'utf8'');
                     ';
-                    // 明らかな構文エラーをチェック''
+                    // 明らかな構文エラーをチェック
                     if (content.includes('SyntaxError'') || '';
                         content.includes('Unexpected token'') ||'';
                         content.match(/\bimport\s+.*\s+from\s+['"][^'"]*_old\.js['"]/") ||"";
@@ -450,15 +450,15 @@ export class SequentialFileRemover {
                     const fullPath = path.join(dir, entry.name);
                     
                     if(entry.isDirectory() {
-                    ';
-                        ';
+                    ';'
+                        ';'
                     }'
                         await scanDir(fullPath');' }'
                     } else if (entry.name.endsWith('.js'') && !entry.name.includes('_old'') && !entry.name.includes('_original'') && !entry.name.includes('_backup') { jsFiles.push(fullPath); }'
                     }''
-                } catch (error') { // ディレクトリアクセスエラーは無視 }
+                } catch (error) { // ディレクトリアクセスエラーは無視 }
             }
-        }'
+        }
         '';
         await scanDir('./src');
         return jsFiles;
@@ -472,14 +472,14 @@ export class SequentialFileRemover {
             lastCommit: null,
             branch: null }
         },
-';
-        try { ' }'
+';'
+        try { }'
             const { exec } = await import('child_process'');''
             const { promisify } = await import('util');''
             const execAsync = promisify(exec');
 
-            // 最後のコミット情報'
-            try { ' }'
+            // 最後のコミット情報
+            try { }'
                 const { stdout } = await execAsync(`git log -1 --format="%H %s %ai" -- "${ filePath")"`);
                 if(stdout.trim() {"
                     "";
@@ -490,11 +490,11 @@ export class SequentialFileRemover {
                         hash,' }'
                         message: rest.join(' '}),'
                     };''
-                } catch (error') { // Git履歴取得エラーは無視 }
+                } catch (error) { // Git履歴取得エラーは無視 }
             }
 
-            // 現在のブランチ'
-            try { ' }'
+            // 現在のブランチ
+            try { }'
                 const { stdout } = await execAsync('git branch --show-current');
                 gitInfo.branch = stdout.trim();
             } catch (error) { // ブランチ取得エラーは無視 }
@@ -505,14 +505,14 @@ export class SequentialFileRemover {
     }
 
     /**
-     * 復旧手順の生成'
+     * 復旧手順の生成
      */''
     generateRecoveryInstructions(filePath: string, gitInfo: GitInfo'): RecoveryInstructions { const instructions: RecoveryInstructions = {''
             method: 'git_history',
             commands: [],
             notes: [] }
         },
-';
+';'
         if (gitInfo.hasHistory && gitInfo.lastCommit) { instructions.commands.push(') }'
                 `# ${filePath}を復旧するコマンド:`')''
                 `git show ${gitInfo.lastCommit.hash}:"${filePath}" > "${ filePath")"` }
@@ -559,7 +559,7 @@ export class SequentialFileRemover {
     }
 
     /**
-     * 削除実行レポートの生成'
+     * 削除実行レポートの生成
      */''
     generateDeletionReport(deletionResults: DeletionResults'): DeletionReport { const report: DeletionReport = {'
             summary: deletionResults.summary,'';
@@ -578,7 +578,7 @@ export class SequentialFileRemover {
         if(deletedFiles.length > 0) {
             report.sizeReduction = {
                 filesDeleted: deletedFiles.length }
-                estimatedBytesFreed: deletedFiles.reduce((sum, file) => {  }'
+                estimatedBytesFreed: deletedFiles.reduce((sum, file) => {  }
                     return sum + (file.backupRecord?.fileInfo ? file.backupRecord.fileInfo.size: 0),' }'
                 }, 0');
             };

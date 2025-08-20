@@ -30,7 +30,7 @@ export interface ActiveSource { sourceNode: AudioBufferSourceNode,
     gainNode: GainNode,
     filterNode: BiquadFilterNode | null,
     originalVolume: number,
-    layer: PreparedLayer;
+    layer: PreparedLayer
     }
 }
 
@@ -41,7 +41,7 @@ export interface ActiveLayerInfo { id: string,
     name: string,
     type: string,
     volume: number,
-    biomeId: string; }
+    biomeId: string }
 }
 
 /**
@@ -76,12 +76,12 @@ export class BiomeTransitionController {
     // フェード管理
     private readonly fadeManager: {
         activeTransitions: Map<string, any>,
-        crossfadeInProgress: boolean; }
+        crossfadeInProgress: boolean }
     };
 
     constructor(;
         audioContext: AudioContext,
-        audioController: AudioController,
+        audioController: AudioController
     );
         soundGenerator: EnvironmentalSoundGenerator);
         biomeDefinitionManager: BiomeDefinitionManager;
@@ -119,12 +119,12 @@ export class BiomeTransitionController {
             // 新しい環境音をフェードイン
             await this._fadeInEnvironment(newLayers, fadeTime);
              }
-            console.log(`Biome transition completed: ${biome.name)`});'
+            console.log(`Biome transition completed: ${biome.name)`});
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'transitionToBiome',')';
                 component: 'BiomeTransitionController',);
-                biome: biome.name); }
+                biome: biome.name) }
             });
         }
     }
@@ -167,7 +167,7 @@ export class BiomeTransitionController {
             
             // 時間帯バリエーションを追加
             if(timeOfDay) {
-                const timeVariation = this.biomeDefinitionManager.getTimeVariation(timeOfDay);'
+                const timeVariation = this.biomeDefinitionManager.getTimeVariation(timeOfDay);
                 if (timeVariation && timeVariation.additionalLayers) {''
                     for (const timeLayer of timeVariation.additionalLayers') {''
                         if (timeLayer.biomes.includes('all') || timeLayer.biomes.includes(biome.id) {
@@ -192,7 +192,7 @@ export class BiomeTransitionController {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: '_prepareBiomeLayers',')';
-                component: 'BiomeTransitionController'); }
+                component: 'BiomeTransitionController') }
             });
             return [];
         }
@@ -227,7 +227,7 @@ export class BiomeTransitionController {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: '_prepareWeatherLayer',')';
-                component: 'BiomeTransitionController'); }
+                component: 'BiomeTransitionController') }
             });
             return null;
         }
@@ -270,11 +270,11 @@ export class BiomeTransitionController {
             
             await Promise.all(fadePromises);
             this.activeSources.clear();
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: '_fadeOutCurrentEnvironment',')';
-                component: 'BiomeTransitionController'); }
+                component: 'BiomeTransitionController') }
             });
         }
     }
@@ -297,7 +297,7 @@ export class BiomeTransitionController {
                 gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
                 
                 // フィルターを適用（必要に応じて）
-                let filterNode: BiquadFilterNode | null = null,';
+                let filterNode: BiquadFilterNode | null = null,
                 if (layer.filterCutoff) {''
                     filterNode = this.audioContext.createBiquadFilter(''';
                     filterNode.type = 'lowpass';
@@ -327,17 +327,17 @@ export class BiomeTransitionController {
                 // アクティブソースに追加
                 const layerId = `${layer.biomeId}_${layer.name}_${Date.now(})}`;
                 this.activeSources.set(layerId, { sourceNode,
-                    gainNode,);
+                    gainNode);
                     filterNode);
                     originalVolume: layer.volume || 0.5,);
-                    layer: layer); }
+                    layer: layer) }
             }
             
-            console.log(`Faded in ${layers.length) environmental layers`});'
+            console.log(`Faded in ${layers.length) environmental layers`});
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: '_fadeInEnvironment',')';
-                component: 'BiomeTransitionController'); }
+                component: 'BiomeTransitionController') }
             });
         }
     }
@@ -356,14 +356,14 @@ export class BiomeTransitionController {
                         source.filterNode.disconnect(); }
                     } catch (e) { // Already stopped }
                 }
-            }'
+            }
             '';
-            this.activeSources.clear('')';
+            this.activeSources.clear()';
             console.log('All environmental audio stopped');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: 'stopAllEnvironmental',')';
-                component: 'BiomeTransitionController'); }
+                component: 'BiomeTransitionController') }
             });
         }
     }
@@ -383,7 +383,7 @@ export class BiomeTransitionController {
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: 'updateVolume',')';
-                component: 'BiomeTransitionController'); }
+                component: 'BiomeTransitionController') }
             });
         }
     }
@@ -401,9 +401,9 @@ export class BiomeTransitionController {
         for(const [layerId, source] of this.activeSources) {
             layers.push({
                 id: layerId,
-                name: source.layer.name,);
+                name: source.layer.name);
                 type: source.layer.type)';
-                volume: source.originalVolume,');
+                volume: source.originalVolume,')
         }'
                 biomeId: source.layer.biomeId)'); }
         }

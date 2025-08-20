@@ -14,7 +14,7 @@ export interface HelpContext { scene: string,
 
 export interface HelpContent { title: string,
     description: string,
-    tips?: string[]; }
+    tips?: string[] }
     links?: Array<{ text: string; url: string }>;
 }
 
@@ -22,7 +22,7 @@ export interface HelpManagerConfig { enabled: boolean,
     showTips: boolean,
     autoShow: boolean,';
     delay: number,'';
-    position: 'top' | 'bottom' | 'left' | 'right'; }
+    position: 'top' | 'bottom' | 'left' | 'right' }
 }
 
 export class ContextualHelpManager {
@@ -44,9 +44,9 @@ export class ContextualHelpManager {
 
         this.initialize();
     }
-';
+';'
     private initialize(): void { this.loadHelpContent();''
-        this.setupEventListeners('')';
+        this.setupEventListeners()';
         console.log('ContextualHelpManager initialized'); }
     }'
 '';
@@ -59,10 +59,10 @@ export class ContextualHelpManager {
         this.helpContent.set('game.settings', {''
             title: '設定画面',')';
             description: 'ゲームの設定を変更できます',')';
-            tips: ['音量や画質を調整できます', 'アクセシビリティ設定も利用可能']); }
+            tips: ['音量や画質を調整できます', 'アクセシビリティ設定も利用可能']) }
     }'
 '';
-    private setupEventListeners('')';
+    private setupEventListeners()';
         if(typeof window !== 'undefined'') {'
             '';
             document.addEventListener('mouseover', this.handleMouseOver.bind(this)');'
@@ -70,10 +70,10 @@ export class ContextualHelpManager {
             document.addEventListener('mouseout', this.handleMouseOut.bind(this); }
         }
     }
-';
+';'
     private handleMouseOver(event: MouseEvent): void { ''
         if (!this.config.enabled || !this.config.autoShow') return;
-';
+';'
         const target = event.target as HTMLElement;''
         const helpKey = target.getAttribute('data-help');
         
@@ -99,7 +99,7 @@ export class ContextualHelpManager {
     showHelp(contentKey: string, element?: HTMLElement): void { const content = this.helpContent.get(contentKey);
         if (!content) return;'
 '';
-        this.hideHelp('')';
+        this.hideHelp()';
         this.helpElement = document.createElement('div'');''
         this.helpElement.className = 'contextual-help-tooltip';'
         this.helpElement.innerHTML = `' }'
@@ -171,7 +171,7 @@ export class ContextualHelpManager {
 
     destroy(): void { this.hideHelp();
         if(this.showTimer) {'
-            ';
+            ';'
         }'
             clearTimeout(this.showTimer'); }
         }'
@@ -187,6 +187,6 @@ export class ContextualHelpManager {
 
 // シングルトンインスタンス
 let instance: ContextualHelpManager | null = null,
-';
+';'
 export function getContextualHelpManager(): ContextualHelpManager { if (!instance) {''
         instance = new ContextualHelpManager(' })

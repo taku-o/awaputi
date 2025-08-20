@@ -8,7 +8,7 @@
 import { getErrorHandler } from '../utils/ErrorHandler';''
 import { getLoggingSystem } from './LoggingSystem';''
 import { getValidationSystem } from './ValidationSystem';
-';
+';'
 export enum ConfigErrorType { ''
     CONFIGURATION_ACCESS = 'CONFIGURATION_ACCESS','';
     CONFIGURATION_VALIDATION = 'CONFIGURATION_VALIDATION','';
@@ -20,25 +20,25 @@ export enum ConfigErrorType { ''
 }
 
 interface RecoveryStrategy { maxAttempts: number,
-    strategy: (error: Error, context: any) => RecoveryResult; }
+    strategy: (error: Error, context: any) => RecoveryResult }
 }
 
 interface RecoveryResult { success: boolean,
     value?: any;
-    message: string; }
+    message: string }
 }
 
 interface ErrorStats { total: number,
     byType: Map<string, number>;
     recovered: number,
     failed: number,
-    lastReset: number; }
+    lastReset: number }
 }
 
 interface FallbackState { useDefaultValues: boolean,
     disableValidation: boolean,
     disableCache: boolean,
-    safeMode: boolean; }
+    safeMode: boolean }
 }
 
 export class ConfigurationErrorHandler {
@@ -71,9 +71,9 @@ export class ConfigurationErrorHandler {
         this.logger = getLoggingSystem();
         this._initialize();
     }
-';
+';'
     private _initialize(): void { this._setupRecoveryStrategies();''
-        this._setupErrorMonitoring('')';
+        this._setupErrorMonitoring()';
         this.logger.info('ConfigurationErrorHandler initialized', null, 'ConfigurationErrorHandler'); }
     }
 
@@ -87,7 +87,7 @@ export class ConfigurationErrorHandler {
                 
                     
                 
-                }'
+                }
                     this.logger.warn(`設定アクセスエラー、デフォルト値を使用: ${category}.${key}`, { error: error.message,')'
                         defaultValue');' }'
                     }, 'ConfigurationErrorHandler'');
@@ -100,7 +100,7 @@ export class ConfigurationErrorHandler {
                 
                 const fallbackValue = this._generateFallbackValue(category, key);
                 
-                this.logger.warn(`設定アクセスエラー、フォールバック値を生成: ${category}.${key}`, { error: error.message,)'
+                this.logger.warn(`設定アクセスエラー、フォールバック値を生成: ${category}.${key}`, { error: error.message)'
                     fallbackValue)'';
                 '), 'ConfigurationErrorHandler'');
                 
@@ -113,11 +113,11 @@ export class ConfigurationErrorHandler {
     }
 
     private _setupErrorMonitoring(): void { // エラー監視の設定 }
-    }'
+    }
 '';
-    private _generateFallbackValue(category: string, key: string'): any { // 基本的なフォールバック値の生成''
+    private _generateFallbackValue(category: string, key: string'): any { // 基本的なフォールバック値の生成
         if (key.includes('time'') || key.includes('interval')') {
-            return 1000; // 1秒 }'
+            return 1000; // 1秒 }
         }''
         if (key.includes('count'') || key.includes('max')') { return 10; }'
         }''
@@ -142,7 +142,7 @@ export class ConfigurationErrorHandler {
                 } else { this.errorStats.failed++; }
                 }'
                 return result;''
-            } catch (recoveryError') { this.errorStats.failed++;'
+            } catch (recoveryError) { this.errorStats.failed++;'
                 return { success: false,' };'
                     message: '復旧に失敗' }
                 },
@@ -164,12 +164,12 @@ export class ConfigurationErrorHandler {
             byType: new Map(),
             recovered: 0,
             failed: 0,
-            lastReset: Date.now(); }
+            lastReset: Date.now() }
         };
     }
 }
 
 let instance: ConfigurationErrorHandler | null = null,
-';
+';'
 export function getConfigurationErrorHandler(): ConfigurationErrorHandler { if (!instance) {''
         instance = new ConfigurationErrorHandler(' })

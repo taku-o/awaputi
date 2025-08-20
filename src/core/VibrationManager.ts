@@ -67,7 +67,7 @@ export class VibrationManager {'
         
         // デバイス情報
         this.deviceInfo = { hasVibration: false,
-            isGamepad: false,';
+            isGamepad: false,
             batteryLevel: 1.0,'';
             performance: 'high' // 'low', 'medium', 'high' }
         };
@@ -91,7 +91,7 @@ export class VibrationManager {'
             averageIntensity: 0,
             queuedVibrations: 0,
             batteryImpactEstimate: 0,
-            sessionStart: Date.now(); }
+            sessionStart: Date.now() }
         };
         
         // ユーザー設定
@@ -102,7 +102,7 @@ export class VibrationManager {'
                 ui: true,
                 special: true,
                 ambient: false }
-            },'
+            },
             customPatterns: new Map(),'';
             intensityByEvent: new Map(''';
                 alternatives: ['visual', 'audio'];
@@ -137,14 +137,14 @@ export class VibrationManager {'
             
             // バッテリー監視の設定
             this.setupBatteryMonitoring();
-            ';
-            // イベントリスナーの設定''
-            this.setupEventListeners('');
+            ;
+            // イベントリスナーの設定
+            this.setupEventListeners();'
     }'
             console.log('VibrationManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'VIBRATION_MANAGER_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -152,14 +152,14 @@ export class VibrationManager {'
     /**
      * 振動機能の検出'
      */''
-    detectVibrationCapabilities('')';
+    detectVibrationCapabilities()';
         if ('vibrate' in navigator') {'
         this.deviceInfo.hasVibration = true;'
     }'
             console.log('Device vibration support detected''); }
         }
         ';
-        // ゲームパッドの検出''
+        // ゲームパッドの検出
         if('getGamepads' in navigator') {'
             this.deviceInfo.isGamepad = true;'
         }'
@@ -185,7 +185,7 @@ export class VibrationManager {'
         
         // モバイルデバイスの検出
         const isMobile = /mobile|android|iphone|ipad/.test(userAgent);
-        ';
+        ';'
         if (isMobile) {''
             if (memory <= 2 || cores <= 4') {'
     }'
@@ -211,14 +211,14 @@ export class VibrationManager {'
         try {
             // 短い振動でテスト
             const testPattern = [50];
-            const result = navigator.vibrate(testPattern);'
+            const result = navigator.vibrate(testPattern);
             '';
             if (result') {'
     }'
                 console.log('Vibration test successful''); }'
             } else {  ' }'
                 console.warn('Vibration test failed, but API is available');' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('Vibration test error:', error);
             this.deviceInfo.hasVibration = false; }
         }
@@ -227,7 +227,7 @@ export class VibrationManager {'
     /**
      * ユーザー設定の読み込み'
      */''
-    loadUserPreferences('')';
+    loadUserPreferences()';
             const saved = localStorage.getItem('vibrationManager_preferences');
             if(saved) {
                 const preferences = JSON.parse(saved);
@@ -242,10 +242,10 @@ export class VibrationManager {'
                 }
                 
                 // 設定を適用
-                this.config.enabled = this.userPreferences.enabled;'
+                this.config.enabled = this.userPreferences.enabled;
                 this.config.globalIntensity = this.userPreferences.globalIntensity;''
-            } catch (error') { ''
-            console.warn('Failed to load vibration manager preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load vibration manager preferences:', error) }
         }
     }
     
@@ -256,15 +256,15 @@ export class VibrationManager {'
         try {
             const preferences = {
                 ...this.userPreferences,';
-                customPatterns: Array.from(this.userPreferences.customPatterns.entries(),';
+                customPatterns: Array.from(this.userPreferences.customPatterns.entries(),'
     }'
                 intensityByEvent: Array.from(this.userPreferences.intensityByEvent.entries()'); }
             };'
             '';
             localStorage.setItem('vibrationManager_preferences');'
                 JSON.stringify(preferences);''
-        } catch (error') { ''
-            console.warn('Failed to save vibration manager preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save vibration manager preferences:', error) }
         }
     }
     
@@ -274,14 +274,14 @@ export class VibrationManager {'
     startGamepadMonitoring() {'
         '';
         if (!this.deviceInfo.isGamepad') return;
-        ';
-        // ゲームパッド接続イベント'
+        ';'
+        // ゲームパッド接続イベント
     }'
         window.addEventListener('gamepadconnected', (event) => {  }'
             this.handleGamepadConnected(event.gamepad);' }'
         }');
         ';
-        // ゲームパッド切断イベント''
+        // ゲームパッド切断イベント
         window.addEventListener('gamepaddisconnected', (event) => { this.handleGamepadDisconnected(event.gamepad); }
         });
         
@@ -341,21 +341,21 @@ export class VibrationManager {'
     }
     
     /**
-     * バッテリー監視の設定'
+     * バッテリー監視の設定
      */''
-    setupBatteryMonitoring('')';
+    setupBatteryMonitoring()';
         if ('getBattery' in navigator) {'
         '';
             navigator.getBattery().then((battery') => { 
                 this.deviceInfo.batteryLevel = battery.level;
                 ';
-                // バッテリーレベル変更の監視''
+                // バッテリーレベル変更の監視
                 battery.addEventListener('levelchange', () => {
     }
                     this.deviceInfo.batteryLevel = battery.level; }
                     this.handleBatteryLevelChange(battery.level); }
                 });
-                ';
+                ';'
                 console.log(`Battery level: ${Math.round(battery.level * 100})}%`);''
             }).catch((error') => {  ' }'
                 console.warn('Battery API not available:', error); }
@@ -368,9 +368,9 @@ export class VibrationManager {'
      */
     handleBatteryLevelChange(level) {
         if (this.userPreferences.batteryAware) {
-            if (level < 0.2) { // 20%未満'
-                // 低バッテリー時の振動強度減少''
-                this.applyLowBatteryMode('');
+            if (level < 0.2) { // 20%未満
+                // 低バッテリー時の振動強度減少
+                this.applyLowBatteryMode();
     }'
                 console.log('Low battery detected, reducing vibration intensity'); }
             } else if (level > 0.5) { // 50%以上
@@ -432,10 +432,10 @@ export class VibrationManager {'
     /**
      * イベントリスナーの設定
      */
-    setupEventListeners() {'
-        // ゲームイベントの監視''
+    setupEventListeners() {
+        // ゲームイベントの監視
         if (this.gameEngine') {'
-            // バブル関連'
+            // バブル関連
     }'
             this.gameEngine.addEventListener? .('bubblePopped', (event') => { ' }'
                 this.triggerGameEventVibration('bubblePop', event);' }'
@@ -445,7 +445,7 @@ export class VibrationManager {'
                 this.triggerGameEventVibration('bubbleBurst', event);' }'
             }');
             ';
-            // ゲーム進行''
+            // ゲーム進行
             this.gameEngine.addEventListener?.('comboAchieved', (event') => {  ' }'
                 this.triggerGameEventVibration('combo', event);' }'
             }');'
@@ -470,7 +470,7 @@ export class VibrationManager {'
                 this.triggerGameEventVibration('victory', event);' }'
             }');
             ';
-            // ダメージと警告''
+            // ダメージと警告
             this.gameEngine.addEventListener?.('playerDamaged', (event') => {  ' }'
                 this.triggerGameEventVibration('damage', event);' }'
             }');'
@@ -479,7 +479,7 @@ export class VibrationManager {'
                 this.triggerGameEventVibration('warning', event);' }'
             }');
             ';
-            // 特殊効果''
+            // 特殊効果
             this.gameEngine.addEventListener?.('electricEffect', (event') => {  ' }'
                 this.triggerGameEventVibration('electric', event);' }'
             }');'
@@ -497,14 +497,14 @@ export class VibrationManager {'
             }');
         }
         ';
-        // UI イベント''
+        // UI イベント
         document.addEventListener('click', (event') => {  ''
             if (this.shouldTriggerUIVibration('click', event.target)') {' }'
                 this.triggerVibration('click'); }'
             }''
         }');
         ';
-        // ページの可視性変更''
+        // ページの可視性変更
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseAllVibrations(); }
             } else { this.resumeVibrations(); }
@@ -522,10 +522,10 @@ export class VibrationManager {'
             return; }
         }
         ';
-        // イベント固有の強度調整''
+        // イベント固有の強度調整
         const customIntensity = this.userPreferences.intensityByEvent.get(eventType');
         const intensity = customIntensity || 1.0;
-        ';
+        ';'
         this.triggerVibration(eventType, { intensity, : undefined')'
             category: 'game',);
             eventData);
@@ -535,7 +535,7 @@ export class VibrationManager {'
     }
     
     /**
-     * UI振動の判定'
+     * UI振動の判定
      */''
     shouldTriggerUIVibration(action, target') {'
         '';
@@ -544,7 +544,7 @@ export class VibrationManager {'
             return false; }
         }
         ';
-        // UI要素の判定''
+        // UI要素の判定
         const interactiveElements = ['button', 'a', 'input', 'select', 'textarea'];
         const tagName = target.tagName.toLowerCase();
         const hasClickHandler = target.onclick || target.addEventListener;'
@@ -589,7 +589,7 @@ export class VibrationManager {'
     }
     
     /**
-     * 振動のトリガー'
+     * 振動のトリガー
      */''
     triggerVibration(patternName, options = { )') {''
         if(!this.shouldTriggerVibration('game', patternName) {
@@ -684,10 +684,10 @@ export class VibrationManager {'
         this.vibrationQueue.push(vibrationData);
         this.activePattern = vibrationData;
         
-        // 振動完了時の処理'
+        // 振動完了時の処理
         Promise.all(vibrationPromises).then(() => { this.handleVibrationComplete(vibrationId);' }'
         }).catch((error') => {  ''
-            console.warn('Vibration execution error:', error); }'
+            console.warn('Vibration execution error:', error) }'
             this.handleVibrationComplete(vibrationId);' }'
         }');'
         '';
@@ -706,7 +706,7 @@ export class VibrationManager {'
     }
                     const totalDuration = pattern.reduce((sum, duration, index) => { }
                         return sum + duration + (index < pattern.length - 1 ? 0 : 0); }
-                    }, 0);'
+                    }, 0);
                     '';
                     setTimeout(resolve, totalDuration');'
                 } else {  ' }'
@@ -742,13 +742,13 @@ export class VibrationManager {'
         return new Promise((resolve, reject) => { 
             try {
                 if (gamepad.vibrationActuator) {
-                    // 新しい Vibration API'
+                    // 新しい Vibration API
                     const intensity = options.intensity || 1.0;''
                     const duration = pattern.reduce((sum, d) => sum + d, 0');'
                     '';
                     gamepad.vibrationActuator.playEffect('dual-rumble', {)
                         duration: duration);
-                        strongMagnitude: intensity,);
+                        strongMagnitude: intensity,)
     }
                         weakMagnitude: intensity * 0.7).then(resolve).catch(reject); }
                      }
@@ -806,7 +806,7 @@ export class VibrationManager {'
     /**
      * フォールバック処理
      */
-    handleVibrationFallback(patternName, options) {'
+    handleVibrationFallback(patternName, options) {
         '';
         if (!this.fallbackStrategies.noVibration.enabled') {
     }
@@ -815,14 +815,14 @@ export class VibrationManager {'
         
         const alternatives = this.fallbackStrategies.noVibration.alternatives;
         ';
-        // 視覚的フィードバック''
+        // 視覚的フィードバック
         if(alternatives.includes('visual') {'
-            ';
+            ';'
         }'
             this.triggerVisualFallback(patternName, options'); }
         }
         ';
-        // 音響フィードバック''
+        // 音響フィードバック
         if(alternatives.includes('audio') { this.triggerAudioFallback(patternName, options); }
         }
         
@@ -833,11 +833,11 @@ export class VibrationManager {'
      * 視覚的フォールバック
      */
     triggerVisualFallback(patternName, options) {'
-        // VisualFeedbackManager との連携''
+        // VisualFeedbackManager との連携
         if (this.audioAccessibilityManager? .visualFeedbackManager') {''
             this.audioAccessibilityManager.visualFeedbackManager.triggerManualFeedback('flash', { : undefined')'
                 color: '#ff6b6b');
-                intensity: options.intensity || 0.5,);
+                intensity: options.intensity || 0.5,)
     }
                 duration: 200); }
         }
@@ -847,7 +847,7 @@ export class VibrationManager {'
      * 音響フォールバック
      */
     triggerAudioFallback(patternName, options) {'
-        // 簡単な音響効果でフィードバック''
+        // 簡単な音響効果でフィードバック
         if (this.gameEngine? .audioManager') {''
             this.gameEngine.audioManager.playSound('vibrationFallback', {); : undefined
     }
@@ -911,9 +911,9 @@ export class VibrationManager {'
      */
     enable() {
         this.config.enabled = true;
-        this.userPreferences.enabled = true;'
+        this.userPreferences.enabled = true;
         '';
-        this.saveUserPreferences('');
+        this.saveUserPreferences();
     }'
         console.log('Vibration manager enabled'); }
     }
@@ -926,9 +926,9 @@ export class VibrationManager {'
         this.userPreferences.enabled = false;
         
         // すべての振動を停止
-        this.stopAllVibrations();'
+        this.stopAllVibrations();
         '';
-        this.saveUserPreferences('');
+        this.saveUserPreferences();
     }'
         console.log('Vibration manager disabled'); }
     }
@@ -947,9 +947,9 @@ export class VibrationManager {'
         for(const [index, hasVibration] of this.gamepadVibrationSupport) {
             if (!hasVibration) continue;
             
-            const gamepad = this.gamepads.get(index);'
+            const gamepad = this.gamepads.get(index);
             if (gamepad && gamepad.vibrationActuator) {''
-                gamepad.vibrationActuator.reset('');
+                gamepad.vibrationActuator.reset();
         }'
         console.log('All vibrations stopped'); }
     }
@@ -959,7 +959,7 @@ export class VibrationManager {'
      */
     pauseAllVibrations() {'
         '';
-        this.stopAllVibrations('');
+        this.stopAllVibrations();
     }'
         console.log('All vibrations paused'); }
     }
@@ -967,7 +967,7 @@ export class VibrationManager {'
     /**
      * 振動の再開'
      */''
-    resumeVibrations('')';
+    resumeVibrations()';
         console.log('Vibrations resumed');
     }
     
@@ -990,7 +990,7 @@ export class VibrationManager {'
         if(this.userPreferences.enabledCategories.hasOwnProperty(category) {'
             this.userPreferences.enabledCategories[category] = enabled;'
     }'
-            this.saveUserPreferences('') }'
+            this.saveUserPreferences() }'
             console.log(`Vibration category ${category} ${enabled ? 'enabled' : 'disabled')`});
         }
     }
@@ -1006,7 +1006,7 @@ export class VibrationManager {'
             return; }
         }
         
-        // パターンの検証'
+        // パターンの検証
         const validPattern = pattern.every(duration => ')';
             typeof duration === 'number' && duration > 0 && duration <= this.config.maxDuration);'
         '';
@@ -1041,10 +1041,10 @@ export class VibrationManager {'
     triggerManualVibration(pattern, options = { ) {'
         '';
         if (Array.isArray(pattern)') {'
-            // カスタムパターン'
+            // カスタムパターン
     }'
             this.executeVibration(pattern, { ...options, patternName: 'manual' )'),' }'
-        } else if (typeof pattern === 'string') { // 名前付きパターン''
+        } else if (typeof pattern === 'string') { // 名前付きパターン
             this.triggerVibration(pattern, options'); }'
         } else {  ' }'
             console.warn('Invalid vibration pattern format'); }
@@ -1108,14 +1108,14 @@ export class VibrationManager {'
     }
             this.enable(); }'
         } else {  ' }'
-            this.disable('') }'
+            this.disable() }'
         console.log(`VibrationManager ${enabled ? 'enabled' : 'disabled')`});
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying VibrationManager...');
         
         // 振動マネージャーを無効化
@@ -1136,9 +1136,9 @@ export class VibrationManager {'
         this.userPreferences.intensityByEvent.clear();
         
         if(this.simplifiedPatterns) {
-        ';
+        ';'
             '';
-            this.simplifiedPatterns.clear('');
+            this.simplifiedPatterns.clear();
         }'
         console.log('VibrationManager destroyed''); }'
     }''

@@ -19,71 +19,71 @@ export interface ComplexityMetrics { elementCount: ElementCountMetric,
     interactionCount: InteractionCountMetric,
     informationDensity: InformationDensityMetric,
     visualComplexity: VisualComplexityMetric,
-    cognitiveLoad: CognitiveLoadMetric;
+    cognitiveLoad: CognitiveLoadMetric
     }
 }
 
 export interface ElementCountMetric { total: number,
     visible: number,
-    score: number; }
+    score: number }
 }
 
 export interface InteractionCountMetric { total: number,
     visible: number,
-    score: number; }
+    score: number }
 }
 
 export interface InformationDensityMetric { textLength: number,
     visibleArea: number,
     density: number,
-    score: number; }
+    score: number }
 }
 
 export interface VisualComplexityMetric { colors: number,
     fonts: number,
     borders: number,
     shadows: number,
-    score: number; }
+    score: number }
 }
 
 export interface CognitiveLoadMetric { hierarchyDepth: number,
     informationTypes: number,
     animationCount: number,
     overlayCount: number,
-    score: number; }
+    score: number }
 }
 
 export interface ComplexityThresholds { elementCount: ThresholdLevels,
     interactionCount: ThresholdLevels,
     informationDensity: ThresholdLevels,
     visualComplexity: ThresholdLevels,
-    cognitiveLoad: ThresholdLevels;
+    cognitiveLoad: ThresholdLevels
     }
 }
 
 export interface ThresholdLevels { low: number,
     medium: number,
     high: number,
-    extreme: number; }
+    extreme: number }
 }
 
 export interface ComplexityWeightings { elementCount: number,
     interactionCount: number,
     informationDensity: number,
     visualComplexity: number,
-    cognitiveLoad: number; }
+    cognitiveLoad: number }
 }
 
 export interface AnalysisResult { timestamp: number,
     metrics: ComplexityMetrics,
     overallComplexity: OverallComplexity,
     recommendations: Recommendation[],
-    analysisTime: number; }
+    analysisTime: number }
 }
 
 export interface OverallComplexity { score: number,
     level: ComplexityLevel,
-    breakdown: ComplexityBreakdown;
+    breakdown: ComplexityBreakdown
     }
 }
 
@@ -91,7 +91,7 @@ export interface ComplexityBreakdown { elementCount: number,
     interactionCount: number,
     informationDensity: number,
     visualComplexity: number,
-    cognitiveLoad: number; }
+    cognitiveLoad: number }
 }
 
 export interface Recommendation { type: RecommendationType,
@@ -122,36 +122,36 @@ export interface PerformanceStats { averageAnalysisTime: number,
 export interface ComplexityDistribution { low: number,
     medium: number,
     high: number,
-    extreme: number; }
+    extreme: number }
 }
 
 export interface HistoricalPeak { timestamp: number,
     complexity: number,
-    context: string; }
+    context: string }
 }
 
 export interface CurrentMetrics extends ComplexityMetrics { overall: OverallComplexity,
-    lastAnalysis?: number; }
+    lastAnalysis?: number }
 }
 
 export interface VisibilityContext { visibleElements: number,
     screenArea: number,
     viewportRatio: number,
-    scrollPosition: number; }
+    scrollPosition: number }
 }
 
 export interface AnalysisConfig { enableRealTimeAnalysis: boolean,
     analysisDelay: number,
     historyLimit: number,
     performanceMonitoring: boolean,
-    detailedBreakdown: boolean; }
+    detailedBreakdown: boolean }
 }
 
 export interface ElementClassification { interactive: HTMLElement[],
     visual: HTMLElement[],
     textual: HTMLElement[],
     decorative: HTMLElement[],
-    structural: HTMLElement[];
+    structural: HTMLElement[]
     }
 }
 
@@ -159,38 +159,38 @@ export interface ComplexityFactors { layout: LayoutComplexity,
     content: ContentComplexity,
     interaction: InteractionComplexity,
     visual: VisualComplexityFactors,
-    navigation: NavigationComplexity;
+    navigation: NavigationComplexity
     }
 }
 
 export interface LayoutComplexity { nesting: number,
     positioning: number,
     responsiveness: number,
-    grid: number; }
+    grid: number }
 }
 
 export interface ContentComplexity { textDensity: number,
     mediaDensity: number,
     informationVariety: number,
-    updateFrequency: number; }
+    updateFrequency: number }
 }
 
 export interface InteractionComplexity { inputTypes: number,
     actionComplexity: number,
     feedbackComplexity: number,
-    stateManagement: number; }
+    stateManagement: number }
 }
 
 export interface VisualComplexityFactors { colorPalette: number,
     typography: number,
     spacing: number,
-    effects: number; }
+    effects: number }
 }
 
 export interface NavigationComplexity { menuDepth: number,
     pathVariety: number,
     breadcrumbs: number,
-    contextSwitching: number; }
+    contextSwitching: number }
 }
 
 // 列挙型
@@ -251,7 +251,7 @@ export const DEFAULT_WEIGHTINGS: ComplexityWeightings = { elementCount: 0.2,
     visualComplexity: 0.15,
     cognitiveLoad: 0.2 }
 } as const,
-';
+';'
 export const INTERACTIVE_SELECTORS = ['';
     'button','';
     'input','';
@@ -266,7 +266,7 @@ export const INTERACTIVE_SELECTORS = ['';
     '[role="tab"]','';
     '[contenteditable]';
 ] as const;
-';
+';'
 export const INFORMATION_TYPE_SELECTORS = { ''
     headings: 'h1, h2, h3, h4, h5, h6','';
     paragraphs: 'p','';
@@ -280,7 +280,7 @@ export const INFORMATION_TYPE_SELECTORS = { ''
     buttons: '.button, button','';
     navigation: '.menu, .nav, nav, [role="navigation"]' }
 } as const;
-';
+';'
 export const OVERLAY_SELECTORS = ['';
     '.modal','';
     '.popup', '';
@@ -307,7 +307,7 @@ export const COMPLEXITY_SCORE_MAPPING = {
     extreme: { min: 0.8, max: 1.0 }
 } as const;
 
-// ユーティリティ関数'
+// ユーティリティ関数
 export function isElementVisible(element: HTMLElement): boolean { const style = window.getComputedStyle(element);''
     const rect = element.getBoundingClientRect(''';
     return style.display !== 'none' && '';
@@ -340,7 +340,7 @@ export function isInteractiveElement(element: HTMLElement): boolean { const tagN
         }''
     }') || element.hasAttribute('onclick') || element.tabIndex >= 0;
 }
-';
+';'
 export function hasVisualEffects(element: HTMLElement): boolean { ''
     const style = window.getComputedStyle(element');''
     return style.boxShadow !== 'none' || '';
@@ -353,7 +353,7 @@ export function hasTextContent(element: HTMLElement): boolean { return (element.
 }
  : undefined';
 export function isDecorativeElement(element: HTMLElement): boolean { ''
-    const classNames = element.className.toLowerCase('')';
+    const classNames = element.className.toLowerCase()';
     return classNames.includes('decoration'') ||'';
            classNames.includes('ornament'') ||'';
            classNames.includes('visual-flair'') ||'';
@@ -364,7 +364,7 @@ export function isStructuralElement(element: HTMLElement'): boolean { ''
     const structuralTags = ['div', 'section', 'article', 'header', 'footer', 'main', 'aside'];
     return structuralTags.includes(element.tagName.toLowerCase(); }
 }
-';
+';'
 export function getComplexityLevel(score: number): ComplexityLevel { ''
     if (score < COMPLEXITY_SCORE_MAPPING.medium.min') return 'low';''
     if (score < COMPLEXITY_SCORE_MAPPING.high.min') return 'medium';''
@@ -374,10 +374,10 @@ export function getComplexityLevel(score: number): ComplexityLevel { ''
 
 export function normalizeScore(value: number, max: number): number { return Math.min(value / max, 1.0); }
 }
-';
+';'
 export function calculateTrend(values: number[]): TrendDirection { ''
     if (values.length < 2') return 'stable';
-    ';
+    ';'
     const recent = values.slice(-5);''
     if (recent.length < 2') return 'stable';
     
@@ -442,14 +442,14 @@ export class UIComplexityAnalyzer {
     }
 
     /**
-     * 監視を開始'
+     * 監視を開始
      */''
-    private startObserving('')';
+    private startObserving()';
         if(typeof document !== 'undefined' && document.body') {
             this.mutationObserver.observe(document.body, {
-                childList: true,);
+                childList: true);
                 subtree: true)';
-                attributes: true,');
+                attributes: true,')
         }'
                 attributeFilter: ['style', 'class', 'hidden']); }
         }
@@ -480,7 +480,7 @@ export class UIComplexityAnalyzer {
                 interactionCount: this.calculateInteractionCount(container),
                 informationDensity: this.calculateInformationDensity(container),
                 visualComplexity: this.calculateVisualComplexity(container),
-                cognitiveLoad: this.calculateCognitiveLoad(container); }
+                cognitiveLoad: this.calculateCognitiveLoad(container) }
             };
             
             // 総合複雑度スコアを計算
@@ -500,9 +500,9 @@ export class UIComplexityAnalyzer {
             if (this.analysisHistory.length > this.config.historyLimit) { this.analysisHistory = this.analysisHistory.slice(-Math.floor(this.config.historyLimit / 2); }
             }
             
-            return analysis;'
+            return analysis;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Complexity analysis failed:', error);
             return null; }
         }
@@ -525,7 +525,7 @@ export class UIComplexityAnalyzer {
      * インタラクション数を計算
      */'
     private calculateInteractionCount(container: HTMLElement): InteractionCountMetric { ''
-        const interactiveElements = Array.from('')';
+        const interactiveElements = Array.from()';
             container.querySelectorAll(INTERACTIVE_SELECTORS.join(',');
         ) as HTMLElement[];
         
@@ -541,7 +541,7 @@ export class UIComplexityAnalyzer {
      * 情報密度を計算
      */'
     private calculateInformationDensity(container: HTMLElement): InformationDensityMetric { ''
-        const textElements = Array.from('')';
+        const textElements = Array.from()';
             container.querySelectorAll('p, span, div, h1, h2, h3, h4, h5, h6, li, td, th') as HTMLElement[];
         
         let totalTextLength = 0;
@@ -580,7 +580,7 @@ export class UIComplexityAnalyzer {
             '';
             const style = window.getComputedStyle(el');
             ';
-            // 色の多様性''
+            // 色の多様性
             if (style.color && style.color !== 'rgba(0, 0, 0, 0')') {' }'
                 colorVariety.add(style.color'); }'
             }''
@@ -588,17 +588,17 @@ export class UIComplexityAnalyzer {
             }
             
             // フォントの多様性
-            if(style.fontFamily) {'
-                ';
+            if(style.fontFamily) {
+                ';'
             }'
                 fontVariety.add(style.fontFamily'); }
             }
             ';
-            // ボーダーの数''
+            // ボーダーの数
             if (style.border && style.border !== 'none' && style.borderWidth !== '0px'') { borderCount++; }
             }
             ';
-            // シャドウの数''
+            // シャドウの数
             if (style.boxShadow && style.boxShadow !== 'none') { shadowCount++; }
             }
         });
@@ -626,7 +626,7 @@ export class UIComplexityAnalyzer {
             hierarchyDepth: this.calculateHierarchyDepth(container),
             informationTypes: this.countInformationTypes(container),
             animationCount: this.countAnimations(container),
-            overlayCount: this.countOverlays(container); }
+            overlayCount: this.countOverlays(container) }
         };
         
         // 認知負荷スコアを計算
@@ -675,7 +675,7 @@ export class UIComplexityAnalyzer {
     }
 
     /**
-     * アニメーション数を計算'
+     * アニメーション数を計算
      */''
     private countAnimations(container: HTMLElement'): number { const animatedElements = container.querySelectorAll(')'
             '[style*="animation"], [class*="animate"], [class*="transition"]');
@@ -726,7 +726,7 @@ export class UIComplexityAnalyzer {
     private generateRecommendations(): Recommendation[] { const recommendations: Recommendation[] = [],
         const metrics = this.complexityMetrics;
         ';
-        // 要素数に基づく推奨''
+        // 要素数に基づく推奨
         if(metrics.elementCount.score > 0.7') {'
             recommendations.push({''
                 type: 'element_reduction','';
@@ -734,12 +734,12 @@ export class UIComplexityAnalyzer {
                 message: '表示要素数が多すぎます。重要でない要素を非表示にすることを推奨します。','';
                 action: 'hide_non_essential_elements','';
                 impact: 'high',')';
-                effort: 'moderate',);
+                effort: 'moderate',)
         }
                 confidence: 0.9); }
         }
         ';
-        // インタラクション数に基づく推奨''
+        // インタラクション数に基づく推奨
         if(metrics.interactionCount.score > 0.7') {'
             recommendations.push({''
                 type: 'interaction_simplification','';
@@ -747,12 +747,12 @@ export class UIComplexityAnalyzer {
                 message: 'インタラクティブ要素が多すぎます。主要な操作のみに集中することを推奨します。','';
                 action: 'simplify_interactions','';
                 impact: 'medium',')';
-                effort: 'significant',);
+                effort: 'significant',)
         }
                 confidence: 0.8); }
         }
         ';
-        // 情報密度に基づく推奨''
+        // 情報密度に基づく推奨
         if(metrics.informationDensity.score > 0.8') {'
             recommendations.push({''
                 type: 'information_spacing','';
@@ -760,12 +760,12 @@ export class UIComplexityAnalyzer {
                 message: '情報密度が高すぎます。テキストの間隔を広げることを推奨します。','';
                 action: 'increase_spacing','';
                 impact: 'medium',')';
-                effort: 'minimal',);
+                effort: 'minimal',)
         }
                 confidence: 0.7); }
         }
         ';
-        // 視覚的複雑さに基づく推奨''
+        // 視覚的複雑さに基づく推奨
         if(metrics.visualComplexity.score > 0.7') {'
             recommendations.push({''
                 type: 'visual_simplification','';
@@ -773,12 +773,12 @@ export class UIComplexityAnalyzer {
                 message: '視覚的要素が複雑すぎます。色やフォントの統一を推奨します。','';
                 action: 'unify_visual_elements','';
                 impact: 'medium',')';
-                effort: 'moderate',);
+                effort: 'moderate',)
         }
                 confidence: 0.8); }
         }
         ';
-        // 認知負荷に基づく推奨''
+        // 認知負荷に基づく推奨
         if(metrics.cognitiveLoad.score > 0.8') {'
             recommendations.push({''
                 type: 'cognitive_reduction','';
@@ -786,7 +786,7 @@ export class UIComplexityAnalyzer {
                 message: '認知負荷が高すぎます。段階的な情報開示を推奨します。','';
                 action: 'progressive_disclosure','';
                 impact: 'high',')';
-                effort: 'major',);
+                effort: 'major',)
         }
                 confidence: 0.9); }
         }
@@ -879,7 +879,7 @@ export class UIComplexityAnalyzer {
                 current.overallComplexity.score > 0.7) {
                 peaks.push({)
                     timestamp: current.timestamp);
-                    complexity: current.overallComplexity.score,);
+                    complexity: current.overallComplexity.score,)
         }
                     context: current.overallComplexity.level); }
             }
@@ -945,8 +945,8 @@ export class UIComplexityAnalyzer {
         this.intersectionObserver?.disconnect();
         
         if(this.analysisTimer) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             window.clearTimeout(this.analysisTimer'); }
         }

@@ -12,7 +12,7 @@ interface HistoryEntry { command: string,
     executionTime: number,
     errorMessage: string | null,
     commandName: string,
-    args: any[]; }
+    args: any[] }
 }
 
 interface HistoryMetadata { success?: boolean;
@@ -23,17 +23,17 @@ interface HistoryMetadata { success?: boolean;
 }
 
 interface HistorySettings { duplicateFilter: boolean,
-    exportEnabled: boolean; }
+    exportEnabled: boolean }
 }
 
 interface HistoryStatistics { totalCommands: number,
     successfulCommands: number,
     failedCommands: number,
-    averageExecutionTime: number; }
+    averageExecutionTime: number }
 }
 
 interface ExtendedStatistics extends HistoryStatistics { successRate: string,
-    totalEntries: number; }
+    totalEntries: number }
 }
 
 interface SearchOptions { limit?: number;
@@ -48,7 +48,7 @@ interface ImportOptions { merge?: boolean; }
 }
 
 interface ImportResult { imported: number,
-    total: number; }
+    total: number }
 }
 
 type ExportFormat = 'json' | 'csv' | 'text';''
@@ -84,13 +84,13 @@ export class EnhancedHistoryManager {
     }
 
     /**
-     * コマンドを履歴に追加'
+     * コマンドを履歴に追加
      */''
     public addCommand(command: string, metadata: HistoryMetadata = { )'): boolean {
         const entry: HistoryEntry = {
             command,
             timestamp: Date.now(,
-            success: metadata.success !== false,);
+            success: metadata.success !== false);
             executionTime: metadata.executionTime || 0)';
             errorMessage: metadata.errorMessage || null,')';
             commandName: metadata.commandName || command.split(' ')[0],
@@ -112,7 +112,7 @@ export class EnhancedHistoryManager {
         if (this.history.length > this.maxHistorySize) { this.history.shift(); }
         }
 ';
-        // 統計更新''
+        // 統計更新
         this.updateStatistics(entry');
         
         // インデックス更新
@@ -122,7 +122,7 @@ export class EnhancedHistoryManager {
     }
 
     /**
-     * 履歴をナビゲート'
+     * 履歴をナビゲート
      */''
     public navigate(direction: 'up' | 'down', filter: string | null = null): { command: string } | null { ''
         if (this.history.length === 0') return null;
@@ -130,7 +130,7 @@ export class EnhancedHistoryManager {
         let newIndex = this.currentIndex;'
         '';
         if(direction === 'up') {'
-            ';
+            ';'
         }'
             newIndex = Math.max(0, this.currentIndex - 1');' }'
         } else if (direction === 'down') { newIndex = Math.min(this.history.length, this.currentIndex + 1); }
@@ -193,7 +193,7 @@ export class EnhancedHistoryManager {
     /**
      * 統計情報を取得
      */
-    public getStatistics(): ExtendedStatistics { return { ...this.statistics,'
+    public getStatistics(): ExtendedStatistics { return { ...this.statistics,
             successRate: this.statistics.totalCommands > 0 '';
                 ? (this.statistics.successfulCommands / this.statistics.totalCommands * 100).toFixed(2') + '%''';
                 : '0%', };
@@ -206,7 +206,7 @@ export class EnhancedHistoryManager {
      */''
     public exportHistory(format: ExportFormat = 'json', options: ExportOptions = { ): string {''
         if(!this.settings.exportEnabled') {'
-            ';
+            ';'
         }'
             throw new Error('History export is disabled'); }
         }
@@ -233,9 +233,9 @@ export class EnhancedHistoryManager {
                 data.forEach(entry => { )
         }'
                     const row = [);' }'
-                        new Date(entry.timestamp).toISOString('') }'
+                        new Date(entry.timestamp).toISOString() }'
                         `"${entry.command.replace(/"/g, '""''})}"`,
-                        entry.success,];
+                        entry.success];
                         entry.executionTime || 0]";
                     ];""
                     csvData.push(row.join(',');''
@@ -249,7 +249,7 @@ export class EnhancedHistoryManager {
                     const status = entry.success ? '✓' : '✗'; })'
                     return `[${timestamp}] ${status} ${entry.command}`;')'
                 }').join('\n');
-                ';
+                ';'
             default:'';
                 throw new Error(`Unsupported export format: ${format)`'}),
         }
@@ -270,8 +270,8 @@ export class EnhancedHistoryManager {
         }
 
         let importedEntries: any[],
-        ';
-        try { ''
+        ';'
+        try {'
             switch(format') {'
                 '';
                 case 'json':;
@@ -292,19 +292,19 @@ export class EnhancedHistoryManager {
         let importCount = 0;
         
         for(const entry of importedEntries) {
-        ';
+        ';'
             '';
             if (!this.validateHistoryEntry(entry)') {''
-                console.warn('Skipping invalid history entry:', entry');
+                console.warn('Skipping invalid history entry:', entry')
         
         }
                 continue; }
             }
-';
+';'
             this.history.push({ ')'
                 command: entry.command || '''),
                 timestamp: entry.timestamp || Date.now(,
-                success: entry.success !== false,);
+                success: entry.success !== false);
                 executionTime: entry.executionTime || 0)';
                 errorMessage: entry.errorMessage || null,')';
                 commandName: entry.commandName || entry.command? .split(' '')[0] || '', : undefined;
@@ -322,7 +322,7 @@ export class EnhancedHistoryManager {
     }
 
     /**
-     * 履歴エントリを検証'
+     * 履歴エントリを検証
      */''
     private validateHistoryEntry(entry: any'): boolean { return entry && ''
                typeof entry.command === 'string' && '';

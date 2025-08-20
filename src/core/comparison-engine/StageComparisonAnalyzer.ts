@@ -15,7 +15,7 @@ export interface StageConfig { difficultyLevels: DifficultyLevel[],
     performanceMetrics: PerformanceMetricType[],
     minimumPlaysForAnalysis: number,
     maxStagesForComparison: number,
-    trendAnalysisWindow: number; };
+    trendAnalysisWindow: number };
 }
 export interface PlayData { score?: number;
     completionTime?: number;
@@ -77,7 +77,7 @@ export interface DifficultyAdjustedMetrics { [stageId: string]: {
         adjustedAccuracy: number,
         difficultyAdjustmentFactor: number,
         normalizedPerformance: NormalizedPerformance,
-        skillLevel: SkillLevel;
+        skillLevel: SkillLevel
     }
     };
 }
@@ -97,26 +97,26 @@ export interface PairwiseComparison { stage1: StageInfo,
     comparisons: {
         score: SignificanceTestResult,
         time: SignificanceTestResult,
-        accuracy: SignificanceTestResult ;
+        accuracy: SignificanceTestResult 
 }
     },
     summary: string[],
     recommendations: string[],
     effectSizes?: { score: number,
         time: number,
-        accuracy: number; }
+        accuracy: number }
     };
 }
 
 export interface StageInfo { id: string,
-    stats: StageStatistics;
+    stats: StageStatistics
     };
 }
 export interface OverallTrends { insufficient_data?: boolean;
     overallPerformance?: {;
         averageScore: BasicStatistics,
         averageTime: BasicStatistics,
-        averageAccuracy: BasicStatistics;
+        averageAccuracy: BasicStatistics
     }
     };
     consistencyAcrossStages?: number;
@@ -167,15 +167,15 @@ export interface NormalizedPerformance { score: number,
     time: number,
     accuracy: number,
     overall: number,
-    efficiency?: number; };
+    efficiency?: number };
 }
 export interface SeasonalPattern { detected: boolean,
     pattern: SeasonalPatternType,
     confidence?: number;
     description?: string; };
 }
-';
-// 列挙型''
+;
+// 列挙型
 export type DifficultyLevel = 'easy' | 'normal' | 'hard' | 'expert' | 'master' | 'unknown';''
 export type SkillLevel = 'novice' | 'beginner' | 'intermediate' | 'advanced' | 'expert' | 'master';''
 export type ImprovementTrend = 'improving' | 'declining' | 'stable' | 'insufficient_data' | 'volatile';''
@@ -189,13 +189,13 @@ export type ImprovementType = '';
 export type Priority = 'low' | 'medium' | 'high' | 'critical';''
 export type SeasonalPatternType = 'none' | 'daily' | 'weekly' | 'monthly' | 'session_based';
 
-// 定数'
+// 定数
 export const DEFAULT_STAGE_CONFIG: StageConfig = { ''
     difficultyLevels: ['easy', 'normal', 'hard', 'expert'],'';
     performanceMetrics: ['score', 'time', 'accuracy', 'efficiency'],
     minimumPlaysForAnalysis: 3,
     maxStagesForComparison: 50,
-    trendAnalysisWindow: 10 ;
+    trendAnalysisWindow: 10 
 }
 },
 
@@ -204,7 +204,7 @@ export const DEFAULT_DIFFICULTY_ADJUSTMENTS: Record<DifficultyLevel, number> = {
     hard: 1.3,
     expert: 1.6,
     master: 2.0,
-    unknown: 1.0 ;
+    unknown: 1.0 
 }
 },
 
@@ -215,7 +215,7 @@ export const PERFORMANCE_THRESHOLDS = { highScore: 5000,
     lowAccuracy: 0.6,
     lowConsistency: 0.4,
     slowTime: 300,
-    plateauVariation: 0.1 ;
+    plateauVariation: 0.1 
 }
 } as const,
 
@@ -223,16 +223,16 @@ export const SKILL_LEVEL_THRESHOLDS = { expert: 80,
     advanced: 60,
     intermediate: 40,
     beginner: 20,
-    novice: 0 ;
+    novice: 0 
 }
 } as const,
 
 export const TREND_SLOPE_THRESHOLDS = { improving: 50,
-    declining: -50 ;
+    declining: -50 
 }
 } as const,
 ';
-// ユーティリティ関数''
+// ユーティリティ関数
 export function isValidPlayData(play: any'): play is PlayData { ''
     return play && typeof play === 'object'; };
 }
@@ -244,15 +244,15 @@ export function getPlayTime(play: PlayData): number { return play.completionTime
 }
 export function getPlayAccuracy(play: PlayData): number { return play.accuracy || 0; };
 }
-';
+';'
 export function getPlayTimestamp(play: PlayData): number { ''
     if(play.timestamp') {'
-        ';
+        ';'
     }'
         return typeof play.timestamp === 'string' ? new Date(play.timestamp).getTime() : play.timestamp; }'
     }''
     if(play.date') {'
-        ';
+        ';'
     }'
         return typeof play.date === 'string' ? new Date(play.date).getTime() : play.date; };
 }
@@ -261,11 +261,11 @@ export function getPlayTimestamp(play: PlayData): number { ''
 
 export function calculateEfficiency(play: PlayData): number { const score = getPlayScore(play);
     const time = getPlayTime(play);
-    return time > 0 ? score / time: 0; };
+    return time > 0 ? score / time: 0 };
 }
-';
+';'
 export function normalizeDifficultyLevel(level: string): DifficultyLevel { ''
-    const normalized = level.toLowerCase('')';
+    const normalized = level.toLowerCase()';
     if(['easy', 'tutorial'].some(keyword => normalized.includes(keyword)') return 'easy';''
     if(['hard'].some(keyword => normalized.includes(keyword)') return 'hard';''
     if(['expert', 'master'].some(keyword => normalized.includes(keyword)') return 'expert';''
@@ -306,7 +306,7 @@ export class StageComparisonAnalyzer {
      */
     compareStagePerformance(stageData: StageData, options: Record<string, any> = { ): StageComparisonResult {
         const results: StageComparisonResult = {
-            timestamp: new Date().toISOString();
+            timestamp: new Date().toISOString()
 }
             stageSummary: {},
             individualComparisons: {},
@@ -339,9 +339,9 @@ export class StageComparisonAnalyzer {
             // 推奨事項生成
             results.recommendations = this.generateStageRecommendations(results);
 
-            return results;'
+            return results;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Error in stage performance comparison:', error');'
             return { ''
                 error: error instanceof Error ? error.message : 'Unknown error', };
@@ -384,7 +384,7 @@ export class StageComparisonAnalyzer {
                 improvementTrend: this.calculateImprovementTrend(validPlays),
                 consistency: this.calculateConsistency(validPlays),
                 performanceRating: this.calculatePerformanceRating(validPlays),
-                masteryLevel: this.calculateMasteryLevel(validPlays); }
+                masteryLevel: this.calculateMasteryLevel(validPlays) }
             };
         }
 
@@ -420,7 +420,7 @@ export class StageComparisonAnalyzer {
                 
                 // 時系列分析
                 recentTrend: this.analyzeRecentTrend(plays),
-                seasonalPatterns: this.detectSeasonalPatterns(plays); }
+                seasonalPatterns: this.detectSeasonalPatterns(plays) }
             };
         }
 
@@ -502,13 +502,13 @@ export class StageComparisonAnalyzer {
             stage2: { id: stage2Id, stats: stage2Stats },
             comparisons: { score: scoreComparison,
                 time: timeComparison,
-                accuracy: accuracyComparison ;
+                accuracy: accuracyComparison 
 }
             },
             summary: this.generateComparisonSummary(stage1Id, stage2Id, { score: scoreComparison)
                 time: timeComparison,);
                 accuracy: accuracyComparison),
-            recommendations: this.generatePairwiseRecommendations(stage1Id, stage2Id, stage1Stats, stage2Stats); }
+            recommendations: this.generatePairwiseRecommendations(stage1Id, stage2Id, stage1Stats, stage2Stats) }
         };
     }
 
@@ -546,12 +546,12 @@ export class StageComparisonAnalyzer {
         const { stageSummary, performanceMetrics, overallTrends } = results;
 
         // 練習不足のステージ
-        for(const [stageId, stats] of Object.entries(stageSummary) {'
+        for(const [stageId, stats] of Object.entries(stageSummary) {
             '';
             if (stats.playCount < this.stageConfig.minimumPlaysForAnalysis') {'
                 recommendations.push({''
                     type: 'practice_more',')';
-                    priority: 'medium');
+                    priority: 'medium')
         }
                     stage: stageId, }'
                     message: `${stageId}はプレイ回数が少ないです。より多く練習することで正確な分析が可能になります。`,''
@@ -561,12 +561,12 @@ export class StageComparisonAnalyzer {
             };
 }
         // 改善が停滞しているステージ
-        for(const [stageId, metrics] of Object.entries(performanceMetrics) {'
+        for(const [stageId, metrics] of Object.entries(performanceMetrics) {
             '';
             if (metrics.plateauDetection? .isOnPlateau') {'
                 recommendations.push({ : undefined''
                     type: 'break_plateau',')';
-                    priority: 'high');
+                    priority: 'high')
         }
                     stage: stageId, }'
                     message: `${stageId}でパフォーマンスが停滞しています。練習方法を変えることを推奨します。`,''
@@ -576,11 +576,11 @@ export class StageComparisonAnalyzer {
             };
 }
         // 弱点ステージ
-        if(overallTrends.weakestStages) {'
+        if(overallTrends.weakestStages) {
             '';
             overallTrends.weakestStages.slice(0, 3').forEach(stage => { '
                 recommendations.push({''
-                    type: 'focus_weak_areas',';
+                    type: 'focus_weak_areas','
         })'
                     priority: 'high') ;
 }
@@ -593,11 +593,11 @@ export class StageComparisonAnalyzer {
         }
 
         // 得意ステージの活用
-        if(overallTrends.strongestStages) {'
+        if(overallTrends.strongestStages) {
             '';
             overallTrends.strongestStages.slice(0, 2').forEach(stage => { '
                 recommendations.push({''
-                    type: 'leverage_strengths',';
+                    type: 'leverage_strengths','
         })'
                     priority: 'low') ;
 }
@@ -620,7 +620,7 @@ export class StageComparisonAnalyzer {
         const timestamps = plays.map(getPlayTimestamp);
         return new Date(Math.max(...timestamps); };
 }
-';
+';'
     private calculateImprovementTrend(plays: PlayData[]): ImprovementTrend { ''
         if (plays.length < 3') return 'insufficient_data';
         
@@ -640,7 +640,7 @@ export class StageComparisonAnalyzer {
         }
             sumXX += i * i; };
 }
-        ';
+        ';'
         const denominator = n * sumXX - sumX * sumX;''
         if (denominator === 0') return 'stable';
         
@@ -702,7 +702,7 @@ export class StageComparisonAnalyzer {
         
         const stats = this.statisticalAnalyzer.calculateBasicStatistics(timeData);
         const cv = stats.mean > 0 ? stats.standardDeviation / stats.mean: 1,
-        return Math.max(0, 1 - cv); };
+        return Math.max(0, 1 - cv) };
 }
     private calculateLearningRate(plays: PlayData[]): number { if (plays.length < 3) return 0;
         
@@ -726,10 +726,10 @@ export class StageComparisonAnalyzer {
         const stats = this.statisticalAnalyzer.calculateBasicStatistics(scores);
         
         // 変動係数が小さく、改善トレンドがない場合は停滞と判定
-        const cv = stats.mean > 0 ? stats.standardDeviation / stats.mean: 0,';
+        const cv = stats.mean > 0 ? stats.standardDeviation / stats.mean: 0,
         const isLowVariation = cv < PERFORMANCE_THRESHOLDS.plateauVariation;''
         const trend = this.calculateImprovementTrend(recent');
-        ';
+        ';'
         return { ''
             isOnPlateau: isLowVariation && trend === 'stable',
             confidence: isLowVariation ? 0.8 : 0.3,
@@ -772,7 +772,7 @@ export class StageComparisonAnalyzer {
         
         return weaknesses; };
 }
-';
+';'
     private analyzeRecentTrend(plays: PlayData[]): ImprovementTrend { const recentPlays = plays.slice(-5);''
         if (recentPlays.length < 3') return 'insufficient_data';
         
@@ -819,7 +819,7 @@ export class StageComparisonAnalyzer {
         if (comparisons.time.significant && comparisons.time.testStatistic !== null) { const faster = comparisons.time.testStatistic < 0 ? stage1Id: stage2Id }
             summary.push(`時間: ${faster)が有意に高速`});
         }
-        ';
+        ';'
         if (comparisons.accuracy.significant && comparisons.accuracy.testStatistic !== null) { const accurate = comparisons.accuracy.testStatistic > 0 ? stage1Id: stage2Id,' }'
             summary.push(`精度: ${accurate)が有意に正確`'});
         }'
@@ -861,7 +861,7 @@ export class StageComparisonAnalyzer {
             .map(([id, stats]) => ({ 
                 id, ;
                 rating: stats.performanceRating);
-                percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating); }
+                percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating) }
             })
             .sort((a, b) => b.rating - a.rating);
             .slice(0, 3);
@@ -873,7 +873,7 @@ export class StageComparisonAnalyzer {
             .map(([id, stats]) => ({ 
                 id, ;
                 rating: stats.performanceRating);
-                percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating); }
+                percentileRank: this.calculatePercentileRank(stats.performanceRating, Object.values(stageStats).map(s => s.performanceRating) }
             })
             .sort((a, b) => a.rating - b.rating);
             .slice(0, 3);
@@ -883,7 +883,7 @@ export class StageComparisonAnalyzer {
         const opportunities: ImprovementOpportunity[] = [],
         
         for(const [stageId, stats] of Object.entries(stageStats) {
-        ';
+        ';'
             '';
             if (stats.playCount < this.stageConfig.minimumPlaysForAnalysis') continue;'
             '';
@@ -892,7 +892,7 @@ export class StageComparisonAnalyzer {
                     stage: stageId, '';
                     type: 'declining_performance', '';
                     priority: 'high',')';
-                    description: 'パフォーマンスが低下傾向にあります',);
+                    description: 'パフォーマンスが低下傾向にあります',)
         }
                     estimatedImpact: 0.8); }
             }'
@@ -902,7 +902,7 @@ export class StageComparisonAnalyzer {
                     stage: stageId, '';
                     type: 'inconsistent_performance', '';
                     priority: 'medium',')';
-                    description: 'パフォーマンスが不安定です',);
+                    description: 'パフォーマンスが不安定です',)
             }
                     estimatedImpact: 0.6); }
             }'
@@ -912,7 +912,7 @@ export class StageComparisonAnalyzer {
                     stage: stageId, '';
                     type: 'low_accuracy', '';
                     priority: 'high',')';
-                    description: '精度が低く改善が必要です',);
+                    description: '精度が低く改善が必要です',)
             }
                     estimatedImpact: 0.9); };
 }
@@ -927,7 +927,7 @@ export class StageComparisonAnalyzer {
             .map(([id, stats]) => ({
                 stage: id,
                 mastery: stats.masteryLevel || 0);
-                difficulty: stats.difficultyLevel ;
+                difficulty: stats.difficultyLevel 
 }
             }),
         
@@ -956,10 +956,10 @@ export class StageComparisonAnalyzer {
         for(const [difficulty, masteries] of Object.entries(grouped) { result[difficulty] = masteries.reduce((sum, m) => sum + m, 0) / masteries.length; };
 }
         return result;
-    }'
+    }
 '';
     private calculateProgressionRate(masteryLevels: Array<{ stage: string; mastery: number; difficulty: DifficultyLevel )>'): number {'
-        // 難易度順でのマスタリー進歩率を計算''
+        // 難易度順でのマスタリー進歩率を計算
         const difficultyOrder: DifficultyLevel[] = ['easy', 'normal', 'hard', 'expert'];
         const progression: number[] = [],
         
@@ -980,7 +980,7 @@ export class StageComparisonAnalyzer {
         return progression.length > 0 ;
             ? progression.reduce((sum, p) => sum + p, 0) / progression.length: 0,
     }
-';
+';'
     private determineNextMilestone(overallMastery: number): string { ''
         if (overallMastery < 0.3') return '基本スキルの習得';''
         if (overallMastery < 0.6') return '中級レベルへの到達';''

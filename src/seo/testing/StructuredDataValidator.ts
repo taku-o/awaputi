@@ -9,26 +9,26 @@ import { seoLogger } from '../SEOLogger.js';''
 import { seoErrorHandler } from '../SEOErrorHandler.js';
 
 interface MainController { baseUrl: string,
-    validationRules: Map<string, ValidationRules>; }
+    validationRules: Map<string, ValidationRules> }
 }
 
 interface ValidationRules { required: string[],
     allowedContexts: string[],
-    videoGameProperties: string[]; }
+    videoGameProperties: string[] }
 }
 
 interface TestResult { name: string,
     passed: boolean,
-    message: string; }
+    message: string }
 }
 
 interface ValidationResults { category: string,
     tests: TestResult[],
     passed: number,
     failed: number,
-    warnings: number; }
+    warnings: number }
 }
-';
+';'
 interface StructuredDataObject { ''
     '@context': string;''
     '@type': string;
@@ -42,7 +42,7 @@ interface StructuredDataObject { ''
     image: string,';
     author?: {''
         '@type': string;
-        name: string; }
+        name: string }
     };
     datePublished?: string;
     inLanguage?: string[];
@@ -55,7 +55,7 @@ export class StructuredDataValidator {
     private baseUrl: string;
     constructor(mainController: MainController) {
 
-        this.mainController = mainController;
+        this.mainController = mainController
 
     }
     }
@@ -74,11 +74,11 @@ export class StructuredDataValidator {
                 warnings: 0);
             })'
             '';
-            const structuredData = await this._extractStructuredData('');'
+            const structuredData = await this._extractStructuredData();'
             const rules = this.mainController.validationRules.get('structuredData');'
             '';
             if(!rules') {'
-                ';
+                ';'
             }'
                 throw new Error('Structured data validation rules not found'); }
             }'
@@ -91,7 +91,7 @@ export class StructuredDataValidator {
                 return results; }
             }
             ';
-            // 必須プロパティの存在確認''
+            // 必須プロパティの存在確認
             for (const requiredProp of rules.required') { const test: TestResult = { }
                     name: `Required property: ${requiredProp}`,'
                     passed: false,'';
@@ -109,11 +109,11 @@ export class StructuredDataValidator {
                 results.tests.push(test');
             }
             ';
-            // @contextの検証''
+            // @contextの検証
             if(structuredData['@context']') {'
                 const contextTest: TestResult = {''
                     name: 'Schema.org context validation',';
-                    passed: false,';
+                    passed: false,'
             }'
                     message: '' }
                 },'
@@ -130,7 +130,7 @@ export class StructuredDataValidator {
                 results.tests.push(contextTest');
             }
             ';
-            // VideoGame特有のプロパティ検証''
+            // VideoGame特有のプロパティ検証
             if(structuredData['@type'] === 'VideoGame') {'
                 '';
                 for (const prop of rules.videoGameProperties') {
@@ -167,9 +167,9 @@ export class StructuredDataValidator {
             } else { results.warnings++; }
             }
             
-            return results;'
+            return results;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'validateStructuredData'); }
         }
     }
@@ -202,13 +202,13 @@ export class StructuredDataValidator {
             '';
             results.tests.push(formatTest');
             
-            // Schema.org vocabulary検証'
+            // Schema.org vocabulary検証
             const vocabTest: TestResult = { ''
                 name: 'Schema.org vocabulary validation',';
                 passed: false,'';
                 message: '' }
             },
-            ';
+            ';'
             const vocabValid = await this._validateSchemaVocabulary(structuredData);''
             if(vocabValid') {'
                 vocabTest.passed = true;''
@@ -224,7 +224,7 @@ export class StructuredDataValidator {
             
             return results;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'validateJsonLdCompliance'); }
         }
     }
@@ -262,13 +262,13 @@ export class StructuredDataValidator {
                 results.tests.push(test');
             }
             
-            // Google構造化データテストツール互換性'
+            // Google構造化データテストツール互換性
             const googleTest: TestResult = { ''
                 name: 'Google Structured Data Test compatibility',';
                 passed: false,'';
                 message: '' }
             },
-            ';
+            ';'
             const googleCompatible = await this._checkGoogleStructuredDataTestCompatibility(structuredData);''
             if(googleCompatible') {'
                 googleTest.passed = true;''
@@ -284,7 +284,7 @@ export class StructuredDataValidator {
             
             return results;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'testRichSnippets'); }
         }
     }
@@ -293,7 +293,7 @@ export class StructuredDataValidator {
     
     /**
      * 構造化データの抽出
-     * @private'
+     * @private
      */''
     private async _extractStructuredData(''';
             '@context': 'https://schema.org','';
@@ -326,9 +326,9 @@ export class StructuredDataValidator {
             message: '' }
         },
         ';
-        try { // 必須フィールドの存在確認''
+        try { // 必須フィールドの存在確認
             if(structuredData['@context'] && structuredData['@type']) {
-                // JSON-LD形式の基本要件を満たしているか確認'
+                // JSON-LD形式の基本要件を満たしているか確認
                 const isValid = this._isValidJsonLd(structuredData);''
                 if (isValid') {'
                     test.passed = true;'
@@ -339,7 +339,7 @@ export class StructuredDataValidator {
                 }'
             } else {  ' }'
                 test.message = '❌ Missing required @context or @type';' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             test.message = `❌ JSON-LD validation error: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
@@ -356,7 +356,7 @@ export class StructuredDataValidator {
             message: '' }
         },
         ';
-        try { // Rich Snippet生成に必要な基本プロパティの確認''
+        try { // Rich Snippet生成に必要な基本プロパティの確認
             const requiredForRichSnippets = ['name', 'description', 'image'];'
             const hasRequiredProps = requiredForRichSnippets.every(prop => ')';
                 structuredData[prop] && structuredData[prop] !== '');'
@@ -367,7 +367,7 @@ export class StructuredDataValidator {
                 test.message = '✅ Rich snippets should display properly'; }'
             } else {  ' }'
                 test.message = '⚠️ Rich snippets may not display optimally';' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             test.message = `⚠️ Rich snippets test error: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
@@ -392,9 +392,9 @@ export class StructuredDataValidator {
     
     /**
      * Schema.org vocabulary検証
-     * @private'
+     * @private
      */''
-    private async _validateSchemaVocabulary(structuredData: StructuredDataObject'): Promise<boolean> { // 実際の実装では Schema.org の公式ボキャブラリーと比較'
+    private async _validateSchemaVocabulary(structuredData: StructuredDataObject'): Promise<boolean> { // 実際の実装では Schema.org の公式ボキャブラリーと比較
         const knownVideoGameProperties = ['';
             'name', 'description', 'genre', 'gamePlatform', 'operatingSystem',']';
             'applicationCategory', 'url', 'image', 'author', 'datePublished'];
@@ -427,18 +427,18 @@ export class StructuredDataValidator {
      */''
     private async _checkGoogleStructuredDataTestCompatibility(structuredData: StructuredDataObject'): Promise<boolean> { // Google構造化データテストツールで問題となりやすい項目をチェック
         const issues: string[] = [],
-        ';
-        // 画像URLの形式チェック''
+        ;
+        // 画像URLの形式チェック
         if (structuredData.image && !structuredData.image.startsWith('http')') {''
             issues.push('Image URL should be absolute''); }
         }
         ';
-        // URLの形式チェック''
+        // URLの形式チェック
         if (structuredData.url && !structuredData.url.startsWith('http')') { ''
             issues.push('URL should be absolute'); }
         }
         ';
-        // 日付形式チェック''
+        // 日付形式チェック
         if (structuredData.datePublished && !this._isValidISODate(structuredData.datePublished)') { ''
             issues.push('Date should be in ISO format'); }
         }

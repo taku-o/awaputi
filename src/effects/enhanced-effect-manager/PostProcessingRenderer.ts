@@ -14,7 +14,7 @@ interface EnhancedTransform { depthOfField: number,
     noise: number,
     scanlines: number,
     glitch: { intensity: number,
-        frequency: number; }
+        frequency: number }
     };
 }
 
@@ -22,21 +22,21 @@ interface EnhancedTransform { depthOfField: number,
  * レンダリング設定インターフェース
  */'
 interface RenderSettings { enablePostProcessing: boolean,''
-    qualityLevel: 'low' | 'medium' | 'high' | 'ultra'; }
+    qualityLevel: 'low' | 'medium' | 'high' | 'ultra' }
 }
 
 /**
  * グリッチ効果設定インターフェース
  */
 interface GlitchEffect { intensity: number,
-    frequency: number; }
+    frequency: number }
 }
 
 /**
  * フォーカスポイントインターフェース
  */
 interface FocusPoint { x: number,
-    y: number; }
+    y: number }
 }
 
 /**
@@ -48,7 +48,7 @@ export class PostProcessingRenderer {
     private errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas;
+        this.canvas = canvas
 
     }
     }
@@ -76,10 +76,10 @@ export class PostProcessingRenderer {
             if (enhancedTransform.scanlines > 0) { this.renderScanlinesEffect(context, enhancedTransform.scanlines); }
             }
             
-            // グリッチ効果'
+            // グリッチ効果
             if (enhancedTransform.glitch.intensity > 0) { this.renderGlitchEffect(context, enhancedTransform.glitch);' }'
-            } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'PostProcessingRenderer.renderPostProcessingEffects'); }
+            } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'PostProcessingRenderer.renderPostProcessingEffects') }
             });
         }
     }
@@ -102,8 +102,8 @@ export class PostProcessingRenderer {
             context.fillStyle = gradient;
             context.fillRect(0, 0, canvas.width, canvas.height); }'
             context.restore(});''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'PostProcessingRenderer.renderVignetteEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'PostProcessingRenderer.renderVignetteEffect') }
             });
         }
     }
@@ -126,10 +126,10 @@ export class PostProcessingRenderer {
             }
                 data[i + 2] += noise; // B }
             }
-            ';
+            ';'
             context.putImageData(imageData, 0, 0);''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'PostProcessingRenderer.renderNoiseEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'PostProcessingRenderer.renderNoiseEffect') }
             });
         }
     }
@@ -137,7 +137,7 @@ export class PostProcessingRenderer {
     /**
      * スキャンライン効果をレンダリング
      */
-    renderScanlinesEffect(context: CanvasRenderingContext2D, intensity: number): void { try {'
+    renderScanlinesEffect(context: CanvasRenderingContext2D, intensity: number): void { try {
             const canvas = this.canvas;''
             context.save(''';
             context.globalCompositeOperation = 'multiply';)'
@@ -148,10 +148,10 @@ export class PostProcessingRenderer {
             }
                 context.fillRect(0, y, canvas.width, 2); }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'PostProcessingRenderer.renderScanlinesEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'PostProcessingRenderer.renderScanlinesEffect') }
             });
         }
     }
@@ -175,10 +175,10 @@ export class PostProcessingRenderer {
                 
                 }
                         context.putImageData(imageData, offset, y); }
-                    }'
+                    }
                 }''
-            } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'PostProcessingRenderer.renderGlitchEffect'); }
+            } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'PostProcessingRenderer.renderGlitchEffect') }
             });
         }
     }
@@ -194,10 +194,10 @@ export class PostProcessingRenderer {
                 const blur = enhancedTransform.motionBlur.intensity; }
                 context.filter += ` blur(${blur)px})`;
             }
-            ';
-            // 色収差は後処理で実装''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'PostProcessingRenderer.applyEnhancedTransform'); }
+            ;
+            // 色収差は後処理で実装
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'PostProcessingRenderer.applyEnhancedTransform') }
             });
         }
     }
@@ -216,7 +216,7 @@ export class PostProcessingRenderer {
             // フォーカスポイント周辺はシャープに保つ
             const focusRadius = 100;
             const gradient = context.createRadialGradient(;
-                focusPoint.x, focusPoint.y, 0,)';
+                focusPoint.x, focusPoint.y, 0);
                 focusPoint.x, focusPoint.y, focusRadius)'';
             ');''
             gradient.addColorStop(0, 'rgba(0, 0, 0, 0')'');''
@@ -227,7 +227,7 @@ export class PostProcessingRenderer {
             context.fillRect(0, 0, canvas.width, canvas.height);
              }'
             context.restore(});''
-        } catch (error') { this.errorHandler.handleError(error, {')'
+        } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'PostProcessingRenderer.renderDepthBlurEffect'),' }'
             }');
         }'

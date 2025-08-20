@@ -62,7 +62,7 @@ export class MockGameStateGenerator {
             
             states.push(this.generateGameState({)
                 level);
-                minScore: score,);
+                minScore: score,)
         }
                 maxScore: score + 1000))); }
         }
@@ -87,7 +87,7 @@ export class MockGameStateGenerator {
             id: `bubble_${i}`)
             x: Math.random() * 800,';
             y: Math.random() * 400 + 50,'';
-            color: this.getRandomColor('')';
+            color: this.getRandomColor()';
             type: 'normal');
         }),
     }
@@ -101,7 +101,7 @@ export class MockGameStateGenerator {
         const colors = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];)
         return colors[Math.floor(Math.random() * colors.length)];
     }
-';
+';'
     private generateId(): string { ' }'
         return `gamestate_${Date.now(})}_${Math.random().toString(36).substr(2, 9'})}`;'
     }''

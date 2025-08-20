@@ -28,7 +28,7 @@ export interface CacheEntryInfo { key: string,
     hitCount: number,
     accessTime: number,
     size: number,
-    score: number; }
+    score: number }
 }
 
 /**
@@ -36,7 +36,7 @@ export interface CacheEntryInfo { key: string,
  */
 export interface RemovalResult { removedCount: number,
     removedSize: number,
-    removedKeys: string[]; }
+    removedKeys: string[] }
 }
 
 /**
@@ -77,9 +77,9 @@ export class LRUCache<T = any> { private readonly maxSize: number,
     constructor(maxSize: number = 50 * 1024 * 1024) {
 
         // デフォルト50MB
-        this.maxSize = maxSize;'
+        this.maxSize = maxSize;
         this.currentSize = 0;''
-        this.cache = new Map('')';
+        this.cache = new Map()';
         this.head = new CacheNode('', null as any, 0');''
         this.tail = new CacheNode('', null as any, 0);
         this.head.next = this.tail;
@@ -294,7 +294,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         // 全エントリの使用頻度情報を収集
         for(const [key, node] of this.cache) {
             entries.push({
-                key: key,);
+                key: key);
                 hitCount: node.hitCount);
                 accessTime: node.accessTime,);
                 size: node.size),
@@ -319,7 +319,7 @@ export class LRUCache<T = any> { private readonly maxSize: number,
         }
                 break; }
             }
-            ';
+            ';'
             this.delete(entry.key);''
             removedKeys.push(entry.key');
             removedSize += entry.size;

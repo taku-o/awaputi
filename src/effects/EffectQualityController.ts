@@ -4,12 +4,12 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 // Type definitions for quality control system
 interface ConfigurationManager { get<T = any>(key: string, defaultValue?: T): T;
     set<T = any>(key: string, value: T): void,
-    watch<T = any>(key: string, callback: (newValue: T) => void): ConfigWatchListener;
+    watch<T = any>(key: string, callback: (newValue: T) => void): ConfigWatchListener
     }
 }
 
-interface ErrorHandler { handleError(error: Error, context: string): void; }
-}'
+interface ErrorHandler { handleError(error: Error, context: string): void }
+}
 '';
 type ConfigWatchListener = (newValue: any') => void;'
 '';
@@ -26,7 +26,7 @@ interface QualitySettings { particleCountMultiplier: number,
     reflectionEnabled: boolean,
     blurEnabled: boolean,
     backgroundParticles: boolean,
-    frameRateTarget: number; }
+    frameRateTarget: number }
 }
 
 interface EffectPriorities { critical: number;    // ゲームプレイに必須
@@ -38,13 +38,13 @@ interface EffectPriorities { critical: number;    // ゲームプレイに必須
 interface EffectLimits { maxActiveParticles: number,
     maxActiveEffects: number,
     maxScreenEffects: number,
-    maxBackgroundParticles: number; }
+    maxBackgroundParticles: number }
 }
 
 interface ActiveEffectCounts { particles: number,
     effects: number,
     screenEffects: number,
-    backgroundParticles: number; }
+    backgroundParticles: number }
 }
 
 interface PerformanceStats { averageFrameRate: number,
@@ -52,7 +52,7 @@ interface PerformanceStats { averageFrameRate: number,
     currentQuality: QualityLevelType,
     autoAdjustEnabled: boolean,
     effectCounts: ActiveEffectCounts,
-    effectLimits: EffectLimits;
+    effectLimits: EffectLimits
     }
 }
 
@@ -63,7 +63,7 @@ interface DebugInfo { currentQuality: QualityLevelType,
     activeEffectCounts: ActiveEffectCounts,
     effectLimits: EffectLimits,
     autoAdjustEnabled: boolean,
-    lastAdjustTime: number; }
+    lastAdjustTime: number }
 }
 
 /**
@@ -123,8 +123,8 @@ export class EffectQualityController {
             frameRateTarget: 60 }
         }
     },
-    ';
-    // 現在の品質設定''
+    ;
+    // 現在の品質設定
     private currentQuality: QualityLevelType = 'high';
     private autoAdjustEnabled: boolean = true;
     private lastAdjustTime: number = 0;
@@ -169,23 +169,23 @@ export class EffectQualityController {
     
     /**
      * 品質設定の初期化
-     * @private'
+     * @private
      */''
-    private _initializeQualitySettings('')';
+    private _initializeQualitySettings()';
             const savedQuality = this.configManager.get<QualityLevelType>('effects.quality.level', 'high'');''
             const autoAdjust = this.configManager.get<boolean>('effects.quality.autoAdjust', true);
-            ';
+            ';'
             this.setQualityLevel(savedQuality);''
             this.setAutoAdjustment(autoAdjust');
             ';
-            // 品質変更の監視''
+            // 品質変更の監視
             this.configManager.watch<QualityLevelType>('effects.quality.level', (newValue) => { this.setQualityLevel(newValue);' }'
             }');'
             '';
             this.configManager.watch<boolean>('effects.quality.autoAdjust', (newValue) => { this.setAutoAdjustment(newValue); }
             });'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'EffectQualityController._initializeQualitySettings'); }
         }
     }
@@ -194,7 +194,7 @@ export class EffectQualityController {
      * 品質レベルの設定
      * @param level - 品質レベル (low, medium, high, ultra)
      */'
-    public setQualityLevel(level: QualityLevelType | null): void { // null または undefined の場合はデフォルト値を使用''
+    public setQualityLevel(level: QualityLevelType | null): void { // null または undefined の場合はデフォルト値を使用
         if(level == null') {'
             '';
             level = 'high';'
@@ -203,7 +203,7 @@ export class EffectQualityController {
         }
         
         if(!this.qualityLevels[level]) {
-        ';
+        ';'
             this.errorHandler.handleError();''
                 new Error(`Invalid quality level: ${level)`'),'
         
@@ -216,10 +216,10 @@ export class EffectQualityController {
         const previousQuality = this.currentQuality;
         this.currentQuality = level;
         ';
-        // エフェクト制限の調整''
+        // エフェクト制限の調整
         this._adjustEffectLimits(level');
         ';
-        // 設定の保存''
+        // 設定の保存
         this.configManager.set('effects.quality.level', level);
         
         console.log(`Quality level changed from ${previousQuality} to ${level)`});
@@ -261,8 +261,8 @@ export class EffectQualityController {
         }
             return true; }
         }
-        ';
-        // エフェクトタイプ別の制限チェック''
+        ;
+        // エフェクトタイプ別の制限チェック
         switch(effectType') {'
             '';
             case 'particle':';
@@ -341,8 +341,8 @@ export class EffectQualityController {
         
         let shouldAdjust = false;
         let newQuality: QualityLevelType = this.currentQuality,
-        ';
-        // フレームレートが目標を大幅に下回る場合、品質を下げる''
+        ;
+        // フレームレートが目標を大幅に下回る場合、品質を下げる
         if(avgFrameRate < targetFrameRate * 0.8') {'
             '';
             if (this.currentQuality === 'ultra'') {''
@@ -359,7 +359,7 @@ export class EffectQualityController {
         }
         // フレームレートが安定している場合、品質を上げる
         else if (avgFrameRate > targetFrameRate * 1.1 && this.frameRateHistory.length >= 5) { const stableFrameRate = this.frameRateHistory.every(rate => );
-                rate > targetFrameRate * 1.05);'
+                rate > targetFrameRate * 1.05);
             '';
             if(stableFrameRate') {'
                 '';
@@ -473,6 +473,6 @@ let effectQualityControllerInstance: EffectQualityController | null = null,
 /**
  * EffectQualityControllerのシングルトンインスタンスを取得
  * @returns シングルトンインスタンス
- */'
+ */
 export function getEffectQualityController(): EffectQualityController { if (!effectQualityControllerInstance) {''
         effectQualityControllerInstance = new EffectQualityController(' })

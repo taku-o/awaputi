@@ -13,14 +13,14 @@
 interface DirtyRegionBounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface DirtyRegionStats { totalRegions: number,
     mergedRegions: number,
     skippedRedraws: number,
     pixelsSaved: number,
-    performanceGain: number; }
+    performanceGain: number }
 }
 
 interface DirtyRegionConfig { enabled: boolean,
@@ -34,7 +34,7 @@ interface DirtyRegionConfig { enabled: boolean,
     regionHistory: DirtyRegionBounds[][],
     historySize: number,
     hotspots: Map<string, number>;
-    stats: DirtyRegionStats;
+    stats: DirtyRegionStats
     }
 }
 
@@ -58,7 +58,7 @@ interface ObjectTracking { x: number,
     scale: number,
     alpha: number,
     visible: boolean,
-    dirty: boolean; }
+    dirty: boolean }
 }
 
 interface DirtyRegionResult extends DirtyRegionBounds { full?: boolean; }
@@ -235,7 +235,7 @@ export class BasicDirtyRegionManager {
             x: Math.floor(bounds.x - bounds.width * (this.config.expansionFactor - 1) / 2),
             y: Math.floor(bounds.y - bounds.height * (this.config.expansionFactor - 1) / 2),
             width: Math.ceil(bounds.width * this.config.expansionFactor),
-            height: Math.ceil(bounds.height * this.config.expansionFactor); }
+            height: Math.ceil(bounds.height * this.config.expansionFactor) }
         };
 
         // Only add if region meets minimum size requirements
@@ -350,10 +350,10 @@ export class BasicDirtyRegionManager {
             width: obj.width || 0,
             height: obj.height || 0,
             rotation: obj.rotation || 0,
-            scale: obj.scale || 1,);
+            scale: obj.scale || 1);
             alpha: obj.alpha !== undefined ? obj.alpha : 1);
             visible: obj.visible !== undefined ? obj.visible : true,);
-            dirty: obj.dirty || false); }
+            dirty: obj.dirty || false) }
     }
 
     /**

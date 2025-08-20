@@ -19,7 +19,7 @@ interface LayerProperties { opacity?: number;
 interface BoundingBox { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface Layer { name: string,
@@ -39,7 +39,7 @@ interface Layer { name: string,
     renderTime: number,
     complexity: number,
     cacheHits: number,
-    cacheMisses: number; }
+    cacheMisses: number }
 }
 
 interface LayerStats { totalLayers: number,
@@ -47,7 +47,7 @@ interface LayerStats { totalLayers: number,
     cachedLayers: number,
     renderTime: number,
     compositionTime: number,
-    cacheHitRatio: number; }
+    cacheHitRatio: number }
 }
 
 interface Viewport { x?: number;
@@ -56,9 +56,9 @@ interface Viewport { x?: number;
     height?: number;
     scale?: number; }
 }
-';
+';'
 interface ErrorHandler { ''
-    logError(message: string, error: Error'): void; }
+    logError(message: string, error: Error'): void }
 }
 
 /**
@@ -92,7 +92,7 @@ export class AdvancedLayerManager {
         this.dynamicLayers = new Set();
         
         // Caching system
-        this.cachingEnabled = config.cachingEnabled !== undefined ? config.cachingEnabled: true,';
+        this.cachingEnabled = config.cachingEnabled !== undefined ? config.cachingEnabled: true,
         this.cachedLayers = new Map();''
         this.cacheInvalidation = new Set(''';
         this.globalCompositeOperation = config.globalCompositeOperation || 'source-over';
@@ -124,12 +124,12 @@ export class AdvancedLayerManager {
      * @param order - Rendering order (lower = rendered first)
      * @param properties - Layer properties
      */
-    createLayer(name: string, order: number, properties: LayerProperties = { ): Layer | null {'
-        try {''
+    createLayer(name: string, order: number, properties: LayerProperties = { ): Layer | null {
+        try {'
             if (this.layers.has(name)') {' }'
                 throw new Error(`Layer '${name')' already exists`});
             }
-            ';
+            ';'
             if (this.layers.size >= this.config.maxLayers) { ' }'
                 throw new Error(`Maximum layer count (${this.config.maxLayers) exceeded`'});
             }
@@ -161,8 +161,8 @@ export class AdvancedLayerManager {
                 cacheHits: 0,
                 cacheMisses: 0;
             },
-            ';
-            // Create layer canvas if cacheable''
+            ;
+            // Create layer canvas if cacheable
             if(layer.cacheable && this.cachingEnabled') {'
                 '';
                 layer.canvas = document.createElement('canvas'');
@@ -183,9 +183,9 @@ export class AdvancedLayerManager {
             this.stats.totalLayers = this.layers.size;
             
             console.log(`[LayerManager] Layer created: ${name} (order: ${order)`});
-            return layer;'
+            return layer;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to create layer', error as Error);
             return null; }
         }
@@ -219,9 +219,9 @@ export class AdvancedLayerManager {
             this.stats.totalLayers = this.layers.size;
             
             console.log(`[LayerManager] Layer removed: ${name)`});
-            return true;'
+            return true;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to remove layer', error as Error);
             return false; }
         }
@@ -353,9 +353,9 @@ export class AdvancedLayerManager {
             }
             
             this.stats.activeLayers = activeLayers;
-            this.stats.renderTime = performance.now() - startTime;'
+            this.stats.renderTime = performance.now() - startTime;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to render layers', error as Error); }
         }
     }
@@ -487,7 +487,7 @@ export class AdvancedLayerManager {
         if(layer.cacheable && layer.context && targetContext !== mainContext) {
             mainContext.drawImage(layer.canvas!, 0, 0);
             
-            // Mark as cached if render time exceeds threshold'
+            // Mark as cached if render time exceeds threshold
             if (layer.renderTime > this.config.cacheThreshold) {''
                 this.cachedLayers.set(layer.name, Date.now()');
         }

@@ -32,14 +32,14 @@ export class SocialLeaderboardUI {
                 screenReaderDescriptions: options.screenReaderDescriptions !== false }
             },
             
-            // 多言語設定'
+            // 多言語設定
             localization: { enabled: options.localization !== false,''
                 defaultLanguage: options.defaultLanguage || 'ja',
                 rtlSupport: options.rtlSupport === true }
             }
         },
         
-        // 状態管理'
+        // 状態管理
         this.state = { ''
             currentLeaderboard: 'overall',
             currentPage: 1,
@@ -68,7 +68,7 @@ export class SocialLeaderboardUI {
             focus: this.handleFocus.bind(this),
             resize: this.handleResize.bind(this),
             filterChange: this.handleFilterChange.bind(this),
-            searchInput: this.handleSearchInput.bind(this); }
+            searchInput: this.handleSearchInput.bind(this) }
         };
         
         // データキャッシュ
@@ -104,12 +104,12 @@ export class SocialLeaderboardUI {
     }
                 this.setupAccessibility(); }
             }
-            ';
-            // 初期データの読み込み''
-            this.loadInitialData('')';
+            ;
+            // 初期データの読み込み
+            this.loadInitialData()';
             this.log('SocialLeaderboardUI初期化完了');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('LEADERBOARD_UI_INIT_FAILED', error); }
         }
     }
@@ -117,7 +117,7 @@ export class SocialLeaderboardUI {
     /**
      * DOM要素の作成'
      */''
-    createElements('')';
+    createElements()';
         this.elements.container = document.createElement('div'');''
         this.elements.container.className = 'social-leaderboard-ui';''
         this.elements.container.setAttribute('role', 'region'');''
@@ -125,9 +125,9 @@ export class SocialLeaderboardUI {
         
         // ヘッダー
         this.elements.header = this.createHeader();
-        ';
-        // コントロール''
-        this.elements.controls = this.createControls('')';
+        ;
+        // コントロール
+        this.elements.controls = this.createControls()';
         this.elements.content = document.createElement('div'');''
         this.elements.content.className = 'leaderboard-content';''
         this.elements.content.setAttribute('role', 'main'');''
@@ -140,8 +140,8 @@ export class SocialLeaderboardUI {
         
         // ローディングインジケーター
         this.elements.loadingIndicator = this.createLoadingIndicator();
-        ';
-        // スクリーンリーダー用アナウンサー''
+        ;
+        // スクリーンリーダー用アナウンサー
         if(this.config.accessibility.enabled') {'
             '';
             this.elements.announcer = document.createElement('div'');''
@@ -176,9 +176,9 @@ export class SocialLeaderboardUI {
     }
     
     /**
-     * ヘッダーの作成'
+     * ヘッダーの作成
      */''
-    createHeader('')';
+    createHeader()';
         const header = document.createElement('div'');''
         header.className = 'leaderboard-header';'
         '';
@@ -201,13 +201,13 @@ export class SocialLeaderboardUI {
     /**
      * コントロールの作成'
      */''
-    createControls('')';
+    createControls()';
         const controls = document.createElement('div'');''
         controls.className = 'leaderboard-controls';''
         controls.setAttribute('role', 'toolbar'');''
         controls.setAttribute('aria-label', 'リーダーボード制御'');
         ';
-        // フィルター選択''
+        // フィルター選択
         const filterGroup = document.createElement('div'');''
         filterGroup.className = 'control-group filter-group';'
         '';
@@ -219,7 +219,7 @@ export class SocialLeaderboardUI {
         filterSelect.id = 'leaderboard-filter';''
         filterSelect.className = 'leaderboard-filter';''
         filterSelect.setAttribute('aria-label', '表示期間を選択'');
-        ';
+        ';'
         const filterOptions = ['';
             { value: 'all', label: '全期間' },''
             { value: 'daily', label: '今日' },''
@@ -233,11 +233,11 @@ export class SocialLeaderboardUI {
             optionElement.textContent = option.label; }
             filterSelect.appendChild(optionElement); }
         });
-        ';
+        ';'
         filterGroup.appendChild(filterLabel);''
         filterGroup.appendChild(filterSelect');
         ';
-        // 検索ボックス''
+        // 検索ボックス
         const searchGroup = document.createElement('div'');''
         searchGroup.className = 'control-group search-group';'
         '';
@@ -262,7 +262,7 @@ export class SocialLeaderboardUI {
         searchGroup.appendChild(searchInput);''
         searchGroup.appendChild(searchButton');
         ';
-        // 更新ボタン''
+        // 更新ボタン
         const refreshButton = document.createElement('button'');''
         refreshButton.type = 'button';''
         refreshButton.className = 'refresh-button';''
@@ -279,7 +279,7 @@ export class SocialLeaderboardUI {
     /**
      * ページネーションの作成'
      */''
-    createPagination('')';
+    createPagination()';
         const pagination = document.createElement('nav'');''
         pagination.className = 'leaderboard-pagination';''
         pagination.setAttribute('role', 'navigation'');''
@@ -312,7 +312,7 @@ export class SocialLeaderboardUI {
     /**
      * ローディングインジケーターの作成'
      */''
-    createLoadingIndicator('')';
+    createLoadingIndicator()';
         const indicator = document.createElement('div'');''
         indicator.className = 'loading-indicator';''
         indicator.style.display = 'none';''
@@ -336,7 +336,7 @@ export class SocialLeaderboardUI {
     /**
      * スタイルの適用'
      */''
-    applyStyles('')';
+    applyStyles()';
         const style = document.createElement('style');
         style.textContent = this.generateCSS();
         document.head.appendChild(style);
@@ -364,12 +364,12 @@ export class SocialLeaderboardUI {
             .leaderboard-title { font-size: 24px,
                 font-weight: 600,
                 color: #333,
-                margin: 0 0 8px 0; }
+                margin: 0 0 8px 0 }
             }
             
             .leaderboard-subtitle { font-size: 14px,
                 color: #666,
-                margin: 0; }
+                margin: 0 }
             }
             
             .leaderboard-controls { display: flex,
@@ -381,12 +381,12 @@ export class SocialLeaderboardUI {
             
             .control-group { display: flex,
                 align-items: center,
-                gap: 8px; }
+                gap: 8px }
             }
             
             .control-group label { font-size: 14px,
                 font-weight: 500,
-                color: #555; }
+                color: #555 }
             }
             
             .leaderboard-filter,
@@ -409,11 +409,11 @@ export class SocialLeaderboardUI {
                 border-radius: 4px,
                 font-size: 14px,
                 cursor: pointer,
-                transition: background-color 0.2s; }
+                transition: background-color 0.2s }
             }
             
             .search-button:hover,
-            .refresh-button:hover { background: #0056b3; }
+            .refresh-button:hover { background: #0056b3 }
             }
             
             .search-button:focus,
@@ -433,7 +433,7 @@ export class SocialLeaderboardUI {
                 background: #fafafa,
                 transition: all 0.2s ease,
                 cursor: pointer,
-                position: relative; }
+                position: relative }
             }
             
             .leaderboard-entry:hover { background: #f0f8ff,
@@ -442,7 +442,7 @@ export class SocialLeaderboardUI {
             
             .leaderboard-entry:focus { outline: 3px solid #007AFF,
                 outline-offset: 2px,
-                background: #f0f8ff; }
+                background: #f0f8ff }
             }
             
             .leaderboard-entry.current-player { background: #fff3cd,
@@ -456,19 +456,19 @@ export class SocialLeaderboardUI {
                 text-align: center, }
             }
             
-            .entry-rank.top-3 { color: #ffd700; }
+            .entry-rank.top-3 { color: #ffd700 }
             }
             
             .entry-name { flex: 1,
                 font-size: 16px,
                 font-weight: 500,
                 color: #333,
-                margin: 0 16px; }
+                margin: 0 16px }
             }
             
             .entry-score { font-size: 16px,
                 font-weight: 600,
-                color: #007AFF; }
+                color: #007AFF }
             }
             
             .entry-metadata { font-size: 12px,
@@ -489,10 +489,10 @@ export class SocialLeaderboardUI {
                 border-radius: 4px,
                 font-size: 14px,
                 cursor: pointer,
-                transition: background-color 0.2s; }
+                transition: background-color 0.2s }
             }
             
-            .pagination-button:hover:not(:disabled) { background: #e9ecef; }
+            .pagination-button:hover:not(:disabled) { background: #e9ecef }
             }
             
             .pagination-button:focus { outline: 3px solid #007AFF,
@@ -500,15 +500,15 @@ export class SocialLeaderboardUI {
             }
             
             .pagination-button:disabled { opacity: 0.5,
-                cursor: not-allowed; }
+                cursor: not-allowed }
             }
             
             .page-info { font-size: 14px,
-                color: #666; }
+                color: #666 }
             }
             
             .loading-indicator { text-align: center,
-                padding: 40px; }
+                padding: 40px }
             }
             
             .loading-spinner { width: 40px,
@@ -517,16 +517,16 @@ export class SocialLeaderboardUI {
                 border-top: 4px solid #007AFF,
                 border-radius: 50%,
                 animation: spin 1s linear infinite,
-                margin: 0 auto 16px; }
+                margin: 0 auto 16px }
             }
             
             @keyframes spin {
                 0% { transform: rotate(0deg), }
-                100% { transform: rotate(360deg); }
+                100% { transform: rotate(360deg) }
             }
             
             .loading-message { font-size: 16px,
-                color: #666; }
+                color: #666 }
             }
             
             .sr-only { position: absolute !important,
@@ -541,16 +541,16 @@ export class SocialLeaderboardUI {
             /* 高コントラストモード */
             .high-contrast-mode .social-leaderboard-ui { background: #000000 !important,
                 color: #ffffff !important,
-                border: 2px solid #ffffff !important; }
+                border: 2px solid #ffffff !important }
             }
             
             .high-contrast-mode .leaderboard-entry { background: #333333 !important,
                 border-color: #ffffff !important,
-                color: #ffffff !important; }
+                color: #ffffff !important }
             }
             
             .high-contrast-mode .leaderboard-entry:hover,
-            .high-contrast-mode .leaderboard-entry:focus { background: #555555 !important; }
+            .high-contrast-mode .leaderboard-entry:focus { background: #555555 !important }
             }
             
             /* 動きの軽減モード */
@@ -558,39 +558,39 @@ export class SocialLeaderboardUI {
                 animation-iteration-count: 1 !important,
                 transition-duration: 0.01ms !important, }
             }
-            ';
+            ';'
             /* レスポンシブ対応 */''
             @media (max-width: 768px') { .social-leaderboard-ui {
                     padding: 16px,
-                    margin: 8px 0; }
+                    margin: 8px 0 }
                 }
                 
                 .leaderboard-controls { flex-direction: column,
                     align-items: stretch,
-                    gap: 12px; }
+                    gap: 12px }
                 }
                 
                 .control-group { flex-direction: column,
                     align-items: stretch,
-                    gap: 4px; }
+                    gap: 4px }
                 }
                 
                 .leaderboard-entry { flex-direction: column,
                     align-items: stretch,
                     text-align: center,
-                    gap: 8px; }
+                    gap: 8px }
                 }
                 
                 .entry-rank { min-width: auto, }
                 }
                 
                 .leaderboard-pagination { flex-direction: column,
-                    gap: 12px; }
+                    gap: 12px }
                 }
             }
-            ';
+            ';'
             /* RTL言語サポート */''
-            [dir="rtl"] .leaderboard-entry { direction: rtl; }
+            [dir="rtl"] .leaderboard-entry { direction: rtl }
             }"
             "";
             [dir = "rtl"] .entry-rank { text-align: center }
@@ -605,17 +605,17 @@ export class SocialLeaderboardUI {
         // キーボードナビゲーション""
         this.elements.container.addEventListener('keydown', this.handlers.keydown');
         ';
-        // フォーカス管理''
+        // フォーカス管理
         this.elements.container.addEventListener('focusin', this.handlers.focus');
         ';
-        // フィルター変更''
+        // フィルター変更
         const filterSelect = this.elements.controls.querySelector('.leaderboard-filter');''
         if (filterSelect') {'
     }'
             filterSelect.addEventListener('change', this.handlers.filterChange'); }
         }
         ';
-        // 検索''
+        // 検索
         const searchInput = this.elements.controls.querySelector('.leaderboard-search'');''
         const searchButton = this.elements.controls.querySelector('.search-button');''
         if(searchInput') {'
@@ -629,20 +629,20 @@ export class SocialLeaderboardUI {
             });'
         }''
         if(searchButton') {'
-            ';
+            ';'
         }'
             searchButton.addEventListener('click', this.executeSearch.bind(this)'); }
         }
         ';
-        // 更新ボタン''
+        // 更新ボタン
         const refreshButton = this.elements.controls.querySelector('.refresh-button');''
         if(refreshButton') {'
-            ';
+            ';'
         }'
             refreshButton.addEventListener('click', this.refresh.bind(this); }
         }
         ';
-        // ページネーション''
+        // ページネーション
         if(this.elements.pagination') {'
             '';
             const prevButton = this.elements.pagination.querySelector('.prev-button'');''
@@ -653,20 +653,20 @@ export class SocialLeaderboardUI {
                 prevButton.addEventListener('click', () => this.goToPage(this.state.currentPage - 1); }'
             }''
             if(nextButton') {'
-                ';
+                ';'
             }'
                 nextButton.addEventListener('click', () => this.goToPage(this.state.currentPage + 1)'); }
             }
         }
         ';
-        // ウィンドウリサイズ''
+        // ウィンドウリサイズ
         window.addEventListener('resize', this.handlers.resize);
     }
     
     /**
      * アクセシビリティの設定'
      */''
-    setupAccessibility('')';
+    setupAccessibility()';
         this.elements.container.setAttribute('tabindex', '0');
         
         // ARIA属性の設定
@@ -678,12 +678,12 @@ export class SocialLeaderboardUI {
     }
     
     /**
-     * ARIA属性の更新'
+     * ARIA属性の更新
      */''
-    updateAriaAttributes('')';
+    updateAriaAttributes()';
         this.elements.content.setAttribute('aria-label', `${ entriesCount)件のリーダーボードエントリー`);
         ';
-        // エントリーにARIA属性を設定''
+        // エントリーにARIA属性を設定
         this.elements.entries.forEach((entry, index') => { ''
             entry.setAttribute('role', 'button'');''
             entry.setAttribute('tabindex', '0'');' }'
@@ -695,7 +695,7 @@ export class SocialLeaderboardUI {
     /**
      * スクリーンリーダー用説明の追加'
      */''
-    addScreenReaderDescriptions('')';
+    addScreenReaderDescriptions()';
         const description = document.createElement('div'');''
         description.id = 'leaderboard-description';''
         description.className = 'sr-only';
@@ -716,7 +716,7 @@ export class SocialLeaderboardUI {
             this.showLoading(true);
             await this.loadLeaderboardData();'
             this.render();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('INITIAL_DATA_LOAD_FAILED', error); }
         } finally { this.showLoading(false); }
         }
@@ -737,11 +737,11 @@ export class SocialLeaderboardUI {
             if(this.leaderboardManager) {
             
                 data = await this.leaderboardManager.getRanking(;
-                    this.state.filterPeriod,);
+                    this.state.filterPeriod);
                     this.state.currentLeaderboard);
                     {
                         limit: this.config.maxEntries,);
-                        search: this.state.searchQuery);
+                        search: this.state.searchQuery)
             }
                 ), }
             } else {  // フォールバックデータ; }
@@ -752,9 +752,9 @@ export class SocialLeaderboardUI {
             this.cache.set(cacheKey, data);
             this.lastUpdate = Date.now();
             
-            return data;'
+            return data;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('LEADERBOARD_DATA_LOAD_FAILED', error);
             return this.generateMockData(); }
         }
@@ -792,14 +792,14 @@ export class SocialLeaderboardUI {
             this.updatePagination(data);
             this.updateAriaAttributes();
             
-            // アクセシビリティアナウンス'
+            // アクセシビリティアナウンス
             if (this.config.accessibility.announcements && this.elements.announcer) {' }'
                 this.announce(`リーダーボードが更新されました。${data.entries.length)件のエントリーが表示されています。`'});
             }'
             '';
             this.log('リーダーボードレンダリング完了', { entriesCount: data.entries.length ),'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('LEADERBOARD_RENDER_FAILED', error); }
         }
     }
@@ -808,7 +808,7 @@ export class SocialLeaderboardUI {
      * エントリーのレンダリング'
      */''
     renderEntries(entries') {'
-        // 既存のエントリーをクリア''
+        // 既存のエントリーをクリア
         this.elements.content.innerHTML = '';
         this.elements.entries = [];
         
@@ -840,25 +840,25 @@ export class SocialLeaderboardUI {
             element.classList.add('current-player''); }
         }
         ';
-        // ランク''
+        // ランク
         const rank = document.createElement('div'');''
         rank.className = 'entry-rank';''
         if(entry.rank <= 3') {'
-            ';
+            ';'
         }'
             rank.classList.add('top-3''); }
         }
         rank.textContent = entry.rank;
         ';
-        // 名前''
+        // 名前
         const name = document.createElement('div'');''
         name.className = 'entry-name';
         name.textContent = entry.playerName;
         ';
-        // スコア''
+        // スコア
         const score = document.createElement('div'');''
         score.className = 'entry-score';''
-        score.textContent = entry.score.toLocaleString('')';
+        score.textContent = entry.score.toLocaleString()';
         const metadata = document.createElement('div'');''
         metadata.className = 'entry-metadata';
         metadata.textContent = this.formatTimestamp(entry.timestamp);
@@ -868,11 +868,11 @@ export class SocialLeaderboardUI {
         element.appendChild(score);''
         element.appendChild(metadata');
         ';
-        // ARIA属性''
+        // ARIA属性
         element.setAttribute('aria-label')'';
             `${entry.rank}位: ${entry.playerName), スコア: ${entry.score.toLocaleString(})}点`');
         ';
-        // イベントリスナー''
+        // イベントリスナー
         element.addEventListener('click', () => this.selectEntry(entry, element)');''
         element.addEventListener('keydown', (event') => {  ''
             if(event.key === 'Enter' || event.key === ' ') {
@@ -886,10 +886,10 @@ export class SocialLeaderboardUI {
         return element;
     }
     
-    /**
+    /**'
      * 空の状態のレンダリング'
      */''
-    renderEmptyState('')';
+    renderEmptyState()';
         const emptyState = document.createElement('div'');''
         emptyState.className = 'empty-state';
         emptyState.style.cssText = `;
@@ -897,7 +897,7 @@ export class SocialLeaderboardUI {
             padding: 40px,
             color: #666,
         `;
-        ';
+        ';'
         emptyState.innerHTML = `'';
             <div style="font-size: 48px; margin-bottom: 16px;">📊</div>""
             <div style="font-size: 18px; margin-bottom: 8px;">データがありません</div>""
@@ -930,20 +930,20 @@ export class SocialLeaderboardUI {
     selectEntry(entry, element') {
         this.stats.interactions++;
         ';
-        // 既存の選択をクリア''
+        // 既存の選択をクリア
         this.elements.entries.forEach(el => el.classList.remove('selected')');
         ';
-        // 新しい選択を設定''
+        // 新しい選択を設定
         element.classList.add('selected');
         this.state.selectedEntry = entry;
         
         // アクセシビリティアナウンス
-    }'
+    }
         if (this.config.accessibility.announcements && this.elements.announcer) {' }'
             this.announce(`${entry.playerName}のエントリーが選択されました。${entry.rank)位、${entry.score.toLocaleString(})}点。`');
         }
         ';
-        // イベントの発火''
+        // イベントの発火
         this.dispatchEvent('entrySelected', { entry, element )');'
         '';
         this.log('エントリー選択', entry); }
@@ -959,7 +959,7 @@ export class SocialLeaderboardUI {
         const diffMins = Math.floor(diffMs / 60000);
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);'
-        ';
+        ';'
     }'
         if (diffMins < 1') return 'たった今'; }
         if (diffMins < 60) return `${diffMins}分前`;
@@ -978,13 +978,13 @@ export class SocialLeaderboardUI {
         switch (event.key') {''
             case 'ArrowDown':';
                 event.preventDefault();''
-                this.focusNext('')';
+                this.focusNext()';
             case 'ArrowUp':)';
                 event.preventDefault();''
-                this.focusPrevious('')';
+                this.focusPrevious()';
             case 'Home':)';
                 event.preventDefault();''
-                this.focusFirst('')';
+                this.focusFirst()';
             case 'End':)';
                 event.preventDefault();''
                 this.focusLast(''';
@@ -1092,7 +1092,7 @@ export class SocialLeaderboardUI {
         await this.refresh();
         
         // アクセシビリティアナウンス
-        if(this.config.accessibility.announcements && this.elements.announcer) {'
+        if(this.config.accessibility.announcements && this.elements.announcer) {
             const query = this.state.searchQuery.trim();'
         }'
             if (query') {' }'
@@ -1130,7 +1130,7 @@ export class SocialLeaderboardUI {
      * レスポンシブレイアウトの更新
      */
     updateResponsiveLayout() {
-        const isMobile = window.innerWidth < 768;'
+        const isMobile = window.innerWidth < 768;
         '';
         if (isMobile') {'
     }'
@@ -1153,7 +1153,7 @@ export class SocialLeaderboardUI {
         }'
         '';
         if(this.elements.content') {'
-            ';
+            ';'
         }'
             this.elements.content.setAttribute('aria-busy', show ? 'true' : 'false'); }
         }
@@ -1168,9 +1168,9 @@ export class SocialLeaderboardUI {
             // キャッシュをクリア
             this.cache.clear();
             
-            await this.render();'
+            await this.render();
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('REFRESH_FAILED', error); }
         } finally { this.showLoading(false); }
         }
@@ -1218,14 +1218,14 @@ export class SocialLeaderboardUI {
         
     }'
         this.config = { ...this.config, ...newConfig };''
-        this.applyStyles('')';
+        this.applyStyles()';
         this.log('設定更新', newConfig);
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         this.elements.container.removeEventListener('keydown', this.handlers.keydown');''
         window.removeEventListener('resize', this.handlers.resize);
         
@@ -1234,8 +1234,8 @@ export class SocialLeaderboardUI {
         }
         
         // DOM要素の削除
-        if(this.elements.container && this.elements.container.parentNode) {'
-            ';
+        if(this.elements.container && this.elements.container.parentNode) {
+            ';'
         }'
             this.elements.container.parentNode.removeChild(this.elements.container'); }
         }'

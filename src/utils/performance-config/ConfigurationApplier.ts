@@ -15,7 +15,7 @@ interface ConfigMetadata { reason?: string;
 
 interface ConfigBackup { value: any,
     timestamp: number,
-    metadata: ConfigMetadata;
+    metadata: ConfigMetadata
     }
 }
 
@@ -26,13 +26,13 @@ interface ConfigProfile { created: number,
 interface ConfigChangeNotification { key: string,
     newValue: any,
     oldValue: any,
-    metadata: ConfigMetadata;
+    metadata: ConfigMetadata
     }
 }
 
 interface SetResult { success: boolean,
     oldValue: any,
-    newValue: any; }
+    newValue: any }
 }
 
 interface ApplyResult { key: string,
@@ -42,7 +42,7 @@ interface ApplyResult { key: string,
 }
 
 interface BackupResult { key: string,
-    backupCount: number; }
+    backupCount: number }
 }
 
 interface ResetResult { resetKeys: string[],
@@ -50,7 +50,7 @@ interface ResetResult { resetKeys: string[],
     status?: string;
     message?: string; }
 }
-';
+';'
 interface ProfileResult { name: string,''
     status: 'created' | 'loaded', }
     changes?: Record<string, { oldValue: any; newValue: any }>;
@@ -60,9 +60,9 @@ interface RollbackResult { key: string,
     value: any,
     oldValue: any,
     originalTimestamp: number,
-    rollbackTimestamp: number; }
+    rollbackTimestamp: number }
 }
-';
+';'
 interface UpdateItem { id: string,''
     handler: (data: any') => Promise<void>,';
     data: any,'';
@@ -76,7 +76,7 @@ interface UpdateItem { id: string,''
 
 interface UpdateStatus { queueLength: number,
     updating: boolean,
-    recentUpdates: UpdateItem[];
+    recentUpdates: UpdateItem[]
     }
 }
 
@@ -85,14 +85,14 @@ interface ApplierStatus { configCount: number,
     listenerCount: number,
     updateQueueLength: number,
     updating: boolean,
-    backupCount: number; }
+    backupCount: number }
 }
 
 interface ApplierConfiguration { maxBackupsPerKey?: number;
     updateInterval?: number; }
 }
 ';
-// Configuration category types''
+// Configuration category types
 type ConfigCategory = 'frameStabilization' | 'memoryManagement' | 'qualityControl' | 'rendering' | 'mobile' | 'general';
 
 // Configuration listener types
@@ -122,12 +122,12 @@ export class ConfigurationApplier {
         this.listeners = new Map<ConfigCategory, Set<ConfigChangeCallback>>();
         this.defaults = new Map<string, any>();
         this.updateQueue = [];
-        this.updating = false;'
+        this.updating = false;
         this.updateHistory = [];''
         this.backups = new Map<string, ConfigBackup[]>(');
         this.maxBackupsPerKey = 10;'
         ';
-    }
+    }'
     }'
         console.log('[ConfigurationApplier] Applier component initialized'); }
     }
@@ -138,7 +138,7 @@ export class ConfigurationApplier {
     async initialize(): Promise<void> { this.setupDefaults();
         await this.loadCurrentConfig();'
         await this.loadBackups();''
-        this.startUpdateProcessor('')';
+        this.startUpdateProcessor()';
         console.log('[ConfigurationApplier] All applier components initialized'); }
     }
     
@@ -152,27 +152,27 @@ export class ConfigurationApplier {
             'frameStabilization.adaptiveTargeting': true,'';
             'frameStabilization.stabilityThreshold': 5,
             ';
-            // メモリ管理設定''
+            // メモリ管理設定
             'memoryManagement.enabled': true,'';
-            'memoryManagement.maxUsage': 150 * 1024 * 1024, // 150MB'';
-            'memoryManagement.gcInterval': 60000, // 60秒'';
+            'memoryManagement.maxUsage': 150 * 1024 * 1024, // 150MB;
+            'memoryManagement.gcInterval': 60000, // 60秒;
             'memoryManagement.aggressiveCleanup': false,'';
             'memoryManagement.leakDetection': true,
             ';
-            // 品質制御設定''
+            // 品質制御設定
             'qualityControl.enabled': true,'';
             'qualityControl.autoAdjust': true,'';
             'qualityControl.qualityLevel': 'high','';
             'qualityControl.minQuality': 'low','';
             'qualityControl.adjustmentSpeed': 'medium',
             ';
-            // レンダリング最適化設定''
+            // レンダリング最適化設定
             'rendering.enableOptimization': true,'';
             'rendering.dirtyRegions': true,'';
             'rendering.viewportCulling': true,'';
             'rendering.batchRendering': true,')';
             'rendering.layerCaching': true)';
-            // モバイル最適化設定''
+            // モバイル最適化設定
             'mobile.enableOptimization': true,'';
             'mobile.deviceDetection': true,'';
             'mobile.batteryOptimization': true,'';
@@ -192,7 +192,7 @@ export class ConfigurationApplier {
     /**
      * Load current configuration from storage'
      */''
-    private async loadCurrentConfig('')';
+    private async loadCurrentConfig()';
             const saved = localStorage.getItem('performance_config');
             if(saved) {
                 const parsedConfig = JSON.parse(saved);
@@ -200,22 +200,22 @@ export class ConfigurationApplier {
             }
                     this.config.set(key, value); }'
                 }''
-            } catch (error') { ''
-            console.error('[ConfigurationApplier] Failed to load saved config:', error); }
+            } catch (error) { ''
+            console.error('[ConfigurationApplier] Failed to load saved config:', error) }
         }
     }
     
     /**
      * Load configuration backups'
      */''
-    private async loadBackups('')';
+    private async loadBackups()';
             const saved = localStorage.getItem('performance_config_backups');
             if(saved) {
                 const parsed = JSON.parse(saved);
             }'
                 this.backups = new Map<string, ConfigBackup[]>(Object.entries(parsed);' }'
-            } catch (error') { ''
-            console.error('[ConfigurationApplier] Failed to load backups:', error); }
+            } catch (error) { ''
+            console.error('[ConfigurationApplier] Failed to load backups:', error) }
         }
     }
     
@@ -239,10 +239,10 @@ export class ConfigurationApplier {
                 const update = this.updateQueue.shift();
                 if (update) {
             }
-                    await this.processUpdate(update); }'
+                    await this.processUpdate(update); }
                 }''
-            } catch (error') { ''
-            console.error('[ConfigurationApplier] Update processing failed:', error); }
+            } catch (error) { ''
+            console.error('[ConfigurationApplier] Update processing failed:', error) }
         } finally { this.updating = false; }
         }
     }
@@ -251,22 +251,22 @@ export class ConfigurationApplier {
      * Process a single configuration update
      * @param update - Update object
      */'
-    private async processUpdate(update: UpdateItem): Promise<void> { try {''
+    private async processUpdate(update: UpdateItem): Promise<void> { try {'
             await update.handler(update.data');
             
             const completedUpdate: UpdateItem = {'
                 ...update,'';
                 status: 'completed',
-                completedAt: Date.now(); }
+                completedAt: Date.now() }
             };
             
             this.updateHistory.push(completedUpdate);'
             '';
-        } catch (error') { const failedUpdate: UpdateItem = {'
+        } catch (error) { const failedUpdate: UpdateItem = {'
                 ...update,'';
                 status: 'failed',
                 error: error instanceof Error ? error.message : String(error),
-                failedAt: Date.now(); }
+                failedAt: Date.now() }
             };
             
             this.updateHistory.push(failedUpdate);
@@ -313,7 +313,7 @@ export class ConfigurationApplier {
      * @returns Application results
      */
     async applyConfigChanges(configUpdates: Record<string, any>, metadata: ConfigMetadata = { ): Promise<ApplyResult[]> {
-        const results: ApplyResult[] = [],';
+        const results: ApplyResult[] = [],
         '';
         for (const [key, value] of Object.entries(configUpdates)') {
             try {
@@ -323,10 +323,10 @@ export class ConfigurationApplier {
                     timestamp: Date.now(),' };'
                 }');''
                 results.push({ key, status: 'success', result );' }'
-            } catch (error') { results.push({ )'
+            } catch (error) { results.push({ )'
                     key, ')';
                     status: 'error' ),
-                    error: error instanceof Error ? error.message : String(error); }
+                    error: error instanceof Error ? error.message : String(error) }
                 });
             }
         }
@@ -365,12 +365,12 @@ export class ConfigurationApplier {
     
     /**
      * Save configuration backups
-     */'
-    private async saveBackups(): Promise<void> { try {''
+     */
+    private async saveBackups(): Promise<void> { try {'
             const backupsObj = Object.fromEntries(this.backups');''
             localStorage.setItem('performance_config_backups', JSON.stringify(backupsObj);' }'
-        } catch (error') { ''
-            console.error('[ConfigurationApplier] Failed to save backups:', error); }
+        } catch (error) { ''
+            console.error('[ConfigurationApplier] Failed to save backups:', error) }
         }
     }
     
@@ -417,8 +417,8 @@ export class ConfigurationApplier {
         
         }'
                     callback({ key, newValue, oldValue, metadata );' }'
-                } catch (error') { ''
-                    console.error('[ConfigurationApplier] Config change listener error:', error); }
+                } catch (error) { ''
+                    console.error('[ConfigurationApplier] Config change listener error:', error) }
                 }
             }
         }
@@ -441,11 +441,11 @@ export class ConfigurationApplier {
     /**
      * Save configuration to storage
      */'
-    private async saveConfig(): Promise<void> { try {''
+    private async saveConfig(): Promise<void> { try {'
             const configObj = Object.fromEntries(this.config');''
             localStorage.setItem('performance_config', JSON.stringify(configObj);' }'
-        } catch (error') { ''
-            console.error('[ConfigurationApplier] Failed to save config:', error); }
+        } catch (error) { ''
+            console.error('[ConfigurationApplier] Failed to save config:', error) }
         }
     }
     
@@ -505,11 +505,11 @@ export class ConfigurationApplier {
     async createProfile(name: string, config: Record<string, any>): Promise<ProfileResult> {
         this.profiles.set(name, { ...config, created: Date.now() });
         
-        // プロファイルの保存'
-        try { ''
+        // プロファイルの保存
+        try {'
             const profiles = Object.fromEntries(this.profiles');''
             localStorage.setItem('performance_config_profiles', JSON.stringify(profiles);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[ConfigurationApplier] Failed to save profile:', error');
             throw error; }
         }'
@@ -526,7 +526,7 @@ export class ConfigurationApplier {
         if (!profile') {' }'
             throw new Error(`Profile '${name')' not found`});
         }
-        ';
+        ';'
         const changes: Record<string, { oldValue: any; newValue: any }> = {}''
         for (const [key, value] of Object.entries(profile)') { ''
             if(key !== 'created') {'
@@ -595,7 +595,7 @@ export class ConfigurationApplier {
             handler,
             data,
             priority,
-            queuedAt: Date.now(); }
+            queuedAt: Date.now() }
         });
         
         // 優先度でソート
@@ -674,9 +674,9 @@ export class ConfigurationApplier {
         this.profiles.clear();
         this.listeners.clear();
         this.defaults.clear();
-        this.updateQueue = [];'
+        this.updateQueue = [];
         this.updateHistory = [];''
-        this.backups.clear('')';
+        this.backups.clear()';
         console.log('[ConfigurationApplier] Applier destroyed''); }'
     }''
 }

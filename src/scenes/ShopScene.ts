@@ -44,15 +44,15 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     }
     
     /**
-     * 描画処理'
+     * 描画処理
      */''
     render(context: CanvasRenderingContext2D'): void { const canvas = this.gameEngine.canvas;
         ';
-        // 背景''
+        // 背景
         context.fillStyle = '#001122';
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
-        // タイトル''
+        // タイトル
         context.save(''';
         context.fillStyle = '#FFFFFF';''
         context.font = 'bold 32px Arial';''
@@ -75,7 +75,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
      * プレイヤー情報を描画
      */
     private renderPlayerInfo(context: CanvasRenderingContext2D): void { const canvas = this.gameEngine.canvas;
-        const playerData = this.gameEngine.playerData;'
+        const playerData = this.gameEngine.playerData;
         '';
         context.save(''';
         context.fillStyle = '#CCCCCC';''
@@ -86,7 +86,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
         const infoY = 70;')'
         context.fillText(`プレイヤー: ${playerData.username || '名無し')`, 20, infoY);
         context.fillText(`所持AP: ${playerData.ap)`, 20, infoY + 25);
-        context.fillText(`総TAP: ${playerData.tap)`, 20, infoY + 50);
+        context.fillText(`総TAP: ${playerData.tap)`, 20, infoY + 50)
          }
         context.restore(});
     }
@@ -116,26 +116,26 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
      * アイテムカードを描画
      */'
     private renderItemCard(context: CanvasRenderingContext2D, itemInfo: ItemInfo, x: number, y: number, width: number, height: number, isSelected: boolean): void { ''
-        context.save('')';
+        context.save()';
         let bgColor = '#333333';')'
         if(isSelected') {'
-            ';
+            ';'
         }'
             bgColor = itemInfo.canPurchase ? '#0066CC' : '#CC6600';' }'
         } else if (!itemInfo.canPurchase') { ''
             bgColor = '#222222'; }
         }
         
-        // 背景'
+        // 背景
         context.fillStyle = bgColor;''
         context.fillRect(x, y, width, height');
         ';
-        // 枠線''
+        // 枠線
         context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';'
         context.lineWidth = 2;''
         context.strokeRect(x, y, width, height');
         ';
-        // アイテム名''
+        // アイテム名
         context.fillStyle = itemInfo.canPurchase ? '#FFFFFF' : '#888888';''
         context.font = 'bold 18px Arial';''
         context.textAlign = 'left';''
@@ -148,19 +148,19 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             itemName += ` (Lv.${itemInfo.currentLevel})`;'
         }''
         if(itemInfo.isMaxLevel') {'
-            ';
+            ';'
         }'
             itemName += ' [MAX]'; }
         }'
         '';
         context.fillText(itemName, x + 15, y + 10');
         ';
-        // 説明文''
+        // 説明文
         context.font = '14px Arial';''
         context.fillStyle = itemInfo.canPurchase ? '#CCCCCC' : '#666666';
         context.fillText(itemInfo.description, x + 15, y + 35);
         ';
-        // コスト表示''
+        // コスト表示
         if(!itemInfo.isMaxLevel') {'
             '';
             context.font = 'bold 16px Arial';''
@@ -175,7 +175,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             context.fillText('購入済み', x + width - 15, y + 10); }
         }
         ';
-        // 最大レベル表示''
+        // 最大レベル表示
         if(itemInfo.maxLevel > 1') {'
             '';
             context.font = '12px Arial';''
@@ -185,7 +185,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
             context.fillText(`最大Lv.${itemInfo.maxLevel)`, x + width - 15, y + height - 20});
         }
         ';
-        // 効果値表示（現在のレベルでの効果）''
+        // 効果値表示（現在のレベルでの効果）
         if(itemInfo.currentLevel > 0') {'
             '';
             context.font = '12px Arial';''
@@ -256,7 +256,7 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
                     this.moveSelection(1');'
                     break;''
                 case 'Enter':'';
-                    this.purchaseSelectedItem('')';
+                    this.purchaseSelectedItem()';
                 case 'KeyH':')';
                     this.gameEngine.sceneManager.switchScene('help'');'
                     break;''
@@ -318,23 +318,23 @@ export class ShopScene extends Scene { private selectedItemIndex: number = 0
     
     /**
      * 選択されたアイテムを購入
-     */'
+     */
     private purchaseSelectedItem(): void { ''
         if(this.selectedItemIndex >= 0 && this.selectedItemIndex < this.availableItems.length') {
             const selectedItem = this.availableItems[this.selectedItemIndex];'
             '';
             if (selectedItem.id === 'reset') {'
-                // リセットアイテムの場合''
+                // リセットアイテムの場合
                 if (this.gameEngine.itemManager.resetAllItems()') {''
                     console.log('All items have been reset');''
-                    this.updateItemList('');
+                    this.updateItemList();
         }'
                     console.log('Failed to reset items (not enough AP')'); }
                 }
             } else {  // 通常アイテムの場合
                 if(this.gameEngine.itemManager.purchaseItem(selectedItem.id) { }
                     console.log(`Purchased ${selectedItem.name)`); }
-                    this.updateItemList(}); // リストを更新'
+                    this.updateItemList(}); // リストを更新
                 } else { ' }'
                     console.log(`Failed to purchase ${selectedItem.name)`'});
                 }

@@ -19,7 +19,7 @@ interface ProcessInfo { id: string,
     processedChunks: number,
     startTime: number,
     results: any[],
-    options: ProcessOptions;
+    options: ProcessOptions
     }
 }
 
@@ -41,7 +41,7 @@ interface ProcessorStats { totalProcessed: number,
     totalChunks: number,
     averageChunkTime: number,
     memoryPeakUsage: number,
-    totalProcessingTime: number; }
+    totalProcessingTime: number }
 }
 
 /**
@@ -121,9 +121,9 @@ export class ChunkProcessor {
     }
             totalProcessingTime: 0 }
         },
-        ';
-        // イベントリスナー''
-        this.listeners = new Map('')';
+        ;
+        // イベントリスナー
+        this.listeners = new Map()';
         console.log('ChunkProcessor initialized');
     }
     
@@ -153,7 +153,7 @@ export class ChunkProcessor {
                 startTime,
                 results: [],
                 options }
-            };'
+            };
             '';
             this.activeProcesses.set(processId, processInfo');'
             '';
@@ -173,7 +173,7 @@ export class ChunkProcessor {
                 const chunkStartTime = Date.now();
                 const chunkResult = await this.processChunk(;
                     chunk, ;
-                    processor, );
+                    processor );
                     chunkIndex);
                     processInfo,);
                     options);
@@ -190,11 +190,11 @@ export class ChunkProcessor {
                     }
                 }
                 
-                // 進捗更新'
+                // 進捗更新
                 processInfo.processedChunks++;''
                 processInfo.processedItems = Math.min(i + chunkSize, data.length');'
                 '';
-                this.emit('chunkProcessed', { id: processId,)
+                this.emit('chunkProcessed', { id: processId)
                     chunkIndex);
                     processedItems: processInfo.processedItems,);
                     totalItems: processInfo.totalItems),
@@ -205,11 +205,11 @@ export class ChunkProcessor {
                 if (chunkIndex % this.yieldInterval === 0) { await this.yieldControl(); }
                 }
             }
-            ';
+            ';'
             const totalDuration = Date.now() - startTime;''
             this.updateProcessStats(totalDuration, processInfo.totalChunks');'
             '';
-            this.emit('processCompleted', { id: processId,)
+            this.emit('processCompleted', { id: processId)
                 totalItems: processInfo.totalItems);
                 duration: totalDuration,);
                 results: options.collectResults !== false ? processInfo.results : undefined),
@@ -246,7 +246,7 @@ export class ChunkProcessor {
         options: ProcessOptions = {}''
     '): Promise<R[] | Record<string, any>> { ''
         if(typeof data !== 'object' || data === null') {'
-            ';
+            ';'
         }'
             throw new Error('Data must be an object'); }
         }
@@ -280,9 +280,9 @@ export class ChunkProcessor {
     async processStream<T, R>(;
         dataProvider: DataProviderFunction<T>, ;
         processor: ChunkProcessorFunction<T, R>);
-        options: ProcessOptions = {}'
+        options: ProcessOptions = {}
     ): Promise<R[]>;''
-        const processId = this.generateProcessId('')';
+        const processId = this.generateProcessId()';
             this.emit('streamStarted', { id: processId ),
             
             let batch: T[] = [],
@@ -299,7 +299,7 @@ export class ChunkProcessor {
                     // 残りのバッチを処理
                     if (batch.length > 0) {
                         const batchResult = await this.processChunk(;
-                            batch,);
+                            batch);
                             processor);
             
             }
@@ -317,22 +317,22 @@ export class ChunkProcessor {
                 // バッチサイズに達したら処理
                 if(batch.length >= batchSize) {
                     const batchResult = await this.processChunk(;
-                        batch,);
+                        batch);
                         processor);
                 }
                         Math.floor(processedCount / batchSize), }
                         { id: processId } as ProcessInfo,
                         options;
-                    );'
+                    );
                     '';
                     results.push(...(Array.isArray(batchResult) ? batchResult: [batchResult])'),
                     processedCount += batch.length;
                     batch = [];'
                     '';
-                    this.emit('streamProgress', { id: processId,)
+                    this.emit('streamProgress', { id: processId)
                         processedCount);
                     
-                    // メモリチェックと制御移譲'
+                    // メモリチェックと制御移譲
                     await this.checkMemoryUsage();''
                     await this.yieldControl(''';
             this.emit('streamCompleted', {)
@@ -342,7 +342,7 @@ export class ChunkProcessor {
             
             return options.collectResults !== false ? results: [],';
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.emit('streamError', {)
                 id: processId),
                 error: (error as Error).message }
@@ -367,18 +367,18 @@ export class ChunkProcessor {
             
             // チャンク処理実行
             const result = await processor(chunk, chunkIndex, {
-                processId: processInfo.id,);
+                processId: processInfo.id);
                 totalItems: processInfo.totalItems);
                 processedItems: processInfo.processedItems;
             ),
             ;
             return result;
-             }'
+             }
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CHUNK_PROCESS_ERROR', {)
                 chunkIndex);
                 chunkSize: chunk.length,);
-                processId: processInfo.id); }
+                processId: processInfo.id) }
             });
             throw error;
         }
@@ -443,9 +443,9 @@ export class ChunkProcessor {
     }
     
     /**
-     * チャンク結果のマージ'
+     * チャンク結果のマージ
      */''
-    private mergeChunkResults(results: any[], options: ProcessOptions'): any { try {''
+    private mergeChunkResults(results: any[], options: ProcessOptions'): any { try {'
             if(options.mergeStrategy === 'object') {
                 
             }
@@ -453,17 +453,17 @@ export class ChunkProcessor {
                     return { ...merged, ...result };''
                 }, {}');''
             } else if (options.mergeStrategy === 'array') { ''
-                return results.flat('') }'
+                return results.flat() }'
             } else if (typeof options.customMerger === 'function') { return options.customMerger(results); }
             }
             
             // デフォルト: 配列として返す
             return results;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CHUNK_RESULT_MERGE_ERROR', {)
                 resultsCount: results.length,);
-                mergeStrategy: options.mergeStrategy); }
+                mergeStrategy: options.mergeStrategy) }
             });
             return results; // フォールバック
         }
@@ -483,7 +483,7 @@ export class ChunkProcessor {
         totalItems: number,
         processedItems: number,
         progress: number,
-        duration: number; }
+        duration: number }
     }> { return Array.from(this.activeProcesses.values().map(process => ({)
             id: process.id);
             totalItems: process.totalItems,);
@@ -497,7 +497,7 @@ export class ChunkProcessor {
      * 統計情報を取得
      */
     getStats(): ProcessorStats & { currentMemoryUsage: number,
-        activeProcesses: number; }
+        activeProcesses: number }
     } { return { ...this.stats,
             currentMemoryUsage: this.memoryUsage, };
             activeProcesses: this.activeProcesses.size }
@@ -506,11 +506,11 @@ export class ChunkProcessor {
     
     /**
      * プロセスのキャンセル
-     */'
+     */
     cancelProcess(processId: string): boolean { if(this.activeProcesses.has(processId) {''
             this.activeProcesses.delete(processId');''
             this.emit('processCancelled', { id: processId ),
-            return true; }
+            return true }
         }
         return false;
     }
@@ -555,9 +555,9 @@ export class ChunkProcessor {
     /**
      * リソースの解放
      */
-    destroy(): void { // アクティブプロセスをクリア'
+    destroy(): void { // アクティブプロセスをクリア
         this.activeProcesses.clear();''
-        this.listeners.clear('')';
+        this.listeners.clear()';
         console.log('ChunkProcessor destroyed'); }
     }
 }
@@ -567,6 +567,6 @@ let processorInstance: ChunkProcessor | null = null,
 
 /**
  * ChunkProcessorシングルトンインスタンスの取得
- */'
+ */
 export function getChunkProcessor(): ChunkProcessor { if (!processorInstance) {''
         processorInstance = new ChunkProcessor(' })

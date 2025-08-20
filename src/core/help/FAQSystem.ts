@@ -15,7 +15,7 @@ export interface GameEngine { helpManager?: HelpManager;
 export interface HelpManager { contentLoader?: ContentLoader;
     }
 }
-';
+';'
 export interface ContentLoader { ''
     loadFAQData(''';
 export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced';''
@@ -63,13 +63,13 @@ export class FAQSystem {
         this.usageStatistics = new Map<string, UsageStatistics>();
         this.userPreferences = new Map<string, any>();
         
-        // 検索・フィルタリング'
+        // 検索・フィルタリング
         this.searchEngine = null;''
         this.activeFilters = new Set<string>(');''
         this.sortOrder = 'relevance';
         
         // 表示設定
-        this.displayConfig = {'
+        this.displayConfig = {
             itemsPerPage: 10,'';
             expandedItems: new Set<string>('),
             showCategories: true,
@@ -80,7 +80,7 @@ export class FAQSystem {
             animationDuration: 300 }
         },
         
-        // FAQカテゴリ定義'
+        // FAQカテゴリ定義
         this.defaultCategories = [{ ''
                 id: 'gameplay','';
                 name: 'ゲームプレイ','';
@@ -126,7 +126,7 @@ export class FAQSystem {
         ],
         
         // デフォルトFAQデータ
-        this.defaultFAQs = [// ゲームプレイ関連';
+        this.defaultFAQs = [// ゲームプレイ関連;
             { ''
                 id: 'how_to_play','';
                 category: 'gameplay','';
@@ -233,11 +233,11 @@ export class FAQSystem {
             
             // 検索インデックスの構築
             this.buildSearchIndex();
-            ';
-            // ユーザー統計の読み込み''
-            this.loadUserStatistics('')';
+            ;
+            // ユーザー統計の読み込み
+            this.loadUserStatistics()';
             this.loggingSystem.info('FAQSystem', 'FAQ system initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('FAQSystem', 'Failed to initialize FAQ system', error');''
             ErrorHandler.handle(error as Error, 'FAQSystem.initialize'); }
         }
@@ -248,7 +248,7 @@ export class FAQSystem {
      */
     private initializeCategories(): void { this.defaultCategories.forEach(category => { 
             this.categories.set(category.id, {
-                ...category,);
+                ...category);
                 faqCount: 0);
                 viewCount: 0,) }
                 lastAccessed: null); }
@@ -295,9 +295,9 @@ export class FAQSystem {
                                 category.faqCount!++; }
                             }
                         }
-                    });'
+                    });
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.warn('FAQSystem', 'Failed to load external FAQ data', error);
             // エラーが発生してもデフォルトデータで継続 }
         }
@@ -311,7 +311,7 @@ export class FAQSystem {
         for(const [faqId, faq] of this.faqDatabase) {
         
             // 検索可能なテキストを抽出
-            const searchableText = [faq.question,]';
+            const searchableText = [faq.question];
                 faq.answer,']';
                 ...(faq.tags || []')'';
             ].join(' ').toLowerCase();
@@ -404,7 +404,7 @@ export class FAQSystem {
             // フィルタリングとページネーション
             return this.applyFiltersAndPagination(sortedResults, options);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('FAQSystem', 'FAQ search error', error);
             return { faqs: [],
                 totalCount: 0,
@@ -483,7 +483,7 @@ export class FAQSystem {
      * @param faqs - FAQ配列
      * @param sortBy - ソート基準
      * @returns ソート済みFAQ配列
-     */'
+     */
     private sortFAQs(faqs: FAQData[], sortBy: SortOrder): FAQData[] { ''
         switch(sortBy') {'
             '';
@@ -519,9 +519,9 @@ export class FAQSystem {
             
             // カテゴリの閲覧数も更新
             const category = this.categories.get(faq.category);
-            if (category) {'
+            if (category) {
                 category.viewCount = (category.viewCount || 0) + 1;''
-                category.lastAccessed = new Date().toISOString('')';
+                category.lastAccessed = new Date().toISOString()';
             this.updateUsageStatistics(faqId, 'view'');
         }
              }
@@ -540,7 +540,7 @@ export class FAQSystem {
             const faq = this.faqDatabase.get(faqId);
             if (!faq) return;
             ';
-            // FAQのフィードバック統計を更新''
+            // FAQのフィードバック統計を更新
             switch(feedbackType') {'
                 '';
                 case 'helpful':'';
@@ -557,15 +557,15 @@ export class FAQSystem {
             this.feedbackData.set(feedbackId, { faqId: faqId)
                 type: feedbackType,);
                 comment: comment),
-                timestamp: new Date().toISOString(),';
+                timestamp: new Date().toISOString(),
                 userAgent: navigator.userAgent' }'
             }'),
             ';
-            // 統計更新''
+            // 統計更新
             this.updateUsageStatistics(faqId, 'feedback', feedbackType');'
             '';
             this.loggingSystem.info('FAQSystem', `Feedback recorded: ${faqId} - ${feedbackType)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('FAQSystem', 'Failed to record feedback', error'); }
         }
     }
@@ -602,16 +602,16 @@ export class FAQSystem {
     }
     
     /**
-     * ユーザー統計の読み込み'
+     * ユーザー統計の読み込み
      */''
-    private loadUserStatistics('')';
+    private loadUserStatistics()';
             const savedStats = localStorage.getItem('awaputi_faq_stats');
             if(savedStats) {
                 const parsedStats: UserStatisticsData = JSON.parse(savedStats),
-                this.usageStatistics = new Map(parsedStats.usageStatistics || []);
+                this.usageStatistics = new Map(parsedStats.usageStatistics || [])
             }'
                 this.userPreferences = new Map(parsedStats.userPreferences || []);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.warn('FAQSystem', 'Failed to load user statistics', error); }
         }
     }
@@ -623,9 +623,9 @@ export class FAQSystem {
             const statsData: UserStatisticsData = {
                 usageStatistics: Array.from(this.usageStatistics.entries(),';
                 userPreferences: Array.from(this.userPreferences.entries(),'';
-                lastSaved: new Date().toISOString('')';
+                lastSaved: new Date().toISOString()';
             localStorage.setItem('awaputi_faq_stats', JSON.stringify(statsData);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.warn('FAQSystem', 'Failed to save user statistics', error); }
         }
     }
@@ -764,11 +764,11 @@ export class FAQSystem {
             this.faqDatabase.clear();
             this.categories.clear();
             this.searchIndex.clear();
-            this.feedbackData.clear();'
+            this.feedbackData.clear();
             this.usageStatistics.clear();''
-            this.userPreferences.clear('')';
+            this.userPreferences.clear()';
             this.loggingSystem.info('FAQSystem', 'FAQ system cleaned up');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('FAQSystem', 'Failed to cleanup FAQ system', error); }
         }
     }
@@ -794,7 +794,7 @@ export function getFAQSystem(gameEngine: GameEngine): FAQSystem { if (!faqSystem
  * @returns 新しいFAQSystemインスタンス
  */
 export function reinitializeFAQSystem(gameEngine: GameEngine): FAQSystem { if (faqSystemInstance) {
-        faqSystemInstance.cleanup(); }'
+        faqSystemInstance.cleanup(); }
     }''
     faqSystemInstance = new FAQSystem(gameEngine');'
     return faqSystemInstance;''

@@ -23,7 +23,7 @@ export class DeveloperAlertSystem {
         };
 
         this.alertHistory = [];
-        this.alertCategories = new Map();'
+        this.alertCategories = new Map();
         this.alertFilters = new Map();''
         this.alertCallbacks = new Map(''';
         this.severityLevels = ['info', 'warning', 'error', 'critical'];)
@@ -116,13 +116,13 @@ export class DeveloperAlertSystem {
     /**
      * アラートフィルターの設定'
      */''
-    setupAlertFilters('')';
+    setupAlertFilters()';
         this.alertFilters.set('severity', (alert) => {  const minLevel = this.severityLevels.indexOf(this.options.minSeverityLevel);
             const alertLevel = this.severityLevels.indexOf(alert.severity); }'
             return alertLevel >= minLevel;' }'
         }');
 ';
-        // レート制限フィルター''
+        // レート制限フィルター
         this.alertFilters.set('rateLimit', (alert) => {  const now = Date.now(); }
             const hourStart = Math.floor(now / (60 * 60 * 1000) * (60 * 60 * 1000); }
             const key = `${alert.category}_${hourStart}`;
@@ -135,7 +135,7 @@ export class DeveloperAlertSystem {
             return true;''
         }');
 ';
-        // 重複アラートフィルター''
+        // 重複アラートフィルター
         this.alertFilters.set('duplicate', (alert) => {  const recentAlerts = this.alertHistory.filter(a => )
                 a.category === alert.category &&);
                 a.checkType === alert.checkType &&);
@@ -146,17 +146,17 @@ export class DeveloperAlertSystem {
     }
 
     /**
-     * イベントリスナーの設定 '
+     * イベントリスナーの設定 
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         window.addEventListener('analytics-data-updated', (event) => { this.analyzeData(event.detail);' }'
         }');
 ';
-        // パフォーマンス警告イベント''
+        // パフォーマンス警告イベント
         window.addEventListener('performance-warning', (event) => { this.handlePerformanceWarning(event.detail);' }'
         }');
 ';
-        // エラーイベント''
+        // エラーイベント
         window.addEventListener('error-notification-displayed', (event) => { this.handleErrorEvent(event.detail); }
         });
     }
@@ -174,9 +174,9 @@ export class DeveloperAlertSystem {
                     this.generateAlert({
                         category: categoryName,
                         checkType: checkType,
-                        severity: result.severity || category.defaultSeverity,);
+                        severity: result.severity || category.defaultSeverity);
                         message: result.message);
-                        data: result.alertData,);
+                        data: result.alertData,)
     }
                         recommendations: result.recommendations || []); }
                 }
@@ -233,11 +233,11 @@ export class DeveloperAlertSystem {
         if (sessions.length < 3) return { shouldAlert: false }
         const scoreProgression = sessions.map(s => s.totalScore || 0);
         const avgIncrease = this.calculateAverageIncrease(scoreProgression);
-        ';
-        // 異常に急激なスコア上昇を検出''
+        ;
+        // 異常に急激なスコア上昇を検出
         if(avgIncrease > 10000') {
             // 通常の10倍以上のスコア上昇
-        }'
+        }
             return { shouldAlert: true,' };'
                 severity: 'warning', }'
                 message: `異常に急激なスコア上昇が検出されました (平均上昇: ${avgIncrease.toFixed(0})})`,''
@@ -263,7 +263,7 @@ export class DeveloperAlertSystem {
         const recentSessions = data.playerBehavior.sessionData.slice(-5);
         const avgDuration = recentSessions.reduce((sum, s) => sum + (s.duration || 0), 0) / recentSessions.length;
         ';
-        // 24時間以上の連続プレイ''
+        // 24時間以上の連続プレイ
         if (avgDuration > 24 * 60 * 60 * 1000') { return { shouldAlert: true,' };'
                 severity: 'warning',' }'
                 message: `異常に長いセッション時間が検出されました (平均: ${(avgDuration / (60 * 60 * 1000)).toFixed(1})}時間')`,
@@ -286,11 +286,11 @@ export class DeveloperAlertSystem {
     }
         if (!data.gameBalance?.bubbleInteractions) return { shouldAlert: false }
         const interactions = data.gameBalance.bubbleInteractions;
-        const actionPatterns = this.analyzeActionPatterns(interactions.slice(-100); // 最新100アクション'
+        const actionPatterns = this.analyzeActionPatterns(interactions.slice(-100); // 最新100アクション
         '';
         if(actionPatterns.repetitiveScore > 0.8') {
             // 80%以上が繰り返しパターン
-        }'
+        }
             return { shouldAlert: true,' };'
                 severity: 'info',' }'
                 message: `繰り返し動作パターンが検出されました (スコア: ${actionPatterns.repetitiveScore.toFixed(2})}')`,
@@ -340,7 +340,7 @@ export class DeveloperAlertSystem {
         const avgFPS = data.performance.frameRate.average;''
         if(avgFPS < 20') {
             // 20FPS未満
-        }'
+        }
             return { shouldAlert: true,' };'
                 severity: 'error',' }'
                 message: `深刻なパフォーマンス問題: 平均FPS ${avgFPS.toFixed(1'})}`,
@@ -366,7 +366,7 @@ export class DeveloperAlertSystem {
         const memoryUsage = data.performance.memoryUsage.current;''
         if(memoryUsage > 500 * 1024 * 1024') {
             // 500MB以上
-        }'
+        }
             return { shouldAlert: true,' };'
                 severity: 'warning',' }'
                 message: `高メモリ使用量: ${(memoryUsage / (1024 * 1024)).toFixed(1'})}MB`,
@@ -392,7 +392,7 @@ export class DeveloperAlertSystem {
         const avgLoadTime = data.performance.loadTimes.average;''
         if(avgLoadTime > 5000') {
             // 5秒以上
-        }'
+        }
             return { shouldAlert: true,' };'
                 severity: 'warning',' }'
                 message: `長いロード時間: ${(avgLoadTime / 1000).toFixed(1'})}秒`,
@@ -415,8 +415,8 @@ export class DeveloperAlertSystem {
         
     }
         if (!data.errors?.errorRate) return { shouldAlert: false }'
-        const errorRate = data.errors.errorRate; // エラー/分''
-        if(errorRate > 1') {
+        const errorRate = data.errors.errorRate; // エラー/分
+        if(errorRate > 1) {
             // 1分間に1エラー以上
         }'
             return { shouldAlert: true,' };'
@@ -493,11 +493,11 @@ export class DeveloperAlertSystem {
         '';
         if(inconsistencies.length > 5') {
             // 5つ以上の不整合
-        }'
+        }
             return { shouldAlert: true,' };'
                 severity: 'warning', }'
                 message: `データ不整合が多数検出されました (${inconsistencies.length}件)`,''
-                alertData: { inconsistencies: inconsistencies.slice(0, 10') }, // 最初の10件のみ'
+                alertData: { inconsistencies: inconsistencies.slice(0, 10') }, // 最初の10件のみ
                 recommendations: ['';
                     'データ検証ロジックの見直しが必要です','';
                     'データクリーニング処理を実行してください',']';
@@ -550,7 +550,7 @@ export class DeveloperAlertSystem {
             '';
             if (changePercent < -20') { // 20%以上の低下
         
-        }'
+        }
                 return { shouldAlert: true,' };'
                     severity: 'warning',' }'
                     message: `ユーザーエンゲージメントが大幅に低下しました (${changePercent.toFixed(1})}%')`,
@@ -583,7 +583,7 @@ export class DeveloperAlertSystem {
             '';
             if (changePercent < -15') { // 15%以上の低下
         
-        }'
+        }
                 return { shouldAlert: true,' };'
                     severity: 'error',' }'
                     message: `ユーザーリテンション率が大幅に低下しました (${changePercent.toFixed(1})}%')`,
@@ -663,7 +663,7 @@ export class DeveloperAlertSystem {
     /**
      * コンソールログ出力
      */
-    logToConsole(alert) {'
+    logToConsole(alert) {
         '';
         const category = this.alertCategories.get(alert.category');''
         const emoji = category? .icon || '🔔';
@@ -676,7 +676,7 @@ export class DeveloperAlertSystem {
         console.log(`%c時刻: ${new Date(alert.timestamp).toLocaleString(})}`, `color: ${color}`);'
         '';
         if(alert.data') {'
-            ';
+            ';'
         }'
             console.log('データ:', alert.data); }
         }'
@@ -696,7 +696,7 @@ export class DeveloperAlertSystem {
     /**
      * ウェブフック通知送信'
      */''
-    async sendWebhookNotification(alert') { try {'
+    async sendWebhookNotification(alert') { try {
             await fetch(this.options.webhookUrl, {')'
                 method: 'POST')';
                 headers: {''
@@ -704,19 +704,19 @@ export class DeveloperAlertSystem {
                 ),
                 body: JSON.stringify({);'
                     alert);''
-                    timestamp: Date.now('')';
+                    timestamp: Date.now()';
                     source: 'BubblePop Analytics') }
                 }),'
             });''
-        } catch (error') { ''
-            console.warn('Failed to send webhook notification:', error); }
+        } catch (error) { ''
+            console.warn('Failed to send webhook notification:', error) }
         }
     }
 
     /**
      * メール通知送信'
      */''
-    async sendEmailNotification(alert') { try {'
+    async sendEmailNotification(alert') { try {
             await fetch(this.options.emailEndpoint, {''
                 method: 'POST',';
                 headers: {''
@@ -725,11 +725,11 @@ export class DeveloperAlertSystem {
                 body: JSON.stringify({ ')'
                     to: 'developer@example.com'), }
                     subject: `[${alert.severity.toUpperCase(})}] ${alert.message}`,
-                    body: this.formatEmailBody(alert),;
+                    body: this.formatEmailBody(alert),
                 });'
             });''
-        } catch (error') { ''
-            console.warn('Failed to send email notification:', error); }
+        } catch (error) { ''
+            console.warn('Failed to send email notification:', error) }
         }
     }
 
@@ -775,7 +775,7 @@ export class DeveloperAlertSystem {
             try {
     }'
                 callback(alert);' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
                 console.warn(`Alert callback '${name}' failed:`, error);
             }
         }
@@ -835,7 +835,7 @@ export class DeveloperAlertSystem {
         // 短時間での大量アクション
         const recentActions = activityLog.filter(log => );
             Date.now() - log.timestamp < 60000 // 1分以内;
-        );'
+        );
         '';
         if (recentActions.length > 100') {'
             riskScore += 0.5;'
@@ -844,7 +844,7 @@ export class DeveloperAlertSystem {
             patterns.push('high_frequency_actions'); }
         }
         ';
-        // 非常に多数のアクション（150以上）''
+        // 非常に多数のアクション（150以上）
         if(recentActions.length > 150') {'
             riskScore += 0.3;'
         }'
@@ -858,7 +858,7 @@ export class DeveloperAlertSystem {
         const colors = {''
             info: '#2196f3','';
             warning: '#ff9800','';
-            error: '#f44336',';
+            error: '#f44336','
     }'
             critical: '#d32f2f' }'
         };''
@@ -871,10 +871,10 @@ export class DeveloperAlertSystem {
     handlePerformanceWarning(warningData') {'
         this.generateAlert({''
             category: 'performance','';
-            checkType: 'performance_warning',';
+            checkType: 'performance_warning','
     }'
             severity: warningData.severity || 'warning', }
-            message: `パフォーマンス警告: ${warningData.message}`,)
+            message: `パフォーマンス警告: ${warningData.message}`)
             data: warningData)';
             recommendations: ['';
                 'パフォーマンス最適化の実行を検討してください',']';
@@ -888,10 +888,10 @@ export class DeveloperAlertSystem {
     handleErrorEvent(errorData') {'
         this.generateAlert({''
             category: 'performance','';
-            checkType: 'error_event',';
+            checkType: 'error_event','
     }'
             severity: errorData.severity = == 'critical' ? 'critical' : 'error' }
-            message: `エラー発生: ${errorData.message}`,)
+            message: `エラー発生: ${errorData.message}`)
             data: errorData)';
             recommendations: ['';
                 'エラーログの詳細調査が必要です',']';
@@ -956,7 +956,7 @@ export class DeveloperAlertSystem {
      */
     cleanupRateLimitCounters() {
         const now = Date.now();
-        const currentHour = Math.floor(now / (60 * 60 * 1000) * (60 * 60 * 1000);'
+        const currentHour = Math.floor(now / (60 * 60 * 1000) * (60 * 60 * 1000);
         '';
         for (const [key] of this.rateLimitCounter.entries()') {''
             const keyHour = parseInt(key.split('_').pop();
@@ -983,14 +983,14 @@ export class DeveloperAlertSystem {
         const now = Date.now();
         const oneDayAgo = now - (24 * 60 * 60 * 1000);
         const oneWeekAgo = now - (7 * 24 * 60 * 60 * 1000);
-        ';
+        ';'
         const todayAlerts = this.alertHistory.filter(a => a.timestamp > oneDayAgo);''
         const weekAlerts = this.alertHistory.filter(a => a.timestamp > oneWeekAgo');
         
         return { total: this.alertHistory.length,
             today: todayAlerts.length,';
             thisWeek: weekAlerts.length,'';
-            byCategory: this.groupBy(todayAlerts, 'category''),';
+            byCategory: this.groupBy(todayAlerts, 'category''),'
     }'
             bySeverity: this.groupBy(todayAlerts, 'severity'), };
             acknowledged: this.alertHistory.filter(a => a.acknowledged).length }
@@ -1021,15 +1021,15 @@ export class DeveloperAlertSystem {
     /**
      * リソースの解放'
      */''
-    destroy('')';
+    destroy()';
         window.removeEventListener('analytics-data-updated', this.analyzeData');''
         window.removeEventListener('performance-warning', this.handlePerformanceWarning');''
         window.removeEventListener('error-notification-displayed', this.handleErrorEvent);
         
         // データクリア
-        this.alertHistory = [];'
+        this.alertHistory = [];
         this.alertCallbacks.clear();''
-        this.rateLimitCounter.clear('')';
+        this.rateLimitCounter.clear()';
         console.log('DeveloperAlertSystem destroyed'');'
     }''
 }

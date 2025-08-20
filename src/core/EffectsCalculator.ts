@@ -26,24 +26,24 @@ interface EffectsConfig { particles: {
     bubbleEffects: { popIntensity: number,
         chainRadius: number,
         explosionScale: number,
-        trailLength: number; }
+        trailLength: number }
     };
 }
 
 interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 interface Color { r: number,
     g: number,
     b: number,
-    a: number; }
+    a: number }
 }
 
 interface ShakeSettings { amplitude: number,
     frequency: number,
     duration: number,
-    easing?: string; }
+    easing?: string }
 }
 
 interface EffectModifier { type: 'multiply' | 'add' | 'power' | 'clamp',
@@ -68,7 +68,7 @@ interface PerformanceOptimization { particleQuality: number,
     animationQuality: number,
     effectsEnabled: boolean,
     maxParticles: number,
-    skipFrames: number; }
+    skipFrames: number }
 }
 
 interface EffectContext { isCombo?: boolean;
@@ -108,7 +108,7 @@ export class EffectsCalculator {
                 flashDuration: 200,
                 zoomSensitivity: 1.0,
                 transitionDuration: 300 }
-            },'
+            },
             animations: { duration: 300,''
                 easing: 'easeOut',
                 scaleFactor: 1.0,
@@ -127,7 +127,7 @@ export class EffectsCalculator {
     /**
      * エフェクト設定を取得'
      */''
-    getEffectsConfig('')';
+    getEffectsConfig()';
         if (this.effectsConfig && typeof this.effectsConfig.getEffectsConfig === 'function') { return this.effectsConfig.getEffectsConfig(); }
         }
         return this.defaultEffectsConfig;
@@ -216,7 +216,7 @@ export class EffectsCalculator {
     calculateEffectIntensity(baseIntensity: number, modifiers: EffectModifier[] = []): number { let intensity = baseIntensity;
         
         // 修正値を順次適用
-        for(const modifier of modifiers) {'
+        for(const modifier of modifiers) {
             '';
             switch (modifier.type') {''
                 case 'multiply':;
@@ -264,7 +264,7 @@ export class EffectsCalculator {
         const frequency = baseSetting.frequency;
         const duration = baseSetting.duration;
         
-        return { amplitude: Math.min(amplitude, 20), // 最大振幅制限'
+        return { amplitude: Math.min(amplitude, 20), // 最大振幅制限
             frequency,'';
             duration: Math.min(duration, 1000'), // 最大時間制限' };'
             easing: options.easing || 'easeOut' }
@@ -295,7 +295,7 @@ export class EffectsCalculator {
         for(let i = 0; i <= steps; i++) {
         
             const t = i / steps;
-            let x, y;'
+            let x, y;
             '';
             switch (trajectoryType') {''
                 case 'linear':';
@@ -337,7 +337,7 @@ export class EffectsCalculator {
                 x += (Math.random() - 0.5) * randomness * 20;
             }
                 y += (Math.random() - 0.5) * randomness * 20; }
-            }'
+            }
             '';
             trajectory.push({ x: Math.floor(x), y: Math.floor(y) }');
         }
@@ -479,7 +479,7 @@ export class EffectsCalculator {
     
     /**
      * デバッグ情報を取得
-     */'
+     */
     getDebugInfo(): { hasEffectsConfig: boolean; effectsConfig: EffectsConfig; version: string } { return { hasEffectsConfig: !!this.effectsConfig,''
             effectsConfig: this.getEffectsConfig('' };'
             version: '1.0.0' }
@@ -491,6 +491,6 @@ export class EffectsCalculator {
 let effectsCalculatorInstance: EffectsCalculator | null = null);
 /**
  * EffectsCalculatorのシングルトンインスタンスを取得
- */)'
+ */)
 export function getEffectsCalculator(): EffectsCalculator { if (!effectsCalculatorInstance) {''
         effectsCalculatorInstance = new EffectsCalculator(' })

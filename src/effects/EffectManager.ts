@@ -5,7 +5,7 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';
 export interface ColorRGBA { r: number,
     g: number,
     b: number,
-    a: number; };
+    a: number };
 }
 export interface CurrentTransform {
     shake: { x: number; y: number },
@@ -27,7 +27,7 @@ export interface Transforms { shakeX: number[],
     blur: number[],
     contrast: number[],
     brightness: number[],
-    saturation: number[]; };
+    saturation: number[] };
 }
 export interface EffectParameters { shakeIntensity: number,
     flashDuration: number,
@@ -35,77 +35,77 @@ export interface EffectParameters { shakeIntensity: number,
     enabled: boolean,
     shake: {
         duration: number,
-        damping: number ;
+        damping: number 
 }
     },
-    flash: { intensity: number ;
+    flash: { intensity: number 
 }
     },
     zoom: { duration: number,
-        easing: string ;
+        easing: string 
 }
     },
     tint: { intensity: number,
-        duration: number; }
+        duration: number }
     };
 }
 
 export interface BaseEffect { id: number,
     type: EffectType,
     duration: number,
-    elapsed: number; };
+    elapsed: number };
 }
-';
+';'
 export interface ShakeEffect extends BaseEffect { ''
     type: 'shake',
     intensity: number,
     shakeType: ShakeType,
     frequency: number,
-    damping: number; };
+    damping: number };
 }
-';
+';'
 export interface FlashEffect extends BaseEffect { ''
     type: 'flash',
     color: ColorRGBA,
     intensity: number,
-    fadeType: FadeType;
+    fadeType: FadeType
     };
 }
-';
+';'
 export interface TintEffect extends BaseEffect { ''
     type: 'tint',
     color: ColorRGBA,
     intensity: number,
-    easing: string; };
+    easing: string };
 }
-';
+';'
 export interface ZoomEffect extends BaseEffect { ''
     type: 'zoom',
     targetZoom: number,
     startZoom: number,
-    easing: string; };
+    easing: string };
 }
-';
+';'
 export interface RotationEffect extends BaseEffect { ''
     type: 'rotation',
     targetRotation: number,
     startRotation: number,
-    easing: string; };
+    easing: string };
 }
-';
+';'
 export interface BlurEffect extends BaseEffect { ''
     type: 'blur',
     targetBlur: number,
     startBlur: number,
-    easing: string; };
+    easing: string };
 }
-';
+';'
 export interface FilterEffect extends BaseEffect { ''
     type: 'filter',
     filterType: FilterType,
     targetValue: number,
     startValue: number,
-    easing: string; };
+    easing: string };
 }
 export type Effect = ShakeEffect | FlashEffect | TintEffect | ZoomEffect | RotationEffect | BlurEffect | FilterEffect;'
 '';
@@ -162,7 +162,7 @@ export class EffectManager {
             blur: [],
             contrast: [],
             brightness: [],
-            saturation: [] ;
+            saturation: [] 
 }
         },
         
@@ -172,37 +172,37 @@ export class EffectManager {
     
     /**
      * 設定変更の監視を設定
-     * @private'
+     * @private
      */''
-    private _setupConfigWatchers('')';
+    private _setupConfigWatchers()';
             const shakeWatcher = configManager.watch('effects', 'screen.shakeIntensity', (newValue: number) => {  }'
                 console.log(`[EffectManager] 画面揺れ強度が変更されました: ${newValue}`);''
             }');''
             this.configWatchers.set('shakeIntensity', shakeWatcher');
             ';
-            // フラッシュ時間の監視''
+            // フラッシュ時間の監視
             const flashWatcher = configManager.watch('effects', 'screen.flashDuration', (newValue: number) => {  }'
                 console.log(`[EffectManager] フラッシュ時間が変更されました: ${newValue}ms`);''
             }');''
             this.configWatchers.set('flashDuration', flashWatcher');
             ';
-            // ズーム感度の監視''
+            // ズーム感度の監視
             const zoomWatcher = configManager.watch('effects', 'screen.zoomSensitivity', (newValue: number) => {  }'
                 console.log(`[EffectManager] ズーム感度が変更されました: ${newValue}`);''
             }');''
             this.configWatchers.set('zoomSensitivity', zoomWatcher');
             ';
-            // 画面効果有効状態の監視''
+            // 画面効果有効状態の監視
             const enabledWatcher = configManager.watch('effects', 'screen.enabled', (newValue: boolean) => {  }
                 console.log(`[EffectManager] 画面効果有効状態が変更されました: ${newValue}`);
                 if (!newValue) { this.clearEffects(); }'
                 }''
             }');''
             this.configWatchers.set('enabled', enabledWatcher);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager._setupConfigWatchers'); }
+                context: 'EffectManager._setupConfigWatchers') }
             });
         };
 }
@@ -227,7 +227,7 @@ export class EffectManager {
                 zoom: screenConfig.zoom, };
                 tint: screenConfig.tint ;
 }
-            },'
+            },
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
                 context: 'EffectManager._getEffectParameters'),' }'
@@ -237,7 +237,7 @@ export class EffectManager {
         };
 }
     /**
-     * 画面揺れ効果を追加'
+     * 画面揺れ効果を追加
      */''
     public addScreenShake(intensity: number, duration?: number, type: ShakeType = 'random'): number { try {
             const params = this._getEffectParameters();
@@ -248,14 +248,14 @@ export class EffectManager {
             }
                 return -1; };
 }
-            ';
-            // 画面効果が無効な場合は何もしない''
+            ;
+            // 画面効果が無効な場合は何もしない
             if (!params.enabled') { return -1; };
 }
             // 設定値を適用
             const adjustedIntensity = intensity * params.shakeIntensity;
             const configDuration = duration || params.shake.duration;
-            ';
+            ';'
             const effect: ShakeEffect = { id: this.effectId++,''
                 type: 'shake',
                 intensity: adjustedIntensity,
@@ -263,12 +263,12 @@ export class EffectManager {
                 elapsed: 0,
                 shakeType: type,
                 frequency: 20, // 揺れの頻度;
-                damping: params.shake.damping   // 設定から減衰率を取得 ;
+                damping: params.shake.damping   // 設定から減衰率を取得 
 }
             },
             
             this.effects.push(effect);
-            return effect.id;'
+            return effect.id;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
                 context: 'EffectManager.addScreenShake'),' }'
@@ -288,22 +288,22 @@ export class EffectManager {
             }
                 return -1; };
 }
-            ';
-            // 画面効果が無効な場合は何もしない''
+            ;
+            // 画面効果が無効な場合は何もしない
             if (!params.enabled') { return -1; };
 }
             // 設定値を適用
             const adjustedIntensity = intensity * params.flash.intensity;
             // durationが指定されていない場合は設定から取得、指定されている場合はそれを使用
             const configDuration = duration !== undefined ? duration: params.flashDuration,
-            ';
+            ';'
             const effect: FlashEffect = { id: this.effectId++,''
                 type: 'flash',
                 color: this.parseColor(color),
                 intensity: adjustedIntensity,
                 duration: configDuration,
                 elapsed: 0,
-                fadeType: fadeType ;
+                fadeType: fadeType 
 }
             },
             
@@ -328,21 +328,21 @@ export class EffectManager {
             }
                 return -1; };
 }
-            ';
-            // 画面効果が無効な場合は何もしない''
+            ;
+            // 画面効果が無効な場合は何もしない
             if (!params.enabled') { return -1; };
 }
             // 設定値を適用
             const adjustedIntensity = intensity * params.tint.intensity;
             const configDuration = duration !== undefined ? duration: params.tint.duration,
-            ';
+            ';'
             const effect: TintEffect = { id: this.effectId++,''
                 type: 'tint',
                 color: this.parseColor(color),
                 intensity: adjustedIntensity,
                 duration: configDuration,
                 elapsed: 0,
-                easing: easing ;
+                easing: easing 
 }
             },
             
@@ -368,18 +368,18 @@ export class EffectManager {
             }
                 return -1; };
 }
-            // ズーム感度を適用し、範囲を制限'
+            // ズーム感度を適用し、範囲を制限
             const adjustedZoom = 1 + (targetZoom - 1) * params.zoomSensitivity;''
             const clampedZoom = Math.max(0.5, Math.min(3.0, adjustedZoom)'); // 範囲制限
             const configDuration = duration !== undefined ? duration: params.zoom.duration,
-            ';
+            ';'
             const effect: ZoomEffect = { id: this.effectId++,''
                 type: 'zoom',
                 targetZoom: clampedZoom,
                 startZoom: this.currentTransform.zoom,
                 duration: configDuration,
                 elapsed: 0,
-                easing: easing ;
+                easing: easing 
 }
             },
             
@@ -387,7 +387,7 @@ export class EffectManager {
             return effect.id;'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addZoom'); }
+                context: 'EffectManager.addZoom') }
             });
             return -1;
         };
@@ -445,7 +445,7 @@ export class EffectManager {
     /**
      * 効果を適用
      */
-    private applyEffect(effect: Effect): void { const progress = Math.min(effect.elapsed / effect.duration, 1);'
+    private applyEffect(effect: Effect): void { const progress = Math.min(effect.elapsed / effect.duration, 1);
         '';
         switch(effect.type') {'
             '';
@@ -526,7 +526,7 @@ export class EffectManager {
         const flashColor: ColorRGBA = { r: effect.color.r,
             g: effect.color.g,
             b: effect.color.b,
-            a: alpha ;
+            a: alpha 
 }
         },
         
@@ -543,7 +543,7 @@ export class EffectManager {
             r: effect.color.r,
             g: effect.color.g,
             b: effect.color.b,
-            a: alpha ;
+            a: alpha 
 }
         },
         
@@ -606,7 +606,7 @@ export class EffectManager {
             case 'easeOut':'';
                 return 1 - (1 - progress) * (1 - progress');''
             case 'easeInOut':;
-                return progress < 0.5 ';
+                return progress < 0.5 ';'
                     ? 2 * progress * progress '';
                     : 1 - Math.pow(-2 * progress + 2, 2') / 2;''
             case 'easeOutBounce':;
@@ -643,7 +643,7 @@ export class EffectManager {
         this.currentTransform.brightness = this.transforms.brightness.reduce((product, val) => product * val, 1);
         this.currentTransform.saturation = this.transforms.saturation.reduce((product, val) => product * val, 1);
         
-        // フラッシュとティントの合成'
+        // フラッシュとティントの合成
         this.currentTransform.flash = this.blendColors(this.transforms.flash);''
         this.currentTransform.tint = this.blendColors(this.transforms.tint'); };
 }
@@ -658,14 +658,14 @@ export class EffectManager {
             }
                 return -1; };
 }
-            ';
+            ';'
             const effect: RotationEffect = { id: this.effectId++,''
                 type: 'rotation',
                 startRotation: this.currentTransform.rotation,
                 targetRotation: this.currentTransform.rotation + angle,
                 duration: duration,
                 elapsed: 0,
-                easing: easing ;
+                easing: easing 
 }
             },
             
@@ -689,14 +689,14 @@ export class EffectManager {
             }
                 return -1; };
 }
-            ';
+            ';'
             const effect: BlurEffect = { id: this.effectId++,''
                 type: 'blur',
                 startBlur: this.currentTransform.blur,
                 targetBlur: intensity,
                 duration: duration,
                 elapsed: 0,
-                easing: easing ;
+                easing: easing 
 }
             },
             
@@ -722,7 +722,7 @@ export class EffectManager {
             }
                 return -1; };
 }
-            ';
+            ';'
             let startValue = 1;''
             switch(filterType') {'
                 '';
@@ -737,7 +737,7 @@ export class EffectManager {
             }
                     break; };
 }
-            ';
+            ';'
             const effect: FilterEffect = { id: this.effectId++,''
                 type: 'filter',
                 filterType: filterType,
@@ -745,7 +745,7 @@ export class EffectManager {
                 targetValue: targetValue,
                 duration: duration,
                 elapsed: 0,
-                easing: easing ;
+                easing: easing 
 }
             },
             
@@ -753,7 +753,7 @@ export class EffectManager {
             return effect.id;'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addFilter'); }
+                context: 'EffectManager.addFilter') }
             });
             return -1;
         };
@@ -768,7 +768,7 @@ export class EffectManager {
             const invAlpha = 1 - alpha;
             
             return { r: result.r * invAlpha + color.r * alpha,
-                g: result.g * invAlpha + color.g * alpha;
+                g: result.g * invAlpha + color.g * alpha
 }
                 b: result.b * invAlpha + color.b * alpha, };
                 a: Math.min(result.a + color.a, 1); }
@@ -818,7 +818,7 @@ export class EffectManager {
                 
             }
                 filterParts.push(`saturate(${this.currentTransform.saturation)`});
-            }'
+            }
             '';
             if(filterParts.length > 0') {'
                 '';
@@ -843,7 +843,7 @@ export class EffectManager {
         }
         
         // ティントを適用
-        if(this.currentTransform.tint.a > 0) {'
+        if(this.currentTransform.tint.a > 0) {
             '';
             context.save('';
         })'
@@ -895,39 +895,39 @@ export class EffectManager {
     /**
      * 時間停止効果'
      */''
-    public addTimeStopEffect(duration: number'): void { try {'
-            // 青いフラッシュ''
+    public addTimeStopEffect(duration: number'): void { try {
+            // 青いフラッシュ
             this.addFlash('#0088FF', 0.3, 200, 'out'');
             ';
-            // 画面の軽いズームイン''
+            // 画面の軽いズームイン
             this.addZoom(1.05, 300, 'easeOut');''
             setTimeout((') => { ' }'
                 this.addZoom(1.0, duration - 300, 'easeIn');' }'
             }, 300');
             ';
-            // 青い色調''
+            // 青い色調
             this.addTint('#0088FF', 0.2, duration, 'easeInOut'');
             ';
-            // 軽いぼかし効果''
+            // 軽いぼかし効果
             this.addBlur(2, 200, 'easeOut');''
             setTimeout((') => {  ' }'
                 this.addBlur(0, duration - 200, 'easeIn'); }
             }, 200);'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addTimeStopEffect'); }
+                context: 'EffectManager.addTimeStopEffect') }
             });
         };
 }
     /**
      * ボーナスタイム効果'
      */''
-    public addBonusTimeEffect(duration: number'): void { try {'
-            // 金色のフラッシュ''
+    public addBonusTimeEffect(duration: number'): void { try {
+            // 金色のフラッシュ
             this.addFlash('#FFD700', 0.4, 300, 'out');
             
             // パルスズーム
-            for(let i = 0; i < duration / 1000; i++) {'
+            for(let i = 0; i < duration / 1000; i++) {
                 '';
                 setTimeout((') => { ''
                     this.addZoom(1.02, 200, 'easeOut');'
@@ -938,92 +938,92 @@ export class EffectManager {
                 }, i * 1000');
             }
             ';
-            // 金色の色調''
+            // 金色の色調
             this.addTint('#FFD700', 0.15, duration, 'easeInOut');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addBonusTimeEffect'); }
+                context: 'EffectManager.addBonusTimeEffect') }
             });
         };
 }
     /**
      * 爆発効果'
      */''
-    public addExplosionEffect(_x: number, _y: number, intensity: number = 1'): void { try {'
-            // 中心からの画面揺れ''
+    public addExplosionEffect(_x: number, _y: number, intensity: number = 1'): void { try {
+            // 中心からの画面揺れ
             this.addScreenShake(15 * intensity, 500, 'circular'');
             ';
-            // 白いフラッシュ''
+            // 白いフラッシュ
             this.addFlash('#FFFFFF', 0.6 * intensity, 150, 'out'');
             ';
-            // 一瞬のズームアウト''
+            // 一瞬のズームアウト
             this.addZoom(0.95, 100, 'easeOut');''
             setTimeout((') => { ' }'
                 this.addZoom(1.0, 200, 'easeOut'); }
             }, 100);'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addExplosionEffect'); }
+                context: 'EffectManager.addExplosionEffect') }
             });
         };
 }
     /**
      * ダメージ効果'
      */''
-    public addDamageEffect('')';
+    public addDamageEffect()';
             this.addFlash('#FF0000', 0.4, 200, 'out'');
             ';
-            // 短い画面揺れ''
+            // 短い画面揺れ
             this.addScreenShake(8, 300, 'random'');
             ';
-            // 一瞬の赤い色調''
+            // 一瞬の赤い色調
             this.addTint('#FF0000', 0.3, 400, 'easeOut');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addDamageEffect'); }
+                context: 'EffectManager.addDamageEffect') }
             });
         };
 }
     /**
      * 回復効果'
      */''
-    public addHealEffect('')';
+    public addHealEffect()';
             this.addFlash('#00FF00', 0.3, 400, 'inout'');
             ';
-            // 優しいズームイン''
+            // 優しいズームイン
             this.addZoom(1.02, 300, 'easeInOut');''
             setTimeout((') => {  ' }'
                 this.addZoom(1.0, 300, 'easeInOut');' }'
             }, 300');
             ';
-            // 緑の色調''
+            // 緑の色調
             this.addTint('#00FF88', 0.2, 600, 'easeInOut');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addHealEffect'); }
+                context: 'EffectManager.addHealEffect') }
             });
         };
 }
     /**
      * 電気効果'
      */''
-    public addElectricEffect('')';
+    public addElectricEffect()';
             this.addScreenShake(20, 800, 'random');
             
             // 黄色いフラッシュ（点滅）
-            for(let i = 0; i < 4; i++) {'
-                ';
+            for(let i = 0; i < 4; i++) {
+                ';'
             }'
                 setTimeout((') => { ' }'
                     this.addFlash('#FFFF00', 0.5, 100, 'out'); }
                 }, i * 200);
             }
             ';
-            // 軽い回転''
+            // 軽い回転
             this.addRotation((Math.random() - 0.5') * 0.1, 200, 'easeOut');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.addElectricEffect'); }
+                context: 'EffectManager.addElectricEffect') }
             });
         };
 }
@@ -1048,7 +1048,7 @@ export class EffectManager {
     /**
      * ビネット効果を追加'
      */''
-    public addVignette(intensity: number, duration: number'): number { // ビネット効果は色調効果として実装''
+    public addVignette(intensity: number, duration: number'): number { // ビネット効果は色調効果として実装
         return this.addTint('#000000', intensity, duration); };
 }
     /**
@@ -1073,21 +1073,21 @@ export class EffectManager {
             },
             
             // 積算用配列をクリア
-            Object.keys(this.transforms).forEach(key => {  ) }'
+            Object.keys(this.transforms).forEach(key => {  ) }
                 (this.transforms as any)[key] = [];' }'
             }');'
             '';
             console.log('[EffectManager] エフェクトシステムを無効化しました');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.disable'); }
+                context: 'EffectManager.disable') }
             });
         };
 }
     /**
      * エフェクトシステムを有効化'
      */''
-    public enable('')';
+    public enable()';
         console.log('[EffectManager] エフェクトシステムを有効化しました'');
     }
     
@@ -1095,35 +1095,35 @@ export class EffectManager {
      * エフェクトの品質レベルを設定（ErrorRecovery用）''
      * @param {string} level - 品質レベル ('high', 'medium', 'low')
      */'
-    public setQualityLevel(level: string): void { try {''
+    public setQualityLevel(level: string): void { try {'
             switch(level') {'
                 '';
                 case 'low':';
-                    // 低品質: エフェクトを無効化または大幅削減''
-                    this.disable('')';
+                    // 低品質: エフェクトを無効化または大幅削減
+                    this.disable()';
                     console.log('[EffectManager] 品質レベルを低に設定: エフェクトを無効化'');'
                     break;''
                 case 'medium':';
-                    // 中品質: 一部のエフェクトを削減''
-                    this.clearEffects('')';
+                    // 中品質: 一部のエフェクトを削減
+                    this.clearEffects()';
                     console.log('[EffectManager] 品質レベルを中に設定: エフェクトを削減'');'
                     break;''
                 case 'high':;
                 default:';
-                    // 高品質: 全エフェクト有効（デフォルト）''
-                    this.enable('')';
+                    // 高品質: 全エフェクト有効（デフォルト）
+                    this.enable()';
                     console.log('[EffectManager] 品質レベルを高に設定: 全エフェクト有効'),
             }'
                     break;' }'
-            } catch (error') { ''
-            console.warn('EffectManager: setQualityLevel failed', error); };
+            } catch (error) { ''
+            console.warn('EffectManager: setQualityLevel failed', error) };
 }
     }
     
     /**
      * 設定値を動的に変更
      */'
-    public setConfigValue(key: string, value: any): boolean { try {''
+    public setConfigValue(key: string, value: any): boolean { try {'
             switch(key') {'
                 '';
                 case 'shakeIntensity':';
@@ -1134,14 +1134,14 @@ export class EffectManager {
                     break;''
                 case 'flashDuration':;
                     if(this.effectsConfig.setFlashDuration) {'
-                        ';
+                        ';'
                     }'
                         this.effectsConfig.setFlashDuration(value'); }
                     }'
                     break;''
                 case 'zoomSensitivity':;
                     if(this.effectsConfig.setZoomSensitivity) {'
-                        ';
+                        ';'
                     }'
                         this.effectsConfig.setZoomSensitivity(value'); }
                     }'
@@ -1158,7 +1158,7 @@ export class EffectManager {
             return true;'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.setConfigValue'); }
+                context: 'EffectManager.setConfigValue') }
             });
             return false;
         };
@@ -1166,7 +1166,7 @@ export class EffectManager {
     /**
      * 現在の設定値を取得
      */'
-    public getConfigValue(key: string): any { try {''
+    public getConfigValue(key: string): any { try {'
             switch(key') {'
                 '';
                 case 'shakeIntensity':'';
@@ -1184,7 +1184,7 @@ export class EffectManager {
                     return null;'
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.getConfigValue'); }
+                context: 'EffectManager.getConfigValue') }
             });
             return null;
         };
@@ -1198,14 +1198,14 @@ export class EffectManager {
             if (!params) return;
             
             // 設定が無効な場合は全効果をクリア
-            if(!params.enabled) {'
+            if(!params.enabled) {
                 '';
-                this.clearEffects('');
+                this.clearEffects();
             }'
             console.log('[EffectManager] 設定システムとの連携を適用しました'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.applyConfiguration'); }
+                context: 'EffectManager.applyConfiguration') }
             });
         };
 }
@@ -1241,14 +1241,14 @@ export class EffectManager {
             const params = this._getEffectParameters();
             
             // 画面効果が無効になった場合、全ての効果をクリア
-            if(params && !params.enabled) {'
+            if(params && !params.enabled) {
                 '';
-                this.clearEffects('');
+                this.clearEffects();
             }'
             console.log('[EffectManager] 設定を更新しました'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.updateConfiguration'); }
+                context: 'EffectManager.updateConfiguration') }
             });
         };
 }
@@ -1261,9 +1261,9 @@ export class EffectManager {
         this.configWatchers.forEach((watcher, _key) => { 
             if (this.effectsConfig? .configManager?.unwatch) { }
                 this.effectsConfig.configManager.unwatch(watcher); }
-            }'
+            }
         });''
-        this.configWatchers.clear('')';
+        this.configWatchers.clear()';
         console.log('[EffectManager] Disposed successfully');
     }
     
@@ -1278,23 +1278,23 @@ export class EffectManager {
 
     /**
      * ナイトモードを有効化
-     * 夜間イベントステージで画面全体を暗くし、視界を制限する'
+     * 夜間イベントステージで画面全体を暗くし、視界を制限する
      */''
     public enableNightMode(intensity: number = 0.8, duration?: number'): number { try {
-            // 暗いティント効果を適用して夜間の雰囲気を演出'
-            const nightDuration = duration || 5000; // デフォルト5秒間''
+            // 暗いティント効果を適用して夜間の雰囲気を演出
+            const nightDuration = duration || 5000; // デフォルト5秒間
             const nightEffect = this.addTint('#000033', intensity, nightDuration, 'easeInOut'');
             ';
-            // コントラストを少し下げて暗い雰囲気を強化''
+            // コントラストを少し下げて暗い雰囲気を強化
             this.addFilter('contrast', 0.8, nightDuration, 'easeInOut'');
             ';
-            // 明度を下げて全体的に暗くする''
+            // 明度を下げて全体的に暗くする
             this.addFilter('brightness', 0.6, nightDuration, 'easeInOut');
              }
             console.log(`[EffectManager] ナイトモードを有効化: intensity=${intensity}, duration=${nightDuration)ms`});
             
             // 主要なエフェクトID（ティント）を返す
-            return nightEffect;'
+            return nightEffect;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
                 context: 'EffectManager.enableNightMode'),' }'
@@ -1308,30 +1308,30 @@ export class EffectManager {
      */''
     public setVisibilityReduction(reduction: number, duration?: number, effectType: 'fog' | 'smoke' | 'darkness' = 'fog'): number { try {
             const effectDuration = duration || 3000; // デフォルト3秒間
-            let effectId = -1;'
+            let effectId = -1;
             '';
             switch(effectType') {'
                 '';
                 case 'fog':';
-                    // 白っぽい霧効果（彩度を下げ、軽いぼかし）''
+                    // 白っぽい霧効果（彩度を下げ、軽いぼかし）
                     effectId = this.addTint('#CCCCCC', reduction * 0.4, effectDuration, 'easeInOut'');''
                     this.addFilter('saturation', 1 - reduction * 0.3, effectDuration, 'easeInOut'');''
                     this.addBlur(reduction * 2, effectDuration, 'easeInOut'');
                     break;'
                     '';
                 case 'smoke':';
-                    // 暗い煙効果（暗いティントとぼかし）''
+                    // 暗い煙効果（暗いティントとぼかし）
                     effectId = this.addTint('#444444', reduction * 0.6, effectDuration, 'easeInOut'');''
                     this.addBlur(reduction * 3, effectDuration, 'easeInOut'');''
                     this.addFilter('contrast', 1 + reduction * 0.2, effectDuration, 'easeInOut'');
                     break;'
                     '';
                 case 'darkness':';
-                    // 暗闇効果（暗いティントと明度低下）''
+                    // 暗闇効果（暗いティントと明度低下）
                     effectId = this.addTint('#000000', reduction * 0.7, effectDuration, 'easeInOut'');''
                     this.addFilter('brightness', 1 - reduction * 0.4, effectDuration, 'easeInOut');
                     break;'
-                    ';
+                    ';'
             }'
                 default: console.warn(`[EffectManager] 未知の視界制限タイプ: ${effectType)`'),' }'
                     effectId = this.addTint('#CCCCCC', reduction * 0.5, effectDuration, 'easeInOut'});
@@ -1341,7 +1341,7 @@ export class EffectManager {
             return effectId;'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EFFECT_ERROR', {')'
-                context: 'EffectManager.setVisibilityReduction'); }
+                context: 'EffectManager.setVisibilityReduction') }
             });
             return -1;
         };
@@ -1350,10 +1350,10 @@ export class EffectManager {
      * 復活エフェクトを作成
      * プレイヤーが復活アイテムを使用した時の特別なエフェクト'
      */''
-    public createRevivalEffect('')';
+    public createRevivalEffect()';
             this.addFlash('#FFFFFF', 0.8, 300, 'easeOut'');
             ';
-            // 一時的にズームイン''
+            // 一時的にズームイン
             this.addZoom(1.2, 200, 'easeOut');''
             setTimeout((') => {  ' }'
                 this.addZoom(1.0, 300, 'easeIn'); }
@@ -1361,13 +1361,13 @@ export class EffectManager {
             
             // 画面を軽く振動させる
             this.addShake(15, 500, 0.95);
-            ';
-            // 金色のティントを追加''
+            ;
+            // 金色のティントを追加
             setTimeout((') => {  ' }'
                 this.addTint('#FFD700', 0.3, 1000, 'easeInOut');' }'
             }, 300');
             ';
-            // 明度を一時的に上げる''
+            // 明度を一時的に上げる
             this.addFilter('brightness', 1.5, 400, 'easeOut');''
             setTimeout((') => {  ' }'
                 this.addFilter('brightness', 1.0, 600, 'easeIn');' }'

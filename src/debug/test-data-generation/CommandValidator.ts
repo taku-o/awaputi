@@ -12,6 +12,6 @@ export class CommandValidator {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

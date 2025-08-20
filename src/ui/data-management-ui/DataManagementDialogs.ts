@@ -12,7 +12,7 @@ interface Renderer { ctx: CanvasRenderingContext2D,
     drawText(text: string, x: number, y: number, options?: TextOptions): void;
     drawButton(x: number, y: number, width: number, height: number, text: string, options?: ButtonOptions): void;
     drawProgressBar(x: number, y: number, width: number, height: number, progress: number): void,
-    wrapText(text: string, maxWidth: number, fontSize: number): string[]; }
+    wrapText(text: string, maxWidth: number, fontSize: number): string[] }
 }
 
 /**
@@ -78,7 +78,7 @@ export class DialogManager {
         this.registerDefaultDialogs(); }
     }'
 '';
-    registerDefaultDialogs('')';
+    registerDefaultDialogs()';
         this.dialogs.set('backup', new BackupDialog(this.renderer, this.layoutManager)');''
         this.dialogs.set('export', new DataManagementExportDialog(this.renderer, this.layoutManager)');''
         this.dialogs.set('import', new DataManagementImportDialog(this.renderer, this.layoutManager)');''
@@ -119,7 +119,7 @@ export class DataManagementBaseDialog implements Dialog { protected renderer: Re
 
     constructor(renderer: Renderer, layoutManager: LayoutManager) {
 
-        this.renderer = renderer;
+        this.renderer = renderer
 
     }
     }
@@ -135,10 +135,10 @@ export class DataManagementBaseDialog implements Dialog { protected renderer: Re
         const defaultWidth = data.width || 400;
         const defaultHeight = data.height || 300;
         return this.layoutManager.calculateDialogBounds(defaultWidth, defaultHeight); }
-    }'
+    }
 '';
     renderDialog(bounds: DialogBounds, data: any'): void { // Override in subclasses }
-    }'
+    }
 '';
     renderDialogFrame(bounds: DialogBounds, title: string = ''): ContentBounds { const colors = this.layoutManager.getColors(); }
         const { padding } = this.layoutManager.getLayoutConfig();
@@ -175,7 +175,7 @@ export class DataManagementBaseDialog implements Dialog { protected renderer: Re
         const totalButtonWidth = buttons.length * buttonWidth + (buttons.length - 1) * buttonSpacing;
         const startX = contentBounds.contentX + (contentBounds.contentWidth - totalButtonWidth) / 2;
         const buttonY = contentBounds.contentY + contentBounds.contentHeight - buttonHeight - 10;
-';
+';'
         buttons.forEach((button, index) => {  ''
             const buttonX = startX + index * (buttonWidth + buttonSpacing');
             const isSelected = index === selectedIndex;
@@ -208,25 +208,25 @@ interface BackupDialogData extends BaseDialogData { estimatedSize?: string;
 export class BackupDialog extends DataManagementBaseDialog { ''
     renderDialog(bounds: DialogBounds, data: BackupDialogData'): void {''
         const contentBounds = this.renderDialogFrame(bounds, 'Create Backup');''
-        const colors = this.layoutManager.getColors('')';
-        this.renderer.drawText('Create a new backup of your game data? ');
+        const colors = this.layoutManager.getColors()';
+        this.renderer.drawText('Create a new backup of your game data? ');'
             contentBounds.contentX, contentBounds.contentY + 20, { : undefined'
                 fontSize: 14,')';
                 color: colors.textSecondary)'),
 ';
-        // Current data size''
+        // Current data size
         const dataSize = data.estimatedSize || 'Unknown'; }
         this.renderer.drawText(`Estimated backup size: ${dataSize}`)'
             contentBounds.contentX, contentBounds.contentY + 50, { fontSize: 12,')'
                 color: colors.textSecondary)'),
 
-        // Auto backup setting'
+        // Auto backup setting
         const autoBackupEnabled = data.autoBackupEnabled || false;' }'
         this.renderer.drawText(`Auto backup: ${autoBackupEnabled ? 'Enabled' : 'Disabled'}`)'
             contentBounds.contentX, contentBounds.contentY + 80, { fontSize: 12,')'
                 color: autoBackupEnabled ? colors.success : colors.warning)'),
 
-        // Buttons'
+        // Buttons
         const buttons: ButtonDef[] = [' }'
             { text: 'Cancel', variant: 'secondary' },']'
             { text: 'Create Backup', variant: 'primary' }]
@@ -251,7 +251,7 @@ interface ExportDialogData extends BaseDialogData { formats?: string[];
 export class DataManagementExportDialog extends DataManagementBaseDialog { ''
     renderDialog(bounds: DialogBounds, data: ExportDialogData'): void {''
         const contentBounds = this.renderDialogFrame(bounds, 'Export Data');''
-        const colors = this.layoutManager.getColors('')';
+        const colors = this.layoutManager.getColors()';
         this.renderer.drawText('Select export format:');
             contentBounds.contentX, contentBounds.contentY + 20, {'
                 fontSize: 14,')';
@@ -278,11 +278,11 @@ export class DataManagementExportDialog extends DataManagementBaseDialog { ''
                     color: isSelected ? colors.text : colors.textSecondary);' }'
         }');
 ';
-        // Include options''
+        // Include options
         this.renderer.drawText('Include:')';
             contentBounds.contentX, contentBounds.contentY + 160, { fontSize: 14,')'
                 bold: true)'),
-';
+';'
         const options = data.includeOptions || [' }'
             { name: 'Game Progress', checked: true },''
             { name: 'Settings', checked: true },']'
@@ -294,11 +294,11 @@ export class DataManagementExportDialog extends DataManagementBaseDialog { ''
  }
             this.renderer.drawText(`${checkbox} ${option.name}`)
                 contentBounds.contentX + 10, itemY, { fontSize: 12,)
-                    color: colors.textSecondary); }'
+                    color: colors.textSecondary) }'
                 });''
         }');
 
-        // Buttons'
+        // Buttons
         const buttons: ButtonDef[] = ['';
             { text: 'Cancel', variant: 'secondary' },']'
             { text: 'Export', variant: 'primary' }]
@@ -328,7 +328,7 @@ export class DataManagementImportDialog extends DataManagementBaseDialog { ''
         const contentBounds = this.renderDialogFrame(bounds, 'Import Data');
         const colors = this.layoutManager.getColors();
 
-        // File selection area'
+        // File selection area
         this.renderer.drawCard(contentBounds.contentX, contentBounds.contentY + 20);''
             contentBounds.contentWidth, 60, false');'
 '';
@@ -346,16 +346,16 @@ export class DataManagementImportDialog extends DataManagementBaseDialog { ''
                     color: colors.text),
  }
             this.renderer.drawText(`Size: ${this.formatFileSize(data.selectedFile.size})}`, 
-                contentBounds.contentX, contentBounds.contentY + 120, { fontSize: 12,'
+                contentBounds.contentX, contentBounds.contentY + 120, { fontSize: 12,
                     color: colors.textSecondary' }'
                 }'),
         }
 ';
-        // Import options''
+        // Import options
         this.renderer.drawText('Import Options:')';
             contentBounds.contentX, contentBounds.contentY + 160, { fontSize: 14,')'
                 bold: true)'),
-';
+';'
         const options = data.importOptions || [' }'
             { name: 'Merge with existing data', checked: true },''
             { name: 'Replace all data', checked: false },']'
@@ -367,11 +367,11 @@ export class DataManagementImportDialog extends DataManagementBaseDialog { ''
  }
             this.renderer.drawText(`${checkbox} ${option.name}`)
                 contentBounds.contentX + 10, itemY, { fontSize: 12,)
-                    color: colors.textSecondary); }'
+                    color: colors.textSecondary) }'
                 });''
         }');
 
-        // Buttons'
+        // Buttons
         const buttons: ButtonDef[] = ['';
             { text: 'Cancel', variant: 'secondary' },']'
             { text: 'Import', variant: 'primary', enabled: !!data.selectedFile }]
@@ -382,10 +382,10 @@ export class DataManagementImportDialog extends DataManagementBaseDialog { ''
 
     calculateBounds(data: BaseDialogData): DialogBounds { return this.layoutManager.calculateDialogBounds(450, 350); }
     }
-';
+';'
     formatFileSize(bytes: number): string { ''
         if (bytes === 0') return '0 B';
-        ';
+        ';'
         const k = 1024;''
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);'
@@ -402,7 +402,7 @@ interface ClearDataDialogData extends BaseDialogData { confirmText?: string; }
 
 /**
  * Clear Data Dialog
- * データクリアダイアログ - データ削除の確認
+ * データクリアダイアログ - データ削除の確認'
  */'
 export class ClearDataDialog extends DataManagementBaseDialog { ''
     renderDialog(bounds: DialogBounds, data: ClearDataDialogData'): void {''
@@ -425,12 +425,12 @@ export class ClearDataDialog extends DataManagementBaseDialog { ''
                 color: colors.danger,')';
                 bold: true)'),
 ';
-        // Data to be cleared''
+        // Data to be cleared
         this.renderer.drawText('The following data will be deleted:');
             contentBounds.contentX, contentBounds.contentY + 120, {'
                 fontSize: 12,')';
                 color: colors.textSecondary)'),
-';
+';'
         const dataTypes = ['';
             'Game progress and saves','';
             'User settings and preferences','';
@@ -441,11 +441,11 @@ export class ClearDataDialog extends DataManagementBaseDialog { ''
         dataTypes.forEach((type, index) => { }
             this.renderer.drawText(`• ${type}`)
                 contentBounds.contentX + 10, contentBounds.contentY + 150 + index * 20, { fontSize: 11,)
-                    color: colors.textSecondary); }'
+                    color: colors.textSecondary) }'
                 });''
         }');
 ';
-        // Confirmation input''
+        // Confirmation input
         const confirmText = data.confirmText || '';''
         const requiredText = 'DELETE';'
         '';
@@ -504,7 +504,7 @@ export class ProgressDialog extends DataManagementBaseDialog { ''
         const progress = data.progress || 0;
         this.renderer.drawProgressBar(;
             contentBounds.contentX, ;
-            contentBounds.contentY + 60, );
+            contentBounds.contentY + 60 );
             contentBounds.contentWidth);
             30, );
             progress);
@@ -518,16 +518,16 @@ export class ProgressDialog extends DataManagementBaseDialog { ''
             
             this.renderer.drawText(elapsedText);
                 contentBounds.contentX, contentBounds.contentY + 110, { fontSize: 11,)
-                    color: colors.textSecondary); }
+                    color: colors.textSecondary) }
         }
-';
-        // Cancel button (if allowed);''
+;
+        // Cancel button (if allowed);
         if (data.cancellable') { ' }'
             const buttons: ButtonDef[] = [{ text: 'Cancel', variant: 'secondary' }];
             this.renderButtons(contentBounds, buttons, this.selectedButton);
         }
     }
-';
+';'
     calculateBounds(data: ProgressDialogData): DialogBounds { const height = data.cancellable ? 250 : 180;''
         return this.layoutManager.calculateDialogBounds(400, height'); }
     }
@@ -552,7 +552,7 @@ export class ConfirmDialog extends DataManagementBaseDialog { ''
     renderDialog(bounds: DialogBounds, data: ConfirmDialogData'): void {''
         const title = data.title || 'Confirm';'
         const contentBounds = this.renderDialogFrame(bounds, title);''
-        const colors = this.layoutManager.getColors('')';
+        const colors = this.layoutManager.getColors()';
         const message = data.message || 'Are you sure? ';)
         const lines = this.renderer.wrapText(message, contentBounds.contentWidth - 20, 14);
         
@@ -579,7 +579,7 @@ export class ConfirmDialog extends DataManagementBaseDialog { ''
             }');
         }
 
-        // Buttons'
+        // Buttons
         const buttons: ButtonDef[] = ['';
             { text: data.cancelText || 'Cancel', variant: 'secondary' },']'
             { text: data.confirmText || 'Confirm', variant: data.variant || 'primary' }]
@@ -632,7 +632,7 @@ export class AlertDialog extends DataManagementBaseDialog { ''
             contentBounds.contentX, contentBounds.contentY + 20, { fontSize: 24,')'
                 color: iconColor)'),
 ';
-        // Message''
+        // Message
         const message = data.message || 'No message provided';
         const lines = this.renderer.wrapText(message, contentBounds.contentWidth - 60, 14);
         
@@ -644,14 +644,14 @@ export class AlertDialog extends DataManagementBaseDialog { ''
                 });''
         }');
 
-        // Buttons'
+        // Buttons
         const buttons: ButtonDef[] = [']';
             { text: data.buttonText || 'OK', variant: 'primary' }]
         ];
 
         this.renderButtons(contentBounds, buttons, this.selectedButton);
     }
-';
+';'
     calculateBounds(data: BaseDialogData): DialogBounds { ''
         return this.layoutManager.calculateDialogBounds(400, 180'); }'
     }''

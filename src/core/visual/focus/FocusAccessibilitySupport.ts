@@ -19,68 +19,68 @@ export interface MainController { config: MainControllerConfig,
     state: MainControllerState,
     elements: MainControllerElements,
     focusStateManager: FocusStateManager,
-    accessibilityManager?: AccessibilityManager;
+    accessibilityManager?: AccessibilityManager
     }
 }
 
 export interface MainControllerConfig { navigationFeedback: NavigationFeedbackConfig,
     keyboardHints: KeyboardHintsConfig,
     visualCues: VisualCuesConfig,
-    announcements: AnnouncementsConfig;
+    announcements: AnnouncementsConfig
     }
 }
 
 export interface NavigationFeedbackConfig { enabled: boolean,
     showDirection: boolean,
     showPosition: boolean,
-    fadeTimeout: number; }
+    fadeTimeout: number }
 }
 
 export interface KeyboardHintsConfig { enabled: boolean,
     autoHide: boolean,
     hideDelay: number,
-    detailed: boolean; }
+    detailed: boolean }
 }
 
-export interface VisualCuesConfig { breadcrumbs: boolean; }
+export interface VisualCuesConfig { breadcrumbs: boolean }
 }
 
-export interface AnnouncementsConfig { enabled: boolean; }
+export interface AnnouncementsConfig { enabled: boolean }
 }
 
 export interface MainControllerState { animationTimers: Map<string, number>,
     keyboardHintVisible: boolean,
-    currentFocusElement: HTMLElement | null; }
+    currentFocusElement: HTMLElement | null }
 }
 
 export interface MainControllerElements { navigationIndicator: HTMLElement,
     keyboardHint: HTMLElement,
-    breadcrumbTrail: HTMLElement;
+    breadcrumbTrail: HTMLElement
     }
 }
 
 export interface FocusStateManager { getNavigationDirection(): NavigationDirectionInfo | null;
-    getElementPosition(element: HTMLElement, index: number): string | null; }
+    getElementPosition(element: HTMLElement, index: number): string | null }
 }
 
-export interface AccessibilityManager { config: AccessibilityConfig;
+export interface AccessibilityManager { config: AccessibilityConfig
     }
 }
 
-export interface AccessibilityConfig { keyboard: KeyboardAccessibilityConfig;
+export interface AccessibilityConfig { keyboard: KeyboardAccessibilityConfig
     }
 }
 
-export interface KeyboardAccessibilityConfig { navigationMode: NavigationMode;
+export interface KeyboardAccessibilityConfig { navigationMode: NavigationMode
     }
 }
 
 export interface NavigationDirectionInfo { icon: string,
-    text: string; }
+    text: string }
 }
 
 export interface KeyboardHint { key: string,
-    description: string; }
+    description: string }
 }
 
 export interface AccessibilityReport { totalFocusableElements: number,
@@ -88,7 +88,7 @@ export interface AccessibilityReport { totalFocusableElements: number,
     keyboardHintsEnabled: boolean,
     navigationFeedbackEnabled: boolean,
     breadcrumbsEnabled: boolean,
-    currentFocusPath: string[] | null; }
+    currentFocusPath: string[] | null }
 }
 
 export interface AccessibilitySettings { announcements?: boolean;
@@ -99,7 +99,7 @@ export interface AccessibilitySettings { announcements?: boolean;
 export interface ElementValidationResult { isValid: boolean,
     isFocusable: boolean,
     isVisible: boolean,
-    accessibility: ElementAccessibilityInfo;
+    accessibility: ElementAccessibilityInfo
     }
 }
 
@@ -107,7 +107,7 @@ export interface ElementAccessibilityInfo { hasAriaLabel: boolean,
     hasTitle: boolean,
     hasTextContent: boolean,
     role: string | null,
-    tabIndex: number | null; }
+    tabIndex: number | null }
 }
 
 export interface ScreenReaderAnnouncementOptions { priority: AnnounceLevel,
@@ -123,7 +123,7 @@ export type ElementRole = '';
     | 'button' | 'input' | 'select' | 'textarea' | 'link' | 'checkbox' '';
     | 'radio' | 'menuitem' | 'tab' | 'option' | 'generic';
 
-// 定数'
+// 定数
 export const FOCUSABLE_SELECTORS = [']';
     'a[href]','';
     'button:not([disabled]')','';
@@ -169,7 +169,7 @@ export const SCREEN_READER_STYLES = `;
     border: 0 !important,
 ` as const;
 ';
-// ユーティリティ関数''
+// ユーティリティ関数
 export function isValidHTMLElement(element: any'): element is HTMLElement { return element && '
            element.nodeType === Node.ELEMENT_NODE &&'';
            typeof element.getBoundingClientRect === 'function'; }
@@ -178,14 +178,14 @@ export function isValidHTMLElement(element: any'): element is HTMLElement { retu
 export function getElementRole(element: HTMLElement'): ElementRole { ''
     const role = element.getAttribute('role');
     if (role) return role as ElementRole;
-    ';
+    ';'
     const tagName = element.tagName.toLowerCase();''
     switch(tagName') {'
         '';
         case 'button': return 'button';''
         case 'input': {''
             const type = (element as HTMLInputElement').type;''
-            return type === 'checkbox' ? 'checkbox' : ';
+            return type === 'checkbox' ? 'checkbox' : ';'
     }'
                    type === 'radio' ? 'radio' : 'input'; }'
         }''
@@ -199,10 +199,10 @@ export function getElementRole(element: HTMLElement'): ElementRole { ''
 export function getElementLabel(element: HTMLElement'): string { ''
     return element.getAttribute('aria-label'') ||'';
            element.getAttribute('title') ||'';
-           element.textContent? .trim('')';
+           element.textContent? .trim()';
            element.className.split(' ')[0] ||;
            element.tagName.toLowerCase(); }
-}
+}'
  : undefined';
 export function truncateText(text: string, maxLength: number): string { ''
     return text.length > maxLength ? text.substring(0, maxLength') + '...' : text; }
@@ -243,7 +243,7 @@ export class FocusAccessibilitySupport {
         const direction = this.mainController.focusStateManager.getNavigationDirection();
         const position = this.mainController.focusStateManager.getElementPosition(element, index);
         ';
-        // 方向インジケータ''
+        // 方向インジケータ
         if(this.config.navigationFeedback.showDirection && direction') {'
             '';
             const directionElement = indicator.querySelector('.direction'');''
@@ -254,7 +254,7 @@ export class FocusAccessibilitySupport {
             if (statusElement) statusElement.textContent = direction.text; }
         }
         ';
-        // 位置情報''
+        // 位置情報
         if(this.config.navigationFeedback.showPosition && position') {'
             '';
             const positionElement = indicator.querySelector('.position');'
@@ -262,10 +262,10 @@ export class FocusAccessibilitySupport {
             if (positionElement') positionElement.textContent = position; }
         }
         ';
-        // 表示''
+        // 表示
         indicator.classList.add('visible'');
         ';
-        // 自動非表示タイマー''
+        // 自動非表示タイマー
         this.clearTimer('navigation');'
         '';
         const timer = window.setTimeout((') => {  ' }'
@@ -279,16 +279,16 @@ export class FocusAccessibilitySupport {
      * キーボードヒントの表示
      */
     showKeyboardHints(element: HTMLElement): void { if (!this.config.keyboardHints.enabled) return;
-        ';
+        ';'
         const hints = this.generateKeyboardHints(element);''
         if (!hints.length') return;
-        ';
+        ';'
         const hint = this.elements.keyboardHint;''
         const shortcutsContainer = hint.querySelector('.shortcuts');'
         '';
         if (!shortcutsContainer') return;
         
-        // ショートカット情報を更新'
+        // ショートカット情報を更新
         shortcutsContainer.innerHTML = hints.map(hint => `')';
             <div class="shortcut">") }"
                 <span class="description">${hint.description}</span>")""
@@ -296,11 +296,11 @@ export class FocusAccessibilitySupport {
             </div>"";
         `").join(''');
         ';
-        // 表示''
+        // 表示
         hint.classList.add('visible');
         this.state.keyboardHintVisible = true;
         ';
-        // 自動非表示タイマー''
+        // 自動非表示タイマー
         if(this.config.keyboardHints.autoHide') {'
             '';
             this.clearTimer('keyboardHint');
@@ -317,7 +317,7 @@ export class FocusAccessibilitySupport {
     /**
      * キーボードヒントの非表示'
      */''
-    hideKeyboardHints('')';
+    hideKeyboardHints()';
         hint.classList.remove('visible'');
         this.state.keyboardHintVisible = false;'
         '';
@@ -339,7 +339,7 @@ export class FocusAccessibilitySupport {
     /**
      * パンくずリストの更新
      */
-    updateBreadcrumbTrail(element: HTMLElement): void { if (!this.config.visualCues.breadcrumbs) return;'
+    updateBreadcrumbTrail(element: HTMLElement): void { if (!this.config.visualCues.breadcrumbs) return;
         '';
         const path = this.generateElementPath(element');'
         const breadcrumb = this.elements.breadcrumbTrail;''
@@ -353,7 +353,7 @@ export class FocusAccessibilitySupport {
         '';
         breadcrumb.classList.add('visible'');
         ';
-        // 自動非表示''
+        // 自動非表示
         this.clearTimer('breadcrumb');'
         '';
         const timer = window.setTimeout((') => {' }'
@@ -368,7 +368,7 @@ export class FocusAccessibilitySupport {
      */''
     generateKeyboardHints(element: HTMLElement'): KeyboardHint[] { const hints: KeyboardHint[] = [],
         
-        // 基本ナビゲーション'
+        // 基本ナビゲーション
         hints.push(' }'
             { key: 'Tab', description: '次の要素' },')'
             { key: 'Shift+Tab', description: '前の要素' },')'
@@ -377,7 +377,7 @@ export class FocusAccessibilitySupport {
         );
         
         // コンテキスト固有のヒント
-        const role = getElementRole(element);'
+        const role = getElementRole(element);
         '';
         switch(role') {'
             '';
@@ -395,16 +395,16 @@ export class FocusAccessibilitySupport {
                     { key: 'Space', description: '開く' )''
                 ');
                 break; }
-        }
+        }'
         ';
-        // 2Dナビゲーションが有効な場合''
+        // 2Dナビゲーションが有効な場合
         if(this.mainController.accessibilityManager? .config.keyboard.navigationMode === '2d'') {'
             : undefined';
         }'
-            hints.push({ key: '↑↓←→', description: '2D移動' )'); }
+            hints.push({ key: '↑↓←→', description: '2D移動' )') }
         }
         
-        // グローバルショートカット'
+        // グローバルショートカット
         hints.push(')';
             { key: 'F1', description: 'ヘルプ' },')'
             { key: 'Alt+C', description: 'コントラスト' }')''
@@ -432,7 +432,7 @@ export class FocusAccessibilitySupport {
             
             current = current.parentElement;
             ';
-            // パスの長さ制限''
+            // パスの長さ制限
             if (path.length >= KEYBOARD_HINT_LIMITS.MAX_PATH_DEPTH') break;
         }
         
@@ -455,7 +455,7 @@ export class FocusAccessibilitySupport {
             ...options }
         };
         ';
-        // aria-live要素を使用してスクリーンリーダーに通知''
+        // aria-live要素を使用してスクリーンリーダーに通知
         let announcer = document.getElementById('focus-announcer');'
         '';
         if(!announcer') {'
@@ -471,7 +471,7 @@ export class FocusAccessibilitySupport {
                 // メッセージをクリア
                 if(opts.clearAfter && opts.clearAfter > 0) {
                     
-                }'
+                }
                     setTimeout(() => {' }'
                         if (announcer') announcer.textContent = ''; }
                     }, opts.clearAfter);
@@ -496,11 +496,11 @@ export class FocusAccessibilitySupport {
      * 要素の可視性チェック
      */
     isElementVisible(element: HTMLElement): boolean { if(!isValidHTMLElement(element) return false;
-        ';
+        ';'
         const rect = element.getBoundingClientRect();''
         const style = window.getComputedStyle(element');
         
-        return rect.width > 0 && ';
+        return rect.width > 0 && ';'
                rect.height > 0 &&'';
                style.visibility !== 'hidden' &&'';
                style.display !== 'none' &&'';
@@ -512,11 +512,11 @@ export class FocusAccessibilitySupport {
      */'
     validateElement(element: HTMLElement): ElementValidationResult { const isFocusable = this.validateFocusableElement(element);''
         const isVisible = this.isElementVisible(element');
-        ';
+        ';'
         const accessibility: ElementAccessibilityInfo = {''
             hasAriaLabel: !!element.getAttribute('aria-label''),'';
             hasTitle: !!element.getAttribute('title'),'';
-            hasTextContent: !!element.textContent? .trim('')';
+            hasTextContent: !!element.textContent? .trim()';
             role: element.getAttribute('role'),
             tabIndex: element.tabIndex }
         },
@@ -547,7 +547,7 @@ export class FocusAccessibilitySupport {
     /**
      * レポート生成'
      */''
-    generateAccessibilityReport('')';
+    generateAccessibilityReport()';
         const focusableElements = document.querySelectorAll(FOCUSABLE_SELECTORS.join(', ');
         const visibleElements = Array.from(focusableElements);
             .filter((el): el is HTMLElement => isValidHTMLElement(el);
@@ -583,10 +583,10 @@ export class FocusAccessibilitySupport {
         this.state.animationTimers.clear();
     }
 
-    /**
+    /**'
      * フィードバック要素の非表示'
      */''
-    private hideAllFeedback('')';
+    private hideAllFeedback()';
         this.elements.navigationIndicator.classList.remove('visible'');''
         this.elements.breadcrumbTrail.classList.remove('visible');
         this.hideKeyboardHints();
@@ -595,7 +595,7 @@ export class FocusAccessibilitySupport {
     /**
      * アナウンサー要素の削除'
      */''
-    private removeAnnouncerElement('')';
+    private removeAnnouncerElement()';
         const announcer = document.getElementById('focus-announcer');
         if (announcer && announcer.parentNode) { announcer.parentNode.removeChild(announcer); }
         }
@@ -609,9 +609,9 @@ export class FocusAccessibilitySupport {
         
         // フィードバック要素を非表示
         this.hideAllFeedback();
-        ';
-        // アナウンサー要素を削除''
-        this.removeAnnouncerElement('')';
+        ;
+        // アナウンサー要素を削除
+        this.removeAnnouncerElement()';
         console.log('FocusAccessibilitySupport disposed''); }'
     }''
 }

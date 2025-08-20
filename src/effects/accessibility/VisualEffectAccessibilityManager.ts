@@ -13,25 +13,25 @@ interface AccessibilityManager { getConfiguration(): AccessibilityConfiguration;
 }
 
 interface EnhancedParticleManager { createParticle?: (x: number, y: number, options?: ParticleOptions) => any;
-    renderParticle?: (context: CanvasRenderingContext2D, particle: Particle) => void; }
+    renderParticle?: (context: CanvasRenderingContext2D, particle: Particle) => void }
 }
 
 interface EnhancedEffectManager { addEffect?: (effectType: string, options?: EffectOptions) => any;
-    renderEffect?: (context: CanvasRenderingContext2D, effect: Effect) => void; }
+    renderEffect?: (context: CanvasRenderingContext2D, effect: Effect) => void }
 }
-';
+';'
 interface AnimationManager { ''
-    createAnimation?: (element: any, animationType: string, duration: number, options?: AnimationOptions') => any; }
+    createAnimation?: (element: any, animationType: string, duration: number, options?: AnimationOptions') => any }
 }
 
 // Visual accessibility state
 interface VisualAccessibilityState { highContrastActive: boolean,
     colorBlindnessMode: ColorBlindnessType,
     motionReduced: boolean,
-    visualAlertsEnabled: boolean; }
+    visualAlertsEnabled: boolean }
 }
-';
-// Color blindness types''
+;
+// Color blindness types
 type ColorBlindnessType = 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia';
 
 // Accessibility configuration
@@ -42,7 +42,7 @@ interface AccessibilityConfiguration { visual: {
             customColors?: any; }
         };
         colorBlindness: { enabled: boolean,
-            type?: ColorBlindnessType;
+            type?: ColorBlindnessType
     }
         };
         motion: { reduced: boolean,
@@ -50,7 +50,7 @@ interface AccessibilityConfiguration { visual: {
             alternativeEffects?: boolean; }
         };
         textScaling?: { enabled: boolean,
-            scale?: number; }
+            scale?: number }
         };
     };
     audio: { visualFeedback: {
@@ -59,9 +59,9 @@ interface AccessibilityConfiguration { visual: {
             type?: string; }
         };
         vibration?: { enabled: boolean,
-            intensity?: number; }
+            intensity?: number }
         };
-        captions?: { enabled: boolean; }
+        captions?: { enabled: boolean }
         };
     };
 }
@@ -72,7 +72,7 @@ interface ParticleOptions { color?: string;
     lifetime?: number;
     movement?: {
         type: string,
-        speed: number; }'
+        speed: number }
     };''
     patternType?: 'dot' | 'stripe' | 'cross';
     usePattern?: boolean;
@@ -106,14 +106,14 @@ interface Particle { x: number,
 interface Effect { isAlert?: boolean;
     [key: string]: any, }
 }
-';
-// Color filter function type''
+;
+// Color filter function type
 type ColorFilter = (color: string') => string;
 
 // RGB color interface
 interface RGBColor { r: number,
     g: number,
-    b: number; }
+    b: number }
 }
 
 // High contrast color palette
@@ -123,19 +123,19 @@ interface HighContrastColors { background: string,
     error: string,
     success: string,
     warning: string,
-    info: string; }
+    info: string }
 }
 
 // Reduced motion settings
 interface ReducedMotionSettings { particleCount: number,
     animationDuration: number,
     disableEffects: string[],
-    enableAlternatives: boolean; }
+    enableAlternatives: boolean }
 }
 
 // System preference change event
 interface SystemPreferenceChangeEvent { preference: string,
-    value: any; }
+    value: any }
 }
 
 // Animation configuration result
@@ -147,7 +147,7 @@ interface AnimationConfigResult { duration: number,
 interface AccessibilityConfigResult { highContrastActive: boolean,
     colorBlindnessMode: ColorBlindnessType,
     motionReduced: boolean,
-    visualAlertsEnabled: boolean; }
+    visualAlertsEnabled: boolean }
 }
 
 // Visual effect accessibility report
@@ -162,7 +162,7 @@ interface VisualAccessibilityReport { component: string,
         patternSupport: boolean }
     },
     statistics: { filtersApplied: number,
-        alternativeEffectsCreated: number; }
+        alternativeEffectsCreated: number }
     };
 }
 
@@ -174,21 +174,21 @@ export class VisualEffectAccessibilityManager {
     private effectManager: EffectManager | null;
     private accessibilityManager: AccessibilityManager | null;
     private config: AccessibilityConfiguration | null = null;
-    private state: VisualAccessibilityState = {'
+    private state: VisualAccessibilityState = {
         highContrastActive: false'';
         colorBlindnessMode: 'none',
         motionReduced: false,
         visualAlertsEnabled: false }
     },
     
-    // 色覚異常対応のカラーマップ'
+    // 色覚異常対応のカラーマップ
     private colorBlindnessFilters = new Map<ColorBlindnessType, ColorFilter>(['';
         ['protanopia', this.createProtanopiaFilter(''])';
-        ['deuteranopia', this.createDeuteranopiaFilter('')]';
+        ['deuteranopia', this.createDeuteranopiaFilter()]';
         ['tritanopia', this.createTritanopiaFilter()]'';
     ]');
     
-    // ハイコントラストカラーパレット'
+    // ハイコントラストカラーパレット
     private readonly highContrastColors: HighContrastColors = { ''
         background: '#000000','';
         foreground: '#FFFFFF','';
@@ -200,7 +200,7 @@ export class VisualEffectAccessibilityManager {
     },
     
     // アニメーション軽減設定
-    private readonly reducedMotionSettings: ReducedMotionSettings = { particleCount: 0.25,'
+    private readonly reducedMotionSettings: ReducedMotionSettings = { particleCount: 0.25,
         animationDuration: 0.5,'';
         disableEffects: ['shake', 'zoom', 'blur', 'flash'],
         enableAlternatives: true }
@@ -227,15 +227,15 @@ export class VisualEffectAccessibilityManager {
             
             // エフェクト管理システムとの統合
             this.integrateWithEffectManagers();
-            ';
-            // イベントリスナーの設定''
-            this.setupEventListeners('')';
+            ;
+            // イベントリスナーの設定
+            this.setupEventListeners()';
             console.log('VisualEffectAccessibilityManager initialized successfully');
             return true;'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ACCESSIBILITY_ERROR', {')'
                 operation: 'initialize',')';
-                component: 'VisualEffectAccessibilityManager'); }
+                component: 'VisualEffectAccessibilityManager') }
             });
             return false;
         }
@@ -336,26 +336,26 @@ export class VisualEffectAccessibilityManager {
         const accessibleOptions = { ...options };
         
         // ハイコントラスト対応
-        if(this.state.highContrastActive && options.color) {'
-            ';
+        if(this.state.highContrastActive && options.color) {
+            ';'
         }'
             accessibleOptions.color = this.convertToHighContrast(options.color'); }
         }
         ';
-        // 色覚異常対応''
+        // 色覚異常対応
         if(this.state.colorBlindnessMode !== 'none' && options.color) {
             accessibleOptions.color = this.applyColorBlindnessFilter(;
-                options.color, );
+                options.color );
         }
                 this.state.colorBlindnessMode); }
         }
         
         // アニメーション軽減
-        if(this.state.motionReduced) {'
+        if(this.state.motionReduced) {
             accessibleOptions.count = Math.floor((options.count || 1) * this.reducedMotionSettings.particleCount);''
             accessibleOptions.lifetime = (options.lifetime || 1000') * this.reducedMotionSettings.animationDuration;
-            ';
-            // 動きの激しいエフェクトを無効化'
+            ';'
+            // 動きの激しいエフェクトを無効化
         }'
             if (options.movement && options.movement.type === 'erratic'') {' }'
                 accessibleOptions.movement = { type: 'linear', speed: options.movement.speed * 0.5 }
@@ -372,16 +372,16 @@ export class VisualEffectAccessibilityManager {
         const accessibleOptions = { ...options };
         
         // ハイコントラスト対応
-        if(this.state.highContrastActive && options.color) {'
-            ';
+        if(this.state.highContrastActive && options.color) {
+            ';'
         }'
             accessibleOptions.color = this.convertToHighContrast(options.color'); }
         }
         ';
-        // 色覚異常対応''
+        // 色覚異常対応
         if(this.state.colorBlindnessMode !== 'none' && options.color) {
             accessibleOptions.color = this.applyColorBlindnessFilter(;
-                options.color, );
+                options.color );
         }
                 this.state.colorBlindnessMode); }
         }
@@ -407,12 +407,12 @@ export class VisualEffectAccessibilityManager {
      */
     applyAccessibilityToAnimation(animationType: string, duration: number, options: AnimationOptions): AnimationConfigResult { let adjustedDuration = duration; }
         const accessibleOptions = { ...options };
-        ';
-        // アニメーション軽減''
+        ;
+        // アニメーション軽減
         if(this.state.motionReduced') {
             adjustedDuration = duration * this.reducedMotionSettings.animationDuration;
             ';
-            // 激しいアニメーションを穏やかに変更''
+            // 激しいアニメーションを穏やかに変更
             if (animationType === 'bounce'') {''
                 accessibleOptions.easing = 'ease-out';
         }'
@@ -446,10 +446,10 @@ export class VisualEffectAccessibilityManager {
     }
     
     /**
-     * 色の明度を計算'
+     * 色の明度を計算
      */''
     private calculateBrightness(color: string'): number { // RGB値を取得（簡易版）
-        let r: number, g: number, b: number,';
+        let r: number, g: number, b: number,
         '';
         if(color.startsWith('#') {
             const hex = color.substring(1);
@@ -482,7 +482,7 @@ export class VisualEffectAccessibilityManager {
     }
     
     /**
-     * 代替エフェクトの作成'
+     * 代替エフェクトの作成
      */''
     private createAlternativeEffect(originalType: string, options: EffectOptions'): EffectOptions { const alternatives: Record<string, Partial<EffectOptions>> = {' }'
             'shake': { type: 'glow', intensity: 0.8, duration: 500 },''
@@ -516,7 +516,7 @@ export class VisualEffectAccessibilityManager {
     /**
      * アクセシブルなパーティクルの描画'
      */''
-    private renderAccessibleParticle(context: CanvasRenderingContext2D, particle: Particle'): void { // パターンやシェイプを使用して色覚異常者にも識別可能にする''
+    private renderAccessibleParticle(context: CanvasRenderingContext2D, particle: Particle'): void { // パターンやシェイプを使用して色覚異常者にも識別可能にする
         if(this.state.colorBlindnessMode !== 'none' && particle.usePattern) {
             
         }
@@ -529,7 +529,7 @@ export class VisualEffectAccessibilityManager {
     }
     
     /**
-     * パターン付きパーティクルの描画'
+     * パターン付きパーティクルの描画
      */''
     private renderParticleWithPattern(context: CanvasRenderingContext2D, particle: Particle'): void { const patterns = {''
             'dot': this.createDotPattern,'';
@@ -568,9 +568,9 @@ export class VisualEffectAccessibilityManager {
     }
     
     /**
-     * 視覚アラートの描画'
+     * 視覚アラートの描画
      */''
-    private renderVisualAlert(context: CanvasRenderingContext2D, effect: Effect'): void { // 点滅や色変化による視覚的なアラート'
+    private renderVisualAlert(context: CanvasRenderingContext2D, effect: Effect'): void { // 点滅や色変化による視覚的なアラート
         const alertColor = this.state.highContrastActive '';
             ? this.highContrastColors.accent: '#FFD700',
         
@@ -625,7 +625,7 @@ export class VisualEffectAccessibilityManager {
     }
     
     /**
-     * 色文字列をRGB値に解析'
+     * 色文字列をRGB値に解析
      */''
     private parseColor(color: string'): RGBColor | null { ''
         if(color.startsWith('#') {
@@ -672,7 +672,7 @@ export class VisualEffectAccessibilityManager {
         for(let i = 0; i < stripes; i++) {
         
             context.fillRect(;
-                particle.x - particle.size / 2 + i * stripeWidth,);
+                particle.x - particle.size / 2 + i * stripeWidth);
                 particle.y - particle.size / 2);
                 stripeWidth / 2,);
         }
@@ -685,14 +685,14 @@ export class VisualEffectAccessibilityManager {
         
         // 水平線
         context.fillRect(;
-            particle.x - crossSize / 2,);
+            particle.x - crossSize / 2);
             particle.y - lineWidth / 2);
             crossSize,);
             lineWidth);
         
         // 垂直線
         context.fillRect(;
-            particle.x - lineWidth / 2,);
+            particle.x - lineWidth / 2);
             particle.y - crossSize / 2);
             lineWidth,);
             crossSize); }
@@ -700,14 +700,14 @@ export class VisualEffectAccessibilityManager {
     
     /**
      * アクセシビリティ設定の適用
-     */'
+     */
     async applyAccessibilitySettings(): Promise<void> { ''
         if (!this.config') return;
         
         // ハイコントラスト設定
         this.state.highContrastActive = this.config.visual.highContrast.enabled;
         
-        // 色覚異常設定'
+        // 色覚異常設定
         this.state.colorBlindnessMode = this.config.visual.colorBlindness.enabled '';
             ? (this.config.visual.colorBlindness.type || 'none'')'';
             : 'none';
@@ -716,9 +716,9 @@ export class VisualEffectAccessibilityManager {
         this.state.motionReduced = this.config.visual.motion.reduced;
         
         // 視覚アラート設定
-        this.state.visualAlertsEnabled = this.config.audio.visualFeedback.enabled;'
+        this.state.visualAlertsEnabled = this.config.audio.visualFeedback.enabled;
         '';
-        console.log('Accessibility settings applied:', this.state); }
+        console.log('Accessibility settings applied:', this.state) }
     }
     
     /**
@@ -726,14 +726,14 @@ export class VisualEffectAccessibilityManager {
      */'
     private setupEventListeners(): void { ''
         if(this.accessibilityManager') {'
-            // アクセシビリティ設定変更の監視''
+            // アクセシビリティ設定変更の監視
             this.accessibilityManager.addEventListener?.('configurationApplied', (event: any) => { 
         }
                 this.config = event.config; }'
                 this.applyAccessibilitySettings();' }'
             }');
             ';
-            // システム設定変更の監視''
+            // システム設定変更の監視
             this.accessibilityManager.addEventListener?.('systemPreferenceChanged', (event: SystemPreferenceChangeEvent) => { this.handleSystemPreferenceChange(event); }
             });
         }
@@ -774,7 +774,7 @@ export class VisualEffectAccessibilityManager {
      * レポート生成'
      */''
     generateReport(''';
-            component: 'VisualEffectAccessibilityManager',);
+            component: 'VisualEffectAccessibilityManager');
             state: { ...this.state })
             configuration: this.getConfiguration(),
             features: { highContrast: true,
@@ -792,10 +792,10 @@ export class VisualEffectAccessibilityManager {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying VisualEffectAccessibilityManager...');
         ';
-        // イベントリスナーの削除''
+        // イベントリスナーの削除
         if(this.accessibilityManager') {'
             '';
             this.accessibilityManager.removeEventListener? .('configurationApplied'');'
@@ -806,7 +806,7 @@ export class VisualEffectAccessibilityManager {
         // 参照のクリア
         this.effectManager = null;
         this.accessibilityManager = null;
-        this.config = null;'
+        this.config = null;
         '';
         console.log('VisualEffectAccessibilityManager destroyed'');'
     }''

@@ -12,10 +12,10 @@ interface ImportPatterns { namedImport: RegExp,
     namespaceImport: RegExp,
     sideEffectImport: RegExp,
     dynamicImport: RegExp,
-    requireCall: RegExp;
+    requireCall: RegExp
     }
 }
-';
+';'
 interface ImportInfo { ''
     type: 'named' | 'default' | 'namespace' | 'sideEffect' | 'dynamic',
     importedName: string | null,
@@ -24,14 +24,14 @@ interface ImportInfo { ''
     lineNumber: number,
     startIndex: number,
     endIndex: number,
-    containingFile?: string; }
+    containingFile?: string }
 }
 
 interface ImportSearchResults { byClassName: Map<string, ImportInfo[]>;
     byFileName: Map<string, ImportInfo[]>;
-    total: number; }
+    total: number }
 }
-';
+';'
 interface UpdateResult { file: string,''
     status: 'updated' | 'failed',
     changes?: number;
@@ -41,12 +41,12 @@ interface UpdateResult { file: string,''
 interface ValidationIssue { type: string,
     line: number,
     content: string,
-    message: string; }
+    message: string }
 }
 
 interface ImportPathInfo { path: string,
     line: number,
-    type: string; }
+    type: string }
 }
 
 export class ImportUpdater {
@@ -55,10 +55,7 @@ export class ImportUpdater {
     constructor() {
 
         this.cache = new Map<string, any>();
-        this.importPatterns = {
-
-    }
-    }'
+        this.importPatterns = {}'
             // 各種インポートパターンの正規表現' }'
             namedImport: /import\s*\{\s*([^}]+')\s*\}\s*from\s*['"`]([^'"`]+")['"`]/g,""
             defaultImport: /import\s+(\w+")\s+from\s*['"`]([^'"`]+")['"`]/g,"";
@@ -93,9 +90,9 @@ export class ImportUpdater {
         }
                             results.byClassName.set(className, []); }
                         }
-                        results.byClassName.get(className).push({ ...importInfo,)
+                        results.byClassName.get(className).push({ ...importInfo)
                             containingFile: filePath),
-                        results.total++; }
+                        results.total++ }
                     }
                     
                     // ファイル名での検索
@@ -104,9 +101,9 @@ export class ImportUpdater {
                     }
                             results.byFileName.set(fileName, []); }
                         }
-                        results.byFileName.get(fileName).push({ ...importInfo,)
+                        results.byFileName.get(fileName).push({ ...importInfo)
                             containingFile: filePath),
-                        results.total++; }
+                        results.total++ }
                     }
                 } catch (error) {
                 console.warn(`Could not analyze imports in ${filePath}: ${error.message}`);
@@ -117,12 +114,12 @@ export class ImportUpdater {
     }
 
     /**
-     * ファイル内容からインポート文を抽出'
+     * ファイル内容からインポート文を抽出
      */''
     extractImportsFromContent(content: string, filePath: string'): ImportInfo[] { const imports: ImportInfo[] = [],''
         const lines = content.split('\n');
 ';
-        // 名前付きインポート''
+        // 名前付きインポート
         for (const match of content.matchAll(this.importPatterns.namedImport)') {''
             const importedNames = match[1].split(',').map(name => name.trim();
             const sourcePath = match[2];
@@ -133,70 +130,70 @@ export class ImportUpdater {
                     type: 'named',
                     importedName: name,
                     sourcePath: sourcePath,
-                    fullMatch: match[0],);
+                    fullMatch: match[0]);
                     lineNumber: lineNumber);
-                    startIndex: match.index,);
+                    startIndex: match.index,)
             }
                     endIndex: match.index + match[0].length); }
             }
         }
 
         // デフォルトインポート
-        for(const match of content.matchAll(this.importPatterns.defaultImport) {'
+        for(const match of content.matchAll(this.importPatterns.defaultImport) {
             '';
             const lineNumber = this.findLineNumber(content, match.index');'
             imports.push({''
                 type: 'default',
                 importedName: match[1],
                 sourcePath: match[2],
-                fullMatch: match[0],);
+                fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index,);
+                startIndex: match.index,)
         }
                 endIndex: match.index + match[0].length); }
         }
 
         // 名前空間インポート
-        for(const match of content.matchAll(this.importPatterns.namespaceImport) {'
+        for(const match of content.matchAll(this.importPatterns.namespaceImport) {
             '';
             const lineNumber = this.findLineNumber(content, match.index');'
             imports.push({''
                 type: 'namespace',
                 importedName: match[1],
                 sourcePath: match[2],
-                fullMatch: match[0],);
+                fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index,);
+                startIndex: match.index,)
         }
                 endIndex: match.index + match[0].length); }
         }
 
         // サイドエフェクトインポート
-        for(const match of content.matchAll(this.importPatterns.sideEffectImport) {'
+        for(const match of content.matchAll(this.importPatterns.sideEffectImport) {
             '';
             const lineNumber = this.findLineNumber(content, match.index');'
             imports.push({''
                 type: 'sideEffect',
                 importedName: null,
                 sourcePath: match[1],
-                fullMatch: match[0],);
+                fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index,);
+                startIndex: match.index,)
         }
                 endIndex: match.index + match[0].length); }
         }
 
         // 動的インポート
-        for(const match of content.matchAll(this.importPatterns.dynamicImport) {'
+        for(const match of content.matchAll(this.importPatterns.dynamicImport) {
             '';
             const lineNumber = this.findLineNumber(content, match.index');'
             imports.push({''
                 type: 'dynamic',
                 importedName: null,
                 sourcePath: match[1],
-                fullMatch: match[0],);
+                fullMatch: match[0]);
                 lineNumber: lineNumber);
-                startIndex: match.index,);
+                startIndex: match.index,)
         }
                 endIndex: match.index + match[0].length); }
         }
@@ -211,10 +208,10 @@ export class ImportUpdater {
         const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles();'
         '';
         for(const filePath of filesToUpdate') {'
-            try {''
+            try {'
                 const content = await fs.readFile(filePath, 'utf8');
                 const updatedContent = this.updateImportPathsInContent(;
-                    content, );
+                    content );
                     oldPath);
                     newPath, );
                     filePath);'
@@ -227,7 +224,7 @@ export class ImportUpdater {
         }
                         changes: this.countChanges(content, updatedContent); }'
                     });''
-                } catch (error') { results.push({'
+                } catch (error) { results.push({'
                     file: filePath,')';
                     status: 'failed',)';
                     error: error.message),' }'
@@ -276,10 +273,10 @@ export class ImportUpdater {
      * 名前付きインポートを更新
      */
     async updateNamedImports(oldName: string, newName: string, targetFiles: string[] | null = null): Promise<UpdateResult[]> { const results: UpdateResult[] = [],
-        const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles();'
+        const filesToUpdate = targetFiles || await this.getAllJavaScriptFiles();
         '';
         for(const filePath of filesToUpdate') {'
-            try {''
+            try {'
                 const content = await fs.readFile(filePath, 'utf8');
                 const updatedContent = this.updateNamedImportsInContent(content, oldName, newName);'
                 '';
@@ -291,7 +288,7 @@ export class ImportUpdater {
         }
                         changes: this.countChanges(content, updatedContent); }'
                     });''
-                } catch (error') { results.push({'
+                } catch (error) { results.push({'
                     file: filePath,')';
                     status: 'failed',)';
                     error: error.message),' }'
@@ -306,14 +303,14 @@ export class ImportUpdater {
     /**
      * ファイル内容の名前付きインポートを更新
      */
-    updateNamedImportsInContent(content: string, oldName: string, newName: string): string { // 名前付きインポートのパターンをより厳密に'
+    updateNamedImportsInContent(content: string, oldName: string, newName: string): string { // 名前付きインポートのパターンをより厳密に
         const namedImportPattern = new RegExp(' })'
             `import\\s*\\{([^}]*\\b${oldName}\\b[^)]*')\\}\\s*from\\s*(['"\`][^'"\`]+['"\`]")`,""
             'g';
         );
-        ';
+        ';'
         return content.replace(namedImportPattern, (match, importList, fromClause) => {  ' }'
-            const updatedImportList = importList.replace('') }'
+            const updatedImportList = importList.replace() }'
                 new RegExp(`\\b${oldName}\\b`, 'g'),
                 newName;
             );
@@ -328,27 +325,27 @@ export class ImportUpdater {
         const lines = content.split('\n');
         
         // 基本的な構文チェック
-        for(let i = 0; i < lines.length; i++) {'
+        for(let i = 0; i < lines.length; i++) {
             '';
-            const line = lines[i].trim('')';
+            const line = lines[i].trim()';
             if (line.startsWith('import '') && !line.includes('from') {'
-                // import文にfromがない（サイドエフェクト以外）''
+                // import文にfromがない（サイドエフェクト以外）
                 if (!this.importPatterns.sideEffectImport.test(line)') {'
                     issues.push({''
-                        type: 'missing_from',);
+                        type: 'missing_from');
                         line: i + 1)';
-                        content: line,');
+                        content: line,')
         }'
                         message: 'Import statement missing "from" clause')'); }
                 }
             }
             ';
-            // 閉じ括弧の不一致''
-            if (line.includes('import { '') && !line.includes('')')) {'
+            // 閉じ括弧の不一致
+            if (line.includes('import { '') && !line.includes()')) {'
                 let foundClosing = false;''
                 for(let j = i + 1; j < lines.length && j < i + 5; j++') {'
                     '';
-                    if (lines[j].includes('')') {
+                    if (lines[j].includes()') {
                         foundClosing = true;
                 }
                         break; }
@@ -356,9 +353,9 @@ export class ImportUpdater {
                 }''
                 if(!foundClosing') {'
                     issues.push({''
-                        type: 'unclosed_brace',);
+                        type: 'unclosed_brace');
                         line: i + 1)';
-                        content: line,');
+                        content: line,')
                 }'
                         message: 'Unclosed brace in import statement'); }
                 }
@@ -367,12 +364,12 @@ export class ImportUpdater {
         
         // 循環依存の検出（簡易版）
         const importPaths = this.extractAllImportPaths(content);
-        const circularImports = this.detectCircularDependencies(importPaths);'
+        const circularImports = this.detectCircularDependencies(importPaths);
         '';
         for(const circular of circularImports') {'
             issues.push({''
-                type: 'circular_dependency',);
-                line: circular.line);
+                type: 'circular_dependency');
+                line: circular.line)
         }'
                 content: circular.path,') }'
                 message: `Potential circular dependency detected: ${circular.path}`)'),
@@ -419,7 +416,7 @@ export class ImportUpdater {
      */''
     resolveImportPath(importPath: string, currentDir: string'): string { ''
         if (importPath.startsWith('./'') || importPath.startsWith('../') {'
-            // 相対パス''
+            // 相対パス
             return path.resolve(currentDir, importPath');' }'
         } else if(importPath.startsWith('/') { // 絶対パス
             return path.resolve(importPath); }
@@ -430,18 +427,18 @@ export class ImportUpdater {
 
     /**
      * 相対パスを計算
-     */'
+     */
     calculateRelativePath(fromDir: string, toPath: string): string { ''
         let relativePath = path.relative(fromDir, toPath');
         ';
-        // 拡張子を除去（.jsファイルの場合）''
+        // 拡張子を除去（.jsファイルの場合）
         if(relativePath.endsWith('.js') {'
-            ';
+            ';'
         }'
             relativePath = relativePath.slice(0, -3'); }
         }
         ';
-        // 相対パスが現在のディレクトリを指さない場合は./を追加''
+        // 相対パスが現在のディレクトリを指さない場合は./を追加
         if (!relativePath.startsWith('../'') && !relativePath.startsWith('./')') { ''
             relativePath = './' + relativePath; }
         }
@@ -458,7 +455,7 @@ export class ImportUpdater {
             case 'namedImport':'';
             case 'defaultImport':'';
             case 'namespaceImport':';
-                return groups[1]; // 2番目のグループがパス''
+                return groups[1]; // 2番目のグループがパス
             case 'sideEffectImport':'';
             case 'dynamicImport':'';
             case 'requireCall':;
@@ -477,7 +474,7 @@ export class ImportUpdater {
     /**
      * ファイル名マッチング
      */
-    matchesFileName(importInfo: ImportInfo, fileName: string): boolean { const sourcePath = importInfo.sourcePath;'
+    matchesFileName(importInfo: ImportInfo, fileName: string): boolean { const sourcePath = importInfo.sourcePath;
         return sourcePath.includes(fileName) || '';
                path.basename(sourcePath') === fileName ||'';
                path.basename(sourcePath, '.js') === fileName; }
@@ -536,8 +533,8 @@ export class ImportUpdater {
     /**
      * 循環依存の検出（簡易版）
      */
-    detectCircularDependencies(importPaths: ImportPathInfo[]): ImportPathInfo[] { // 現在は基本的な検出のみ実装'
-        // 将来的にはより詳細な依存関係グラフ分析を追加''
+    detectCircularDependencies(importPaths: ImportPathInfo[]): ImportPathInfo[] { // 現在は基本的な検出のみ実装
+        // 将来的にはより詳細な依存関係グラフ分析を追加
         const suspiciousPaths = importPaths.filter(imp => ');''
             imp.path.includes('..'') && '';
             imp.path.split('../').length > 3;

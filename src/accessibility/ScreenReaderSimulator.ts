@@ -8,21 +8,21 @@ import { ScreenReaderEngine } from './screen-reader/ScreenReaderEngine.js';''
 import { ARIAAttributeProcessor } from './screen-reader/ARIAAttributeProcessor.js';''
 import { TextToSpeechController } from './screen-reader/TextToSpeechController.js';
 
-// Interfaces for screen reader simulation'
+// Interfaces for screen reader simulation
 interface SimulatorConfig { enabled: boolean,''
     defaultReader: 'nvda' | 'jaws' | 'voiceover' | 'talkback',';
     simulateDelay: boolean,'';
     verbosityLevel: 'off' | 'some' | 'most' | 'all' | 'standard',
     speechRate: number,
     enableTTS: boolean,
-    enableAriaValidation: boolean; }
+    enableAriaValidation: boolean }
 }
 
 interface SimulationResults { screenReader: ScreenReaderResults | null,
     aria: AriaValidationResults | null,
     compatibility: Map<string, CompatibilityInfo>;
     issues: SimulationIssue[],
-    announcements: Announcement[];
+    announcements: Announcement[]
     }
 }
 
@@ -31,7 +31,7 @@ interface ScreenReaderResults { timestamp: number,
     results: {
         announcements: Announcement[],
         compatibility: Map<string, CompatibilityInfo>;
-        issues: SimulationIssue[];
+        issues: SimulationIssue[]
     }
     };
 }
@@ -40,7 +40,7 @@ interface AriaValidationResults { timestamp: number,
     results: {
         passed: ValidationResult[],
         failed: ValidationResult[],
-        warnings: ValidationResult[];
+        warnings: ValidationResult[]
     }
     };
 }
@@ -48,7 +48,7 @@ interface AriaValidationResults { timestamp: number,
 interface ValidationResult { element: HTMLElement,
     rule: string,';
     message: string,'';
-    severity: 'error' | 'warning' | 'info'; }
+    severity: 'error' | 'warning' | 'info' }
 }
 
 interface CompatibilityInfo { compatible: boolean,
@@ -61,9 +61,9 @@ interface CompatibilityInfo { compatible: boolean,
 interface FeatureSupport { landmarks: boolean,
     liveRegions: boolean,
     forms: boolean,
-    tables: boolean; }
+    tables: boolean }
 }
-';
+';'
 interface SimulationIssue { id: string,''
     type: 'navigation' | 'announcement' | 'interaction' | 'aria','';
     severity: 'critical' | 'warning' | 'info',
@@ -71,7 +71,7 @@ interface SimulationIssue { id: string,''
     element?: HTMLElement;
     suggestion?: string; }
 }
-';
+';'
 interface Announcement { text: string,''
     type: 'focus' | 'navigation' | 'alert' | 'description',
     timestamp: number,
@@ -82,25 +82,25 @@ interface Announcement { text: string,''
 interface SimulationStatistics { totalSimulations: number,
     totalAriaValidations: number,
     totalAnnouncements: number,
-    averageSimulationTime: number; }
+    averageSimulationTime: number }
 }
 
 interface PerformanceMetrics { simulationTime: number[],
     ariaValidationTime: number[],
-    speechTime: number[]; }
+    speechTime: number[] }
 }
 
 interface SimulationReport { simulationTime: number,
     results: SimulationResults,
     stats: SimulationStatistics,
-    performance: PerformanceMetrics;
+    performance: PerformanceMetrics
     }
 }
-';
+';'
 interface CompatibilityReport { screenReaders: Record<string, CompatibilityInfo>;''
     ariaCompliance: 'excellent' | 'good' | 'fair' | 'poor' | 'unknown',
     ttsSupport: boolean,
-    overallScore: number; }
+    overallScore: number }
 }
 
 interface SimulationHistoryEntry { timestamp: number,
@@ -108,19 +108,19 @@ interface SimulationHistoryEntry { timestamp: number,
     stats: SimulationStatistics,
     performance: {
         averageSimulationTime: number,
-        totalSimulations: number; }
+        totalSimulations: number }
     };
 }
 
 interface TTSEventHandlers { onStart: (announcement: Announcement) => void,
     onEnd: (announcement: Announcement, duration: number) => void,
-    onError: (event: any, announcement: Announcement) => void; }
+    onError: (event: any, announcement: Announcement) => void }
 }
 
 interface ComponentStatus { engine: boolean,
     aria: boolean,
     tts: boolean,
-    initialized: boolean; }
+    initialized: boolean }
 }
 
 interface TestResult { success: boolean,
@@ -134,26 +134,26 @@ interface TestResult { success: boolean,
 interface ScreenReaderEngineConfig { enabled: boolean,
     defaultReader: string,
     simulateDelay: boolean,
-    verbosityLevel: string; }
+    verbosityLevel: string }
 }
 
 interface ARIAProcessorConfig { enabled: boolean,
     validateStructure: boolean,
     monitorLiveRegions: boolean,
-    trackChanges: boolean; }
+    trackChanges: boolean }
 }
 
 interface TTSControllerConfig { enabled: boolean,
     defaultRate: number,
     queueAnnouncements: boolean,
-    interruptOnNew: boolean; }
+    interruptOnNew: boolean }
 }
 
 // AccessibilityManager interface (minimal definition);
 interface AccessibilityManager { gameEngine?: any;
     eventSystem?: {
         emit: (event: string, data: any) => void,
-        on: (event: string, handler: (data?: any) => void) => void; }
+        on: (event: string, handler: (data?: any) => void) => void }
     };
     getSettings?: () => any;
 }
@@ -168,14 +168,14 @@ export class ScreenReaderSimulator {
     private results: SimulationResults;
     private stats: SimulationStatistics;
     private performance: PerformanceMetrics;
-    private initialized: boolean';
+    private initialized: boolean;
 '';
     constructor(accessibilityManager: AccessibilityManager | null') {
         this.accessibilityManager = accessibilityManager;
         this.gameEngine = accessibilityManager? .gameEngine;
         
         // Configuration
-        this.config = { : undefined'
+        this.config = { : undefined
             enabled: true,'';
             defaultReader: 'nvda',';
             simulateDelay: true,'';
@@ -189,14 +189,14 @@ export class ScreenReaderSimulator {
         
         // Initialize sub-components
         this.screenReaderEngine = new ScreenReaderEngine({ enabled: this.config.enabled,
-            defaultReader: this.config.defaultReader,);
+            defaultReader: this.config.defaultReader);
             simulateDelay: this.config.simulateDelay);
             verbosityLevel: this.config.verbosityLevel;
         ),
         
         this.ariaProcessor = new ARIAAttributeProcessor({
             enabled: this.config.enableAriaValidation,
-            validateStructure: true,);
+            validateStructure: true);
             monitorLiveRegions: true);
             trackChanges: true;
         ),
@@ -234,7 +234,7 @@ export class ScreenReaderSimulator {
     
     /**
      * Initialize the simulator
-     */'
+     */
     initialize(): void { ''
         if (this.initialized') return;'
         '';
@@ -244,7 +244,7 @@ export class ScreenReaderSimulator {
         const ttsSupported = this.ttsController.initialize();
         this.ariaProcessor.initialize();
         
-        // Set up TTS event handlers'
+        // Set up TTS event handlers
         this.ttsController.setEventHandlers({);''
             onStart: (announcement: Announcement') => { ' }'
                 console.log('TTS Started:', announcement.text.substring(0, 50') + '...'); }
@@ -257,7 +257,7 @@ export class ScreenReaderSimulator {
                 console.error('TTS Error:', event.error); }'
             }''
         }');
-        ';
+        ';'
         this.initialized = true;''
         console.log(`ScreenReaderSimulator: Initialized (TTS: ${ttsSupported ? 'enabled' : 'disabled'})`');
     }
@@ -306,9 +306,9 @@ export class ScreenReaderSimulator {
                 results: this.results,
                 stats: this.stats, };
                 performance: this.performance }
-            },'
+            },
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ScreenReaderSimulator: Simulation error:', error);''
             getErrorHandler(')? .handleError(error, 'SCREEN_READER_SIMULATION_ERROR', { : undefined')'
                 operation: 'runFullSimulation',);
@@ -340,14 +340,14 @@ export class ScreenReaderSimulator {
         const announcements = this.results.screenReader.results.announcements;'
         '';
         for(const announcement of announcements') {
-            try {'
+            try {
                 await this.ttsController.announce(announcement.announcement || announcement.text, { : undefined')'
                     priority: announcement.type === 'focus' ? 'high' : 'normal'),
-                ;
+                
         }'
                 this.stats.totalAnnouncements++;' }'
-            } catch (error') { ''
-                console.warn('ScreenReaderSimulator: TTS announcement failed:', error); }
+            } catch (error) { ''
+                console.warn('ScreenReaderSimulator: TTS announcement failed:', error) }
             }
         }
     }
@@ -383,7 +383,7 @@ export class ScreenReaderSimulator {
         const total = passed.length + failed.length + warnings.length;'
         '';
         if (total === 0') return 'excellent';
-        ';
+        ';'
         const score = passed.length / total;''
         if (score >= 0.9') return 'excellent';''
         if (score >= 0.8') return 'good';''
@@ -417,12 +417,12 @@ export class ScreenReaderSimulator {
     }
     
     /**
-     * Set verbosity level'
+     * Set verbosity level
      */''
     setVerbosityLevel(level: string'): void { ''
         if (['off', 'some', 'most', 'all'].includes(level)') {''
             this.config.verbosityLevel = level as SimulatorConfig['verbosityLevel'];
-            this.screenReaderEngine.updateConfig({ verbosityLevel: level ); }
+            this.screenReaderEngine.updateConfig({ verbosityLevel: level ) }
         }
     }
     
@@ -465,33 +465,33 @@ export class ScreenReaderSimulator {
     /**
      * Save simulation results
      */
-    private saveSimulationResults(): void { try {'
-            const results: SimulationHistoryEntry = {''
-                timestamp: Date.now('')';
+    private saveSimulationResults(): void { try {
+            const results: SimulationHistoryEntry = {
+                timestamp: Date.now()';
             const history = JSON.parse(localStorage.getItem('screenReaderSimulator_history'') || '[]'),
             history.unshift(results);
             
             // Keep only last 50 results
-            if(history.length > 50) {'
-                ';
+            if(history.length > 50) {
+                ';'
             }'
                 history.splice(50'); }
             }'
             '';
             localStorage.setItem('screenReaderSimulator_history', JSON.stringify(history);'
             '';
-        } catch (error') { ''
-            console.warn('ScreenReaderSimulator: Failed to save results:', error); }
+        } catch (error) { ''
+            console.warn('ScreenReaderSimulator: Failed to save results:', error) }
         }
     }
     
     /**
      * Load simulation history'
      */''
-    loadSimulationHistory('')';
+    loadSimulationHistory()';
             const history = localStorage.getItem('screenReaderSimulator_history');'
             return history ? JSON.parse(history) : [];''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScreenReaderSimulator: Failed to load history:', error);
             return []; }
         }
@@ -506,7 +506,7 @@ export class ScreenReaderSimulator {
             this.accessibilityManager.eventSystem.emit('screenReaderSimulationCompleted', {)
                 simulationTime);
                 readerType, : undefined;
-                results: this.results,);
+                results: this.results,)
         }
                 stats: this.stats); }
         }
@@ -515,9 +515,9 @@ export class ScreenReaderSimulator {
     /**
      * Setup event listeners
      */'
-    setupEventListeners(): void { // Listen for accessibility manager events''
+    setupEventListeners(): void { // Listen for accessibility manager events
         if(this.accessibilityManager? .eventSystem') {'
-            ';
+            ';'
         }'
             this.accessibilityManager.eventSystem.on('accessibility-settings-changed', () => {  }'
                 this.applyConfig(this.accessibilityManager?.getSettings?.();' }'
@@ -537,7 +537,7 @@ export class ScreenReaderSimulator {
         };
         
         // Update sub-components
-        this.screenReaderEngine.updateConfig({ enabled: this.config.enabled,)
+        this.screenReaderEngine.updateConfig({ enabled: this.config.enabled)
             defaultReader: this.config.defaultReader);
             simulateDelay: this.config.simulateDelay,);
             verbosityLevel: this.config.verbosityLevel),
@@ -547,12 +547,12 @@ export class ScreenReaderSimulator {
         
         this.ttsController.updateConfig({)
             enabled: this.config.enableTTS,);
-            defaultRate: this.config.speechRate / 250); }
+            defaultRate: this.config.speechRate / 250) }
     }
     
     /**
      * Set enabled state
-     */'
+     */
     setEnabled(enabled: boolean): void { this.config.enabled = enabled;''
         this.applyConfig({ enabled )'); }
     }
@@ -560,24 +560,24 @@ export class ScreenReaderSimulator {
     /**
      * Test screen reader functionality'
      */''
-    async testScreenReader(readerType: string = 'nvda'): Promise<TestResult> { try {'
-            // Test screen reader engine''
-            const engineTest = await this.screenReaderEngine.runReaderSimulation(readerType');
+    async testScreenReader(readerType: string = 'nvda'): Promise<TestResult> { try {
+            // Test screen reader engine
+            const engineTest = await this.screenReaderEngine.runReaderSimulation(readerType);
             ';
-            // Test TTS''
+            // Test TTS
             const ttsTest = await this.ttsController.testSpeech('Screen reader test successful');
             ';
-            // Test ARIA validation''
-            const ariaTest = await this.ariaProcessor.validateAriaAttributes('')';
+            // Test ARIA validation
+            const ariaTest = await this.ariaProcessor.validateAriaAttributes()';
             console.log('ScreenReaderSimulator: Test completed successfully'),
             
             return { success: true,
-                engine: !!engineTest,;
+                engine: !!engineTest,
                 tts: ttsTest, };
                 aria: !!ariaTest }
             },'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ScreenReaderSimulator: Test failed:', error);
             return { success: false, };
                 error: (error as Error).message }
@@ -598,7 +598,7 @@ export class ScreenReaderSimulator {
     /**
      * Destroy and cleanup'
      */''
-    destroy('')';
+    destroy()';
         console.log('ScreenReaderSimulator: Destroying...'),
         
         // Stop any ongoing operations
@@ -613,9 +613,9 @@ export class ScreenReaderSimulator {
         this.ttsController.destroy();
         
         // Clear data
-        this.results = { screenReader: null,'
+        this.results = { screenReader: null,
             aria: null,'';
-            compatibility: new Map('')';
+            compatibility: new Map()';
         console.log('ScreenReaderSimulator: Destroyed''), }'
     }''
 }

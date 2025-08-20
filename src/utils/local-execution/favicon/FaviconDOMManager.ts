@@ -9,12 +9,12 @@
 // Type definitions
 interface FaviconData { size: number | 'ico',
     dataURL: string,
-    type: string; }
+    type: string }
 }
 
 interface BrowserCompatibility { browser: {
         name: string,
-        version?: string; }
+        version?: string }
     };
 }
 
@@ -23,7 +23,7 @@ interface ValidationResult { hasIcoFavicon: boolean,
     hasAppleTouchIcon: boolean,
     totalLinks: number,
     sizes: string[],
-    issues: string[]; }
+    issues: string[] }
 }
 
 interface FaviconMetadata { manifestURL?: string;
@@ -34,7 +34,7 @@ interface FaviconMetadata { manifestURL?: string;
 export default class FaviconDOMManager { /**
      * 既存のfavicon link要素を削除'
      */''
-    static removeExistingFavicons('')';
+    static removeExistingFavicons()';
         const existingLinks = document.querySelectorAll('link[rel*="icon"]');
         existingLinks.forEach(link => link.remove(); }
     }
@@ -49,22 +49,22 @@ export default class FaviconDOMManager { /**
             const link = document.createElement('link'');'
             '';
             if(size === 'ico'') {'
-                // favicon.ico''
+                // favicon.ico
                 link.rel = 'icon';'
             }'
                 link.type = 'image/x-icon'; }
                 link.href = dataURL; }'
-            } else {  // PNG favicons''
+            } else {  // PNG favicons
                 link.rel = 'icon';' }'
                 link.type = 'image/png'; }
                 link.sizes = `${size}x${size}`;
                 link.href = dataURL;
             }
-            ';
+            ';'
             head.appendChild(link);''
         }');
         
-        // Apple Touch Icon（最大サイズを使用）'
+        // Apple Touch Icon（最大サイズを使用）
         const largestFavicon = faviconData'';
             .filter(favicon => typeof favicon.size === 'number');
             .sort((a, b) => (b.size as number) - (a.size as number))[0];'
@@ -86,7 +86,7 @@ export default class FaviconDOMManager { /**
      */
     static addBrowserSpecificFavicons(faviconMap: Map<number, string>, browserCompatibility: BrowserCompatibility): void { const head = document.head;
         ';
-        // 標準的なfavicon.ico''
+        // 標準的なfavicon.ico
         if (faviconMap.has(32)') {''
             const icoLink = document.createElement('link'');''
             icoLink.rel = 'shortcut icon';''
@@ -95,9 +95,9 @@ export default class FaviconDOMManager { /**
             head.appendChild(icoLink'); }
         }
         ';
-        // ブラウザ固有の対応''
+        // ブラウザ固有の対応
         if(browserCompatibility.browser.name === 'Safari') {'
-            ';
+            ';'
         }'
             this._addSafariFavicons(faviconMap, head');' }'
         } else if (browserCompatibility.browser.name === 'Chrome') { ''
@@ -111,9 +111,9 @@ export default class FaviconDOMManager { /**
     
     /**
      * 既存のfaviconリンクを検証
-     * @returns 検証結果'
+     * @returns 検証結果
      */''
-    static validateExistingFavicons('')';
+    static validateExistingFavicons()';
         const existingLinks = document.querySelectorAll('link[rel*="icon"]');
         const validation: ValidationResult = { hasIcoFavicon: false,
             hasPngFavicons: false,
@@ -130,13 +130,13 @@ export default class FaviconDOMManager { /**
             const sizes = linkElement.sizes')';
             ');''
             if(rel === 'icon' || rel === 'shortcut icon'') {'
-                ';
+                ';'
             }'
                 if (type === 'image/x-icon' || href.endsWith('.ico')') { }'
                     validation.hasIcoFavicon = true;' }'
                 } else if(type === 'image/png' || href.includes('png') { validation.hasPngFavicons = true;
                     if(sizes) {'
-                        ';
+                        ';'
                     }'
                         validation.sizes.push(sizes'); }
                     }'
@@ -144,15 +144,15 @@ export default class FaviconDOMManager { /**
             } else if (rel === 'apple-touch-icon'') { validation.hasAppleTouchIcon = true; }
             }
             ';
-            // 問題のチェック''
+            // 問題のチェック
             if(!href || href === ''') {'
-                ';
+                ';'
             }'
                 validation.issues.push('Empty href attribute found''); }
             }'
             '';
             if (href.startsWith('file://')') { ''
-                validation.issues.push('File: // protocol detected - may cause CORS issues'), }
+                validation.issues.push('File: // protocol detected - may cause CORS issues), }
             }
         });
         
@@ -163,7 +163,7 @@ export default class FaviconDOMManager { /**
      * favicon要素のメタデータを更新
      * @param metadata - メタデータ'
      */''
-    static updateFaviconMetadata(metadata: FaviconMetadata'): void { // マニフェストファイルへの参照を追加/更新''
+    static updateFaviconMetadata(metadata: FaviconMetadata'): void { // マニフェストファイルへの参照を追加/更新
         let manifestLink = document.querySelector('link[rel="manifest"]') as HTMLLinkElement;''
         if(!manifestLink && metadata.manifestURL') {'
             '';
@@ -174,7 +174,7 @@ export default class FaviconDOMManager { /**
             document.head.appendChild(manifestLink); }
         }
         ';
-        // theme-colorメタタグの追加''
+        // theme-colorメタタグの追加
         if(metadata.themeColor') {'
             '';
             let themeColorMeta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement;''
@@ -187,7 +187,7 @@ export default class FaviconDOMManager { /**
             themeColorMeta.content = metadata.themeColor;
         }
         ';
-        // MSタイル設定''
+        // MSタイル設定
         if(metadata.msTileColor') {'
             '';
             let msTileMeta = document.querySelector('meta[name="msapplication-TileColor"]') as HTMLMetaElement;''
@@ -209,7 +209,7 @@ export default class FaviconDOMManager { /**
      */
     private static _addSafariFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void { // Safari用のapple-touch-iconを複数サイズで追加
         const safariSizes: number[] = [57, 60, 72, 76, 114, 120, 144, 152, 180];
-        ';
+        ';'
         safariSizes.forEach(size => { );''
             if (faviconMap.has(size)') {''
                 const link = document.createElement('link'');' }'
@@ -229,7 +229,7 @@ export default class FaviconDOMManager { /**
      */
     private static _addChromeFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void { // Chrome用のicon追加
         const chromeSizes: number[] = [16, 32, 48, 96, 192];
-        ';
+        ';'
         chromeSizes.forEach(size => { );''
             if (faviconMap.has(size)') {''
                 const link = document.createElement('link'');''
@@ -250,7 +250,7 @@ export default class FaviconDOMManager { /**
      */
     private static _addFirefoxFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void { // Firefox用のicon追加
         const firefoxSizes: number[] = [16, 32, 48];
-        ';
+        ';'
         firefoxSizes.forEach(size => { );''
             if (faviconMap.has(size)') {''
                 const link = document.createElement('link'');''
@@ -271,7 +271,7 @@ export default class FaviconDOMManager { /**
      */
     private static _addPWAFavicons(faviconMap: Map<number, string>, head: HTMLHeadElement): void { // PWA用の大きなアイコン
         const pwaLargeSizes: number[] = [192, 512];
-        ';
+        ';'
         pwaLargeSizes.forEach(size => { );''
             if (faviconMap.has(size)') {''
                 const link = document.createElement('link'');''
@@ -283,7 +283,7 @@ export default class FaviconDOMManager { /**
             }
         });
         ';
-        // Android Chrome用''
+        // Android Chrome用
         if (faviconMap.has(192)') { ''
             const link = document.createElement('link'');''
             link.rel = 'icon';''

@@ -12,6 +12,6 @@ export class ScenarioCommands {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

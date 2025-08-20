@@ -15,7 +15,7 @@ import { SoundEffectRenderer } from './effects/SoundEffectRenderer';
  * サウンドカテゴリ設定インターフェース
  */
 interface SoundCategoryConfig { enabled: boolean,
-    volume: number; }
+    volume: number }
 }
 
 /**
@@ -31,20 +31,20 @@ interface PlaybackOptions { volume?: number;
  * AudioManager インターフェース
  */
 interface AudioManager { audioContext: AudioContext | null,
-    sfxGainNode: GainNode | null; }
+    sfxGainNode: GainNode | null }
 }
 
 /**
  * ConfigurationManager インターフェース（型定義用）
  */
-interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): string | null; }
+interface ConfigurationManager { watch(category: string, path: string, callback: (value: any) => void): string | null }
 }
 
 /**
  * ErrorHandler インターフェース（型定義用）
  */'
 interface ErrorHandler { ''
-    handleError(error: any, context: string, details?: any'): void; }
+    handleError(error: any, context: string, details?: any'): void }
 }
 
 /**
@@ -149,8 +149,8 @@ export class SoundEffectSystem {
         // バリエーション管理
         this.soundVariations = new Map();
         this.activeSources = new Set();
-        ';
-        // 設定監視''
+        ;
+        // 設定監視
         this.configWatchers = new Set(''';
             'normal', 'stone', 'iron', 'diamond', 'rainbow', '';
             'pink', 'clock', 'electric', 'poison', 'spiky', '';
@@ -160,8 +160,8 @@ export class SoundEffectSystem {
         
         // コンボレベル定義
         this.comboLevels = [1, 2, 3, 4, 5];
-        ';
-        // 実績レアリティ定義''
+        ;
+        // 実績レアリティ定義
         this.achievementRarities = ['common', 'rare', 'epic', 'legendary'];
         
         // 無効化フラグ
@@ -172,8 +172,8 @@ export class SoundEffectSystem {
     
     /**
      * 初期化
-     */'
-    async initialize(): Promise<boolean> { try {''
+     */
+    async initialize(): Promise<boolean> { try {'
             if(!this.audioContext') {'
                 '';
                 console.warn('[SoundEffectSystem] AudioContext not available - sound effect system disabled');
@@ -190,12 +190,12 @@ export class SoundEffectSystem {
             
             // 設定変更の監視を設定
             this.setupConfigWatchers();
-            ';
-            // 効果音を生成''
-            await this.generateAllSounds('');'
+            ;
+            // 効果音を生成
+            await this.generateAllSounds();'
             console.log('[SoundEffectSystem] Sound effect system initialized successfully');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.initialize');
             this.disabled = true;
             return false; }
@@ -205,7 +205,7 @@ export class SoundEffectSystem {
     /**
      * 専用コンポーネントを初期化'
      */''
-    private async initializeComponents('')';
+    private async initializeComponents()';
             console.log('[SoundEffectSystem] Initializing audio components...');
             
             // AudioContextManagerは既存のコンテキストを使用
@@ -226,14 +226,14 @@ export class SoundEffectSystem {
             }
             
             // サウンドレンダラーを初期化
-            if(this.audioContext) {'
-                ';
+            if(this.audioContext) {
+                ';'
             }'
                 this.soundRenderer = new SoundEffectRenderer(this.audioContext'); }
             }'
             '';
             console.log('[SoundEffectSystem] All audio components initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.initializeComponents'); }
         }
     }
@@ -241,9 +241,9 @@ export class SoundEffectSystem {
     /**
      * コンポーネント間の統合を設定'
      */''
-    private setupComponentIntegration('')';
+    private setupComponentIntegration()';
             console.log('[SoundEffectSystem] Component integration setup completed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.setupComponentIntegration'); }
         }
     }
@@ -251,17 +251,17 @@ export class SoundEffectSystem {
     /**
      * 設定変更の監視を設定'
      */''
-    private setupConfigWatchers('')';
+    private setupConfigWatchers()';
             const sfxVolumeWatcher = this.configManager.watch('audio', 'volumes.sfx', (newValue) => {  }
                 console.log(`[SoundEffectSystem] SFX volume changed to ${newValue}`);
                 if(this.audioContextManager) {'
-                    ';
+                    ';'
                 }'
                     (this.audioContextManager as any').setVolume('sfx', newValue); }
                 }
             };'
             if (sfxVolumeWatcher) this.configWatchers.add(sfxVolumeWatcher);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.setupConfigWatchers'); }
         }
     }
@@ -269,7 +269,7 @@ export class SoundEffectSystem {
     /**
      * 全ての効果音を生成'
      */''
-    private async generateAllSounds('')';
+    private async generateAllSounds()';
             console.log('[SoundEffectSystem] Generating all sound effects...');
             
             // 泡破壊音を生成
@@ -283,11 +283,11 @@ export class SoundEffectSystem {
             
             // ゲーム状態音を生成
             await this.generateGameStateSounds();
-            ';
-            // コンボ音を生成''
-            await this.generateComboSounds('');'
+            ;
+            // コンボ音を生成
+            await this.generateComboSounds();'
             console.log('[SoundEffectSystem] All sound effects generated successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateAllSounds'); }
         }
     }
@@ -302,17 +302,17 @@ export class SoundEffectSystem {
 
                 // メインサウンドを生成
                 const mainSound = (this.soundRenderer as any).generateBubbleSound(bubbleType);
-                ';
-                // バリエーションを生成''
+                ;
+                // バリエーションを生成
                 const variations = (this.soundRenderer as any').generateVariations('bubble', mainSound, 3);
                 ';
-                // プールに追加''
+                // プールに追加
                 (this.poolManager as any').addToPool('bubble', bubbleType, mainSound, variations);
 
             }
                  }'
                 console.log(`[SoundEffectSystem] Generated bubble sound: ${bubbleType)`});''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateBubbleSounds'); }
         }
     }
@@ -320,13 +320,13 @@ export class SoundEffectSystem {
     /**
      * UI操作音を生成
      */'
-    private async generateUISounds(): Promise<void> { try {''
+    private async generateUISounds(): Promise<void> { try {'
             if (!this.soundRenderer || !this.poolManager') return;'
 '';
             const uiTypes: UISoundType[] = ['click', 'hover', 'success', 'error'];
             
             for(const uiType of uiTypes) {
-            ';
+            ';'
                 const uiSound = (this.soundRenderer as any).generateUISound(uiType);''
                 const variations = (this.soundRenderer as any').generateVariations('ui', uiSound, 2);'
                 '';
@@ -335,7 +335,7 @@ export class SoundEffectSystem {
             }
                  }'
                 console.log(`[SoundEffectSystem] Generated UI sound: ${uiType)`});''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateUISounds'); }
         }
     }
@@ -355,7 +355,7 @@ export class SoundEffectSystem {
             }
                  }'
                 console.log(`[SoundEffectSystem] Generated achievement sound: ${rarity)`});''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateAchievementSounds'); }
         }
     }
@@ -363,22 +363,22 @@ export class SoundEffectSystem {
     /**
      * ゲーム状態音を生成
      */'
-    private async generateGameStateSounds(): Promise<void> { try {''
+    private async generateGameStateSounds(): Promise<void> { try {'
             if (!this.soundRenderer || !this.poolManager') return;'
 '';
             const gameStates: GameState[] = ['start', 'pause', 'resume', 'gameover', 'levelup'];
             
             for(const state of gameStates) {
             ';
-                // 簡易的なゲーム状態音を生成（実際の実装では詳細な設定が必要）''
-                const stateSound = (this.soundRenderer as any').generateUISound('success'); // フォールバック'
+                // 簡易的なゲーム状態音を生成（実際の実装では詳細な設定が必要）
+                const stateSound = (this.soundRenderer as any').generateUISound('success'); // フォールバック
                 '';
                 (this.poolManager as any').addToPool('gamestate', state, stateSound, []);
             
             }
                  }'
                 console.log(`[SoundEffectSystem] Generated game state sound: ${state)`});''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateGameStateSounds'); }
         }
     }
@@ -398,7 +398,7 @@ export class SoundEffectSystem {
             }
                  }'
                 console.log(`[SoundEffectSystem] Generated combo sound: level ${level)`});''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.generateComboSounds'); }
         }
     }
@@ -423,11 +423,11 @@ export class SoundEffectSystem {
                 ...options }
             };
             ';
-            // プールから再生''
+            // プールから再生
             const playback = this.poolManager ? (this.poolManager as any').playSound('bubble', bubbleType, playbackOptions) : null;
             
             // エフェクトを適用
-            if(playback && this.effectManager) {'
+            if(playback && this.effectManager) {
                 '';
                 const effectVariation = (this.effectManager as any').getEffectVariation('bubble', bubbleType);'
             }'
@@ -436,7 +436,7 @@ export class SoundEffectSystem {
             
             return playback;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.playBubbleSound');
             return null; }
         }
@@ -464,7 +464,7 @@ export class SoundEffectSystem {
             const playback = this.poolManager ? (this.poolManager as any').playSound('ui', uiType, playbackOptions) : null;
             
             if(playback && this.effectManager) {
-            ';
+            ';'
                 '';
                 const effectVariation = (this.effectManager as any').getEffectVariation('ui', uiType);'
             
@@ -474,7 +474,7 @@ export class SoundEffectSystem {
             
             return playback;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.playUISound');
             return null; }
         }
@@ -502,8 +502,8 @@ export class SoundEffectSystem {
             const playback = this.poolManager ? (this.poolManager as any').playSound('combo', clampedLevel.toString(), playbackOptions) : null;
             
             if(playback && this.effectManager) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 const effectVariation = (this.effectManager as any').getEffectVariation('combo', `level${clampedLevel)`);' }'
                 (this.effectManager as any').applyEffect(playback.sourceWrapper.source, 'combo', effectVariation});
@@ -511,7 +511,7 @@ export class SoundEffectSystem {
             
             return playback;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.playComboSound');
             return null; }
         }
@@ -538,7 +538,7 @@ export class SoundEffectSystem {
             const playback = this.poolManager ? (this.poolManager as any').playSound('achievement', rarity, playbackOptions) : null;
             
             if(playback && this.effectManager) {
-            ';
+            ';'
                 '';
                 const effectVariation = (this.effectManager as any').getEffectVariation('achievement', rarity);'
             
@@ -548,7 +548,7 @@ export class SoundEffectSystem {
             
             return playback;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.playAchievementSound');
             return null; }
         }
@@ -574,7 +574,7 @@ export class SoundEffectSystem {
             '';
             return this.poolManager ? (this.poolManager as any').playSound('gamestate', state, playbackOptions) : null;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.playGameStateSound');
             return null; }
         }
@@ -611,9 +611,9 @@ export class SoundEffectSystem {
         }
             return 0; }
         }
-        ';
+        ';'
         try { return this.poolManager ? (this.poolManager as any).stopAllSounds() : 0;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.stopAllSounds');
             return 0; }
         }
@@ -629,9 +629,9 @@ export class SoundEffectSystem {
         }
             return 0; }
         }
-        ';
+        ';'
         try { return this.poolManager ? (this.poolManager as any).stopCategory(category) : 0;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.stopCategorySounds');
             return 0; }
         }
@@ -674,7 +674,7 @@ export class SoundEffectSystem {
      */
     async regenerateSounds(category: SoundCategory | null = null): Promise<void> { try {
             if(category) {'
-                // 特定カテゴリのサウンドのみ再生成''
+                // 特定カテゴリのサウンドのみ再生成
                 switch (category') {''
                     case 'bubble':'';
                         await this.generateBubbleSounds(''';
@@ -683,16 +683,16 @@ export class SoundEffectSystem {
                     case 'achievement':'';
                         await this.generateAchievementSounds(''';
                     case 'gamestate':'';
-                        await this.generateGameStateSounds('')';
+                        await this.generateGameStateSounds()';
                     case 'combo':);
                         await this.generateComboSounds();
             }
                         break; }
                 }'
             } else {  // 全サウンドを再生成' }'
-                await this.generateAllSounds('') };'
+                await this.generateAllSounds() };'
             console.log(`[SoundEffectSystem] Sounds regenerated for category: ${category || 'all')`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.regenerateSounds'); }
         }
     }
@@ -700,7 +700,7 @@ export class SoundEffectSystem {
     /**
      * 効果音システムを破棄'
      */''
-    dispose('')';
+    dispose()';
             console.log('[SoundEffectSystem] Disposing sound effect system...');
             
             // 全サウンドを停止
@@ -710,8 +710,8 @@ export class SoundEffectSystem {
             this.effectManager? .dispose();
             this.poolManager?.dispose();
             this.audioContextManager?.dispose();
-            ';
-            // 設定監視を停止''
+            ;
+            // 設定監視を停止
             this.configWatchers.forEach(watcher => {  ');''
                 if (typeof watcher === 'function') { }
                     watcher(); // アンサブスクライブ }
@@ -719,11 +719,11 @@ export class SoundEffectSystem {
             };
             this.configWatchers.clear();
             
-            // データをクリア'
+            // データをクリア
             this.soundVariations.clear();''
-            this.activeSources.clear('')';
+            this.activeSources.clear()';
             console.log('[SoundEffectSystem] Sound effect system disposed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundEffectSystem.dispose''); }
         }'
     }''

@@ -7,7 +7,7 @@
  * Position interface
  */
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 /**
@@ -40,7 +40,7 @@ export interface LoadingAnimation { position: Position,
  * Ripple effect options interface
  */
 export interface RippleEffectOptions { color: string,
-    maxAlpha: number; }
+    maxAlpha: number }
 }
 
 /**
@@ -49,7 +49,7 @@ export interface RippleEffectOptions { color: string,
 export interface RippleAnimation { position: Position,
     startRadius?: number;
     endRadius?: number;
-    options: RippleEffectOptions;
+    options: RippleEffectOptions
     }
 }
 
@@ -59,14 +59,14 @@ export interface RippleAnimation { position: Position,
 export interface FocusGlowState { active: boolean,
     intensity: number,
     color: string,
-    phase?: number; }
+    phase?: number }
 }
 
 /**
  * Hover state interface
  */
 export interface HoverState { active: boolean,
-    scale?: number; }
+    scale?: number }
 }
 
 /**
@@ -102,7 +102,7 @@ export interface Particle { startX: number,
     size: number,
     growth: number,
     alpha: number,
-    color: string; }
+    color: string }
 }
 
 /**
@@ -110,7 +110,7 @@ export interface Particle { startX: number,
  */
 export interface ExplosionAnimation { particles?: Particle[];
     duration: number,
-    options: ParticleOptions;
+    options: ParticleOptions
     }
 }
 
@@ -118,14 +118,14 @@ export interface ExplosionAnimation { particles?: Particle[];
  * Trail point interface
  */
 export interface TrailPoint { x: number,
-    y: number; }
+    y: number }
 }
 
 /**
  * Trail animation interface
  */
 export interface TrailAnimation { trail?: TrailPoint[];
-    options: TrailOptions;
+    options: TrailOptions
     }
 }
 
@@ -133,7 +133,7 @@ export interface TrailAnimation { trail?: TrailPoint[];
  * Trail options interface
  */
 export interface TrailOptions { color: string,
-    thickness?: number; }
+    thickness?: number }
 }
 
 /**
@@ -145,14 +145,14 @@ export interface SparkleParticle { x: number,
     alpha: number,
     phase: number,
     speed: number,
-    color: string; }
+    color: string }
 }
 
 /**
  * Sparkle animation interface
  */
 export interface SparkleAnimation { sparkles?: SparkleParticle[];
-    options: ParticleOptions;
+    options: ParticleOptions
     }
 }
 
@@ -174,7 +174,7 @@ export interface RenderableElement { render?(context: CanvasRenderingContext2D):
  * Bezier curve point interface
  */
 export interface BezierPoint { x: number,
-    y: number; }
+    y: number }
 }
 
 /**
@@ -318,7 +318,7 @@ export class LoadingAnimationRenderer {
         const barHeight = size * 0.3;
         const progress = options.progress || 0;
         ';
-        // 背景バー''
+        // 背景バー
         context.fillStyle = options.backgroundColor || '#CCCCCC';
         context.fillRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth, barHeight);
         
@@ -330,8 +330,8 @@ export class LoadingAnimationRenderer {
         context.strokeStyle = options.color;
         context.lineWidth = 1;
         context.strokeRect(pos.x - barWidth / 2, pos.y - barHeight / 2, barWidth, barHeight);
-        ';
-        // パーセンテージ表示''
+        ;
+        // パーセンテージ表示
         if(options.showPercentage') {
             
         }
@@ -414,8 +414,8 @@ export class InteractiveEffectRenderer {
         }
             context.translate(-centerX, -centerY); }
         }
-        ';
-        // 追加の視覚効果（影、グロー等）''
+        ;
+        // 追加の視覚効果（影、グロー等）
         if(hoverOptions? .shadow') {'
             '';
             context.shadowColor = hoverOptions.shadowColor || '#000000';
@@ -557,15 +557,15 @@ export class TransitionEffectRenderer {
         if(toElement) {
         
             context.save();
-            context.globalAlpha = progress;'
+            context.globalAlpha = progress;
             this.renderElement(context, toElement);''
-            context.restore('')';
+            context.restore()';
     static renderSlideTransition(context: CanvasRenderingContext2D, fromElement: RenderableElement | null, toElement: RenderableElement | null, progress: number, direction: 'horizontal' | 'vertical' = 'horizontal'): void {
         const canvasWidth = context.canvas.width;
         const canvasHeight = context.canvas.height;
-        ';
+        ';'
         if (fromElement) {''
-            context.save('')';
+            context.save()';
             if (direction === 'horizontal') {
         
         }
@@ -577,9 +577,9 @@ export class TransitionEffectRenderer {
         }
         
         if(toElement) {
-        ';
+        ';'
             '';
-            context.save('')';
+            context.save()';
             if (direction === 'horizontal') {
         
         }
@@ -660,9 +660,9 @@ export class AnimationEffectUtils {
                 gravity: options.gravity || 98,
                 size: Math.random() * 3 + 1,
                 growth: Math.random() * 2,
-                alpha: Math.random() * 0.5 + 0.5,';
+                alpha: Math.random() * 0.5 + 0.5,
                 color: options.colors ?   : undefined'';
-                       options.colors[Math.floor(Math.random() * options.colors.length')] : ';
+                       options.colors[Math.floor(Math.random() * options.colors.length')] : ';'
         }'
                        '#FFFFFF' }
             }),
@@ -691,7 +691,7 @@ export class AnimationEffectUtils {
                 phase: Math.random() * Math.PI * 2,
                 speed: Math.random() * 0.1 + 0.05,';
                 color: options.colors ?   : undefined'';
-                       options.colors[Math.floor(Math.random() * options.colors.length')] : ';
+                       options.colors[Math.floor(Math.random() * options.colors.length')] : ';'
         }'
                        '#FFD700' }
             }),

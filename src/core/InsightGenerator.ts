@@ -5,28 +5,28 @@ export interface InsightType { PERFORMANCE: 'performance',''
     WARNING: 'warning','';
     ACHIEVEMENT: 'achievement','';
     PATTERN: 'pattern','';
-    RECOMMENDATION: 'recommendation'; };
+    RECOMMENDATION: 'recommendation' };
 }
-';
+';'
 export interface PriorityLevel { ''
     CRITICAL: 'critical','';
     HIGH: 'high','';
     MEDIUM: 'medium','';
     LOW: 'low','';
-    INFORMATIONAL: 'informational'; };
+    INFORMATIONAL: 'informational' };
 }
 export interface InsightConfig { thresholds: {
         significant_change: number,
         concerning_decline: number,
         excellent_improvement: number,
         volatility_warning: number,
-        streak_achievement: number ;
+        streak_achievement: number 
 }
     },
     patterns: { min_data_points: number,
         trend_consistency: number,
         cycle_detection_window: number,
-        outlier_threshold: number ;
+        outlier_threshold: number 
 }
     },
     recommendations: { max_recommendations: number,
@@ -34,7 +34,7 @@ export interface InsightConfig { thresholds: {
         priority_scoring_weights: {
             impact: number,
             urgency: number,
-            feasibility: number; }
+            feasibility: number }
         };
     };
 }
@@ -46,7 +46,7 @@ export interface Insight { id: string,
     priority: string,
     timestamp: number,
     context: Record<string, any>,
-    confidence: number; };
+    confidence: number };
 }
 export interface Recommendation { id: string,
     type: string,
@@ -55,7 +55,7 @@ export interface Recommendation { id: string,
     actionItems: string[],
     priority: string,
     estimatedImpact: string,
-    timeToImplement: string; };
+    timeToImplement: string };
 }
 export interface StatisticsData { basic?: any;
     bubbles?: any;
@@ -77,7 +77,7 @@ export interface InsightResult { generationId: string,
         totalInsights: number,
         criticalInsights: number,
         dataQuality: any,
-        analysisConfidence: number; }
+        analysisConfidence: number }
     };
 }
 
@@ -99,16 +99,16 @@ export class InsightGenerator {
             WARNING: 'warning','';
             ACHIEVEMENT: 'achievement','';
             PATTERN: 'pattern','';
-            RECOMMENDATION: 'recommendation' ;
+            RECOMMENDATION: 'recommendation' 
 }
         },
-        ';
+        ';'
         this.priorityLevels = { ''
             CRITICAL: 'critical','';
             HIGH: 'high','';
             MEDIUM: 'medium','';
             LOW: 'low','';
-            INFORMATIONAL: 'informational' ;
+            INFORMATIONAL: 'informational' 
 }
         },
         
@@ -118,7 +118,7 @@ export class InsightGenerator {
                 concerning_decline: -10,     // 10%以上の低下で警告;
                 excellent_improvement: 25,   // 25%以上の向上で優秀;
                 volatility_warning: 30,      // 変動係数30%以上で不安定;
-                streak_achievement: 7        // 7日連続で実績 ;
+                streak_achievement: 7        // 7日連続で実績 
 }
             },
             
@@ -126,7 +126,7 @@ export class InsightGenerator {
             patterns: { min_data_points: 5,
                 trend_consistency: 0.7,
                 cycle_detection_window: 14,
-                outlier_threshold: 2.5 ;
+                outlier_threshold: 2.5 
 }
             },
             
@@ -136,7 +136,7 @@ export class InsightGenerator {
                 priority_scoring_weights: {
                     impact: 0.4,
                     urgency: 0.3,
-                    feasibility: 0.3 ;
+                    feasibility: 0.3 
 };
 }
             })
@@ -206,10 +206,10 @@ export class InsightGenerator {
         if (!basicStats) return insights;
         
         // プレイ頻度の分析
-        if(basicStats.totalGamesPlayed > 0) {'
+        if(basicStats.totalGamesPlayed > 0) {
             '';
             if (basicStats.averageSessionLength > 600000') { // 10分以上
-                insights.push(this.createInsight()';
+                insights.push(this.createInsight();
                     this.insightTypes.PERFORMANCE,');
         }'
                     'Long Session Player')' }'
@@ -219,7 +219,7 @@ export class InsightGenerator {
                 );
             }
             ';
-            // 完了率の分析''
+            // 完了率の分析
             if(basicStats.completionRate > 80') {
                 insights.push(this.createInsight()';
                     this.insightTypes.ACHIEVEMENT,');
@@ -248,7 +248,7 @@ export class InsightGenerator {
         
         if (!bubbleStats) return insights;
         
-        // 精度の分析'
+        // 精度の分析
         const accuracy = parseFloat(bubbleStats.accuracy);''
         if(accuracy > 85') {
             insights.push(this.createInsight()';
@@ -268,7 +268,7 @@ export class InsightGenerator {
             );
         }
         
-        // 反応時間の分析'
+        // 反応時間の分析
         const reactionTime = parseFloat(bubbleStats.averageReactionTime);''
         if(reactionTime < 300') {
             insights.push(this.createInsight()';
@@ -289,7 +289,7 @@ export class InsightGenerator {
         }
         
         // 効率統計の分析
-        if(bubbleStats.efficiencyStats) {'
+        if(bubbleStats.efficiencyStats) {
             const efficiency = bubbleStats.efficiencyStats.bubblesPerMinute;''
             if (efficiency > 50') {
                 insights.push(this.createInsight()';
@@ -303,7 +303,7 @@ export class InsightGenerator {
             };
 }
         ';
-        // お気に入りバブルタイプの分析''
+        // お気に入りバブルタイプの分析
         if(bubbleStats.favoriteType') {
             const favType = bubbleStats.favoriteType.type;
             insights.push(this.createInsight(';
@@ -313,7 +313,7 @@ export class InsightGenerator {
                 `${favType}バブルを最も多く処理しています。特定タイプへの適応力が高いようです。`,')'
                 this.priorityLevels.INFORMATIONAL')'';
                 { metric: 'favorite_bubble', value: favType )
-            ); };
+            ) };
 }
         return insights;
     }
@@ -325,7 +325,7 @@ export class InsightGenerator {
         
         if (!comboStats) return insights;
         ';
-        // 最高コンボの分析''
+        // 最高コンボの分析
         if(comboStats.highestCombo > 20') {
             insights.push(this.createInsight(';
                 this.insightTypes.ACHIEVEMENT,';
@@ -341,9 +341,9 @@ export class InsightGenerator {
                 `コンボ継続に注力することで、より高いスコアが期待できます。`,')';
                 this.priorityLevels.HIGH')'';
                 { metric: 'highest_combo', value: comboStats.highestCombo )
-            ); };
+            ) };
 }
-        // コンボ成功率の分析'
+        // コンボ成功率の分析
         const successRate = parseFloat(comboStats.comboSuccessRate);''
         if(successRate > 80') {
             insights.push(this.createInsight()';
@@ -366,7 +366,7 @@ export class InsightGenerator {
         
         if (!healthStats) return insights;
         
-        // 生存率の分析'
+        // 生存率の分析
         const survivalRate = parseFloat(healthStats.survivalRate);''
         if(survivalRate > 90') {
             insights.push(this.createInsight()';
@@ -386,7 +386,7 @@ export class InsightGenerator {
             );
         }
         ';
-        // 復活回数の分析''
+        // 復活回数の分析
         if(healthStats.timesRevived > 10') {
             insights.push(this.createInsight(';
                 this.insightTypes.OPPORTUNITY,')';
@@ -407,7 +407,7 @@ export class InsightGenerator {
         
         if (!playstyleStats) return insights;
         ';
-        // パーフェクトゲーム分析''
+        // パーフェクトゲーム分析
         if(playstyleStats.perfectGames > 0') {
             insights.push(this.createInsight(';
                 this.insightTypes.ACHIEVEMENT,';
@@ -416,10 +416,10 @@ export class InsightGenerator {
                 `${playstyleStats.perfectGames}回のパーフェクトゲーム達成は素晴らしい技術力です！`,')'
                 this.priorityLevels.MEDIUM')'';
                 { metric: 'perfect_games', value: playstyleStats.perfectGames )
-            ); };
+            ) };
 }
         ';
-        // クリック効率の分析''
+        // クリック効率の分析
         if(playstyleStats.clicksPerMinute > 100') {
             insights.push(this.createInsight(';
                 this.insightTypes.PATTERN,';
@@ -428,10 +428,10 @@ export class InsightGenerator {
                 `毎分${playstyleStats.clicksPerMinute}回のクリックは積極的なプレイスタイルです。`,')'
                 this.priorityLevels.INFORMATIONAL')'';
                 { metric: 'clicks_per_minute', value: playstyleStats.clicksPerMinute )
-            ); };
+            ) };
 }
         ';
-        // ドラッグ操作分析''
+        // ドラッグ操作分析
         if(playstyleStats.dragOperations > 0') {
             insights.push(this.createInsight(';
                 this.insightTypes.PATTERN,')';
@@ -455,7 +455,7 @@ export class InsightGenerator {
         const peakHour = timeStats.peakPlayingTimes.peakHour;
         const peakDay = timeStats.peakPlayingTimes.peakDay;
         ';
-        // ピーク時間の分析''
+        // ピーク時間の分析
         if(peakHour.hour >= 6 && peakHour.hour <= 9') {
             insights.push(this.createInsight(';
                 this.insightTypes.PATTERN,';
@@ -471,20 +471,20 @@ export class InsightGenerator {
                 `夜遅い時間（${peakHour.name}）にプレイすることが多いです。`,')'
                 this.priorityLevels.INFORMATIONAL')'';
                 { metric: 'peak_hour', value: peakHour.hour )
-            ); };
+            ) };
 }
         ';
-        // 曜日パターンの分析''
+        // 曜日パターンの分析
         if(peakDay.day === 0 || peakDay.day === 6') {
             // 日曜日または土曜日
-            insights.push(this.createInsight(';
+            insights.push(this.createInsight(;
                 this.insightTypes.PATTERN,';
         }'
                 'Weekend Player', })'
                 `週末（${peakDay.name}）にプレイすることが多いです。リラックス時間を楽しんでいますね。`,')'
                 this.priorityLevels.INFORMATIONAL')'';
                 { metric: 'peak_day', value: peakDay.day )
-            ); };
+            ) };
 }
         return insights;
     }
@@ -496,7 +496,7 @@ export class InsightGenerator {
         
         if (!progressStats) return insights;
         
-        // AP効率の分析'
+        // AP効率の分析
         const efficiency = parseFloat(progressStats.efficiency);''
         if(efficiency > 100') {
             insights.push(this.createInsight(';
@@ -506,10 +506,10 @@ export class InsightGenerator {
                 `APあたり${efficiency}点のスコア効率は優秀です。効率的なプレイができています。`,')'
                 this.priorityLevels.MEDIUM')'';
                 { metric: 'ap_efficiency', value: efficiency )
-            ); };
+            ) };
 }
         ';
-        // 実績解除数の分析''
+        // 実績解除数の分析
         if(progressStats.achievementsUnlocked > 10') {
             insights.push(this.createInsight(';
                 this.insightTypes.ACHIEVEMENT,';
@@ -518,7 +518,7 @@ export class InsightGenerator {
                 `${progressStats.achievementsUnlocked}個の実績解除は素晴らしい探求心の表れです！`,')'
                 this.priorityLevels.MEDIUM')'';
                 { metric: 'achievements_unlocked', value: progressStats.achievementsUnlocked )
-            ); };
+            ) };
 }
         return insights;
     }
@@ -530,7 +530,7 @@ export class InsightGenerator {
         '';
         if (!timeSeriesData.growthTrends') return insights;
         
-        // スコアトレンドの分析'
+        // スコアトレンドの分析
         const scoreTrend = timeSeriesData.growthTrends.score;''
         if(scoreTrend && scoreTrend.overall.trend === 'improving'') {
             insights.push(this.createInsight(';
@@ -547,9 +547,9 @@ export class InsightGenerator {
                 `最近スコアが低下傾向にあります。休息や戦略見直しを検討してみてください。`,')';
                 this.priorityLevels.HIGH')'';
                 { metric: 'score_trend', value: scoreTrend.overall.changePercent )''
-            )'); };
+            )') };
 }
-        // 効率トレンドの分析'
+        // 効率トレンドの分析
         const efficiencyTrend = timeSeriesData.growthTrends.efficiency;''
         if(efficiencyTrend && efficiencyTrend.overall.trend === 'improving'') {
             insights.push(this.createInsight(';
@@ -572,7 +572,7 @@ export class InsightGenerator {
         // 精度とスコアの関係分析
         if(statisticsData.bubbles && statisticsData.basic) {
             const accuracy = parseFloat(statisticsData.bubbles.accuracy);
-            const avgScore = statisticsData.basic.averageScore;'
+            const avgScore = statisticsData.basic.averageScore;
             '';
             if (accuracy > 80 && avgScore > 5000') {
                 insights.push(this.createInsight(';
@@ -589,10 +589,10 @@ export class InsightGenerator {
         // セッション長とパフォーマンスの関係
         if(statisticsData.basic && statisticsData.session) {
             const sessionLength = statisticsData.basic.averageSessionLength;
-            const sessionAvgScore = statisticsData.session.averageScoreThisSession;'
+            const sessionAvgScore = statisticsData.session.averageScoreThisSession;
             '';
             if (sessionLength > 300000 && sessionAvgScore > 3000') { // 5分以上のセッション
-                insights.push(this.createInsight(';
+                insights.push(this.createInsight(;
                     this.insightTypes.PATTERN,')';
                     'Endurance Performance')';
                     `長時間プレイでも高いパフォーマンスを維持できています。集中力に優れています。`,')';
@@ -623,7 +623,7 @@ export class InsightGenerator {
             }
         });
         
-        // 一般的な推奨事項'
+        // 一般的な推奨事項
         if (statisticsData.bubbles && parseFloat(statisticsData.bubbles.accuracy) < 70) { recommendations.push({);''
                 id: this.generateRecommendationId(''';
                 type: 'skill_improvement','';
@@ -636,7 +636,7 @@ export class InsightGenerator {
                 ])';
                 priority: this.priorityLevels.HIGH,'';
                 estimatedImpact: 'medium','';
-                timeToImplement: 'short') ;
+                timeToImplement: 'short') 
 }
             }),
         }
@@ -659,7 +659,7 @@ export class InsightGenerator {
         };
     }'
     '';
-    private createRecommendationFromInsight(insight: Insight, statisticsData: StatisticsData'): Recommendation | null { // 簡略化された実装''
+    private createRecommendationFromInsight(insight: Insight, statisticsData: StatisticsData'): Recommendation | null { // 簡略化された実装
         if(insight.context.metric === 'accuracy' && insight.context.value < 60) {'
             return { ''
                 id: this.generateRecommendationId(''';
@@ -667,7 +667,7 @@ export class InsightGenerator {
                 title: '精度向上のための集中練習','';
                 description: '短時間の練習で精度を改善しましょう。','';
                 actionItems: ['ゆっくりと正確にクリック', '画面の中央に集中'],';
-                priority: insight.priority,';
+                priority: insight.priority,'
         }'
                 estimatedImpact: 'high',' };'
                 timeToImplement: 'short' })
@@ -732,7 +732,7 @@ export class InsightGenerator {
     
     private generateRecommendationId(): string {
         return `rec_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
-    }'
+    }
     '';
     private identifyDataSource(statisticsData: StatisticsData'): string { ''
         return 'bubble_pop_game'; };
@@ -746,7 +746,7 @@ export class InsightGenerator {
             recommendations: [];
 }
             summary: { totalInsights: 0 },
-            metadata: { totalInsights: 0 ;
+            metadata: { totalInsights: 0 
 }
         },
     }'

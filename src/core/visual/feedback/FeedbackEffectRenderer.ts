@@ -23,14 +23,14 @@ export interface VisualFeedbackManager { config: FeedbackRenderConfig,
     canvasContext: CanvasRenderingContext2D,
     visualCanvas: HTMLCanvasElement,
     animationFrameId: number | null,
-    triggerVisualFeedback: (options: FeedbackTriggerOptions) => void; }
+    triggerVisualFeedback: (options: FeedbackTriggerOptions) => void }
 }
 
 export interface FeedbackRenderConfig { enabled: boolean,
     globalIntensity: number,
     audioMapping: AudioMappingConfig,
     effects: EffectRenderConfig,
-    performance: RenderPerformanceConfig;
+    performance: RenderPerformanceConfig
     }
 }
 
@@ -40,31 +40,31 @@ export interface AudioMappingConfig { frequency: Record<string, FrequencyMapping
 
 export interface FrequencyMappingConfig { range: [number, number],
     color: string,
-    intensity: number; }
+    intensity: number }
 }
 
 export interface VolumeMappingConfig { range: [number, number],
     color: string,
-    feedback: VolumeFeedbackConfig;
+    feedback: VolumeFeedbackConfig
     }
 }
 
 export interface VolumeFeedbackConfig { enabled: boolean,
     threshold: number,
-    effects: VolumeEffectType[];
+    effects: VolumeEffectType[]
     }
 }
 
 export interface EffectRenderConfig { color: ColorEffectConfig,
     border: BorderEffectConfig,
-    scale: ScaleEffectConfig;
+    scale: ScaleEffectConfig
     }
 }
 
 export interface ColorEffectConfig { enabled: boolean,
     duration: number,
     easing: string,
-    opacity: OpacityConfig;
+    opacity: OpacityConfig
     }
 }
 
@@ -72,43 +72,43 @@ export interface BorderEffectConfig { enabled: boolean,
     minWidth: number,
     maxWidth: number,
     duration: number,
-    easing: string; }
+    easing: string }
 }
 
 export interface ScaleEffectConfig { enabled: boolean,
     minScale: number,
     maxScale: number,
     duration: number,
-    easing: string; }
+    easing: string }
 }
 
 export interface OpacityConfig { start: number,
     peak: number,
-    end: number; }
+    end: number }
 }
 
 export interface RenderPerformanceConfig { maxFrameRate: number,
     skipFrames: number,
     batchSize: number,
-    memoryThreshold: number; }
+    memoryThreshold: number }
 }
 
 export interface UserRenderPreferences { audioVisualization: boolean,
     enabledEffects: EffectType[],
     colorScheme: ColorSchemePreference,
     animationSpeed: AnimationSpeedPreference,
-    reducedMotion: boolean; }
+    reducedMotion: boolean }
 }
 
 export interface ColorSchemePreference { primary: string,
     secondary: string,
     accent: string,
-    background: string; }
+    background: string }
 }
 
 export interface AnimationSpeedPreference { multiplier: number,
     enableTransitions: boolean,
-    smoothing: boolean; }
+    smoothing: boolean }
 }
 
 export interface EffectOptions { id: string,
@@ -141,7 +141,7 @@ export interface EffectResult { id: string,
     cleanup: (() => void) | null,
     animation: Animation,
     startTime: number,
-    duration: number; }
+    duration: number }
 }
 
 export interface FeedbackTriggerOptions { type: EffectType,
@@ -149,55 +149,55 @@ export interface FeedbackTriggerOptions { type: EffectType,
     intensity: number,
     duration: number,
     target: HTMLElement,
-    position?: EffectPosition;
+    position?: EffectPosition
     }
 }
 
 export interface EffectPosition { x: number,
     y: number,
-    relative: boolean; }
+    relative: boolean }
 }
 
 export interface AudioVisualizationData { frequencyData: Uint8Array,
     timeData: Uint8Array,
     averageVolume: number,
     peakFrequency: number,
-    dominantFrequencyRange: FrequencyRange;
+    dominantFrequencyRange: FrequencyRange
     }
 }
 
 export interface FrequencyRange { min: number,
     max: number,
-    dominantFreq: number; }
+    dominantFreq: number }
 }
 
 export interface VisualizationBarData { height: number,
     color: string,
     frequency: number,
-    intensity: number; }
+    intensity: number }
 }
 
 export interface EdgeFeedbackData { edge: EdgeType,
     element: HTMLElement,
     color: string,
     intensity: number,
-    lastTriggered: number; }
+    lastTriggered: number }
 }
 
 export interface EffectValidationResult { isValid: boolean,
     errors: ValidationError[],
-    warnings: ValidationWarning[];
+    warnings: ValidationWarning[]
     }
 }
 
 export interface ValidationError { field: string,
     message: string,
-    code: string; }
+    code: string }
 }
 
 export interface ValidationWarning { field: string,
     message: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 export interface RenderReport { timestamp: string,
@@ -206,7 +206,7 @@ export interface RenderReport { timestamp: string,
     effectTypes: Record<EffectType, EffectTypeStatus>,
     configuration: ConfigurationReport,
     performance: PerformanceReport,
-    errors: ErrorReport[];
+    errors: ErrorReport[]
     }
 }
 
@@ -215,29 +215,29 @@ export interface AudioVisualizationReport { enabled: boolean,
     hasCanvas: boolean,
     canvasSize: CanvasSize | null,
     frameRate: number,
-    lastUpdate: number; }
+    lastUpdate: number }
 }
 
 export interface CanvasSize { width: number,
-    height: number; }
+    height: number }
 }
 
 export interface ConfigurationReport { enabled: boolean,
     globalIntensity: number,
     effectsEnabled: number,
-    audioMappings: number; }
+    audioMappings: number }
 }
 
 export interface PerformanceReport { activeEffects: number,
     memoryUsage: number,
     averageFrameTime: number,
-    droppedFrames: number; }
+    droppedFrames: number }
 }
 
 export interface ErrorReport { timestamp: number,
     operation: string,
     error: string,
-    stack?: string; }
+    stack?: string }
 }
 
 // 列挙型
@@ -251,7 +251,7 @@ export type VolumeLevel = 'quiet' | 'medium' | 'loud' | 'very-loud';
 
 // 定数
 export const DEFAULT_EFFECT_CONFIG: EffectRenderConfig = { color: {
-        enabled: true,';
+        enabled: true,
         duration: 500,'';
         easing: 'ease-in-out', }
         opacity: { start: 0, peak: 1, end: 0 }
@@ -269,7 +269,7 @@ export const DEFAULT_EFFECT_CONFIG: EffectRenderConfig = { color: {
         easing: 'ease-in-out' }
     }
 } as const,
-';
+';'
 export const FREQUENCY_COLOR_MAPPING: Record<string, FrequencyMappingConfig> = { ' }'
     bass: { range: [20, 250], color: '#ff4444', intensity: 1.0 },''
     lowMid: { range: [250, 500], color: '#ff8844', intensity: 0.8 },''
@@ -297,7 +297,7 @@ export const VOLUME_LEVEL_MAPPING: Record<VolumeLevel, VolumeMappingConfig> = { 
         feedback: { enabled: true, threshold: 0.8, effects: ['edge', 'flash', 'scale'] }
     }
 } as const;
-';
+';'
 export const ANIMATION_EASING = { ''
     EASE_IN: 'ease-in','';
     EASE_OUT: 'ease-out','';
@@ -312,14 +312,14 @@ export const VISUALIZATION_CONFIG = { MIN_BAR_HEIGHT: 2,
     SMOOTHING_FACTOR: 0.8 }
 } as const,
 ';
-// ユーティリティ関数''
+// ユーティリティ関数
 export function validateEffectOptions(options: Partial<EffectOptions>'): EffectValidationResult { const errors: ValidationError[] = [],
     const warnings: ValidationWarning[] = [],';
     '';
     if(!options.id || typeof options.id !== 'string'') {'
         errors.push({''
             field: 'id',')';
-            message: 'Effect ID is required and must be a string',');
+            message: 'Effect ID is required and must be a string',')
     }'
             code: 'INVALID_ID'); }
     }'
@@ -327,7 +327,7 @@ export function validateEffectOptions(options: Partial<EffectOptions>'): EffectV
     if(!options.target || !options.target.style') {'
         errors.push({''
             field: 'target',')';
-            message: 'Target element is required and must have style property',');
+            message: 'Target element is required and must have style property',')
     }'
             code: 'INVALID_TARGET')'); }
     }'
@@ -335,7 +335,7 @@ export function validateEffectOptions(options: Partial<EffectOptions>'): EffectV
     if(!options.color || typeof options.color !== 'string'') {'
         errors.push({''
             field: 'color',')';
-            message: 'Color is required and must be a valid CSS color string',');
+            message: 'Color is required and must be a valid CSS color string',')
     }'
             code: 'INVALID_COLOR')'); }
     }'
@@ -343,7 +343,7 @@ export function validateEffectOptions(options: Partial<EffectOptions>'): EffectV
     if(typeof options.intensity !== 'number' || options.intensity < 0 || options.intensity > 2') {'
         errors.push({''
             field: 'intensity',')';
-            message: 'Intensity must be a number between 0 and 2',');
+            message: 'Intensity must be a number between 0 and 2',')
     }'
             code: 'INVALID_INTENSITY')'); }
     }'
@@ -351,7 +351,7 @@ export function validateEffectOptions(options: Partial<EffectOptions>'): EffectV
     if(typeof options.duration !== 'number' || options.duration < 0') {'
         errors.push({''
             field: 'duration',')';
-            message: 'Duration must be a positive number',');
+            message: 'Duration must be a positive number',')
     }'
             code: 'INVALID_DURATION'); }
     }'
@@ -359,7 +359,7 @@ export function validateEffectOptions(options: Partial<EffectOptions>'): EffectV
     if(options.duration && options.duration > 5000') {'
         warnings.push({')'
             field: 'duration''),'';
-            message: 'Duration is very long (>5s')',';
+            message: 'Duration is very long (>5s')','
     }'
             suggestion: 'Consider shorter durations for better user experience' }
         }),
@@ -370,7 +370,7 @@ export function validateEffectOptions(options: Partial<EffectOptions>'): EffectV
         warnings }
     };
 }
-';
+';'
 export function getFrequencyColor(frequency: number): string { for(const [range, config] of Object.entries(FREQUENCY_COLOR_MAPPING) {''
         if(frequency >= config.range[0] && frequency <= config.range[1]') {
             
@@ -380,7 +380,7 @@ export function getFrequencyColor(frequency: number): string { for(const [range,
     }''
     return '#ffffff';
 }
-';
+';'
 export function getVolumeLevel(volume: number): VolumeLevel { for(const [level, config] of Object.entries(VOLUME_LEVEL_MAPPING) {''
         if(volume >= config.range[0] && volume <= config.range[1]') {
             
@@ -413,7 +413,7 @@ export class FeedbackEffectRenderer {
     // Performance tracking
     private lastFrameTime: number = 0;
     private frameCount: number = 0;
-    private errorLog: ErrorReport[] = []';
+    private errorLog: ErrorReport[] = [];
 '';
     constructor(mainController: VisualFeedbackManager') {
         this.mainController = mainController;
@@ -424,7 +424,7 @@ export class FeedbackEffectRenderer {
         this.canvasContext = mainController.canvasContext;
         this.visualCanvas = mainController.visualCanvas;'
         ';
-    }
+    }'
     }'
         console.log('FeedbackEffectRenderer initialized'); }
     }
@@ -432,25 +432,25 @@ export class FeedbackEffectRenderer {
     /**
      * カラーエフェクトの作成
      */
-    createColorEffect(options: ColorEffectOptions): EffectResult | null { try {'
+    createColorEffect(options: ColorEffectOptions): EffectResult | null { try {
             const validation = validateEffectOptions(options);''
             if(!validation.isValid') {'
                 '';
-                console.warn('Invalid parameters for color effect:', validation.errors');
+                console.warn('Invalid parameters for color effect:', validation.errors')
             }
                 return null; }
             }
 
             const originalBackground = options.target.style.background;
             const config = this.config.effects.color;
-            ';
+            ';'
             const keyframes = ['';
                 { backgroundColor: 'transparent', opacity: config.opacity.start },'
                 { backgroundColor: options.color, opacity: config.opacity.peak },']'
                 { backgroundColor: 'transparent', opacity: config.opacity.end }]
             ];
             
-            const animation = options.target.animate(keyframes, { duration: options.duration || config.duration,)
+            const animation = options.target.animate(keyframes, { duration: options.duration || config.duration)
                 easing: options.easing || config.easing),';
 '';
             const cleanup = (') => {  }
@@ -467,7 +467,7 @@ export class FeedbackEffectRenderer {
                 startTime: Date.now(), };
                 duration: options.duration || config.duration }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             this.logError('createColorEffect', error as Error);
             return null; }
         }
@@ -476,27 +476,27 @@ export class FeedbackEffectRenderer {
     /**
      * ボーダーエフェクトの作成
      */
-    createBorderEffect(options: BorderEffectOptions): EffectResult | null { try {'
+    createBorderEffect(options: BorderEffectOptions): EffectResult | null { try {
             const validation = validateEffectOptions(options);''
             if(!validation.isValid') {'
                 '';
-                console.warn('Invalid parameters for border effect:', validation.errors);
+                console.warn('Invalid parameters for border effect:', validation.errors)
             }
                 return null; }
             }
-';
+';'
             const config = this.config.effects.border;''
             const borderWidth = options.width || calculateBorderWidth(options.intensity, config');
             const originalBorder = options.target.style.border;'
             '';
             options.target.style.border = `${borderWidth}px ${options.style || 'solid'} ${options.color}`;''
             options.target.style.opacity = '1';
-            ';
+            ';'
             const keyframes = [{ borderWidth: `${borderWidth}px`, opacity: 1 },']'
                 { borderWidth: '0px', opacity: 0 }]
             ];
             
-            const animation = options.target.animate(keyframes, { duration: options.duration || config.duration,)
+            const animation = options.target.animate(keyframes, { duration: options.duration || config.duration)
                 easing: options.easing || config.easing),';
 '';
             const cleanup = (') => { '
@@ -514,7 +514,7 @@ export class FeedbackEffectRenderer {
                 startTime: Date.now(), };
                 duration: options.duration || config.duration }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             this.logError('createBorderEffect', error as Error);
             return null; }
         }
@@ -523,34 +523,34 @@ export class FeedbackEffectRenderer {
     /**
      * スケールエフェクトの作成
      */
-    createScaleEffect(options: ScaleEffectOptions): EffectResult | null { try {'
+    createScaleEffect(options: ScaleEffectOptions): EffectResult | null { try {
             const validation = validateEffectOptions(options);''
             if(!validation.isValid') {'
                 '';
-                console.warn('Invalid parameters for scale effect:', validation.errors);
+                console.warn('Invalid parameters for scale effect:', validation.errors)
             }
                 return null; }
             }
-';
+';'
             const config = this.config.effects.scale;''
             const scaleAmount = calculateScaleAmount(options.intensity, config');
             const scaleX = options.scaleX || scaleAmount;
             const scaleY = options.scaleY || scaleAmount;
             const originalTransform = options.target.style.transform;
-            ';
+            ';'
             options.target.style.background = options.color;''
             options.target.style.opacity = '0.5';'
             '';
             if (options.origin') { options.target.style.transformOrigin = options.origin; }
             }
-            ';
+            ';'
             const keyframes = ['';
                 { transform: 'scale(1')', opacity: 0 },''
                 { transform: `scale(${scaleX}, ${scaleY)'})`, opacity: 0.5 },']'
                 { transform: 'scale(1')', opacity: 0 }]
             ];
             
-            const animation = options.target.animate(keyframes, { duration: options.duration || config.duration,)
+            const animation = options.target.animate(keyframes, { duration: options.duration || config.duration)
                 easing: options.easing || config.easing),';
 '';
             const cleanup = (') => { '
@@ -570,7 +570,7 @@ export class FeedbackEffectRenderer {
                 startTime: Date.now(), };
                 duration: options.duration || config.duration }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             this.logError('createScaleEffect', error as Error);
             return null; }
         }
@@ -579,7 +579,7 @@ export class FeedbackEffectRenderer {
     /**
      * オーディオ視覚化の開始
      */'
-    startAudioVisualization(): void { try {''
+    startAudioVisualization(): void { try {'
             if(!this.analyser || !this.canvasContext') {'
                 '';
                 console.warn('Audio visualization cannot start: missing analyser or canvas context'),
@@ -597,7 +597,7 @@ export class FeedbackEffectRenderer {
                 }
                 const deltaTime = timestamp - this.lastFrameTime;
                 this.lastFrameTime = timestamp;
-                this.frameCount++;'
+                this.frameCount++;
                 '';
                 this.analyser.getByteFrequencyData(this.dataArray');
                 
@@ -606,7 +606,7 @@ export class FeedbackEffectRenderer {
                 const width = canvas.width;
                 const height = canvas.height;
                 ';
-                // クリア''
+                // クリア
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.8')';
                 ctx.fillRect(0, 0, width, height);
                 
@@ -615,7 +615,7 @@ export class FeedbackEffectRenderer {
                 const barWidth = width / this.dataArray.length;
                 
                 normalizedData.forEach((value, i) => {  const barHeight = Math.max(
-                        VISUALIZATION_CONFIG.MIN_BAR_HEIGHT,);
+                        VISUALIZATION_CONFIG.MIN_BAR_HEIGHT);
                         value * height * VISUALIZATION_CONFIG.MAX_BAR_HEIGHT_RATIO);
                     
                     // 周波数に基づく色の決定
@@ -633,9 +633,9 @@ export class FeedbackEffectRenderer {
                 
                 this.mainController.animationFrameId = requestAnimationFrame(drawVisualization);
             };
-            ';
+            ';'
             drawVisualization(0);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.logError('startAudioVisualization', error as Error); }
         }
     }
@@ -647,14 +647,14 @@ export class FeedbackEffectRenderer {
             const volumeLevel = getVolumeLevel(volume);
             const volumeConfig = VOLUME_LEVEL_MAPPING[volumeLevel];
             ';
-            // 高音量時のエッジフィードバック''
+            // 高音量時のエッジフィードバック
             if(volumeConfig.feedback.enabled && volume >= volumeConfig.feedback.threshold') {'
                 '';
                 if (volumeConfig.feedback.effects.includes('edge') && Math.random() < 0.1) {
             }
                     this.triggerEdgeFeedback(volumeConfig.color, volume); }'
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             this.logError('triggerVolumeBasedFeedback', error as Error); }
         }
     }
@@ -662,7 +662,7 @@ export class FeedbackEffectRenderer {
     /**
      * エッジフィードバックのトリガー'
      */''
-    private triggerEdgeFeedback(color: string, intensity: number'): void { try {''
+    private triggerEdgeFeedback(color: string, intensity: number'): void { try {'
             const edges: EdgeType[] = ['top', 'bottom', 'left', 'right'];
             const randomEdge = edges[Math.floor(Math.random() * edges.length)];
             const edgeElement = this.mainController.feedbackElements.get(`edge-${randomEdge)`);'
@@ -670,12 +670,12 @@ export class FeedbackEffectRenderer {
             if(edgeElement') {'
                 this.mainController.triggerVisualFeedback({''
                     type: 'flash',
-                    color: color,);
-                    intensity: intensity * 0.5);
+                    color: color);
+                    intensity: intensity * 0.5)
             }
                     duration: 200,) }'
                     target: edgeElement)});''
-            } catch (error') { ''
+            } catch (error) { ''
             this.logError('triggerEdgeFeedback', error as Error); }
         }
     }
@@ -693,9 +693,9 @@ export class FeedbackEffectRenderer {
                 effect.animation.cancel(); }
             }
             
-            // カスタムクリーンアップの実行'
+            // カスタムクリーンアップの実行
             if (effect.cleanup) { effect.cleanup();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.logError('cleanupEffect', error as Error); }
         }
     }
@@ -716,7 +716,7 @@ export class FeedbackEffectRenderer {
                 component: 'FeedbackEffectRenderer',
                 audioVisualization: {
                     enabled: this.userPreferences.audioVisualization,
-                    hasAnalyser: !!this.analyser,);
+                    hasAnalyser: !!this.analyser);
                     hasCanvas: !!this.visualCanvas);
                     canvasSize: this.visualCanvas ? { : undefined
                         width: this.visualCanvas.width, };
@@ -737,7 +737,7 @@ export class FeedbackEffectRenderer {
                     droppedFrames: 0 }
                 },
                 errors: [...this.errorLog];
-            },'
+            },
         } catch (error) { return { ''
                 timestamp: new Date().toISOString(''';
                 component: 'FeedbackEffectRenderer',
@@ -761,9 +761,9 @@ export class FeedbackEffectRenderer {
                     droppedFrames: 0 })
                 })'
                 errors: [{ ''
-                    timestamp: Date.now('')';
+                    timestamp: Date.now()';
                     operation: 'generateReport',);
-                    error: (error as Error).message,];
+                    error: (error as Error).message];
                     stack: (error as Error).stack }]
                 }]
             },
@@ -807,7 +807,7 @@ export class FeedbackEffectRenderer {
      */
     destroy(): void { try {
             // アニメーションフレームのキャンセル
-            if(this.mainController.animationFrameId) {'
+            if(this.mainController.animationFrameId) {
                 '';
                 cancelAnimationFrame(this.mainController.animationFrameId');
             }
@@ -822,11 +822,11 @@ export class FeedbackEffectRenderer {
             this.analyser = null as any;
             this.canvasContext = null as any;
             this.visualCanvas = null as any;
-            this.errorLog = [];'
+            this.errorLog = [];
             '';
             console.log('FeedbackEffectRenderer destroyed');''
-        } catch (error') { ''
-            console.error('Error destroying FeedbackEffectRenderer:', error'); }
+        } catch (error) { ''
+            console.error('Error destroying FeedbackEffectRenderer:', error') }
         }'
     }''
 }

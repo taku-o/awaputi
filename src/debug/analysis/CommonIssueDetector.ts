@@ -10,7 +10,7 @@ interface Issue { id: string,
     description: string,
     solution?: string;
     context: any,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface DetectionRule { id: string,'
@@ -36,7 +36,7 @@ export class CommonIssueDetector {
     private initializeDefaultRules(''';
                 id: 'high_memory_usage','';
                 name: 'High Memory Usage',')';
-                pattern: (data: any') => data.memoryUsage > 100 * 1024 * 1024, // 100MB'';
+                pattern: (data: any') => data.memoryUsage > 100 * 1024 * 1024, // 100MB;
                 type: 'memory','';
                 severity: 'high','';
                 description: 'Memory usage is higher than expected','';
@@ -91,8 +91,8 @@ export class CommonIssueDetector {
     private checkRule(rule: DetectionRule, data: any): Issue | null { let matches = false;'
 '';
         if(rule.pattern instanceof RegExp') {'
-            // Pattern matching for string data''
-            const stringData = typeof data === 'string' ? data: JSON.stringify(data),';
+            // Pattern matching for string data
+            const stringData = typeof data === 'string' ? data: JSON.stringify(data),'
         }'
             matches = rule.pattern.test(stringData');' }'
         } else if (typeof rule.pattern === 'function') { // Function-based detection
@@ -106,7 +106,7 @@ export class CommonIssueDetector {
                 severity: rule.severity,
                 title: rule.name,
                 description: rule.description,
-                solution: rule.solution,';
+                solution: rule.solution,
                 context: data,'';
                 timestamp: Date.now(''';
         type?: Issue['type'];')'
@@ -165,7 +165,7 @@ export class CommonIssueDetector {
             recent }
         };
     }
-';
+';'
     private generateIssueId(): string { ' }'
         return `issue_${Date.now(})}_${Math.random().toString(36).substr(2, 9'})}`;'
     }''

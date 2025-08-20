@@ -4,45 +4,45 @@ import { CleanupOrchestrator } from './CleanupOrchestrator.js';
 interface CommandLineOptions { dryRun: boolean,
     verbose: boolean,
     validateOnly: boolean,
-    listOnly: boolean; }
+    listOnly: boolean }
 }
 
 interface TargetFileInfo { fileName: string,
-    size: string; }
+    size: string }
 }
 
 interface ValidationResult { safeToDelete: any[],
-    unsafeToDelete: any[]; }
+    unsafeToDelete: any[] }
 }
 
 interface CleanupResult { summary: {
         deletion?: {
             successfulDeletions: number,
-            totalSizeDeleted: string; }
+            totalSizeDeleted: string }
         };
     };
 }
-';
+';'
 async function main(): Promise<void> { ''
     const args = process.argv.slice(2');'
     const options: CommandLineOptions = {''
         dryRun: args.includes('--dry-run''),'';
         verbose: args.includes('--verbose'') || args.includes('-v''),'';
         validateOnly: args.includes('--validate-only''),'';
-        listOnly: args.includes('--list-only''); }
+        listOnly: args.includes('--list-only'') }
     };'
 '';
     console.log('🧹 File Cleanup Tool'');''
     console.log('==================');'
     '';
     if(options.dryRun') {'
-        ';
+        ';'
     }'
         console.log('🔍 Running in DRY RUN mode - no files will be deleted'); }
     }'
     '';
     if(options.verbose') {'
-        ';
+        ';'
     }'
         console.log('📝 Verbose logging enabled'); }
     }
@@ -69,14 +69,14 @@ async function main(): Promise<void> { ''
             const result: ValidationResult = await orchestrator.validateOnly() }
             console.log(`   Safe to delete: ${result.safeToDelete.length) files`), };
             console.log(`   Unsafe to delete: ${result.unsafeToDelete.length) files`});
-            return;
+            return;'
         }'
 '';
-        const result: CleanupResult = await orchestrator.executeCleanup('');'
+        const result: CleanupResult = await orchestrator.executeCleanup();'
         console.log('\n✅ Cleanup completed successfully');
         if (result.summary.deletion) { console.log(`   Deleted: ${result.summary.deletion.successfulDeletions) files`) }'
             console.log(`   Space freed: ${result.summary.deletion.totalSizeDeleted)`});''
-        } catch (error') { ''
+        } catch (error) { ''
         console.error('\n❌ Error during cleanup: ''),'';
         const errorMessage = error instanceof Error ? error.message: 'Unknown error',
         console.error(errorMessage);
@@ -92,7 +92,7 @@ async function main(): Promise<void> { ''
 // Export for testing
 export { CleanupOrchestrator };
 
-// Run if called directly'
+// Run if called directly
 if (import.meta.url === `file://${ process.argv[1])`) {' }'
     main().catch(console.error'});''
 }

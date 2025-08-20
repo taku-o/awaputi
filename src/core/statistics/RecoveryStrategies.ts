@@ -9,7 +9,7 @@ export interface DataRecovery { statisticsManager: StatisticsManager,
     updateProgress(step: string, progress: number): void,
     analyzeDataIntegrity(data: any): Promise<IntegrityAnalysis>,
     calculateChecksum(data: any): string,
-    repairObjectStructure(data: any, template: any): any; }
+    repairObjectStructure(data: any, template: any): any }
 }
 
 export interface StatisticsManager { getDefaultStatistics(): DefaultStatistics;
@@ -18,7 +18,7 @@ export interface StatisticsManager { getDefaultStatistics(): DefaultStatistics;
     [key: string]: any, }
 }
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void; }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
 }
 
 export interface DefaultStatistics { totalScore: number,
@@ -44,16 +44,16 @@ export interface BubbleStats { normal: number,
 
 export interface ComboStats { maxCombo: number,
     totalCombos: number,
-    averageCombo: number; }
+    averageCombo: number }
 }
 
 export interface AchievementStats { total: number,
     unlocked: number,
-    progress?: Record<string, any>; }
+    progress?: Record<string, any> }
 }
 
 export interface TimeStats { playTime: number,
-    averageSessionTime: number; }
+    averageSessionTime: number }
 }
 
 export interface SessionStats { recentSessions?: SessionData[];
@@ -68,12 +68,12 @@ export interface SessionData { timestamp: number,
 
 export interface BackupData { data: any,
     timestamp: string,
-    version?: string; }
+    version?: string }
 }
 
 export interface HistoricalDataEntry { timestamp: number,
     data: any,
-    source: string; }
+    source: string }
 }
 
 export interface IntegrityAnalysis { isValid: boolean,
@@ -108,7 +108,7 @@ export interface StructureDamage { missingFields?: string[];
 
 export interface TypeError { field: string,
     expected: string,
-    actual: string; }
+    actual: string }
 }
 
 export interface RecoveryResult { success: boolean,
@@ -135,7 +135,7 @@ export interface FieldRepairResult { success: boolean,
 }
 
 export interface InterpolationResult { data: any,
-    log: string[]; }
+    log: string[] }
 }
 
 export interface MigrationResult { success: boolean,
@@ -145,12 +145,12 @@ export interface MigrationResult { success: boolean,
 }
 
 export interface ConversionResult { data: any,
-    log: string[]; }
+    log: string[] }
 }
 
 export interface StrategyStats { totalStrategies: number,
     availableStrategies: string[],
-    recoveryPriority: string[]; }
+    recoveryPriority: string[] }
 }
 
 export interface FieldTemplates { bubbleStats: BubbleStats,
@@ -191,7 +191,7 @@ export class RecoveryStrategies {
         this.statisticsManager = dataRecovery.statisticsManager;
         this.errorHandler = dataRecovery.errorHandler;
         
-        // 復旧戦略マップ'
+        // 復旧戦略マップ
         this.strategies = new Map<string, RecoveryStrategy>([']';
             ['corruption', this.recoverFromCorruption.bind(this')],'';
             ['partial_loss', this.recoverFromPartialLoss.bind(this')],'';
@@ -201,7 +201,7 @@ export class RecoveryStrategies {
             ['complete_loss', this.recoverFromCompleteLoss.bind(this)]'';
         ]');
         
-        // 復旧優先度（高い順）'
+        // 復旧優先度（高い順）
         this.recoveryPriority = ['';
             'gamePlayStats','';
             'scoreStats', '';
@@ -212,7 +212,7 @@ export class RecoveryStrategies {
             'sessionStats'];
         ];'
         ';
-    }
+    }'
     }'
         console.log('[RecoveryStrategies] Component initialized'); }
     }
@@ -238,9 +238,9 @@ export class RecoveryStrategies {
             
             this.dataRecovery.updateProgress(`recovery_${strategyName)`, 100); }
             console.log(`[RecoveryStrategies] Strategy completed: ${strategyName)`});
-            ';
+            ';'
             return result;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'RECOVERY_STRATEGY_ERROR', {)
                 strategy: strategyName);
                 analysis,);
@@ -282,12 +282,12 @@ export class RecoveryStrategies {
             }
             // 重度な破損の場合：バックアップから復元
             else { const backup = await this.statisticsManager.getLatestBackup();
-                if(backup) {'
+                if(backup) {
                     '';
                     Object.assign(recoveredData, backup.data');'
                 }'
                     repairLog.push('Restored from backup due to severe corruption'); }
-                } else {  // バックアップがない場合は初期化'
+                } else {  // バックアップがない場合は初期化
                     const defaultData = this.statisticsManager.getDefaultStatistics();''
                     Object.assign(recoveredData, defaultData');' }'
                     repairLog.push('Initialized with default data - no backup available''); }
@@ -302,7 +302,7 @@ export class RecoveryStrategies {
                 fieldsRepaired: corruptedFields.length }
             },'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[RecoveryStrategies] Corruption recovery failed:', error);'
             return { success: false,''
                 error: (error as Error').message,' };'
@@ -334,7 +334,7 @@ export class RecoveryStrategies {
                         recoveredData[field] = recovered.data; }
                         repairLog.push(`Recovered missing field: ${field)`});
                     } else {  // デフォルト値で初期化
-                        const defaultValue = this._getDefaultFieldValue(field); }'
+                        const defaultValue = this._getDefaultFieldValue(field); }
                         recoveredData[field] = defaultValue;' }'
                         repairLog.push(`Initialized field with default: ${field)`'});
                     }
@@ -349,7 +349,7 @@ export class RecoveryStrategies {
                 dataIntegrity }
             };'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[RecoveryStrategies] Partial loss recovery failed:', error);'
             return { success: false,''
                 error: (error as Error').message,' };'
@@ -373,7 +373,7 @@ export class RecoveryStrategies {
             const migrationLog: string[] = [],
             
             // バージョン間マイグレーション
-            const migrationResult = await this._migrateDataToVersion(';
+            const migrationResult = await this._migrateDataToVersion(;
                 migratedData, ')';
                 dataVersion || 'unknown', ');'
                 currentVersion || 'latest');
@@ -386,7 +386,7 @@ export class RecoveryStrategies {
                 migrationLog.push(...(migrationResult.log || []); }
             } else {  // マイグレーション失敗時は構造を現在のバージョンに合わせて初期化
                 const currentStructure = this.statisticsManager.getDefaultStatistics();
-                const converted = this._convertToCurrentStructure(oldData, currentStructure);'
+                const converted = this._convertToCurrentStructure(oldData, currentStructure);
                 Object.assign(migratedData, converted.data);' }'
                 migrationLog.push(...converted.log'); }
             }
@@ -399,7 +399,7 @@ export class RecoveryStrategies {
                 toVersion: currentVersion }
             },'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[RecoveryStrategies] Version mismatch recovery failed:', error);'
             return { success: false,''
                 error: (error as Error').message,' };'
@@ -429,7 +429,7 @@ export class RecoveryStrategies {
             
                 // データ自体は有効なので、チェックサムを再計算
             
-            }'
+            }
                 const newChecksum = this.dataRecovery.calculateChecksum(recoveredData);' }'
                 repairLog.push(`Recalculated checksum: ${expectedChecksum} -> ${newChecksum)`'});
                 
@@ -442,9 +442,9 @@ export class RecoveryStrategies {
             } else {  // データに問題がある場合は破損として処理
                 return await this.recoverFromCorruption({)
                     corruptedData: data);
-                    corruptionLevel: 1 - integrityCheck.validFieldsRatio,); }'
+                    corruptionLevel: 1 - integrityCheck.validFieldsRatio,) }
                     corruptedFields: integrityCheck.invalidFields), options);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('[RecoveryStrategies] Checksum failure recovery failed:', error);'
             return { success: false,''
                 error: (error as Error').message,' };'
@@ -467,7 +467,7 @@ export class RecoveryStrategies {
             const recoveredData: any = {}
             const repairLog: string[] = [],
             
-            // 期待される構造に基づいてデータを再構築'
+            // 期待される構造に基づいてデータを再構築
             const rebuilt = this.dataRecovery.repairObjectStructure(damagedData, expectedStructure);''
             Object.assign(recoveredData, rebuilt');''
             repairLog.push('Rebuilt data structure based on expected schema');
@@ -475,7 +475,7 @@ export class RecoveryStrategies {
             // 失われたフィールドをデフォルト値で補完
             for(const field of structureDamage? .missingFields || []) {
                 const defaultValue = this._getDefaultFieldValue(field);
-            }'
+            }
                 recoveredData[field] = defaultValue; : undefined' }'
                 repairLog.push(`Added missing field with default: ${field)`'});
             }
@@ -487,7 +487,7 @@ export class RecoveryStrategies {
                 missingFields: structureDamage? .missingFields?.length || 0 }
             },'
             '';
-        } catch (error') { : undefined''
+        } catch (error) { : undefined''
             console.error('[RecoveryStrategies] Structure damage recovery failed:', error);'
             return { success: false,''
                 error: (error as Error').message,' };'
@@ -512,7 +512,7 @@ export class RecoveryStrategies {
             
             // 1. 最新のバックアップから復元を試行
             const latestBackup = await this.statisticsManager.getLatestBackup();
-            if (latestBackup && latestBackup.data) { }'
+            if (latestBackup && latestBackup.data) { }
                 recoveredData = { ...latestBackup.data };''
                 repairLog.push(`Restored from backup: ${latestBackup.timestamp)`'});''
                 dataSource = 'backup';
@@ -520,7 +520,7 @@ export class RecoveryStrategies {
             
             // 2. バックアップがない場合は履歴データから復元を試行
             if(!recoveredData) {
-                const historyData = await this.statisticsManager.getHistoricalData();'
+                const historyData = await this.statisticsManager.getHistoricalData();
                 if (historyData && historyData.length > 0) {''
                     recoveredData = this._reconstructFromHistory(historyData');''
                     repairLog.push('Reconstructed from historical data'');'
@@ -530,9 +530,9 @@ export class RecoveryStrategies {
             }
             
             // 3. 全て失敗した場合はデフォルトデータで初期化
-            if(!recoveredData) {'
+            if(!recoveredData) {
                 '';
-                recoveredData = this.statisticsManager.getDefaultStatistics('')';
+                recoveredData = this.statisticsManager.getDefaultStatistics()';
                 repairLog.push('Initialized with default statistics (complete data loss')'');'
             }'
                 dataSource = 'default'; }
@@ -545,7 +545,7 @@ export class RecoveryStrategies {
                 dataSource }
             };'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[RecoveryStrategies] Complete loss recovery failed:', error);'
             return { success: false,''
                 error: (error as Error').message,' };'
@@ -563,7 +563,7 @@ export class RecoveryStrategies {
      */
     private async _repairCorruptedField(fieldName: string, corruptedValue: any): Promise<FieldRepairResult> { try {
             // フィールドタイプに応じた修復戦略
-            const fieldType = this._getFieldType(fieldName);'
+            const fieldType = this._getFieldType(fieldName);
             '';
             switch(fieldType') {'
                 '';
@@ -685,13 +685,13 @@ export class RecoveryStrategies {
      * 数値フィールドを修復
      * @param value 破損した値
      * @returns 修復された値
-     * @private'
+     * @private
      */''
     private _repairNumericField(value: any'): number { ''
         if(typeof value === 'number' && !isNaN(value) {'
-            ';
+            ';'
         }'
-            return Math.max(0, value'); // 負の値は0に修正 }'
+            return Math.max(0, value'); // 負の値は0に修正 }
         }''
         if(typeof value === 'string') {
             const parsed = parseFloat(value);
@@ -737,8 +737,8 @@ export class RecoveryStrategies {
      * @param existingData 既存データ
      * @returns 推定値
      * @private
-     */'
-    private _estimateFieldValue(fieldName: string, existingData: any): any { // フィールドタイプに応じた推定ロジック''
+     */
+    private _estimateFieldValue(fieldName: string, existingData: any): any { // フィールドタイプに応じた推定ロジック
         switch(fieldName') {'
             '';
             case 'totalGamesPlayed':'';
@@ -767,7 +767,7 @@ export class RecoveryStrategies {
      * @param obj オブジェクト
      * @param path ドット記法のパス
      * @returns 値
-     * @private'
+     * @private
      */''
     private _getNestedValue(obj: any, path: string'): any { ''
         return path.split('.').reduce((current, key) => current? .[key], obj); }
@@ -799,7 +799,7 @@ export class RecoveryStrategies {
     private _getFieldTemplate(fieldName: string): any { const templates: FieldTemplates = { }
             bubbleStats: { normal: 0, electric: 0, diamond: 0, rainbow: 0 },
             comboStats: { maxCombo: 0, totalCombos: 0, averageCombo: 0 },
-            achievementStats: { total: 0, unlocked: 0, progress: {} }
+            achievementStats: { total: 0, unlocked: 0, progress: {}
         };
         return templates[fieldName] || {};
     }

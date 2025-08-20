@@ -47,7 +47,7 @@ export class ScoreCalculator {
      * スコア設定を取得
      * @returns {Object} スコア設定'
      */''
-    getScoreConfig('')';
+    getScoreConfig()';
         if (this.gameConfig && typeof this.gameConfig.getScoreConfig === 'function') { return this.gameConfig.getScoreConfig(); }
         }
         return this.defaultScoreConfig;
@@ -192,21 +192,21 @@ export class ScoreCalculator {
      * @returns {number} ボーナススコア
      */
     calculateSpecialBubbleBonus(bubbleType, effectParams = { ) {
-        const config = this.getScoreConfig();'
+        const config = this.getScoreConfig();
         '';
         switch (bubbleType') {''
             case 'rainbow':;
                 // レインボー泡：ボーナスタイム中の追加スコア
-                return effectParams.bonusTimeActive ? config.baseScores.rainbow * 0.5 : 0;'
+                return effectParams.bonusTimeActive ? config.baseScores.rainbow * 0.5 : 0;
                 '';
             case 'spiky':;
                 // とげとげ泡：連鎖による追加スコア
                 const chainCount = effectParams.chainCount || 0;
-                return chainCount * 20;'
+                return chainCount * 20;
                 '';
             case 'score':;
                 // S字泡：固定ボーナススコア
-                return effectParams.bonusScore || 80;'
+                return effectParams.bonusScore || 80;
                 '';
             case 'boss':;
                 // ボス泡：体力に応じたボーナス
@@ -270,7 +270,7 @@ export class ScoreCalculator {
     /**
      * 推奨戦略を計算
      * @param {Object} gameState - ゲーム状態
-     * @returns {Object} 推奨戦略'
+     * @returns {Object} 推奨戦略
      */''
     calculateRecommendedStrategy(gameState') {
         const {
@@ -279,14 +279,14 @@ export class ScoreCalculator {
             timeRemaining = 0 }
             currentScore = 0 }
         } = gameState;
-        ';
+        ';'
         const strategy = { ''
             priority: 'normal',
             targetBubbles: [],
             reasoning: [] }
         },
         ';
-        // コンボが高い場合は継続を優先''
+        // コンボが高い場合は継続を優先
         if(currentCombo >= 3') {'
             '';
             strategy.priority = 'combo';'
@@ -294,9 +294,9 @@ export class ScoreCalculator {
             strategy.reasoning.push('高コンボ継続を優先'); }
         }
         ';
-        // 時間が少ない場合は高得点泡を優先''
+        // 時間が少ない場合は高得点泡を優先
         if(timeRemaining < 30000') {'
-            // 30秒未満''
+            // 30秒未満
             strategy.priority = 'highScore';'
         }'
             strategy.reasoning.push('時間切れ前の高得点狙い'); }
@@ -305,7 +305,7 @@ export class ScoreCalculator {
         // 利用可能な泡から推奨順を決定
         const bubbleValues = availableBubbles.map(bubble => ({ )
             ...bubble);
-            expectedScore: this.calculateBaseScore(bubble.type, bubble.ageRatio || 0); }
+            expectedScore: this.calculateBaseScore(bubble.type, bubble.ageRatio || 0) }
         });
         
         // 期待スコア順でソート
@@ -320,7 +320,7 @@ export class ScoreCalculator {
      * デバッグ情報を取得
      * @returns {Object} デバッグ情報
      */
-    getDebugInfo() {'
+    getDebugInfo() {
         return { hasGameConfig: !!this.gameConfig,'
     }'
             scoreConfig: this.getScoreConfig('' };'
@@ -335,6 +335,6 @@ let scoreCalculatorInstance = null;
 /**
  * ScoreCalculatorのシングルトンインスタンスを取得
  * @returns {ScoreCalculator} ScoreCalculatorインスタンス
- */)'
+ */)
 export function getScoreCalculator() { if (!scoreCalculatorInstance) {''
         scoreCalculatorInstance = new ScoreCalculator(' })

@@ -13,7 +13,7 @@ interface VolumeSliderOptions { id: string,
     icon: string,'';
     category: 'master' | 'bgm' | 'sfx',
     defaultValue: number,
-    previewSound: string | null; }
+    previewSound: string | null }
 }
 
 /**
@@ -23,7 +23,7 @@ interface ToggleOptionOptions { id: string,
     label: string,
     icon: string,
     defaultValue: boolean,
-    onChange: (value: boolean) => void; }
+    onChange: (value: boolean) => void }
 }
 
 /**
@@ -58,7 +58,7 @@ interface VerticalSliderOptions { id: string,
     max: number,
     defaultValue: number,
     unit: string,
-    onChange: (value: number) => void; }
+    onChange: (value: number) => void }
 }
 
 /**
@@ -101,7 +101,7 @@ export class AudioSettingsUIComponentFactory {
     }
     
     /**
-     * 音量スライダーを作成'
+     * 音量スライダーを作成
      */''
     createVolumeSlider(container: HTMLElement, options: VolumeSliderOptions'): void { ''
         const sliderGroup = document.createElement('div'');''
@@ -113,7 +113,7 @@ export class AudioSettingsUIComponentFactory {
             border-radius: 10px,
         `;
         ';
-        // ラベル''
+        // ラベル
         const labelContainer = document.createElement('div'');
         labelContainer.style.cssText = `;
             display: flex,
@@ -131,7 +131,7 @@ export class AudioSettingsUIComponentFactory {
         `;''
         labelContainer.appendChild(label');
         ';
-        // 値表示''
+        // 値表示
         const valueDisplay = document.createElement('span');
         valueDisplay.id = `${options.id}-value`;
         valueDisplay.textContent = `${Math.round(options.defaultValue * 100})}%`;
@@ -144,7 +144,7 @@ export class AudioSettingsUIComponentFactory {
         '';
         sliderGroup.appendChild(labelContainer');
         ';
-        // スライダーコンテナ''
+        // スライダーコンテナ
         const sliderContainer = document.createElement('div'');
         sliderContainer.style.cssText = `;
             display: flex,
@@ -152,7 +152,7 @@ export class AudioSettingsUIComponentFactory {
             gap: 15px,
         `;
         ';
-        // スライダー''
+        // スライダー
         const slider = document.createElement('input'');''
         slider.type = 'range';'
         slider.id = options.id;''
@@ -169,7 +169,7 @@ export class AudioSettingsUIComponentFactory {
             cursor: pointer,
         `;
         ';
-        // プレビューボタン''
+        // プレビューボタン
         const previewButton = document.createElement('button'');''
         previewButton.className = 'preview-button';''
         previewButton.innerHTML = '🔊';'
@@ -184,7 +184,7 @@ export class AudioSettingsUIComponentFactory {
             transition: all 0.3s ease,
         `;
         ';
-        // イベントハンドラー''
+        // イベントハンドラー
         slider.addEventListener('input', (e) => {  }
             const target = e.target as HTMLInputElement; }
             const value = parseInt(target.value}) / 100;
@@ -197,14 +197,14 @@ export class AudioSettingsUIComponentFactory {
             // 保存状態を表示
             this._showSaveStatus();
             
-            // プレビュー音を予約'
+            // プレビュー音を予約
             this._schedulePreview(options);''
         }');'
         '';
         previewButton.addEventListener('click', () => {  ''
             this._playPreviewSound(options');
             ';
-            // ボタンアニメーション''
+            // ボタンアニメーション
             previewButton.style.transform = 'scale(0.95')';''
             setTimeout((') => {' }'
                 previewButton.style.transform = 'scale(1')'; }
@@ -222,7 +222,7 @@ export class AudioSettingsUIComponentFactory {
     }
     
     /**
-     * トグルオプションを作成'
+     * トグルオプションを作成
      */''
     createToggleOption(container: HTMLElement, options: ToggleOptionOptions'): void { ''
         const toggleGroup = document.createElement('div'');''
@@ -239,7 +239,7 @@ export class AudioSettingsUIComponentFactory {
             transition: all 0.3s ease,
         `;
         ';
-        // ラベル''
+        // ラベル
         const label = document.createElement('label');
         label.htmlFor = options.id; }
         label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})}`;
@@ -249,7 +249,7 @@ export class AudioSettingsUIComponentFactory {
             cursor: pointer,
         `;
         ';
-        // トグルスイッチ''
+        // トグルスイッチ
         const switchContainer = this._createToggleSwitch(options');'
         '';
         toggleGroup.addEventListener('mouseenter', (') => {  ' }'
@@ -279,7 +279,7 @@ export class AudioSettingsUIComponentFactory {
             border-radius: 10px,
         `;
         ';
-        // ラベル''
+        // ラベル
         const groupLabel = document.createElement('h3'); }
         groupLabel.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})}`;
         groupLabel.style.cssText = `;
@@ -289,7 +289,7 @@ export class AudioSettingsUIComponentFactory {
         `;''
         radioGroup.appendChild(groupLabel');
         ';
-        // オプション''
+        // オプション
         const optionsContainer = document.createElement('div');
         optionsContainer.style.cssText = `;
             display: grid,
@@ -319,7 +319,7 @@ export class AudioSettingsUIComponentFactory {
             border-radius: 10px,
         `;
         ';
-        // ラベル''
+        // ラベル
         const label = document.createElement('label');
         label.htmlFor = options.id; }
         label.innerHTML = `${options.icon} ${this.localizationManager.getText(options.label})}`;
@@ -339,7 +339,7 @@ export class AudioSettingsUIComponentFactory {
     }
     
     /**
-     * 垂直スライダーを作成（イコライザー用）'
+     * 垂直スライダーを作成（イコライザー用）
      */''
     createVerticalSlider(container: HTMLElement, options: VerticalSliderOptions'): void { ''
         const sliderGroup = document.createElement('div'');''
@@ -351,7 +351,7 @@ export class AudioSettingsUIComponentFactory {
             vertical-align: top,
         `;
         ';
-        // 値表示''
+        // 値表示
         const valueDisplay = document.createElement('div''); }'
         valueDisplay.id = `${options.id}-value`;''
         valueDisplay.textContent = `${options.defaultValue >= 0 ? '+' : ''}${options.defaultValue}${options.unit}`;
@@ -362,7 +362,7 @@ export class AudioSettingsUIComponentFactory {
         `;''
         sliderGroup.appendChild(valueDisplay');
         ';
-        // スライダーコンテナ''
+        // スライダーコンテナ
         const sliderContainer = document.createElement('div');
         sliderContainer.style.cssText = `;
             position: relative,
@@ -373,11 +373,11 @@ export class AudioSettingsUIComponentFactory {
         
         // スライダー（垂直）
         const slider = this._createVerticalSliderElement(options, valueDisplay);
-        ';
+        ';'
         sliderContainer.appendChild(slider);''
         sliderGroup.appendChild(sliderContainer');
         ';
-        // ラベル''
+        // ラベル
         const label = document.createElement('div');
         label.innerHTML = `${options.icon}<br>${options.label}`;
         label.style.cssText = `;
@@ -456,7 +456,7 @@ export class AudioSettingsUIComponentFactory {
         `;''
         switchLabel.appendChild(switchKnob');
         ';
-        // イベントハンドラー''
+        // イベントハンドラー
         checkbox.addEventListener('change', (e') => {  const target = e.target as HTMLInputElement;'
             const isChecked = target.checked;''
             switchLabel.style.backgroundColor = isChecked ? '#00ffff' : '#333333';''
@@ -466,7 +466,7 @@ export class AudioSettingsUIComponentFactory {
                 options.onChange(isChecked); }
             }
             ';
-            // UIサウンド''
+            // UIサウンド
             (this.audioManager as any').playUISound?.('toggle', { volume: 0.3 });
             
             // 保存状態を表示
@@ -481,7 +481,7 @@ export class AudioSettingsUIComponentFactory {
     
     /**
      * ラジオオプションを作成
-     * @private'
+     * @private
      */''
     private _createRadioOption(option: { value: string; label: string ), parentOptions: RadioGroupOptions'): HTMLElement {''
         const optionLabel = document.createElement('label');
@@ -606,7 +606,7 @@ export class AudioSettingsUIComponentFactory {
             cursor: pointer,
         `;
         ';
-        // スライダースタイル追加''
+        // スライダースタイル追加
         this._addVerticalSliderStyles(options.id');'
         '';
         slider.addEventListener('input', (e) => { '
@@ -628,7 +628,7 @@ export class AudioSettingsUIComponentFactory {
     
     /**
      * 垂直スライダースタイルを追加
-     * @private'
+     * @private
      */''
     private _addVerticalSliderStyles(sliderId: string'): void { ''
         const style = document.createElement('style');
@@ -640,14 +640,14 @@ export class AudioSettingsUIComponentFactory {
                 background: #00ffff,
                 cursor: pointer,
                 border-radius: 50%,
-                box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+                box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) }
             }
             #${sliderId}::-moz-range-thumb { width: 20px,
                 height: 20px,
                 background: #00ffff,
                 cursor: pointer,
                 border-radius: 50%,
-                box-shadow: 0 0 10px rgba(0, 255, 255, 0.5); }
+                box-shadow: 0 0 10px rgba(0, 255, 255, 0.5) }
             }
         `;
         document.head.appendChild(style);
@@ -675,15 +675,15 @@ export class AudioSettingsUIComponentFactory {
     /**
      * プレビュー音を再生
      * @private
-     */'
+     */
     private _playPreviewSound(options: VolumeSliderOptions): void { ''
         if (!options.previewSound || !this.audioManager') return;'
         '';
         if(options.category === 'bgm') {
-            // BGMプレビュー（短いフレーズを再生）'
+            // BGMプレビュー（短いフレーズを再生）
             const currentBGM = (this.audioManager as any).getCurrentBGMInfo? .();''
             if (currentBGM && currentBGM.isPlaying') {'
-                // 一時的に音量を上げる''
+                // 一時的に音量を上げる
                 const originalVolume = this.audioManager.getVolume('bgm');
                 (this.audioManager as any).setBGMVolume?.(1.0, 0.2);
         }
@@ -693,7 +693,7 @@ export class AudioSettingsUIComponentFactory {
             } else { // BGMが再生されていない場合は短いメロディを生成 : undefined' }'
                 this.audioManager.playSound('success', { volume: 0.5 }');
             }
-        } else {  // 通常の効果音'
+        } else {  // 通常の効果音
             this.audioManager.playSound(options.previewSound, { ') }'
                 volume: options.category === 'master' ? 0.5 : 1.0 ); }
         }
@@ -714,6 +714,6 @@ export class AudioSettingsUIComponentFactory {
     dispose(): void { // タイムアウトをクリア
         this.previewTimeouts.forEach(timeout => clearTimeout(timeout);
         this.previewTimeouts.clear();
-        ';
-        // スライダー管理をクリア''
+        ;
+        // スライダー管理をクリア
         this.sliders.clear(') }

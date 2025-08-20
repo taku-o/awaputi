@@ -10,19 +10,19 @@ export interface GestureConfig { enabled: boolean,
     keyboardSensitivity?: number;
     oneHandedMode?: boolean;
     deviceAdaptation: DeviceAdaptation,
-    gestureThresholds: GestureThresholds;
+    gestureThresholds: GestureThresholds
     }
 }
 
 export interface DeviceAdaptation { touchscreenOptimized: boolean,
     mouseOptimized: boolean,
     keyboardOptimized: boolean,
-    gamepadOptimized: boolean; }
+    gamepadOptimized: boolean }
 }
 
 export interface GestureThresholds { minDistance: number,
     angleThreshold: number,
-    minVelocity: number; }
+    minVelocity: number }
 }
 
 export interface RecognitionState { isRecognizing: boolean,
@@ -41,47 +41,47 @@ export interface RecognitionState { isRecognizing: boolean,
 export interface TouchPoint { id: number,
     x: number,
     y: number,
-    force: number; }
+    force: number }
 }
 
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface Velocity { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface DeviceSettings { touch: TouchSettings,
     mouse: MouseSettings,
     keyboard: KeyboardSettings,
-    gamepad: GamepadSettings;
+    gamepad: GamepadSettings
     }
 }
 
 export interface TouchSettings { sensitivity: number,
     deadZone: number,
     multiTouchEnabled: boolean,
-    pressureEnabled: boolean; }
+    pressureEnabled: boolean }
 }
 
 export interface MouseSettings { sensitivity: number,
     acceleration: number,
     rightClickEnabled: boolean,
-    wheelSensitivity: number; }
+    wheelSensitivity: number }
 }
 
 export interface KeyboardSettings { sensitivity: number,
     repeatDelay: number,
     repeatRate: number,
     stickyKeys: boolean,
-    filterKeys: boolean; }
+    filterKeys: boolean }
 }
 
 export interface GamepadSettings { enabled: boolean,
     deadZone: number,
     sensitivity: number,
-    vibrationEnabled: boolean; }
+    vibrationEnabled: boolean }
 }
 
 export interface DeviceInfo { hasTouch: boolean,
@@ -90,26 +90,26 @@ export interface DeviceInfo { hasTouch: boolean,
     hasGamepad: boolean,
     screenSize: ScreenSize,
     devicePixelRatio: number,
-    orientation: string; }
+    orientation: string }
 }
 
 export interface ScreenSize { width: number,
-    height: number; }
+    height: number }
 }
 
 export interface KeyModifiers { ctrl: boolean,
     alt: boolean,
     shift: boolean,
-    meta: boolean; }
+    meta: boolean }
 }
 
 export interface StickInput { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface GamepadButton { pressed: boolean,
     touched: boolean,
-    value: number; }
+    value: number }
 }
 
 export interface BoundHandlers { touchStart: (event: TouchEvent) => void,
@@ -126,7 +126,7 @@ export interface BoundHandlers { touchStart: (event: TouchEvent) => void,
     gamepadConnected: (event: GamepadEvent) => void,
     gamepadDisconnected: (event: GamepadEvent) => void,
     resize: (event: Event) => void,
-    orientationChange: (event: Event) => void; }
+    orientationChange: (event: Event) => void }
 }
 
 export interface GestureEventData { type: GestureInputType,
@@ -146,21 +146,21 @@ export interface TouchGestureData extends GestureEventData { type: 'touch',
     direction?: number;
     movement?: number; }
 }
-';
+';'
 export interface MouseGestureData extends GestureEventData { ''
     type: 'mouse',
     x?: number;
     y?: number; }
 }
-';
+';'
 export interface WheelGestureData extends GestureEventData { ''
     type: 'wheel',
     deltaX: number,
     deltaY: number,
     deltaZ: number,
-    deltaMode: number; }
+    deltaMode: number }
 }
-';
+';'
 export interface KeyboardGestureData extends GestureEventData { ''
     type: 'keyboard',
     key: string,
@@ -168,7 +168,7 @@ export interface KeyboardGestureData extends GestureEventData { ''
     modifiers?: KeyModifiers;
     combo?: string; }
 }
-';
+';'
 export interface GamepadGestureData extends GestureEventData { ''
     type: 'gamepad',
     leftStick?: StickInput;
@@ -184,7 +184,7 @@ export interface DeviceCapabilities { touch: boolean,
     keyboard: boolean,
     gamepad: boolean,
     multiTouch: boolean,
-    pressure: boolean; }
+    pressure: boolean }
 }
 
 export interface DeviceSettingsUpdate { touch?: Partial<TouchSettings>;
@@ -194,7 +194,7 @@ export interface DeviceSettingsUpdate { touch?: Partial<TouchSettings>;
     }
 }
 ';
-// 列挙型''
+// 列挙型
 export type GestureInputType = 'touch' | 'mouse' | 'wheel' | 'keyboard' | 'gamepad';''
 export type EdgePosition = 'left' | 'right' | 'top' | 'bottom';'
 export type GestureEventType = '';
@@ -204,7 +204,7 @@ export type GestureEventType = '';
     | 'gamepadInput' | 'gamepadConnected' | 'gamepadDisconnected''';
     | 'screenSizeChange' | 'orientationChange';
 ';
-// 型ガード''
+// 型ガード
 export function isTouchGestureData(data: GestureEventData'): data is TouchGestureData { ''
     return data.type === 'touch'; }
 }'
@@ -289,7 +289,7 @@ export class GestureDeviceManager {
             gamepadConnected: this.handleGamepadConnected.bind(this),
             gamepadDisconnected: this.handleGamepadDisconnected.bind(this),
             resize: this.handleScreenSizeChange.bind(this),
-            orientationChange: this.handleOrientationChange.bind(this); }
+            orientationChange: this.handleOrientationChange.bind(this) }
         };
         
         // ゲームパッドポーリング
@@ -303,9 +303,9 @@ export class GestureDeviceManager {
      */
     private initialize(): void { // デバイス検出と最適化
         this.detectAndOptimizeForDevice();
-        ';
-        // イベントリスナーの設定''
-        this.setupEventListeners('')';
+        ;
+        // イベントリスナーの設定
+        this.setupEventListeners()';
         console.log('GestureDeviceManager initialized'); }
     }
     
@@ -336,9 +336,9 @@ export class GestureDeviceManager {
         }
         
         // ゲームパッド対応
-        if(this.deviceInfo.hasGamepad) {'
+        if(this.deviceInfo.hasGamepad) {
             this.config.deviceAdaptation.gamepadOptimized = true;''
-            this.optimizeForGamepad('');
+            this.optimizeForGamepad();
         }'
         console.log('Device optimization applied:', this.deviceInfo); }
     }
@@ -349,7 +349,7 @@ export class GestureDeviceManager {
     private detectDeviceCapabilities(''';
             hasTouch: 'ontouchstart' in window || navigator.maxTouchPoints > 0,')';
             hasMouse: matchMedia('(pointer: fine')'').matches,';
-            hasKeyboard: true, // 常に利用可能と仮定'';
+            hasKeyboard: true, // 常に利用可能と仮定;
             hasGamepad: 'getGamepads' in navigator,
             screenSize: { width: window.screen.width,
                 height: window.screen.height }
@@ -362,7 +362,7 @@ export class GestureDeviceManager {
     /**
      * タッチ入力の最適化'
      */ : undefined''
-    private optimizeForTouch('')';
+    private optimizeForTouch()';
         if ('TouchEvent' in window && 'force' in TouchEvent.prototype) { this.deviceSettings.touch.pressureEnabled = true; }
         }
     }
@@ -380,9 +380,9 @@ export class GestureDeviceManager {
     }
     
     /**
-     * キーボード入力の最適化'
+     * キーボード入力の最適化
      */''
-    private optimizeForKeyboard('')';
+    private optimizeForKeyboard()';
         if(navigator.userAgent.includes('Windows') {
             // Windows固有の設定
             this.deviceSettings.keyboard.stickyKeys = this.checkStickyKeysEnabled();
@@ -417,12 +417,12 @@ export class GestureDeviceManager {
         }
         
         // ゲームパッドイベント
-        if(this.config.deviceAdaptation.gamepadOptimized) {'
+        if(this.config.deviceAdaptation.gamepadOptimized) {
             '';
-            this.setupGamepadListeners('')';
+            this.setupGamepadListeners()';
         window.addEventListener('resize', this.boundHandlers.resize);
         ';
-        // オリエンテーション変更''
+        // オリエンテーション変更
         if (screen.orientation') {'
         }'
             screen.orientation.addEventListener('change', this.boundHandlers.orientationChange); }
@@ -432,28 +432,28 @@ export class GestureDeviceManager {
     /**
      * タッチリスナーの設定'
      */''
-    private setupTouchListeners('')';
+    private setupTouchListeners()';
         document.addEventListener('touchstart', this.boundHandlers.touchStart, { passive: false )'),''
         document.addEventListener('touchmove', this.boundHandlers.touchMove, { passive: false )'),''
         document.addEventListener('touchend', this.boundHandlers.touchEnd, { passive: false )'),''
-        document.addEventListener('touchcancel', this.boundHandlers.touchCancel, { passive: false ); }
+        document.addEventListener('touchcancel', this.boundHandlers.touchCancel, { passive: false ) }
     }
     
     /**
      * マウスリスナーの設定'
      */''
-    private setupMouseListeners('')';
+    private setupMouseListeners()';
         document.addEventListener('mousedown', this.boundHandlers.mouseDown');''
         document.addEventListener('mousemove', this.boundHandlers.mouseMove');''
         document.addEventListener('mouseup', this.boundHandlers.mouseUp');''
         document.addEventListener('wheel', this.boundHandlers.wheel, { passive: false )'),''
-        document.addEventListener('contextmenu', this.boundHandlers.contextMenu); }
+        document.addEventListener('contextmenu', this.boundHandlers.contextMenu) }
     }
     
     /**
      * キーボードリスナーの設定'
      */''
-    private setupKeyboardListeners('')';
+    private setupKeyboardListeners()';
         document.addEventListener('keydown', this.boundHandlers.keyDown');''
         document.addEventListener('keyup', this.boundHandlers.keyUp);
     }
@@ -461,7 +461,7 @@ export class GestureDeviceManager {
     /**
      * ゲームパッドリスナーの設定'
      */''
-    private setupGamepadListeners('')';
+    private setupGamepadListeners()';
         window.addEventListener('gamepadconnected', this.boundHandlers.gamepadConnected');''
         window.addEventListener('gamepaddisconnected', this.boundHandlers.gamepadDisconnected);
         
@@ -479,7 +479,7 @@ export class GestureDeviceManager {
         this.recognitionState.isRecognizing = true;
         this.recognitionState.startTime = Date.now();
         this.recognitionState.touchPoints = Array.from(event.touches).map(touch => ({
-            id: touch.identifier,);
+            id: touch.identifier);
             x: touch.clientX);
             y: touch.clientY,);
             force: touch.force || 0))),
@@ -490,17 +490,17 @@ export class GestureDeviceManager {
         },
         
         // 片手モード用のエッジ検出
-        if(this.config.oneHandedMode) {'
-            ';
+        if(this.config.oneHandedMode) {
+            ';'
         }'
             this.detectEdgeTouch(this.recognitionState.startPosition'); }
         }
         ';
-        // 上位に通知''
+        // 上位に通知
         this.notifyGestureEvent('touchStart', { ')'
             type: 'touch');
             points: this.recognitionState.touchPoints,);
-            startPosition: this.recognitionState.startPosition); }
+            startPosition: this.recognitionState.startPosition) }
     }
     
     /**
@@ -511,7 +511,7 @@ export class GestureDeviceManager {
         event.preventDefault(); // スクロール防止
         
         const currentTouches = Array.from(event.touches).map(touch => ({
-            id: touch.identifier,);
+            id: touch.identifier);
             x: touch.clientX);
             y: touch.clientY,);
             force: touch.force || 0))),
@@ -526,18 +526,18 @@ export class GestureDeviceManager {
         },
         
         // マルチタッチの処理
-        if(currentTouches.length > 1) {'
-            ';
+        if(currentTouches.length > 1) {
+            ';'
         }'
             this.handleMultiTouch(currentTouches'); }
         }
         ';
-        // 上位に通知''
+        // 上位に通知
         this.notifyGestureEvent('touchMove', { ''
-            type: 'touch',);
+            type: 'touch');
             points: currentTouches);
             currentPosition: this.recognitionState.currentPosition,);
-            velocity: this.recognitionState.velocity); }
+            velocity: this.recognitionState.velocity) }
     }
     
     /**
@@ -547,11 +547,11 @@ export class GestureDeviceManager {
         
         const duration = Date.now() - this.recognitionState.startTime;
         const distance = this.calculateDistance(;
-            this.recognitionState.startPosition,)';
+            this.recognitionState.startPosition)';
             this.recognitionState.currentPosition)'';
         ');
-        
-        // ジェスチャーデータの構築'
+        '
+        // ジェスチャーデータの構築
         const gestureData: TouchGestureData = {''
             type: 'touch',
             duration,
@@ -562,13 +562,13 @@ export class GestureDeviceManager {
             velocity: this.recognitionState.velocity,
             fingers: this.recognitionState.touchPoints.length,
             direction: this.calculateDirection(;
-                this.recognitionState.startPosition,)';
+                this.recognitionState.startPosition)';
                 this.recognitionState.currentPosition)'';
             '),
             movement: distance }
-        },
+        },'
         ';
-        // 上位に通知''
+        // 上位に通知
         this.notifyGestureEvent('touchEnd', gestureData);
         
         // 状態リセット
@@ -577,10 +577,10 @@ export class GestureDeviceManager {
     
     /**
      * タッチキャンセル処理
-     */'
+     */
     private handleTouchCancel(event: TouchEvent): void { ''
-        this.resetRecognitionState('')';
-        this.notifyGestureEvent('touchCancel', { type: 'touch' ); }
+        this.resetRecognitionState()';
+        this.notifyGestureEvent('touchCancel', { type: 'touch' ) }
     }
     
     // マウスイベント処理
@@ -595,7 +595,7 @@ export class GestureDeviceManager {
             touches: [{
                 identifier: 0,
                 clientX: event.clientX,
-                clientY: event.clientY,];
+                clientY: event.clientY];
                 force: (event as any).pressure || 0.5 }]
             }] as Touch[]
         } as TouchEvent,
@@ -615,7 +615,7 @@ export class GestureDeviceManager {
             touches: [{
                 identifier: 0,
                 clientX: event.clientX,
-                clientY: event.clientY,];
+                clientY: event.clientY];
                 force: (event as any).pressure || 0.5 }]
             }] as Touch[]
         } as TouchEvent,
@@ -638,7 +638,7 @@ export class GestureDeviceManager {
     /**
      * ホイール処理
      */
-    private handleWheel(event: WheelEvent): void { if (!this.config.enabled) return;'
+    private handleWheel(event: WheelEvent): void { if (!this.config.enabled) return;
         '';
         event.preventDefault(''';
             type: 'wheel',
@@ -655,12 +655,12 @@ export class GestureDeviceManager {
      * コンテキストメニュー処理
      */
     private handleContextMenu(event: MouseEvent): void { if (this.config.enabled) {'
-            // カスタムコンテキストメニューの表示''
+            // カスタムコンテキストメニューの表示
             event.preventDefault(''';
             this.notifyGestureEvent('contextMenu', {')'
                 type: 'mouse');
                 x: event.clientX,);
-                y: event.clientY); }
+                y: event.clientY) }
         }
     }
     
@@ -676,11 +676,11 @@ export class GestureDeviceManager {
             alt: event.altKey,
             shift: event.shiftKey,
             meta: event.metaKey }
-        },'
+        },
         '';
         const keyCombo = this.createKeyCombo(event.key, modifiers');
         
-        // キーボードジェスチャーとして処理'
+        // キーボードジェスチャーとして処理
         const keyboardGesture: KeyboardGestureData = { ''
             type: 'keyboard',
             key: event.key,
@@ -701,7 +701,7 @@ export class GestureDeviceManager {
         this.notifyGestureEvent('keyUp', {')'
             type: 'keyboard');
             key: event.key,);
-            code: event.code); }
+            code: event.code) }
     }
     
     // ゲームパッド処理
@@ -711,8 +711,8 @@ export class GestureDeviceManager {
      */
     private handleGamepadConnected(event: GamepadEvent): void { const gamepad = event.gamepad;
         console.log(`Gamepad connected: ${gamepad.id)`),
-        ';
-        // ゲームパッド固有の設定を適用''
+        ;
+        // ゲームパッド固有の設定を適用
         this.configureGamepad(gamepad');'
         ' }'
         this.notifyGestureEvent('gamepadConnected', { type: 'gamepad', gamepad )});
@@ -766,17 +766,17 @@ export class GestureDeviceManager {
         },
         
         // ボタン入力
-        const buttons: GamepadButton[] = gamepad.buttons.map(button => ({ pressed: button.pressed)'
+        const buttons: GamepadButton[] = gamepad.buttons.map(button => ({ pressed: button.pressed)
             touched: button.touched,')';
             value: button.value))'),
         
-        // ゲームパッドジェスチャーとして処理'
+        // ゲームパッドジェスチャーとして処理
         const gamepadGesture: GamepadGestureData = {''
             type: 'gamepad',
             leftStick,
             rightStick,';
             buttons,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
         this.notifyGestureEvent('gamepadInput', gamepadGesture); }
     }
     
@@ -784,7 +784,7 @@ export class GestureDeviceManager {
     
     /**
      * キーコンボの作成
-     */'
+     */
     private createKeyCombo(key: string, modifiers: KeyModifiers): string { const parts: string[] = [],''
         if (modifiers.ctrl') parts.push('Ctrl');''
         if (modifiers.alt') parts.push('Alt');''
@@ -797,7 +797,7 @@ export class GestureDeviceManager {
     /**
      * ゲームパッド設定'
      */''
-    private configureGamepad(gamepad: Gamepad'): void { // ゲームパッド固有の設定''
+    private configureGamepad(gamepad: Gamepad'): void { // ゲームパッド固有の設定
         if (gamepad.id.includes('Xbox')') {'
             this.deviceSettings.gamepad.deadZone = 0.15;' }'
         } else if(gamepad.id.includes('PlayStation') { this.deviceSettings.gamepad.deadZone = 0.1; }
@@ -862,7 +862,7 @@ export class GestureDeviceManager {
             // ピンチジェスチャーの検出
             const distance = this.calculateDistance(touches[0], touches[1]);
             const initialDistance = this.calculateDistance(;
-                this.recognitionState.touchPoints[0],);
+                this.recognitionState.touchPoints[0]);
                 this.recognitionState.touchPoints[1]);
             
             const scale = distance / initialDistance;
@@ -876,10 +876,10 @@ export class GestureDeviceManager {
     private detectEdgeTouch(position: Position): void { const edgeThreshold = 50;
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
-        ';
-        // エッジの判定''
+        ;
+        // エッジの判定
         if(position.x < edgeThreshold') {'
-            ';
+            ';'
         }'
             this.recognitionState.edge = 'left';' }'
         } else if (position.x > screenWidth - edgeThreshold') { ''
@@ -916,23 +916,23 @@ export class GestureDeviceManager {
         this.deviceInfo.screenSize = {
             width: window.screen.width,
             height: window.screen.height }
-        },'
+        },
         '';
         this.notifyGestureEvent('screenSizeChange', { ')'
             type: 'touch', // ダミー型);
-            screenSize: this.deviceInfo.screenSize); }
+            screenSize: this.deviceInfo.screenSize) }
     }
     
     /**
      * オリエンテーション変更処理
-     */'
+     */
     private handleOrientationChange(): void { ''
         if (!this.deviceInfo') return;'
         '';
         this.deviceInfo.orientation = screen.orientation? .type || 'unknown';''
         this.notifyGestureEvent('orientationChange', { : undefined')'
             type: 'touch', // ダミー型);
-            orientation: this.deviceInfo.orientation); }
+            orientation: this.deviceInfo.orientation) }
     }
     
     /**
@@ -975,8 +975,8 @@ export class GestureDeviceManager {
         }
         
         if(newSettings.gamepad) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             Object.assign(this.deviceSettings.gamepad, newSettings.gamepad'); }
         }'
@@ -1017,7 +1017,7 @@ export class GestureDeviceManager {
     /**
      * リソースの解放'
      */''
-    destroy('')';
+    destroy()';
         document.removeEventListener('touchstart', this.boundHandlers.touchStart');''
         document.removeEventListener('touchmove', this.boundHandlers.touchMove');''
         document.removeEventListener('touchend', this.boundHandlers.touchEnd');''
@@ -1034,7 +1034,7 @@ export class GestureDeviceManager {
         window.removeEventListener('resize', this.boundHandlers.resize);'
         '';
         if(screen.orientation') {'
-            ';
+            ';'
         }'
             screen.orientation.removeEventListener('change', this.boundHandlers.orientationChange'); }
         }'

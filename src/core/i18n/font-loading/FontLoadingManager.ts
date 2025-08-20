@@ -18,7 +18,7 @@ export interface FontLoadingConfig extends FontErrorConfig { enabledSources: str
         maxErrorsPerSource: number }
     },
     development: { disableExternalFonts: boolean,
-        verboseLogging: boolean; }
+        verboseLogging: boolean }
     };
 }
 
@@ -31,7 +31,7 @@ export interface FontLoadResult { success: boolean,
     cached?: boolean;
     originalFont?: string; }
 }
-';
+';'
 export interface FontLoadOptions { ''
     priority?: 'high' | 'normal' | 'low';
     timeout?: number;
@@ -40,7 +40,7 @@ export interface FontLoadOptions { ''
 
 export interface ApplyElementResults { total: number,
     successful: number,
-    failed: number; }
+    failed: number }
 }
 
 export class FontLoadingManager {
@@ -87,14 +87,14 @@ export class FontLoadingManager {
         }
             this._setupErrorIntegration(); }
         }
-    }'
+    }
     '';
-    private async _setupErrorIntegration('')';
+    private async _setupErrorIntegration()';
             const { FontErrorIntegration } = await import('./FontErrorIntegration.js');
             this.errorIntegration = new FontErrorIntegration(this.globalErrorHandler, this.errorHandler);
             
             if(this.errorIntegration.initialize() {
-            ';
+            ';'
                 '';
                 if (this.config.development? .verboseLogging') {'
             
@@ -104,7 +104,7 @@ export class FontLoadingManager {
             } else {  ''
                 console.warn('[FontLoadingManager] ErrorHandler integration failed to initialize'); }'
                 this.errorIntegration = null;' }'
-            } catch (error') { : undefined''
+            } catch (error) { : undefined''
             console.warn('[FontLoadingManager] Failed to setup ErrorHandler integration:', error);
             this.errorIntegration = null; }
         }
@@ -138,7 +138,7 @@ export class FontLoadingManager {
         }
 
         try { // Check source availability
-            const availableSources = this.sourceManager.getAvailableSources();'
+            const availableSources = this.sourceManager.getAvailableSources();
             '';
             if(this.config.development? .verboseLogging') {'
                 : undefined';
@@ -147,14 +147,14 @@ export class FontLoadingManager {
             }'
 '';
             if(availableSources.length === 0') {'
-                ';
+                ';'
             }'
                 console.warn('[FontLoadingManager] No font sources available'); }
             }
 
             this.initialized = true;'
 '';
-        } catch (error') { this.errorHandler.handleFontError(error as Error, {')'
+        } catch (error) { this.errorHandler.handleFontError(error as Error, {')'
                 source: 'manager' as any,')';
                 fontFamily: 'initialization'),' }'
             }');
@@ -162,7 +162,7 @@ export class FontLoadingManager {
             // Continue with fallback behavior
             this.initialized = true;
         }
-    }'
+    }
 '';
     async loadFont(fontFamily: string, language: string = 'default', options: FontLoadOptions = { ): Promise<FontLoadResult> {
         if(!this.initialized) {
@@ -218,7 +218,7 @@ export class FontLoadingManager {
 
             } catch (error) { const context = {
                     source: sourceName as any,
-                    fontFamily: fontFamily; }
+                    fontFamily: fontFamily }
                 };
 
                 this.errorHandler.handleFontError(error as Error, context);
@@ -233,20 +233,20 @@ export class FontLoadingManager {
         // All sources failed, apply fallback
         return this._applyFallbackStrategy(fontFamily, language, startTime);
     }
-';
+';'
     private _applyFallbackStrategy(fontFamily: string, language: string, startTime: number): FontLoadResult { ''
         if(!this.config.fallbackBehavior.useSystemFonts') {
             return { success: false,'
                 fontFamily: fontFamily,'';
                 source: 'none',';
-                fallbackUsed: false,';
+                fallbackUsed: false,'
         }'
-                loadTime: Date.now('') };'
+                loadTime: Date.now() };'
                 error: new Error('All font sources failed and fallback disabled'); }
             };
         }
-';
-        try { ''
+';'
+        try {'
             const fallbackFont = this.fallbackHandler.getSystemFontForLanguage(language');
             
             return { success: true,'
@@ -258,7 +258,7 @@ export class FontLoadingManager {
                 originalFont: fontFamily }
             },'
 '';
-        } catch (error') { this.errorHandler.handleFontError(error as Error, {')'
+        } catch (error) { this.errorHandler.handleFontError(error as Error, {')'
                 source: 'fallback' as any,)';
                 fontFamily: fontFamily),' }'
             }');
@@ -294,11 +294,11 @@ export class FontLoadingManager {
                 
                 return true;
             } else {  // Apply fallback even if loading failed
-                this.fallbackHandler.applyFallback(element, language, fontFamily); }'
+                this.fallbackHandler.applyFallback(element, language, fontFamily); }
                 return false;' }'
-            } catch (error') { this.errorHandler.handleFontError(error as Error, {')'
+            } catch (error) { this.errorHandler.handleFontError(error as Error, {')'
                 source: 'element' as any,);
-                fontFamily: fontFamily); }
+                fontFamily: fontFamily) }
             });
 
             this.fallbackHandler.applyFallback(element, language, fontFamily);
@@ -355,7 +355,7 @@ export class FontLoadingManager {
         
         // Update child components
         this.sourceManager.enabledSources = this.config.enabledSources;
-        this.sourceManager.timeouts = this.config.timeouts;'
+        this.sourceManager.timeouts = this.config.timeouts;
 '';
         if(this.config.development? .verboseLogging') {'
             : undefined';
@@ -376,13 +376,13 @@ export class FontLoadingManager {
         }
                 if (this.config.development? .verboseLogging) { : undefined }'
                     console.log(`[FontLoadingManager] Preloaded ${fontFamily}: ${result.success)`});''
-                } catch (error') { results.push({
+                } catch (error) { results.push({
                     success: false,';
                     fontFamily: fontFamily,'';
-                    source: 'error',);
+                    source: 'error');
                     fallbackUsed: false);
                     loadTime: 0,);
-                    error: error as Error); }
+                    error: error as Error) }
                 });
             }
         }
@@ -394,7 +394,7 @@ export class FontLoadingManager {
         this.initialized = false;'
         '';
         if(this.config.development? .verboseLogging') {'
-            ';
+            ';'
         }'
             console.log('[FontLoadingManager] Disposed''); }
         }'

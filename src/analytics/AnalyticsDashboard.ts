@@ -7,7 +7,7 @@ import { AnalyticsChartRenderer } from './ChartRenderer.ts';''
 import { DataVisualizer } from './DataVisualizer.ts';
 
 // Dashboard interfaces and types
-export interface DashboardOptions { enableRealtime?: boolean;'
+export interface DashboardOptions { enableRealtime?: boolean;
     updateInterval?: number;''
     theme?: 'default' | 'dark' | 'light';''
     layout?: 'grid' | 'flex' | 'masonry';
@@ -30,25 +30,25 @@ export interface DashboardSection { container: HTMLElement,
 }
 
 export interface PlaytimeData { date: string,
-    minutes: number; }
+    minutes: number }
 }
 
 export interface ScoreDistribution { range: string,
-    count: number; }
+    count: number }
 }
 
 export interface BubbleStats { type: string,
     successRate: number,
     frequency: number,
-    avgScore: number; }
+    avgScore: number }
 }
 
 export interface PerformanceFPS { timestamp: number,
-    fps: number; }
+    fps: number }
 }
 
 export interface PerformanceMemory { timestamp: number,
-    usagePercent: number; }
+    usagePercent: number }
 }
 
 export interface PerformanceData { fps?: PerformanceFPS[];
@@ -65,7 +65,7 @@ export interface DashboardData { playtime?: PlaytimeData[];
 }
 
 export interface ChartData { labels: string[],
-    data: number[]; }
+    data: number[] }
 }
 
 export interface ChartOptions { label?: string;
@@ -80,7 +80,7 @@ export interface DashboardStatistics { totalSections: number,
     realtimeUpdates: number,
     dataCallbacks: number,
     theme: string,
-    updateInterval: number; }
+    updateInterval: number }
 }'
 '';
 export type DataCallback = (') => DashboardData;''
@@ -102,7 +102,7 @@ export class AnalyticsDashboard {
         this.containerId = containerId;
         this.options = {
             enableRealtime: true,';
-            updateInterval: 5000, // 5秒間隔'';
+            updateInterval: 5000, // 5秒間隔;
             theme: 'default','';
             layout: 'grid', // grid, flex, masonry;
             showDataCollectingMessage: true,
@@ -129,7 +129,7 @@ export class AnalyticsDashboard {
 
     /**
      * 初期化
-     */'
+     */
     private initialize(): void { this.container = document.getElementById(this.containerId);''
         if (!this.container') {' }'
             console.error(`Container element with ID '${this.containerId')' not found`});
@@ -138,20 +138,20 @@ export class AnalyticsDashboard {
 
         // Chart.jsとD3.jsレンダラーの初期化
         this.chartRenderer = new AnalyticsChartRenderer({ theme: this.options.theme,
-            defaultWidth: this.options.chartDefaults.width!,);
+            defaultWidth: this.options.chartDefaults.width!);
             defaultHeight: this.options.chartDefaults.height!);
             animationDuration: this.options.chartDefaults.enableAnimation! ? 750 : 0;
         ),
 
         this.dataVisualizer = new DataVisualizer({
             enableInteractivity: true,
-            enableAnimation: this.options.chartDefaults.enableAnimation!,);
+            enableAnimation: this.options.chartDefaults.enableAnimation!);
             defaultWidth: this.options.chartDefaults.width!);
             defaultHeight: this.options.chartDefaults.height!;
         ),
-';
+';'
         this.setupContainer();''
-        this.createLayout('')';
+        this.createLayout()';
         console.log('Analytics Dashboard initialized'); }
     }
 
@@ -170,11 +170,11 @@ export class AnalyticsDashboard {
 
     /**
      * レイアウトの作成
-     */'
+     */
     private createLayout(): void { ''
         if (!this.container') return;
         ';
-        // ヘッダー''
+        // ヘッダー
         const header = this.createElement('div', 'dashboard-header'');
         header.innerHTML = `';
             <h2>ゲーム分析ダッシュボード</h2>'';
@@ -195,7 +195,7 @@ export class AnalyticsDashboard {
         const mainContent = this.createElement('div', 'dashboard-main');''
         this.container.appendChild(mainContent');
 ';
-        // セクション作成''
+        // セクション作成
         this.createSection('basic-stats', 'プレイ統計', mainContent');''
         this.createSection('bubble-analysis', 'バブル分析', mainContent');''
         this.createSection('performance-metrics', 'パフォーマンス指標', mainContent);
@@ -205,7 +205,7 @@ export class AnalyticsDashboard {
     }
 
     /**
-     * セクションの作成'
+     * セクションの作成
      */''
     private createSection(sectionId: string, title: string, parent: HTMLElement'): HTMLElement { ''
         const sectionContainer = this.createElement('div', 'dashboard-section''); }
@@ -229,7 +229,7 @@ export class AnalyticsDashboard {
         this.sections.set(sectionId, { container: sectionContainer)
             content: sectionContent,);
             title: title),
-            charts: new Map(); }
+            charts: new Map() }
         });
 
         return sectionContent;
@@ -244,14 +244,14 @@ export class AnalyticsDashboard {
 
         const content = section.content;
         
-        // データ不足チェック'
+        // データ不足チェック
         const data = dataCallback();''
         if (this.isDataInsufficient(data)') {''
             this.showDataCollectingMessage(content, 'basic-stats'');
             return; }
         }
 ';
-        // チャートコンテナの作成''
+        // チャートコンテナの作成
         const chartsContainer = this.createElement('div', 'charts-grid');
         content.appendChild(chartsContainer);
 
@@ -260,16 +260,16 @@ export class AnalyticsDashboard {
         
         // スコア分布チャート
         this.createScoreDistributionChart(chartsContainer, data);
-        ';
-        // 成功率チャート''
+        ;
+        // 成功率チャート
         this.createSuccessRateChart(chartsContainer, data');
 ';
-        // データコールバックを登録''
+        // データコールバックを登録
         this.dataCallbacks.set('basic-stats', dataCallback);
 ';
-        // リアルタイム更新の開始''
+        // リアルタイム更新の開始
         if(this.options.enableRealtime') {'
-            ';
+            ';'
         }'
             this.startRealtimeUpdate('basic-stats'); }
         }
@@ -289,7 +289,7 @@ export class AnalyticsDashboard {
                 yAxisLabel: 'プレイ時間（分）',')';
                 showLegend: false)'),
 ';
-            // データ更新''
+            // データ更新
             this.chartRenderer!.updateChartData('playtime-chart-canvas', {);
                 labels: data.playtime.map(d = > d.date) }'
                 data: data.playtime.map(d => d.minutes);' }'
@@ -340,7 +340,7 @@ export class AnalyticsDashboard {
             this.chartRenderer!.updateChartData('success-rate-chart-canvas', {')'
                 labels: ['成功', '失敗'],')';
                 data: [data.successRate, 100 - data.successRate])');'
-';
+';'
         }'
             this.activeCharts.set('success-rate-chart', chart); }
         } else { this.showNoDataMessage(chartContainer); }
@@ -353,9 +353,9 @@ export class AnalyticsDashboard {
     setupBubbleAnalysis(dataCallback: DataCallback'): void { ''
         const section = this.sections.get('bubble-analysis');
         if (!section) return;
-';
+';'
         const content = section.content;''
-        const data = dataCallback('')';
+        const data = dataCallback()';
         if (this.isDataInsufficient(data, 'bubbleStats')') {''
             this.showDataCollectingMessage(content, 'bubble-analysis'');
             return; }
@@ -369,14 +369,14 @@ export class AnalyticsDashboard {
         
         // バブル出現頻度棒グラフ
         this.createBubbleFrequencyChart(chartsContainer, data);
-        ';
-        // バブル別スコア寄与棒グラフ''
+        ;
+        // バブル別スコア寄与棒グラフ
         this.createBubbleScoreContributionChart(chartsContainer, data');'
 '';
         this.dataCallbacks.set('bubble-analysis', dataCallback);'
 '';
         if(this.options.enableRealtime') {'
-            ';
+            ';'
         }'
             this.startRealtimeUpdate('bubble-analysis'); }
         }
@@ -463,9 +463,9 @@ export class AnalyticsDashboard {
     setupPerformanceMetrics(dataCallback: DataCallback'): void { ''
         const section = this.sections.get('performance-metrics');
         if (!section) return;
-';
+';'
         const content = section.content;''
-        const data = dataCallback('')';
+        const data = dataCallback()';
         if (this.isDataInsufficient(data, 'performance')') {''
             this.showDataCollectingMessage(content, 'performance-metrics'');
             return; }
@@ -476,14 +476,14 @@ export class AnalyticsDashboard {
 
         // FPS推移チャート
         this.createFPSChart(chartsContainer, data);
-        ';
-        // メモリ使用量チャート''
+        ;
+        // メモリ使用量チャート
         this.createMemoryUsageChart(chartsContainer, data');'
 '';
         this.dataCallbacks.set('performance-metrics', dataCallback);'
 '';
         if(this.options.enableRealtime') {'
-            ';
+            ';'
         }'
             this.startRealtimeUpdate('performance-metrics'); }
         }
@@ -579,7 +579,7 @@ export class AnalyticsDashboard {
         // 全般的なデータ不足チェック
         const totalDataPoints = [data.playtime? .length || 0,
             data.scoreDistribution?.length || 0,
-            data.bubbleStats?.length || 0,];
+            data.bubbleStats?.length || 0];
             data.performance?.fps?.length || 0];
         ].reduce((sum, count) => sum + count, 0);
 
@@ -588,10 +588,10 @@ export class AnalyticsDashboard {
 
     /**
      * データ収集中メッセージの表示
-     */ : undefined'
+     */ : undefined
     private showDataCollectingMessage(container: HTMLElement, sectionId: string): void { ''
         if (!this.options.showDataCollectingMessage') return;
-';
+';'
         container.innerHTML = `'';
             <div class="data-collecting-message">"";
                 <div class="collecting-icon">📊</div>;
@@ -677,7 +677,7 @@ export class AnalyticsDashboard {
         if (this.activeCharts.has('success-rate-chart') && data.successRate !== undefined') { ''
             this.chartRenderer!.updateChartData('success-rate-chart-canvas', {')'
                 labels: ['成功', '失敗'],);
-                data: [data.successRate, 100 - data.successRate]); }
+                data: [data.successRate, 100 - data.successRate]) }
         }
     }
 
@@ -708,7 +708,7 @@ export class AnalyticsDashboard {
         if (this.activeCharts.has('bubble-score-contribution-chart')') { ''
             this.chartRenderer!.updateChartData('bubble-score-contribution-chart-canvas', {);
                 labels: data.bubbleStats.map(bubble => bubble.type),
-                data: data.bubbleStats.map(bubble => bubble.avgScore); }
+                data: data.bubbleStats.map(bubble => bubble.avgScore) }
             });
         }
     }
@@ -729,7 +729,7 @@ export class AnalyticsDashboard {
         if (this.activeCharts.has('memory-usage-chart') && data.performance.memory') { ''
             this.chartRenderer!.updateChartData('memory-usage-chart-canvas', {);
                 labels: data.performance.memory.map(d => new Date(d.timestamp).toLocaleTimeString(),
-                data: data.performance.memory.map(d => d.usagePercent); }
+                data: data.performance.memory.map(d => d.usagePercent) }
             });
         }
     }
@@ -737,23 +737,23 @@ export class AnalyticsDashboard {
     /**
      * イベントリスナーの設定'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         const refreshBtn = document.getElementById('refresh-dashboard');''
         if(refreshBtn') {'
-            ';
+            ';'
         }'
             refreshBtn.addEventListener('click', () => this.refresh()'); }
         }
 ';
-        // エクスポートボタン''
+        // エクスポートボタン
         const exportBtn = document.getElementById('export-data');''
         if(exportBtn') {'
-            ';
+            ';'
         }'
             exportBtn.addEventListener('click', () => this.exportData()'); }
         }
 ';
-        // 時間範囲選択''
+        // 時間範囲選択
         const timeRangeSelect = document.getElementById('time-range') as HTMLSelectElement;''
         if(timeRangeSelect') {'
             '';
@@ -764,7 +764,7 @@ export class AnalyticsDashboard {
             }');
         }
 ';
-        // セクション最小化/最大化''
+        // セクション最小化/最大化
         this.container!.addEventListener('click', (e') => {  const target = e.target as HTMLElement;''
             if(target.classList.contains('toggle-section') {
                 const sectionId = target.dataset.section;
@@ -779,7 +779,7 @@ export class AnalyticsDashboard {
     /**
      * ダッシュボードの手動更新'
      */''
-    refresh('')';
+    refresh()';
         console.log('Refreshing dashboard...');
         
         for(const sectionId of this.dataCallbacks.keys() { this.updateSection(sectionId); }
@@ -806,7 +806,7 @@ export class AnalyticsDashboard {
             }
         }
 ';
-        // JSON形式でダウンロード''
+        // JSON形式でダウンロード
         const blob = new Blob([JSON.stringify(exportData, null, 2')], { type: 'application/json' });''
         const url = URL.createObjectURL(blob');''
         const a = document.createElement('a');
@@ -824,7 +824,7 @@ export class AnalyticsDashboard {
      * 時間範囲の変更
      */
     changeTimeRange(timeRange: string): void { console.log(`Time range changed to: ${timeRange)`),
-        this.currentTimeRange = timeRange; }
+        this.currentTimeRange = timeRange }
         this.refresh(});
     }
 
@@ -833,7 +833,7 @@ export class AnalyticsDashboard {
      */'
     private toggleSection(sectionId: string): void { const section = this.sections.get(sectionId);''
         if (!section') return;
-';
+';'
         const content = section.content;''
         const toggleBtn = section.container.querySelector('.toggle-section'') as HTMLButtonElement;'
         '';
@@ -863,7 +863,7 @@ export class AnalyticsDashboard {
     /**
      * スタイルの注入'
      */''
-    private injectStyles('')';
+    private injectStyles()';
         if (document.getElementById('analytics-dashboard-styles')') return;
 
         const styles = `';
@@ -871,7 +871,7 @@ export class AnalyticsDashboard {
                 font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                 background: #f5f5f5,
                 min-height: 100vh,
-                padding: 20px; }
+                padding: 20px }
             }
 
             .dashboard-header { background: white,
@@ -885,7 +885,7 @@ export class AnalyticsDashboard {
             }
 
             .dashboard-header h2 { margin: 0,
-                color: #333; }
+                color: #333 }
             }
 
             .dashboard-controls { display: flex,
@@ -906,7 +906,7 @@ export class AnalyticsDashboard {
                 font-size: 12px, }
             }
 
-            .btn:hover, .btn-small:hover { background: #0056b3; }
+            .btn:hover, .btn-small:hover { background: #0056b3 }
             }
 
             .select { padding: 8px,
@@ -918,7 +918,7 @@ export class AnalyticsDashboard {
                 border-radius: 8px,
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
                 margin-bottom: 20px,
-                overflow: hidden; }
+                overflow: hidden }
             }
 
             .section-header { padding: 15px 20px,
@@ -926,25 +926,25 @@ export class AnalyticsDashboard {
                 display: flex,
                 justify-content: space-between,
                 align-items: center,
-                background: #fafafa; }
+                background: #fafafa }
             }
 
             .section-header h3 { margin: 0,
-                color: #333; }
+                color: #333 }
             }
 
-            .section-content { padding: 20px; }
+            .section-content { padding: 20px }
             }
 
             .charts-grid { display: grid,
                 grid-template-columns: repeat(auto-fit, minmax(350px, 1fr);
-                gap: 20px; }
+                gap: 20px }
             }
 
             .chart-container { border: 1px solid #eee,
                 border-radius: 6px,
                 padding: 15px,
-                background: #fafafa; }
+                background: #fafafa }
             }
 
             .chart-header { margin-bottom: 10px, }
@@ -967,7 +967,7 @@ export class AnalyticsDashboard {
 
             .data-collecting-message { text-align: center,
                 padding: 40px 20px,
-                color: #666; }
+                color: #666 }
             }
 
             .collecting-icon { font-size: 48px,
@@ -975,30 +975,30 @@ export class AnalyticsDashboard {
             }
 
             .data-collecting-message h3 { margin: 0 0 10px 0,
-                color: #333; }
+                color: #333 }
             }
 
             .progress-indicator { margin-top: 20px,
                 background: #eee,
                 border-radius: 10px,
                 height: 8px,
-                overflow: hidden; }
+                overflow: hidden }
             }
 
             .progress-bar { background: #007bff,
                 height: 100%,
                 width: 30%,
-                animation: progress-animation 2s ease-in-out infinite; }
+                animation: progress-animation 2s ease-in-out infinite }
             }
 
             @keyframes progress-animation {
                 0%, 100% { width: 30%, }
-                50% { width: 70%; }
+                50% { width: 70% }
             }
 
             .no-data-message { text-align: center,
                 padding: 20px,
-                color: #999; }
+                color: #999 }
             }
 
             .no-data-icon { font-size: 24px,
@@ -1007,13 +1007,13 @@ export class AnalyticsDashboard {
 '';
             @media (max-width: 768px') { .dashboard-header {
                     flex-direction: column,
-                    gap: 15px; }
+                    gap: 15px }
                 }
 
                 .charts-grid { grid-template-columns: 1fr, }
                 }
 
-                .analytics-dashboard { padding: 10px; }
+                .analytics-dashboard { padding: 10px }
                 }
             }
         `;'
@@ -1052,22 +1052,22 @@ export class AnalyticsDashboard {
         }
         if (this.dataVisualizer) { this.dataVisualizer.destroy(); }
         }
-';
-        // コンテナのクリア''
+;
+        // コンテナのクリア
         if(this.container') {'
-            ';
+            ';'
         }'
             this.container.innerHTML = ''; }
         }
 ';
-        // スタイルの削除''
+        // スタイルの削除
         const styleSheet = document.getElementById('analytics-dashboard-styles');
         if (styleSheet) { styleSheet.remove(); }
         }
 
         this.sections.clear();'
         this.activeCharts.clear();''
-        this.dataCallbacks.clear('')';
+        this.dataCallbacks.clear()';
         console.log('Analytics Dashboard destroyed'');'
     }''
 }

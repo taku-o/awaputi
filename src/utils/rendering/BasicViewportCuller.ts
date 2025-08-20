@@ -2,7 +2,7 @@
 interface Viewport { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface Frustum { left: number,
@@ -10,13 +10,13 @@ interface Frustum { left: number,
     top: number,
     bottom: number,
     near: number,
-    far: number; }
+    far: number }
 }
 
 interface ViewportCullingStats { totalObjects: number,
     culledObjects: number,
     cullingEfficiency: number,
-    processingTime: number; }
+    processingTime: number }
 }
 
 interface CullingConfig { enabled: boolean,
@@ -28,14 +28,14 @@ interface CullingConfig { enabled: boolean,
     culledObjects: Set<RenderableObject>,
     visibilityCache: Map<string | number, boolean>;
     frustum: Frustum,
-    stats: ViewportCullingStats;
+    stats: ViewportCullingStats
     }
 }
 
 interface ObjectBounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface RenderableObject { id?: string | number;
@@ -72,10 +72,7 @@ export class BasicViewportCuller {
         this.canvas = canvas;
         
         // Viewport culling system
-        this.config = {
-
-    }
-    }
+        this.config = {}
             enabled: true, }
             viewport: { x: 0, y: 0, width: 0, height: 0 },
             cullingMargin: 50, // Extra margin around viewport;

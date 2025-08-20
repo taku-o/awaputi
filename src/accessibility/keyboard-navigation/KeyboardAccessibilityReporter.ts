@@ -14,14 +14,14 @@ interface ReporterConfig { enabled: boolean,
     generateDetailedReports: boolean,
     includeRecommendations: boolean,
     exportFormats: string[],
-    scoringWeights: ScoringWeights;
+    scoringWeights: ScoringWeights
     }
 }
 
 interface ScoringWeights { critical: number,
     high: number,
     medium: number,
-    low: number; }
+    low: number }
 }
 
 interface TestResults { overall: OverallResults,
@@ -51,7 +51,7 @@ interface SuiteResult { score?: number;
 }
 
 interface Issue { type: string,
-    message: string,';
+    message: string,
     details?: string;''
     severity?: 'critical' | 'high' | 'medium' | 'low';''
     priority?: 'critical' | 'high' | 'medium' | 'low';
@@ -59,7 +59,7 @@ interface Issue { type: string,
     impact?: number;
     wcagReference?: string; }
 }
-';
+';'
 interface Recommendation { category?: string;''
     priority: 'critical' | 'high' | 'medium' | 'low',
     title: string,
@@ -68,42 +68,42 @@ interface Recommendation { category?: string;''
     criticalCount?: number;
     highCount?: number;
     actions: string[],
-    impact?: string; }
+    impact?: string }
 }
 
 interface Statistics { totalIssues: number,
     issuesByPriority: IssuesByPriority,
     issuesByCategory: Record<string, number>;
     testCoverage: TestCoverage,
-    wcagCompliance: WCAGCompliance;
+    wcagCompliance: WCAGCompliance
     }
 }
 
 interface IssuesByPriority { critical: number,
     high: number,
     medium: number,
-    low: number; }
+    low: number }
 }
 
 interface TestCoverage { totalTests: number,
-    passRate: number; }
+    passRate: number }
 }
 
 interface WCAGCompliance { level: string,
-    score: number; }
+    score: number }
 }
 
 interface IssueCategory { name: string,
     weight: number,
-    description: string; }
+    description: string }
 }
-';
+';'
 interface RecommendationTemplate { ''
     priority: 'critical' | 'high' | 'medium' | 'low',
     template: string,
-    details: string; }
+    details: string }
 }
-';
+';'
 interface CategorizedIssues { ''
     'focus-management': Issue[];''
     'keyboard-traps': Issue[];''
@@ -117,33 +117,33 @@ interface DetailedReport { metadata: ReportMetadata,
     executive_summary: ExecutiveSummary,
     detailed_results: DetailedResults,
     recommendations: Recommendation[],
-    appendix: Appendix;
+    appendix: Appendix
     }
 }
 
 interface ReportMetadata { title: string,
     timestamp: string,
     version: string,
-    generator: string; }
+    generator: string }
 }
 
 interface ExecutiveSummary { overall_score: number,
     level: string,
     total_issues: number,
     critical_issues: number,
-    pass_rate: number; }
+    pass_rate: number }
 }
 
 interface DetailedResults { suite_results: Record<string, SuiteResult>;
     categorized_issues?: CategorizedIssues;
-    statistics: Statistics;
+    statistics: Statistics
     }
 }
 
 interface Appendix { test_configuration: ReporterConfig,
-    wcag_references: Record<string, string>; }
+    wcag_references: Record<string, string> }
 }
-';
+';'
 interface IssueFilters { ''
     priority?: 'critical' | 'high' | 'medium' | 'low';
     category?: string; }
@@ -191,7 +191,7 @@ export class KeyboardAccessibilityReporter {
                 issuesByCategory: {},
                 testCoverage: { totalTests: 0,
                     passRate: 0 }
-                },'
+                },
                 wcagCompliance: { ''
                     level: '',
                     score: 0 }
@@ -199,7 +199,7 @@ export class KeyboardAccessibilityReporter {
             }
         },
         
-        // 問題分類定義'
+        // 問題分類定義
         this.issueCategories = { ''
             'focus-management': {''
                 name: 'フォーカス管理',';
@@ -228,7 +228,7 @@ export class KeyboardAccessibilityReporter {
             }
         },
         
-        // 推奨事項テンプレート'
+        // 推奨事項テンプレート
         this.recommendationTemplates = { ''
             'focus-visibility': {''
                 priority: 'high','';
@@ -262,7 +262,7 @@ export class KeyboardAccessibilityReporter {
             this.testResults = {
                 ...this.testResults,
                 ...results,
-                timestamp: new Date().toISOString(); }
+                timestamp: new Date().toISOString() }
             };
             
             // 問題の分類
@@ -273,15 +273,15 @@ export class KeyboardAccessibilityReporter {
             
             // 推奨事項の生成
             this.generateRecommendations();
-            ';
-            // 統計情報の更新''
-            this.updateStatistics('')';
+            ;
+            // 統計情報の更新
+            this.updateStatistics()';
             console.log('Test results processed successfully');
             return this.testResults;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'TEST_RESULTS_PROCESSING_ERROR', {')'
-                component: 'KeyboardAccessibilityReporter'); }
+                component: 'KeyboardAccessibilityReporter') }
             });
             return null;
         }
@@ -313,7 +313,7 @@ export class KeyboardAccessibilityReporter {
                 }
             });
             
-            // 各カテゴリ内で優先順位でソート'
+            // 各カテゴリ内で優先順位でソート
             Object.keys(categorizedIssues).forEach(category => {  );' }'
                 categorizedIssues[category as keyof CategorizedIssues].sort((a, b') => {' }'
                     const priorityOrder: Record<string, number> = { 'critical': 4, 'high': 3, 'medium': 2, 'low': 1 };''
@@ -322,10 +322,10 @@ export class KeyboardAccessibilityReporter {
             });
             
             this.testResults.categorizedIssues = categorizedIssues;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ISSUE_CATEGORIZATION_ERROR', {')'
-                component: 'KeyboardAccessibilityReporter'); }
+                component: 'KeyboardAccessibilityReporter') }
             });
         }
     }
@@ -344,7 +344,7 @@ export class KeyboardAccessibilityReporter {
         const issueText = (issue.type + ' ' + issue.message + ' ' + (issue.details || '')).toLowerCase();
         
         // キーワードマッチングでカテゴリを決定
-        for(const [category, keywords] of Object.entries(categoryKeywords) {'
+        for(const [category, keywords] of Object.entries(categoryKeywords) {
             '';
             if(keywords.some(keyword => issueText.includes(keyword)') {
         }
@@ -352,7 +352,7 @@ export class KeyboardAccessibilityReporter {
             }
         }
         ';
-        // デフォルトカテゴリ''
+        // デフォルトカテゴリ
         return 'focus-management';
     }
     
@@ -362,7 +362,7 @@ export class KeyboardAccessibilityReporter {
     private prioritizeIssue(issue: Issue, category: string'): Issue { ''
         let priority: Issue['priority'] = issue.severity || 'medium',
         ';
-        // 重要度の調整''
+        // 重要度の調整
         const criticalKeywords = ['trap', 'not accessible', 'missing handler'];''
         const highKeywords = ['focus', 'aria', 'visibility'];''
         const mediumKeywords = ['conflict', 'order', 'contrast'];'
@@ -408,8 +408,8 @@ export class KeyboardAccessibilityReporter {
         '';
         const issueText = (issue.type + ' ' + issue.message).toLowerCase();
         
-        for(const [keyword, reference] of Object.entries(wcagMappings) {
-        ';
+        for(const [keyword, reference] of Object.entries(wcagMappings) {'
+        ';'
             '';
             if (issueText.includes(keyword)') {
         
@@ -452,15 +452,15 @@ export class KeyboardAccessibilityReporter {
                 failed: totalFailed,
                 warnings: totalWarnings,
                 deductions: Math.round(deductions * 10) / 10,
-                timestamp: new Date().toISOString(); }
+                timestamp: new Date().toISOString() }
             };
             
             // スコアレベルの決定
             this.testResults.overall.level = this.determineScoreLevel(finalScore);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'SCORE_CALCULATION_ERROR', {')'
-                component: 'KeyboardAccessibilityReporter'); }
+                component: 'KeyboardAccessibilityReporter') }
             });
         }
     }
@@ -486,7 +486,7 @@ export class KeyboardAccessibilityReporter {
             if(this.testResults.categorizedIssues) {
                 Object.entries(this.testResults.categorizedIssues).forEach(([category, issues]) => { 
                     if (issues.length > 0) {
-                        const categoryRecommendation = this.generateCategoryRecommendation(category, issues);
+                        const categoryRecommendation = this.generateCategoryRecommendation(category, issues)
             }
                         if (categoryRecommendation) { }
                             recommendations.push(categoryRecommendation); }
@@ -498,18 +498,18 @@ export class KeyboardAccessibilityReporter {
             // スコアベースの推奨事項
             const scoreRecommendations = this.generateScoreBasedRecommendations();
             recommendations.push(...scoreRecommendations);
-            ';
-            // 優先順位でソート''
+            ;
+            // 優先順位でソート
             recommendations.sort((a, b') => { ' }'
                 const priorityOrder: Record<string, number> = { 'critical': 4, 'high': 3, 'medium': 2, 'low': 1 };
                 return priorityOrder[b.priority] - priorityOrder[a.priority];
             });
             
             this.testResults.recommendations = recommendations;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RECOMMENDATION_GENERATION_ERROR', {')'
-                component: 'KeyboardAccessibilityReporter'); }
+                component: 'KeyboardAccessibilityReporter') }
             });
         }
     }
@@ -636,10 +636,10 @@ export class KeyboardAccessibilityReporter {
             }
             
             this.testResults.statistics = stats;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'STATISTICS_UPDATE_ERROR', {')'
-                component: 'KeyboardAccessibilityReporter'); }
+                component: 'KeyboardAccessibilityReporter') }
             });
         }
     }
@@ -667,16 +667,16 @@ export class KeyboardAccessibilityReporter {
                 detailed_results: { suite_results: this.testResults.suiteResults,
                     categorized_issues: this.testResults.categorizedIssues,
                     statistics: this.testResults.statistics }
-                },)
+                })
                 recommendations: this.testResults.recommendations)';
                 appendix: { test_configuration: this.config,''
-                    wcag_references: this.generateWCAGReferences('')';
+                    wcag_references: this.generateWCAGReferences()';
             console.log('Detailed report generated successfully'),
             return report;
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'REPORT_GENERATION_ERROR', {')'
-                component: 'KeyboardAccessibilityReporter'); }
+                component: 'KeyboardAccessibilityReporter') }
             });
             return null;
         }
@@ -743,7 +743,7 @@ export class KeyboardAccessibilityReporter {
                 <p>${rec.description}</p>""
                 ${rec.actions ? `<ul>${rec.actions.map(action => `<li>${action)</li>`").join('''})}</ul>` : ''}'
             </div>'';
-        `').join('')}
+        `').join()}
     </div>;
 </body>;
 </html>`;
@@ -797,8 +797,8 @@ export class KeyboardAccessibilityReporter {
         }
         
         if(filters.category) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             issues = issues.filter(issue => issue.category === filters.category'); }
         }
@@ -844,9 +844,9 @@ export class KeyboardAccessibilityReporter {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying KeyboardAccessibilityReporter...');''
-        this.clearResults('')';
+        this.clearResults()';
         console.log('KeyboardAccessibilityReporter destroyed'');'
     }''
 }

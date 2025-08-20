@@ -13,14 +13,14 @@ import { MockDataValidator } from './mock/MockDataValidator.js';
 interface GameEngine { // Game engine interface }
 }
 
-interface ErrorHandler { handleComponentError: (error: Error, component: string, operation: string) => any; }
+interface ErrorHandler { handleComponentError: (error: Error, component: string, operation: string) => any }
 }
 
 interface MockComponent { initialized?: boolean;
     generate?: () => any;
     generateBubble?: (options?: any) => MockBubble;
     generateBubbles?: (count: number, options?: any) => MockBubble[];
-    generatePlayerData?: (options?: any) => MockPlayerData;'
+    generatePlayerData?: (options?: any) => MockPlayerData;
     generateGameState?: (options?: any) => MockGameState;''
     validateData?: (data: any, type: string') => ValidationResult;''
     setErrorHandler?: (handler: ErrorHandler['handleComponentError']) => void;
@@ -51,9 +51,9 @@ interface MockComponent { initialized?: boolean;
     generateLargeBubbleSet?: (count: number) => MockBubble[];
     generateValidationRules?: () => any; }
 }
-';
+';'
 interface ComponentDefinition { name: string,''
-    class: new (generator: MockDataGenerator') => MockComponent; }
+    class: new (generator: MockDataGenerator') => MockComponent }
 }
 
 interface MockBubble { id: string,
@@ -71,7 +71,7 @@ interface MockPlayerData { id: string,
     totalScore: number,
     highScore: number,
     gamesPlayed: number,
-    accuracy: number; }
+    accuracy: number }
 }
 
 interface MockGameState { id: string,
@@ -79,37 +79,37 @@ interface MockGameState { id: string,
     timestamp: number,
     level: number,
     score: number,
-    lives: number; }
+    lives: number }
 }
 
 interface ValidationResult { valid: boolean,
     errors: string[],
-    warnings: string[]; }
+    warnings: string[] }
 }
 
 interface AudioSettings { masterVolume: number,
     musicVolume: number,
     effectsVolume: number,
-    enabled: boolean; }
+    enabled: boolean }
 }
-';
+';'
 interface GraphicsSettings { ''
     quality: 'low' | 'medium' | 'high' | 'ultra','';
     particles: 'off' | 'low' | 'medium' | 'high',
     effects: boolean,
-    fullscreen: boolean; }
+    fullscreen: boolean }
 }
-';
+';'
 interface GameplaySettings { ''
     difficulty: 'easy' | 'normal' | 'hard' | 'expert',
     autoSave: boolean,
     showHints: boolean,
-    pauseOnFocusLoss: boolean; }
+    pauseOnFocusLoss: boolean }
 }
 
 interface Configuration { audio: AudioSettings,
     graphics: GraphicsSettings,
-    gameplay: GameplaySettings;
+    gameplay: GameplaySettings
     }
 }
 
@@ -121,11 +121,11 @@ interface Statistics { totalGames: number,
     playTime: number,
     bubbleTypes: any,
     scoreDistribution: any,
-    bubbleDistribution: any; }
+    bubbleDistribution: any }
 }
 
 interface Position { x: number,
-    y: number; }
+    y: number }
 }'
 '';
 type DataType = 'bubble' | 'bubbles' | 'player' | 'gameState' | 'statistics' | 'achievements' | 'performance';''
@@ -152,7 +152,7 @@ export class MockDataGenerator {
     private async initialize(): Promise<void> { try {
             await this.initializeComponents();'
             this.initialized = true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleComponentError(error as Error, 'MockDataGenerator', 'initialization');
             throw error; }
         }
@@ -187,7 +187,7 @@ export class MockDataGenerator {
     private createFallbackComponent(name: string): MockComponent { return {  };
             initialized: false, }
             generate: () => ({})
-            generateBubble: () => this.createFallbackBubble(,);
+            generateBubble: () => this.createFallbackBubble();
             generateBubbles: () => [],
             generatePlayerData: () => this.createFallbackPlayerData(),
             generateGameState: () => this.createFallbackGameState(),
@@ -203,8 +203,8 @@ export class MockDataGenerator {
     /**
      * データを生成
      */
-    public generate(type: DataType, options: any = { ): any {'
-        try {''
+    public generate(type: DataType, options: any = { ): any {
+        try {'
             switch(type') {'
                 '';
                 case 'bubble':'';
@@ -218,13 +218,13 @@ export class MockDataGenerator {
                 case 'statistics':'';
                     return this.generateStatistics(options');''
                 case 'achievements':'';
-                    return this.generateAchievements('')';
+                    return this.generateAchievements()';
                 case 'performance':);
                     return this.generatePerformanceMetrics(options);
             }
                 default: }'
                     throw new Error(`Unknown data type: ${type)`});''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             return this.errorHandler.handleComponentError(error as Error, 'MockDataGenerator', `generate(${type})`);
         }
     }
@@ -237,7 +237,7 @@ export class MockDataGenerator {
         return this.generate((options.type || 'gameState') as DataType, scenarioOptions);
     }
 
-    // === 泡関連データ生成 ==='
+    // === 泡関連データ生成 ===
 '';
     public generateBubble(options: any = { )'): MockBubble {''
         const generator = this.getComponent('bubbleGenerator');
@@ -264,54 +264,54 @@ export class MockDataGenerator {
         return generator?.addBubbleVariations ? generator.addBubbleVariations(bubble) : bubble; }
     }'
 '';
-    public generateActiveEffects('')';
+    public generateActiveEffects()';
         const generator = this.getComponent('bubbleGenerator');
         return generator?.generateActiveEffects ? generator.generateActiveEffects() : [];
     }
 
-    // === ユーザー・プレイヤーデータ生成 ==='
+    // === ユーザー・プレイヤーデータ生成 ===
 '';
     public generatePlayerData(options: any = { )'): MockPlayerData {''
         const generator = this.getComponent('userGenerator');
         return generator?.generatePlayerData ? generator.generatePlayerData(options) : this.createFallbackPlayerData(); }
     }'
 '';
-    public generatePlayerName('')';
+    public generatePlayerName()';
         const generator = this.getComponent('userGenerator');''
         return generator?.generatePlayerName ? generator.generatePlayerName(') : 'Player';
     }'
 '';
-    public generateDetailedStatistics('')';
+    public generateDetailedStatistics()';
         const generator = this.getComponent('userGenerator');
         return generator?.generateDetailedStatistics ? generator.generateDetailedStatistics() : {};
     }'
 '';
-    public generateBubbleTypeStats('')';
+    public generateBubbleTypeStats()';
         const generator = this.getComponent('userGenerator');
         return generator?.generateBubbleTypeStats ? generator.generateBubbleTypeStats() : {};
     }'
 '';
-    public generatePlayerAchievements('')';
+    public generatePlayerAchievements()';
         const generator = this.getComponent('userGenerator');
         return generator?.generatePlayerAchievements ? generator.generatePlayerAchievements() : [];
     }'
 '';
-    public generatePlayerSettings('')';
+    public generatePlayerSettings()';
         const generator = this.getComponent('userGenerator');
         return generator?.generatePlayerSettings ? generator.generatePlayerSettings() : {};
     }'
 '';
-    public generatePlayerInventory('')';
+    public generatePlayerInventory()';
         const generator = this.getComponent('userGenerator');
         return generator?.generatePlayerInventory ? generator.generatePlayerInventory() : {};
     }'
 '';
-    public generateAchievements('')';
+    public generateAchievements()';
         const generator = this.getComponent('userGenerator');
         return generator?.generateAchievements ? generator.generateAchievements() : [];
     }
 
-    // === ゲーム状態・パフォーマンス関連 ==='
+    // === ゲーム状態・パフォーマンス関連 ===
 '';
     public generateGameState(options: any = { )'): MockGameState {''
         const generator = this.getComponent('gameStateGenerator');
@@ -333,32 +333,32 @@ export class MockDataGenerator {
         return generator?.generateStressTestData ? generator.generateStressTestData(options) : {};
     }'
 '';
-    public generateErrorScenario('')';
+    public generateErrorScenario()';
         const generator = this.getComponent('gameStateGenerator');
         return generator?.generateErrorScenario ? generator.generateErrorScenario() : {};
     }'
 '';
-    public generatePerformanceScenario('')';
+    public generatePerformanceScenario()';
         const generator = this.getComponent('gameStateGenerator');
         return generator?.generatePerformanceScenario ? generator.generatePerformanceScenario() : {};
     }'
 '';
-    public generateEdgeCaseScenario('')';
+    public generateEdgeCaseScenario()';
         const generator = this.getComponent('gameStateGenerator');
         return generator?.generateEdgeCaseScenario ? generator.generateEdgeCaseScenario() : {};
     }'
 '';
-    public generateErrorTrigger('')';
+    public generateErrorTrigger()';
         const generator = this.getComponent('gameStateGenerator');
         return generator?.generateErrorTrigger ? generator.generateErrorTrigger() : {};
     }'
 '';
-    public generateCorruptedData('')';
+    public generateCorruptedData()';
         const generator = this.getComponent('gameStateGenerator');
         return generator?.generateCorruptedData ? generator.generateCorruptedData() : {};
     }'
 '';
-    public generateEdgeCaseData('')';
+    public generateEdgeCaseData()';
         const generator = this.getComponent('gameStateGenerator');
         return generator?.generateEdgeCaseData ? generator.generateEdgeCaseData() : {};
     }
@@ -380,7 +380,7 @@ export class MockDataGenerator {
 
     public generateConfiguration(): Configuration { return { audio: {
                 masterVolume: this.randomFloat(0.5, 1.0),
-                musicVolume: this.randomFloat(0.3, 0.8),';
+                musicVolume: this.randomFloat(0.3, 0.8),;
                 effectsVolume: this.randomFloat(0.4, 1.0),' };'
                 enabled: this.randomChoice([true, false]'); }
             },'
@@ -388,42 +388,42 @@ export class MockDataGenerator {
                 quality: this.randomChoice(['low', 'medium', 'high', 'ultra']'),'';
                 particles: this.randomChoice(['off', 'low', 'medium', 'high']),';
                 effects: this.randomChoice([true, false]),'';
-                fullscreen: this.randomChoice([true, false]'); }
+                fullscreen: this.randomChoice([true, false]') }
             },'
             gameplay: { ''
                 difficulty: this.randomChoice(['easy', 'normal', 'hard', 'expert']),
                 autoSave: true,
                 showHints: this.randomChoice([true, false]),
-                pauseOnFocusLoss: this.randomChoice([true, false]); }
+                pauseOnFocusLoss: this.randomChoice([true, false]) }
             }
         };
     }'
 '';
-    public generateScoreDistribution('')';
+    public generateScoreDistribution()';
         const generator = this.getComponent('userGenerator');
         return generator?.generateScoreDistribution ? generator.generateScoreDistribution() : {};
     }'
 '';
-    public generateBubbleDistribution('')';
+    public generateBubbleDistribution()';
         const generator = this.getComponent('bubbleGenerator');
         return generator?.generateBubbleDistribution ? generator.generateBubbleDistribution() : {};
     }
 
-    // === 大容量データ生成 ==='
+    // === 大容量データ生成 ===
 '';
     public generateLargeBubbleSet(count: number = 1000'): MockBubble[] { ''
         const generator = this.getComponent('bubbleGenerator');
         return generator?.generateLargeBubbleSet ? generator.generateLargeBubbleSet(count) : []; }
     }
 
-    // === データ検証 ==='
+    // === データ検証 ===
 '';
     public validateData(data: any, type: string'): ValidationResult { ''
         const validator = this.getComponent('validator'); }
         return validator?.validateData ? validator.validateData(data, type) : { valid: true, errors: [], warnings: [] }
     }'
 '';
-    public generateValidationRules('')';
+    public generateValidationRules()';
         const validator = this.getComponent('validator');
         return validator?.generateValidationRules ? validator.generateValidationRules() : {};
     }
@@ -457,7 +457,7 @@ export class MockDataGenerator {
         return Math.sqrt(variance); }
     }
 
-    // === フォールバック実装 ==='
+    // === フォールバック実装 ===
 '';
     private createFallbackBubble(''';
             type: 'normal',
@@ -488,7 +488,7 @@ export class MockDataGenerator {
         })
     }
 
-    // === 位置・シナリオ関連（レガシーサポート） ==='
+    // === 位置・シナリオ関連（レガシーサポート） ===
 ')';
     public getScenarioPosition(scenario: Scenario'): Position { const positions: Record<Scenario, Position> = {' }'
             'center': { x: 400, y: 300 },''
@@ -506,6 +506,6 @@ export class MockDataGenerator {
                 
             }
                 component.cleanup(); }
-            }'
+            }
         }''
         this.components.clear(');

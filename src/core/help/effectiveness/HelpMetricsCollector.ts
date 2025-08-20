@@ -14,14 +14,14 @@ export interface GameEngine { [key: string]: any, };
 }
 export interface LoggingSystem { debug(component: string, message: string, data?: any): void;
     error(component: string, message: string, error?: any): void;
-    warn(component: string, message: string): void; };
+    warn(component: string, message: string): void };
 }
 export interface HelpAnalytics { sessions: Map<string, AnalyticsSession>,
-    generateReport(type: string, options?: any): AnalyticsReport;
+    generateReport(type: string, options?: any): AnalyticsReport
     };
 }
 export interface HelpFeedbackSystem { feedbacks: Map<string, FeedbackData>,
-    getFeedbackStatistics(): FeedbackStatistics;
+    getFeedbackStatistics(): FeedbackStatistics
     };
 }
 export interface AnalyticsSession { pageViews?: PageView[];
@@ -65,21 +65,21 @@ export interface FeedbackStatistics { averageRating?: number;
     commonCategories?: Map<string, number>; };
 }
 export interface CollectorConfig { minDataThreshold: number,
-    dataCollectionInterval: number; };
+    dataCollectionInterval: number };
 }
 export interface CollectionState { isActive: boolean,
     lastCollectionTime: number,
-    collectionQueue: any[]; };
+    collectionQueue: any[] };
 }
 export interface RawData { analytics: AnalyticsReport | null,
     feedback: FeedbackStatistics | null,
     sessions: AnalyticsSession[],
     interactions: [string, FeedbackData][],
-    timestamp: number; };
+    timestamp: number };
 }
 export interface UsageAnalysis { summary: UsageSummary,
     details: UsageDetails,
-    insights: Insight[];
+    insights: Insight[]
     };
 }
 export interface UsageSummary { totalSessions: number,
@@ -87,25 +87,25 @@ export interface UsageSummary { totalSessions: number,
     averageSessionDuration: number,
     pageViewsPerSession: number,
     searchUsageRate: number,
-    returnUserRate: number; };
+    returnUserRate: number };
 }
 export interface UsageDetails { topCategories: any[],
     topTopics: any[],
     searchQueries: any[],
     sessionDistribution: SessionDistribution,
-    usagePatterns: UsagePatterns;
+    usagePatterns: UsagePatterns
     };
 }
 export interface EngagementAnalysis { summary: EngagementSummary,
     details: EngagementDetails,
-    insights: Insight[];
+    insights: Insight[]
     };
 }
 export interface EngagementSummary { averageTimePerTopic: number,
     interactionRate: number,
     searchSuccessRate: number,
     navigationEfficiency: number,
-    contentCompletionRate: number; };
+    contentCompletionRate: number };
 }
 export interface EngagementDetails { topicEngagement: Record<string, any>,
     searchBehavior: Record<string, any>,
@@ -115,14 +115,14 @@ export interface EngagementDetails { topicEngagement: Record<string, any>,
 }
 export interface SatisfactionAnalysis { summary: SatisfactionSummary,
     details: SatisfactionDetails,
-    insights: Insight[];
+    insights: Insight[]
     };
 }
 export interface SatisfactionSummary { averageRating: number,
     helpfulnessRate: number,
     totalFeedbacks: number,
     ratingDistribution: Record<string, number>,
-    sentimentScore: number; };
+    sentimentScore: number };
 }
 export interface SatisfactionDetails { topRatedContent: any[],
     lowRatedContent: any[],
@@ -133,12 +133,12 @@ export interface SatisfactionDetails { topRatedContent: any[],
 export interface SessionDistribution { byDuration: {
         short: number,
         medium: number,
-        long: number ;
+        long: number 
 }
     },
     byPageViews: { few: number,
         moderate: number,
-        many: number ;
+        many: number 
 }
     },
     byTime: Map<number, number>,
@@ -150,16 +150,16 @@ export interface UsagePatterns { peakHours: Map<number, number>,
 }
 export interface Insight { type: string,
     message: string,
-    severity: 'low' | 'medium' | 'high'; };
+    severity: 'low' | 'medium' | 'high' };
 }
 export interface DataVolume { sessions: number,
     feedback: number,
-    analytics_events: number; };
+    analytics_events: number };
 }
 export interface CollectionStats { isActive: boolean,
     lastCollectionTime: number,
     queueSize: number,
-    config: CollectorConfig;
+    config: CollectorConfig
     };
 }
 export class HelpMetricsCollector {
@@ -176,7 +176,7 @@ export class HelpMetricsCollector {
         
         // 設定
         this.config = {
-            minDataThreshold: 5;
+            minDataThreshold: 5
 };
 }
             dataCollectionInterval: 60000 // 1分間隔 ;
@@ -186,9 +186,9 @@ export class HelpMetricsCollector {
         // メトリクス収集状態
         this.collectionState = { isActive: false,
             lastCollectionTime: 0,
-            collectionQueue: [] ;
+            collectionQueue: [] 
 }
-        },'
+        },
         '';
         console.log('[HelpMetricsCollector] Component initialized');
     }
@@ -203,10 +203,10 @@ export class HelpMetricsCollector {
             feedback: null,
             sessions: [],
             interactions: [],
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         ';
-        try { // アナリティクスデータの収集''
+        try { // アナリティクスデータの収集
             if(this.helpEffectivenessAnalyzer.helpAnalytics') {'
                 '';
                 rawData.analytics = this.helpEffectivenessAnalyzer.helpAnalytics.generateReport('detailed', { period );
@@ -214,7 +214,7 @@ export class HelpMetricsCollector {
                 rawData.sessions = Array.from(this.helpEffectivenessAnalyzer.helpAnalytics.sessions.values(); };
 }
             // フィードバックデータの収集
-            if(this.helpEffectivenessAnalyzer.helpFeedbackSystem) {'
+            if(this.helpEffectivenessAnalyzer.helpFeedbackSystem) {
                 rawData.feedback = this.helpEffectivenessAnalyzer.helpFeedbackSystem.getFeedbackStatistics();'
             }'
                 rawData.interactions = Array.from(this.helpEffectivenessAnalyzer.helpFeedbackSystem.feedbacks.entries()'); }
@@ -223,9 +223,9 @@ export class HelpMetricsCollector {
             this.loggingSystem.debug('HelpMetricsCollector', `Raw data collected for period: ${period)`});
             return rawData;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to collect raw data', error);
-            throw error; };
+            throw error; }
 }
     }
     
@@ -251,7 +251,7 @@ export class HelpMetricsCollector {
                     uniqueUsers: analyticsData.overview? .uniqueUsers || 0, : undefined;
                     averageSessionDuration: analyticsData.overview? .averageSessionDuration || 0, : undefined;
                     pageViewsPerSession: this.calculatePageViewsPerSession(rawData.sessions),
-                    searchUsageRate: this.calculateSearchUsageRate(rawData.sessions);
+                    searchUsageRate: this.calculateSearchUsageRate(rawData.sessions)
 }
                     returnUserRate: this.calculateReturnUserRate(rawData.sessions); }
                 };
@@ -261,16 +261,16 @@ export class HelpMetricsCollector {
                     topTopics: analyticsData.topContent? .topics || [], : undefined;
                     searchQueries: analyticsData.topContent? .searchQueries || [], : undefined;
                     sessionDistribution: this.analyzeSessionDistribution(rawData.sessions),
-                    usagePatterns: this.analyzeUsagePatterns(rawData.sessions); }
+                    usagePatterns: this.analyzeUsagePatterns(rawData.sessions) }
                 };
                 
                 // インサイト生成
                 analysis.insights = this.generateUsageInsights(analysis.summary, analysis.details);
             }
             
-            return analysis;'
+            return analysis;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze usage metrics', error); }
             return { summary: {} as UsageSummary, details: {} as UsageDetails, insights: [] };
 }
@@ -293,7 +293,7 @@ export class HelpMetricsCollector {
                 interactionRate: this.calculateInteractionRate(rawData.sessions, rawData.interactions),
                 searchSuccessRate: this.calculateSearchSuccessRate(rawData.sessions),
                 navigationEfficiency: this.calculateNavigationEfficiency(rawData.sessions),
-                contentCompletionRate: this.calculateContentCompletionRate(rawData.sessions); }
+                contentCompletionRate: this.calculateContentCompletionRate(rawData.sessions) }
             };
             
             // 詳細エンゲージメント分析
@@ -301,15 +301,15 @@ export class HelpMetricsCollector {
                 searchBehavior: this.analyzeSearchBehavior(rawData.sessions),
                 navigationPatterns: this.analyzeNavigationPatterns(rawData.sessions),
                 dropoffPoints: this.identifyDropoffPoints(rawData.sessions),
-                peakUsageTimes: this.analyzePeakUsageTimes(rawData.sessions); }
+                peakUsageTimes: this.analyzePeakUsageTimes(rawData.sessions) }
             };
             
             // エンゲージメントインサイト
             analysis.insights = this.generateEngagementInsights(analysis.summary, analysis.details);
             
-            return analysis;'
+            return analysis;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze engagement metrics', error); }
             return { summary: {} as EngagementSummary, details: {} as EngagementDetails, insights: [] };
 }
@@ -332,7 +332,7 @@ export class HelpMetricsCollector {
                 // 基本満足度指標
                 analysis.summary = {
                     averageRating: rawData.feedback.averageRating || 0,
-                    helpfulnessRate: rawData.feedback.helpfulPercentage || 0;
+                    helpfulnessRate: rawData.feedback.helpfulPercentage || 0
 }
                     totalFeedbacks: rawData.feedback.totalFeedbacks || 0;
 }
@@ -345,16 +345,16 @@ export class HelpMetricsCollector {
                     lowRatedContent: rawData.feedback.lowRatedContent || [],
                     feedbackCategories: rawData.feedback.commonCategories || new Map(),
                     improvementAreas: this.identifyImprovementAreas(rawData.interactions),
-                    userSentiments: this.analyzeUserSentiments(rawData.interactions); }
+                    userSentiments: this.analyzeUserSentiments(rawData.interactions) }
                 };
                 
                 // 満足度インサイト
                 analysis.insights = this.generateSatisfactionInsights(analysis.summary, analysis.details);
             }
             
-            return analysis;'
+            return analysis;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpMetricsCollector', 'Failed to analyze satisfaction metrics', error); }
             return { summary: {} as SatisfactionSummary, details: {} as SatisfactionDetails, insights: [] };
 }
@@ -368,17 +368,17 @@ export class HelpMetricsCollector {
     validateDataQuality(rawData: RawData): boolean { try {
             // 最小データ数の確認
             const sessionCount = rawData.sessions ? rawData.sessions.length: 0,
-            const feedbackCount = rawData.interactions ? rawData.interactions.length: 0,';
+            const feedbackCount = rawData.interactions ? rawData.interactions.length: 0,
             '';
             if(sessionCount < this.config.minDataThreshold && feedbackCount < this.config.minDataThreshold') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.warn('HelpMetricsCollector') }
                     `Insufficient data: sessions=${sessionCount}, feedback=${feedbackCount)`});
                 return false;
             }
             ';
-            // データの整合性確認''
+            // データの整合性確認
             if(rawData.analytics && rawData.analytics.error') {'
                 '';
                 this.loggingSystem.warn('HelpMetricsCollector', 'Analytics data contains errors');
@@ -387,7 +387,7 @@ export class HelpMetricsCollector {
 }
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpMetricsCollector', 'Data quality validation failed', error);
             return false; };
 }
@@ -466,8 +466,8 @@ export class HelpMetricsCollector {
         return sessionsWithSearch / sessions.length; };
 }
     private calculateReturnUserRate(sessions: AnalyticsSession[]): number { if (!sessions || sessions.length === 0) return 0;
-        ';
-        // 簡単な実装: 同じentryPointを持つセッションの比率で推定''
+        ;
+        // 簡単な実装: 同じentryPointを持つセッションの比率で推定
         const entryPoints = new Map<string, number>(');'
         sessions.forEach(session => { ')'
             const entryPoint = session.entryPoint || 'unknown');
@@ -502,7 +502,7 @@ export class HelpMetricsCollector {
     private calculateInteractionRate(sessions: AnalyticsSession[], interactions: [string, FeedbackData][]): number { if (!sessions || sessions.length === 0) return 0;
         
         const interactionCount = interactions ? interactions.length: 0,
-        return interactionCount / sessions.length; };
+        return interactionCount / sessions.length };
 }
     private calculateSearchSuccessRate(sessions: AnalyticsSession[]): number { if (!sessions || sessions.length === 0) return 0;
         
@@ -603,11 +603,11 @@ export class HelpMetricsCollector {
     }
     
     private analyzeUsagePatterns(sessions: AnalyticsSession[]): UsagePatterns { const patterns: UsagePatterns = {
-            peakHours: new Map<number, number>(),';
+            peakHours: new Map<number, number>(),;
             commonJourneys: new Map<string, number>(),'';
-            entryPoints: new Map<string, number>('); }
+            entryPoints: new Map<string, number>(') }
         };
-        ';
+        ';'
         sessions.forEach(session => {  // エントリーポイント分析')'
             const entry = session.entryPoint || 'unknown');
             patterns.entryPoints.set(entry, (patterns.entryPoints.get(entry) || 0) + 1);
@@ -624,12 +624,12 @@ export class HelpMetricsCollector {
         return patterns;
     }
     
-    private generateUsageInsights(summary: UsageSummary, details: UsageDetails): Insight[] { const insights: Insight[] = [],'
+    private generateUsageInsights(summary: UsageSummary, details: UsageDetails): Insight[] { const insights: Insight[] = [],
         '';
         if(summary.averageSessionDuration < 60') {'
             insights.push({''
                 type: 'usage_concern',')';
-                message: 'セッション時間が短く、ユーザーが求める情報を見つけにくい可能性があります',');
+                message: 'セッション時間が短く、ユーザーが求める情報を見つけにくい可能性があります',')
         }'
                 severity: 'medium'); }
         }'
@@ -637,7 +637,7 @@ export class HelpMetricsCollector {
         if(summary.searchUsageRate > 0.6') {'
             insights.push({''
                 type: 'usage_positive',')';
-                message: '検索機能がよく利用されており、ユーザーの能動的な情報探索が見られます',');
+                message: '検索機能がよく利用されており、ユーザーの能動的な情報探索が見られます',')
         }'
                 severity: 'low'); };
 }
@@ -688,9 +688,9 @@ export class HelpMetricsCollector {
     }
     
     /**
-     * コンポーネントクリーンアップ'
+     * コンポーネントクリーンアップ
      */''
-    destroy('')';
+    destroy()';
         console.log('[HelpMetricsCollector] Component destroyed'');'
     }''
 }

@@ -2,11 +2,11 @@ import { getErrorHandler } from '../utils/ErrorHandler.js';''
 import type { ErrorHandler } from '../utils/ErrorHandler.js';
 import { UIStateManager, 
     DialogStateManager, ;
-    OperationStateManager, ';
+    OperationStateManager, ';'
     BackupStatusManager ' }'
 } from './data-management-ui/DataManagementStateManager.js';
 import { UILayoutManager, 
-    UIRenderer, ';
+    UIRenderer, ';'
     ViewRenderer ' }'
 } from './data-management-ui/DataManagementRenderer.js';''
 import { DialogManager } from './data-management-ui/DataManagementDialogs.js';
@@ -26,7 +26,7 @@ interface DataManager { on?(event: string, callback: (data: any) => void): void;
 interface Config { autoRefresh: boolean,
     refreshInterval: number,
     enableAnimations: boolean,
-    showAdvancedOptions: boolean; }
+    showAdvancedOptions: boolean }
 }
 
 /**
@@ -37,7 +37,7 @@ interface Status { visible: boolean,
     selectedItem: number,
     dialogVisible: boolean,
     operationInProgress: boolean,
-    backupStatus: any; }
+    backupStatus: any }
 }
 
 /**
@@ -46,7 +46,7 @@ interface Status { visible: boolean,
 interface Bounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 /**
@@ -118,14 +118,14 @@ export class DataManagementUI {
             this.layoutManager = new UILayoutManager();
             this.uiRenderer = new UIRenderer(this.layoutManager);
             this.viewRenderer = new ViewRenderer(this.uiRenderer, this.layoutManager);
-            ';
-            // Initialize dialog system''
+            ;
+            // Initialize dialog system
             this.dialogManager = new DialogManager(this.uiRenderer, this.layoutManager');'
             '';
             console.log('DataManagementUI sub-components initialized');'
             ' }'
-        } catch (error') { ''
-            console.error('Failed to initialize DataManagementUI sub-components:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize DataManagementUI sub-components:', error) }
         }
     }
     
@@ -136,14 +136,14 @@ export class DataManagementUI {
             // Initialize backup status
             await this.backupStatus.initialize(this.dataManager);
             
-            // Setup event listeners'
+            // Setup event listeners
             this.setupEventListeners();''
-            this.setupStateChangeListeners('')';
+            this.setupStateChangeListeners()';
             console.log('DataManagementUI initialized');
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'DATA_MANAGEMENT_UI_INITIALIZATION_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -153,7 +153,7 @@ export class DataManagementUI {
      */'
     setupEventListeners(): void { ''
         if(this.dataManager') {'
-            // DataManagerのイベントを監視'
+            // DataManagerのイベントを監視
         }'
             this.dataManager.on?.('backupCreated', (data: any) => {  }'
                 this.onBackupCreated(data);' }'
@@ -176,26 +176,26 @@ export class DataManagementUI {
     /**
      * 状態変更リスナーの設定
      */'
-    setupStateChangeListeners(): void { // UI state changes''
+    setupStateChangeListeners(): void { // UI state changes
         this.uiState.onStateChange((type: string, data: any') => { ' }'
             if (type === 'view') { }
                 console.log(`View changed to: ${data.view}`);
             }
         });
         ';
-        // Dialog state changes''
+        // Dialog state changes
         this.dialogState.onDialogChange((action: string, data: any') => {  ' }'
             if (action === 'show') { }
                 console.log(`Dialog opened: ${data.type}`);
             }
         });
         ';
-        // Operation state changes''
+        // Operation state changes
         this.operationState.onOperationChange((action: string, data: any') => {  ''
             if (action === 'start'') {' }'
                 this.dialogState.showDialog('progress', { }
                     title: `${data.type} in progress`,
-                    message: data.message,);
+                    message: data.message);
                     progress: 0);
                     startTime: data.startTime,)';
                     cancellable: true),'';
@@ -204,9 +204,9 @@ export class DataManagementUI {
                     progress: data.progress,')';
                     message: data.message)');' }'
             } else if (action === 'end') { ''
-                this.dialogState.hideDialog('')';
+                this.dialogState.hideDialog()';
                 if(data.result === 'success') {'
-                    ';
+                    ';'
                 }'
                     this.uiState.showError(`Operation completed successfully`, 3000');' }'
                 } else if (data.result === 'error') {
@@ -261,7 +261,7 @@ export class DataManagementUI {
      * 自動リフレッシュの開始
      */
     startAutoRefresh(): void { this.stopAutoRefresh();
-        ';
+        ';'
         this.refreshInterval = setInterval(() => { ''
             this.backupStatus.loadBackupStatus().catch(error => {');' }'
                 console.error('Auto refresh failed:', error); }
@@ -287,9 +287,9 @@ export class DataManagementUI {
             // Clear and draw background
             this.uiRenderer.clear();
             this.uiRenderer.drawBackground();
-            ';
-            // Calculate menu bounds''
-            const bounds = this.layoutManager.calculateMenuBounds('')';
+            ;
+            // Calculate menu bounds
+            const bounds = this.layoutManager.calculateMenuBounds()';
             this.uiRenderer.drawMenuHeader(bounds, 'Data Management');
             
             // Render current view
@@ -306,10 +306,10 @@ export class DataManagementUI {
             }
             
             // Render error message if present
-            this.renderErrorMessage();'
+            this.renderErrorMessage();
             '';
-        } catch (error') { ''
-            console.error('Render error:', error); }
+        } catch (error) { ''
+            console.error('Render error:', error) }
         }
     }
     
@@ -324,9 +324,9 @@ export class DataManagementUI {
             case 'overview':;
                 this.viewRenderer.renderOverviewView();
                     bounds);
-                    this.backupStatus.getBackupStatus(), ';
+                    this.backupStatus.getBackupStatus(), ';'
                     selectedItem'';
-                ');
+                ');'
                 break;'
                 '';
             case 'export':;
@@ -355,16 +355,16 @@ export class DataManagementUI {
         
         // Error banner
         this.uiRenderer.drawCard(;
-            bounds.x, bounds.y + bounds.height + 10, )';
+            bounds.x, bounds.y + bounds.height + 10 );
             bounds.width, 50, false)'';
         ');'
         '';
         this.uiRenderer.drawText('⚠️ ' + errorMessage, ;
-            bounds.x + 20, bounds.y + bounds.height + 35, {)
+            bounds.x + 20, bounds.y + bounds.height + 35, {)'
                 fontSize: 14)';
                 color: colors.danger,'';
                 align: 'left',')';
-                baseline: 'middle'); }
+                baseline: 'middle') }
     }
     
     /**
@@ -393,12 +393,12 @@ export class DataManagementUI {
      * ダイアログ入力処理
      */
     handleDialogInput(key: string): boolean { const dialogType = this.dialogState.getDialogType();
-        const dialog = dialogType ? this.dialogManager.getDialog(dialogType) : undefined;'
+        const dialog = dialogType ? this.dialogManager.getDialog(dialogType) : undefined;
         '';
         switch(key') {'
             '';
             case 'Escape':'';
-                this.dialogState.hideDialog('')';
+                this.dialogState.hideDialog()';
             case 'ArrowLeft':);
                 if (dialog) {'
                     const currentButton = dialog.getSelectedButton();'
@@ -410,7 +410,7 @@ export class DataManagementUI {
             case 'ArrowRight':;
                 if(dialog) {
                     const currentButton = dialog.getSelectedButton();'
-                    // Assume max 2 buttons for simplicity'
+                    // Assume max 2 buttons for simplicity
                 }'
                     dialog.setSelectedButton(Math.min(1, currentButton + 1)'); }
                 }
@@ -434,13 +434,13 @@ export class DataManagementUI {
             case 'Escape':'';
                 this.hide(''';
             case 'ArrowUp':'';
-                this.uiState.moveSelectionUp('')';
+                this.uiState.moveSelectionUp()';
             case 'ArrowDown':')';
                 this.uiState.moveSelectionDown(5'); // Assume 5 menu items
-                return true;'
+                return true;
                 '';
             case 'Enter':'';
-                this.executeMainAction('')';
+                this.executeMainAction()';
             case 'Tab':);
                 this.cycleView();
         }
@@ -454,7 +454,7 @@ export class DataManagementUI {
      * メインアクション実行
      */'
     executeMainAction(): void { const selectedItem = this.uiState.getSelectedItem();''
-        const currentView = this.uiState.getCurrentView('')';
+        const currentView = this.uiState.getCurrentView()';
         if(currentView === 'overview') {
             switch (selectedItem) {
                 case 1: // Create Backup;
@@ -476,19 +476,19 @@ export class DataManagementUI {
     
     /**
      * ダイアログアクション実行
-     */'
-    async executeDialogAction(dialogType: string, buttonIndex: number): Promise<void> { try {''
+     */
+    async executeDialogAction(dialogType: string, buttonIndex: number): Promise<void> { try {'
             switch(dialogType') {'
                 '';
                 case 'backup':';
-                    if (buttonIndex === 1) { // Confirm''
-                        await this.createBackup('')';
+                    if (buttonIndex === 1) { // Confirm
+                        await this.createBackup()';
                 case 'export':)';
-                    if (buttonIndex === 1) { // Export''
-                        await this.exportData('')';
+                    if (buttonIndex === 1) { // Export
+                        await this.exportData()';
                 case 'import':)';
-                    if (buttonIndex === 1) { // Import''
-                        await this.importData('')';
+                    if (buttonIndex === 1) { // Import
+                        await this.importData()';
                 case 'clear':);
                     if (buttonIndex === 1) { // Confirm;
             }
@@ -498,10 +498,10 @@ export class DataManagementUI {
             }
             
             this.dialogState.hideDialog();
-            ';
+            ';'
         } catch (error) { ''
             this.uiState.showError((error as Error).message');''
-            console.error('Dialog action failed:', error); }
+            console.error('Dialog action failed:', error) }
         }
     }
     
@@ -515,17 +515,17 @@ export class DataManagementUI {
         this.uiState.setCurrentView(views[nextIndex]);
     }
     ';
-    // Dialog show methods''
-    showBackupDialog('')';
+    // Dialog show methods
+    showBackupDialog()';
         this.dialogState.showDialog('backup', { );
             estimatedSize: this.formatFileSize(1024 * 1024), // 1MB estimate;
-            autoBackupEnabled: this.backupStatus.isAutoBackupEnabled(); }
+            autoBackupEnabled: this.backupStatus.isAutoBackupEnabled() }
         });
-    }'
+    }
     '';
     showExportDialog(''';
         this.dialogState.showDialog('export', { ''
-            formats: ['JSON', 'CSV', 'XML'],);
+            formats: ['JSON', 'CSV', 'XML']);
             selectedFormat: 0)';
             includeOptions: [' }'
                 { name: 'Game Progress', checked: true },''
@@ -542,13 +542,13 @@ export class DataManagementUI {
             ]);
     }'
     '';
-    showClearDataDialog('')';
+    showClearDataDialog()';
         this.dialogState.showDialog('clear', { ')'
-            confirmText: ''); }
+            confirmText: '') }
     }
     ';
-    // Operation methods (simplified implementations);''
-    async createBackup('')';
+    // Operation methods (simplified implementations);
+    async createBackup()';
         this.operationState.startOperation('backup', 'Creating backup...');
         
         try { // Simulate backup creation
@@ -558,69 +558,69 @@ export class DataManagementUI {
                 await new Promise(resolve => setTimeout(resolve, 100); }
                 this.operationState.updateOperation(i, `Creating backup... ${i)%`});
             }
-            ';
+            ';'
             this.backupStatus.addBackupToHistory({ );''
-                id: Date.now('')';
+                id: Date.now()';
                 type: 'manual'') }'
             }'),'
             '';
             this.operationState.endOperation('success', 'Backup created successfully');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.operationState.endOperation('error', (error as Error).message); }
         }
     }'
     '';
-    async exportData('')';
+    async exportData()';
         this.operationState.startOperation('export', 'Exporting data...');
         
         try { // Simulate export
             for(let i = 0; i <= 100; i += 20) {
                 
-            }'
+            }
                 await new Promise(resolve => setTimeout(resolve, 200);' }'
                 this.operationState.updateOperation(i, `Exporting... ${i)%`'});
             }'
             '';
             this.operationState.endOperation('success', 'Data exported successfully');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.operationState.endOperation('error', (error as Error).message); }
         }
     }'
     '';
-    async importData('')';
+    async importData()';
         this.operationState.startOperation('import', 'Importing data...');
         
         try { // Simulate import
             for(let i = 0; i <= 100; i += 15) {
                 
-            }'
+            }
                 await new Promise(resolve => setTimeout(resolve, 150);' }'
                 this.operationState.updateOperation(i, `Importing... ${i)%`'});
             }'
             '';
             this.operationState.endOperation('success', 'Data imported successfully');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.operationState.endOperation('error', (error as Error).message); }
         }
     }'
     '';
-    async clearData('')';
+    async clearData()';
         this.operationState.startOperation('clear', 'Clearing data...');
         ';
-        try { // Simulate data clearing''
+        try { // Simulate data clearing
             await new Promise(resolve => setTimeout(resolve, 1000)');''
             this.operationState.updateOperation(100, 'Data cleared'');''
             this.operationState.endOperation('success', 'All data cleared successfully');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.operationState.endOperation('error', (error as Error).message); }
         }
     }
     
-    // Event handlers'
+    // Event handlers
     onBackupCreated(data: any): void { ''
         this.backupStatus.addBackupToHistory(data');''
         this.uiState.showError('Backup created successfully', 3000); }
@@ -642,10 +642,10 @@ export class DataManagementUI {
         this.uiState.showError(data.message || 'An error occurred'); }
     }
     
-    // Utility methods'
+    // Utility methods
     formatFileSize(bytes: number): string { ''
         if (bytes === 0') return '0 B';
-        ';
+        ';'
         const k = 1024;''
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);'
@@ -676,7 +676,7 @@ export class DataManagementUI {
         this.backupStatus.destroy();
         this.uiState.reset();'
         this.dialogState.reset();''
-        this.operationState.reset('')';
+        this.operationState.reset()';
         console.log('DataManagementUI destroyed''); }'
     }''
 }

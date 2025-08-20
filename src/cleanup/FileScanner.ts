@@ -6,7 +6,7 @@ export interface FileInfo { filePath: string,
     fileName: string,
     fileSize: number,
     lastModified: Date,
-    fileType: string; }
+    fileType: string }
 }
 
 export class FileScanner {
@@ -66,7 +66,7 @@ export class FileScanner {
     }
 
     async scanWithInfo(;
-        patterns: string[] = this.defaultPatterns, );
+        patterns: string[] = this.defaultPatterns );
         extensions: string[] = this.defaultExtensions);
         rootPath: string = process.cwd(): Promise<FileInfo[]>,
         const allFiles = await this.scanForOldFiles(patterns, rootPath);

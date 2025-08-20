@@ -12,14 +12,14 @@ import { generateJsonLd,
     measurePerformance' }'
 } from './SEOUtils';
 
-// 基本スキーマインターフェース'
+// 基本スキーマインターフェース
 interface BaseSchema { ''
     '@context': string;''
     '@type': string;
     [key: string]: any, }
 }
 
-// VideoGameスキーマインターフェース'
+// VideoGameスキーマインターフェース
 interface VideoGameSchema extends BaseSchema { ''
     '@type': 'VideoGame';
     name: string,
@@ -37,30 +37,30 @@ interface VideoGameSchema extends BaseSchema { ''
     }
 }
 
-// PropertyValueインターフェース'
+// PropertyValueインターフェース
 interface PropertyValue { ''
     '@type': 'PropertyValue';
     name: string,
-    value: string | number; }
+    value: string | number }
 }
 
-// InteractionCounterインターフェース'
+// InteractionCounterインターフェース
 interface InteractionCounter { ''
     '@type': 'InteractionCounter';
     interactionType: string,
-    userInteractionCount: number; }
+    userInteractionCount: number }
 }
 
-// Organizationスキーマインターフェース'
+// Organizationスキーマインターフェース
 interface OrganizationSchema extends BaseSchema { ''
     '@type': 'Organization';
     name: string,
     url: string,
     logo: string,
-    sameAs: string[]; }
+    sameAs: string[] }
 }
 
-// WebApplicationスキーマインターフェース'
+// WebApplicationスキーマインターフェース
 interface WebApplicationSchema extends BaseSchema { ''
     '@type': 'WebApplication';
     name: string,
@@ -68,25 +68,25 @@ interface WebApplicationSchema extends BaseSchema { ''
     url: string,
     applicationCategory: string,
     operatingSystem: string[],
-    browserRequirements: string; }
+    browserRequirements: string }
 }
 
-// BreadcrumbListスキーマインターフェース'
+// BreadcrumbListスキーマインターフェース
 interface BreadcrumbListSchema extends BaseSchema { ''
     '@type': 'BreadcrumbList';
-    itemListElement: ListItem[];
+    itemListElement: ListItem[]
     }
 }
 
-// ListItemインターフェース'
+// ListItemインターフェース
 interface ListItem { ''
     '@type': 'ListItem';
     position: number,
     name: string,
-    item: string; }
+    item: string }
 }
 
-// Eventスキーマインターフェース'
+// Eventスキーマインターフェース
 interface EventSchema extends BaseSchema { ''
     '@type': 'Event';
     name: string,
@@ -94,7 +94,7 @@ interface EventSchema extends BaseSchema { ''
     startDate: string,
     endDate: string,
     location: string,
-    organizer: OrganizationSchema;
+    organizer: OrganizationSchema
     }
 }
 
@@ -114,7 +114,7 @@ interface StructuredDataContext {
         description: string,
         startDate: string,
         endDate: string,
-        location: string; }
+        location: string }
     };
     pageType?: string;
     gameState?: any;
@@ -124,7 +124,7 @@ interface StructuredDataContext {
 interface LocalizationManager { getCurrentLanguage(): string;
     addLanguageChangeListener(callback: (lang: string) => void): void;
     t(key: string, defaultValue?: string): string;
-    get(key: string, params?: Record<string, any>): string; }
+    get(key: string, params?: Record<string, any>): string }
 }
 
 // GameConfig インターフェース
@@ -174,11 +174,11 @@ export class StructuredDataEngine {
                     this.clearCache(); }
                 });
             }
-            ';
-            // スキーマ生成関数の登録''
-            this._registerSchemaGenerators('')';
+            ;
+            // スキーマ生成関数の登録
+            this._registerSchemaGenerators()';
             seoLogger.info('StructuredDataEngine initialized successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'structuredDataInit'); }
         }
     }
@@ -221,9 +221,9 @@ export class StructuredDataEngine {
             }
                 if (event) schemas.push(event); }
             }
-            ';
+            ';'
             return schemas;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             return seoErrorHandler.handle(error as Error, 'structuredDataGeneration', { context });
         }
     }
@@ -231,7 +231,7 @@ export class StructuredDataEngine {
     /**
      * ゲームプレイデータに基づいて構造化データを更新
      */'
-    async updateGameplayData(gameplayData: GameplayData): Promise<void> { try {''
+    async updateGameplayData(gameplayData: GameplayData): Promise<void> { try {'
             if(!this.initialized') {'
                 '';
                 seoLogger.warn('StructuredDataEngine not initialized');
@@ -239,13 +239,13 @@ export class StructuredDataEngine {
                 return; }
             }
 
-            // 現在の VideoGame スキーマを取得'
+            // 現在の VideoGame スキーマを取得
             const currentSchema = await this.generateVideoGameSchema();''
             if (!currentSchema') return;
             
             // ゲームプレイデータを組み込んだ拡張スキーマを生成
             const enhancedSchema: VideoGameSchema = { ...currentSchema,
-                // ゲームプレイ統計を追加'
+                // ゲームプレイ統計を追加
                 additionalProperty: [{''
                         "@type": "PropertyValue","";
                         "name": "currentHighScore","";
@@ -275,7 +275,7 @@ export class StructuredDataEngine {
             if(gameplayData.score && gameplayData.score > 0") {"
                 enhancedSchema.interactionStatistic = {""
                     "@type": "InteractionCounter","";
-                    "interactionType": "http://schema.org/PlayAction",";
+                    "interactionType": "http://schema.org/PlayAction","
             }"
                     "userInteractionCount": gameplayData.bubblesPopped || 0 }
                 };
@@ -285,7 +285,7 @@ export class StructuredDataEngine {
             await this._updateSchemaInDOM('VideoGame', enhancedSchema');'
 '';
             seoLogger.info('Gameplay data updated in structured data', gameplayData);''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             seoErrorHandler.handle(error as Error, 'updateGameplayData', { gameplayData });
         }
     }
@@ -293,8 +293,8 @@ export class StructuredDataEngine {
     /**
      * DOM内の特定のスキーマを更新'
      */''
-    private async _updateSchemaInDOM(schemaType: string, newSchema: BaseSchema'): Promise<void> { try {'
-            // 既存のスクリプトタグを検索''
+    private async _updateSchemaInDOM(schemaType: string, newSchema: BaseSchema'): Promise<void> { try {
+            // 既存のスクリプトタグを検索
             const existingScript = document.querySelector(`script[type="application/ld+json"][data-schema="${schemaType")"]`);
             
             if(existingScript) {
@@ -310,16 +310,16 @@ export class StructuredDataEngine {
                 scriptTag.setAttribute('data-schema', schemaType);''
                 scriptTag.textContent = JSON.stringify(newSchema, null, 2');
                 ';
-                // 構造化データ注入ポイントに追加''
+                // 構造化データ注入ポイントに追加
                 const injectionPoint = document.getElementById('structured-data-injection-point');
                 if (injectionPoint) { }
                     injectionPoint.appendChild(scriptTag); }
                     seoLogger.debug(`Added ${schemaType) schema to DOM`});
                 } else {  // フォールバック: headに追加 }
                     document.head.appendChild(scriptTag); }
-                    seoLogger.debug(`Added ${schemaType) schema to head`});'
+                    seoLogger.debug(`Added ${schemaType) schema to head`});
                 }''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             seoErrorHandler.handle(error as Error, '_updateSchemaInDOM', { schemaType });
         }
     }
@@ -331,12 +331,12 @@ export class StructuredDataEngine {
             const cacheKey = `videoGame_${this.currentLang}`;
             
             if(this.schemaCache.has(cacheKey) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 return this.schemaCache.get(cacheKey') as VideoGameSchema; }
             }
-            ';
+            ';'
             const schema: VideoGameSchema = { ''
                 '@context': 'https://schema.org','';
                 '@type': 'VideoGame','';
@@ -353,7 +353,7 @@ export class StructuredDataEngine {
             
             this.schemaCache.set(cacheKey, schema);'
             return schema;''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'generateVideoGameSchema', context);
             return null; }
         }
@@ -362,7 +362,7 @@ export class StructuredDataEngine {
     /**
      * Organizationスキーマの生成'
      */''
-    async generateOrganizationSchema(context: StructuredDataContext = {}'): Promise<OrganizationSchema | null> { try {'
+    async generateOrganizationSchema(context: StructuredDataContext = {}'): Promise<OrganizationSchema | null> { try {
             const schema: OrganizationSchema = {''
                 '@context': 'https://schema.org','';
                 '@type': 'Organization',
@@ -371,9 +371,9 @@ export class StructuredDataEngine {
                 logo: SEOConfig.structuredData.organization.logo,
                 sameAs: SEOConfig.structuredData.organization.sameAs }
             },
-            ';
+            ';'
             return schema;''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'generateOrganizationSchema', context);
             return null; }
         }
@@ -382,7 +382,7 @@ export class StructuredDataEngine {
     /**
      * WebApplicationスキーマの生成'
      */''
-    async generateWebApplicationSchema(context: StructuredDataContext = {}'): Promise<WebApplicationSchema | null> { try {'
+    async generateWebApplicationSchema(context: StructuredDataContext = {}'): Promise<WebApplicationSchema | null> { try {
             const schema: WebApplicationSchema = {''
                 '@context': 'https://schema.org','';
                 '@type': 'WebApplication','';
@@ -393,9 +393,9 @@ export class StructuredDataEngine {
                 operatingSystem: ['Any'],
                 browserRequirements: SEOConfig.structuredData.webApplication.browserRequirements }
             },
-            ';
+            ';'
             return schema;''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'generateWebApplicationSchema', context);
             return null; }
         }
@@ -404,22 +404,22 @@ export class StructuredDataEngine {
     /**
      * BreadcrumbListスキーマの生成
      */'
-    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string; url: string }>): Promise<BreadcrumbListSchema | null> { try {''
+    async generateBreadcrumbSchema(breadcrumbs: Array<{ name: string; url: string }>): Promise<BreadcrumbListSchema | null> { try {'
             const itemListElement: ListItem[] = breadcrumbs.map((crumb, index') => ({''
                 '@type': 'ListItem',
                 position: index + 1,
                 name: crumb.name)';
                 item: crumb.url' }'
             }'),
-            ';
+            ';'
             const schema: BreadcrumbListSchema = { ''
                 '@context': 'https://schema.org','';
                 '@type': 'BreadcrumbList',
                 itemListElement }
             };
-            ';
+            ';'
             return schema;''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'generateBreadcrumbSchema', breadcrumbs);
             return null; }
         }
@@ -430,13 +430,13 @@ export class StructuredDataEngine {
      */
     async generateEventSchema(eventData: { name: string,
         description: string,
-        startDate: string,);
+        startDate: string);
         endDate: string);
-        location: string; }
+        location: string }
     }): Promise<EventSchema | null>;'
         try { const organizer = await this.generateOrganizationSchema();''
             if (!organizer') return null;
-            ';
+            ';'
             const schema: EventSchema = {''
                 '@context': 'https://schema.org','';
                 '@type': 'Event',
@@ -447,9 +447,9 @@ export class StructuredDataEngine {
                 location: eventData.location,
                 organizer: organizer }
             },
-            ';
+            ';'
             return schema;''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'generateEventSchema', eventData);
             return null; }
         }
@@ -458,7 +458,7 @@ export class StructuredDataEngine {
     /**
      * スキーマ生成関数の登録'
      */''
-    private _registerSchemaGenerators('')';
+    private _registerSchemaGenerators()';
         this.schemas.set('videoGame', this.generateVideoGameSchema.bind(this)');''
         this.schemas.set('organization', this.generateOrganizationSchema.bind(this)');''
         this.schemas.set('webApplication', this.generateWebApplicationSchema.bind(this);
@@ -477,7 +477,7 @@ export class StructuredDataEngine {
      * キャッシュのクリア
      */'
     clearCache(): void { ''
-        this.schemaCache.clear('')';
+        this.schemaCache.clear()';
         seoLogger.info('StructuredDataEngine cache cleared'); }
     }
     
@@ -485,7 +485,7 @@ export class StructuredDataEngine {
      * リソースのクリーンアップ
      */'
     cleanup(): void { this.schemas.clear();''
-        this.schemaCache.clear('')';
+        this.schemaCache.clear()';
         seoLogger.info('StructuredDataEngine cleaned up''); }'
     }''
 }

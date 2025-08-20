@@ -30,7 +30,7 @@ interface FaviconDefaultConfig { sizes: number[],
     fontFamily: string,
     text: string,
     cacheEnabled: boolean,
-    enablePerformanceOptimizations: boolean; }
+    enablePerformanceOptimizations: boolean }
 }
 
 interface GenerationResult { success: boolean,
@@ -38,9 +38,9 @@ interface GenerationResult { success: boolean,
     cached: number,
     failed: number,
     details: FaviconDetail[],
-    error?: string; }
+    error?: string }
 }
-';
+';'
 interface FaviconDetail { ''
     size?: number | 'ico';
     dataURL?: string;
@@ -50,7 +50,7 @@ interface FaviconDetail { ''
 
 interface GenerationRequest { size: number,
     config: FaviconDefaultConfig,
-    configHash: string; }
+    configHash: string }
 }
 
 interface CanvasInfo { canvas: HTMLCanvasElement,
@@ -58,25 +58,25 @@ interface CanvasInfo { canvas: HTMLCanvasElement,
     fromPool?: boolean;
     poolIndex?: number; }
 }
-';
+';'
 interface BatchResult { ''
     status: 'fulfilled' | 'rejected',
-    value?: FaviconDetail;
+    value?: FaviconDetail
     }
     reason?: { message?: string };
 }
-';
+';'
 interface FaviconData { ''
     size: number | 'ico',';
     dataURL: string,'';
-    type: 'ico' | 'png'; }
+    type: 'ico' | 'png' }
 }
 
 interface Stats { cache: any,
     performance: any,
     memoryCache: {
         size: number,
-        keys: string[]; }
+        keys: string[] }
     };
 }
 
@@ -149,7 +149,7 @@ class FaviconGenerator { /**
             }
             
             // DOM更新
-            if(result.generated > 0) {'
+            if(result.generated > 0) {
                 const faviconData: FaviconData[] = result.details'';
                     .filter(detail => detail.dataURL');
                     .map(detail => ({)
@@ -157,7 +157,7 @@ class FaviconGenerator { /**
                         dataURL: detail.dataURL!,')';
                         type: detail.size === 'ico' ? 'ico' : 'png'))),
                 
-                FaviconDOMManager.removeExistingFavicons();
+                FaviconDOMManager.removeExistingFavicons()
             }
                 FaviconDOMManager.addFaviconsToDOM(faviconData); }
             }
@@ -168,9 +168,9 @@ class FaviconGenerator { /**
             if (finalConfig.enablePerformanceOptimizations) { FaviconPerformanceManager.cleanupMemory(); }
             }
             
-            return result;'
+            return result;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('FaviconGenerator: Generation failed:', error);
             return { success: false,
                 generated: 0,
@@ -253,11 +253,11 @@ class FaviconGenerator { /**
             canvas = canvasData.canvas; }
             ctx = canvasData.ctx; }
         }
-        ';
-        // レンダリング実行''
+        ;
+        // レンダリング実行
         FaviconCanvasRenderer.renderFavicon(ctx, size, config');
         ';
-        // Data URL生成''
+        // Data URL生成
         const format: 'png' | 'ico' = size === 32 ? 'ico' : 'png'; // 仮の条件、実際は要件に応じて調整
         const dataURL = FaviconCanvasRenderer.canvasToDataURL(canvas, format);
         
@@ -273,7 +273,7 @@ class FaviconGenerator { /**
      * @private
      * @param batchResults - バッチ処理結果
      * @param result - 結果オブジェクト
-     */'
+     */
     private static _processBatchResults(batchResults: BatchResult[], result: GenerationResult): void { ''
         batchResults.forEach(batchResult => { ');''
             if(batchResult.status === 'fulfilled') {

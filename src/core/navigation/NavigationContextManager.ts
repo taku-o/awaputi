@@ -16,11 +16,11 @@ export interface NavigationContext { scene: string,
     method: AccessMethod,
     timestamp: number,
     data: ContextData,
-    id: string; }
+    id: string }
 }
 
 export interface ContextData { [key: string]: any,
-    preserveState?: boolean; }
+    preserveState?: boolean }
 }
 
 export interface ReturnContext { targetScene: string,
@@ -31,14 +31,14 @@ export interface ReturnContext { targetScene: string,
 export interface NavigationConfig { maxStackSize: number,
     enableLogging: boolean,
     defaultReturnScene: string,
-    allowCircularNavigation: boolean; }
+    allowCircularNavigation: boolean }
 }
 
 export interface DebugInfo { stackSize: number,
     maxStackSize: number,
     currentContext: NavigationContext | null,
     stack: NavigationContext[],
-    config: NavigationConfig;
+    config: NavigationConfig
     }
 }
 
@@ -56,23 +56,23 @@ export interface LoggingSystem { info: (component: string, message: string, ...a
     warn: (component: string, message: string, ...args: any[]) => void,
     error: (component: string, message: string, ...args: any[]) => void, }
 }
-';
+';'
 export interface ErrorHandlerInstance { ''
-    handleError: (error: Error, context: string, additionalData?: any') => void; }
+    handleError: (error: Error, context: string, additionalData?: any') => void }
 }
 
-// 列挙型'
+// 列挙型
 export type AccessMethod = '';
     | 'menu_click' | 'keyboard_h' | 'keyboard_s' | 'keyboard_i''';
     | 'button_click' | 'explicit_return' | 'shortcut' | 'navigation''';
     | 'breadcrumb' | 'back_button' | 'escape_key' | 'system';
-';
+';'
 export type SceneName = '';
     | 'menu' | 'help' | 'settings' | 'game' | 'stage_select' '';
     | 'user_info' | 'leaderboard' | 'achievements' | 'shop''';
     | 'tutorial' | 'credits' | 'options';
 
-// 定数'
+// 定数
 export const DEFAULT_MAX_STACK_SIZE = 10;''
 export const DEFAULT_RETURN_SCENE = 'menu';
 export const CIRCULAR_NAVIGATION_THRESHOLD = 3;
@@ -85,8 +85,8 @@ export const DEFAULT_CONFIG: NavigationConfig = { maxStackSize: DEFAULT_MAX_STAC
     defaultReturnScene: DEFAULT_RETURN_SCENE,
     allowCircularNavigation: false }
 },
-';
-// 型ガード''
+;
+// 型ガード
 export function isValidAccessMethod(method: string'): method is AccessMethod { return [''
         'menu_click', 'keyboard_h', 'keyboard_s', 'keyboard_i','';
         'button_click', 'explicit_return', 'shortcut', 'navigation',']';
@@ -159,10 +159,10 @@ export class NavigationContextManager {
      */
     private initialize(): void { try {
             // 初期状態の設定
-            this.clear();'
+            this.clear();
             '';
             if(this.config.enableLogging') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.info('NavigationContextManager', 'Navigation context manager initialized'); }'
             } catch (error) { ''
@@ -176,16 +176,16 @@ export class NavigationContextManager {
      * ナビゲーションコンテキストをプッシュ'
      */''
     pushContext(fromScene: string, accessMethod: string, additionalData: ContextData = { )'): boolean {
-        try {'
-            // 入力値の検証''
+        try {
+            // 入力値の検証
             if(!fromScene || typeof fromScene !== 'string'') {'
-                ';
+                ';'
             }'
                 throw new Error('Invalid fromScene parameter''); }
             }'
             '';
             if(!accessMethod || typeof accessMethod !== 'string'') {'
-                ';
+                ';'
             }'
                 throw new Error('Invalid accessMethod parameter'); }
             }'
@@ -203,11 +203,11 @@ export class NavigationContextManager {
                 method: accessMethod as AccessMethod,
                 timestamp: Date.now(),
                 data: additionalData,
-                id: this.generateContextId(); }
+                id: this.generateContextId() }
             };
             
             // 循環ナビゲーションのチェック
-            if(!this.config.allowCircularNavigation && this.isCircularNavigation(fromScene) {'
+            if(!this.config.allowCircularNavigation && this.isCircularNavigation(fromScene) {
                 '';
                 if (this.config.enableLogging') {'
             }'
@@ -218,7 +218,7 @@ export class NavigationContextManager {
             }
             
             // スタックサイズの管理
-            while(this.navigationStack.length >= this.config.maxStackSize) {'
+            while(this.navigationStack.length >= this.config.maxStackSize) {
                 const removed = this.navigationStack.shift();''
                 if (removed && this.config.enableLogging') {'
             }'
@@ -229,10 +229,10 @@ export class NavigationContextManager {
             
             // コンテキストをスタックに追加
             this.navigationStack.push(context);
-            this.currentContext = context;'
+            this.currentContext = context;
             '';
             if(this.config.enableLogging') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.debug('NavigationContextManager') }
                     `Context pushed: ${fromScene} via ${accessMethod} (ID: ${context.id))`});
@@ -265,7 +265,7 @@ export class NavigationContextManager {
                 : null;'
             '';
             if(poppedContext && this.config.enableLogging') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.debug('NavigationContextManager') }
                     `Context popped: ${poppedContext.scene} (ID: ${poppedContext.id))`});
@@ -282,12 +282,12 @@ export class NavigationContextManager {
     /**
      * 戻り先コンテキストを設定
      */'
-    setReturnContext(returnContext: ReturnContext): boolean { try {''
+    setReturnContext(returnContext: ReturnContext): boolean { try {'
             if (!isReturnContext(returnContext)') {''
                 throw new Error('Invalid return context parameter''); }
             }
             
-            // 現在のコンテキストを上書きする形で戻り先を設定'
+            // 現在のコンテキストを上書きする形で戻り先を設定
             const context: NavigationContext = { scene: returnContext.targetScene,''
                 method: 'explicit_return',
                 timestamp: Date.now(),
@@ -303,10 +303,10 @@ export class NavigationContextManager {
             } else { this.navigationStack.push(context); }
             }
             
-            this.currentContext = context;'
+            this.currentContext = context;
             '';
             if(this.config.enableLogging') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.debug('NavigationContextManager') }
                     `Return context set: ${returnContext.targetScene} (ID: ${context.id))`});
@@ -334,7 +334,7 @@ export class NavigationContextManager {
             const returnScene = lastContext.scene;
             
             // シーンの存在確認
-            if(hasSceneManager(this.gameEngine) {'
+            if(hasSceneManager(this.gameEngine) {
                 if(!this.gameEngine.sceneManager.hasScene(returnScene) {''
                     if (this.config.enableLogging') {'
             }'
@@ -384,7 +384,7 @@ export class NavigationContextManager {
         this.currentContext = null;'
         '';
         if(this.config.enableLogging') {'
-            ';
+            ';'
         }'
             this.loggingSystem.debug('NavigationContextManager', 'Navigation stack cleared'); }
         }
@@ -400,16 +400,16 @@ export class NavigationContextManager {
     /**
      * 設定を更新
      */
-    updateConfig(newConfig: Partial<NavigationConfig>): void { try {'
-            // 設定値の検証''
+    updateConfig(newConfig: Partial<NavigationConfig>): void { try {
+            // 設定値の検証
             if(newConfig.maxStackSize !== undefined && newConfig.maxStackSize < 1') {'
-                ';
+                ';'
             }'
                 throw new Error('maxStackSize must be at least 1'); }
             }'
 '';
             if(newConfig.defaultReturnScene !== undefined && !newConfig.defaultReturnScene') {'
-                ';
+                ';'
             }'
                 throw new Error('defaultReturnScene cannot be empty'); }
             }
@@ -417,7 +417,7 @@ export class NavigationContextManager {
             this.config = { ...this.config, ...newConfig };'
             '';
             if(this.config.enableLogging') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.debug('NavigationContextManager', 'Configuration updated'); }'
             } catch (error) { ''
@@ -471,7 +471,7 @@ export class NavigationContextManager {
     }
 
     /**
-     * 特定のシーンへの直接戻りパスを設定'
+     * 特定のシーンへの直接戻りパスを設定
      */''
     setDirectReturnPath(targetScene: string, preserveState = false'): boolean { ''
         if(!targetScene || typeof targetScene !== 'string') {
@@ -506,10 +506,10 @@ export class NavigationContextManager {
                 if (popped) { poppedContexts.push(popped); }
                 } else { break; }
                 }
-            }'
+            }
 '';
             if(this.config.enableLogging') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.debug('NavigationContextManager') }
                     `Popped ${poppedContexts.length} contexts to reach context: ${contextId)`});'
@@ -540,7 +540,7 @@ export class NavigationContextManager {
         uniqueScenes: number,
         accessMethods: Record<string, number>,
         averageStackDepth: number,
-        oldestContext: NavigationContext | null; }
+        oldestContext: NavigationContext | null }
     } {
         const accessMethods: Record<string, number> = {};
         const uniqueScenes = new Set<string>();
@@ -562,10 +562,10 @@ export class NavigationContextManager {
      * クリーンアップ処理
      */
     cleanup(): void { try {
-            this.clear();'
+            this.clear();
             '';
             if(this.config.enableLogging') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.info('NavigationContextManager', 'Navigation context manager cleaned up'); }'
             } catch (error) { ''

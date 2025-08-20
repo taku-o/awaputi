@@ -4,7 +4,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date ;
+    timeRange?: { start: Date, end: Date 
 }
     filters?: Record<string, any>;
     metrics?: string[];
@@ -14,7 +14,7 @@ export interface AnalysisResult { success: boolean,
     data?: any;
     insights?: string[];
     recommendations?: string[];
-    timestamp: number; };
+    timestamp: number };
 }
 export class PlayerBehaviorAnalyzer {
     constructor() {
@@ -24,7 +24,7 @@ export class PlayerBehaviorAnalyzer {
             interactionPatterns: [],
             skillProgression: {
                 accuracyHistory: [],
-                reactionTimeHistory: [];
+                reactionTimeHistory: []
 };
 }
                 comboHistory: [] ;
@@ -32,7 +32,7 @@ export class PlayerBehaviorAnalyzer {
             },
             playStyle: { aggressive: 0,
                 defensive: 0,
-                strategic: 0 ;
+                strategic: 0 
 };
 }
         },
@@ -55,7 +55,7 @@ export class PlayerBehaviorAnalyzer {
             previousBestScore: sessionInfo.previousBestScore || 0,
             sessionId: sessionId,
             playerSettings: {
-                soundEnabled: sessionInfo.soundEnabled;
+                soundEnabled: sessionInfo.soundEnabled
 }
                 effectsEnabled: sessionInfo.effectsEnabled ;
 };
@@ -75,7 +75,7 @@ export class PlayerBehaviorAnalyzer {
             bubblesPopped: 0,
             bubblesMissed: 0,
             scoreProgression: [],
-            exitEvents: [] ;
+            exitEvents: [] 
 }
         },
     }
@@ -90,7 +90,7 @@ export class PlayerBehaviorAnalyzer {
             bubbleType: bubbleData.bubbleType,
             action: bubbleData.action,
             reactionTime: bubbleData.reactionTime || null,
-            accuracy: bubbleData.action === 'popped' ? 1 : 0;
+            accuracy: bubbleData.action === 'popped' ? 1 : 0
 }
             position: bubbleData.position || null ;
 }
@@ -119,12 +119,12 @@ export class PlayerBehaviorAnalyzer {
     }
             this.playerBehavior.playStyle.aggressive += 1; };
 }
-        ';
-        // 守備的プレイスタイル：慎重な操作''
+        ;
+        // 守備的プレイスタイル：慎重な操作
         if (pattern.reactionTime && pattern.reactionTime > 800') { this.playerBehavior.playStyle.defensive += 1; };
 }
         ';
-        // 戦略的プレイスタイル：特殊バブルを優先''
+        // 戦略的プレイスタイル：特殊バブルを優先
         if(['rainbow', 'clock', 'electric'].includes(pattern.bubbleType) { this.playerBehavior.playStyle.strategic += 1; };
 }
     }
@@ -145,7 +145,7 @@ export class PlayerBehaviorAnalyzer {
                     stats.successfulClicks++;
                     stats.bubblesPopped++;
                     
-                    // コンボ追跡'
+                    // コンボ追跡
                     stats.currentCombo = (behaviorData.comboCount || 0);''
                     if (stats.currentCombo > stats.maxCombo') {
     }
@@ -156,7 +156,7 @@ export class PlayerBehaviorAnalyzer {
                     stats.currentCombo = 0; };
 }
                 ';
-                // 反応時間の追跡''
+                // 反応時間の追跡
                 if(behaviorData.reactionTime && behaviorData.reactionTime > 0') {
                     stats.totalReactionTime += behaviorData.reactionTime;
                     stats.validReactionTimes++;
@@ -171,8 +171,8 @@ export class PlayerBehaviorAnalyzer {
                 '';
             case 'score_update':';
                 stats.scoreProgression.push({ );''
-                    timestamp: Date.now('')';
-                    source: behaviorData.source || 'unknown') ;
+                    timestamp: Date.now()';
+                    source: behaviorData.source || 'unknown') 
 }
                 }),
                 break;
@@ -190,20 +190,20 @@ export class PlayerBehaviorAnalyzer {
             exitPoint: {
                 stageProgress: exitData.stageProgress || 0,
                 timeRemaining: exitData.timeRemaining || 0,
-                playerHP: exitData.playerHP || 0;
+                playerHP: exitData.playerHP || 0
 }
                 currentScore: exitData.currentScore || 0 ;
 }
             },
-            playerSituation: { isInCombat: exitData.isInCombat || false,)
+            playerSituation: { isInCombat: exitData.isInCombat || false)
                 recentFailures: exitData.recentFailures || 0);
                 comboBroken: exitData.comboBroken || false,);
-                lowHP: (exitData.playerHP || 100) < 30 ;
+                lowHP: (exitData.playerHP || 100) < 30 
 }
             },
             gameState: { activeBubbles: exitData.activeBubbles || 0,
                 nextBubbleTypes: exitData.nextBubbleTypes || [],
-                activeItems: exitData.activeItems || [] ;
+                activeItems: exitData.activeItems || [] 
 };
 }
         },
@@ -227,7 +227,7 @@ export class PlayerBehaviorAnalyzer {
             midGameExit: exitInfo.exitPoint.stageProgress > 0.3 && exitInfo.exitPoint.stageProgress < 0.7,
             lateGameExit: exitInfo.exitPoint.stageProgress > 0.7,
             lowHPExit: exitInfo.playerSituation.lowHP,
-            comboBrokenExit: exitInfo.playerSituation.comboBroken;
+            comboBrokenExit: exitInfo.playerSituation.comboBroken
 }
             difficultySpike: exitInfo.playerSituation.recentFailures > 3 ;
 }
@@ -236,7 +236,7 @@ export class PlayerBehaviorAnalyzer {
         // パターンの分類
         const dominantPattern = Object.entries(exitPatterns);
             .filter(([_, value]) => value);
-            .map(([key, _]) => key);'
+            .map(([key, _]) => key);
         '';
         if (dominantPattern.length > 0') { ' }'
             console.info(`[Player Behavior] Exit pattern detected: ${dominantPattern.join(', '})}`);
@@ -253,14 +253,14 @@ export class PlayerBehaviorAnalyzer {
      * @returns {string}
      */
     getPlayerSkillLevel() {
-        const accuracy = this.getAverageAccuracy();
+        const accuracy = this.getAverageAccuracy();'
         const reactionTime = this.getAverageReactionTime();'
         '';
         if (accuracy > 0.9 && reactionTime < 400') return 'expert';''
         if (accuracy > 0.8 && reactionTime < 500') return 'advanced';''
         if (accuracy > 0.7 && reactionTime < 600') return 'intermediate';''
         if (accuracy > 0.5 && reactionTime < 800') return 'beginner';'
-        ';
+        ';'
     }'
         return 'novice'; };
 }
@@ -357,9 +357,9 @@ export class PlayerBehaviorAnalyzer {
             sessionStats.successfulClicks / sessionStats.clickCount: 0,
         const currentReactionTime = sessionStats.averageReactionTime;
         
-        // 過去の平均との比較'
+        // 過去の平均との比較
         const historicalAccuracy = this.getAverageAccuracy();''
-        const historicalReactionTime = this.getAverageReactionTime('')';
+        const historicalReactionTime = this.getAverageReactionTime()';
                 accuracy: accuracyImprovement ? 'improved' : (currentAccuracy < historicalAccuracy - 0.05 ? 'declined' : 'stable''),'';
                 speed: reactionTimeImprovement ? 'improved' : (currentReactionTime > historicalReactionTime + 50 ? 'declined' : 'stable');
             }
@@ -388,10 +388,10 @@ export class PlayerBehaviorAnalyzer {
         }
             segments.push({ accuracy, avgReactionTime ); };
 }
-        // トレンドの計算'
+        // トレンドの計算
         const accuracyTrend = this.calculateTrend(segments.map(s => s.accuracy);''
         const speedTrend = this.calculateTrend(segments.map(s => s.avgReactionTime), true');
-        ';
+        ';'
         return { ''
             trend: accuracyTrend > 0.05 || speedTrend > 0.05 ? 'improving' : '';
                    (accuracyTrend < -0.05 || speedTrend < -0.05 ? 'declining' : 'stable'),
@@ -433,8 +433,8 @@ export class PlayerBehaviorAnalyzer {
     calculateEngagementLevel(sessionDuration, totalInteractions) {
         const interactionsPerMinute = sessionDuration > 0 ?   : undefined;
             (totalInteractions / (sessionDuration / 60000)) : 0;
-        ';
-        // セッション長とインタラクション密度から判定''
+        ;
+        // セッション長とインタラクション密度から判定
         if (sessionDuration > 15 * 60 * 1000 && interactionsPerMinute > 20') {'
     }'
             return 'high';' }'
@@ -476,7 +476,7 @@ export class PlayerBehaviorAnalyzer {
             manyMisses: stats.bubblesMissed > stats.bubblesPopped * 0.3,';
             comboBroken: stats.maxCombo > 5 && stats.currentCombo === 0,'';
             rapidClicking: this.detectRapidClickingPattern(patterns'),'';
-            earlyExit: stats.exitEvents.some(e => e.exitReason === 'quit' && e.sessionDuration < 2 * 60 * 1000); }
+            earlyExit: stats.exitEvents.some(e => e.exitReason === 'quit' && e.sessionDuration < 2 * 60 * 1000) }
         };'
         '';
         const indicatorCount = Object.values(indicators).filter(Boolean').length;
@@ -501,7 +501,7 @@ export class PlayerBehaviorAnalyzer {
             consistentTiming: this.calculateConsistencyScore() > 0.7,
             sustainedCombo: stats.maxCombo > 10,
             longSession: (Date.now() - this.playerBehavior.sessionData? .startTime || 0) > 10 * 60 * 1000, : undefined;
-            improvedPerformance: this.calculateSkillImprovement().improved ;
+            improvedPerformance: this.calculateSkillImprovement().improved 
 }
         },'
         '';
@@ -575,6 +575,6 @@ export class PlayerBehaviorAnalyzer {
         return Math.min(Math.max(timeProgress, scoreProgress * 0.8), 1.0); };
 }
     /**
-     * セッションデータのリセット'
+     * セッションデータのリセット
      */''
     resetSessionData(');

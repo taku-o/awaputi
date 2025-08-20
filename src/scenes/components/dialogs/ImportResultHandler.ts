@@ -8,11 +8,11 @@
 export interface ResultType { SUCCESS: 'success',''
     ERROR: 'error','';
     CANCELLED: 'cancelled','';
-    WARNING: 'warning'; };
+    WARNING: 'warning' };
 }
 export interface FeedbackAnimation { color: string,
     icon: string,
-    duration: number; };
+    duration: number };
 }
 export interface ImportStats { playerDataImported: boolean,
     statisticsImported: boolean,
@@ -20,7 +20,7 @@ export interface ImportStats { playerDataImported: boolean,
     settingsImported: boolean,
     dataSize: number,
     itemCount: number,
-    version: string; };
+    version: string };
 }
 export interface ImportResult { action: string,
     data: {
@@ -29,7 +29,7 @@ export interface ImportResult { action: string,
         error?: string;
         importStats?: ImportStats | null;
         timestamp: string,
-        duration: string; }
+        duration: string }
     };
 }
 
@@ -38,27 +38,27 @@ export interface Layout { contentX: number,
     contentWidth: number,
     buttonY: number,
     x: number,
-    width: number; };
+    width: number };
 }
 export interface ComponentStatus { componentType: string,
     supportedResultTypes: string[],
     animationTypes: string[],
-    exportFormats: string[]; };
+    exportFormats: string[] };
 }
 export interface MainController { data: {
         success?: boolean,
         error?: string;
         importMethod: string,
         parsedData?: any;
-        step: string ;
+        step: string 
 }
     },
     textSettings: { contentFont: string,
-        contentColor: string ;
+        contentColor: string 
 }
     },
     gameEngine: { eventBus?: {
-            emit(event: string, data: any): void; }
+            emit(event: string, data: any): void }
         };
     };
     onResult?: (result: ImportResult) => void;
@@ -69,7 +69,7 @@ export interface AnimationResult { type: string,
     icon: string,
     startTime: number,
     duration: number,
-    isActive(): boolean; };
+    isActive(): boolean };
 }
 export class ImportResultHandler {
     private mainController: MainController;
@@ -81,7 +81,7 @@ export class ImportResultHandler {
         this.resultTypes = {''
             SUCCESS: 'success','';
             ERROR: 'error','';
-            CANCELLED: 'cancelled',';
+            CANCELLED: 'cancelled','
     }
     }'
             WARNING: 'warning' ;
@@ -107,7 +107,7 @@ export class ImportResultHandler {
         
         }
             this.renderSuccessResult(context, layout, y); }
-        } else { this.renderErrorResult(context, layout, y); };
+        } else { this.renderErrorResult(context, layout, y); }
 }
         // 追加情報やアクション
         this.renderResultActions(context, layout, y + 80);
@@ -120,7 +120,7 @@ export class ImportResultHandler {
         
         // 成功アイコン (アニメーション効果付き);
         const iconScale = 1 + 0.1 * Math.sin(Date.now() / 200);
-        context.save();'
+        context.save();
         context.translate(layout.x + layout.width / 2, y + 20);''
         context.scale(iconScale, iconScale');''
         context.font = '32px sans-serif';'
@@ -128,10 +128,10 @@ export class ImportResultHandler {
         context.textAlign = 'center';''
         context.textBaseline = 'middle';'
         context.fillText(animation.icon, 0, 0);''
-        context.restore('')';
+        context.restore()';
         context.fillText('データのインポートが完了しました！', layout.x + layout.width / 2, y + 60');
         
-        // 詳細情報'
+        // 詳細情報
         context.fillStyle = this.mainController.textSettings.contentColor;''
         context.font = '12px sans-serif';''
         context.fillText('ゲームを再開してください。', layout.x + layout.width / 2, y + 85);
@@ -140,11 +140,11 @@ export class ImportResultHandler {
         this.renderSuccessStats(context, layout, y + 110); };
 }
     /**
-     * エラー結果を描画'
+     * エラー結果を描画
      */''
     renderErrorResult(context: CanvasRenderingContext2D, layout: Layout, y: number'): void { const animation = this.feedbackAnimations.error;
         ';
-        // エラーアイコン''
+        // エラーアイコン
         context.font = '32px sans-serif';'
         context.fillStyle = animation.color;''
         context.textAlign = 'center';''
@@ -152,11 +152,11 @@ export class ImportResultHandler {
         context.fillText(animation.icon, layout.x + layout.width / 2, y');
 
         // エラーメッセージ
-        context.fillStyle = animation.color;'
+        context.fillStyle = animation.color;
         context.font = this.mainController.textSettings.contentFont;''
         context.fillText('インポートに失敗しました', layout.x + layout.width / 2, y + 40);
         ';
-        // 詳細エラー情報''
+        // 詳細エラー情報
         if(this.mainController.data.error') {'
             '';
             context.font = '12px sans-serif';
@@ -176,7 +176,7 @@ export class ImportResultHandler {
     renderSuccessStats(context: CanvasRenderingContext2D, layout: Layout, y: number): void { if (!this.mainController.data.parsedData) return;
 
         const stats = this.generateImportStats(this.mainController.data.parsedData);
-        const statsHeight = Math.min(60, layout.buttonY - y - 20);'
+        const statsHeight = Math.min(60, layout.buttonY - y - 20);
         '';
         if (statsHeight <= 10') return;'
 '';
@@ -189,7 +189,7 @@ export class ImportResultHandler {
         const leftX = layout.contentX;
         const rightX = layout.contentX + layout.contentWidth / 2;
 ';
-        // 左側の統計''
+        // 左側の統計
         if(stats.playerDataImported') {'
             '';
             context.fillText('✓ プレイヤーデータ', leftX, currentY);
@@ -202,7 +202,7 @@ export class ImportResultHandler {
         }
             currentY += 15; };
 }
-        // 右側の統計'
+        // 右側の統計
         currentY = y;''
         if(stats.achievementsImported') {'
             '';
@@ -211,7 +211,7 @@ export class ImportResultHandler {
             currentY += 15; }'
         }''
         if(stats.settingsImported') {'
-            ';
+            ';'
         }'
             context.fillText('✓ 設定データ', rightX, currentY); };
 }
@@ -222,7 +222,7 @@ export class ImportResultHandler {
      */
     renderResultActions(context: CanvasRenderingContext2D, layout: Layout, y: number): void { if (this.mainController.data.success) {
             this.renderSuccessActions(context, layout, y); }
-        } else { this.renderErrorActions(context, layout, y); };
+        } else { this.renderErrorActions(context, layout, y); }
 }
     }
 
@@ -234,7 +234,7 @@ export class ImportResultHandler {
         context.fillStyle = '#6C757D';''
         context.textAlign = 'center';''
         context.textBaseline = 'top';
-';
+';'
         const actions = ['';
             '💾 データが正常に復元されました','';
             '🎮 メインメニューに戻ってゲームを再開してください',']';
@@ -298,18 +298,18 @@ export class ImportResultHandler {
     handleComplete(''';
             action: 'import',
             data: { success: this.mainController.data.success || false,
-                method: this.mainController.data.importMethod,);
+                method: this.mainController.data.importMethod);
                 error: this.mainController.data.error);
                 importStats: this.mainController.data.parsedData ?   : undefined;
                     this.generateImportStats(this.mainController.data.parsedData) : null,
                 timestamp: new Date().toISOString(),
-                duration: this.calculateImportDuration(); };
+                duration: this.calculateImportDuration() };
 }
         };
 
         // 成功時の追加処理
         if (this.mainController.data.success) { this.handleSuccessCompletion(result); }
-        } else { this.handleErrorCompletion(result); };
+        } else { this.handleErrorCompletion(result); }
 }
         // コールバック実行
         if (this.mainController.onResult) { this.mainController.onResult(result); };
@@ -318,48 +318,48 @@ export class ImportResultHandler {
     }
 
     /**
-     * 成功完了処理'
+     * 成功完了処理
      */''
-    private handleSuccessCompletion(result: ImportResult'): void { // 成功ログの記録''
+    private handleSuccessCompletion(result: ImportResult'): void { // 成功ログの記録
         console.log('✅ Import completed successfully:', result.data.importStats);
         ';
-        // 統計更新の通知''
+        // 統計更新の通知
         if(this.mainController.gameEngine.eventBus') {'
             '';
             this.mainController.gameEngine.eventBus.emit('data:imported', {)'
-                method: result.data.method,');
+                method: result.data.method,')
         }'
                 stats: result.data.importStats)'); };
 }
 ';
-        // ローカルストレージの更新通知''
+        // ローカルストレージの更新通知
         if(typeof window !== 'undefined' && window.localStorage') {'
-            try {''
+            try {'
                 const importHistory = JSON.parse(localStorage.getItem('importHistory'') || '[]');
                 importHistory.push({)
                     timestamp: result.data.timestamp);
                     method: result.data.method,);
                     success: true),
                 
-                // 履歴を最新10件に制限'
+                // 履歴を最新10件に制限
                 if (importHistory.length > 10) {'
         }'
                     importHistory.splice(0, importHistory.length - 10'); }
                 }'
                 '';
                 localStorage.setItem('importHistory', JSON.stringify(importHistory);''
-            } catch (error') { ''
-                console.warn('Failed to save import history:', error); };
+            } catch (error) { ''
+                console.warn('Failed to save import history:', error) };
 }
         };
 }
     /**
      * エラー完了処理'
      */''
-    private handleErrorCompletion(result: ImportResult'): void { // エラーログの記録''
+    private handleErrorCompletion(result: ImportResult'): void { // エラーログの記録
         console.error('❌ Import failed:', result.data.error');
         ';
-        // エラー報告の送信（開発環境でのみ）''
+        // エラー報告の送信（開発環境でのみ）
         if(typeof process !== 'undefined' && process.env? .NODE_ENV === 'development') {
             
         }
@@ -402,7 +402,7 @@ export class ImportResultHandler {
             return hints; }
         }'
 '';
-        const errorLower = error.toLowerCase('')';
+        const errorLower = error.toLowerCase()';
         if (errorLower.includes('json')') { ''
             hints.push('JSONデータの形式を確認してください'');''
             hints.push('引用符やカンマの記述を確認してください''); }
@@ -421,7 +421,7 @@ export class ImportResultHandler {
             hints.push('テキスト形式での入力を試してください'); };
 }
 ';
-        // 一般的なヒント''
+        // 一般的なヒント
         if(hints.length === 0') {'
             '';
             hints.push('別のインポート方法を試してください'');'
@@ -432,7 +432,7 @@ export class ImportResultHandler {
     }
 
     /**
-     * エラー時のアクション取得'
+     * エラー時のアクション取得
      */''
     getErrorActions(error?: string'): string[] { ''
         const actions = ['🔄 戻るボタンで再試行できます'];'
@@ -474,7 +474,7 @@ export class ImportResultHandler {
         return count; };
 }
     /**
-     * インポート期間の計算'
+     * インポート期間の計算
      */''
     calculateImportDuration(''';
         return this.mainController.data.success ? '2.3s' : 'N/A';
@@ -483,12 +483,12 @@ export class ImportResultHandler {
     /**
      * エラー報告の送信（開発環境用）'
      */')'
-    private reportImportError(errorData: ImportResult['data']'): void { // 開発環境でのデバッグ用''
+    private reportImportError(errorData: ImportResult['data']'): void { // 開発環境でのデバッグ用
         console.debug('Import Error Report:', {
-            error: errorData.error,);
+            error: errorData.error);
             method: errorData.method)';
             timestamp: errorData.timestamp,')';
-            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A'); };
+            userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A') };
 }
     /**
      * 結果フィードバックアニメーション
@@ -504,9 +504,9 @@ export class ImportResultHandler {
         return { type: resultType,
             color: animation.color,
             icon: animation.icon,
-            startTime,';
+            startTime,;
             duration: duration || animation.duration,'';
-            isActive: () => Date.now('')';
+            isActive: () => Date.now()';
     exportResult(format: string = 'json'): string | ImportResult {
         const result: ImportResult = {
             timestamp: new Date().toISOString(),
@@ -522,7 +522,7 @@ export class ImportResultHandler {
                 return JSON.stringify(result, null, 2');''
             case 'text':;
                 return this.formatResultAsText(result as any);
-            default: return result; };
+            default: return result };
 }
     }
 
@@ -556,7 +556,7 @@ export class ImportResultHandler {
     /**
      * ステータス取得'
      */''
-    getStatus('')';
+    getStatus()';
             componentType: 'ImportResultHandler')';
             supportedResultTypes: Object.values(this.resultTypes),'';
             animationTypes: Object.keys(this.feedbackAnimations'),'';

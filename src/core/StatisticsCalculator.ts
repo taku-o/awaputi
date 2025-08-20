@@ -43,7 +43,7 @@ export class StatisticsCalculator {
                 session: sessionStats, };
                 summary: this.generateSummary(statistics, sessionStats); }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             ErrorHandler.handleError(error, 'StatisticsCalculator', 'getDetailedStatistics');
             return this.getEmptyDetailedStats(); }
         }
@@ -65,13 +65,11 @@ export class StatisticsCalculator {
             score: { total: statistics.totalScore || 0,
                 highest: statistics.highestScore || 0,
                 average: statistics.averageScore || 0, }
-                distribution: statistics.scoreDistribution || {}
-            },
+                distribution: statistics.scoreDistribution || {},
             bubbles: { popped: statistics.totalBubblesPopped || 0,
                 missed: statistics.totalBubblesMissed || 0,
                 accuracy: statistics.bubbleAccuracy || 0, }
-                typeStats: statistics.bubbleTypeStats || {}
-            },
+                typeStats: statistics.bubbleTypeStats || {},
             time: { total: statistics.totalPlayTime || 0,
                 average: statistics.averageSessionLength || 0,
                 longest: statistics.longestSession || 0,
@@ -267,7 +265,7 @@ export class StatisticsCalculator {
         const recentAvg = recent.reduce((sum, val) => sum + val, 0) / recent.length;
         const earlierAvg = earlier.reduce((sum, val) => sum + val, 0) / earlier.length;
         
-        const improvementThreshold = 0.05; // 5%'
+        const improvementThreshold = 0.05; // 5%
         '';
         if (recentAvg > earlierAvg * (1 + improvementThreshold)') { ''
             return 'improving';' }'
@@ -361,7 +359,7 @@ export class StatisticsCalculator {
      * @returns {string} スキルレベル
      */
     determineSkillLevel(statistics) {
-        const rating = this.calculateOverallRating(statistics);'
+        const rating = this.calculateOverallRating(statistics);
         '';
         if (rating >= 90') return 'Expert';''
         if (rating >= 75') return 'Advanced';''
@@ -508,7 +506,7 @@ export class StatisticsCalculator {
     /**
      * お気に入りステージを取得
      * @param {Object} statistics - 統計データ
-     * @returns {string} お気に入りステージ'
+     * @returns {string} お気に入りステージ
      */''
     getFavoriteStage(statistics') {
         
@@ -561,14 +559,13 @@ export class StatisticsCalculator {
             efficiency: {},
             rankings: {},
             session: {},
-            summary: {}
-        },
+            summary: {},
     }
 
     // プレースホルダーメソッド（実装の完全性のため）
     calculateTimeConsistency(statistics) { return 75; }
     calculateAccuracyConsistency(statistics) { return 80; }
-    calculatePerformanceVariability(statistics) { return 15; }'
+    calculatePerformanceVariability(statistics) { return 15; }
     calculateReliabilityIndex(statistics) { return 85; }''
     calculateScoreTrend(statistics') { return 'improving'; }''
     calculateAccuracyTrend(statistics') { return 'stable'; }''
@@ -608,6 +605,6 @@ export function getStatisticsCalculator() { if (!statisticsCalculatorInstance) {
 /**
  * StatisticsCalculatorのシングルトンインスタンスを再初期化
  * @returns {StatisticsCalculator} 新しいシングルトンインスタンス
- */'
+ */
 export function reinitializeStatisticsCalculator() { ''
     statisticsCalculatorInstance = new StatisticsCalculator(' })

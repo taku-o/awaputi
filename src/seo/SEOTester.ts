@@ -37,7 +37,7 @@
  * - Core Web Vitals monitoring
  * - Schema.org vocabulary validation
  * - WCAG 2.1 AA accessibility standards
- * '
+ * 
  * @class SEOTester''
  * @version 1.2.0 (Phase F.4 - Main Controller Pattern')
  * @since SEO system implementation - Enhanced with component architecture
@@ -50,7 +50,7 @@ import { seoLogger } from './SEOLogger';''
 import { seoErrorHandler } from './SEOErrorHandler';''
 import { measurePerformance } from './SEOUtils';
 ';
-// Import sub-components''
+// Import sub-components
 import { MetaTagValidator } from './testing/MetaTagValidator';''
 import { StructuredDataValidator } from './testing/StructuredDataValidator';''
 import { PerformanceValidator } from './testing/PerformanceValidator';''
@@ -90,12 +90,12 @@ interface TwitterCardValidationRule extends ValidationRule { required: string[],
 
 interface StructuredDataValidationRule extends ValidationRule { required: string[],
     allowedContexts: string[],
-    videoGameProperties: string[]; }
+    videoGameProperties: string[] }
 }
 
 interface HreflangValidationRule extends ValidationRule { requiredLanguages: string[],
     requiresXDefault: boolean,
-    validLanguageCodes: RegExp;
+    validLanguageCodes: RegExp
     }
 }
 
@@ -104,7 +104,7 @@ interface PerformanceMetrics { testExecutionTime: number,
     validationErrors: number,
     validationWarnings: number,
     totalTests: number,
-    passedTests: number; }
+    passedTests: number }
 }
 
 // テスト結果インターフェース
@@ -116,11 +116,11 @@ interface TestResult { category: string,
     score?: number;
     details?: any; }
 }
-';
+';'
 interface TestCase { name: string,''
     status: 'passed' | 'failed' | 'warning',
     message: string,
-    details?: any; }
+    details?: any }
 }
 
 // 集約結果インターフェース
@@ -138,7 +138,7 @@ interface AggregatedTestResults { summary: {
 
 // システム状態インターフェース
 interface SystemStatus { initialized: boolean,
-    baseUrl: string,';
+    baseUrl: string,
     components: {''
         metaValidator: 'active' | 'inactive','';
         structuredDataValidator: 'active' | 'inactive','';
@@ -156,10 +156,10 @@ interface SystemStatistics { totalTestsRun: number,
     averageExecutionTime: number,
     validationRulesConfigured: number,
     lastTestTimestamp: number | null,
-    componentsActive: number; }
+    componentsActive: number }
 }
-';
-// レポート形式タイプ''
+;
+// レポート形式タイプ
 type ReportFormat = 'json' | 'html' | 'csv';
 
 export class SEOTester {
@@ -192,9 +192,9 @@ export class SEOTester {
         this.metaValidator = new MetaTagValidator(this);
         this.structuredDataValidator = new StructuredDataValidator(this);
         this.performanceValidator = new PerformanceValidator(this);
-        this.reportGenerator = new SEOReportGenerator(this);'
+        this.reportGenerator = new SEOReportGenerator(this);
         '';
-        this._initializeValidationRules('')';
+        this._initializeValidationRules()';
         console.log('SEOTester initialized with Main Controller Pattern');
     }
     
@@ -208,27 +208,27 @@ export class SEOTester {
             descriptionLength: { min: 50, max: 160 },')'
             keywordsCount: { max: 10 }) as MetaTagValidationRule'),
         ';
-        // Open Graph検証ルール''
+        // Open Graph検証ルール
         this.validationRules.set('openGraph', { ''
             required: ['og:title', 'og:description', 'og:image', 'og:url', 'og:type'], })
             imageMinSize: { width: 1200, height: 630 })'
             titleLength: { max: 95 }')'
             descriptionLength: { max: 297 }) as OpenGraphValidationRule'),
         ';
-        // Twitter Card検証ルール''
+        // Twitter Card検証ルール
         this.validationRules.set('twitterCard', { ''
             required: ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image'],'';
             cardTypes: ['summary', 'summary_large_image', 'app', 'player'], })'
             titleLength: { max: 70 }')'
             descriptionLength: { max: 200 }) as TwitterCardValidationRule'),
         ';
-        // 構造化データ検証ルール''
+        // 構造化データ検証ルール
         this.validationRules.set('structuredData', { ''
             required: ['@context', '@type', 'name', 'description'],')';
             allowedContexts: ['https://schema.org', 'http://schema.org'],')';
             videoGameProperties: ['genre', 'gamePlatform', 'operatingSystem', 'applicationCategory']) as StructuredDataValidationRule');
         ';
-        // hreflang検証ルール''
+        // hreflang検証ルール
         this.validationRules.set('hreflang', {)
             requiredLanguages: SEOConfig.supportedLanguages,);
             requiresXDefault: true), }'
@@ -253,9 +253,9 @@ export class SEOTester {
                 includePerformance = true,
                 includeAccessibility = true,
                 includeSitemap = true,
-                includeRobots = true } = options;'
+                includeRobots = true } = options;
             '';
-            const startTime = performance.now('')';
+            const startTime = performance.now()';
             seoLogger.info('Starting comprehensive SEO test suite');
             
             // メタタグテスト
@@ -304,9 +304,9 @@ export class SEOTester {
             
             seoLogger.info(`SEO test suite completed in ${aggregatedResults.executionTime.toFixed(2})}ms`);
             
-            return aggregatedResults;'
+            return aggregatedResults;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error as Error, 'runComprehensiveTest', options); }
         }
     }
@@ -394,9 +394,9 @@ export class SEOTester {
      */
     async validateRobotsTxt(): Promise<TestResult> { return this.performanceValidator.validateRobotsTxt(); }
     }
-    ';
-    // ========================================''
-    // Report Generation (delegation to SEOReportGenerator')
+    ;
+    // ========================================
+    // Report Generation (delegation to SEOReportGenerator)
     // ========================================
     
     /**
@@ -429,7 +429,7 @@ export class SEOTester {
     // ========================================
     
     /**
-     * システム状態の取得'
+     * システム状態の取得
      */''
     getStatus(''';
                 metaValidator: this.metaValidator ? 'active' : 'inactive','';
@@ -472,7 +472,7 @@ export class SEOTester {
             categories: {},
             overallScore: 0,
             timestamp: new Date().toISOString(),
-        };'
+        };
         '';
         results.forEach((result, index') => {  ''
             if(result.status === 'fulfilled' && result.value) {
@@ -504,9 +504,9 @@ export class SEOTester {
     
     /**
      * リソースのクリーンアップ
-     */ : undefined'
+     */ : undefined
     cleanup(): void { ''
-        this.testResults.clear('')';
+        this.testResults.clear()';
         seoLogger.info('SEOTester cleaned up'); }
     }
     
@@ -514,7 +514,7 @@ export class SEOTester {
      * システムの再初期化
      */'
     reinitialize(): void { this.cleanup();''
-        this._initializeValidationRules('')';
+        this._initializeValidationRules()';
         console.log('SEOTester reinitialized'); }
     }
     
@@ -543,7 +543,7 @@ export class SEOTester {
     
     /**
      * テスト結果の保存（サブコンポーネント用）
-     */'
+     */
     saveTestResult(key: string, result: TestResult): void { ''
         this.testResults.set(key, result'); }'
     }''

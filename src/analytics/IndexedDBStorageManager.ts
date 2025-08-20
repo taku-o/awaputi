@@ -7,13 +7,13 @@
 export interface StoreDefinition { name: string,
     keyPath: string,
     autoIncrement?: boolean;
-    indexes: IndexDefinition[];
+    indexes: IndexDefinition[]
     }
 }
 
 export interface IndexDefinition { name: string,
     keyPath: string,
-    unique: boolean; }
+    unique: boolean }
 }
 
 export interface QueryOptions { limit?: number;
@@ -23,10 +23,10 @@ export interface QueryOptions { limit?: number;
     filters?: QueryFilter[];
     }
 }
-';
+';'
 export interface QueryFilter { field: string,''
     operator: 'equals' | 'greaterThan' | 'lessThan' | 'between' | 'in',
-    value: any; }
+    value: any }
 }
 
 export interface StorageStats { totalRecords: number,
@@ -46,7 +46,7 @@ export class IndexedDBStorageManager {
         this.db = null;
         
         // ストア定義
-        this.stores = {'
+        this.stores = {
             sessions: {''
                 name: 'sessions','';
                 keyPath: 'sessionId',';
@@ -89,7 +89,7 @@ export class IndexedDBStorageManager {
             },'
             userBehavior: { ''
                 name: 'userBehavior','';
-                keyPath: 'id',);
+                keyPath: 'id');
                 autoIncrement: true)';
                 indexes: [' }'
                     { name: 'sessionId', keyPath: 'sessionId', unique: false },''
@@ -105,11 +105,11 @@ export class IndexedDBStorageManager {
     /**
      * データベースの初期化
      */'
-    private async initialize(): Promise<void> { try {''
-            await this.openDatabase('');'
+    private async initialize(): Promise<void> { try {'
+            await this.openDatabase();'
             console.log('IndexedDB initialized successfully');' }'
-        } catch (error') { ''
-            console.error('Failed to initialize IndexedDB:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize IndexedDB:', error) }
         }
     }
     
@@ -119,7 +119,7 @@ export class IndexedDBStorageManager {
     private openDatabase(): Promise<IDBDatabase>;'
         return new Promise((resolve, reject) => {  ''
             if(!window.indexedDB') {'
-                ';
+                ';'
             }'
                 reject(new Error('IndexedDB is not supported'); }
                 return; }
@@ -151,8 +151,8 @@ export class IndexedDBStorageManager {
             }
             
             // ストアの作成
-            const objectStore = db.createObjectStore(store.name, { keyPath: store.keyPath,)
-                autoIncrement: store.autoIncrement || false); }
+            const objectStore = db.createObjectStore(store.name, { keyPath: store.keyPath)
+                autoIncrement: store.autoIncrement || false) }
             });
             
             // インデックスの作成
@@ -168,10 +168,10 @@ export class IndexedDBStorageManager {
     async saveData(storeName: string, data: any[]): Promise<boolean> { if (!this.db) {
             await this.openDatabase(); }
         }
-        ';
+        ';'
         return new Promise((resolve, reject) => {  ''
             if(!this.db') {'
-                ';
+                ';'
             }'
                 reject(new Error('Database not available')'); }
                 return; }
@@ -203,10 +203,10 @@ export class IndexedDBStorageManager {
     async getData(storeName: string, options: QueryOptions = {}): Promise<any[]> { if (!this.db) {
             await this.openDatabase(); }
         }
-        ';
+        ';'
         return new Promise((resolve, reject) => {  ''
             if(!this.db') {'
-                ';
+                ';'
             }'
                 reject(new Error('Database not available')'); }
                 return; }
@@ -220,7 +220,7 @@ export class IndexedDBStorageManager {
             // フィルターがある場合はインデックスを使用
             if(options.filters && options.filters.length > 0) {
                 const filter = options.filters[0]; // 最初のフィルターのみ使用
-                const index = store.index(filter.field);'
+                const index = store.index(filter.field);
                 '';
                 switch (filter.operator') {''
                     case 'equals':'';
@@ -270,10 +270,10 @@ export class IndexedDBStorageManager {
     async updateData(storeName: string, key: any, data: any): Promise<boolean> { if (!this.db) {
             await this.openDatabase(); }
         }
-        ';
+        ';'
         return new Promise((resolve, reject) => {  ''
             if(!this.db') {'
-                ';
+                ';'
             }'
                 reject(new Error('Database not available')'); }
                 return; }
@@ -299,10 +299,10 @@ export class IndexedDBStorageManager {
     async deleteData(storeName: string, key: any): Promise<boolean> { if (!this.db) {
             await this.openDatabase(); }
         }
-        ';
+        ';'
         return new Promise((resolve, reject) => {  ''
             if(!this.db') {'
-                ';
+                ';'
             }'
                 reject(new Error('Database not available')'); }
                 return; }
@@ -328,10 +328,10 @@ export class IndexedDBStorageManager {
     async clearStore(storeName: string): Promise<boolean> { if (!this.db) {
             await this.openDatabase(); }
         }
-        ';
+        ';'
         return new Promise((resolve, reject) => {  ''
             if(!this.db') {'
-                ';
+                ';'
             }'
                 reject(new Error('Database not available')'); }
                 return; }
@@ -357,10 +357,10 @@ export class IndexedDBStorageManager {
     async getCount(storeName: string, filters?: QueryFilter[]): Promise<number> { if (!this.db) {
             await this.openDatabase(); }
         }
-        ';
+        ';'
         return new Promise((resolve, reject) => {  ''
             if(!this.db') {'
-                ';
+                ';'
             }'
                 reject(new Error('Database not available')'); }
                 return; }
@@ -405,7 +405,7 @@ export class IndexedDBStorageManager {
     /**
      * ストレージ統計の取得'
      */''
-    async getStorageStats('')';
+    async getStorageStats()';
             if('storage' in navigator && 'estimate' in navigator.storage) {
                 const estimate = await navigator.storage.estimate();
             }
@@ -419,8 +419,8 @@ export class IndexedDBStorageManager {
             
             }'
                 stats.totalRecords += count;' }'
-            } catch (error') { ''
-            console.error('Failed to get storage stats:', error); }
+            } catch (error) { ''
+            console.error('Failed to get storage stats:', error) }
         }
         
         return stats;
@@ -431,7 +431,7 @@ export class IndexedDBStorageManager {
      */
     async optimizeDatabase(): Promise<boolean> { try {
             // 古いデータの削除（30日以上前）
-            const cutoffTime = Date.now() - (30 * 24 * 60 * 60 * 1000);'
+            const cutoffTime = Date.now() - (30 * 24 * 60 * 60 * 1000);
             '';
             for (const storeName of Object.keys(this.stores)') {
                 const oldData = await this.getData(storeName, {'
@@ -450,7 +450,7 @@ export class IndexedDBStorageManager {
             '';
             console.log('Database optimization completed');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Database optimization failed:', error);
             return false; }
         }
@@ -462,8 +462,7 @@ export class IndexedDBStorageManager {
     async exportData(storeName?: string): Promise<any> { const exportData: any = {
             exportDate: new Date().toISOString(),
             version: this.version, }
-            stores: {}
-        },
+            stores: {},
         
         try { const storeNames = storeName ? [storeName] : Object.keys(this.stores);
             
@@ -473,8 +472,8 @@ export class IndexedDBStorageManager {
             
             }'
                 exportData.stores[name] = await this.getData(name);' }'
-            } catch (error') { ''
-            console.error('Data export failed:', error); }
+            } catch (error) { ''
+            console.error('Data export failed:', error) }
         }
         
         return exportData;
@@ -494,7 +493,7 @@ export class IndexedDBStorageManager {
             '';
             console.log('Data import completed');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Data import failed:', error);
             return false; }
         }
@@ -513,9 +512,9 @@ export class IndexedDBStorageManager {
             // 各ストアへのアクセステスト
             for(const storeName of Object.keys(this.stores) { await this.getCount(storeName); }
             }
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Health check failed:', error);
             return false; }
         }
@@ -525,7 +524,7 @@ export class IndexedDBStorageManager {
      * リソースの解放
      */'
     destroy(): void { if (this.db) {''
-            this.db.close('')';
+            this.db.close()';
         console.log('IndexedDBStorageManager destroyed''); }'
     }''
 }

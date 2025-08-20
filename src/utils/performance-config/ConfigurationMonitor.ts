@@ -17,7 +17,7 @@ interface GlobalConfigChange { key: string,
 interface ConfigFileChange { type: 'modified' | 'added' | 'deleted',
     file: string,
     key?: string;
-    timestamp: number; }
+    timestamp: number }
 }
 
 // Configuration recommendation interfaces
@@ -25,11 +25,11 @@ interface ConfigRecommendation { key: string,
     value: any,
     reason: string,
     confidence: number,
-    autoApply: boolean,';
+    autoApply: boolean,
     impact: string,'';
-    priority: 'low' | 'medium' | 'high' | 'critical'; }
+    priority: 'low' | 'medium' | 'high' | 'critical' }
 }
-';
+';'
 interface ConfigNotification { ''
     type: 'config_change' | 'recommendation',
     key?: string;
@@ -37,7 +37,7 @@ interface ConfigNotification { ''
     oldValue?: any;
     metadata?: any;
     recommendation?: ConfigRecommendation;
-    timestamp: number; }
+    timestamp: number }
 }
 
 // System integration interfaces
@@ -45,7 +45,7 @@ interface OptimizationSystems { frameStabilizer: any | null,
     memoryManager: any | null,
     qualityController: any | null,
     renderOptimizer: any | null,
-    mobileOptimizer: any | null; }
+    mobileOptimizer: any | null }
 }
 
 interface ActiveIntegrations { configurationManager: boolean,
@@ -54,23 +54,23 @@ interface ActiveIntegrations { configurationManager: boolean,
     qualityController: boolean,
     renderOptimizer: boolean,
     mobileOptimizer: boolean,
-    monitoringSystem: boolean; }
+    monitoringSystem: boolean }
 }
 
 interface MonitorStatus { integrations: ActiveIntegrations,
     lastSyncTime: number | null,
     pendingChanges: SyncChange[],
     watchingFiles: boolean,
-    notificationSubscribers: number; }
+    notificationSubscribers: number }
 }
 
-// Sync change interfaces'
+// Sync change interfaces
 interface SyncChange { ''
     type: 'global' | 'local' | 'file',
     key?: string;
     value?: any;
     file?: string;
-    timestamp: number; }
+    timestamp: number }
 }
 
 // Manager interfaces
@@ -81,11 +81,11 @@ interface MainController { configManager?: any;
     [key: string]: any, }
 }
 
-interface ErrorHandler { handleConfigError(key: string, error: any): Promise<void>;
+interface ErrorHandler { handleConfigError(key: string, error: any): Promise<void>
     }
 }
 
-// Global window extensions'
+// Global window extensions
 declare global { interface Window {''
         getConfigurationManager?: (') => any;
         FrameStabilizer?: any;
@@ -97,7 +97,7 @@ declare global { interface Window {''
     }
 }
 ';
-// Type definitions''
+// Type definitions
 type ConfigCategory = 'frameStabilization' | 'memoryManagement' | 'qualityControl' | 'rendering' | 'mobile' | 'general';
 type ConfigChangeCallback = (config: any) => void;
 type NotificationCallback = (notification: ConfigNotification) => void;
@@ -130,7 +130,7 @@ export class ConfigurationMonitor {
         this.monitoringSystem = null;
         this.configWatcher = null;'
         this.syncManager = new ConfigSyncManager();''
-        this.notificationSystem = new ConfigNotificationSystem('')';
+        this.notificationSystem = new ConfigNotificationSystem()';
         console.log('[ConfigurationMonitor] Monitor component initialized');
     }
     
@@ -140,7 +140,7 @@ export class ConfigurationMonitor {
     async initialize(): Promise<void> { await this.syncManager.initialize();
         await this.notificationSystem.initialize();'
         await this.setupIntegrations();''
-        this.startConfigurationWatching('')';
+        this.startConfigurationWatching()';
         console.log('[ConfigurationMonitor] All monitor components initialized'); }
     }
     
@@ -159,7 +159,7 @@ export class ConfigurationMonitor {
     
     /**
      * Integrate with global configuration manager
-     */'
+     */
     private async integrateWithConfigurationManager(): Promise<void> { if (window.getConfigurationManager) {''
             this.globalConfigManager = window.getConfigurationManager(''';
                 'performance.targetFPS','';
@@ -227,8 +227,8 @@ export class ConfigurationMonitor {
     
     /**
      * Setup frame stabilizer integration
-     */'
-    private setupFrameStabilizerIntegration(): void { // フレーム安定化設定の動的更新''
+     */
+    private setupFrameStabilizerIntegration(): void { // フレーム安定化設定の動的更新
         if(this.mainController.configManager') {'
             '';
             this.mainController.configManager.onConfigChange('frameStabilization', (config: any) => { 
@@ -243,7 +243,7 @@ export class ConfigurationMonitor {
     /**
      * Setup memory manager integration
      */'
-    private setupMemoryManagerIntegration(): void { // メモリ管理設定の動的更新''
+    private setupMemoryManagerIntegration(): void { // メモリ管理設定の動的更新
         if(this.mainController.configManager') {'
             '';
             this.mainController.configManager.onConfigChange('memoryManagement', (config: any) => { 
@@ -258,7 +258,7 @@ export class ConfigurationMonitor {
     /**
      * Setup quality controller integration
      */'
-    private setupQualityControllerIntegration(): void { // 品質制御設定の動的更新''
+    private setupQualityControllerIntegration(): void { // 品質制御設定の動的更新
         if(this.mainController.configManager') {'
             '';
             this.mainController.configManager.onConfigChange('qualityControl', (config: any) => { 
@@ -273,7 +273,7 @@ export class ConfigurationMonitor {
     /**
      * Setup render optimizer integration
      */'
-    private setupRenderOptimizerIntegration(): void { // レンダリング最適化設定の動的更新''
+    private setupRenderOptimizerIntegration(): void { // レンダリング最適化設定の動的更新
         if(this.mainController.configManager') {'
             '';
             this.mainController.configManager.onConfigChange('rendering', (config: any) => { 
@@ -288,7 +288,7 @@ export class ConfigurationMonitor {
     /**
      * Setup mobile optimizer integration
      */'
-    private setupMobileOptimizerIntegration(): void { // モバイル最適化設定の動的更新''
+    private setupMobileOptimizerIntegration(): void { // モバイル最適化設定の動的更新
         if(this.mainController.configManager') {'
             '';
             this.mainController.configManager.onConfigChange('mobile', (config: any) => { 
@@ -312,7 +312,7 @@ export class ConfigurationMonitor {
     /**
      * Setup monitoring integration'
      */''
-    private setupMonitoringIntegration('')';
+    private setupMonitoringIntegration()';
         this.monitoringSystem.onMetricsUpdate('performance_feedback', (metrics: Map<string, any>) => { this.handlePerformanceFeedback(metrics); }
         });
     }
@@ -365,12 +365,12 @@ export class ConfigurationMonitor {
         const recommendations = await this.generateConfigRecommendations(metrics);
         
         for(const recommendation of recommendations) {
-        ';
+        ';'
             if (recommendation.autoApply && recommendation.confidence > 0.8) {''
                 if (this.mainController.applyConfigChange') {'
                     await this.mainController.applyConfigChange(recommendation.key, recommendation.value, {')'
                         reason: 'performance_feedback');
-                        confidence: recommendation.confidence,);
+                        confidence: recommendation.confidence,)
         }
                         automatic: true); }
                 }
@@ -383,72 +383,72 @@ export class ConfigurationMonitor {
     /**
      * Generate configuration recommendations based on metrics
      * @param metrics - Performance metrics
-     * @returns Configuration recommendations'
+     * @returns Configuration recommendations
      */''
     async generateConfigRecommendations(metrics: Map<string, any>'): Promise<ConfigRecommendation[]> { const recommendations: ConfigRecommendation[] = [],
 ';
-        // フレームレートベースの推奨事項''
+        // フレームレートベースの推奨事項
         if (metrics.has('fps')') {''
             const fps = metrics.get('fps');''
             if(fps < 50') {'
                 recommendations.push({''
                     key: 'performance.adaptiveQuality.enabled',';
                     value: true,'';
-                    reason: 'Low frame rate detected',);
+                    reason: 'Low frame rate detected');
                     confidence: 0.9)';
                     autoApply: true,'';
                     impact: 'Should improve frame rate',')';
                     priority: 'high')'),
-';
+';'
                 recommendations.push({''
                     key: 'performance.qualityLevel','';
                     value: 'medium','';
-                    reason: 'Reduce quality to improve performance',);
+                    reason: 'Reduce quality to improve performance');
                     confidence: 0.8)';
                     autoApply: false,'';
-                    impact: 'Will improve performance but reduce visual quality',');
+                    impact: 'Will improve performance but reduce visual quality',')
             }'
                     priority: 'medium')'); }
             }
         }
 ';
-        // メモリ使用量ベースの推奨事項''
+        // メモリ使用量ベースの推奨事項
         if (metrics.has('memory_used')') { ''
             const memoryUsed = metrics.get('memory_used');''
             if(memoryUsed > 100 * 1024 * 1024') {
-                // 100MB以上'
+                // 100MB以上
                 recommendations.push({''
                     key: 'performance.memoryManagement.aggressiveCleanup',';
                     value: true,'';
-                    reason: 'High memory usage detected',);
+                    reason: 'High memory usage detected');
                     confidence: 0.85)';
                     autoApply: true,'';
                     impact: 'Will reduce memory usage',')';
                     priority: 'high')'),
-';
+';'
                 recommendations.push({''
                     key: 'performance.memoryManagement.gcInterval',';
-                    value: 30000, // 30秒間隔'';
-                    reason: 'Increase GC frequency for better memory management',);
+                    value: 30000, // 30秒間隔;
+                    reason: 'Increase GC frequency for better memory management');
                     confidence: 0.7)';
                     autoApply: false,'';
-                    impact: 'May cause periodic frame drops but will improve memory stability',');
+                    impact: 'May cause periodic frame drops but will improve memory stability',')
             }'
                     priority: 'medium')'); }
             }
         }
 ';
-        // CPU使用率ベースの推奨事項''
+        // CPU使用率ベースの推奨事項
         if (metrics.has('cpu_usage')') { ''
             const cpuUsage = metrics.get('cpu_usage');''
             if(cpuUsage > 80') {'
                 recommendations.push({''
                     key: 'rendering.batchRendering',';
                     value: true,'';
-                    reason: 'High CPU usage detected',);
+                    reason: 'High CPU usage detected');
                     confidence: 0.8)';
                     autoApply: true,'';
-                    impact: 'Should reduce CPU usage',');
+                    impact: 'Should reduce CPU usage',')
             }'
                     priority: 'high'); }
             }
@@ -484,7 +484,7 @@ export class ConfigurationMonitor {
      * Process configuration file change
      * @param change - Configuration change object
      */'
-    private async processConfigFileChange(change: ConfigFileChange): Promise<void> { // ファイル変更の種類に応じた処理''
+    private async processConfigFileChange(change: ConfigFileChange): Promise<void> { // ファイル変更の種類に応じた処理
         switch(change.type') {'
             '';
             case 'modified':'';
@@ -545,7 +545,7 @@ export class ConfigurationMonitor {
      * @param value - Configuration value
      */
     private async notifySystemsOfChange(key: string, value: any): Promise<void> { // 関連する最適化システムへの通知
-        const category = this.categorizeConfigKey(key);'
+        const category = this.categorizeConfigKey(key);
         '';
         switch(category') {'
             '';
@@ -558,7 +558,7 @@ export class ConfigurationMonitor {
                 '';
             case 'memoryManagement':;
                 if(this.optimizationSystems.memoryManager) {'
-                    ';
+                    ';'
                 }'
                     await this.optimizationSystems.memoryManager.handleConfigChange(key, value'); }
                 }
@@ -566,7 +566,7 @@ export class ConfigurationMonitor {
                 '';
             case 'qualityControl':;
                 if(this.optimizationSystems.qualityController) {'
-                    ';
+                    ';'
                 }'
                     await this.optimizationSystems.qualityController.handleConfigChange(key, value'); }
                 }
@@ -574,7 +574,7 @@ export class ConfigurationMonitor {
                 '';
             case 'rendering':;
                 if(this.optimizationSystems.renderOptimizer) {'
-                    ';
+                    ';'
                 }'
                     await this.optimizationSystems.renderOptimizer.handleConfigChange(key, value'); }
                 }
@@ -620,7 +620,7 @@ export class ConfigurationMonitor {
      * @returns Monitor status
      */
     getMonitorStatus(): MonitorStatus { return { integrations: this.getActiveIntegrations(,
-            lastSyncTime: this.syncManager.getLastSyncTime(,);
+            lastSyncTime: this.syncManager.getLastSyncTime();
             pendingChanges: this.syncManager.getPendingChanges();
             watchingFiles: !!this.configWatcher,) };
             notificationSubscribers: this.notificationSystem.getSubscriberCount(); }
@@ -671,9 +671,9 @@ export class ConfigurationMonitor {
         }
         
         if(this.notificationSystem) {
-        ';
+        ';'
             '';
-            this.notificationSystem.destroy('');
+            this.notificationSystem.destroy();
         }'
         console.log('[ConfigurationMonitor] Monitor destroyed'); }
     }
@@ -715,10 +715,10 @@ class ConfigSyncManager { private lastSyncTime: number | null
             }
             
             this.pendingChanges.clear();
-            this.lastSyncTime = Date.now();'
+            this.lastSyncTime = Date.now();
             '';
-        } catch (error') { ''
-            console.error('[ConfigSyncManager] Sync failed:', error); }
+        } catch (error) { ''
+            console.error('[ConfigSyncManager] Sync failed:', error) }
         } finally { this.syncInProgress = false; }
         }
     }'
@@ -776,7 +776,7 @@ class ConfigNotificationSystem { private subscribers: Set<NotificationCallback>
 
     subscribe(callback: NotificationCallback): UnsubscribeFunction { this.subscribers.add(callback);
         return () => this.subscribers.delete(callback); }
-    }'
+    }
 '';
     async notifyConfigChange(key: string, newValue: any, oldValue: any, metadata?: any'): Promise<void> { const notification: ConfigNotification = {''
             type: 'config_change',
@@ -784,7 +784,7 @@ class ConfigNotificationSystem { private subscribers: Set<NotificationCallback>
             newValue,
             oldValue,
             metadata,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
 
         this.broadcast(notification);
@@ -793,17 +793,17 @@ class ConfigNotificationSystem { private subscribers: Set<NotificationCallback>
     async notifyRecommendation(recommendation: ConfigRecommendation'): Promise<void> { const notification: ConfigNotification = {''
             type: 'recommendation',
             recommendation,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
 
         this.broadcast(notification);
     }
 
     private broadcast(notification: ConfigNotification): void { for (const subscriber of this.subscribers) {
-            try {'
+            try {
                 subscriber(notification);' }'
-            } catch (error') { ''
-                console.error('[ConfigNotificationSystem] Notification subscriber error:', error); }
+            } catch (error) { ''
+                console.error('[ConfigNotificationSystem] Notification subscriber error:', error) }
             }
         }
     }
@@ -834,14 +834,14 @@ class ConfigFileWatcher { private watchers: Map<string, any>;
     }
 
     private notifyChange(changes: ConfigFileChange[]): void { for (const callback of this.changeCallbacks) {
-            try {'
+            try {
                 callback(changes);' }'
-            } catch (error') { ''
-                console.error('[ConfigFileWatcher] Config change callback error:', error); }
+            } catch (error) { ''
+                console.error('[ConfigFileWatcher] Config change callback error:', error) }
             }
         }
     }
-';
+';'
     startWatching(): void { ''
         if(!this.watching') {'
             this.watching = true;'
@@ -849,7 +849,7 @@ class ConfigFileWatcher { private watchers: Map<string, any>;
             console.log('[ConfigFileWatcher] Config file watching started (simulated')'); }
         }
     }
-';
+';'
     stopWatching(): void { ''
         if(this.watching') {'
             this.watching = false;'

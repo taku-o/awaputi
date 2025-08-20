@@ -9,39 +9,39 @@ interface FrameMetric { timestamp: number,
     particleCount: number,
     effectCount: number,
     memoryUsage: number,
-    renderTime: number; }
+    renderTime: number }
 }
 
 interface MemorySnapshot { timestamp: number,
     used: number,
     total: number,
-    limit: number; }
+    limit: number }
 }
 
 interface RenderingMetric { name: string,
     duration: number,
     startTime: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ParticlePerformanceMetric { effectType: string,
     particleCount: number,
     duration: number,
     memoryDelta: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface EffectPerformanceMetric { effectType: string,
     duration: number,
     memoryDelta: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ProfilingData { particlePerformance: Map<string, ParticlePerformanceMetric[]>;
     effectPerformance: Map<string, EffectPerformanceMetric[]>;
     memorySnapshots: MemorySnapshot[],
     frameMetrics: FrameMetric[],
-    renderingMetrics: RenderingMetric[];
+    renderingMetrics: RenderingMetric[]
     }
 }
 
@@ -59,7 +59,7 @@ interface PerformanceThresholds { fps: {
     renderTime: { excellent: number,
         good: number,
         acceptable: number,
-        poor: number; }
+        poor: number }
     };
 }
 
@@ -73,7 +73,7 @@ interface FrameAnalysis { averageFPS: number,
     maxRenderTime: number,
     frameDrops: number,
     fpsRating: PerformanceRating,
-    renderTimeRating: PerformanceRating;
+    renderTimeRating: PerformanceRating
     }
 }
 
@@ -83,14 +83,14 @@ interface MemoryAnalysis { averageMemory: number,
     memoryDelta: number,
     memoryGrowthRate: number,
     memoryRating: PerformanceRating,
-    hasMemoryLeak: boolean; }
+    hasMemoryLeak: boolean }
 }
 
 interface ParticleEffectAnalysis { sampleCount: number,
     averageDuration: number,
     maxDuration: number,
     averageMemoryImpact: number,
-    rating: PerformanceRating;
+    rating: PerformanceRating
     }
 }
 
@@ -98,7 +98,7 @@ interface EffectAnalysis { sampleCount: number,
     averageDuration: number,
     maxDuration: number,
     averageMemoryImpact: number,
-    rating: PerformanceRating;
+    rating: PerformanceRating
     }
 }
 
@@ -106,7 +106,7 @@ interface ProfileAnalysis { overall: number,
     frame: FrameAnalysis | null,
     memory: MemoryAnalysis | null,
     particles: Record<string, ParticleEffectAnalysis>;
-    effects: Record<string, EffectAnalysis>; }
+    effects: Record<string, EffectAnalysis> }
 }'
 '';
 type OptimizationType = 'performance' | 'memory' | 'memory_leak' | 'particle_optimization' | 'rendering';''
@@ -117,19 +117,19 @@ interface OptimizationSuggestion { type: OptimizationType,
     priority: OptimizationPriority,
     message: string,
     action: OptimizationAction,
-    effectType?: string; }
+    effectType?: string }
 }
 
 interface ProfilerExportData { timestamp: string,
     analysis: ProfileAnalysis,
     suggestions: OptimizationSuggestion[],
-    rawData: ProfilingData;
+    rawData: ProfilingData
     }
 }
 
 interface ProfilerResult { analysis: ProfileAnalysis,
     suggestions: OptimizationSuggestion[],
-    rawData: ProfilingData;
+    rawData: ProfilingData
     }
 }
 
@@ -147,7 +147,7 @@ interface GameEngineInterface { performanceOptimizer?: {
 // Browser performance memory interface
 interface PerformanceMemory { usedJSHeapSize: number,
     totalJSHeapSize: number,
-    jsHeapSizeLimit: number; }
+    jsHeapSizeLimit: number }
 }
 
 // Extended Performance interface
@@ -208,9 +208,9 @@ export class EffectProfiler {
 
     private initialize(): void { this.setupPerformanceObserver();
         this.setupMemoryMonitoring(); }
-    }'
+    }
 '';
-    private setupPerformanceObserver('')';
+    private setupPerformanceObserver()';
         if('PerformanceObserver' in window) {
             try {
                 this.performanceObserver = new PerformanceObserver((list) => { '
@@ -224,8 +224,8 @@ export class EffectProfiler {
                 }');'
                 '';
                 this.performanceObserver.observe({ entryTypes: ['measure'] ),' }'
-            } catch (error') { ''
-                console.warn('PerformanceObserver not supported:', error); }
+            } catch (error) { ''
+                console.warn('PerformanceObserver not supported:', error) }
             }
         }
     }
@@ -236,16 +236,16 @@ export class EffectProfiler {
                 this.captureMemorySnapshot(); }
             }
         }, 1000); // 1秒毎
-    }'
+    }
 '';
-    startProfiling('')';
+    startProfiling()';
         console.log('Effect profiling started');
         this.startFrameMetrics();
     }
 
     stopProfiling(): ProfilerResult { this.isActive = false;
         this.stopFrameMetrics();
-        ';
+        ';'
         const analysis = this.analyzeProfilingData();''
         this.generateOptimizationSuggestions(analysis');'
         '';
@@ -277,11 +277,11 @@ export class EffectProfiler {
 
         this.profilingData.frameMetrics.push({
             timestamp,
-            fps,);
+            fps);
             particleCount);
             effectCount,);
             memoryUsage); : undefined
-            renderTime: this.getLastRenderTime(); }
+            renderTime: this.getLastRenderTime() }
         });
 
         // データサイズ制限（最新1000フレーム）
@@ -308,7 +308,7 @@ export class EffectProfiler {
             name: entry.name);
             duration: entry.duration,);
             startTime: entry.startTime),
-            timestamp: performance.now(); }
+            timestamp: performance.now() }
         });
 
         // データサイズ制限
@@ -483,11 +483,11 @@ export class EffectProfiler {
     }
 
     private generateOptimizationSuggestions(analysis: ProfileAnalysis): void { this.optimizationSuggestions = [];
-';
-        // FPSベースの提案''
+;
+        // FPSベースの提案
         if(analysis.frame && analysis.frame.averageFPS < this.thresholds.fps.acceptable') {'
             this.optimizationSuggestions.push({')'
-                type: 'performance',');
+                type: 'performance',')
         }'
                 priority: 'high'),' }'
                 message: `Average FPS (${analysis.frame.averageFPS.toFixed(1})}') is below acceptable threshold. Consider reducing particle counts or effect quality.`,''
@@ -495,10 +495,10 @@ export class EffectProfiler {
             }),
         }
 ';
-        // メモリベースの提案''
+        // メモリベースの提案
         if(analysis.memory && analysis.memory.averageMemory > this.thresholds.memory.high') {'
             this.optimizationSuggestions.push({')'
-                type: 'memory',');
+                type: 'memory',')
         }'
                 priority: 'high'),' }'
                 message: `High memory usage (${analysis.memory.averageMemory.toFixed(1})}MB'). Implement object pooling and cleanup unused effects.`,''
@@ -506,22 +506,22 @@ export class EffectProfiler {
             }),
         }
 ';
-        // メモリリーク検出''
+        // メモリリーク検出
         if(analysis.memory && analysis.memory.hasMemoryLeak') {'
             this.optimizationSuggestions.push({''
                 type: 'memory_leak','';
                 priority: 'critical',')';
-                message: 'Potential memory leak detected. Check for unreleased resources and event listeners.',');
+                message: 'Potential memory leak detected. Check for unreleased resources and event listeners.',')
         }'
                 action: 'fix_memory_leak'); }
         }
-';
-        // パーティクルパフォーマンス提案'
+';'
+        // パーティクルパフォーマンス提案
         for(const [effectType, metrics] of Object.entries(analysis.particles ||) {'
             )') {''
             if (metrics.rating === 'poor'') {'
                 this.optimizationSuggestions.push({''
-                    type: 'particle_optimization',';
+                    type: 'particle_optimization','
         }'
                     priority: 'medium', }'
                     message: `${effectType} particle effect shows poor performance. Consider optimizing particle count or rendering method.`,')'
@@ -530,10 +530,10 @@ export class EffectProfiler {
             }
         }
 ';
-        // レンダリング時間提案''
+        // レンダリング時間提案
         if(analysis.frame && analysis.frame.maxRenderTime > this.thresholds.renderTime.poor') {'
             this.optimizationSuggestions.push({')'
-                type: 'rendering',');
+                type: 'rendering',')
         }'
                 priority: 'medium'),' }'
                 message: `High render times detected (max: ${analysis.frame.maxRenderTime.toFixed(2})}ms'). Consider optimizing draw calls or using requestAnimationFrame throttling.`,''
@@ -550,35 +550,35 @@ export class EffectProfiler {
         const squareDiffs = values.map(value => Math.pow(value - avg, 2);
         return Math.sqrt(this.calculateAverage(squareDiffs); }
     }
-';
+';'
     private rateFPS(fps: number): PerformanceRating { ''
         if (fps >= this.thresholds.fps.excellent') return 'excellent';''
         if (fps >= this.thresholds.fps.good') return 'good';''
         if (fps >= this.thresholds.fps.acceptable') return 'acceptable';''
         return 'poor'; }
     }
-';
+';'
     private rateRenderTime(renderTime: number): PerformanceRating { ''
         if (renderTime <= this.thresholds.renderTime.excellent') return 'excellent';''
         if (renderTime <= this.thresholds.renderTime.good') return 'good';''
         if (renderTime <= this.thresholds.renderTime.acceptable') return 'acceptable';''
         return 'poor'; }
     }
-';
+';'
     private rateMemoryUsage(memory: number): PerformanceRating { ''
         if (memory <= this.thresholds.memory.low') return 'excellent';''
         if (memory <= this.thresholds.memory.medium') return 'good';''
         if (memory <= this.thresholds.memory.high') return 'acceptable';''
         return 'poor'; }
     }
-';
+';'
     private rateParticlePerformance(duration: number): PerformanceRating { ''
         if (duration <= 5') return 'excellent';''
         if (duration <= 10') return 'good';''
         if (duration <= 20') return 'acceptable';''
         return 'poor'; }
     }
-';
+';'
     private rateEffectPerformance(duration: number): PerformanceRating { ''
         if (duration <= 2') return 'excellent';''
         if (duration <= 5') return 'good';''
@@ -604,7 +604,7 @@ export class EffectProfiler {
     private calculateOverallScore(frameAnalysis: FrameAnalysis | null, memoryAnalysis: MemoryAnalysis | null): number { let score = 100;
         
         if(frameAnalysis) {
-        ';
+        ';'
             '';
             switch (frameAnalysis.fpsRating') {''
                 case 'poor': score -= 40; break;''
@@ -616,7 +616,7 @@ export class EffectProfiler {
         }
         
         if(memoryAnalysis) {
-        ';
+        ';'
             '';
             switch (memoryAnalysis.memoryRating') {''
                 case 'poor': score -= 30; break;''
@@ -658,5 +658,5 @@ export class EffectProfiler {
     }
 }
 ';
-// グローバルアクセス用（デバッグ目的）''
+// グローバルアクセス用（デバッグ目的）
 (window as any').EffectProfiler = EffectProfiler;

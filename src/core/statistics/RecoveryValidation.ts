@@ -5,7 +5,7 @@
 
 // 型定義
 export interface DataRecovery { statisticsManager: StatisticsManager,
-    errorHandler: ErrorHandler;
+    errorHandler: ErrorHandler
     }
 }
 
@@ -13,7 +13,7 @@ export interface StatisticsManager { getDefaultStatistics(): DefaultStatistics;
     [key: string]: any, }
 }
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void; }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
 }
 
 export interface DefaultStatistics { totalScore: number,
@@ -39,15 +39,15 @@ export interface BubbleStats { normal: number,
 
 export interface ComboStats { maxCombo: number,
     totalCombos: number,
-    averageCombo: number; }
+    averageCombo: number }
 }
 
 export interface TimeStats { playTime: number,
-    averageSessionTime: number; }
+    averageSessionTime: number }
 }
 
 export interface AchievementStats { total: number,
-    unlocked: number; }
+    unlocked: number }
 }
 
 export interface SessionStats { recentSessions?: SessionData[];
@@ -64,13 +64,13 @@ export interface ValidationConfig { strictMode: boolean,
     validateChecksums: boolean,
     validateStructure: boolean,
     validateRanges: boolean,
-    allowPartialValidation: boolean; }
+    allowPartialValidation: boolean }
 }
 
 export interface ValidationStats { totalValidations: number,
     successfulValidations: number,
     failedValidations: number,
-    lastValidationTime: number | null; }
+    lastValidationTime: number | null }
 }
 
 export interface IntegrityAnalysis { isValid: boolean,
@@ -79,7 +79,7 @@ export interface IntegrityAnalysis { isValid: boolean,
     validFieldsRatio: number,
     integrityScore: number,
     errors: string[],
-    warnings: string[]; }
+    warnings: string[] }
 }
 
 export interface CorruptionAnalysis { isCorrupted: boolean,
@@ -87,7 +87,7 @@ export interface CorruptionAnalysis { isCorrupted: boolean,
     corruptedFields: string[],
     corruptionTypes: CorruptionType[],
     repairability: RepairabilityLevel,
-    analysis: CorruptionAnalysisDetails;
+    analysis: CorruptionAnalysisDetails
     }
 }
 
@@ -99,46 +99,46 @@ export interface CorruptionAnalysisDetails { typeCheck?: DataTypeCheckResult;
 }
 
 export interface DataTypeCheckResult { hasIssues: boolean,
-    corruptedFields: string[]; }
+    corruptedFields: string[] }
 }
 
 export interface DataRangeCheckResult { hasIssues: boolean,
-    corruptedFields: string[]; }
+    corruptedFields: string[] }
 }
 
 export interface DataStructureCheckResult { hasIssues: boolean,
-    corruptedFields: string[]; }
+    corruptedFields: string[] }
 }
 
 export interface LogicalConsistencyCheckResult { hasIssues: boolean,
-    corruptedFields: string[]; }
+    corruptedFields: string[] }
 }
 
 export interface StructureValidationResult { isValid: boolean,
     missingFields: string[],
     extraFields: string[],
     typeErrors: TypeError[],
-    error?: string; }
+    error?: string }
 }
 
 export interface TypeError { field: string,
     expected: string,
-    actual: string; }
+    actual: string }
 }
 
 export interface RangeValidationResult { isValid: boolean,
     rangeErrors: RangeError[],
-    error?: string; }
+    error?: string }
 }
 
 export interface RangeError { field: string,
     value: number,
-    expected: NumericRange;
+    expected: NumericRange
     }
 }
 
 export interface NumericRange { min: number,
-    max: number; }
+    max: number }
 }
 
 export interface ValidationStatsResult { totalValidations: number,
@@ -146,7 +146,7 @@ export interface ValidationStatsResult { totalValidations: number,
     failedValidations: number,
     lastValidationTime: number | null,
     availableRules: string[],
-    config: ValidationConfig;
+    config: ValidationConfig
     }
 }
 
@@ -170,7 +170,7 @@ export class RecoveryValidation {
         this.statisticsManager = dataRecovery.statisticsManager;
         this.errorHandler = dataRecovery.errorHandler;
         
-        // データ検証規則'
+        // データ検証規則
         this.validationRules = new Map<string, ValidationFunction>([']';
             ['gamePlayStats', this.validateGamePlayStats.bind(this')],'';
             ['scoreStats', this.validateScoreStats.bind(this')],'';
@@ -197,7 +197,7 @@ export class RecoveryValidation {
             successfulValidations: 0,
             failedValidations: 0,
             lastValidationTime: null }
-        },'
+        },
         '';
         console.log('[RecoveryValidation] Component initialized');
     }
@@ -207,7 +207,7 @@ export class RecoveryValidation {
      * @param data 検証対象データ
      * @returns 整合性分析結果'
      */''
-    async analyzeDataIntegrity(data: Record<string, any>'): Promise<IntegrityAnalysis> { try {''
+    async analyzeDataIntegrity(data: Record<string, any>'): Promise<IntegrityAnalysis> { try {'
             console.log('[RecoveryValidation] Starting data integrity analysis');
             
             const analysis: IntegrityAnalysis = {
@@ -255,9 +255,9 @@ export class RecoveryValidation {
             this.validationStats.lastValidationTime = Date.now();
             
             console.log(`[RecoveryValidation] Integrity analysis completed: ${analysis.integrityScore)%`});
-            return analysis;'
+            return analysis;
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error as Error, 'DATA_INTEGRITY_ANALYSIS_ERROR', { data });
             return { isValid: false,
                 validFields: [],
@@ -275,7 +275,7 @@ export class RecoveryValidation {
      * @param data 分析対象データ
      * @returns 破損分析結果'
      */''
-    async analyzeDataCorruption(data: Record<string, any>'): Promise<CorruptionAnalysis> { try {''
+    async analyzeDataCorruption(data: Record<string, any>'): Promise<CorruptionAnalysis> { try {'
             console.log('[RecoveryValidation] Starting data corruption analysis'');
             
             const corruption: CorruptionAnalysis = {
@@ -284,12 +284,11 @@ export class RecoveryValidation {
                 corruptedFields: [],';
                 corruptionTypes: [],'';
                 repairability: 'high', }
-                analysis: {}
-            },
+                analysis: {},
             
             // データ型チェック
             const typeCheck = this._checkDataTypes(data);
-            if(typeCheck.hasIssues) {'
+            if(typeCheck.hasIssues) {
                 '';
                 corruption.corruptedFields.push(...typeCheck.corruptedFields');'
             }'
@@ -298,7 +297,7 @@ export class RecoveryValidation {
             
             // 値範囲チェック
             const rangeCheck = this._checkDataRanges(data);
-            if(rangeCheck.hasIssues) {'
+            if(rangeCheck.hasIssues) {
                 '';
                 corruption.corruptedFields.push(...rangeCheck.corruptedFields');'
             }'
@@ -307,7 +306,7 @@ export class RecoveryValidation {
             
             // 構造整合性チェック
             const structureCheck = this._checkDataStructure(data);
-            if(structureCheck.hasIssues) {'
+            if(structureCheck.hasIssues) {
                 '';
                 corruption.corruptedFields.push(...structureCheck.corruptedFields');'
             }'
@@ -316,7 +315,7 @@ export class RecoveryValidation {
             
             // 論理整合性チェック
             const logicCheck = this._checkLogicalConsistency(data);
-            if(logicCheck.hasIssues) {'
+            if(logicCheck.hasIssues) {
                 '';
                 corruption.corruptedFields.push(...logicCheck.corruptedFields');'
             }'
@@ -328,10 +327,10 @@ export class RecoveryValidation {
             const uniqueCorruptedFields = [...new Set(corruption.corruptedFields)];
             corruption.corruptionLevel = totalFields > 0 ? uniqueCorruptedFields.length / totalFields: 0,
             corruption.isCorrupted = corruption.corruptionLevel > 0;
-            ';
-            // 修復可能性を評価''
+            ;
+            // 修復可能性を評価
             if(corruption.corruptionLevel < 0.3') {'
-                ';
+                ';'
             }'
                 corruption.repairability = 'high';' }'
             } else if (corruption.corruptionLevel < 0.7') { ''
@@ -349,7 +348,7 @@ export class RecoveryValidation {
             console.log(`[RecoveryValidation] Corruption analysis completed: ${corruption.corruptionLevel * 100)%`});
             return corruption;'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error as Error, 'DATA_CORRUPTION_ANALYSIS_ERROR', { data });
             return { isCorrupted: true,'
                 corruptionLevel: 1.0,'';
@@ -378,9 +377,9 @@ export class RecoveryValidation {
             }
                 hash = hash & hash; // 32bit integer }
             }
-            ';
+            ';'
             return Math.abs(hash).toString(16);''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[RecoveryValidation] Checksum calculation failed:', error');''
             return '0'; }
         }
@@ -462,7 +461,7 @@ export class RecoveryValidation {
                 playTime: { min: 0, max: Number.MAX_SAFE_INTEGER },
                 totalGamesPlayed: { min: 0, max: Number.MAX_SAFE_INTEGER },
                 winRate: { min: 0, max: 1 }
-            };'
+            };
             '';
             for (const [field, range] of Object.entries(numericRanges)') { ''
                 if(field in data && typeof data[field] === 'number') {
@@ -512,7 +511,7 @@ export class RecoveryValidation {
     /**
      * スコア統計を検証
      * @param data スコアデータ
-     * @returns 検証結果'
+     * @returns 検証結果
      */''
     validateScoreStats(data: any'): boolean { ''
         if (!data || typeof data !== 'object'') return false;'
@@ -636,7 +635,7 @@ export class RecoveryValidation {
             hasIssues: false,
             corruptedFields: [] }
         },
-        ';
+        ';'
         const expectedTypes: Record<string, string> = { ''
             totalScore: 'number','';
             averageScore: 'number','';
@@ -717,7 +716,7 @@ export class RecoveryValidation {
             corruptedFields: [] }
         },
         ';
-        // ゲーム数の整合性チェック''
+        // ゲーム数の整合性チェック
         if('wins' in data && 'losses' in data && 'totalGamesPlayed' in data) {'
             '';
             if (data.totalGamesPlayed !== data.wins + data.losses') {'
@@ -752,7 +751,7 @@ export class RecoveryValidation {
     /**
      * 検証統計をリセット'
      */''
-    resetValidationStats('')';
+    resetValidationStats()';
         console.log('[RecoveryValidation] Validation statistics reset'');'
     }''
 }

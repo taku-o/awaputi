@@ -20,7 +20,7 @@ interface KeyUsageData { count: number,
     firstUsed: string | null,
     lastUsed: string | null,
     contexts: Set<string>,
-    locations: Set<string>;
+    locations: Set<string>
     }
 }
 
@@ -33,13 +33,13 @@ interface UsageStats { totalKeys: number,
     usedKeys: number,
     unusedKeys: number,
     recentlyUsed: number,
-    lastUpdateTime: string | null; }
+    lastUpdateTime: string | null }
 }
 
 interface UnusedKey { key: string,
     metadata: KeyMetadata,
     registeredAt: string,
-    category: string; }
+    category: string }
 }
 
 interface FrequentlyUsedKey { key: string,
@@ -47,14 +47,14 @@ interface FrequentlyUsedKey { key: string,
     metadata: KeyMetadata | undefined,
     lastUsed: string | null,
     contexts: string[],
-    locations: string[]; }
+    locations: string[] }
 }
 
 interface RecentlyUsedKey { key: string,
     count: number,
     metadata: KeyMetadata | undefined,
     lastUsed: string | null,
-    lastUsedDate: Date | null; }
+    lastUsedDate: Date | null }
 }
 
 interface SearchResult { key: string,
@@ -63,7 +63,7 @@ interface SearchResult { key: string,
         count: number,
         lastUsed: string | null,
         contexts: string[],
-        locations: string[]; }
+        locations: string[] }
     } | null;
 }
 
@@ -72,7 +72,7 @@ interface CategoryStatistics { [key: string]: {
         used: number,
         unused: number,
         deprecated: number,
-        totalUsage: number; }
+        totalUsage: number }
     };
 }
 
@@ -86,7 +86,7 @@ interface KeyInfo { key: string,
         firstUsed: string | null,
         lastUsed: string | null,
         contexts: string[],
-        isUsed: boolean; }
+        isUsed: boolean }
     };
 }
 
@@ -94,7 +94,7 @@ interface UsageReport { generatedAt: string,
     totalKeys: number,
     usageStats: UsageStats,
     categoryStats: CategoryStatistics,
-    keys: KeyInfo[];
+    keys: KeyInfo[]
     }
 }
 
@@ -110,14 +110,14 @@ interface SummaryReport { summary: {
 
 interface DuplicateKey { key: string,
     occurrences: string[],
-    count: number; }
+    count: number }
 }
 
 interface MissingKeysResult { missingInTarget: string[],
     extraInTarget: string[],
     totalReference: number,
     totalTarget: number,
-    completeness: number; }
+    completeness: number }
 }
 
 interface UnusedKeysOptions { excludeCategories?: string[];
@@ -138,18 +138,18 @@ interface ReportOptions { includeUnused?: boolean;
 }
 
 interface ExtractResult { extracted: number,
-    keys: string[]; }
+    keys: string[] }
 }
 
 interface RegisterResult { successful: string[],
-    failed: string[]; }
+    failed: string[] }
 }
 
 interface KeyManagerStats { totalRegisteredKeys: number,
     totalUsageRecords: number,
     usageTracking: boolean,
     categories: string[],
-    usageStats: UsageStats;
+    usageStats: UsageStats
     }
 }
 
@@ -167,7 +167,7 @@ export class TranslationKeyManager {
     constructor() {
 
         this.registeredKeys = new Map();
-        this.keyUsage = new Map();'
+        this.keyUsage = new Map();
         this.keyCategories = new Map();''
         this.keyMetadata = new Map(''';
             ['common', /^common\./],'';
@@ -192,7 +192,7 @@ export class TranslationKeyManager {
     }
     }
             lastUpdateTime: null }
-        },'
+        },
         '';
         console.log('TranslationKeyManager initialized');
     }
@@ -201,9 +201,9 @@ export class TranslationKeyManager {
      * 翻訳キーを登録'
      */''
     registerKey(key: string, metadata: any = { )'): boolean {'
-        try {''
+        try {'
             if(!key || typeof key !== 'string'') {'
-                ';
+                ';'
             }'
                 throw new Error('Invalid translation key'); }
             }
@@ -211,7 +211,7 @@ export class TranslationKeyManager {
             // キーのバリデーション
             this.validateKeyFormat(key);
             
-            // メタデータの設定'
+            // メタデータの設定
             const keyMetadata: KeyMetadata = { key: key,''
                 category: this.categorizeKey(key'),'';
                 description: metadata.description || '','';
@@ -222,7 +222,7 @@ export class TranslationKeyManager {
                 priority: metadata.priority || 'normal',';
                 registeredAt: new Date().toISOString(),'';
                 lastModified: new Date().toISOString(''';
-                version: metadata.version || '1.0.0',);
+                version: metadata.version || '1.0.0');
                 tags: metadata.tags || []);
                 ...metadata }
             };
@@ -248,11 +248,11 @@ export class TranslationKeyManager {
             
             console.log(`Translation key registered: ${key} (${keyMetadata.category)`});
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'TRANSLATION_KEY_MANAGER_ERROR', {')'
                 operation: 'registerKey',);
-                key: key); }
+                key: key) }
             });
             return false;
         }
@@ -292,11 +292,11 @@ export class TranslationKeyManager {
                 const fullPath = basePath ? `${basePath}.${fullKey}` : fullKey;'
                 '';
                 if(typeof value === 'object' && value !== null && !Array.isArray(value) {'
-                    ';
+                    ';'
                 }'
                     extractRecursive(value, fullKey');' }'
                 } else if (typeof value === 'string'') { // 翻訳キーとして登録
-                    const metadata = { }'
+                    const metadata = { }
                         description: `Extracted from ${language} translation data`,''
                         context: basePath || 'general',
                         extractedFrom: language,
@@ -349,10 +349,10 @@ export class TranslationKeyManager {
             if (location) { usage.locations.add(location); }
             }
             
-            this.updateUsageStats();'
+            this.updateUsageStats();
             '';
-        } catch (error') { ''
-            console.warn('Error recording key usage:', error); }
+        } catch (error) { ''
+            console.warn('Error recording key usage:', error) }
         }
     }
     
@@ -396,9 +396,9 @@ export class TranslationKeyManager {
             const usage = this.keyUsage.get(key);
             if(!usage || usage.count === 0) {
                 unusedKeys.push({
-                    key: key,);
+                    key: key);
                     metadata: metadata);
-                    registeredAt: metadata.registeredAt,);
+                    registeredAt: metadata.registeredAt,)
             }
                     category: metadata.category); }
             }
@@ -417,7 +417,7 @@ export class TranslationKeyManager {
                 metadata: this.registeredKeys.get(key),
                 lastUsed: usage.lastUsed,
                 contexts: Array.from(usage.contexts),
-                locations: Array.from(usage.locations); }
+                locations: Array.from(usage.locations) }
             })
             .filter(item => item.count > 0);
             .sort((a, b) => b.count - a.count);
@@ -447,7 +447,7 @@ export class TranslationKeyManager {
     }
     
     /**
-     * キーを検索'
+     * キーを検索
      */ : undefined''
     searchKeys(query: string, options: SearchOptions = { )'): SearchResult[] {'
         const { ''
@@ -473,7 +473,7 @@ export class TranslationKeyManager {
             }
             
             // 検索マッチング
-            let matched = false;'
+            let matched = false;
             '';
             for(const field of searchIn') {'
                 '';
@@ -511,7 +511,7 @@ export class TranslationKeyManager {
             
                 const usage = this.keyUsage.get(key);
                 results.push({
-                    key: key,);
+                    key: key);
                     metadata: metadata);
                     usage: usage ? { : undefined
                         count: usage.count,);
@@ -536,26 +536,26 @@ export class TranslationKeyManager {
             used: number,
             unused: number,
             deprecated: number,
-            totalUsage: number; }
+            totalUsage: number }
         }>();
         
         // カテゴリを初期化
         for(const category of this.categoryPatterns.keys() {
             categoryStats.set(category, {
                 total: 0,
-                used: 0,);
+                used: 0);
                 unused: 0)';
-                deprecated: 0,');
+                deprecated: 0,')
         }'
                 totalUsage: 0)'); }'
         }''
         categoryStats.set('other', { total: 0,
-            used: 0,);
+            used: 0);
             unused: 0);
             deprecated: 0,);
             totalUsage: 0),
         ';
-        // 統計を計算''
+        // 統計を計算
         for(const [key, metadata] of this.registeredKeys') {'
             '';
             const category = metadata.category || 'other';
@@ -663,7 +663,7 @@ export class TranslationKeyManager {
             if (occurrences.length > 1) {
                 duplicates.push({)
                     key: key);
-                    occurrences: occurrences,);
+                    occurrences: occurrences,)
         }
                     count: occurrences.length); }
             }
@@ -697,12 +697,12 @@ export class TranslationKeyManager {
             throw new Error(`Invalid key format: ${key). Keys must start with letter and contain only letters, numbers, dots, and underscores.`});
         }
         
-        // 長さチェック'
+        // 長さチェック
         if (key.length > 100) { ' }'
             throw new Error(`Key too long: ${key). Maximum length is 100 characters.`'});
         }
         ';
-        // 予約語チェック''
+        // 予約語チェック
         const reservedWords = ['constructor', 'prototype', '__proto__', 'toString', 'valueOf'];
         if(reservedWords.includes(key) {
             
@@ -741,7 +741,7 @@ export class TranslationKeyManager {
             while((match = pattern.exec(text) !== null) { }
                 parameters.add(match[0]); }
             }
-        });'
+        });
         '';
         return Array.from(parameters');
     }
@@ -755,7 +755,7 @@ export class TranslationKeyManager {
             const fullKey = prefix ? `${prefix}.${key}` : key;'
             '';
             if(typeof value === 'object' && value !== null && !Array.isArray(value) {'
-                ';
+                ';'
             }'
                 keys.push(...this.flattenTranslationKeys(value, fullKey)');' }'
             } else if (typeof value === 'string') { keys.push(fullKey); }
@@ -845,7 +845,7 @@ export class TranslationKeyManager {
             topUsedKeys: reportData.keys;
                 .filter(k => k.usage.isUsed);
                 .slice(0, 10);
-                .map(k => ({ key: k.key, count: k.usage.count )); }
+                .map(k => ({ key: k.key, count: k.usage.count )) }
         };
     }
     
@@ -917,7 +917,7 @@ export class TranslationKeyManager {
         this.keyUsage.clear();
         this.keyCategories.clear();'
         this.keyMetadata.clear();''
-        this.updateUsageStats('')';
+        this.updateUsageStats()';
         console.log('All translation key data cleared'); }
     }
     
@@ -938,6 +938,6 @@ let translationKeyManagerInstance: TranslationKeyManager | null = null,
 
 /**
  * TranslationKeyManagerのシングルトンインスタンスを取得
- */'
+ */
 export function getTranslationKeyManager(): TranslationKeyManager { if (!translationKeyManagerInstance) {''
         translationKeyManagerInstance = new TranslationKeyManager(' })

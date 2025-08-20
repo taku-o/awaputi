@@ -23,7 +23,7 @@ interface ProfileSettings { [key: string]: any, }
 }
 
 interface ProfileHistoryEntry { profile: string,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ValidationResult { valid: boolean,
@@ -34,7 +34,7 @@ interface ValidationResult { valid: boolean,
 interface Notification { message: string,
     type: NotificationType,
     timestamp: number,
-    id: string; }
+    id: string }
 }
 
 interface Statistics { settingsChanged: number,
@@ -42,22 +42,22 @@ interface Statistics { settingsChanged: number,
     exportCount: number,
     importCount: number,
     validationErrors: number,
-    sessionStart: number; }
+    sessionStart: number }
 }
 
 interface ExtendedStatistics extends Statistics { sessionDuration: number,
     profileCount: number,
     currentProfile: string,
     validationErrors: number,
-    notifications: number; }
+    notifications: number }
 }
 
 interface ValidationError { key: string,
-    error: string; }
+    error: string }
 }
 
 interface SettingOption { value: string,
-    label: string; }
+    label: string }
 }
 
 interface AccessibilitySetting { key: string,
@@ -84,17 +84,17 @@ interface ProfileInfo { name: string,
     displayName: string,
     description: string,
     isCustom: boolean,
-    created: number | null; }
+    created: number | null }
 }
 
 // ゲームエンジンの拡張型
-interface ExtendedGameEngine extends GameEngine { settingsManager?: {'
+interface ExtendedGameEngine extends GameEngine { settingsManager?: {
         get(key: string): any,'';
-        set(key: string, value: any'): void; }
+        set(key: string, value: any'): void }
     };
 }
 ';
-// 型定義''
+// 型定義
 type NotificationType = 'info' | 'success' | 'error' | 'warning';''
 type SettingType = 'toggle' | 'slider' | 'select' | 'text';
 type ValidatorFunction = (value: any, ...args: any[]) => ValidationResult;
@@ -104,7 +104,7 @@ export class AccessibilitySettingsManager {
     private gameEngine: ExtendedGameEngine;
     private loggingSystem: any;
     ';
-    // 設定プロファイル管理''
+    // 設定プロファイル管理
     private profiles: Map<string, Profile> = new Map(''';
     private currentProfile: string = 'default';
     private profileHistory: ProfileHistoryEntry[] = [];
@@ -122,7 +122,7 @@ export class AccessibilitySettingsManager {
         exportCount: 0,
         importCount: 0,
         validationErrors: 0,
-        sessionStart: Date.now(); }
+        sessionStart: Date.now() }
     };
     
     // 通知システム
@@ -144,11 +144,11 @@ export class AccessibilitySettingsManager {
      */
     private initialize(): void { try {
             this.setupValidators();
-            this.setupPreviewCallbacks();'
+            this.setupPreviewCallbacks();
             this.loadProfiles();''
-            this.setupDefaultProfile('')';
+            this.setupDefaultProfile()';
             this.loggingSystem.info('AccessibilitySettingsManager', 'Accessibility settings manager initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('AccessibilitySettingsManager', 'Initialization error', error); }
         }
     }
@@ -156,7 +156,7 @@ export class AccessibilitySettingsManager {
     /**
      * 設定検証ルールの設定'
      */''
-    private setupValidators('')';
+    private setupValidators()';
         this.validators.set('range', (value: any, min: number, max: number): ValidationResult => { const numValue = parseFloat(value);' }'
             if (isNaN(numValue)') return { valid: false, error: '数値である必要があります' }
             if(numValue < min || numValue > max) {
@@ -167,7 +167,7 @@ export class AccessibilitySettingsManager {
             return { valid: true }''
         }');
         ';
-        // テキスト長制限''
+        // テキスト長制限
         this.validators.set('textLength', (value: any, maxLength: number'): ValidationResult => { ' }'
             if (typeof value !== 'string'') return { valid: false, error: '文字列である必要があります' }
             if(value.length > maxLength) {
@@ -178,7 +178,7 @@ export class AccessibilitySettingsManager {
             return { valid: true }''
         }');
         ';
-        // 選択肢検証''
+        // 選択肢検証
         this.validators.set('options', (value: any, validOptions: string[]): ValidationResult => {  ' }'
             if (!validOptions.includes(value)') {' }'
                 return { valid: false, error: '有効な選択肢から選んでください' }
@@ -186,7 +186,7 @@ export class AccessibilitySettingsManager {
             return { valid: true }''
         }');
         ';
-        // コントラスト比検証（アクセシビリティ）''
+        // コントラスト比検証（アクセシビリティ）
         this.validators.set('contrastRatio', (foreground: string, background: string): ValidationResult => {  const ratio = this.calculateContrastRatio(foreground, background);
             if (ratio < 4.5) { }
                 return {  };
@@ -197,7 +197,7 @@ export class AccessibilitySettingsManager {
             return { valid: true, data: { ratio } }''
         }');
         ';
-        // フォントサイズ検証''
+        // フォントサイズ検証
         this.validators.set('fontSize', (value: any): ValidationResult => { const numValue = parseFloat(value);' }'
             if (isNaN(numValue)') return { valid: false, error: '数値である必要があります' }''
             if (numValue < 8 || numValue > 72') { ' }'
@@ -210,7 +210,7 @@ export class AccessibilitySettingsManager {
     /**
      * プレビューコールバックの設定'
      */''
-    private setupPreviewCallbacks('')';
+    private setupPreviewCallbacks()';
         this.previewCallbacks.set('accessibility.highContrast', (value: boolean) => {  ''
             if (value') {' }'
                 document.body.classList.add('high-contrast-preview''); }'
@@ -219,7 +219,7 @@ export class AccessibilitySettingsManager {
             }''
         }');
         ';
-        // 大きな文字のプレビュー''
+        // 大きな文字のプレビュー
         this.previewCallbacks.set('accessibility.largeText', (value: boolean) => {  ''
             if (value') {' }'
                 document.body.classList.add('large-text-preview''); }'
@@ -228,7 +228,7 @@ export class AccessibilitySettingsManager {
             }''
         }');
         ';
-        // アニメーション削減のプレビュー''
+        // アニメーション削減のプレビュー
         this.previewCallbacks.set('accessibility.reducedMotion', (value: boolean) => {  ''
             if (value') {' }'
                 document.body.classList.add('reduced-motion-preview''); }'
@@ -237,7 +237,7 @@ export class AccessibilitySettingsManager {
             }''
         }');
         ';
-        // 色覚サポートのプレビュー''
+        // 色覚サポートのプレビュー
         this.previewCallbacks.set('accessibility.colorBlindSupport', (value: boolean) => {  ''
             if (value') {' }'
                 document.body.classList.add('color-blind-support-preview''); }'
@@ -250,7 +250,7 @@ export class AccessibilitySettingsManager {
     /**
      * プロファイル読み込み'
      */''
-    private loadProfiles('')';
+    private loadProfiles()';
             const savedProfiles = localStorage.getItem('accessibilityProfiles');
             if(savedProfiles) {
                 const profiles = JSON.parse(savedProfiles);
@@ -258,7 +258,7 @@ export class AccessibilitySettingsManager {
                 Object.entries(profiles).forEach(([name, settings]) => {  }
                     this.profiles.set(name, settings as Profile); }'
                 });''
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.warn('AccessibilitySettingsManager', 'Failed to load profiles', error); }
         }
     }
@@ -266,7 +266,7 @@ export class AccessibilitySettingsManager {
     /**
      * デフォルトプロファイルの設定'
      */''
-    private setupDefaultProfile('')';
+    private setupDefaultProfile()';
         if (!this.profiles.has('default')') { ''
             this.profiles.set('default', {')'
                 name: 'デフォルト')';
@@ -284,7 +284,7 @@ export class AccessibilitySettingsManager {
                 })');
         }
         ';
-        // 高コントラストプロファイル''
+        // 高コントラストプロファイル
         if (!this.profiles.has('highContrast')') { ''
             this.profiles.set('highContrast', {')'
                 name: '高コントラスト')';
@@ -302,7 +302,7 @@ export class AccessibilitySettingsManager {
                 })');
         }
         ';
-        // 運動機能配慮プロファイル''
+        // 運動機能配慮プロファイル
         if (!this.profiles.has('motorImpairment')') { ''
             this.profiles.set('motorImpairment', {')'
                 name: '運動機能配慮')';
@@ -373,13 +373,13 @@ export class AccessibilitySettingsManager {
     public validateSetting(key: string, value: any, constraints: any = { ): ValidationResult {
         this.validationErrors = [];
         
-        try {'
+        try {
             const setting = this.getExtendedAccessibilitySettings().find(s => s.key === key);''
             if (!setting') {' }'
                 return { valid: false, error: '不明な設定項目です' }
             }
             
-            // 基本的な型検証'
+            // 基本的な型検証
             let result: ValidationResult = { valid: true }''
             switch(setting.type') {'
                 '';
@@ -418,12 +418,12 @@ export class AccessibilitySettingsManager {
                 this.stats.validationErrors++;
             
             }
-                this.validationErrors.push({ key, error: result.error! ); }
+                this.validationErrors.push({ key, error: result.error! ) }
             }
             
-            return result;'
+            return result;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('AccessibilitySettingsManager', 'Validation error', error');' }'
             return { valid: false, error: '設定の検証中にエラーが発生しました' }
         }
@@ -433,7 +433,7 @@ export class AccessibilitySettingsManager {
      * 設定値の設定（検証付き）
      */
     public setSetting(key: string, value: any): boolean { const validationResult = this.validateSetting(key, value);
-        ';
+        ';'
         if (!validationResult.valid) {' }'
             this.showNotification(`設定エラー: ${validationResult.error')`, 'error'});
             return false;
@@ -448,7 +448,7 @@ export class AccessibilitySettingsManager {
             if(this.previewEnabled && this.previewCallbacks.has(key) {
         }
                 this.previewCallbacks.get(key)!(value); }
-            }'
+            }
             '';
             this.showNotification(`設定を更新しました: ${key')`, 'success'});
             return true;
@@ -472,7 +472,7 @@ export class AccessibilitySettingsManager {
         // 現在のプロファイル履歴に追加
         this.profileHistory.push({ )
             profile: this.currentProfile),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         // 履歴サイズ制限
@@ -482,7 +482,7 @@ export class AccessibilitySettingsManager {
         // 設定を適用
         let successCount = 0;
         Object.entries(settings).forEach(([key, value]) => {  if(this.setSetting(key, value) { }
-                successCount++; }'
+                successCount++; }
             }''
         }');
         
@@ -516,9 +516,9 @@ export class AccessibilitySettingsManager {
             settings: currentSettings),
             created: Date.now();
             custom: true) }
-        }),'
+        }),
         '';
-        this.saveProfiles('')';
+        this.saveProfiles()';
         this.showNotification(`プロファイル '${name')' を作成しました`, 'success''});
         
         return true;
@@ -527,7 +527,7 @@ export class AccessibilitySettingsManager {
     /**
      * 設定のエクスポート'
      */''
-    public exportSettings(format: string = 'json', includeProfiles: boolean = false): boolean { try {'
+    public exportSettings(format: string = 'json', includeProfiles: boolean = false): boolean { try {
             const exportData: ExportData = {''
                 timestamp: new Date(''';
                 version: '1.0.0',
@@ -551,7 +551,7 @@ export class AccessibilitySettingsManager {
             }
             
             let exportContent: string,
-            let filename: string,';
+            let filename: string,
             '';
             switch(format') {'
                 '';
@@ -560,12 +560,12 @@ export class AccessibilitySettingsManager {
                     exportContent = JSON.stringify(exportData, null, 2); }
                     filename = `accessibility-settings-${Date.now(})}.json`;
                     break;
-                    ';
+                    ';'
                 default:'';
                     throw new Error(`サポートされていない形式: ${format)`'}),
             }
             ';
-            // ダウンロードリンクを作成''
+            // ダウンロードリンクを作成
             const blob = new Blob([exportContent], { type: 'application/json' ),''
             const url = URL.createObjectURL(blob');''
             const a = document.createElement('a');
@@ -575,13 +575,13 @@ export class AccessibilitySettingsManager {
             a.click();'
             document.body.removeChild(a);''
             URL.revokeObjectURL(url');
-            ';
+            ';'
             this.stats.exportCount++;''
             this.showNotification('設定をエクスポートしました', 'success');
             
             return true;'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('AccessibilitySettingsManager', 'Export failed', error');''
             this.showNotification('エクスポートに失敗しました', 'error');
             return false; }
@@ -598,7 +598,7 @@ export class AccessibilitySettingsManager {
                 try {
                     const importData = JSON.parse(event.target!.result as string) as ExportData;
                     ';
-                    // データ形式の検証''
+                    // データ形式の検証
                     if (!importData.settings') {' }'
                         throw new Error('無効な設定ファイル形式です'); }
                     }
@@ -607,8 +607,8 @@ export class AccessibilitySettingsManager {
                     
                     // 設定をインポート
                     Object.entries(importData.settings).forEach(([key, value]) => {  const validationResult = this.validateSetting(key, value);
-                        if(validationResult.valid) {'
-                            ';
+                        if(validationResult.valid) {
+                            ';'
                         }'
                             this.gameEngine.settingsManager? .set(key, value'); }
                             importedCount++; }'
@@ -624,12 +624,12 @@ export class AccessibilitySettingsManager {
                     }
                     
                     this.saveProfiles();
-                    this.stats.importCount++;'
+                    this.stats.importCount++;
                     '';
                     this.showNotification(`設定をインポートしました（${ importedCount')項目）`, 'success'); }
                     resolve(true});'
                     '';
-                } catch (error') { ''
+                } catch (error) { ''
                     this.loggingSystem.error('AccessibilitySettingsManager', 'Import failed', error');''
                     this.showNotification('インポートに失敗しました', 'error');
                     reject(error); }
@@ -656,7 +656,7 @@ export class AccessibilitySettingsManager {
             }');'
             '';
             localStorage.setItem('accessibilityProfiles', JSON.stringify(profilesData);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('AccessibilitySettingsManager', 'Failed to save profiles', error'); }
         }
     }
@@ -667,13 +667,13 @@ export class AccessibilitySettingsManager {
     private showNotification(message: string, type: NotificationType = 'info'): void { const notification: Notification = {
             message,
             type,
-            timestamp: Date.now(,);
-            id: Math.random().toString(36).substr(2, 9); }
+            timestamp: Date.now();
+            id: Math.random().toString(36).substr(2, 9) }
         };
         
         this.notifications.push(notification);
         
-        // 通知の自動削除'
+        // 通知の自動削除
         setTimeout(() => { this.notifications = this.notifications.filter(n => n.id !== notification.id);' }'
         }, 5000');'
         '';
@@ -683,7 +683,7 @@ export class AccessibilitySettingsManager {
     /**
      * コントラスト比の計算
      */'
-    private calculateContrastRatio(foreground: string, background: string): number { // 簡易的なコントラスト比計算''
+    private calculateContrastRatio(foreground: string, background: string): number { // 簡易的なコントラスト比計算
         const getLuminance = (color: string'): number => { ''
             const rgb = parseInt(color.replace('#', ''), 16);
             const r = (rgb >> 16) & 0xff;
@@ -718,7 +718,7 @@ export class AccessibilitySettingsManager {
             });
         });'
         '';
-        return profiles.sort((a, b') => {  // デフォルトプロファイルを最初に''
+        return profiles.sort((a, b') => {  // デフォルトプロファイルを最初に
             if (a.name === 'default'') return -1;''
             if (b.name === 'default') return 1;
             
@@ -745,7 +745,7 @@ export class AccessibilitySettingsManager {
     }
     
     /**
-     * クリーンアップ'
+     * クリーンアップ
      */''
     public cleanup(''';
             'high-contrast-preview','';
@@ -758,9 +758,9 @@ export class AccessibilitySettingsManager {
         }
         
         // データをクリア
-        this.profiles.clear();'
+        this.profiles.clear();
         this.validators.clear();''
-        this.previewCallbacks.clear('')';
+        this.previewCallbacks.clear()';
         this.loggingSystem.info('AccessibilitySettingsManager', 'Accessibility settings manager cleaned up');
     }
     
@@ -772,11 +772,10 @@ export class AccessibilitySettingsManager {
             return this.profiles.get(this.currentProfile')!; }
         }
         
-        // デフォルトプロファイルを返す'
+        // デフォルトプロファイルを返す
         return { ''
             name: '標準',' };'
             description: 'デフォルトのアクセシビリティ設定', }
-            settings: {}
-        },'
+            settings: {},'
     }''
 }

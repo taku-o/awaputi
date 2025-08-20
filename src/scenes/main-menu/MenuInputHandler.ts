@@ -2,18 +2,18 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';''
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
-interface MenuItemWithLabel extends MenuItem { label: string; }
+interface MenuItemWithLabel extends MenuItem { label: string }
 }
 
 interface Coordinates { x: number,
-    y: number; }
+    y: number }
 }
 
 interface ClickableSlider { x: number,
     y: number,
     width: number,
     height: number,
-    settingKey: string; }
+    settingKey: string }
 }
 
 interface ClickableButton { x: number,
@@ -36,7 +36,7 @@ interface ClickableElements { volumeSliders?: ClickableSlider[];
 interface SettingsCallbacks { onChangeUsername: () => void,
     onShowDataClear: () => void,
     onShowControlsHelp: () => void,
-    onCloseSettings: () => void; }
+    onCloseSettings: () => void }
 }
 
 /**
@@ -49,7 +49,7 @@ export class MenuInputHandler {
 
     constructor(gameEngine: any) {
 
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine
 
     }
     }
@@ -61,7 +61,7 @@ export class MenuInputHandler {
      */
     handleMainMenuClick(;
         event: MouseEvent,
-        selectedMenuIndex: number, );
+        selectedMenuIndex: number );
         menuItems: MenuItemWithLabel[]);
         onSelectCallback: (index: number) => void;
     ): boolean { try {
@@ -102,11 +102,11 @@ export class MenuInputHandler {
                     return true; }
                 }
             }
-            ';
+            ';'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleMainMenuClick'); }
+                context: 'MenuInputHandler.handleMainMenuClick') }
             });
             return false;
         }
@@ -161,11 +161,11 @@ export class MenuInputHandler {
             }
                 return true; }
             }
-            ';
+            ';'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleUsernameInputClick'); }
+                context: 'MenuInputHandler.handleUsernameInputClick') }
             });
             return false;
         }
@@ -175,7 +175,7 @@ export class MenuInputHandler {
      * 設定画面のクリック処理
      */
     handleSettingsClick(;
-        event: MouseEvent,
+        event: MouseEvent
     );
         clickableElements: ClickableElements);
         settingsCallbacks: SettingsCallbacks;
@@ -211,7 +211,7 @@ export class MenuInputHandler {
             
             // 言語ボタンのクリック処理
             if(clickableElements.languageButtons) {
-                for (const button of clickableElements.languageButtons) {'
+                for (const button of clickableElements.languageButtons) {
                     if (x >= button.x && x <= button.x + button.width && '';
                         y >= button.y && y <= button.y + button.height') {''
                         this.gameEngine.settingsManager.set('language', button.langCode!);
@@ -223,7 +223,7 @@ export class MenuInputHandler {
             
             // 品質ボタンのクリック処理
             if(clickableElements.qualityButtons) {
-                for (const button of clickableElements.qualityButtons) {'
+                for (const button of clickableElements.qualityButtons) {
                     if (x >= button.x && x <= button.x + button.width && '';
                         y >= button.y && y <= button.y + button.height') {''
                         this.gameEngine.settingsManager.set('quality', button.qualityCode!);
@@ -233,11 +233,11 @@ export class MenuInputHandler {
                 }
             }
             
-            // アクションボタンのクリック処理'
+            // アクションボタンのクリック処理
             return this.handleSettingsActionButtons(x, y, settingsCallbacks);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleSettingsClick'); }
+                context: 'MenuInputHandler.handleSettingsClick') }
             });
             return false;
         }
@@ -280,11 +280,11 @@ export class MenuInputHandler {
             }
                 return true; }
             }
-            ';
+            ';'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleSettingsActionButtons'); }
+                context: 'MenuInputHandler.handleSettingsActionButtons') }
             });
             return false;
         }
@@ -324,11 +324,11 @@ export class MenuInputHandler {
             }
                 return true; }
             }
-            ';
+            ';'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleDataClearConfirmationClick'); }
+                context: 'MenuInputHandler.handleDataClearConfirmationClick') }
             });
             return false;
         }
@@ -359,11 +359,11 @@ export class MenuInputHandler {
             }
                 return true; }
             }
-            ';
+            ';'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
-                context: 'MenuInputHandler.handleBackButtonClick'); }
+                context: 'MenuInputHandler.handleBackButtonClick') }
             });
             return false;
         }
@@ -383,9 +383,9 @@ export class MenuInputHandler {
             } else {  // フォールバック: 従来の方法
                 const rect = canvas.getBoundingClientRect(); }
                 return { x: event.clientX - rect.left, };
-                    y: event.clientY - rect.top }'
+                    y: event.clientY - rect.top }
                 };''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'INPUT_ERROR', {')'
                 context: 'MenuInputHandler.getClickCoordinates'),' }'
             }');

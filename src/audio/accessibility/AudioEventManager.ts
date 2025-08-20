@@ -9,7 +9,7 @@
 interface AudioAccessibilityEvent { id: string,
     type: string,
     data: Record<string, any>;
-    timestamp: number; }
+    timestamp: number }
 }
 
 // Types for event statistics
@@ -17,14 +17,14 @@ interface EventStatistics { totalEvents: number,
     eventsByType: Record<string, number>;
     uptime: number,
     firstEventTime: number | null,
-    lastEventTime: number | null; }
+    lastEventTime: number | null }
 }
 
 // Types for component status
 interface ComponentStatus { historySize: number,
     maxHistorySize: number,
     uptime: number,
-    eventTypes: string[]; }
+    eventTypes: string[] }
 }
 
 // Main controller interface
@@ -56,7 +56,7 @@ export class AudioEventManager {
             id: this.generateEventId(),
             type: eventType,
             data: eventData,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         
         this.eventHistory.push(event);

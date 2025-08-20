@@ -9,7 +9,7 @@ export interface EnvironmentalSettings { enabled: boolean,
     layerCount: number,
     biomeBlending: boolean,
     weatherEffects: boolean,
-    timeOfDayVariation: boolean; }
+    timeOfDayVariation: boolean }
 }
 
 /**
@@ -18,7 +18,7 @@ export interface EnvironmentalSettings { enabled: boolean,
 export interface PerformanceData { activeLayers: number,
     cpuUsage: number,
     memoryUsage: number,
-    lastUpdate: number; }
+    lastUpdate: number }
 }
 
 /**
@@ -26,7 +26,7 @@ export interface PerformanceData { activeLayers: number,
  */
 export interface SystemStatus extends EnvironmentalSettings { configWatchers: number,
     performance: PerformanceData & {
-        memoryUsageMB: string; }
+        memoryUsageMB: string }
     };
     [key: string]: any; // For additional data
 }
@@ -97,14 +97,14 @@ export class EnvironmentalAudioSettings {
     initialize(): void { try {
             // 設定を読み込み
             this._loadSettings();
-            ';
-            // 設定変更の監視を開始''
-            this._setupConfigWatchers('')';
+            ;
+            // 設定変更の監視を開始
+            this._setupConfigWatchers()';
             console.log('EnvironmentalAudioSettings initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: 'initialize',')';
-                component: 'EnvironmentalAudioSettings'); }
+                component: 'EnvironmentalAudioSettings') }
             });
         }
     }
@@ -113,7 +113,7 @@ export class EnvironmentalAudioSettings {
      * 設定を読み込み
      * @private'
      */''
-    private _loadSettings('')';
+    private _loadSettings()';
             const envSettings = this.configManager.get('audio', 'environmental'') || {};
             
             this.settings = { enabled: envSettings.enabled || false,
@@ -129,7 +129,7 @@ export class EnvironmentalAudioSettings {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: '_loadSettings',')';
-                component: 'EnvironmentalAudioSettings'); }
+                component: 'EnvironmentalAudioSettings') }
             });
         }
     }
@@ -138,12 +138,12 @@ export class EnvironmentalAudioSettings {
      * 設定変更の監視を設定
      * @private'
      */''
-    private _setupConfigWatchers('')';
+    private _setupConfigWatchers()';
             const enabledWatcher = this.configManager.watch('audio', 'environmental.enabled', (newValue) => { this.setEnabled(newValue); }'
             });''
             if (enabledWatcher) this.configWatchers.add(enabledWatcher');
             ';
-            // 環境音音量の監視''
+            // 環境音音量の監視
             const volumeWatcher = this.configManager.watch('audio', 'environmental.volume', (newValue) => { this.setVolume(newValue); }'
             });''
             if (volumeWatcher) this.configWatchers.add(volumeWatcher');'
@@ -152,7 +152,7 @@ export class EnvironmentalAudioSettings {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: '_setupConfigWatchers',')';
-                component: 'EnvironmentalAudioSettings'); }
+                component: 'EnvironmentalAudioSettings') }
             });
         }
     }
@@ -165,13 +165,13 @@ export class EnvironmentalAudioSettings {
             this.settings.enabled = enabled;
             
             // コールバック関数を実行（環境音の開始/停止処理）
-            if(callback) {'
-                ';
+            if(callback) {
+                ';'
             }'
                 callback(enabled, wasEnabled'); }
             }
             ';
-            // 設定に保存''
+            // 設定に保存
             this.configManager.set('audio', 'environmental.enabled', enabled');'
             '';
             console.log(`Environmental audio ${enabled ? 'enabled' : 'disabled')`});'
@@ -179,7 +179,7 @@ export class EnvironmentalAudioSettings {
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'setEnabled',')';
                 component: 'EnvironmentalAudioSettings',);
-                enabled: enabled); }
+                enabled: enabled) }
             });
         }
     }
@@ -195,13 +195,13 @@ export class EnvironmentalAudioSettings {
             this.settings.volume = volume;
             
             // コールバック関数を実行（音量更新処理）
-            if(callback) {'
-                ';
+            if(callback) {
+                ';'
             }'
                 callback(volume'); }
             }
             ';
-            // 設定に保存''
+            // 設定に保存
             this.configManager.set('audio', 'environmental.volume', volume);
             
             console.log(`Environmental audio volume set to ${volume)`});'
@@ -209,7 +209,7 @@ export class EnvironmentalAudioSettings {
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'setVolume',')';
                 component: 'EnvironmentalAudioSettings',);
-                volume: volume); }
+                volume: volume) }
             });
         }
     }
@@ -217,11 +217,11 @@ export class EnvironmentalAudioSettings {
     /**
      * フェード時間を設定
      */
-    setFadeTime(fadeTime: number): void { try {'
+    setFadeTime(fadeTime: number): void { try {
             if (fadeTime < 0) {' }'
                 throw new Error(`Fade time must be positive, got: ${fadeTime)`'});
             }
-            ';
+            ';'
             this.settings.fadeTime = fadeTime;''
             this.configManager.set('audio', 'environmental.fadeTime', fadeTime);
             
@@ -230,7 +230,7 @@ export class EnvironmentalAudioSettings {
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'setFadeTime',')';
                 component: 'EnvironmentalAudioSettings',);
-                fadeTime: fadeTime); }
+                fadeTime: fadeTime) }
             });
         }
     }
@@ -238,7 +238,7 @@ export class EnvironmentalAudioSettings {
     /**
      * バイオームブレンディングを設定'
      */''
-    setBiomeBlending(enabled: boolean'): void { try {'
+    setBiomeBlending(enabled: boolean'): void { try {
             this.settings.biomeBlending = enabled;''
             this.configManager.set('audio', 'environmental.biomeBlending', enabled');'
             ' }'
@@ -247,7 +247,7 @@ export class EnvironmentalAudioSettings {
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'setBiomeBlending',')';
                 component: 'EnvironmentalAudioSettings',);
-                enabled: enabled); }
+                enabled: enabled) }
             });
         }
     }
@@ -255,7 +255,7 @@ export class EnvironmentalAudioSettings {
     /**
      * 天候効果を設定'
      */''
-    setWeatherEffects(enabled: boolean'): void { try {'
+    setWeatherEffects(enabled: boolean'): void { try {
             this.settings.weatherEffects = enabled;''
             this.configManager.set('audio', 'environmental.weatherEffects', enabled');'
             ' }'
@@ -264,7 +264,7 @@ export class EnvironmentalAudioSettings {
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'setWeatherEffects',')';
                 component: 'EnvironmentalAudioSettings',);
-                enabled: enabled); }
+                enabled: enabled) }
             });
         }
     }
@@ -272,7 +272,7 @@ export class EnvironmentalAudioSettings {
     /**
      * 時間帯バリエーションを設定'
      */''
-    setTimeOfDayVariation(enabled: boolean'): void { try {'
+    setTimeOfDayVariation(enabled: boolean'): void { try {
             this.settings.timeOfDayVariation = enabled;''
             this.configManager.set('audio', 'environmental.timeOfDayVariation', enabled');'
             ' }'
@@ -281,7 +281,7 @@ export class EnvironmentalAudioSettings {
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'setTimeOfDayVariation',')';
                 component: 'EnvironmentalAudioSettings',);
-                enabled: enabled); }
+                enabled: enabled) }
             });
         }
     }
@@ -293,7 +293,7 @@ export class EnvironmentalAudioSettings {
             activeLayers: activeLayers,
             cpuUsage: cpuUsage,
             memoryUsage: memoryUsage,
-            lastUpdate: Date.now(); }
+            lastUpdate: Date.now() }
         };
     }
     
@@ -332,15 +332,15 @@ export class EnvironmentalAudioSettings {
     }
     
     /**
-     * 設定を全て保存'
+     * 設定を全て保存
      */''
-    saveAllSettings('')';
+    saveAllSettings()';
             this.configManager.set('audio', 'environmental', this.settings');''
             console.log('All environmental audio settings saved');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: 'saveAllSettings',')';
-                component: 'EnvironmentalAudioSettings'); }
+                component: 'EnvironmentalAudioSettings') }
             });
         }
     }
@@ -359,12 +359,12 @@ export class EnvironmentalAudioSettings {
                 timeOfDayVariation: true }
             },'
             '';
-            this.saveAllSettings('')';
+            this.saveAllSettings()';
             console.log('Environmental audio settings reset to defaults');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: 'resetSettings',')';
-                component: 'EnvironmentalAudioSettings'); }
+                component: 'EnvironmentalAudioSettings') }
             });
         }
     }
@@ -379,7 +379,7 @@ export class EnvironmentalAudioSettings {
                 this.configWatchers.forEach(watchId => { ); }
                     this.configManager.unwatch(watchId); }'
                 });''
-                this.configWatchers.clear('')';
+                this.configWatchers.clear()';
             console.log('EnvironmentalAudioSettings disposed');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'

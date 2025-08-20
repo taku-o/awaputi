@@ -22,25 +22,25 @@ export interface AudioConfig { volumes: {
   bufferSize?: number;
   
   getCompressorConfig(): CompressorConfig;
-  getReverbConfig(): ReverbConfig;'
+  getReverbConfig(): ReverbConfig;
   isCompressionEnabled(): boolean;''
   isReverbEnabled(''';
 export type AudioQualityMode = 'low' | 'medium' | 'high' | 'ultra';
 
 export interface AudioQualitySettings { sampleRate: number,
   bufferSize: number,
-  effects: boolean; }
+  effects: boolean }
 }
 
 export interface CompressorConfig { threshold: number,
   knee: number,
   ratio: number,
   attack: number,
-  release: number; }
+  release: number }
 }
 
 export interface ReverbConfig { duration: number,
-  decay: number; }
+  decay: number }
 }
 
 // ========== Audio Context Management ==========
@@ -53,7 +53,7 @@ export interface AudioContextManager { audioContext: AudioContext | null,
   reverbConvolver: ConvolverNode | null,
   reverbBuffer: AudioBuffer | null,
   isInitialized: boolean,
-  isEnabled: boolean,);
+  isEnabled: boolean);
   audioConfig: AudioConfig | null);
   setAudioConfig(audioConfig: AudioConfig): void,
   initializeAudioContext(): Promise<boolean>;
@@ -92,7 +92,7 @@ export interface AudioContextStatus { isInitialized: boolean,
     bgm: number }
   },
   effects: { compression: boolean,
-    reverb: boolean; }
+    reverb: boolean }
   };
 }
 
@@ -110,7 +110,7 @@ export interface AudioPlaybackController { audioContext: AudioContext | null,
 
   setDependencies(;
     audioContext: AudioContext,
-    sfxGainNode: GainNode,
+    sfxGainNode: GainNode
     );
     masterGainNode: GainNode);
     soundBuffers: Map<string, AudioBuffer>;
@@ -141,18 +141,18 @@ export interface PlaySoundOptions { volume?: number;
 export interface PlaybackStats { totalPlayed: number,
   activeCount: number,
   peakConcurrency: number,
-  errors: number; }
+  errors: number }
 }
 
 export interface EffectConfig { maxPitchShift: number,
   maxVolumeScale: number,
   maxPan: number,
   fadeInDuration: number,
-  fadeOutDuration: number; }
+  fadeOutDuration: number }
 }
 
 export interface SoundCategory { volume: number,
-  priority: number; }
+  priority: number }
 }
 
 // ========== BGM System ==========
@@ -187,14 +187,14 @@ export interface BGMTrack { name: string,
   duration: number,
   loop: boolean,
   volume: number,
-  metadata?: BGMMetadata;
+  metadata?: BGMMetadata
     }
 }
 
 export interface BGMType { style: string,
   tempo: number,
   key: string,
-  duration: number; }
+  duration: number }
 }
 
 export interface BGMPlayOptions { loop?: boolean;
@@ -214,7 +214,7 @@ export interface BGMMetadata { title?: string;
 export interface BGMGenerator { audioContext: AudioContext,
   generateBGM(type: string, options?: BGMGenerationOptions): Promise<AudioBuffer>;
   generateTrack(config: BGMTrackConfig): Promise<AudioBuffer>,
-  dispose(): void; }
+  dispose(): void }
 }
 
 export interface BGMGenerationOptions { duration?: number;
@@ -250,7 +250,7 @@ export interface BGMPlayer { audioContext: AudioContext,
   getCurrentTime(): number;
   getDuration(): number;
   seek(time: number): void,
-  dispose(): void; }
+  dispose(): void }
 }
 
 export interface BGMTransitionManager { audioContext: AudioContext,
@@ -260,7 +260,7 @@ export interface BGMTransitionManager { audioContext: AudioContext,
 
   crossfade(fromTrack: BGMTrack, toTrack: BGMTrack, duration: number): Promise<void>,
   fadeOut(track: BGMTrack, duration: number): Promise<void>,
-  fadeIn(track: BGMTrack, duration: number): Promise<void>,';
+  fadeIn(track: BGMTrack, duration: number): Promise<void>,
   stop(): void;''
   dispose(''';
   type: 'crossfade' | 'fadeOut' | 'fadeIn',
@@ -268,7 +268,7 @@ export interface BGMTransitionManager { audioContext: AudioContext,
   toTrack: BGMTrack | null,
   duration: number,
   startTime: number,
-  progress: number; }
+  progress: number }
 }
 
 // ========== Sound Effect System ==========
@@ -286,7 +286,7 @@ export interface SoundEffectSystem extends Manager { audioManager: AudioManager,
   activeSources: Set<AudioBufferSourceNode>,
   configWatchers: Set<any>,
   bubbleTypes: string[],
-  comboLevels: number[],);
+  comboLevels: number[]);
   achievementRarities: string[]);
   initialize(): Promise<boolean>;
   initializeComponents(): Promise<void>;
@@ -297,12 +297,12 @@ export interface SoundEffectSystem extends Manager { audioManager: AudioManager,
   playUISound(actionType: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
   playComboSound(comboLevel: number, options?: PlaySoundOptions): AudioBufferSourceNode | null;
   playAchievementSound(rarity: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
-  playGameStateSound(stateType: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;'
+  playGameStateSound(stateType: string, options?: PlaySoundOptions): AudioBufferSourceNode | null;
   stopAllSounds(): void;''
   dispose(''';
   type: 'combo' | 'score' | 'time' | 'random',';
   value: any,'';
-  operator: '=' | '>' | '<' | '>=' | '<=' | '!='; }
+  operator: '=' | '>' | '<' | '>=' | '<=' | '!=' }
 }
 
 // ========== Audio Configuration ==========
@@ -313,7 +313,7 @@ export interface AudioConfigurationManager { configManager: ConfigurationManager
   configWatchers: Set<any>,
   settings: AudioSettings,
   setDependencies(;
-    configManager: ConfigurationManager,
+    configManager: ConfigurationManager
     );
     audioConfig: AudioConfig);
     audioNodes: AudioNodes;
@@ -334,7 +334,7 @@ export interface AudioNodes { masterGainNode: GainNode,
   sfxGainNode: GainNode,
   bgmGainNode: GainNode,
   compressor: DynamicsCompressorNode,
-  reverbConvolver: ConvolverNode;
+  reverbConvolver: ConvolverNode
     }
 }
 
@@ -458,7 +458,7 @@ export interface AudioStatus { isEnabled: boolean,
   muted: boolean,
   contextState: AudioContextState,
   supportedFormats: string[],
-  qualityMode: AudioQualityMode;
+  qualityMode: AudioQualityMode
     }
 }
 
@@ -479,7 +479,7 @@ export interface ProceduralSoundGenerator { audioContext: AudioContext | null,
 export interface GenerationStatus { isGenerated: boolean,
   soundCount: number,
   generationTime: number,
-  lastGenerated: Date | null; }
+  lastGenerated: Date | null }
 }
 
 export interface AudioSubsystemCoordinator { audioManager: AudioManager | null,
@@ -504,14 +504,14 @@ export interface SubsystemStatus { bgmSystem: boolean,
   soundEffectSystem: boolean,
   audioController: boolean,
   audioVisualizer: boolean,
-  accessibilitySupport: boolean; }
+  accessibilitySupport: boolean }
 }
 
 export interface AudioController { // Audio controller interface (placeholder);
   setVolume(category: string, volume: number, fadeTime?: number): any;
   getVolume(category: string): any,
   fadeIn(category: string, duration?: number, targetVolume?: number): any;
-  fadeOut(category: string, duration?: number, targetVolume?: number): any; }
+  fadeOut(category: string, duration?: number, targetVolume?: number): any }
 }
 
 export interface AudioVisualizer { // Audio visualizer interface (placeholder);
@@ -553,6 +553,6 @@ export function reinitializeAudioContextManager(): AudioContextManager;
 
 // ========== Type Guards ==========
 
-export function isAudioManagerInitialized(audioManager: AudioManager): boolean,';
+export function isAudioManagerInitialized(audioManager: AudioManager): boolean,
 export function isAudioContextAvailable(): boolean;''
 export function isSoundSupported(format: string'): boolean;

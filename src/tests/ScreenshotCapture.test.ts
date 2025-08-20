@@ -5,16 +5,16 @@ import { jest } from '@jest/globals';
 // モック用の型定義
 interface MockContext { drawImage: jest.Mock,
     imageSmoothingEnabled: boolean,
-    imageSmoothingQuality: string; }
+    imageSmoothingQuality: string }
 }
 interface MockCanvas { width: number,
     height: number,
     getContext: jest.Mock<MockContext>,
     toBlob: jest.Mock,
     toDataURL: jest.Mock<string>,
-    remove: jest.Mock; }
+    remove: jest.Mock }
 }
-interface MockGameEngine { canvas: MockCanvas | null; }
+interface MockGameEngine { canvas: MockCanvas | null }
 }
 interface ScreenshotResult { data: ArrayBuffer,
     blob: Blob,
@@ -35,22 +35,22 @@ interface CaptureHistoryItem { timestamp: number,
     filename: string,
     format: string,
     size: number,
-    url?: string; }
+    url?: string }
 }
 interface CaptureStats { captures: number,
     successes: number,
     errors: number,
     successRate: number,
-    averageTimeMs?: number; }
+    averageTimeMs?: number }
 }
 interface ImageData { data: ArrayBuffer,
     blob: Blob,
     url: string,
     size: number,
     optimized: boolean,
-    originalSize?: number; }
+    originalSize?: number }
 }
-// MockImage クラスの定義'
+// MockImage クラスの定義
 class MockImage { onload: (() => void) | null = null;''
     onerror: (() => void') | null = null;''
     private _src: string = '';
@@ -78,7 +78,7 @@ interface ScreenshotCapture { gameEngine: MockGameEngine,
     config: any,
     stats: any,
     captureHistory: CaptureHistoryItem[],
-    capturing?: boolean; }
+    capturing?: boolean }
     lastCapture?: { url: string } | null,
     
     cleanup: () => void,
@@ -93,7 +93,7 @@ interface ScreenshotCapture { gameEngine: MockGameEngine,
     createWebP: (canvas: MockCanvas, quality: number) => Promise<ScreenshotResult>;
     generateFilename: (prefix?: string) => string,
     getQualityValue: (quality: string, format: string) => number;
-    getGameCanvas: () => MockCanvas | null,';
+    getGameCanvas: () => MockCanvas | null,
     updateConfig: (newConfig: any) => void;''
     clearHistory: (') => void,';
 }''
@@ -102,21 +102,21 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
     let mockCanvas: MockCanvas,
     let mockContext: MockContext,
     beforeEach(async () => {
-        // Canvas APIのモック'
+        // Canvas APIのモック
         mockContext = {''
             drawImage: jest.fn('' }'
             imageSmoothingQuality: 'high' }
-        },
+        }
         );
         mockCanvas = { width: 800)
             height: 600,);
             getContext: jest.fn<MockContext>().mockReturnValue(mockContext),';
             toBlob: jest.fn(),'';
             toDataURL: jest.fn<string>(').mockReturnValue('data:image/png;base64,mock'),
-        remove: jest.fn(); }
+        remove: jest.fn() }
         };
         ';
-        // document.createElement のモック''
+        // document.createElement のモック
         document.createElement = jest.fn().mockImplementation((tagName: string') => {  ' }'
             if (tagName === 'canvas') { }
                 return { ...mockCanvas };
@@ -127,14 +127,14 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
         mockGameEngine = { canvas: mockCanvas }
         },
         
-        // URLのモック'
+        // URLのモック
         global.URL = { ''
             createObjectURL: jest.fn(').mockReturnValue('blob:mock-url'),'';
-        revokeObjectURL: jest.fn()'); }
+        revokeObjectURL: jest.fn()') }
         } as any;
         
         // Imageのモック
-        global.Image = MockImage as any;'
+        global.Image = MockImage as any;
         '';
         const { ScreenshotCapture } = await import('../core/ScreenshotCapture.ts');
         screenshotCapture = new ScreenshotCapture(mockGameEngine);
@@ -157,7 +157,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
         }');'
     }''
     describe('ゲームCanvasキャプチャ', () => {  beforeEach(() => {'
-            // toBlob のモック設定''
+            // toBlob のモック設定
             mockCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string, quality?: number') => {''
                 const mockBlob = new Blob(['mock-image-data'], { ' }'
                     type: type || 'image/png' ' })'
@@ -188,7 +188,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
                 maxWidth: 400,) }
                 maxHeight: 300), };
             });'
-            // リサイズされたキャンバスが作成されることを確認''
+            // リサイズされたキャンバスが作成されることを確認
             expect(document.createElement').toHaveBeenCalledWith('canvas');''
         }');''
         test('WebP形式の対応確認', () => {  const isSupported = screenshotCapture.isWebPSupported();' }'
@@ -229,7 +229,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
         }');''
         test('Canvas境界を超える領域の調整', async () => {  const result = await screenshotCapture.captureRegion(700, 500, 200, 200);
             // Canvas境界内に調整されることを確認
-            expect(mockContext.drawImage).toHaveBeenCalledWith() }'
+            expect(mockContext.drawImage).toHaveBeenCalledWith() }
                 mockCanvas, 700, 500, 100, 100, 0, 0, 100, 100);' }'
         }');'
     }''
@@ -243,25 +243,25 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
                 optimized: false;
             },'
             '';
-            Object.defineProperty(mockImageData.blob, 'size', { value: 1024 * 600 )'); }'
+            Object.defineProperty(mockImageData.blob, 'size', { value: 1024 * 600 )') }'
         }''
         test('ターゲットサイズ以下の画像は最適化されない', async (') => {  }'
-            const smallImageData = { ...mockImageData, size: 1024 * 100 }; // 100KB''
+            const smallImageData = { ...mockImageData, size: 1024 * 100 }; // 100KB
             const result = await screenshotCapture.optimizeImage(smallImageData, { format: 'png' });
             expect(result.optimized).toBeFalsy();'
             expect(result.size).toBe(1024 * 100);''
         }');''
-        test('大きな画像の最適化が実行される', async () => { // 最適化用のmockCanvasとmockContextを設定 }'
+        test('大きな画像の最適化が実行される', async () => { // 最適化用のmockCanvasとmockContextを設定 }
             const optimizeCanvas = { ...mockCanvas };''
             optimizeCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void') => { ' }'
                 const optimizedBlob = new Blob(['optimized-image'], { type: 'image/png' }');''
                 Object.defineProperty(optimizedBlob, 'size', { value: 1024 * 300 }); // 300KB
-                callback(optimizedBlob);'
+                callback(optimizedBlob);
             });''
             document.createElement = jest.fn().mockReturnValue(optimizeCanvas');'
             const result = await screenshotCapture.optimizeImage(mockImageData, { ')'
                 format: 'png',')';
-                quality: 'medium'),;
+                quality: 'medium'),
             expect(result.optimized).toBe(true);'
             expect(result.originalSize).toBe(1024 * 600);' }'
         }');'
@@ -286,7 +286,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
             expect(result').toHaveProperty('data');''
             expect(result').toHaveProperty('blob');''
         }');''
-        test('WebP画像の作成（対応時）', async () => {  // WebPサポートのモック''
+        test('WebP画像の作成（対応時）', async () => {  // WebPサポートのモック
             mockCanvas.toDataURL = jest.fn<string>(').mockReturnValue('data:image/webp;base64,mock');'
             mockCanvas.toBlob = jest.fn().mockImplementation((callback: (blob: Blob | null) => void, type?: string, quality?: number) => {' }'
                 expect(type').toBe('image/webp'');' }'
@@ -296,7 +296,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
             expect(result').toHaveProperty('data');''
             expect(result').toHaveProperty('blob');''
         }');''
-        test('WebP非対応時のエラーハンドリング', async () => {  // WebP非対応のモック''
+        test('WebP非対応時のエラーハンドリング', async () => {  // WebP非対応のモック
             mockCanvas.toDataURL = jest.fn<string>(').mockReturnValue('data:image/png;base64,mock');''
             await expect(screenshotCapture.createWebP(mockCanvas, 0.8)')' };'
                 .rejects.toThrow('WebPはサポートされていません');' }'
@@ -304,7 +304,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
     }''
     describe('ユーティリティ機能', (') => {  ''
         test('ファイル名が正しく生成される', () => {''
-            const filename1 = screenshotCapture.generateFilename('')';
+            const filename1 = screenshotCapture.generateFilename()';
             const filename2 = screenshotCapture.generateFilename('custom');''
             expect(filename1').toContain('screenshot-');''
             expect(filename2').toContain('custom-'); }'
@@ -353,7 +353,7 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
                 await screenshotCapture.captureGameCanvas(); }
             }
             
-            const history = screenshotCapture.getCaptureHistory();'
+            const history = screenshotCapture.getCaptureHistory();
             expect(history).toHaveLength(10);''
         }');''
         test('履歴クリア機能', async () => {  await screenshotCapture.captureGameCanvas();
@@ -390,6 +390,6 @@ describe('ScreenshotCapture', () => {  let screenshotCapture: ScreenshotCapture,
             expect(stats.captures).toBe(1);
             expect(stats.errors).toBe(1);
             expect(stats.successRate).toBe(0);
-        });'
+        });
     }''
 }');

@@ -26,12 +26,12 @@ export class LanguageDetector {
         
         // 検出メソッドの優先順位（上から順に試行）
         this.detectionMethods = [this.detectFromURL.bind(this),
-            this.detectFromStorage.bind(this),';
+            this.detectFromStorage.bind(this),;
             this.detectFromBrowser.bind(this),']';
             this.detectFromDefault.bind(this')];
         ];
-        ';
-        // サポート言語リスト'
+        ';'
+        // サポート言語リスト
 
     }
     }'
@@ -51,7 +51,7 @@ export class LanguageDetector {
                 }
             }
             ';
-            // Ultimate fallback''
+            // Ultimate fallback
             console.warn('No supported language detected, using default: en''),'';
             return 'en';'
         } catch (error) { ''
@@ -66,7 +66,7 @@ export class LanguageDetector {
     /**
      * URLパラメータから言語検出
      */'
-    private detectFromURL(): string | null { try {''
+    private detectFromURL(): string | null { try {'
             const params = new URLSearchParams(window.location.search');''
             const langParam = params.get('lang'') || params.get('language');
             
@@ -79,9 +79,9 @@ export class LanguageDetector {
                 console.log(`URL language parameter detected: ${normalized)`});
                 return normalized;
             }
-            ';
+            ';'
             return null;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to detect language from URL:', error);
             return null; }
         }
@@ -90,16 +90,16 @@ export class LanguageDetector {
     /**
      * ローカルストレージから言語検出'
      */''
-    private detectFromStorage('')';
+    private detectFromStorage()';
             const storedLang = localStorage.getItem('bubblePop_language');
             
             if (storedLang) { const normalized = this.normalizeLanguageCode(storedLang); }
                 console.log(`Stored language detected: ${normalized)`});
                 return normalized;
             }
-            ';
+            ';'
             return null;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to detect language from storage:', error);
             return null; }
         }
@@ -142,9 +142,9 @@ export class LanguageDetector {
                     return normalized;
                 }
             }
-            ';
+            ';'
             return null;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to detect language from browser:', error);
             return null; }
         }
@@ -153,7 +153,7 @@ export class LanguageDetector {
     /**
      * デフォルト言語を返す'
      */''
-    private detectFromDefault('')';
+    private detectFromDefault()';
         console.log('Using project default language: ja''),'';
         return 'ja';
     }
@@ -168,10 +168,10 @@ export class LanguageDetector {
             return null; }
         }
         ';
-        // 小文字に変換し、地域コードを除去''
+        // 小文字に変換し、地域コードを除去
         const normalized = langCode.toLowerCase(').split('-'')[0].split('_'')[0];
         
-        // 特殊なケースの処理'
+        // 特殊なケースの処理
         const mapping: Record<string, string> = { ''
             'zh-cn': 'zh-CN','';
             'zh-tw': 'zh-TW','';
@@ -192,12 +192,12 @@ export class LanguageDetector {
      */
     private isSupported(language: string | null): boolean { if (!language) return false;
         ';
-        // 完全一致をまずチェック''
+        // 完全一致をまずチェック
         if (this.supportedLanguages.has(language)') {
             return true; }
         }
         ';
-        // 基本言語コード（地域なし）でもチェック''
+        // 基本言語コード（地域なし）でもチェック
         const baseLang = language.split('-')[0];
         if(this.supportedLanguages.has(baseLang) { return true; }
         }
@@ -221,7 +221,7 @@ export class LanguageDetector {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'LANGUAGE_DETECTION_ERROR', {')'
                 operation: 'addSupportedLanguage',);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -243,7 +243,7 @@ export class LanguageDetector {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'LANGUAGE_DETECTION_ERROR', {')'
                 operation: 'removeSupportedLanguage',);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -258,7 +258,7 @@ export class LanguageDetector {
     /**
      * 言語設定をローカルストレージに保存
      */
-    saveLanguagePreference(language: string): boolean { try {'
+    saveLanguagePreference(language: string): boolean { try {
             const normalized = this.normalizeLanguageCode(language);''
             if (normalized && this.isSupported(normalized)') {''
                 localStorage.setItem('bubblePop_language', normalized); }
@@ -269,7 +269,7 @@ export class LanguageDetector {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'LANGUAGE_DETECTION_ERROR', {')'
                 operation: 'saveLanguagePreference',);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -287,7 +287,7 @@ export class LanguageDetector {
                 userLanguage: (navigator as any').userLanguage || null }
             },'
             storageSettings: { ''
-                stored: localStorage.getItem('bubblePop_language'); }
+                stored: localStorage.getItem('bubblePop_language') }
             },'
             urlSettings: { ''
                 params: new URLSearchParams(window.location.search').get('lang') || '';
@@ -300,7 +300,7 @@ export class LanguageDetector {
      * デバッグ情報を出力
      */'
     debug(): any { ''
-        const stats = this.getDetectionStats('')';
+        const stats = this.getDetectionStats()';
         console.group('Language Detection Debug Info'');''
         console.log('Supported Languages:', stats.supportedLanguages');''
         console.log('Current Detected:', stats.currentDetectedLanguage');''

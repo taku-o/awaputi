@@ -29,7 +29,7 @@ export class BaseComponent {
     async initialize(): Promise<void> { try {
             await this._doInitialize();'
             this.initialized = true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('Initialization failed', error as Error);
             throw error; }
         }
@@ -71,6 +71,6 @@ export class BaseComponent {
 
     /**
      * 初期化状態の確認
-     * @returns {boolean}'
+     * @returns {boolean}
      */''
     isInitialized(');

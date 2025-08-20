@@ -12,19 +12,19 @@ interface ExportSettings { format: ExportFormat,
     includeAchievements: boolean,
     includeSettings: boolean,
     anonymize: boolean,
-    compress: boolean; }
+    compress: boolean }
 }
 
 interface ImportSettings { mergeStrategy: MergeStrategy,
     backupBeforeImport: boolean,
     validateData: boolean,
-    preserveUserSettings: boolean; }
+    preserveUserSettings: boolean }
 }
 
 interface ExportMetadata { exportVersion: string,
     timestamp: string,
     gameVersion: string,
-    format: string; }
+    format: string }
 }
 
 interface PlayerData { username?: string;
@@ -47,7 +47,7 @@ interface ExportData { metadata: ExportMetadata,
 
 interface ProcessedExportData { data: string,
     filename: string,
-    mimeType: string; }
+    mimeType: string }
 }
 
 interface ValidationResult { isValid: boolean,
@@ -69,13 +69,13 @@ interface ImportDataEntry { originalData: any,
     processedData: any,
     result: ImportResult,
     options: ImportSettings,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ExportState { isExporting: boolean,
     isImporting: boolean,
     lastExportData: ProcessedExportData | null,
-    lastImportData: ImportDataEntry | null; }
+    lastImportData: ImportDataEntry | null }
 }
 
 interface GameEngine { version?: string;
@@ -89,7 +89,7 @@ interface EventBus { on(event: string, callback: (...args: any[]) => void): void
     off(event: string): void,
     emit(event: string, ...args: any[]): void, }
 }
-';
+';'
 interface SceneState { ''
     get(key: string'): any, }
 }'
@@ -112,7 +112,7 @@ export class UserDataExporter {
     // 統計エクスポーター
     private statisticsExporter: StatisticsExporter | null;
     // レイアウト設定
-    private contentPadding: number';
+    private contentPadding: number;
 '';
     constructor(gameEngine: GameEngine, eventBus: EventBus, sceneState: SceneState') {
         this.gameEngine = gameEngine;
@@ -125,7 +125,7 @@ export class UserDataExporter {
         this.lastExportData = null;
         this.lastImportData = null;
         
-        // エクスポート/インポート設定'
+        // エクスポート/インポート設定
         this.exportSettings = {''
             format: 'json',
             includeStatistics: true,
@@ -136,7 +136,7 @@ export class UserDataExporter {
     }
             compress: false }
         },
-        ';
+        ';'
         this.importSettings = { ''
             mergeStrategy: 'replace',
             backupBeforeImport: true,
@@ -162,10 +162,10 @@ export class UserDataExporter {
     
     /**
      * イベントリスナーをセットアップ
-     */'
+     */
     private setupEventListeners(): void { ''
         if(this.eventBus') {'
-            ';
+            ';'
         }'
             this.eventBus.on('exportDataRequested', (options: Partial<ExportSettings>) => {  }'
                 this.exportData(options);' }'
@@ -190,24 +190,24 @@ export class UserDataExporter {
                 
             }'
                 this.statisticsExporter = new StatisticsExporter(this.gameEngine.statisticsManager);' }'
-            } catch (error') { ''
-            console.error('Failed to initialize statistics exporter:', error); }
+            } catch (error) { ''
+            console.error('Failed to initialize statistics exporter:', error) }
         }
     }
     
     /**
      * データ管理セクションの描画'
      */''
-    renderDataManagementSection(context: CanvasRenderingContext2D, x: number, y: number, width: number'): void { // セクション背景''
+    renderDataManagementSection(context: CanvasRenderingContext2D, x: number, y: number, width: number'): void { // セクション背景
         context.fillStyle = '#1a1a2e';''
         context.fillRect(x, y, width, 160');
         ';
-        // セクション枠線''
+        // セクション枠線
         context.strokeStyle = '#333';'
         context.lineWidth = 1;''
         context.strokeRect(x, y, width, 160');
         ';
-        // セクションタイトル''
+        // セクションタイトル
         context.fillStyle = '#ffffff';''
         context.font = 'bold 18px Arial';''
         context.textAlign = 'left';''
@@ -217,9 +217,9 @@ export class UserDataExporter {
         const exportButtonWidth = 150;
         const exportButtonHeight = 35;
         const exportButtonX = x + 15;
-        const exportButtonY = y + 50;'
+        const exportButtonY = y + 50;
         '';
-        const isExportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount('')';
+        const isExportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount()';
         context.fillStyle = isExportFocused ? '#6bb0ff' : '#4a90e2';')'
         context.fillRect(exportButtonX, exportButtonY, exportButtonWidth, exportButtonHeight');'
         '';
@@ -237,9 +237,9 @@ export class UserDataExporter {
         const importButtonWidth = 150;
         const importButtonHeight = 35;
         const importButtonX = x + 15 + exportButtonWidth + 20;
-        const importButtonY = y + 50;'
+        const importButtonY = y + 50;
         '';
-        const isImportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount('')';
+        const isImportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount()';
         context.fillStyle = isImportFocused ? '#6bb0ff' : '#4a90e2';')'
         context.fillRect(importButtonX, importButtonY, importButtonWidth, importButtonHeight');'
         '';
@@ -254,9 +254,9 @@ export class UserDataExporter {
         context.fillText('インポート', importButtonX + importButtonWidth / 2, importButtonY + 26');
         
         // 統計データエクスポートボタン
-        const statsExportButtonX = x + 15;'
+        const statsExportButtonX = x + 15;
         const statsExportButtonY = y + 85;''
-        const isStatsExportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount('')';
+        const isStatsExportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount()';
         context.fillStyle = isStatsExportFocused ? '#10B981' : '#059669';')'
         context.fillRect(statsExportButtonX, statsExportButtonY, exportButtonWidth, exportButtonHeight');'
         '';
@@ -271,9 +271,9 @@ export class UserDataExporter {
         context.fillText('エクスポート', statsExportButtonX + exportButtonWidth / 2, statsExportButtonY + 26');
         
         // 統計データインポートボタン
-        const statsImportButtonX = x + 15 + exportButtonWidth + 20;'
+        const statsImportButtonX = x + 15 + exportButtonWidth + 20;
         const statsImportButtonY = y + 85;''
-        const isStatsImportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount('')';
+        const isStatsImportFocused = this.sceneState.get('focusedElement') === this.getTotalTabCount()';
         context.fillStyle = isStatsImportFocused ? '#10B981' : '#059669';')'
         context.fillRect(statsImportButtonX, statsImportButtonY, importButtonWidth, importButtonHeight');'
         '';
@@ -287,13 +287,13 @@ export class UserDataExporter {
         context.fillText('統計データ', statsImportButtonX + importButtonWidth / 2, statsImportButtonY + 12');''
         context.fillText('インポート', statsImportButtonX + importButtonWidth / 2, statsImportButtonY + 26');
         ';
-        // エクスポート形式選択（統計データ用）''
+        // エクスポート形式選択（統計データ用）
         context.fillStyle = '#cccccc';''
         context.font = '12px Arial';''
         context.textAlign = 'left';''
         context.fillText('形式: JSON, CSV, TXT', x + 15, y + 135);
         ';
-        // 統計エクスポート状態表示''
+        // 統計エクスポート状態表示
         if(this.isExporting') {'
             '';
             context.fillStyle = '#F59E0B';'
@@ -350,15 +350,15 @@ export class UserDataExporter {
     
     /**
      * プレイヤーデータエクスポートダイアログを表示
-     */'
-    async showPlayerDataExportDialog(): Promise<void> { try {''
+     */
+    async showPlayerDataExportDialog(): Promise<void> { try {'
             if(this.eventBus') {'
                 '';
                 this.eventBus.emit('openDialog', 'export', {')'
-                    exportType: 'playerData',);
+                    exportType: 'playerData',)
             }'
                     format: this.exportSettings.format);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Player data export dialog error:', error');''
             this.showError('エクスポートダイアログでエラーが発生しました'); }
         }
@@ -367,13 +367,13 @@ export class UserDataExporter {
     /**
      * プレイヤーデータインポートダイアログを表示
      */'
-    async showPlayerDataImportDialog(): Promise<void> { try {''
+    async showPlayerDataImportDialog(): Promise<void> { try {'
             if(this.eventBus') {'
                 '';
                 this.eventBus.emit('openDialog', 'import', {')
             }'
                     importType: 'playerData');' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Player data import dialog error:', error');''
             this.showError('インポートダイアログでエラーが発生しました'); }
         }
@@ -386,9 +386,9 @@ export class UserDataExporter {
         if(this.eventBus') {'
             '';
             this.eventBus.emit('showStatisticsExportDialog', {''
-                selectedFormat: 'json',);
+                selectedFormat: 'json');
                 includeMetadata: true);
-                includeTimeSeriesData: true,);
+                includeTimeSeriesData: true,)
         }
                 anonymizeData: false); }
         }
@@ -403,7 +403,7 @@ export class UserDataExporter {
             this.eventBus.emit('showStatisticsImportDialog', {'
                 selectedFile: null,')';
                 mergeStrategy: 'append');
-                backupBeforeImport: true,);
+                backupBeforeImport: true,)
         }
                 validateData: true); }
         }
@@ -428,7 +428,7 @@ export class UserDataExporter {
             // エクスポートデータを準備
             const exportData = await this.prepareExportData(mergedOptions);
             
-            // フォーマットに応じて処理'
+            // フォーマットに応じて処理
             let processedData: ProcessedExportData,'';
             switch(mergedOptions.format') {'
                 '';
@@ -448,23 +448,23 @@ export class UserDataExporter {
             
             this.lastExportData = processedData;
             ';
-            // イベントバスに通知''
+            // イベントバスに通知
             if(this.eventBus') {'
                 '';
                 this.eventBus.emit('dataExported', {)
                     data: processedData);
-                    format: mergedOptions.format,);
+                    format: mergedOptions.format,)
             }
                     options: mergedOptions); }
             }
             
             return processedData;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Export error:', error);'
             '';
             if(this.eventBus') {'
-                ';
+                ';'
             }'
                 this.eventBus.emit('exportError', (error as Error).message); }
             }
@@ -509,25 +509,25 @@ export class UserDataExporter {
                 processedData: validationResult.data,
                 result: importResult,
                 options: mergedOptions,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };
-            ';
-            // イベントバスに通知''
+            ;
+            // イベントバスに通知
             if(this.eventBus') {'
                 '';
                 this.eventBus.emit('dataImported', {)
-                    result: importResult,);
+                    result: importResult,)
             }
                     options: mergedOptions); }
             }
             
             return importResult;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Import error:', error);'
             '';
             if(this.eventBus') {'
-                ';
+                ';'
             }'
                 this.eventBus.emit('importError', (error as Error).message); }
             }
@@ -548,7 +548,7 @@ export class UserDataExporter {
                 format: options.format }
             })
         })'
-        // プレイヤーデータ''
+        // プレイヤーデータ
         if(this.gameEngine.playerData') {'
             exportData.playerData = {''
                 username: this.gameEngine.playerData.username || '',
@@ -560,8 +560,7 @@ export class UserDataExporter {
                 highScores: this.gameEngine.playerData.highScores || {},
                 unlockedStages: this.gameEngine.playerData.unlockedStages || [],
                 ownedItems: this.gameEngine.playerData.ownedItems || [],
-                settings: this.gameEngine.playerData.settings || {}
-            },
+                settings: this.gameEngine.playerData.settings || {},
         }
         
         // 統計データ（オプション）
@@ -587,7 +586,7 @@ export class UserDataExporter {
      * JSON形式でのエクスポート
      */
     private exportToJSON(data: ExportData, options: ExportSettings): ProcessedExportData { const jsonData = JSON.stringify(data, null, options.compress ? 0 : 2);
-        ';
+        ';'
         return { data: jsonData,''
             filename: `player_data_${this.getTimestamp('' };'
             mimeType: 'application/json' })
@@ -599,12 +598,12 @@ export class UserDataExporter {
      */')'
     private exportToCSV(data: ExportData, options: ExportSettings'): ProcessedExportData { // プレイヤーデータをCSV形式に変換
         const csvLines: string[] = [],
-        ';
-        // ヘッダー''
+        ;
+        // ヘッダー
         csvLines.push('Category,Key,Value');
         
         // プレイヤーデータ
-        if(data.playerData) {'
+        if(data.playerData) {
             '';
             for (const [key, value] of Object.entries(data.playerData)') {'
         }'
@@ -628,7 +627,7 @@ export class UserDataExporter {
         }'
         '';
         const csvData = csvLines.join('\n');
-        ';
+        ';'
         return { data: csvData,''
             filename: `player_data_${this.getTimestamp('' };'
             mimeType: 'text/csv' })
@@ -642,9 +641,9 @@ export class UserDataExporter {
         '';
         textLines.push('=== プレイヤーデータエクスポート ===');' }'
         textLines.push(`エクスポート日時: ${new Date(').toLocaleString('ja-JP'})}`');''
-        textLines.push('');
+        textLines.push();
         ';
-        // プレイヤーデータ''
+        // プレイヤーデータ
         if(data.playerData') {'
             '';
             textLines.push('--- プレイヤー情報 ---'');''
@@ -656,9 +655,9 @@ export class UserDataExporter {
             textLines.push(''});
         }
         ';
-        // 統計データ（概要）''
+        // 統計データ（概要）
         if(data.statistics') {'
-            ';
+            ';'
         }'
             textLines.push('--- 統計情報 ---'); }
             textLines.push(`総プレイ時間: ${this.formatPlayTime(data.statistics.totalPlayTime || 0})}`);'
@@ -668,7 +667,7 @@ export class UserDataExporter {
         }
         
         // 実績データ（概要）
-        if(data.achievements) {'
+        if(data.achievements) {
             '';
             const unlockedCount = data.achievements.filter((a: any) => a.unlocked').length;'
         }'
@@ -678,7 +677,7 @@ export class UserDataExporter {
         }'
         '';
         const textData = textLines.join('\n');
-        ';
+        ';'
         return { data: textData,''
             filename: `player_data_${this.getTimestamp('' };'
             mimeType: 'text/plain' })
@@ -691,29 +690,29 @@ export class UserDataExporter {
     private async validateImportData(data: any, options: ImportSettings'): Promise<ValidationResult> { try {
             let parsedData: any,
             ';
-            // データの形式を判定してパース''
+            // データの形式を判定してパース
             if(typeof data === 'string') {
                 try {
             }'
                     parsedData = JSON.parse(data.trim();' }'
-                } catch (parseError') { return { isValid: false, ' };'
+                } catch (parseError) { return { isValid: false, ' };'
                         error: 'JSONデータの形式が正しくありません'  }
                     },'
                 }''
             } else if (typeof data === 'object'') { parsedData = data; }'
-            } else { return { isValid: false, ' };'
+            } else { return { isValid: false, ' }'
                     error: 'サポートされていないデータ形式です'  }
                 },
             }
             ';
-            // 基本構造の検証''
+            // 基本構造の検証
             if (!parsedData || typeof parsedData !== 'object'') { return { isValid: false, ' };'
                     error: 'データの基本構造が不正です'  }
                 },
             }
             
             // メタデータの検証
-            if(parsedData.metadata) {'
+            if(parsedData.metadata) {
                 '';
                 if (!parsedData.metadata.exportVersion') {'
             }'
@@ -721,17 +720,17 @@ export class UserDataExporter {
                 }'
                 '';
                 if(!parsedData.metadata.timestamp') {'
-                    ';
+                    ';'
                 }'
                     console.warn('Timestamp not found in metadata'); }
                 }
             }
             ';
-            // プレイヤーデータの検証''
+            // プレイヤーデータの検証
             if(parsedData.playerData') {
                 const playerData = parsedData.playerData;
                 ';
-                // 必須フィールドの確認''
+                // 必須フィールドの確認
                 if (typeof playerData.username !== 'string' && playerData.username !== undefined') {
             }'
                     return { isValid: false, ' };'
@@ -829,17 +828,17 @@ export class UserDataExporter {
     
     /**
      * プレイヤーデータの復元
-     */'
+     */
     private async restorePlayerData(playerData: PlayerData, options: ImportSettings): Promise<void> { ''
         if(!this.gameEngine.playerData') {'
-            ';
+            ';'
         }'
             throw new Error('PlayerData manager not available'); }
         }
         
         const currentData = this.gameEngine.playerData;
         ';
-        // マージ戦略に応じて処理''
+        // マージ戦略に応じて処理
         switch(options.mergeStrategy') {'
             '';
             case 'replace':;
@@ -849,13 +848,13 @@ export class UserDataExporter {
                 if (playerData.tap !== undefined) currentData.setTotalAP(playerData.tap);
                 if (playerData.level !== undefined) currentData.setLevel(playerData.level);
                 if (playerData.experience !== undefined) currentData.setExperience(playerData.experience);
-                if (playerData.highScores) currentData.setHighScores(playerData.highScores);'
+                if (playerData.highScores) currentData.setHighScores(playerData.highScores);
                 if (playerData.unlockedStages) currentData.setUnlockedStages(playerData.unlockedStages);''
                 if (playerData.ownedItems) currentData.setOwnedItems(playerData.ownedItems');
                 break;'
                 '';
             case 'merge':';
-                // データをマージ''
+                // データをマージ
                 if (playerData.username !== undefined && playerData.username !== '') {
         }
                     currentData.setUsername(playerData.username); }
@@ -863,7 +862,7 @@ export class UserDataExporter {
                 if (playerData.ap !== undefined) currentData.addAP(playerData.ap);''
                 if (playerData.tap !== undefined) currentData.addTotalAP(playerData.tap');
                 // 他のマージロジック...
-                break;'
+                break;
                 '';
             case 'append':;
                 // 追加のみ
@@ -876,10 +875,10 @@ export class UserDataExporter {
     
     /**
      * 統計データの復元
-     */'
+     */
     private async restoreStatisticsData(statisticsData: any, options: ImportSettings): Promise<void> { ''
         if(!this.gameEngine.statisticsManager') {'
-            ';
+            ';'
         }'
             throw new Error('StatisticsManager not available'); }
         }
@@ -890,10 +889,10 @@ export class UserDataExporter {
     
     /**
      * 実績データの復元
-     */'
+     */
     private async restoreAchievementsData(achievementsData: any, options: ImportSettings): Promise<void> { ''
         if(!this.gameEngine.achievementManager') {'
-            ';
+            ';'
         }'
             throw new Error('AchievementManager not available'); }
         }
@@ -904,10 +903,10 @@ export class UserDataExporter {
     
     /**
      * 設定データの復元
-     */'
+     */
     private async restoreSettingsData(settingsData: any, options: ImportSettings): Promise<void> { ''
         if(!this.gameEngine.settingsManager') {'
-            ';
+            ';'
         }'
             throw new Error('SettingsManager not available'); }
         }
@@ -937,13 +936,13 @@ export class UserDataExporter {
     }
     
     /**
-     * バックアップの作成'
+     * バックアップの作成
      */''
     private async createBackup(''';
             format: 'json',
             includeStatistics: true,
             includeAchievements: true,
-            includeSettings: true,);
+            includeSettings: true);
             anonymize: false);
             compress: true),
         
@@ -963,7 +962,7 @@ export class UserDataExporter {
     private cleanupOldBackups(): void { const backupKeys: string[] = [],
         
         for(let i = 0; i < localStorage.length; i++) {
-        ';
+        ';'
             '';
             const key = localStorage.key(i');''
             if(key && key.startsWith('backup_') {
@@ -973,7 +972,7 @@ export class UserDataExporter {
             }
         }
         ';
-        // タイムスタンプ順でソート''
+        // タイムスタンプ順でソート
         backupKeys.sort((a, b') => {  ''
             const timestampA = parseInt(a.split('_')[1]');''
             const timestampB = parseInt(b.split('_')[1]); }
@@ -987,10 +986,10 @@ export class UserDataExporter {
     
     /**
      * データの匿名化
-     */'
+     */
     private anonymizeData(data: ExportData): void { ''
         if(data.playerData') {'
-            ';
+            ';'
         }'
             data.playerData.username = 'Anonymous'; }
         }
@@ -1005,10 +1004,10 @@ export class UserDataExporter {
     
     /**
      * 統計エクスポートの実行
-     */'
+     */
     async performStatisticsExport(options: any): Promise<any> { ''
         if(!this.statisticsExporter') {'
-            ';
+            ';'
         }'
             throw new Error('統計エクスポート機能が利用できません'); }
         }
@@ -1033,7 +1032,7 @@ export class UserDataExporter {
             
             return exportResult;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Statistics export error:', error);
             throw error; }
         }
@@ -1062,7 +1061,7 @@ export class UserDataExporter {
         return new Date().toISOString(').replace(/[:.]/g, '-').slice(0, 19); }
     }'
     '';
-    private getTotalTabCount('')';
+    private getTotalTabCount()';
         return this.sceneState.get('tabs')? .length || 5;
     }
      : undefined;
@@ -1086,10 +1085,10 @@ export class UserDataExporter {
         };''
         return mimeTypes[format] || 'application/octet-stream';
     }
-    ';
+    ';'
     private showError(message: string): void { ''
         if(this.eventBus') {'
-            ';
+            ';'
         }'
             this.eventBus.emit('showError', message); }
         }
@@ -1135,6 +1134,6 @@ export class UserDataExporter {
         // リソースのクリーンアップ
         this.lastExportData = null;
         this.lastImportData = null;
-        this.statisticsExporter = null;'
+        this.statisticsExporter = null;
     }''
 }

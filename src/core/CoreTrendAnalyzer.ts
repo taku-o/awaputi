@@ -7,9 +7,9 @@ import { getErrorHandler } from '../utils/ErrorHandler';
 
 export interface TrendData { timestamp: number,
     value: number,
-    metadata?: Record<string, any>; }
+    metadata?: Record<string, any> }
 }
-';
+';'
 export interface TrendAnalysisResult { ''
     trend: 'increasing' | 'decreasing' | 'stable' | 'volatile',
     slope: number,
@@ -29,7 +29,7 @@ export interface AnalysisConfig { windowSize: number,
     volatilityThreshold: number,
     trendThreshold: number,
     enablePrediction: boolean,
-    predictionSteps: number; }
+    predictionSteps: number }
 }
 
 export class CoreTrendAnalyzer {
@@ -79,7 +79,7 @@ export class CoreTrendAnalyzer {
 
         try { const result = this.performAnalysis(data);
             this.analysisCache.set(seriesId, result);
-            return result; }'
+            return result; }
         } catch (error) { ' }'
             getErrorHandler(').handleError(error, 'TREND_ANALYSIS_ERROR', { seriesId });
             return null;
@@ -166,11 +166,11 @@ export class CoreTrendAnalyzer {
         const variance = values.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / values.length;
         
         return Math.sqrt(variance) / (mean || 1); }
-    }'
+    }
 '';
     private determineTrend(slope: number, volatility: number'): 'increasing' | 'decreasing' | 'stable' | 'volatile' { ''
         if(volatility > this.config.volatilityThreshold') {'
-            ';
+            ';'
         }'
             return 'volatile'; }
         }'
@@ -258,6 +258,6 @@ export class CoreTrendAnalyzer {
 }
 
 let instance: CoreTrendAnalyzer | null = null,
-';
+';'
 export function getCoreTrendAnalyzer(): CoreTrendAnalyzer { if (!instance) {''
         instance = new CoreTrendAnalyzer(' })

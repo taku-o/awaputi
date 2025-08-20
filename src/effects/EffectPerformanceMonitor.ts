@@ -5,36 +5,36 @@ import { getEffectQualityController } from './EffectQualityController.js';
 interface FrameRateBuffer { timestamps: number[],
     rates: number[],
     bufferSize: number,
-    currentRate: number; }
+    currentRate: number }
 }
 
 interface MemoryUsageHistory { timestamp: number,
-    usage: number; }
+    usage: number }
 }
 
 interface RenderStats { particlesRendered: number,
     effectsRendered: number,
     drawCalls: number,
-    lastResetTime: number; }
+    lastResetTime: number }
 }
 
 interface CullingStats { totalEffects: number,
     culledEffects: number,
     visibleEffects: number,
-    offScreenEffects: number; }
+    offScreenEffects: number }
 }
 
 interface WarningThresholds { lowFrameRate: number,
     highMemoryUsage: number,
     maxDrawCalls: number,
-    maxActiveParticles: number; }
+    maxActiveParticles: number }
 }
 
 interface OptimizationSettings { cullOffScreen: boolean,
     cullDistance: number,
     maxVisibleParticles: number,
     reduceQualityThreshold: number,
-    emergencyCleanupThreshold: number; }
+    emergencyCleanupThreshold: number }
 }
 
 interface PerformanceStats { frameRate: number,
@@ -43,15 +43,15 @@ interface PerformanceStats { frameRate: number,
     cullingStats: CullingStats,
     activeEffects: number,
     cleanupQueueSize: number,
-    qualityLevel: string; }
-}'
+    qualityLevel: string }
+}
 '';
 type RenderStatsType = 'particle' | 'effect' | 'drawCall';
 
 // Effect interface for culling operations
 interface Effect { x: number,
     y: number,
-    width: number,';
+    width: number,
     height: number,'';
     priority?: 'decorative' | 'important' | 'critical';
     poolable?: boolean;
@@ -64,14 +64,14 @@ interface Effect { x: number,
 interface Viewport { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 // External dependencies interfaces
-interface ErrorHandler { handleError(error: Error, context?: any): void; }
+interface ErrorHandler { handleError(error: Error, context?: any): void }
 }
 
-interface EffectQualityController { updatePerformanceMetrics(currentTime: number, frameRate: number, memoryUsage?: number): void; }
+interface EffectQualityController { updatePerformanceMetrics(currentTime: number, frameRate: number, memoryUsage?: number): void }
     getActiveEffectCounts(): { particles: number; effects: number }
     getCurrentQualityLevel(): string;
     setQualityLevel(level: string): void,
@@ -80,7 +80,7 @@ interface EffectQualityController { updatePerformanceMetrics(currentTime: number
 // Browser performance memory interface
 interface PerformanceMemory { usedJSHeapSize: number,
     totalJSHeapSize: number,
-    jsHeapSizeLimit: number; }
+    jsHeapSizeLimit: number }
 }
 
 // Extended Performance interface
@@ -160,9 +160,9 @@ export class EffectPerformanceMonitor {
     }
     
     /**
-     * Performance APIの初期化'
+     * Performance APIの初期化
      */''
-    private _initializePerformanceAPI('')';
+    private _initializePerformanceAPI()';
             if(typeof PerformanceObserver !== 'undefined') {
                 this.performanceObserver = new PerformanceObserver((list) => { '
                     const entries = list.getEntries();''
@@ -175,8 +175,8 @@ export class EffectPerformanceMonitor {
                 }');'
                 '';
                 this.performanceObserver.observe({ entryTypes: ['measure'] ),' }'
-            } catch (error') { ''
-            console.warn('Performance Observer not available:', (error as Error).message); }
+            } catch (error) { ''
+            console.warn('Performance Observer not available:', (error as Error).message) }
         }
     }
     
@@ -277,9 +277,9 @@ export class EffectPerformanceMonitor {
         console.warn(`Low frame rate detected: ${frameRate.toFixed(1})} FPS`);
         
         // 品質低下の提案
-        if(frameRate < this.optimizationSettings.reduceQualityThreshold) {'
+        if(frameRate < this.optimizationSettings.reduceQualityThreshold) {
             '';
-            const currentQuality = this.qualityController.getCurrentQualityLevel('')';
+            const currentQuality = this.qualityController.getCurrentQualityLevel()';
             if (currentQuality !== 'low'') {''
                 console.log('Suggesting quality reduction due to low frame rate');
         }
@@ -338,7 +338,7 @@ export class EffectPerformanceMonitor {
     
     /**
      * 緊急最適化のチェック
-     */'
+     */
     private _checkEmergencyOptimization(): void { ''
         if(this.currentFrameRate < this.optimizationSettings.emergencyCleanupThreshold') {'
             '';
@@ -351,14 +351,14 @@ export class EffectPerformanceMonitor {
     /**
      * 緊急クリーンアップの実行
      */'
-    private _performEmergencyCleanup(): void { // すべての装飾的エフェクトを停止''
+    private _performEmergencyCleanup(): void { // すべての装飾的エフェクトを停止
         this.activeEffects.forEach((effect, id') => { ''
             if (effect.priority === 'decorative') { }
                 this.cleanupQueue.push(id); }'
             }''
         }');
         ';
-        // 品質を最低に設定''
+        // 品質を最低に設定
         this.qualityController.setQualityLevel('low');
         
         // ガベージコレクションを促進
@@ -429,7 +429,7 @@ export class EffectPerformanceMonitor {
     
     /**
      * レンダリング統計の記録
-     */'
+     */
     recordRenderStats(type: RenderStatsType, count: number = 1): void { ''
         switch(type') {'
             '';
@@ -492,17 +492,17 @@ export class EffectPerformanceMonitor {
     }
     
     /**
-     * バッチング最適化の提案'
+     * バッチング最適化の提案
      */''
-    private _suggestBatchingOptimization('')';
+    private _suggestBatchingOptimization()';
         console.log('Suggesting batching optimization for draw calls');
         // 実際のバッチング実装は各レンダラーで行う
     }
     
     /**
      * パーティクル数の削減
-     */'
-    private _reduceParticleCount(): void { // 優先度の低いパーティクルから削減''
+     */
+    private _reduceParticleCount(): void { // 優先度の低いパーティクルから削減
         const effects = Array.from(this.activeEffects.values()');''
         const decorativeEffects = effects.filter(e => e.priority === 'decorative');
         
@@ -565,6 +565,6 @@ let performanceMonitorInstance: EffectPerformanceMonitor | null = null,
 
 /**
  * EffectPerformanceMonitorのシングルトンインスタンスを取得
- */'
+ */
 export function getEffectPerformanceMonitor(): EffectPerformanceMonitor { if (!performanceMonitorInstance) {''
         performanceMonitorInstance = new EffectPerformanceMonitor(' })

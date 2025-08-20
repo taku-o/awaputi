@@ -6,7 +6,7 @@
 
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date ;
+    timeRange?: { start: Date, end: Date 
 }
     filters?: Record<string, any>;
     metrics?: string[];
@@ -16,7 +16,7 @@ export interface AnalysisResult { success: boolean,
     data?: any;
     insights?: string[];
     recommendations?: string[];
-    timestamp: number; };
+    timestamp: number };
 }
 export class ComparisonAnalyzer {
     constructor() {
@@ -28,7 +28,7 @@ export class ComparisonAnalyzer {
                 score: 3,
                 accuracy: 2,
                 completionRate: 2,
-                playTime: 1;
+                playTime: 1
 };
 }
                 maxCombo: 1 ;
@@ -40,19 +40,19 @@ export class ComparisonAnalyzer {
         this.suggestionTemplates = { score: {
                 high: '高難度ステージでのコンボ継続を意識した練習','';
                 medium: '中難度ステージでのスコア最適化','';
-                low: '基本的なスコアリング技術の習得' ;
+                low: '基本的なスコアリング技術の習得' 
 }
             },'
             accuracy: { ''
                 high: 'タイミングの微調整と予測能力の向上','';
                 medium: '安定した精度を保つための練習','';
-                low: '基本的なタイミング練習' ;
+                low: '基本的なタイミング練習' 
 }
             },'
             completionRate: { ''
                 high: '難関ポイントの集中練習','';
                 medium: 'ステージ全体の流れを掴む練習','';
-                low: 'クリアを目指した基礎練習' ;
+                low: 'クリアを目指した基礎練習' 
 };
 }
         },
@@ -74,13 +74,13 @@ export class ComparisonAnalyzer {
 
         const suggestions = { summary: this.generateSuggestionSummary(comparisonResult),
             targetAreas: this.identifyWeakAreas(comparisonResult),
-            strongAreas: this.identifyStrongAreas(comparisonResult); }
+            strongAreas: this.identifyStrongAreas(comparisonResult) }
         };
 
         if(includeActionPlan) {
 
             suggestions.actionPlan = this.createActionPlan(;
-                suggestions.targetAreas,);
+                suggestions.targetAreas);
                 suggestions.strongAreas);
                 difficultyPreference,);
         }
@@ -89,14 +89,14 @@ export class ComparisonAnalyzer {
         if(includeExpectedOutcomes) {
 
             suggestions.expectedOutcomes = this.calculateExpectedOutcomes(;
-                suggestions.targetAreas,);
+                suggestions.targetAreas);
         }
                 timeHorizon); };
 }
         if(includeFollowUp) {
 
             suggestions.followUp = this.generateFollowUpActions(;
-                suggestions.targetAreas,);
+                suggestions.targetAreas);
         }
                 timeHorizon); };
 }
@@ -119,15 +119,15 @@ export class ComparisonAnalyzer {
     identifyWeakAreas(comparisonResult) {
         const weakAreas = [];
         
-        // 過去データとの比較から弱点を抽出'
+        // 過去データとの比較から弱点を抽出
         if (comparisonResult.pastComparison && comparisonResult.pastComparison.available) {''
             Object.entries(comparisonResult.pastComparison.metrics).forEach(([metric, data]') => { ''
                 if (data.trend === 'declined' && Math.abs(data.changePercent) > this.analysisConfig.weakAreaThreshold') {'
                     weakAreas.push({''
                         type: 'past_comparison',
-                        metric: metric,);
+                        metric: metric);
                         currentValue: data.current);
-                        previousValue: data.past,);
+                        previousValue: data.past,)
     }
                         decline: data.changePercent);
 }
@@ -138,16 +138,16 @@ export class ComparisonAnalyzer {
         }
         
         // ベンチマークとの比較から弱点を抽出
-        if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {'
+        if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
             '';
             Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metric, data]') => { ''
                 if (data.performance === 'below_average' && data.percentileRank < 25') {'
                     weakAreas.push({''
                         type: 'benchmark_comparison',
                         metric: metric,
-                        currentValue: data.current,);
+                        currentValue: data.current);
                         benchmarkValue: data.benchmark.median);
-                        percentileRank: data.percentileRank,);
+                        percentileRank: data.percentileRank,)
         }
                         improvementPotential: data.differencePercent);
 }
@@ -158,7 +158,7 @@ export class ComparisonAnalyzer {
         }
         
         // ステージ比較から弱点を抽出
-        if(comparisonResult.stageComparison && comparisonResult.stageComparison.stageComparisons) {'
+        if(comparisonResult.stageComparison && comparisonResult.stageComparison.stageComparisons) {
             '';
             Object.entries(comparisonResult.stageComparison.stageComparisons).forEach(([stageId, stageData]') => { ''
                 if (stageData.performance && stageData.performance.grade === 'D') {'
@@ -167,8 +167,8 @@ export class ComparisonAnalyzer {
                         weakAreas.push({''
                             type: 'stage_performance',
                             stageId: stageId,
-                            metric: worstMetric.metric,);
-                            currentValue: worstMetric.value);
+                            metric: worstMetric.metric);
+                            currentValue: worstMetric.value)
         }'
                             weakness: worstMetric.weakness,') }'
                             priority: 'high'); };
@@ -195,13 +195,13 @@ export class ComparisonAnalyzer {
     identifyStrongAreas(comparisonResult) {
         const strongAreas = [];
         
-        // 過去データとの比較から強みを抽出'
+        // 過去データとの比較から強みを抽出
         if (comparisonResult.pastComparison && comparisonResult.pastComparison.available) {''
             Object.entries(comparisonResult.pastComparison.metrics).forEach(([metric, data]') => { ''
                 if (data.trend === 'improved' && Math.abs(data.changePercent) > this.analysisConfig.strongAreaThreshold') {'
                     strongAreas.push({''
-                        type: 'past_comparison',);
-                        metric: metric);
+                        type: 'past_comparison');
+                        metric: metric)
     }
                         currentValue: data.current,) }
                         improvement: data.changePercent); }
@@ -211,13 +211,13 @@ export class ComparisonAnalyzer {
         }
         
         // ベンチマークとの比較から強みを抽出
-        if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {'
+        if(comparisonResult.benchmarkComparison && comparisonResult.benchmarkComparison.available) {
             '';
             Object.entries(comparisonResult.benchmarkComparison.metrics).forEach(([metric, data]') => { ''
                 if (data.performance === 'above_average' && data.percentileRank > 75') {'
                     strongAreas.push({''
-                        type: 'benchmark_comparison',);
-                        metric: metric);
+                        type: 'benchmark_comparison');
+                        metric: metric)
         }
                         currentValue: data.current,) }
                         percentileRank: data.percentileRank); }
@@ -241,7 +241,7 @@ export class ComparisonAnalyzer {
         const plan = {
             immediate: [],
             shortTerm: [],
-            longTerm: [];
+            longTerm: []
 }
             leverage: [] ;
 }
@@ -263,7 +263,7 @@ export class ComparisonAnalyzer {
             
             if (index === 0) { plan.immediate.push(action); }
             } else if (timeHorizon <= 7) { plan.shortTerm.push(action); }
-            } else { plan.longTerm.push(action); };
+            } else { plan.longTerm.push(action); }
 }
         });
         
@@ -283,20 +283,20 @@ export class ComparisonAnalyzer {
      */
     generateMetricSpecificActions(area, metricInfo, difficultyPreference, timeHorizon) {
         const actions = [];
-        const template = this.suggestionTemplates[area.metric];'
+        const template = this.suggestionTemplates[area.metric];
         '';
         if (template') {
-            // 基本アクション'
+            // 基本アクション
             actions.push({')'
                 type: 'practice',)';
                 description: template[difficultyPreference]),'';
-                frequency: this.calculatePracticeFrequency(difficultyPreference, difficultyPreference'),';
+                frequency: this.calculatePracticeFrequency(difficultyPreference, difficultyPreference'),'
     }'
                 duration: '15-30分' ;
 }
             }),
             ';
-            // 追加アクション（メトリック別）''
+            // 追加アクション（メトリック別）
             switch(area.metric') {'
                 '';
                 case 'score':';
@@ -317,7 +317,7 @@ export class ComparisonAnalyzer {
                     actions.push({''
                         type: 'strategy',')';
                         description: '難関セクションの段階的攻略',')';
-                        focus: 'パターン認識と対策の習得');
+                        focus: 'パターン認識と対策の習得')
 }
                     break; };
 }
@@ -335,7 +335,7 @@ export class ComparisonAnalyzer {
     calculateExpectedOutcomes(targetAreas, timeHorizon') {
         const outcomes = {'
             overall: {''
-                improvementRange: '10-20%';
+                improvementRange: '10-20%'
 }
                 confidence: 0.7;
 }
@@ -372,7 +372,7 @@ export class ComparisonAnalyzer {
         
         // 週次チェックポイント
         const weeks = Math.ceil(timeHorizon / 7);
-        for (let week = 1; week <= weeks; week++) {'
+        for (let week = 1; week <= weeks; week++) {
             checkpoints.push({);''
                 timing: `${week')週目`,'
                 actions: ['';
@@ -405,7 +405,7 @@ export class ComparisonAnalyzer {
     generateMotivationalElements(strongAreas, targetAreas, comparisonResult) {
         const elements = {
             achievements: [],
-            encouragement: [];
+            encouragement: []
 }
             milestones: [] ;
 }
@@ -428,8 +428,8 @@ export class ComparisonAnalyzer {
                 }
             });
         }
-        ';
-        // 励ましのメッセージ''
+        ;
+        // 励ましのメッセージ
         if(targetAreas.length > 0') {'
             elements.encouragement.push({')'
                 message: '改善の余地がある領域が明確になりました。これは成長のチャンスです！')'),';
@@ -446,7 +446,7 @@ export class ComparisonAnalyzer {
         }
         
         // マイルストーン設定
-        targetAreas.slice(0, 3).forEach(area => {  );'
+        targetAreas.slice(0, 3).forEach(area => {  );
             const metricInfo = this.getMetricInfo(area.metric);''
             if(metricInfo') {
                 
@@ -546,7 +546,7 @@ export class ComparisonAnalyzer {
      * 努力量を見積もる
      * @param {Object} area - 対象領域
      * @param {string} difficultyPreference - 難易度設定
-     * @returns {string} 努力量'
+     * @returns {string} 努力量
      */''
     estimateEffort(area, difficultyPreference') {'
         '';
@@ -621,10 +621,10 @@ export class ComparisonAnalyzer {
      * 信頼度を計算
      * @param {Object} area - 対象領域
      * @param {number} timeHorizon - 期間
-     * @returns {number} 信頼度（0-1）'
+     * @returns {number} 信頼度（0-1）
      */''
     calculateConfidence(area, timeHorizon') {
-        let confidence = 0.7; // 基本信頼度'
+        let confidence = 0.7; // 基本信頼度
         '';
         if (area.priority === 'high') confidence += 0.1;
         if (timeHorizon >= 14) confidence += 0.1;
@@ -655,7 +655,7 @@ export class ComparisonAnalyzer {
         '';
         if(actions.length === 0') {'
             actions.push({')'
-                action: '現在の練習方法を継続し、安定性を高める',');
+                action: '現在の練習方法を継続し、安定性を高める',')
         }'
                 specific: '成功パターンを分析し、他の領域にも適用'); };
 }
@@ -671,7 +671,7 @@ export class ComparisonAnalyzer {
         const actionMap = {''
             score: 'スコアリング技術を他のゲームモードでも活用','';
             accuracy: '精度の高さを活かして、より難しいパターンに挑戦','';
-            completionRate: 'クリア能力を活かして、高難度ステージに挑戦',';
+            completionRate: 'クリア能力を活かして、高難度ステージに挑戦','
     }'
             maxCombo: 'コンボ継続スキルを活かして、パーフェクトプレイを目指す' ;
 }

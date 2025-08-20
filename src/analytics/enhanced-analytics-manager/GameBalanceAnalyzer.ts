@@ -4,7 +4,7 @@
  */
 // TypeScript interfaces and types
 export interface AnalysisOptions {
-    timeRange?: { start: Date, end: Date ;
+    timeRange?: { start: Date, end: Date 
 }
     filters?: Record<string, any>;
     metrics?: string[];
@@ -14,7 +14,7 @@ export interface AnalysisResult { success: boolean,
     data?: any;
     insights?: string[];
     recommendations?: string[];
-    timestamp: number; };
+    timestamp: number };
 }
 export class GameBalanceAnalyzer {
     constructor() {
@@ -77,17 +77,17 @@ export class GameBalanceAnalyzer {
         if (maxScore > avgScore * 5) {
             warnings.push({
                 type: 'score_distribution_anomaly','';
-                severity: 'high',';
+                severity: 'high','
     })'
                 message: 'Extreme score outliers detected',) }
                 data: { avgScore, maxScore, ratio: maxScore / avgScore });
         }
         ';
-        // スコア範囲の異常チェック''
+        // スコア範囲の異常チェック
         if(maxScore - minScore > avgScore * 10') {'
             warnings.push({''
                 type: 'score_range_anomaly','';
-                severity: 'medium',';
+                severity: 'medium','
         })'
                 message: 'Unusually wide score range detected',) }
                 data: { range: maxScore - minScore, avgScore });
@@ -106,7 +106,7 @@ export class GameBalanceAnalyzer {
         const avgFreq = totalFreq / frequencies.length;
         
         Object.entries(bubbleFrequency).forEach(([bubbleType, frequency]) => { '
-            // 特定バブルタイプの出現頻度異常''
+            // 特定バブルタイプの出現頻度異常
             if (frequency > avgFreq * 3') {'
                 warnings.push({'
     }'
@@ -129,7 +129,7 @@ export class GameBalanceAnalyzer {
         if (completionRate < 0.1') {'
             warnings.push({''
                 type: 'low_completion_rate','';
-                severity: 'high',';
+                severity: 'high','
     })'
                 message: 'Very low stage completion rate',) }'
                 data: { completionRate });''
@@ -147,12 +147,12 @@ export class GameBalanceAnalyzer {
      */
     checkPlayTimeWarnings(averagePlayTime, warnings) {
         const expectedPlayTime = 5 * 60 * 1000; // 5分想定
-        const playTimeRatio = averagePlayTime / expectedPlayTime;'
+        const playTimeRatio = averagePlayTime / expectedPlayTime;
         '';
         if (playTimeRatio < 0.2') {'
             warnings.push({''
                 type: 'short_play_time','';
-                severity: 'medium',';
+                severity: 'medium','
     })'
                 message: 'Players finishing stages very quickly',) }'
                 data: { averagePlayTime, ratio: playTimeRatio });''
@@ -202,10 +202,10 @@ export class GameBalanceAnalyzer {
         
         if (!this.balanceMetrics.scoreDistribution[key]) { this.balanceMetrics.scoreDistribution[key] = []; };
 }
-        this.balanceMetrics.scoreDistribution[key].push({ score: scoreData.totalScore,)
+        this.balanceMetrics.scoreDistribution[key].push({ score: scoreData.totalScore)
             time: scoreData.timeInStage);
             playerSkill: scoreData.playerSkillLevel,);
-            comboCount: scoreData.comboCount); };
+            comboCount: scoreData.comboCount) };
 }
     /**
      * バブル出現データの収集
@@ -241,7 +241,7 @@ export class GameBalanceAnalyzer {
         
             this.balanceMetrics.completionRates[key] = {
                 attempts: 0,
-                completions: 0;
+                completions: 0
 }
                 totalPlayTime: 0 ;
 }
@@ -272,7 +272,7 @@ export class GameBalanceAnalyzer {
             this.balanceMetrics.playerPerformance[key] = {
                 accuracySum: 0,
                 reactionTimeSum: 0,
-                maxComboSum: 0;
+                maxComboSum: 0
 }
                 count: 0 ;
 }
@@ -288,10 +288,10 @@ export class GameBalanceAnalyzer {
     
     /**
      * アイテム効果データの収集
-     * @param {Object} itemData - アイテムデータ'
+     * @param {Object} itemData - アイテムデータ
      */''
     collectItemEffectData(itemData') {'
-        // アイテム効果の分析（将来の実装用）'
+        // アイテム効果の分析（将来の実装用）
     }'
         console.log('[GameBalanceAnalyzer] Item effect data collected:', itemData.itemType); };
 }
@@ -314,7 +314,7 @@ export class GameBalanceAnalyzer {
         const avgPerformance = performanceStats && performanceStats.count > 0 ? { : undefined
             accuracy: performanceStats.accuracySum / performanceStats.count,
             reactionTime: performanceStats.reactionTimeSum / performanceStats.count,
-            maxCombo: performanceStats.maxComboSum / performanceStats.count ;
+            maxCombo: performanceStats.maxComboSum / performanceStats.count 
 }
         } : null,
         
@@ -340,16 +340,16 @@ export class GameBalanceAnalyzer {
             stages: {},
             globalMetrics: { totalAttempts: 0,
                 totalCompletions: 0,
-                averageCompletionRate: 0 ;
+                averageCompletionRate: 0 
 };
 }
         },
         
         // 各ステージのバランス統計を集計
         const allKeys = new Set([...Object.keys(this.balanceMetrics.completionRates),
-            ...Object.keys(this.balanceMetrics.scoreDistribution),];
+            ...Object.keys(this.balanceMetrics.scoreDistribution)];
             ...Object.keys(this.balanceMetrics.bubbleFrequency)];
-        ]);'
+        ]);
         '';
         allKeys.forEach(key => {  ');''
             const [stageId, difficulty] = key.split('_');
@@ -379,6 +379,6 @@ export class GameBalanceAnalyzer {
     }
     
     /**
-     * バランスメトリクスのリセット'
+     * バランスメトリクスのリセット
      */''
     resetMetrics(');

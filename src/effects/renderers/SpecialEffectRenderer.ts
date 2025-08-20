@@ -7,7 +7,7 @@ interface SpecialEffectConfig { name: string,
     particleCount: number,
     colors: string[],
     duration: number,
-    priority: number; }
+    priority: number }
 }
 
 /**
@@ -49,7 +49,7 @@ interface ParticleManager { particles: Particle[],
     getParticleFromPool(): Particle;
     shouldRenderEffect(effectType: string, priority: number): boolean,
     adjustParticleCount(count: number): number,
-    getEffectIntensityMultiplier(): number; }
+    getEffectIntensityMultiplier(): number }
 }
 
 /**
@@ -65,7 +65,7 @@ export class SpecialEffectRenderer {
         
         // 特殊効果の定義
         this.specialEffects = {
-            // 基本効果'
+            // 基本効果
             explosion: {''
                 name: '爆発',';
                 particleCount: 20,'';
@@ -90,7 +90,7 @@ export class SpecialEffectRenderer {
                 priority: 7 }
             },
             
-            // エネルギー効果'
+            // エネルギー効果
             energy_discharge: { ''
                 name: 'エネルギー放出',';
                 particleCount: 30,'';
@@ -106,7 +106,7 @@ export class SpecialEffectRenderer {
                 priority: 7 }
             },
             
-            // 魔法効果'
+            // 魔法効果
             magic_circle: { ''
                 name: '魔法陣',';
                 particleCount: 12,'';
@@ -122,7 +122,7 @@ export class SpecialEffectRenderer {
                 priority: 8 }
             },
             
-            // 自然効果'
+            // 自然効果
             wind_gust: { ''
                 name: '突風',';
                 particleCount: 22,'';
@@ -169,8 +169,8 @@ export class SpecialEffectRenderer {
             }
                 return; }
             }
-            ';
-            // 効果タイプ別の処理''
+            ;
+            // 効果タイプ別の処理
             switch(effectType') {'
                 '';
                 case 'explosion':'';
@@ -209,7 +209,7 @@ export class SpecialEffectRenderer {
                     break; }'
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'SPECIAL_EFFECT_ERROR', {')'
-                context: 'SpecialEffectRenderer.createSpecialEffect'); }
+                context: 'SpecialEffectRenderer.createSpecialEffect') }
             });
         }
     }
@@ -243,7 +243,7 @@ export class SpecialEffectRenderer {
             particle.alpha = 0.8 + Math.random() * 0.2;
             particle.gravity = 30;'
             particle.friction = 0.92;''
-            particle.bounce = 0.2 + Math.random('')';
+            particle.bounce = 0.2 + Math.random()';
             particle.type = 'explosion';)
             particle.rotationSpeed = (Math.random() - 0.5) * 15;
             particle.scaleSpeed = -0.8 / (particle.life / 1000);
@@ -279,7 +279,7 @@ export class SpecialEffectRenderer {
             particle.x = x + Math.cos(angle) * startRadius;
             particle.y = y + Math.sin(angle) * startRadius;
             particle.vx = -Math.cos(angle) * speed;
-            particle.vy = -Math.sin(angle) * speed;'
+            particle.vy = -Math.sin(angle) * speed;
             particle.size = (1 + Math.random() * 3) * intensity;''
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length')];
             particle.life = config.duration * 0.6;
@@ -295,7 +295,7 @@ export class SpecialEffectRenderer {
         }
         
         // 第二段階: 中心からの爆発（遅延）
-        setTimeout(() => {  this.createExplosionEffect(x, y, intensity * 0.8, {)'
+        setTimeout(() => {  this.createExplosionEffect(x, y, intensity * 0.8, {)
                 ...config);''
                 particleCount: Math.floor(config.particleCount * 0.6'),' }'
                 colors: ['#FFFFFF', '#E6E6FA', '#D3D3D3'] }
@@ -364,7 +364,7 @@ export class SpecialEffectRenderer {
             particle.y = y;
             particle.vx = Math.cos(angle) * speed;
             particle.vy = Math.sin(angle) * speed;
-            particle.size = (2 + Math.random() * 4) * intensity;'
+            particle.size = (2 + Math.random() * 4) * intensity;
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length)];''
             particle.life = config.duration * (0.6 + Math.random() * 0.8');
             particle.maxLife = particle.life;
@@ -385,38 +385,38 @@ export class SpecialEffectRenderer {
     }
     
     /**
-     * プラズマ波効果（未実装メソッド）'
+     * プラズマ波効果（未実装メソッド）
      */''
-    createPlasmaWaveEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定''
-        this.createGenericSpecialEffect(x, y, 'plasma_wave', intensity, config); }
+    createPlasmaWaveEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定
+        this.createGenericSpecialEffect(x, y, 'plasma_wave', intensity, config) }
     }
     
     /**
      * テレポート効果（未実装メソッド）'
      */''
-    createTeleportEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定''
-        this.createGenericSpecialEffect(x, y, 'teleport', intensity, config); }
+    createTeleportEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定
+        this.createGenericSpecialEffect(x, y, 'teleport', intensity, config) }
     }
     
     /**
      * 突風効果（未実装メソッド）'
      */''
-    createWindGustEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定''
-        this.createGenericSpecialEffect(x, y, 'wind_gust', intensity, config); }
+    createWindGustEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定
+        this.createGenericSpecialEffect(x, y, 'wind_gust', intensity, config) }
     }
     
     /**
      * 炎上効果（未実装メソッド）'
      */''
-    createFireBurstEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定''
-        this.createGenericSpecialEffect(x, y, 'fire_burst', intensity, config); }
+    createFireBurstEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定
+        this.createGenericSpecialEffect(x, y, 'fire_burst', intensity, config) }
     }
     
     /**
      * 氷砕効果（未実装メソッド）'
      */''
-    createIceShatterEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定''
-        this.createGenericSpecialEffect(x, y, 'ice_shatter', intensity, config); }
+    createIceShatterEffect(x: number, y: number, intensity: number, config: SpecialEffectConfig'): void { // TODO: 将来実装予定
+        this.createGenericSpecialEffect(x, y, 'ice_shatter', intensity, config) }
     }
     
     /**
@@ -443,7 +443,7 @@ export class SpecialEffectRenderer {
                 particle.y = y + Math.sin(angle) * radius;
                 particle.vx = Math.cos(angle + Math.PI / 2) * 20;
                 particle.vy = Math.sin(angle + Math.PI / 2) * 20;
-                particle.size = (1 + Math.random() * 2) * intensity;'
+                particle.size = (1 + Math.random() * 2) * intensity;
                 particle.color = config.colors[ring % config.colors.length];''
                 particle.life = config.duration * (1 + ring * 0.2');
                 particle.maxLife = particle.life;
@@ -467,7 +467,7 @@ export class SpecialEffectRenderer {
      * @param {number} x - X座標
      * @param {number} y - Y座標
      * @param {number} intensity - 強度
-     */'
+     */
     createCenterFlash(x: number, y: number, intensity: number): void { ''
         const particle = this.particleManager.getParticleFromPool(''';
         particle.color = '#FFFFFF';
@@ -523,7 +523,7 @@ export class SpecialEffectRenderer {
             
             const angle = (Math.PI * 2 * i) / 6;
             const distance = 15 * intensity;
-            ';
+            ';'
             particle.x = x + Math.cos(angle) * distance;''
             particle.y = y + Math.sin(angle') * distance;
             particle.vx = 0;
@@ -568,7 +568,7 @@ export class SpecialEffectRenderer {
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length)];
             particle.life = config.duration * (0.7 + Math.random() * 0.6);'
             particle.maxLife = particle.life;''
-            particle.alpha = 0.7 + Math.random('')';
+            particle.alpha = 0.7 + Math.random()';
             particle.type = 'advanced_circle';)
             particle.rotationSpeed = (Math.random() - 0.5) * 10;
             

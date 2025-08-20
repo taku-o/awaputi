@@ -13,7 +13,7 @@ interface MemoryUsageSample { used: number,
     total: number,
     pressure: number,
     timestamp: number,
-    metadata?: Record<string, any>; }
+    metadata?: Record<string, any> }
 }
 
 interface UsagePatterns { growthRate: number,
@@ -23,50 +23,50 @@ interface UsagePatterns { growthRate: number,
     trendDirection: 'growing' | 'shrinking' | 'stable',
     lastTrendAnalysis: number,
     cycleDetected: boolean,
-    cycleLength: number; }
+    cycleLength: number }
 }
-';
+';'
 interface TrendAnalysisConfig { samples: number,''
     trend: 'growing' | 'shrinking' | 'stable',
-    confidence: number; }
+    confidence: number }
 }
 
 interface TrendAnalysisConfigs { shortTerm: TrendAnalysisConfig,
     mediumTerm: TrendAnalysisConfig,
-    longTerm: TrendAnalysisConfig;
+    longTerm: TrendAnalysisConfig
     }
 }
 
 interface Predictions { nextPeak: number,'
     timeToLimit: number,'';
     recommendedAction: 'none' | 'monitor_closely' | 'schedule_cleanup' | 'immediate_cleanup',
-    confidence: number; }
+    confidence: number }
 }
 
 interface AnalyzerStatistics { analysisCount: number,
     trendsDetected: Map<string, number>;
     predictionsCorrect: number,
     predictionsFailed: number,
-    averageAccuracy: number; }
+    averageAccuracy: number }
 }
-';
+';'
 interface TrendResult { ''
     trend: 'growing' | 'shrinking' | 'stable' | 'unknown',
     rate?: number;
     confidence: number,
-    samples?: number; }
+    samples?: number }
 }
 
 interface PredictionRange { min: number,
-    max: number; }
+    max: number }
 }
 
 interface PredictionBasedOn { trend: string,
     rate: number,
     cycles: boolean,
-    volatility: number; }
+    volatility: number }
 }
-';
+';'
 interface UsagePrediction { ''
     prediction: number | 'insufficient_data',
     confidence?: number;
@@ -84,13 +84,13 @@ interface CycleDetection { detected: boolean,
 interface RiskFactors { currentUsage: number,
     growthRate: number,
     volatility: number,
-    timeToLimit: number; }
+    timeToLimit: number }
 }
-';
+';'
 interface RiskAssessment { ''
     level: 'low' | 'medium' | 'high' | 'critical',
     score: number,
-    factors: RiskFactors;
+    factors: RiskFactors
     }
 }
 
@@ -114,7 +114,7 @@ interface AnalyzerStats { analysisCount: number,
     historySize: number,
     currentPressure: number,
     lastAnalysis: number,
-    patterns: UsagePatterns;
+    patterns: UsagePatterns
     }
 }
 
@@ -140,7 +140,7 @@ export class MemoryUsageAnalyzer {
         this.usageHistory = [];
         this.currentUsage = {
             used: 0,
-            total: 0,';
+            total: 0,
             pressure: 0,'';
             timestamp: Date.now(''';
             trendDirection: 'stable',
@@ -152,7 +152,7 @@ export class MemoryUsageAnalyzer {
             cycleLength: 0 }
         },
         
-        // Trend detection'
+        // Trend detection
         this.trendAnalysis = { ' }'
             shortTerm: { samples: 10, trend: 'stable', confidence: 0 },''
             mediumTerm: { samples: 30, trend: 'stable', confidence: 0 },''
@@ -160,7 +160,7 @@ export class MemoryUsageAnalyzer {
         };
         
         // Performance prediction
-        this.predictions = { nextPeak: 0,'
+        this.predictions = { nextPeak: 0,
             timeToLimit: Infinity,'';
             recommendedAction: 'none',
             confidence: 0 })
@@ -209,7 +209,7 @@ export class MemoryUsageAnalyzer {
     
     /**
      * Perform comprehensive usage analysis
-     */'
+     */
     performAnalysis(): AnalysisResult { ''
         if (!this.enabled || this.usageHistory.length < 5') {' }'
             return { analysis: 'insufficient_data' }
@@ -245,9 +245,9 @@ export class MemoryUsageAnalyzer {
                 recommendations: this._generateRecommendations(risk),
             };
             
-            return analysis;'
+            return analysis;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[MemoryUsageAnalyzer] Analysis failed:', error');' }'
             return { analysis: 'error', error: (error as Error).message }
         }
@@ -266,7 +266,7 @@ export class MemoryUsageAnalyzer {
     getTrend(timeframe: number = 300000): TrendResult { // 5 minutes default
         const now = Date.now();
         const relevantSamples = this.usageHistory.filter();
-            sample => now - sample.timestamp <= timeframe);'
+            sample => now - sample.timestamp <= timeframe);
         '';
         if (relevantSamples.length < 2') {' }'
             return { trend: 'unknown', confidence: 0 }
@@ -277,10 +277,10 @@ export class MemoryUsageAnalyzer {
         
         const change = last.pressure - first.pressure;'
         const timeSpan = last.timestamp - first.timestamp;''
-        const rate = change / (timeSpan / 1000'); // Change per second'
+        const rate = change / (timeSpan / 1000'); // Change per second
         '';
         let trend: 'growing' | 'shrinking' | 'stable' = 'stable','';
-        if (Math.abs(rate) > 0.001') { // Significant change threshold''
+        if (Math.abs(rate) > 0.001') { // Significant change threshold
             trend = rate > 0 ? 'growing' : 'shrinking'; }
         }
         
@@ -292,8 +292,8 @@ export class MemoryUsageAnalyzer {
     
     /**
      * Predict future memory usage
-     */'
-    predictUsage(futureTime: number = 60000): UsagePrediction { // 1 minute default''
+     */
+    predictUsage(futureTime: number = 60000): UsagePrediction { // 1 minute default
         if (this.usageHistory.length < 10') {' }'
             return { prediction: 'insufficient_data' }
         }
@@ -344,14 +344,14 @@ export class MemoryUsageAnalyzer {
     }
     
     /**
-     * Reset analyzer state'
+     * Reset analyzer state
      */''
     reset(''';
             trendDirection: 'stable',
             lastTrendAnalysis: 0,
             cycleDetected: false,
             cycleLength: 0;
-        },)
+        })
         this.stats = { analysisCount: 0)
             trendsDetected: new Map(),
             predictionsCorrect: 0,
@@ -413,7 +413,7 @@ export class MemoryUsageAnalyzer {
     /**
      * Update trend direction
      */
-    private _updateTrendDirection(): void { const rate = this.patterns.growthRate;'
+    private _updateTrendDirection(): void { const rate = this.patterns.growthRate;
         '';
         if (Math.abs(rate) < 0.001') {''
             this.patterns.trendDirection = 'stable';' }'
@@ -525,16 +525,16 @@ export class MemoryUsageAnalyzer {
         
         // Predict time to memory limit
         let timeToLimit = Infinity;
-        if(rate > 0.001) {'
-            // Significant growth'
+        if(rate > 0.001) {
+            // Significant growth
         }'
             timeToLimit = (1.0 - current') / rate * 1000; // Time in milliseconds }
         }
-        ';
-        // Determine recommended action''
+        ;
+        // Determine recommended action
         let recommendedAction: 'none' | 'monitor_closely' | 'schedule_cleanup' | 'immediate_cleanup' = 'none','';
         if(current > 0.9') {'
-            ';
+            ';'
         }'
             recommendedAction = 'immediate_cleanup';' }'
         } else if (current > 0.8 || rate > 0.01') { ''
@@ -558,9 +558,9 @@ export class MemoryUsageAnalyzer {
     }
     
     /**
-     * Assess memory risk level'
+     * Assess memory risk level
      */''
-    private _assessRisk('')';
+    private _assessRisk()';
         let riskLevel: 'low' | 'medium' | 'high' | 'critical' = 'low');
         let riskScore = 0;
         
@@ -583,8 +583,8 @@ export class MemoryUsageAnalyzer {
         if (this.predictions.timeToLimit < 60000) riskScore += 0.3; // Less than 1 minute
         else if (this.predictions.timeToLimit < 300000) riskScore += 0.2; // Less than 5 minutes
         else if (this.predictions.timeToLimit < 900000) riskScore += 0.1; // Less than 15 minutes
-        ';
-        // Determine risk level''
+        ;
+        // Determine risk level
         if (riskScore >= 0.7') riskLevel = 'critical';''
         else if (riskScore >= 0.5') riskLevel = 'high';''
         else if (riskScore >= 0.3') riskLevel = 'medium';
@@ -622,15 +622,15 @@ export class MemoryUsageAnalyzer {
             recommendations.push('Continue normal monitoring'); }
         }
         ';
-        // Pattern-specific recommendations''
+        // Pattern-specific recommendations
         if(this.patterns.volatility > 0.2') {'
-            ';
+            ';'
         }'
             recommendations.push('Investigate causes of memory volatility'); }
         }'
         '';
         if(this.patterns.cycleDetected') {'
-            ';
+            ';'
         }'
             recommendations.push('Optimize for detected memory usage cycles''); }
         }

@@ -5,11 +5,11 @@
 
 // 基本データ構造
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface Velocity { x: number,
-    y: number; }
+    y: number }
 }
 
 // バブルタイプ定義
@@ -57,7 +57,7 @@ export interface BubbleEffect { type: BubbleEffectType,
     strength?: number;
     damage?: number; }
 }
-';
+';'
 export type BubbleEffectType = '';
     | 'heal' | 'damage' | 'chain_destroy' | 'bonus_time''';
     | 'time_stop' | 'bonus_score' | 'screen_shake''';
@@ -93,7 +93,7 @@ export interface BubbleInterface { // 基本プロパティ
     burst(): void;
     triggerSpecialEffect(): void;
     containsPoint(x: number, y: number): boolean,
-    getScore(): number;'
+    getScore(): number;
     updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void;''
     getAndClearEffects(''';
     animationQuality: 'high' | 'medium' | 'low',' }'

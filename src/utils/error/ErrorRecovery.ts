@@ -15,27 +15,27 @@ interface ErrorInfo { id?: string;
 }
 
 interface RecoveryResult { success: boolean,
-    message: string; }
+    message: string }
 }
 
 interface RecoveryStrategy { attempts: number,
     maxAttempts: number,
     strategy: (error: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
-    fallback: () => void; }
+    fallback: () => void }
 }
 
 interface FallbackState { audioDisabled: boolean,
     canvasDisabled: boolean,
     storageDisabled: boolean,
     reducedEffects: boolean,
-    safeMode: boolean; }
+    safeMode: boolean }
 }
 
 interface MainController { reporter?: {
-        showFallbackUI: () => void; }
+        showFallbackUI: () => void }
     };
     logger?: { errorStats: {
-            recovered: number; }
+            recovered: number }
         };
     };
     isBrowser?: boolean;
@@ -47,7 +47,7 @@ interface RecoveryConfig { maxRecoveryAttempts?: number; }
 
 interface CustomRecoveryStrategy { strategy: (error: ErrorInfo, context: string) => RecoveryResult | Promise<RecoveryResult>,
     fallback: () => void,
-    maxAttempts?: number; }
+    maxAttempts?: number }
 }
 
 interface RecoveryStats { strategies: number,
@@ -57,13 +57,13 @@ interface RecoveryStats { strategies: number,
     strategiesByContext: Record<string, {
         attempts: number,
         maxAttempts: number,
-        attemptsRemaining: number; }
+        attemptsRemaining: number }
     }>;
 }
 
 interface TestResult { success: boolean,
     message: string,
-    result?: RecoveryResult;
+    result?: RecoveryResult
     }
 }
 
@@ -76,31 +76,31 @@ declare global { interface Window {
             removeItem: (key: string) => void,
             clear: () => void,
             length: number,
-            key: (index: number) => string | null; }
+            key: (index: number) => string | null }
         };
         gameEngine?: { particleManager?: {
                 setMaxParticles: (count: number) => void,
-                disable: () => void; }
+                disable: () => void }
             };
             effectManager?: { setQualityLevel: (level: string) => void,
-                disable: () => void; }
+                disable: () => void }
             };
             audioManager?: { setMaxConcurrentSounds: (count: number) => void,
-                disable: () => void; }
+                disable: () => void }
             };
-            poolManager?: { clearUnused: () => void; }
+            poolManager?: { clearUnused: () => void }
             };
-            memoryManager?: { performCleanup: () => void; }
+            memoryManager?: { performCleanup: () => void }
             };
             performanceOptimizer?: { setPerformanceLevel: (level: string) => void,
                 setTargetFPS: (fps: number) => void,
-                setRenderQuality: (quality: string) => void; }
+                setRenderQuality: (quality: string) => void }
             };
-            networkManager?: { disable: () => void; }
+            networkManager?: { disable: () => void }
             };
-            leaderboardManager?: { enableOfflineMode: () => void; }
+            leaderboardManager?: { enableOfflineMode: () => void }
             };
-            renderer?: { fallbackTo2D: () => void; }
+            renderer?: { fallbackTo2D: () => void }
             };
         };
         gc?: () => void;
@@ -152,13 +152,13 @@ export class ErrorRecovery {
     /**
      * Setup recovery strategies for different error contexts'
      */''
-    private setupRecoveryStrategies('')';
-        this.recoveryStrategies.set('CANVAS_ERROR', { attempts: 0,)'
+    private setupRecoveryStrategies()';
+        this.recoveryStrategies.set('CANVAS_ERROR', { attempts: 0)'
             maxAttempts: 2),'';
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Canvas error detected, attempting recovery:', error.message');
                 ';
-                // Recreate canvas element''
+                // Recreate canvas element
                 const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;''
                 if(canvas') {'
                     const parent = canvas.parentNode;''
@@ -167,7 +167,7 @@ export class ErrorRecovery {
                     newCanvas.width = canvas.width;
                     newCanvas.height = canvas.height;
                     newCanvas.className = canvas.className;'
-                    ';
+                    ';'
                 }'
                     parent? .replaceChild(newCanvas, canvas'); }'
                      : undefined' }'
@@ -181,7 +181,7 @@ export class ErrorRecovery {
             }''
         }');
         ';
-        // Audio-related error recovery''
+        // Audio-related error recovery
         this.recoveryStrategies.set('AUDIO_ERROR', { : undefined)
             attempts: 0,)';
             maxAttempts: 1),'';
@@ -196,8 +196,8 @@ export class ErrorRecovery {
             }''
         }');
         ';
-        // Storage-related error recovery''
-        this.recoveryStrategies.set('STORAGE_ERROR', { attempts: 0,)'
+        // Storage-related error recovery
+        this.recoveryStrategies.set('STORAGE_ERROR', { attempts: 0)'
             maxAttempts: 1),'';
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Storage error detected, using memory storage:', error.message);' }'
@@ -209,8 +209,8 @@ export class ErrorRecovery {
             }''
         }');
         ';
-        // Memory-related error recovery''
-        this.recoveryStrategies.set('MEMORY_WARNING', { attempts: 0,)'
+        // Memory-related error recovery
+        this.recoveryStrategies.set('MEMORY_WARNING', { attempts: 0)'
             maxAttempts: 1),'';
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Memory warning detected, reducing effects:', error.message);'
@@ -223,8 +223,8 @@ export class ErrorRecovery {
             }''
         }');
         ';
-        // Performance-related error recovery''
-        this.recoveryStrategies.set('PERFORMANCE_WARNING', { attempts: 0,)'
+        // Performance-related error recovery
+        this.recoveryStrategies.set('PERFORMANCE_WARNING', { attempts: 0)'
             maxAttempts: 2),'';
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
                 console.warn('Performance warning detected, optimizing:', error.message);' }'
@@ -236,22 +236,22 @@ export class ErrorRecovery {
             }''
         }');
         ';
-        // Network-related error recovery''
-        this.recoveryStrategies.set('NETWORK_ERROR', { attempts: 0,)'
+        // Network-related error recovery
+        this.recoveryStrategies.set('NETWORK_ERROR', { attempts: 0)'
             maxAttempts: 2),'';
             strategy: (error: ErrorInfo, context: string'): Promise<RecoveryResult> => { ''
-                console.warn('Network error detected, attempting recovery:', error.message); }
+                console.warn('Network error detected, attempting recovery:', error.message) }
                 return this.attemptNetworkRecovery(); }
             },
             fallback: (): void = > { this.enableOfflineMode() }'
             }''
         }');
         ';
-        // WebGL-related error recovery''
-        this.recoveryStrategies.set('WEBGL_ERROR', { attempts: 0,)'
+        // WebGL-related error recovery
+        this.recoveryStrategies.set('WEBGL_ERROR', { attempts: 0)'
             maxAttempts: 1),'';
             strategy: (error: ErrorInfo, context: string'): RecoveryResult => { ''
-                console.warn('WebGL error detected, falling back to 2D:', error.message); }
+                console.warn('WebGL error detected, falling back to 2D:', error.message) }
                 return this.fallbackTo2DRendering(); }
             },
             fallback: (): void = > {  this.fallbackState.canvasDisabled = true }
@@ -306,25 +306,25 @@ export class ErrorRecovery {
     }
     
     /**
-     * Use memory storage as LocalStorage fallback'
+     * Use memory storage as LocalStorage fallback
      */''
-    private useMemoryStorage('')';
+    private useMemoryStorage()';
         if(typeof window !== 'undefined') {
             window.memoryStorage = new Map();
             
             // Mock LocalStorage API
             const memoryStorageAPI = {
-                getItem: (key: string): string | null => window.memoryStorage? .get(key) || null, : undefined;
+                getItem: (key: string): string | null => window.memoryStorage? .get(key) || null, : undefined
         }
                 setItem: (key: string, value: string): void => window.memoryStorage? .set(key, value), : undefined }
                 removeItem: (key: string): void => { window.memoryStorage? .delete(key); }, : undefined
-                clear: (): void => { window.memoryStorage? .clear(); }, : undefined'
+                clear: (): void => { window.memoryStorage? .clear(); }, : undefined
                 get length(): number { return window.memoryStorage? .size || 0; }, : undefined''
                 key: (index: number): string | null => Array.from(window.memoryStorage? .keys() || []')[index] || null;
             },
             
             // Make it globally available
-            window.fallbackStorage = memoryStorageAPI;'
+            window.fallbackStorage = memoryStorageAPI;
             '';
             console.log('Memory storage enabled as LocalStorage fallback');
         }
@@ -333,29 +333,29 @@ export class ErrorRecovery {
     /**
      * Reduce effects for performance optimization'
      */ : undefined''
-    private reduceEffects('')';
+    private reduceEffects()';
         if(typeof window !== 'undefined' && window.gameEngine) {
             // Reduce particle count
             if (window.gameEngine.particleManager) {
         }
                 window.gameEngine.particleManager.setMaxParticles(50); }
             }
-            ';
-            // Lower effect quality''
+            ;
+            // Lower effect quality
             if(window.gameEngine.effectManager') {'
-                ';
+                ';'
             }'
                 window.gameEngine.effectManager.setQualityLevel('low'); }
             }
             
             // Reduce audio effects
-            if(window.gameEngine.audioManager) {'
-                ';
+            if(window.gameEngine.audioManager) {
+                ';'
             }'
                 window.gameEngine.audioManager.setMaxConcurrentSounds(5'); }
             }
         }
-        ';
+        ';'
         this.fallbackState.reducedEffects = true;''
         console.log('Effects reduced for performance optimization');
     }
@@ -363,7 +363,7 @@ export class ErrorRecovery {
     /**
      * Perform garbage collection'
      */''
-    private performGarbageCollection('')';
+    private performGarbageCollection()';
         if(typeof window !== 'undefined' && window.gameEngine) {
             // Clear object pools
             if (window.gameEngine.poolManager) {
@@ -372,11 +372,11 @@ export class ErrorRecovery {
             }
             
             // Remove unused listeners
-            if(window.gameEngine.memoryManager) {'
+            if(window.gameEngine.memoryManager) {
                 '';
-                window.gameEngine.memoryManager.performCleanup('')';
+                window.gameEngine.memoryManager.performCleanup()';
         if (typeof window !== 'undefined' && window.gc && typeof window.gc === 'function') {''
-            window.gc('');
+            window.gc();
             }'
         console.log('Garbage collection performed'); }
     }
@@ -384,31 +384,31 @@ export class ErrorRecovery {
     /**
      * Optimize performance settings'
      */''
-    private optimizePerformance('')';
+    private optimizePerformance()';
         if(typeof window !== 'undefined' && window.gameEngine && window.gameEngine.performanceOptimizer') {'
-            // Lower performance level''
+            // Lower performance level
             window.gameEngine.performanceOptimizer.setPerformanceLevel('low');
             ';
-            // Limit frame rate''
+            // Limit frame rate
             window.gameEngine.performanceOptimizer.setTargetFPS(30');
-            ';
-            // Reduce rendering quality'
+            ';'
+            // Reduce rendering quality
         }'
             window.gameEngine.performanceOptimizer.setRenderQuality('low'); }
         }
-        ';
+        ';'
         this.reduceEffects();''
-        this.performGarbageCollection('')';
+        this.performGarbageCollection()';
         console.log('Performance optimized');
     }
     
     /**
      * Disable audio features'
      */''
-    private disableAudioFeatures('')';
+    private disableAudioFeatures()';
         if(typeof window !== 'undefined' && window.gameEngine && window.gameEngine.audioManager) {
             window.gameEngine.audioManager.disable();'
-            // ログ出力頻度を制御（前回と異なる状態の場合のみ）''
+            // ログ出力頻度を制御（前回と異なる状態の場合のみ）
             if (this.lastLoggedAudioDisableState !== true') {''
                 console.log('Audio features disabled');
         }
@@ -422,7 +422,7 @@ export class ErrorRecovery {
      * @returns Recovery result
      */
     private attemptNetworkRecovery(): Promise<RecoveryResult>;
-        return new Promise((resolve) => {  // Test network connectivity'
+        return new Promise((resolve) => {  // Test network connectivity
             const testImage = new Image();' }'
             testImage.onload = ('): void => {' }'
                 resolve({ success: true, message: 'Network connectivity restored' });'
@@ -430,9 +430,9 @@ export class ErrorRecovery {
             testImage.onerror = ('): void => { ' }'
                 resolve({ success: false, message: 'Network still unavailable' }');'
             };''
-            testImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            testImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7;
             ';
-            // Timeout after 5 seconds''
+            // Timeout after 5 seconds
             setTimeout((') => { ' }'
                 resolve({ success: false, message: 'Network test timeout' });
             }, 5000);
@@ -442,10 +442,10 @@ export class ErrorRecovery {
     /**
      * Enable offline mode'
      */''
-    private enableOfflineMode('')';
+    private enableOfflineMode()';
         console.log('Offline mode enabled'');
         ';
-        // Disable network-dependent features''
+        // Disable network-dependent features
         if(typeof window !== 'undefined' && window.gameEngine) {
             if (window.gameEngine.networkManager) {
         }
@@ -461,7 +461,7 @@ export class ErrorRecovery {
      * Fallback to 2D rendering
      * @returns Recovery result'
      */''
-    private fallbackTo2DRendering('')';
+    private fallbackTo2DRendering()';
             if(typeof window !== 'undefined' && window.gameEngine) {'
                 if (window.gameEngine.renderer) {'
             }'
@@ -478,7 +478,7 @@ export class ErrorRecovery {
     /**
      * Enable safe mode'
      */''
-    private enableSafeMode('')';
+    private enableSafeMode()';
         if(this.mainController.isBrowser && typeof window !== 'undefined' && window.gameEngine) {
             // Disable all effects
             if (window.gameEngine.effectManager) {
@@ -491,9 +491,9 @@ export class ErrorRecovery {
             }
             
             // Disable audio
-            if(window.gameEngine.audioManager) {'
+            if(window.gameEngine.audioManager) {
                 '';
-                window.gameEngine.audioManager.disable('');
+                window.gameEngine.audioManager.disable();
             }'
         console.warn('Safe mode enabled - running with minimal features'); }
     }
@@ -505,21 +505,21 @@ export class ErrorRecovery {
      */''
     addRecoveryStrategy(context: string, strategy: CustomRecoveryStrategy'): void { ''
         if(!strategy.strategy || typeof strategy.strategy !== 'function'') {'
-            ';
+            ';'
         }'
             throw new Error('Recovery strategy must have a strategy function''); }
         }'
         '';
         if(!strategy.fallback || typeof strategy.fallback !== 'function'') {'
-            ';
+            ';'
         }'
             throw new Error('Recovery strategy must have a fallback function'); }
         }
         
-        this.recoveryStrategies.set(context, { attempts: 0,)
+        this.recoveryStrategies.set(context, { attempts: 0)
             maxAttempts: strategy.maxAttempts || 2);
             strategy: strategy.strategy,);
-            fallback: strategy.fallback); }
+            fallback: strategy.fallback) }
         });
         
         console.log(`Custom recovery strategy added for context: ${context)`});
@@ -581,8 +581,7 @@ export class ErrorRecovery {
             totalAttempts: 0,
             successfulRecoveries: this.mainController.logger? .errorStats.recovered || 0, : undefined;
             fallbackState: this.getFallbackState(), }
-            strategiesByContext: {}
-        },
+            strategiesByContext: {},
         
         for(const [context, strategy] of this.recoveryStrategies) {
         
@@ -638,7 +637,7 @@ export class ErrorRecovery {
      */
     destroy(): void { this.recoveryStrategies.clear();'
         this.recoveryAttempts.clear();''
-        this.fallbackModes.clear('')';
+        this.fallbackModes.clear()';
         console.log('[ErrorRecovery] Recovery system destroyed''); }'
     }''
 }

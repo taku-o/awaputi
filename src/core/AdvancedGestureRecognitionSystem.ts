@@ -22,14 +22,14 @@ interface GameEngine { canvas: HTMLCanvasElement,
     };
     uiManager?: { showContextMenu(position: Position): void, }
     };
-    effectsManager?: { createWhirlwindEffect(center: Position, direction: string): void; }
+    effectsManager?: { createWhirlwindEffect(center: Position, direction: string): void }
     };
     customGestureHandler?: { handle(gesture: GestureData): void, }
     };
 }
 
 interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 interface Touch { identifier: number,
@@ -68,7 +68,7 @@ interface GestureConfig { swipe: {
     advanced: { circularGesture: boolean,
         customPatterns: boolean,
         gestureChaining: boolean,
-        machinesLearning: boolean; }
+        machinesLearning: boolean }
     };
 }
 
@@ -91,26 +91,26 @@ interface TouchState { id: number,
     startY: number,
     currentX: number,
     currentY: number,
-    path: PathPoint[];
+    path: PathPoint[]
     }
 }
 
 interface PathPoint { x: number,
     y: number,
-    time: number; }
+    time: number }
 }
 
 interface PinchState { initialDistance: number,
     currentDistance: number,
     initialScale: number,
     currentScale: number,
-    center: Position;
+    center: Position
     }
 }
 
 interface RotationState { initialAngle: number,
     currentAngle: number,
-    totalRotation: number; }
+    totalRotation: number }
 }
 
 interface GestureData { type: string,
@@ -141,7 +141,7 @@ interface GesturePattern { type: string,
 
 interface GesturePatterns { basic: Record<string, GesturePattern>;
     advanced: Record<string, GesturePattern>;
-    custom: Map<string, GesturePattern>; }
+    custom: Map<string, GesturePattern> }
 }
 
 interface GestureHistory { type: string | null,
@@ -149,13 +149,13 @@ interface GestureHistory { type: string | null,
     duration: number,
     touches: number,
     startPosition: Position,
-    endPosition: Position;
+    endPosition: Position
     }
 }
 
 interface LearningData { patterns: Map<string, unknown>;
     accuracy: Map<string, number>;
-    adaptiveThresholds: Map<string, number>; }
+    adaptiveThresholds: Map<string, number> }
 }
 
 interface CircularResult { isCircular: boolean,
@@ -169,19 +169,19 @@ interface MovementData { dx: number,
     dy: number,
     distance: number,
     angle: number,
-    velocity: number; }
+    velocity: number }
 }
 
 interface GestureAnalyzer { pathAnalyzer: PathAnalyzer,
     patternMatcher: PatternMatcher,
-    learningEngine: LearningEngine;
+    learningEngine: LearningEngine
     }
 }
 
 interface GestureStatistics { totalGestures: number,
     typeDistribution: Record<string, number>;
     averageDuration: number,
-    customGestureCount: number; }
+    customGestureCount: number }
 }
 
 class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
@@ -196,7 +196,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     private gestureAnalyzer?: GestureAnalyzer;
 
     constructor(gameEngine: GameEngine) {
-';
+';'
         this.gameEngine = gameEngine;''
         this.errorHandler = ErrorHandler.getInstance('';
     }
@@ -235,7 +235,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         },
         
         // ジェスチャーパターン
-        this.gesturePatterns = { // 基本ジェスチャー'
+        this.gesturePatterns = { // 基本ジェスチャー
             basic: {' }'
                 swipeUp: { type: 'swipe', direction: 'up' },''
                 swipeDown: { type: 'swipe', direction: 'down' },''
@@ -247,7 +247,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
                 doubleTap: { type: 'tap', count: 2 },''
                 longPress: { type: 'longpress' }
             },
-            // 高度なジェスチャー'
+            // 高度なジェスチャー
             advanced: { ' }'
                 circle: { type: 'circular', direction: 'clockwise' },''
                 counterCircle: { type: 'circular', direction: 'counterclockwise' },''
@@ -266,7 +266,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         // 学習データ
         this.learningData = { patterns: new Map<string, unknown>(),
             accuracy: new Map<string, number>(),
-            adaptiveThresholds: new Map<string, number>(); }
+            adaptiveThresholds: new Map<string, number>() }
         };
         
         this.initialize();
@@ -276,11 +276,11 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * システム初期化
      */
     private initialize(): void { try {
-            this.setupEventListeners();'
+            this.setupEventListeners();
             this.loadGestureSettings();''
-            this.initializeGestureAnalysis('')';
+            this.initializeGestureAnalysis()';
             console.log('[AdvancedGestureRecognitionSystem] 高度ジェスチャー認識システム初期化完了');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.initialize'); }
         }
     }
@@ -288,18 +288,18 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * イベントリスナー設定'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         canvas.addEventListener('touchstart', (e) => this.handleTouchStart(e), { passive: false }');''
         canvas.addEventListener('touchmove', (e) => this.handleTouchMove(e), { passive: false }');''
         canvas.addEventListener('touchend', (e) => this.handleTouchEnd(e), { passive: false }');''
         canvas.addEventListener('touchcancel', (e) => this.handleTouchCancel(e), { passive: false }');
         ';
-        // マウスイベント（デスクトップ対応）''
+        // マウスイベント（デスクトップ対応）
         canvas.addEventListener('mousedown', (e) => this.handleMouseDown(e)');''
         canvas.addEventListener('mousemove', (e) => this.handleMouseMove(e)');''
         canvas.addEventListener('mouseup', (e) => this.handleMouseUp(e);
         ';
-        // ポインターイベント（統一処理）''
+        // ポインターイベント（統一処理）
         if(window.PointerEvent') {'
             '';
             canvas.addEventListener('pointerdown', (e) => this.handlePointerDown(e)');''
@@ -308,7 +308,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             canvas.addEventListener('pointerup', (e) => this.handlePointerUp(e)'); }
         }
         ';
-        // ジェスチャーイベント（iOS Safari）''
+        // ジェスチャーイベント（iOS Safari）
         canvas.addEventListener('gesturestart', (e) => this.handleGestureStart(e), { passive: false }');''
         canvas.addEventListener('gesturechange', (e) => this.handleGestureChange(e), { passive: false }');''
         canvas.addEventListener('gestureend', (e) => this.handleGestureEnd(e), { passive: false });
@@ -327,9 +327,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             if(touches.length > 1) {
                 
             }
-                this.startMultiTouchGesture(touches); }'
+                this.startMultiTouchGesture(touches); }
             } else { this.startSingleTouchGesture(touches[0]);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchStart'); }
         }
     }
@@ -349,7 +349,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             
             }'
                 this.analyzeGestureMovement(touches);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchMove'); }
         }
     }
@@ -364,9 +364,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             // ジェスチャー完了判定
             if(e.touches.length === 0) {
                 
-            }'
+            }
                 this.completeGestureAnalysis();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchEnd'); }
         }
     }
@@ -374,9 +374,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * タッチキャンセル処理
      */
-    private handleTouchCancel(e: TouchEvent): void { try {'
+    private handleTouchCancel(e: TouchEvent): void { try {
             this.cancelGestureRecognition();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.handleTouchCancel'); }
         }
     }
@@ -486,7 +486,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         this.gestureState.startTime = Date.now();
         this.gestureState.touches = touches.map(touch => ({
             id: touch.identifier,
-            startX: touch.clientX,);
+            startX: touch.clientX);
             startY: touch.clientY);
             currentX: touch.clientX,);
             currentY: touch.clientY), }
@@ -518,7 +518,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     }
     
     /**
-     * マルチタッチジェスチャー開始'
+     * マルチタッチジェスチャー開始
      */''
     private startMultiTouchGesture(touches: Touch[]'): void { ''
         this.gestureState.type = 'multi';
@@ -569,7 +569,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
                 existingTouch.currentX = touch.clientX;
                 existingTouch.currentY = touch.clientY;
                 existingTouch.path.push({)
-                    x: touch.clientX,);
+                    x: touch.clientX,)
     }
                     y: touch.clientY), }
                     time: Date.now(); }
@@ -658,13 +658,13 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     }
     
     /**
-     * スワイプジェスチャー分析'
+     * スワイプジェスチャー分析
      */''
     analyzeSwipeGesture(movement') {'
         const angle = movement.angle;''
         let direction = 'unknown';
         ';
-        // 方向判定''
+        // 方向判定
         if (Math.abs(angle) < this.gestureConfig.swipe.angleThreshold') {'
     }'
             direction = 'right';' }'
@@ -719,7 +719,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             const angle2 = Math.atan2(path[i].y - center.y, path[i].x - center.x);
         }
             totalAngleChange += this.normalizeAngleDifference(angle2 - angle1); }
-        }'
+        }
         '';
         const isCircular = radiusStdDev < avgRadius * 0.3 && Math.abs(totalAngleChange') > Math.PI;''
         const direction = totalAngleChange > 0 ? 'clockwise' : 'counterclockwise';
@@ -797,9 +797,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             this.updateLearningData();
             
             // 状態リセット
-            this.resetGestureState();'
+            this.resetGestureState();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.completeGestureAnalysis'); }
         }
     }
@@ -836,7 +836,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
             direction: direction,
             velocity: movement.velocity,';
             distance: movement.distance,'';
-            duration: Date.now('')';
+            duration: Date.now()';
         this.dispatchGestureEvent('swipe', gesture);
     }
         this.handleSwipeGameAction(gesture); }
@@ -854,12 +854,12 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     }
     
     recognizeTapGesture() {
-    ';
+    ';'
         '';
         const tapCount = this.detectMultiTap(''';
-            type: 'tap',);
+            type: 'tap');
             count: tapCount);
-            position: this.gestureState.startPosition,);
+            position: this.gestureState.startPosition,)
     }
             duration: Date.now() - this.gestureState.startTime }
         },
@@ -876,10 +876,10 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
         this.handleTapGameAction(gesture);
     }'
     '';
-    recognizeLongPress('')';
+    recognizeLongPress()';
             type: 'longpress')';
             position: this.gestureState.startPosition,'';
-            duration: Date.now('')';
+            duration: Date.now()';
         this.dispatchGestureEvent('longpress', gesture);
         this.handleLongPressGameAction(gesture);
     }'
@@ -1077,9 +1077,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     }
     
     detectMultiTap() {
-    ';
-        // 直近のタップ履歴をチェック''
-        const now = Date.now('')';
+    ;
+        // 直近のタップ履歴をチェック
+        const now = Date.now()';
             g.type === 'tap' && );
             now - g.timestamp < this.gestureConfig.tap.doubleTapInterval);
         
@@ -1105,7 +1105,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     }
         const event = new CustomEvent(`gesture:${type}`, { detail: gesture)
         ),
-        this.gameEngine.canvas.dispatchEvent(event);
+        this.gameEngine.canvas.dispatchEvent(event)
          }
         console.log(`[AdvancedGestureRecognitionSystem] ジェスチャー認識: ${type)`, gesture});
     }
@@ -1116,7 +1116,7 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     addToGestureHistory() {
         const gestureRecord = {
             type: this.gestureState.type,
-            timestamp: Date.now(,);
+            timestamp: Date.now();
             duration: Date.now() - this.gestureState.startTime,
             touches: this.gestureState.touches.length,
             startPosition: this.gestureState.startPosition,
@@ -1142,13 +1142,13 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     }
     
     /**
-     * ジェスチャー設定読み込み'
+     * ジェスチャー設定読み込み
      */''
-    loadGestureSettings('')';
+    loadGestureSettings()';
             const savedSettings = localStorage.getItem('bubblepop_gesture_settings');
             if (savedSettings) { const settings = JSON.parse(savedSettings); }'
                 this.gestureConfig = { ...this.gestureConfig, ...settings };''
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('[AdvancedGestureRecognitionSystem] ジェスチャー設定読み込みエラー:', error); }
         }
     }
@@ -1156,9 +1156,9 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     /**
      * ジェスチャー設定保存'
      */''
-    saveGestureSettings('')';
+    saveGestureSettings()';
             localStorage.setItem('bubblepop_gesture_settings', JSON.stringify(this.gestureConfig);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.saveGestureSettings'); }
         }
     }
@@ -1169,8 +1169,8 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
     initializeGestureAnalysis() {
         // 分析エンジン初期化
         this.gestureAnalyzer = {
-            pathAnalyzer: new PathAnalyzer(,);
-            patternMatcher: new PatternMatcher();
+            pathAnalyzer: new PathAnalyzer();
+            patternMatcher: new PatternMatcher()
     }
             learningEngine: new LearningEngine(); }
         };
@@ -1216,12 +1216,12 @@ class AdvancedGestureRecognitionSystem { private gameEngine: GameEngine
      * クリーンアップ
      */
     cleanup() {
-        try {'
-            this.resetGestureState();''
-            this.saveGestureSettings('');
-    }'
+        try {
+            this.resetGestureState();
+            this.saveGestureSettings();
+    }
             console.log('[AdvancedGestureRecognitionSystem] クリーンアップ完了');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AdvancedGestureRecognitionSystem.cleanup'); }
         }
     }
@@ -1241,7 +1241,7 @@ class PathAnalyzer { analyze(path: PathPoint[]): Record<string, unknown> {
  */
 class PatternMatcher { match(pattern1: unknown, pattern2: unknown): number {
         // パターンマッチングロジック
-        return 0.5; }
+        return 0.5 }
     }
 }
 
@@ -1255,7 +1255,7 @@ class LearningEngine { learn(data: unknown): void {
 
 // シングルトンインスタンス
 let advancedGestureRecognitionSystemInstance: AdvancedGestureRecognitionSystem | null = null,
-';
+';'
 export function getAdvancedGestureRecognitionSystem(gameEngine: GameEngine | null = null): AdvancedGestureRecognitionSystem | null { if (!advancedGestureRecognitionSystemInstance && gameEngine) {''
         advancedGestureRecognitionSystemInstance = new AdvancedGestureRecognitionSystem(gameEngine'); }
     }

@@ -8,7 +8,7 @@
 
 // Type definitions
 interface CanvasContext { canvas: HTMLCanvasElement,
-    ctx: CanvasRenderingContext2D;
+    ctx: CanvasRenderingContext2D
     }
 }
 
@@ -21,7 +21,7 @@ interface FaviconConfig { backgroundColor?: string;
 interface FaviconRenderConfig { backgroundColor: string,
     textColor: string,
     fontFamily: string,
-    text: string; }
+    text: string }
 }
 
 type ImageFormat = 'png' | 'ico';
@@ -38,7 +38,7 @@ export default class FaviconCanvasRenderer { /**
         const ctx = canvas.getContext('2d');'
         '';
         if(!ctx') {'
-            ';
+            ';'
         }'
             throw new Error('Could not get 2D context from canvas'); }
         }
@@ -59,25 +59,25 @@ export default class FaviconCanvasRenderer { /**
             text: config.text || 'B' }
         },
 
-        // 背景を描画'
+        // 背景を描画
         ctx.fillStyle = renderConfig.backgroundColor;''
         ctx.fillRect(0, 0, size, size');
 ';
-        // 泡のような円を描画''
+        // 泡のような円を描画
         ctx.fillStyle = '#64B5F6';
         ctx.beginPath();'
         ctx.arc(size * 0.3, size * 0.3, size * 0.15, 0, 2 * Math.PI);''
-        ctx.fill('')';
+        ctx.fill()';
         ctx.fillStyle = '#90CAF9';)
         ctx.beginPath();'
         ctx.arc(size * 0.7, size * 0.4, size * 0.1, 0, 2 * Math.PI);''
-        ctx.fill('')';
+        ctx.fill()';
         ctx.fillStyle = '#BBDEFB';)
         ctx.beginPath();
         ctx.arc(size * 0.5, size * 0.7, size * 0.08, 0, 2 * Math.PI);
         ctx.fill();
 ';
-        // テキストを描画''
+        // テキストを描画
         const fontSize = Math.floor(size * 0.5');
         ctx.font = `bold ${fontSize}px ${renderConfig.fontFamily}`;'
         ctx.fillStyle = renderConfig.textColor;''
@@ -105,12 +105,12 @@ export default class FaviconCanvasRenderer { /**
      * Canvas要素をICO形式に変換
      * @private
      * @param canvas - Canvas要素
-     * @returns ICO形式のData URL'
+     * @returns ICO形式のData URL
      */''
-    private static _convertToICO(canvas: HTMLCanvasElement'): string { // 簡易ICO変換（実際の実装では複数サイズを含むICOを作成）''
+    private static _convertToICO(canvas: HTMLCanvasElement'): string { // 簡易ICO変換（実際の実装では複数サイズを含むICOを作成）
         const pngData = canvas.toDataURL('image/png'');
         ';
-        // ICOヘッダーを付加（簡易版）''
+        // ICOヘッダーを付加（簡易版）
         const base64Data = pngData.replace(/^data:image\/png;base64,/, ''');''
         const icoHeader = 'data:image/x-icon;base64,';
         
@@ -129,7 +129,7 @@ export default class FaviconCanvasRenderer { /**
             fontFamily: config.fontFamily || 'Arial, sans-serif','';
             text: config.text || 'B' }
         },
-';
+';'
         const svg = `'';
             <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">""
                 <rect width="${size}" height="${size}" fill="${renderConfig.backgroundColor}"/>""
@@ -165,7 +165,7 @@ export default class FaviconCanvasRenderer { /**
                 results.set(size, dataURL);
             } catch (error) {
                 console.warn(`Failed to generate favicon for size ${size}:`, error);
-                // フォールバックとしてSVGを生成'
+                // フォールバックとしてSVGを生成
                 const svgDataURL = this.generateSVGFallback(size, config);''
                 results.set(size, svgDataURL');
             }

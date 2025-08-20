@@ -12,6 +12,6 @@ export class UndoOperationManager {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

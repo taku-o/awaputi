@@ -7,13 +7,13 @@ interface ErrorEntry { id: number,
     level: 'error' | 'warn' | 'info',
     message: string,
     context: Record<string, any>;
-    count: number; }
+    count: number }
 }
 
 interface ErrorStats { total: number,
     error: number,
     warn: number,
-    info: number; }
+    info: number }
 }
 
 interface ErrorPatterns { [pattern: string]: number, }
@@ -21,7 +21,7 @@ interface ErrorPatterns { [pattern: string]: number, }
 
 interface ExportData { exportTime: string,
     gameEngine: string,
-    errors: ErrorEntry[];
+    errors: ErrorEntry[]
     }
 }
 
@@ -48,9 +48,9 @@ export class ErrorPanel {
     }
 
     /**
-     * パネルを作成'
+     * パネルを作成
      */''
-    create('')';
+    create()';
         this.element = document.createElement('div'');''
         this.element.className = 'debug-error-panel';'
         this.element.innerHTML = `'';
@@ -104,12 +104,12 @@ export class ErrorPanel {
             this.clearErrors();' }'
         }');
 ';
-        // エラーエクスポート''
+        // エラーエクスポート
         const exportButton = this.element.querySelector('#export-errors'') as HTMLButtonElement;''
         exportButton?.addEventListener('click', () => { this.exportErrors();' }'
         }');
 ';
-        // フィルター変更''
+        // フィルター変更
         const filterSelect = this.element.querySelector('#error-filter'') as HTMLSelectElement;''
         filterSelect?.addEventListener('change', (e) => {  const target = e.target as HTMLSelectElement; }
             this.filterErrors(target.value); }
@@ -119,11 +119,11 @@ export class ErrorPanel {
     /**
      * エラーを読み込み'
      */ : undefined''
-    private loadErrors('')';
+    private loadErrors()';
             const stored = localStorage.getItem('debug-errors');'
             if (stored) { this.errors = JSON.parse(stored);' }'
-            } catch (error') { ''
-            console.warn('Error loading debug errors:', error); }
+            } catch (error) { ''
+            console.warn('Error loading debug errors:', error) }
         }
 
         // コンソールエラーをキャプチャ
@@ -136,11 +136,11 @@ export class ErrorPanel {
      * コンソールエラーをキャプチャ
      */
     private interceptConsoleErrors(): void { const originalError = console.error;
-        const originalWarn = console.warn;'
+        const originalWarn = console.warn;
 '';
         console.error = (...args: any[]') => { ''
-            this.addError('error', args.join(' '); }
-            originalError.apply(console, args); }
+            this.addError('error', args.join(' ') }
+            originalError.apply(console, args); }'
         };'
 '';
         console.warn = (...args: any[]') => {  ''
@@ -148,12 +148,12 @@ export class ErrorPanel {
             originalWarn.apply(console, args'); }
         };
 ';
-        // window.onerror イベントもキャプチャ''
+        // window.onerror イベントもキャプチャ
         window.addEventListener('error', (event: ErrorEvent') => { ' }'
             this.addError('error', `${event.message} at ${event.filename}:${event.lineno}:${event.colno}`);''
         }');
 ';
-        // unhandledrejection イベントもキャプチャ''
+        // unhandledrejection イベントもキャプチャ
         window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent') => { ' }'
             this.addError('error', `Unhandled Promise Rejection: ${event.reason}`);''
         }');
@@ -190,12 +190,12 @@ export class ErrorPanel {
     }
 
     /**
-     * エラーを保存'
+     * エラーを保存
      */''
-    private saveErrors('')';
+    private saveErrors()';
             localStorage.setItem('debug-errors', JSON.stringify(this.errors);''
-        } catch (error') { ''
-            console.warn('Error saving debug errors:', error); }
+        } catch (error) { ''
+            console.warn('Error saving debug errors:', error) }
         }
     }
 
@@ -262,7 +262,7 @@ export class ErrorPanel {
         const patterns = this.element.querySelector('#error-patterns') as HTMLElement;
         if (!patterns) return;
 
-        // 簡単なパターン分析 }'
+        // 簡単なパターン分析 }
         const messagePatterns: ErrorPatterns = {}''
         this.errors.forEach(error => {  ');''
             const key = error.message.split(' ').slice(0, 3').join(' '); // 最初の3単語でパターン化 }
@@ -357,7 +357,7 @@ export class ErrorPanel {
      */'
     hide(): void { ''
         if(this.element') {'
-            ';
+            ';'
         }'
             this.element.style.display = 'none'; }
         }
@@ -376,7 +376,7 @@ export class ErrorPanel {
 
     /**
      * パネルを破棄
-     */'
+     */
     destroy(): void { if (this.element && this.element.parentNode) {''
             this.element.parentNode.removeChild(this.element'); }
         }

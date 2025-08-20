@@ -8,7 +8,7 @@ import { ComponentEventBus } from './ComponentEventBus';''
 import { SceneState } from './SceneState';
 
 interface HelpSectionContent { title: string,
-    content: string[]; }
+    content: string[] }
 }
 
 interface HelpContent { [sectionId: string]: HelpSectionContent,
@@ -16,7 +16,7 @@ interface HelpContent { [sectionId: string]: HelpSectionContent,
 }
 
 interface SectionChangeEvent { oldSection: string,
-    newSection: string; }
+    newSection: string }
 }
 
 interface TextSettings { titleFont: string,
@@ -26,10 +26,10 @@ interface TextSettings { titleFont: string,
     headerColor: string,
     contentColor: string,
     questionColor: string,
-    answerColor: string; }
+    answerColor: string }
 }
 ';
-export class HelpTab extends TabComponent { // ヘルプセクション''
+export class HelpTab extends TabComponent { // ヘルプセクション
     private readonly helpSections: string[] = ['overview', 'categories', 'progress', 'rewards', 'tips', 'faq'];''
     private readonly helpSectionLabels: string[] = ['概要', 'カテゴリ', '進捗', '報酬', 'ヒント', 'FAQ'];''
     private currentHelpSection: string = 'overview';
@@ -68,7 +68,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
     }
     
     /**
-     * ヘルプコンテンツを初期化'
+     * ヘルプコンテンツを初期化
      */''
     private initializeHelpContent(''';
                     title: '実績システム概要',';
@@ -205,7 +205,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
                     ] }
                 }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Help content initialization error:', error);
             this.helpContent = this.createFallbackContent(); }
         }
@@ -214,7 +214,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
     /**
      * フォールバックコンテンツを作成'
      */''
-    private createFallbackContent('')';
+    private createFallbackContent()';
                 title: 'ヘルプ')';
                 content: ['';
                     'ヘルプコンテンツの読み込みに失敗しました。',']';
@@ -249,7 +249,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
     }
     
     /**
-     * 背景を描画'
+     * 背景を描画
      */''
     private renderBackground(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number'): void { ''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#F8F9FA';''
@@ -276,7 +276,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
             const buttonX = x + this.contentPadding + i * (buttonWidth + 10');
             const isActive = this.currentHelpSection === section;
             ';
-            // ボタン背景''
+            // ボタン背景
             context.fillStyle = isActive ? '#007BFF' : '#E9ECEF';'
             this.roundRect(context, buttonX, buttonY, buttonWidth, this.sectionButtonHeight, 4);''
             context.fill(''';
@@ -299,43 +299,43 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
      * ヘルプコンテンツを描画
      */
     private renderHelpContent(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { if (!this.helpContent) return;
-        ';
+        ';'
         const currentSection = this.helpContent[this.currentHelpSection];''
         if (!currentSection') return;
         
         const contentX = x + this.contentPadding;
         const contentWidth = width - this.contentPadding * 2 - 20; // スクロールバー分を除く
         let currentY = y + this.contentPadding - this.scrollPosition;
-        ';
-        // タイトル描画''
+        ;
+        // タイトル描画
         context.font = this.accessibilitySettings.largeText ? '20px bold sans-serif' : '18px bold sans-serif';''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#212529';''
         context.textAlign = 'left';''
         context.textBaseline = 'top';
         
         if(currentY + 30 > y && currentY < y + height) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             context.fillText(currentSection.title, contentX, currentY'); }
         }
         currentY += 40;
         ';
-        // コンテンツ描画''
+        // コンテンツ描画
         context.font = this.accessibilitySettings.largeText ? '16px sans-serif' : '14px sans-serif';''
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057';
         
         for(const line of currentSection.content) {
-        ';
+        ';'
             '';
-            if (currentY > y + height') break; // 表示領域外は描画をスキップ'
+            if (currentY > y + height') break; // 表示領域外は描画をスキップ
             '';
             if (line === ''') {
                 // 空行
         
-        }'
+        }
                 currentY += this.lineHeight;' }'
-            } else if (line.startsWith('【'') && line.endsWith('】') { // セクションヘッダー''
+            } else if (line.startsWith('【'') && line.endsWith('】') { // セクションヘッダー
                 if(currentY + this.lineHeight > y') {'
                     '';
                     context.font = this.accessibilitySettings.largeText ? '16px bold sans-serif' : '14px bold sans-serif';''
@@ -346,7 +346,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
                     context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#495057'; }
                 }'
                 currentY += this.lineHeight + 5;''
-            } else if (line.startsWith('•'') || line.startsWith('Q:'') || line.startsWith('A:') { // リストアイテムや質問回答''
+            } else if (line.startsWith('•'') || line.startsWith('Q:'') || line.startsWith('A:') { // リストアイテムや質問回答
                 if(currentY + this.lineHeight > y') {'
                     '';
                     const textColor = line.startsWith('Q:'') ? '#DC3545' : '';
@@ -370,7 +370,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
     }
     
     /**
-     * 折り返しテキストを描画'
+     * 折り返しテキストを描画
      */''
     private renderWrappedText(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number'): number { ''
         const words = text.split(''');''
@@ -378,7 +378,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
         let currentY = y;
         
         for(let i = 0; i < words.length; i++) {
-        ';
+        ';'
             const testLine = line + words[i];''
             const metrics = context.measureText(testLine');'
             '';
@@ -404,18 +404,18 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
     private renderScrollbar(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { ''
         if (this.maxScrollPosition <= 0') return;
         ';
-        // スクロールバー背景''
+        // スクロールバー背景
         context.fillStyle = '#E9ECEF';
         context.fillRect(x, y, width, height);
         
-        // スクロールバートラック'
+        // スクロールバートラック
         const trackHeight = height * (height / (height + this.maxScrollPosition));''
         const trackY = y + (this.scrollPosition / this.maxScrollPosition) * (height - trackHeight');'
         '';
         context.fillStyle = '#6C757D';''
         context.fillRect(x + 2, trackY, width - 4, trackHeight');
         ';
-        // スクロールバー枠線''
+        // スクロールバー枠線
         context.strokeStyle = '#CED4DA';
         context.lineWidth = 1;
         context.strokeRect(x, y, width, height); }
@@ -462,7 +462,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
     
     /**
      * 入力処理
-     */'
+     */
     handleInput(event: Event): boolean { ''
         if (!this.isActive') return false;'
         '';
@@ -493,7 +493,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
                     keyEvent.preventDefault(''';
                 case 'End':';
         })'
-                    keyEvent.preventDefault('') }'
+                    keyEvent.preventDefault() }'
         } else if (event.type === 'wheel') { const wheelEvent = event as WheelEvent;
             wheelEvent.preventDefault();
             this.scroll(wheelEvent.deltaY);
@@ -515,7 +515,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
             // イベント通知
             const eventData: SectionChangeEvent = {
                 oldSection,
-                newSection: section }'
+                newSection: section }
             };''
             this.eventBus.emit('help-section-changed', eventData);
         }
@@ -549,7 +549,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
     cleanup(): void { super.cleanup();
         
         if(this.contentRenderer) {
-        ';
+        ';'
             '';
             this.contentRenderer.cleanup(''';
         titleFont: '18px bold sans-serif''';
@@ -558,7 +558,7 @@ export class HelpTab extends TabComponent { // ヘルプセクション''
         titleColor: '#212529','';
         headerColor: '#007BFF','';
         contentColor: '#495057','';
-        questionColor: '#DC3545',';
+        questionColor: '#DC3545','
         }'
         answerColor: '#28A745' })
     })

@@ -13,33 +13,33 @@ interface DialogData { type: string,
 }
 
 interface ErrorData { message: string,
-    error?: Error;
+    error?: Error
     }
 }
 
 interface TabData { tabId: string,
-    previousTabId?: string; }
+    previousTabId?: string }
 }
 
 interface EventCoordinates { x: number,
-    y: number; }
+    y: number }
 }
 
 interface BackButton { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface HitArea { x: number,
     y: number,
     width: number,
     height: number,
-    id: string; }
+    id: string }
 }
 
 interface HitAreas { tabs: HitArea[],
-    buttons?: HitArea[];
+    buttons?: HitArea[]
     }
 }
 
@@ -51,18 +51,18 @@ interface Layout { contentPadding: number,
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any,
-    set(key: string, value: any): void; }
+    set(key: string, value: any): void }
 }
 
 // コンポーネントインターフェース
 interface TabManager { switchTab(tabId: string): void,
-    handleTabContentClick(x: number, y: number, contentX: number, contentY: number, contentWidth: number, contentHeight: number): boolean; }
+    handleTabContentClick(x: number, y: number, contentX: number, contentY: number, contentWidth: number, contentHeight: number): boolean }
 }
 
-interface ProfileManager { handleClick?(x: number, y: number): boolean; }
+interface ProfileManager { handleClick?(x: number, y: number): boolean }
 }
 
-interface HelpSystem { handleClick(x: number, y: number, canvas: HTMLCanvasElement): boolean; }
+interface HelpSystem { handleClick(x: number, y: number, canvas: HTMLCanvasElement): boolean }
 }
 
 interface DialogManager { handleClick(x: number, y: number): boolean,
@@ -97,11 +97,11 @@ export class UserInfoEventHandler {
     
     /**
      * イベントリスナーをセットアップ
-     */'
+     */
     private setupEventListeners(): void { ''
         if (!this.eventBus') return;
         ';
-        // ダイアログイベントの監視''
+        // ダイアログイベントの監視
         this.eventBus.on('dialog-opened', (data: DialogData') => { ''
             console.log('Dialog opened:', data.type');' }'
             this.sceneState.set('activeDialog', data.type);' }'
@@ -112,14 +112,14 @@ export class UserInfoEventHandler {
             this.sceneState.set('activeDialog', null);' }'
         }');
         ';
-        // エラー関連イベント''
+        // エラー関連イベント
         this.eventBus.on('error-occurred', (data: ErrorData) => { this.showErrorMessage(data.message);' }'
         }');'
         '';
         this.eventBus.on('error-cleared', () => { this.clearErrorMessage();' }'
         }');
         ';
-        // タブ関連イベント''
+        // タブ関連イベント
         this.eventBus.on('tab-changed', (data: TabData') => {  ' }'
             console.log('Tab changed to:', data.tabId); }
         });
@@ -132,21 +132,21 @@ export class UserInfoEventHandler {
         event: Event,
         tabManager?: TabManager,
         profileManager?: ProfileManager,
-        helpSystem?: HelpSystem,
+        helpSystem?: HelpSystem
     );
         dialogManager?: DialogManager)';
         renderer?: Renderer'';
     '): boolean { try {
-            const canvas = this.gameEngine.canvas;
+            const canvas = this.gameEngine.canvas;'
             ';
-            // ダイアログが開いている場合は、ダイアログが優先''
+            // ダイアログが開いている場合は、ダイアログが優先
             if(dialogManager && this.sceneState.get('activeDialog') {
                 
             }
                 return this.handleDialogInput(event, dialogManager); }
             }
             ';
-            // イベントタイプ別の処理''
+            // イベントタイプ別の処理
             switch(event.type') {'
                 '';
                 case 'click':'';
@@ -163,7 +163,7 @@ export class UserInfoEventHandler {
                     
             }'
                 default: return false,' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('UserInfoEventHandler input error:', error');''
             this.showErrorMessage('入力処理中にエラーが発生しました');
             return false; }
@@ -197,7 +197,7 @@ export class UserInfoEventHandler {
     private handleClickInput(;
         event: MouseEvent | TouchEvent, ;
         tabManager?: TabManager,
-        helpSystem?: HelpSystem,
+        helpSystem?: HelpSystem
     );
         renderer?: Renderer);
         canvas?: HTMLCanvasElement;
@@ -232,7 +232,7 @@ export class UserInfoEventHandler {
     
     /**
      * キーボード入力の処理
-     */'
+     */
     private handleKeyboardInput(event: KeyboardEvent, dialogManager?: DialogManager): boolean { const now = Date.now();''
         if(now - this.lastKeyTime < this.debounceDelay') {
             
@@ -240,12 +240,12 @@ export class UserInfoEventHandler {
             return true; // デバウンス }
         }
         this.lastKeyTime = now;
-        ';
-        // ダイアログが開いている場合''
+        ;
+        // ダイアログが開いている場合
         if(dialogManager && this.sceneState.get('activeDialog') { return dialogManager.handleKeyboard(event); }
         }
         ';
-        // 一般的なキーボードショートカット''
+        // 一般的なキーボードショートカット
         switch(event.key') {'
             '';
             case 'Escape':'';
@@ -278,7 +278,7 @@ export class UserInfoEventHandler {
     }
     
     /**
-     * 戻るボタンのクリック処理'
+     * 戻るボタンのクリック処理
      */''
     private handleBackButtonClick(x: number, y: number'): boolean { ''
         const backButton = this.sceneState.get('backButton') as BackButton | null;
@@ -302,7 +302,7 @@ export class UserInfoEventHandler {
     private handleTabHeaderClick(;
         x: number, ;
         y: number, ;
-        tabManager: TabManager,
+        tabManager: TabManager
     );
         renderer: Renderer);
         canvas: HTMLCanvasElement;
@@ -328,7 +328,7 @@ export class UserInfoEventHandler {
     private handleTabContentClick(;
         x: number, ;
         y: number, ;
-        tabManager: TabManager,
+        tabManager: TabManager
     );
         renderer: Renderer);
         canvas: HTMLCanvasElement;
@@ -353,10 +353,10 @@ export class UserInfoEventHandler {
     /**
      * 戻るアクションの処理'
      */''
-    private handleBackAction('')';
+    private handleBackAction()';
             this.gameEngine.setCurrentScene('MainMenuScene'');''
             console.log('Navigating back to MainMenuScene');''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Error navigating back:', error');''
             this.showErrorMessage('メニューに戻れませんでした'); }
         }
@@ -370,9 +370,9 @@ export class UserInfoEventHandler {
     }
     
     /**
-     * ホバー状態の更新'
+     * ホバー状態の更新
      */''
-    private updateHoverStates(x: number, y: number, canvas: HTMLCanvasElement'): void { // 戻るボタンのホバー''
+    private updateHoverStates(x: number, y: number, canvas: HTMLCanvasElement'): void { // 戻るボタンのホバー
         const backButton = this.sceneState.get('backButton') as BackButton | null;''
         if(backButton') {
             const isHovering = x >= backButton.x && x <= backButton.x + backButton.width &&';
@@ -386,7 +386,7 @@ export class UserInfoEventHandler {
     }
     
     /**
-     * イベント座標の取得'
+     * イベント座標の取得
      */''
     private getEventCoordinates(event: MouseEvent | TouchEvent'): EventCoordinates { ''
         if('touches' in event && event.touches && event.touches.length > 0) {
@@ -405,16 +405,16 @@ export class UserInfoEventHandler {
     }
     
     /**
-     * エラーメッセージの表示'
+     * エラーメッセージの表示
      */''
     private showErrorMessage(message: string'): void { ''
         this.sceneState.set('errorMessage', message');
         ';
-        // 自動でエラーメッセージをクリア''
+        // 自動でエラーメッセージをクリア
         if (this.sceneState.get('errorTimeout')') {''
             clearTimeout(this.sceneState.get('errorTimeout'); }
         }
-        ';
+        ';'
         const timeout = setTimeout(() => { this.clearErrorMessage();' }'
         }, 5000');'
         '';
@@ -424,7 +424,7 @@ export class UserInfoEventHandler {
     /**
      * エラーメッセージのクリア'
      */''
-    private clearErrorMessage('')';
+    private clearErrorMessage()';
         this.sceneState.set('errorMessage', null');'
         '';
         const timeout = this.sceneState.get('errorTimeout');
@@ -439,10 +439,10 @@ export class UserInfoEventHandler {
     /**
      * リソースのクリーンアップ'
      */''
-    public dispose('')';
+    public dispose()';
         const timeout = this.sceneState.get('errorTimeout');
         if(timeout) {'
-            ';
+            ';'
         }'
             clearTimeout(timeout'); }
         }'

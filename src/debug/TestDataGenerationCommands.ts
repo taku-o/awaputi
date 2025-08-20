@@ -14,11 +14,11 @@ import { CommandValidator } from './test-data-generation/CommandValidator.js';
 interface GameEngine { [key: string]: any, }
 }
 
-interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void; }
+interface ErrorHandler { handleError: (error: Error, context: string, details?: any) => void }
 }
 
 interface ComponentConfig { name: string,
-    class: ComponentConstructor;
+    class: ComponentConstructor
     }
 }
 
@@ -44,7 +44,7 @@ interface Component { initialize(): Promise<void>;
     processConfigTestCommand?(args: string[], context: any, console: any): Promise<string>,
     processErrorSimulationCommand?(args: string[], context: any, console: any): Promise<string>,
     processStressTestCommand?(args: string[], context: any, console: any): Promise<string>,
-    validateCommand?(command: string, args: string[]): ValidationResult;
+    validateCommand?(command: string, args: string[]): ValidationResult
     }
 }
 
@@ -66,30 +66,30 @@ interface CommandRegistration { command: string,
     usage: string,
     parameters: Parameter[],
     examples: string[],
-    group: string; }
+    group: string }
 }
 
 interface Parameter { name: string,
     type: string,
     required: boolean,
-    description: string; }
+    description: string }
 }
 
 interface ValidationResult { valid: boolean,
-    errors: string[]; }
+    errors: string[] }
 }
 
 interface Scenario { name: string,
-    description: string; }
+    description: string }
 }
 
 interface Statistics { initialized: boolean,
     componentsCount: number,
     generatedDataCount: number,
-    components: Record<string, any>; }
+    components: Record<string, any> }
 }
 
-interface DeveloperConsole { register(command: string, handler: Function, config: CommandRegistration): void; }
+interface DeveloperConsole { register(command: string, handler: Function, config: CommandRegistration): void }
 }
 
 export class TestDataGenerationCommands {
@@ -107,11 +107,8 @@ export class TestDataGenerationCommands {
         this.initialized = false;
         
         // 軽量エラーハンドラー
-        this.errorHandler = {
-
-    }
-    }
-            handleError: (error: Error, context: string, details?: any) => { }'
+        this.errorHandler = {}
+            handleError: (error: Error, context: string, details?: any) => { }
                 console.error(`[TestDataGenerationCommands] ${context}: ${error.message}`);''
                 if (details') console.error('Details:', details);
             }
@@ -140,11 +137,11 @@ export class TestDataGenerationCommands {
                     this.components.set(name, this.createFallbackComponent(name)');
                 }
             }
-';
+';'
             this.initialized = true;''
             console.log('[TestDataGenerationCommands] 全コンポーネント初期化完了');'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'Component initialization failed'); }
         }
     }
@@ -179,8 +176,8 @@ export class TestDataGenerationCommands {
      * DeveloperConsoleにコマンドを登録（後方互換性維持）
      * @param console - Developer Console インスタンス'
      */''
-    registerCommands(console: DeveloperConsole'): void { try {'
-            // バブル生成コマンド''
+    registerCommands(console: DeveloperConsole'): void { try {
+            // バブル生成コマンド
             const bubbleGenerator = this.getComponent('bubbleGenerator') as Component;
             if(bubbleGenerator? .getBubbleCommandRegistration) {'
                 const bubbleReg = bubbleGenerator.getBubbleCommandRegistration();'
@@ -188,7 +185,7 @@ export class TestDataGenerationCommands {
                 console.register(bubbleReg.command, this.generateBubblesCommand.bind(this), bubbleReg'); }
             }
 ';
-            // ゲーム状態関連コマンド''
+            // ゲーム状態関連コマンド
             const gameStateGenerator = this.getComponent('gameStateGenerator') as Component;
             if(gameStateGenerator?.getGameStateCommandRegistrations) {
                 const gameStateRegs = gameStateGenerator.getGameStateCommandRegistrations();
@@ -201,7 +198,7 @@ export class TestDataGenerationCommands {
                 }
             }
 ';
-            // シナリオ関連コマンド''
+            // シナリオ関連コマンド
             const scenarioProcessor = this.getComponent('scenarioProcessor') as Component;
             if(scenarioProcessor?.getScenarioCommandRegistrations) {
                 const scenarioRegs = scenarioProcessor.getScenarioCommandRegistrations();
@@ -215,9 +212,9 @@ export class TestDataGenerationCommands {
             }
 
             // ユーティリティコマンド
-            this.registerUtilityCommands(console);'
+            this.registerUtilityCommands(console);
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'Command registration failed'); }
         }
     }
@@ -226,7 +223,7 @@ export class TestDataGenerationCommands {
      * ユーティリティコマンドを登録
      * @param console - Developer Console インスタンス'
      */ : undefined''
-    registerUtilityCommands(console: DeveloperConsole'): void { // test.clear コマンド''
+    registerUtilityCommands(console: DeveloperConsole'): void { // test.clear コマンド
         console.register('test.clear', this.clearTestDataCommand.bind(this'), {''
             command: 'test.clear','';
             description: 'Clear generated test data','';
@@ -238,7 +235,7 @@ export class TestDataGenerationCommands {
             group: 'test''';
         }'),
 ';
-        // test.list コマンド''
+        // test.list コマンド
         console.register('test.list', this.listTestDataCommand.bind(this'), { ''
             command: 'test.list','';
             description: 'List available test data and scenarios','';
@@ -270,7 +267,7 @@ export class TestDataGenerationCommands {
         return handlers[command] || null;
     }
 
-    // === 公開コマンドハンドラー（後方互換性維持） ==='
+    // === 公開コマンドハンドラー（後方互換性維持） ===
 '';
     async generateBubblesCommand(args: string[], context: any, console: any'): Promise<string> { ''
         const validator = this.getComponent('validator'') as Component;''
@@ -285,9 +282,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(bubbleGenerator? .processBubbleCommand) {
-        ';
-            ';
+        if(bubbleGenerator? .processBubbleCommand) {'
+        ';'
+            ';'
         }'
             return await bubbleGenerator.processBubbleCommand(args, context, console'); }
         }'
@@ -308,9 +305,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(gameStateGenerator? .processGameStateCommand) {
-        ';
-            ';
+        if(gameStateGenerator? .processGameStateCommand) {'
+        ';'
+            ';'
         }'
             return await gameStateGenerator.processGameStateCommand(args, context, console'); }
         }'
@@ -331,9 +328,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(gameStateGenerator? .processPlayerDataCommand) {
-        ';
-            ';
+        if(gameStateGenerator? .processPlayerDataCommand) {'
+        ';'
+            ';'
         }'
             return await gameStateGenerator.processPlayerDataCommand(args, context, console'); }
         }'
@@ -354,9 +351,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(gameStateGenerator? .processStatisticsCommand) {
-        ';
-            ';
+        if(gameStateGenerator? .processStatisticsCommand) {'
+        ';'
+            ';'
         }'
             return await gameStateGenerator.processStatisticsCommand(args, context, console'); }
         }'
@@ -377,9 +374,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(scenarioProcessor? .processPerformanceTestCommand) {
-        ';
-            ';
+        if(scenarioProcessor? .processPerformanceTestCommand) {'
+        ';'
+            ';'
         }'
             return await scenarioProcessor.processPerformanceTestCommand(args, context, console'); }
         }'
@@ -400,9 +397,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(scenarioProcessor? .processConfigTestCommand) {
-        ';
-            ';
+        if(scenarioProcessor? .processConfigTestCommand) {'
+        ';'
+            ';'
         }'
             return await scenarioProcessor.processConfigTestCommand(args, context, console'); }
         }'
@@ -423,9 +420,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(scenarioProcessor? .processErrorSimulationCommand) {
-        ';
-            ';
+        if(scenarioProcessor? .processErrorSimulationCommand) {'
+        ';'
+            ';'
         }'
             return await scenarioProcessor.processErrorSimulationCommand(args, context, console'); }
         }'
@@ -446,9 +443,9 @@ export class TestDataGenerationCommands {
             }
         }
         
-        if(scenarioProcessor? .processStressTestCommand) {
-        ';
-            ';
+        if(scenarioProcessor? .processStressTestCommand) {'
+        ';'
+            ';'
         }'
             return await scenarioProcessor.processStressTestCommand(args, context, console'); }
         }'
@@ -463,7 +460,7 @@ export class TestDataGenerationCommands {
             this.generatedData.clear();
             
             // 各コンポーネントのデータもクリア
-            for(const component of this.components.values() {'
+            for(const component of this.components.values() {
                 if (component.clearCache) {''
                     component.clearCache('';
         })'
@@ -543,8 +540,7 @@ export class TestDataGenerationCommands {
             initialized: this.initialized,
             componentsCount: this.components.size,
             generatedDataCount: this.generatedData.size, }
-            components: {}
-        },
+            components: {},
 
         // 各コンポーネントの統計を収集
         for(const [name, component] of this.components) {
@@ -571,9 +567,9 @@ export class TestDataGenerationCommands {
                 component.cleanup(); }
             }
         }
-        ';
+        ';'
         this.components.clear();''
-        this.generatedData.clear('')';
+        this.generatedData.clear()';
         console.log('[TestDataGenerationCommands] クリーンアップ完了'');'
     }''
 }

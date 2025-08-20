@@ -25,7 +25,7 @@ interface PanelInstance { show?(): void;
 interface PanelOptions { name: string,
     config: PanelConfig,
     savedState?: PanelState;
-    panelManager: PanelManager;
+    panelManager: PanelManager
     }
 }
 
@@ -38,7 +38,7 @@ interface PanelConfig { title: string,
     lazy: boolean,
     resizable: boolean,
     minimizable: boolean,
-    closable: boolean; }
+    closable: boolean }
 }
 
 interface PanelInfo { name: string,
@@ -49,7 +49,7 @@ interface PanelInfo { name: string,
     visible: boolean,
     lastActivated: number | null,
     activationCount: number,
-    renderTime: number; }
+    renderTime: number }
 }
 
 interface PanelState {
@@ -69,13 +69,13 @@ interface LifecycleHooks { beforeCreate: Set<LifecycleCallback>,
     beforeHide: Set<LifecycleCallback>,
     hidden: Set<LifecycleCallback>,
     beforeDestroy: Set<LifecycleCallback>,
-    destroyed: Set<LifecycleCallback>;
+    destroyed: Set<LifecycleCallback>
     }
 }
 
 interface StateManager { saveEnabled: boolean,
     storageKey: string,
-    maxStateHistory: number; }
+    maxStateHistory: number }
 }
 
 interface PanelStatistics { total: number,
@@ -89,7 +89,7 @@ interface PanelStatistics { total: number,
         visible: boolean,
         activations: number,
         renderTime: number,
-        lastActivated: number | null; }
+        lastActivated: number | null }
     }>;
 }
 
@@ -115,7 +115,7 @@ export class PanelManager {
         this.lifecycleHooks = {
             beforeCreate: new Set(,
             created: new Set(,
-            beforeShow: new Set(,);
+            beforeShow: new Set();
             shown: new Set();
             beforeHide: new Set(),
             hidden: new Set(),
@@ -152,11 +152,11 @@ export class PanelManager {
             return false;
         }
 ';
-        try { // ライフサイクルフック実行''
+        try { // ライフサイクルフック実行
             this.executeLifecycleHook('beforeCreate', name, { PanelClass, config )');
 
             // パネル設定の設定
-            const defaultConfig: PanelConfig = {'
+            const defaultConfig: PanelConfig = {
                 title: name,'';
                 icon: '📋',
                 order: 100,
@@ -183,24 +183,24 @@ export class PanelManager {
                 instance: panelInstance,
                 config: panelConfig,
                 created: !panelConfig.lazy,
-                visible: false,);
+                visible: false);
                 lastActivated: null);
                 activationCount: 0,);
                 renderTime: 0),
 
             // パネルステートの初期化
             this.initializePanelState(name);
-';
-            // UI要素の追加''
+;
+            // UI要素の追加
             this.addPanelToUI(name, panelConfig');
 ';
-            // ライフサイクルフック実行''
+            // ライフサイクルフック実行
             this.executeLifecycleHook('created', name, { panelInstance, config: panelConfig )'),'
 ' }'
             console.log(`Panel '${name')' registered successfully`});
             return true;'
 '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             console.error(`Failed to register panel '${name}':`, error);
             this.cleanupFailedRegistration(name);
             return false;
@@ -218,7 +218,7 @@ export class PanelManager {
         
         return new PanelClass(this.debugInterface.gameEngine, this.debugInterface, {
             name,
-            config: config!,);
+            config: config!);
             savedState);
             panelManager: this;
         ), }
@@ -240,7 +240,7 @@ export class PanelManager {
             return false;
         }
 ';
-        try { // ライフサイクルフック実行''
+        try { // ライフサイクルフック実行
             this.executeLifecycleHook('beforeShow', name, panelInfo);
 
             // Lazy loading の場合、初回表示時にインスタンス作成
@@ -249,9 +249,9 @@ export class PanelManager {
             }
                 panelInfo.created = true; }
             }
-';
-            // パネルの表示処理''
-            const startTime = performance.now('')';
+;
+            // パネルの表示処理
+            const startTime = performance.now()';
             if (panelInfo.instance && typeof panelInfo.instance.show === 'function') { panelInfo.instance.show(); }
             }
 
@@ -263,16 +263,16 @@ export class PanelManager {
 
             // UI の更新
             this.updatePanelUI(name, true);
-';
-            // ステートの保存''
+;
+            // ステートの保存
             this.savePanelState(name');
 ';
-            // ライフサイクルフック実行''
+            // ライフサイクルフック実行
             this.executeLifecycleHook('shown', name, panelInfo);
 
             return true;'
 '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             console.error(`Failed to show panel '${name}':`, error);
             return false;
         }
@@ -290,10 +290,10 @@ export class PanelManager {
             return false; }
         }
 ';
-        try { // ライフサイクルフック実行''
+        try { // ライフサイクルフック実行
             this.executeLifecycleHook('beforeHide', name, panelInfo');
 ';
-            // パネルの非表示処理''
+            // パネルの非表示処理
             if(panelInfo.instance && typeof panelInfo.instance.hide === 'function') {
                 
             }
@@ -310,18 +310,18 @@ export class PanelManager {
             this.savePanelState(name);
 
             // キャッシュ不可の場合、インスタンスを破棄
-            if(!panelInfo.config.cacheable && !panelInfo.config.persistent) {'
-                ';
+            if(!panelInfo.config.cacheable && !panelInfo.config.persistent) {
+                ';'
             }'
                 this.destroyPanelInstance(name'); }
             }
 ';
-            // ライフサイクルフック実行''
+            // ライフサイクルフック実行
             this.executeLifecycleHook('hidden', name, panelInfo);
 
             return true;'
 '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             console.error(`Failed to hide panel '${name}':`, error);
             return false;
         }
@@ -339,7 +339,7 @@ export class PanelManager {
             return false; }
         }
 ';
-        try { // ライフサイクルフック実行''
+        try { // ライフサイクルフック実行
             this.executeLifecycleHook('beforeDestroy', name, panelInfo);
 
             // パネルが表示中の場合は非表示にする
@@ -360,19 +360,19 @@ export class PanelManager {
             this.panelConfigs.delete(name);
             
             // ステートの削除（persistent でない場合）
-            if(!panelInfo.config.persistent) {'
-                ';
+            if(!panelInfo.config.persistent) {
+                ';'
             }'
                 this.panelStates.delete(name'); }
             }
 ';
-            // ライフサイクルフック実行''
+            // ライフサイクルフック実行
             this.executeLifecycleHook('destroyed', name, { name )');'
 ' }'
             console.log(`Panel '${name')' destroyed successfully`});
             return true;'
 '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             console.error(`Failed to destroy panel '${name}':`, error);
             return false;
         }
@@ -400,13 +400,13 @@ export class PanelManager {
      */
     private initializePanelState(name: string): void { if(!this.panelStates.has(name) {
             this.panelStates.set(name, { }
-                position: { x: 0, y: 0 },)
+                position: { x: 0, y: 0 })
                 size: { width: 300, height: 400 })
                 minimized: false,);
                 settings: {}),
                 data: { ),
                 history: [],
-                lastUpdated: Date.now(); }
+                lastUpdated: Date.now() }
             });
         }
     }
@@ -421,7 +421,7 @@ export class PanelManager {
         const currentState = this.panelStates.get(name);'
         '';
         if(panelInfo && panelInfo.instance && currentState') {'
-            // インスタンスから現在の状態を取得''
+            // インスタンスから現在の状態を取得
             if (typeof panelInfo.instance.getState === 'function') {
                 const instanceState = panelInfo.instance.getState();
         }
@@ -441,7 +441,7 @@ export class PanelManager {
      * @param name - パネル名
      */
     public restorePanelState(name: string): void { const panelInfo = this.panels.get(name);
-        const savedState = this.panelStates.get(name);'
+        const savedState = this.panelStates.get(name);
         '';
         if(panelInfo && panelInfo.instance && savedState') {'
             '';
@@ -474,7 +474,7 @@ export class PanelManager {
             (newTab as HTMLButtonElement').disabled = true; }
         }
 ';
-        // 順序に基づいて挿入位置を決定''
+        // 順序に基づいて挿入位置を決定
         const existingTabs = Array.from(tabsContainer.querySelectorAll('.debug-tab');
         let insertIndex = existingTabs.length;
         
@@ -495,10 +495,10 @@ export class PanelManager {
         } else { tabsContainer.insertBefore(newTab, existingTabs[insertIndex]); }
         }
 ';
-        // パネルコンテンツエリアの追加''
+        // パネルコンテンツエリアの追加
         this.addPanelContentArea(name');
 ';
-        // クリックイベントの設定''
+        // クリックイベントの設定
         newTab.addEventListener('click', () => {  if (config.enabled) { }
                 this.debugInterface.switchPanel(name); }
             }
@@ -524,7 +524,7 @@ export class PanelManager {
      * UIからパネルを削除
      * @param name - パネル名'
      */''
-    private removePanelFromUI(name: string'): void { // タブの削除''
+    private removePanelFromUI(name: string'): void { // タブの削除
         const tab = this.debugInterface.debugPanel.querySelector(`[data-panel="${name")"]`);
         if (tab) { }
             tab.remove(});
@@ -570,7 +570,7 @@ export class PanelManager {
         }
                 try {); }'
                     callback(panelName, data);' }'
-                } catch (error') { ' }'
+                } catch (error) { ' }'
                     console.error(`Error in lifecycle hook '${hookName}' for panel '${panelName}':`, error);
                 }
             });
@@ -604,11 +604,11 @@ export class PanelManager {
      */
     private setupStateAutoSave(): void { if (this.stateManager.saveEnabled) {
             // 定期的な自動保存
-            this.autoSaveInterval = setInterval(() => {  }'
+            this.autoSaveInterval = setInterval(() => {  }
                 this.autoSavePanelStates();' }'
             }, 5000'); // 5秒間隔
-';
-            // ページアンロード時の保存''
+;
+            // ページアンロード時の保存
             window.addEventListener('beforeunload', () => { this.savePanelStates(); }
             });
         }
@@ -623,10 +623,10 @@ export class PanelManager {
             const stateData: Record<string, PanelState> = {};
             for (const [name, state] of this.panelStates) { stateData[name] = state; }
             }
-';
+';'
             localStorage.setItem(this.stateManager.storageKey, JSON.stringify(stateData);''
-        } catch (error') { ''
-            console.warn('Failed to auto-save panel states:', error); }
+        } catch (error) { ''
+            console.warn('Failed to auto-save panel states:', error) }
         }
     }
 
@@ -641,8 +641,8 @@ export class PanelManager {
             }
                     this.panelStates.set(name, state as PanelState); }'
                 }''
-            } catch (error') { ''
-            console.warn('Failed to load panel states:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load panel states:', error) }
         }
     }
 
@@ -696,8 +696,7 @@ export class PanelManager {
             cached: 0,
             totalActivations: 0,
             totalRenderTime: 0, }
-            panels: {}
-        },
+            panels: {},
 
         for(const [name, info] of this.panels) {
 
@@ -736,18 +735,18 @@ export class PanelManager {
         this.savePanelStates();
 
         // 全パネルの破棄
-        for(const name of this.panels.keys() {'
-            ';
+        for(const name of this.panels.keys() {
+            ';'
         }'
             this.destroyPanel(name'); }
         }
 ';
-        // イベントリスナーの削除''
+        // イベントリスナーの削除
         window.removeEventListener('beforeunload', this.savePanelStates.bind(this)');'
 '';
         console.log('PanelManager destroyed'');
     }
 }
 ';
-// デフォルトエクスポート''
+// デフォルトエクスポート
 export default PanelManager;

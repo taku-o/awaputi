@@ -11,14 +11,14 @@ interface PerformanceMetrics { fps?: number;
 }
 
 interface CurrentQuality { level: string,
-    index?: number; }
+    index?: number }
 }
 
 interface PerformanceAverages { fps: number[],
     frameTime: number[],
     memoryUsage: number[],
     dropFrameCount: number,
-    performanceScore: number; }
+    performanceScore: number }
 }
 
 interface AnalysisConfig { sampleSize: number,
@@ -31,13 +31,13 @@ interface AnalysisConfig { sampleSize: number,
     },
     trendAnalysis: { windowSize: number,
         significantChange: number,
-        trendStability: number; }
+        trendStability: number }
     };
 }
 
 interface TrendHistoryEntry { trend: string,
     stability: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface TrendAnalysis { trend: string,
@@ -65,12 +65,12 @@ interface EvaluationResult { needsAdjustment: boolean,
     confidence: number,
     performanceScore: number,
     trend: TrendAnalysis,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface LinearTrend { slope: number,
     correlation: number,
-    variance: number; }
+    variance: number }
 }
 
 interface PerformanceStats { averageFPS: number,
@@ -80,7 +80,7 @@ interface PerformanceStats { averageFPS: number,
     performanceScore: number,
     trendHistory: TrendHistoryEntry[],
     stabilityCounter: number,
-    lastDecision: QualityDecision | null; }
+    lastDecision: QualityDecision | null }
 }
 
 export class QualityDecisionAnalyzer {
@@ -181,14 +181,14 @@ export class QualityDecisionAnalyzer {
         const currentIndex = currentQuality.index || 2;
         
         // 基本的な品質決定ロジック
-        let recommendedLevel = currentLevel;'
+        let recommendedLevel = currentLevel;
         let needsAdjustment = false;''
         let reason = 'performance_stable';
         let confidence = 0.5;
         
         // パフォーマンススコアに基づく初期判定
         if(performanceScore >= this.analysisConfig.performanceThresholds.excellent) {
-            // 優秀なパフォーマンス：品質向上を検討'
+            // 優秀なパフォーマンス：品質向上を検討
             if (currentIndex < 4) {''
                 recommendedLevel = this.getQualityLevelByIndex(currentIndex + 1');'
                 needsAdjustment = true;''
@@ -197,7 +197,7 @@ export class QualityDecisionAnalyzer {
                 confidence = 0.8; }
             }
         } else if (performanceScore < this.analysisConfig.performanceThresholds.fair) { // 公正以下のパフォーマンス：品質低下を検討
-            if(currentIndex > 0) {'
+            if(currentIndex > 0) {
                 '';
                 recommendedLevel = this.getQualityLevelByIndex(currentIndex - 1');'
                 needsAdjustment = true;''
@@ -207,7 +207,7 @@ export class QualityDecisionAnalyzer {
             }
         }
         ';
-        // トレンド分析による調整''
+        // トレンド分析による調整
         if(trendAnalysis.trend === 'declining' && trendAnalysis.stability >= 3) {'
             if (currentIndex > 0) {''
                 recommendedLevel = this.getQualityLevelByIndex(currentIndex - 1');'
@@ -225,8 +225,8 @@ export class QualityDecisionAnalyzer {
         }
         
         // 極端な状況への対応
-        if(performanceScore < this.analysisConfig.performanceThresholds.critical) {'
-            // 緊急品質低下''
+        if(performanceScore < this.analysisConfig.performanceThresholds.critical) {
+            // 緊急品質低下
             recommendedLevel = this.getQualityLevelByIndex(Math.max(0, currentIndex - 2)');'
             needsAdjustment = true;''
             reason = 'performance_critical';
@@ -269,11 +269,11 @@ export class QualityDecisionAnalyzer {
         
         // 線形回帰による傾向分析
         const trend = this.calculateLinearTrend(recentScores);
-        ';
-        // 傾向の安定性を評価''
+        ;
+        // 傾向の安定性を評価
         const stability = this.evaluateTrendStability(trend');
         ';
-        // 傾向の分類''
+        // 傾向の分類
         let trendCategory = 'stable';''
         if (Math.abs(trend.slope) >= significantChange') { ''
             trendCategory = trend.slope > 0 ? 'improving' : 'declining'; }
@@ -412,7 +412,7 @@ export class QualityDecisionAnalyzer {
     updateTrendHistory(trendCategory: string, stability: number): void { this.trendHistory.push({)
             trend: trendCategory,);
             stability: stability),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         // 履歴サイズの制限
@@ -436,14 +436,14 @@ export class QualityDecisionAnalyzer {
      */
     updateDecisionHistory(decision: QualityDecision): void { this.lastDecision = {
             ...decision,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
     }
     
     /**
      * 品質レベルをインデックスで取得
      * @param {number} index - 品質インデックス
-     * @returns {string} 品質レベル名'
+     * @returns {string} 品質レベル名
      */''
     getQualityLevelByIndex(index: number'): string { ''
         const levels = ['low', 'medium', 'high', 'ultra'];''
@@ -485,6 +485,6 @@ export class QualityDecisionAnalyzer {
     }
     
     /**
-     * 統計をリセット'
+     * 統計をリセット
      */''
     resetStats(');

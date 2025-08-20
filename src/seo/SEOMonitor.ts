@@ -30,20 +30,20 @@ interface LighthouseScore { performance: number,
     accessibility: number,
     bestPractices: number,
     seo: number,
-    timestamp: string; }
+    timestamp: string }
 }
 
 // Core Web Vitalsデータインターフェース
 interface CoreWebVitalsData { LCP: number; // Largest Contentful Paint
     FID: number; // First Input Delay
     CLS: number; // Cumulative Layout Shift
-    timestamp: string; }
+    timestamp: string }
 }
 
 // ソーシャルエンゲージメントデータインターフェース
 interface SocialEngagementData { platform: string,
     metrics: Record<string, number>;
-    timestamp: string; }
+    timestamp: string }
 }
 
 // Search Consoleメトリクスインターフェース
@@ -51,10 +51,10 @@ interface SearchConsoleMetrics { impressions: number,
     clicks: number,
     position: number,
     ctr: number,
-    timestamp: string; }
+    timestamp: string }
 }
 
-// アラートインターフェース'
+// アラートインターフェース
 interface Alert { type: string,''
     severity: 'critical' | 'warning' | 'info',
     metric?: string;
@@ -62,15 +62,15 @@ interface Alert { type: string,''
     threshold?: number;
     message: string,
     timestamp: string,
-    metadata?: Record<string, any>; }
+    metadata?: Record<string, any> }
 }
 
-// ヘルスチェック結果インターフェース'
+// ヘルスチェック結果インターフェース
 interface HealthCheckResult { ''
     status: 'healthy' | 'warning' | 'critical',
     checks: Record<string, boolean>;
     issues: string[],
-    timestamp: string; }
+    timestamp: string }
 }
 
 // 監視設定インターフェース
@@ -112,7 +112,7 @@ interface MonitoringStats { totalChecks: number,
     alertsBySeverity: Record<string, number>;
     averageScores: Record<string, number>;
     isMonitoring: boolean,
-    lastCheck?: string; }
+    lastCheck?: string }
 }
 
 // レポートインターフェース
@@ -192,21 +192,21 @@ export class SEOMonitor {
     }
     
     /**
-     * 初期化処理'
+     * 初期化処理
      */''
-    private _initialize('')';
+    private _initialize()';
             if(typeof window !== 'undefined' && 'PerformanceObserver' in window) {'
                 '';
-                this.monitoringEngine.setupPerformanceObserver('')';
+                this.monitoringEngine.setupPerformanceObserver()';
             if (typeof document !== 'undefined'') {''
                 document.addEventListener('visibilitychange', () => { 
             }
                     if (document.hidden) { }
                         this.pauseMonitoring(); }'
                     } else {  ''
-                        this.resumeMonitoring('') }'
+                        this.resumeMonitoring() }'
             seoLogger.info('SEOMonitor initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'seoMonitorInit'); }
         }
     }
@@ -235,14 +235,14 @@ export class SEOMonitor {
                 }, this.config.interval);
             }
 
-            // 健全性チェックの定期実行'
+            // 健全性チェックの定期実行
             setInterval(async () => { await this.runHealthCheck();' }'
             }, this.config.healthCheckInterval');
-';
+';'
             this.isMonitoring = true;''
             seoLogger.info('SEO monitoring system started successfully');'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'startMonitoring');
             throw error; }
         }
@@ -251,7 +251,7 @@ export class SEOMonitor {
     /**
      * 監視の停止
      */'
-    stopMonitoring(): void { try {''
+    stopMonitoring(): void { try {'
             if(!this.isMonitoring') {'
                 '';
                 seoLogger.warn('SEO monitoring is not running');
@@ -260,18 +260,18 @@ export class SEOMonitor {
             }
             
             if(this.monitoringInterval) {
-            ';
+            ';'
                 '';
                 clearInterval(this.monitoringInterval');
             
             }
                 this.monitoringInterval = null; }
             }
-            ';
+            ';'
             this.isMonitoring = false;''
             seoLogger.info('SEO monitoring stopped');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'stopMonitoring'); }
         }
     }
@@ -301,7 +301,7 @@ export class SEOMonitor {
     /**
      * 監視サイクルの実行'
      */''
-    async performMonitoringCycle('')';
+    async performMonitoringCycle()';
             seoLogger.debug('Starting monitoring cycle');
 
             // Lighthouse SEOスコア監視
@@ -316,13 +316,13 @@ export class SEOMonitor {
             }
 
             // Search Console データ準備
-            if(this.config.includeSearchConsole) {'
+            if(this.config.includeSearchConsole) {
                 '';
-                await this.prepareSearchConsoleIntegration('');'
+                await this.prepareSearchConsoleIntegration();'
             seoLogger.debug('Monitoring cycle completed');
             }'
 ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             seoLogger.error('Error in monitoring cycle', error as Error');''
             this.createAlert('monitoring_cycle_error', 'critical', (error as Error).message); }
         }
@@ -380,14 +380,14 @@ export class SEOMonitor {
             }
             
             this.monitoringData.lastCheck = checkResults.timestamp;
-            ';
-            // データの保持期間制限（最大100エントリ）''
+            ;
+            // データの保持期間制限（最大100エントリ）
             this._limitDataRetention(''';
             seoLogger.info('SEO monitoring check completed', { lighthouseScore: checkResults.lighthouse? .seo, : undefined)
                 coreWebVitals: checkResults.coreWebVitals,);
                 alertCount: checkResults.alerts.length),';
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, '_performMonitoringCheck', options); }
         }
     }
@@ -402,8 +402,8 @@ export class SEOMonitor {
             if(score < threshold') {'
                 alerts.push({''
                     type: 'lighthouse','';
-                    severity: 'warning',);
-                    metric: metric);
+                    severity: 'warning');
+                    metric: metric)
             }
                     current: score,) }
                     threshold: threshold), }
@@ -426,8 +426,8 @@ export class SEOMonitor {
                 const severity: 'critical' | 'warning' = value > threshold * 1.5 ? 'critical' : 'warning',';
                 alerts.push({''
                     type: 'coreWebVitals',
-                    severity: severity,);
-                    metric: metric);
+                    severity: severity);
+                    metric: metric)
             }
                     current: value,) }
                     threshold: threshold), }
@@ -446,17 +446,17 @@ export class SEOMonitor {
                 // アラートコールバックの実行
                 this.alertCallbacks.forEach(callback => { )
             }
-                    try {); }'
+                    try {); }
                         callback(alert);' }'
-                    } catch (error') { ''
+                    } catch (error) { ''
                         seoLogger.error('Alert callback error', error as Error); }'
                     }''
                 }');
                 ';
-                // アラートのログ出力''
+                // アラートのログ出力
                 const logLevel = alert.severity === 'critical' ? 'error' : 'warn';'
                 (seoLogger as any)[logLevel](`SEO Alert: ${alert.message}`, alert);''
-            } catch (error') { ''
+            } catch (error) { ''
             seoErrorHandler.handle(error as Error, '_processAlerts', alerts); }
         }
     }
@@ -517,11 +517,11 @@ export class SEOMonitor {
     
     /**
      * SEOパフォーマンスダッシュボードデータの生成
-     */'
+     */
     generateDashboardData(): any { ''
-        return this.healthChecker.generateDashboardData('')';
+        return this.healthChecker.generateDashboardData()';
     createAlert(type: string, severity: 'critical' | 'warning' | 'info', message: string, metadata: Record<string, any> = {): Alert {
-        return this.healthChecker.createAlert(type, severity, message, metadata); }
+        return this.healthChecker.createAlert(type, severity, message, metadata) }
     }
     
     /**
@@ -556,7 +556,7 @@ export class SEOMonitor {
     setThresholds(newThresholds: Partial<Thresholds>'): void { try { }'
             this.thresholds = { ...this.thresholds, ...newThresholds };''
             seoLogger.info('SEO monitoring thresholds updated', this.thresholds);''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'setThresholds', newThresholds); }
         }
     }
@@ -599,7 +599,7 @@ export class SEOMonitor {
                     totals[key as keyof typeof totals] += score[key as keyof LighthouseScore] || 0); }
                 };
             };
-            ';
+            ';'
             Object.keys(totals).forEach(key => {  );' }'
                 stats.averageScores[key] = Math.round(totals[key as keyof typeof totals] / this.monitoringData.lighthouse!.length'); }
             };
@@ -617,7 +617,7 @@ export class SEOMonitor {
         const report: MonitoringReport = {
             summary: stats,
             data: data,
-            generatedAt: new Date().toISOString(); }
+            generatedAt: new Date().toISOString() }
         };'
         '';
         switch(format') {'
@@ -702,9 +702,9 @@ export class SEOMonitor {
         },
         
         // 専門コンポーネントのクリーンアップ
-        if(this.monitoringEngine) {'
+        if(this.monitoringEngine) {
             '';
-            this.monitoringEngine.destroy('');
+            this.monitoringEngine.destroy();
         }'
         seoLogger.info('SEOMonitor cleaned up'); }
     }
@@ -712,6 +712,6 @@ export class SEOMonitor {
 
 // シングルトンインスタンス
 let seoMonitorInstance: SEOMonitor | null = null,
-';
+';'
 export function getSEOMonitor(): SEOMonitor { if (!seoMonitorInstance) {''
         seoMonitorInstance = new SEOMonitor(' })

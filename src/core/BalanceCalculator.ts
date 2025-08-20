@@ -11,31 +11,31 @@ interface GameConfig { getBalanceConfig?: () => BalanceConfig; }
 
 interface BalanceConfig { stages: {
         unlockRequirements: Record<string, number>;
-        difficulty: Record<string, DifficultySettings>; }
+        difficulty: Record<string, DifficultySettings> }
     };
     items: { baseCosts: Record<string, number>;
         costMultiplier: number,
         effects: Record<string, number>;
-        maxLevels: Record<string, number>; }
+        maxLevels: Record<string, number> }
     };
     bubbles: { maxAge: Record<string, number>;
-        health: Record<string, number>; }
+        health: Record<string, number> }
     };
 }
 
 interface DifficultySettings { spawnRate: number,
-    maxBubbles: number; }
+    maxBubbles: number }
 }
 
 interface CalculatedDifficulty extends DifficultySettings { originalSpawnRate: number,
     originalMaxBubbles: number,
-    levelAdjustment: LevelAdjustment;
+    levelAdjustment: LevelAdjustment
     }
 }
 
 interface LevelAdjustment { spawnRateMultiplier: number,
     maxBubblesMultiplier: number,
-    playerLevel: number; }
+    playerLevel: number }
 }
 
 interface BubbleModifiers { timeMultiplier?: number;
@@ -49,7 +49,7 @@ interface ItemRecommendation { itemId: string,
     nextLevel: number,
     cost: number,
     effect: number,
-    priority: number; }
+    priority: number }
 }
 
 interface PlayerState { currentTAP?: number;
@@ -65,7 +65,7 @@ interface GameProgress { tapProgress: number,
     totalStages: number,
     nextStage: string | null,
     nextStageRequirement: number | null,
-    tapToNextStage: number; }
+    tapToNextStage: number }
 }
 
 interface BalanceAdjustment { type: string,
@@ -78,7 +78,7 @@ interface BalanceAdjustment { type: string,
 
 interface BalanceSuggestions { difficulty: BalanceAdjustment[],
     items: BalanceAdjustment[],
-    stages: BalanceAdjustment[];
+    stages: BalanceAdjustment[]
     }
 }
 
@@ -89,12 +89,12 @@ interface GameData { averagePlayTime?: number;
 }
 
 interface StageInfo { stageId: string,
-    requirement: number; }
+    requirement: number }
 }
 
 interface DebugInfo { hasGameConfig: boolean,
     balanceConfig: BalanceConfig,
-    version: string; }
+    version: string }
 }
 
 export class BalanceCalculator {
@@ -180,7 +180,7 @@ export class BalanceCalculator {
                     boss: 8 }
                 }
             }
-        },'
+        },
         '';
         console.log('BalanceCalculator initialized');
     }
@@ -188,7 +188,7 @@ export class BalanceCalculator {
     /**
      * バランス設定を取得'
      */''
-    getBalanceConfig('')';
+    getBalanceConfig()';
         if (this.gameConfig && typeof this.gameConfig.getBalanceConfig === 'function') { return this.gameConfig.getBalanceConfig(); }
         }
         return this.defaultBalanceConfig;
@@ -271,19 +271,19 @@ export class BalanceCalculator {
             console.warn(`Unknown item effect: ${itemId). Using default effect.`});
             return 1;
         }
-        ';
-        // アイテムタイプに応じた計算''
+        ;
+        // アイテムタイプに応じた計算
         switch(itemId') {'
             '';
             case 'scoreMultiplier':'';
             case 'rareRate':'';
             case 'comboBoost':';
-                // 倍率系：レベルごとに効果が累積''
+                // 倍率系：レベルごとに効果が累積
                 return 1 + (baseEffect - 1') * level;'
                 '';
             case 'hpBoost':;
                 // HP系：レベルごとに加算
-                return baseEffect * level;'
+                return baseEffect * level;
                 '';
             case 'timeExtension':;
                 // 時間系：固定値
@@ -369,7 +369,7 @@ export class BalanceCalculator {
     }
     
     /**
-     * 推奨アイテム購入順序を計算'
+     * 推奨アイテム購入順序を計算
      */''
     calculateRecommendedItemOrder(playerState: PlayerState'): ItemRecommendation[] { const {
             currentTAP = 0 }'
@@ -379,7 +379,7 @@ export class BalanceCalculator {
         
         const recommendations: ItemRecommendation[] = [],
         
-        // プレイスタイルに基づく優先度'
+        // プレイスタイルに基づく優先度
         const priorities = { ''
             aggressive: ['scoreMultiplier', 'comboBoost', 'rareRate', 'timeExtension', 'hpBoost', 'revival'],'';
             defensive: ['hpBoost', 'revival', 'timeExtension', 'scoreMultiplier', 'rareRate', 'comboBoost'],'';
@@ -396,7 +396,7 @@ export class BalanceCalculator {
             
             if (currentLevel < maxLevel && currentTAP >= cost) {
                 recommendations.push({
-                    itemId,);
+                    itemId);
                     currentLevel);
                     nextLevel: currentLevel + 1,);
                     cost);
@@ -434,7 +434,7 @@ export class BalanceCalculator {
         const sortedStages: StageInfo[] = allStages;
             .map(stageId => ({ )
                 stageId);
-                requirement: this.getStageUnlockRequirement(stageId); }
+                requirement: this.getStageUnlockRequirement(stageId) }
             })
             .sort((a, b) => a.requirement - b.requirement);
             
@@ -462,39 +462,38 @@ export class BalanceCalculator {
             averagePlayTime = 0,
             averageScore = 0 }
             stageCompletionRates = {},
-            itemUsageRates = {}
-        } = gameData;
+            itemUsageRates = {} = gameData;
         
         const suggestions: BalanceSuggestions = { difficulty: [],
             items: [],
             stages: [] }
         },
-        ';
-        // 平均プレイ時間が短すぎる場合''
+        ;
+        // 平均プレイ時間が短すぎる場合
         if(averagePlayTime < 60000') {
-            // 1分未満'
+            // 1分未満
             suggestions.difficulty.push({''
                 type: 'reduce_spawn_rate',')';
-                reason: '平均プレイ時間が短すぎます',);
+                reason: '平均プレイ時間が短すぎます',)
         }
                 adjustment: 0.9); }
         }
         ';
-        // 平均プレイ時間が長すぎる場合''
+        // 平均プレイ時間が長すぎる場合
         if(averagePlayTime > 300000') {
-            // 5分以上'
+            // 5分以上
             suggestions.difficulty.push({''
                 type: 'increase_spawn_rate',')';
-                reason: '平均プレイ時間が長すぎます',);
+                reason: '平均プレイ時間が長すぎます',)
         }
                 adjustment: 1.1); }
         }
         
-        // ステージクリア率が低すぎる場合'
+        // ステージクリア率が低すぎる場合
         Object.entries(stageCompletionRates).forEach(([stageId, rate]) => {  ''
             if(rate < 0.3') {
                 // 30%未満
-            }'
+            }
                 suggestions.stages.push({') }'
                     type: 'reduce_difficulty'), }
                     reason: `${stageId}のクリア率が低すぎます (${Math.floor(rate * 100})}%)`,
@@ -504,11 +503,11 @@ export class BalanceCalculator {
             }
         });
         
-        // アイテム使用率が低い場合'
+        // アイテム使用率が低い場合
         Object.entries(itemUsageRates).forEach(([itemId, rate]) => {  ''
             if(rate < 0.1') {
                 // 10%未満
-            }'
+            }
                 suggestions.items.push({') }'
                     type: 'reduce_cost'), }
                     reason: `${itemId}の使用率が低すぎます (${Math.floor(rate * 100})}%)`,
@@ -535,6 +534,6 @@ export class BalanceCalculator {
 let balanceCalculatorInstance: BalanceCalculator | null = null);
 /**
  * BalanceCalculatorのシングルトンインスタンスを取得
- */)'
+ */)
 export function getBalanceCalculator(): BalanceCalculator { if (!balanceCalculatorInstance) {''
         balanceCalculatorInstance = new BalanceCalculator(' })

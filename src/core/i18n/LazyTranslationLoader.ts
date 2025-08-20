@@ -12,16 +12,16 @@ export interface LoadingStats { totalRequests: number,
     bytesLoaded: number,
     bytesCompressed: number,
     loadTimes: number[],
-    memoryUsage: number; }
+    memoryUsage: number }
 }
 
 export interface CacheItem { data: any,
     timestamp: number,
     size: number,
     compressed?: boolean;
-    lastAccess: number; }
+    lastAccess: number }
 }
-';
+';'
 export interface LoadOptions { forceReload?: boolean;''
     priority?: 'high' | 'normal' | 'low';
     compress?: boolean;
@@ -34,7 +34,7 @@ export interface TranslationNamespace { [key: string]: any, }
 export interface PerformanceMonitor { slowLoadThreshold: number,
     maxConcurrentLoads: number,
     currentLoads: number,
-    loadQueue: Array<() => Promise<any>>; }
+    loadQueue: Array<() => Promise<any>> }
 }
 
 /**
@@ -65,7 +65,7 @@ export class LazyTranslationLoader {
     private unusedDataCleanupInterval: number;
     // 統計とモニタリング
     private stats: LoadingStats;
-    private performanceMonitor: PerformanceMonitor';
+    private performanceMonitor: PerformanceMonitor;
 '';
     constructor(''';
         this.baseURL = '/src/locales/';'
@@ -81,13 +81,13 @@ export class LazyTranslationLoader {
         
         // 読み込み管理)
         this.loadedTranslations = new Map<string, TranslationNamespace>();
-        this.loadingPromises = new Map<string, Promise<any>>();'
+        this.loadingPromises = new Map<string, Promise<any>>();
         this.loadedNamespaces = new Set<string>();''
         this.pendingRequests = new Map<string, Promise<any>>(');
         
-        // 遅延読み込み設定'
+        // 遅延読み込み設定
         this.lazyLoadingEnabled = true;''
-        this.preloadCriticalFiles = ['common', 'menu']; // 最重要ファイル''
+        this.preloadCriticalFiles = ['common', 'menu']; // 最重要ファイル
         this.loadOnDemandFiles = ['achievements', 'help']; // 必要時読み込み
         
         // キャッシュシステム
@@ -124,7 +124,7 @@ export class LazyTranslationLoader {
     }
     
     /**
-     * 言語データの遅延読み込み'
+     * 言語データの遅延読み込み
      */''
     async loadLanguage(language: string, options: LoadOptions = { )'): Promise<TranslationNamespace> {'
         const { ''
@@ -162,7 +162,7 @@ export class LazyTranslationLoader {
                 const result = await loadPromise;
                 this._updateMemoryUsage();
                 return result; }
-            } finally { this.loadingPromises.delete(language); }'
+            } finally { this.loadingPromises.delete(language); }
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {')'
                 operation: 'loadLanguage');
@@ -193,11 +193,11 @@ export class LazyTranslationLoader {
                 
             }
                 filesToLoad = [namespace]; }
-            }'
-            // プリロードの場合は重要ファイルのみ''
+            }
+            // プリロードの場合は重要ファイルのみ
             else if (preload') { filesToLoad = this.preloadCriticalFiles; }
             }'
-            // 遅延読み込みが有効な場合''
+            // 遅延読み込みが有効な場合
             else if (this.lazyLoadingEnabled && priority !== 'high') { filesToLoad = this._determineFilesToLoad(language); }
             }
             
@@ -264,7 +264,7 @@ export class LazyTranslationLoader {
      */
     async _queueLoad(language, options) { return new Promise((resolve, reject) => { 
             this.performanceMonitor.loadQueue.push({
-                language,);
+                language);
                 options);
                 resolve,) }
                 reject); }
@@ -277,9 +277,7 @@ export class LazyTranslationLoader {
      */
     _processLoadQueue() {
         if (this.performanceMonitor.loadQueue.length > 0 && ;
-            this.performanceMonitor.currentLoads < this.performanceMonitor.maxConcurrentLoads) {
-    }
-             }
+            this.performanceMonitor.currentLoads < this.performanceMonitor.maxConcurrentLoads) {}
             const { language, options, resolve, reject } = this.performanceMonitor.loadQueue.shift();
             
             this._performLazyLoad(language, options);
@@ -380,10 +378,10 @@ export class LazyTranslationLoader {
             return { data: compressed,
                 compressed: true,
                 originalSize, };
-                compressedSize }'
+                compressedSize }
             };''
-        } catch (error') { ''
-            console.warn('Compression failed:', error); }
+        } catch (error) { ''
+            console.warn('Compression failed:', error) }
             return { data, compressed: false, originalSize };
         }
     }
@@ -392,10 +390,10 @@ export class LazyTranslationLoader {
      * 基本的な圧縮処理'
      */''
     _performBasicCompression(jsonString') {'
-        // 不要な空白を削除''
+        // 不要な空白を削除
         let compressed = jsonString.replace(/\s+/g, ' '');
         
-        // 共通パターンの圧縮'
+        // 共通パターンの圧縮
         const commonPatterns = {''
             'accessibility.': 'a11y.','';
             'settings.': 's.','';
@@ -424,7 +422,7 @@ export class LazyTranslationLoader {
         try { // 基本的な展開処理
             let decompressed = compressedData.data;
             
-            // パターンを復元'
+            // パターンを復元
             const patterns = {''
                 'a11y.': 'accessibility.','';
                 's.': 'settings.','';
@@ -435,9 +433,9 @@ export class LazyTranslationLoader {
             for (const [compressed, original] of Object.entries(patterns)') { ''
                 decompressed = decompressed.replace(new RegExp(compressed, 'g'), original); }
             }
-            ';
+            ';'
             return JSON.parse(decompressed);''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Decompression failed:', error);
             return compressedData.data; }
         }
@@ -457,7 +455,7 @@ export class LazyTranslationLoader {
             data);
             timestamp: Date.now(),
             accessCount: 0,
-            lastAccessed: Date.now(); }
+            lastAccessed: Date.now() }
         });
     }
     
@@ -496,7 +494,7 @@ export class LazyTranslationLoader {
      * 重複翻訳の削除
      */
     _removeDuplicateTranslations(translations) { const seen = new Set(); }
-        const optimized = {};'
+        const optimized = {};
         '';
         for (const [key, value] of Object.entries(translations)') { ''
             if(typeof value === 'string') {
@@ -540,7 +538,7 @@ export class LazyTranslationLoader {
     }
     
     /**
-     * 重要な翻訳かどうかを判定'
+     * 重要な翻訳かどうかを判定
      */''
     _isCriticalTranslation(key') {'
         '';
@@ -579,13 +577,13 @@ export class LazyTranslationLoader {
                 const existingTranslations = this.loadedTranslations.get(language}) || {};
                 const namespacedTranslations = data.translations || data;
                 
-                this.loadedTranslations.set(language, { ...existingTranslations,)
+                this.loadedTranslations.set(language, { ...existingTranslations)
                     ...namespacedTranslations);
                 
                 return namespacedTranslations; }
             }
             
-            return {};'
+            return {};
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'LAZY_TRANSLATION_LOADER_ERROR', {')'
                 operation: 'loadNamespace');
@@ -638,9 +636,9 @@ export class LazyTranslationLoader {
     }
     
     /**
-     * メモリクリーンアップ'
+     * メモリクリーンアップ
      */''
-    _performMemoryCleanup('')';
+    _performMemoryCleanup()';
         console.log('Performing memory cleanup...');
         
         // 使用頻度の低いキャッシュエントリを削除
@@ -701,7 +699,7 @@ export class LazyTranslationLoader {
     _flattenTranslations(categorizedTranslations) {
         
     }
-        const flattened = {};'
+        const flattened = {};
         '';
         for (const [category, translations] of Object.entries(categorizedTranslations)') { ''
             if(translations && typeof translations === 'object') {
@@ -795,7 +793,7 @@ export class LazyTranslationLoader {
         }
         
         if (config.compressionEnabled !== undefined) { this.compressionEnabled = config.compressionEnabled; }
-        }'
+        }
         '';
         if (config.memoryThreshold !== undefined') { this.memoryThreshold = config.memoryThreshold; }
         }'
@@ -868,9 +866,9 @@ export class LazyTranslationLoader {
      * 全キャッシュをクリア
      */
     clearCache() {
-        this.memoryCache.clear();'
+        this.memoryCache.clear();
         this.loadedTranslations.clear();''
-        this.loadedNamespaces.clear('');
+        this.loadedNamespaces.clear();
     }'
         console.log('All caches cleared'); }
     }
@@ -883,9 +881,9 @@ export class LazyTranslationLoader {
     }
             clearInterval(this.cleanupInterval); }
         }
-        ';
+        ';'
         this.clearCache();''
-        this.loadingPromises.clear('')';
+        this.loadingPromises.clear()';
         console.log('LazyTranslationLoader cleaned up'');'
     }''
 }

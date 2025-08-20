@@ -18,12 +18,12 @@ interface ErrorStats { total: number,
     byType: Map<string, number>;
     byContext: Map<string, number>;
     critical: number,
-    recovered: number; }
+    recovered: number }
 }
 
 interface MainController { isBrowser?: boolean;
     isNode?: boolean;
-    determineSeverity?: (error: ErrorInfo) => string; }
+    determineSeverity?: (error: ErrorInfo) => string }
 }
 
 interface LogEntry { level: string,
@@ -40,7 +40,7 @@ interface ExportOptions { format?: 'json' | 'csv';
     includeStack?: boolean;
     timeRange?: {
         start: number,
-        end: number; }
+        end: number }
     } | null;
     severityFilter?: string | null;
     contextFilter?: string | null;
@@ -51,13 +51,13 @@ interface HealthMetrics { totalErrors: number,
     criticalErrorsCount: number,
     logSizeUsage: number,
     recoveryRate: number,
-    lastErrorTime: string | null; }
+    lastErrorTime: string | null }
 }
 
 interface ArchivedLogData { rotatedAt: string,
     errorCount: number,
     statistics: ErrorStats,
-    errors: ErrorInfo[];
+    errors: ErrorInfo[]
     }
 }
 
@@ -94,9 +94,9 @@ export class ErrorLogger {
         
         // Error statistics
         this.errorStats = {
-            total: 0,';
+            total: 0,
             byType: new Map(),'';
-            byContext: new Map('';
+            byContext: new Map(''
     }
     })'
         console.log('[ErrorLogger] Error logging component initialized'), }
@@ -134,7 +134,7 @@ export class ErrorLogger {
     /**
      * Log error to console with appropriate severity
      * @param errorInfo - Error information
-     * @param severity - Error severity level'
+     * @param severity - Error severity level
      */''
     logError(errorInfo: ErrorInfo, severity: string'): void { ''
         const logMethod = severity === 'CRITICAL' ? 'error' : '';
@@ -175,7 +175,7 @@ export class ErrorLogger {
     /**
      * Log error in browser environment
      * @param logEntry - Structured log entry
-     * @param severity - Error severity'
+     * @param severity - Error severity
      */''
     private logBrowserError(logEntry: LogEntry, severity: string'): void { const styles: Record<string, string> = {''
             CRITICAL: 'color: white; background-color: red; font-weight: bold; padding: 2px 6px;',''
@@ -183,7 +183,7 @@ export class ErrorLogger {
             MEDIUM: 'color: white; background-color: #ff9900; padding: 2px 6px;',''
             LOW: 'color: #666; padding: 2px 6px;' }
         };
-        ';
+        ';'
         console.log()'';
             `%c[${severity}]%c ${logEntry.context}: ${ logEntry.message')`,'
             styles[severity] || styles.LOW,'';
@@ -198,12 +198,12 @@ export class ErrorLogger {
      * @param severity - Error severity'
      */''
     private logNodeError(logEntry: LogEntry, severity: string'): void { const colors: Record<string, string> = {''
-            CRITICAL: '\x1b[41m\x1b[37m', // White text on red background'';
-            HIGH: '\x1b[43m\x1b[30m',    // Black text on yellow background'';
-            MEDIUM: '\x1b[33m',          // Yellow text'';
+            CRITICAL: '\x1b[41m\x1b[37m', // White text on red background;
+            HIGH: '\x1b[43m\x1b[30m',    // Black text on yellow background;
+            MEDIUM: '\x1b[33m',          // Yellow text;
             LOW: '\x1b[90m',             // Bright black (gray') text'';
             RESET: '\x1b[0m'             // Reset color }
-        },]
+        }]
         ];
         const color = colors[severity] || colors.LOW;
         console.log();
@@ -285,7 +285,7 @@ export class ErrorLogger {
     /**
      * Export error log data
      * @param options - Export options
-     * @returns Exported data'
+     * @returns Exported data
      */''
     exportErrorLog(options: ExportOptions = { )'): ExportData | string {'
         const { ''
@@ -322,10 +322,10 @@ export class ErrorLogger {
                 id: error.id,
                 timestamp: error.timestamp,
                 context: error.context,
-                message: error.message,);
+                message: error.message);
                 name: error.name);
                 metadata: error.metadata,);
-                recovered: error.recovered)';
+                recovered: error.recovered);
                 ...(includeStack && { stack: error.stack ),' }'
             }');
         };'
@@ -348,9 +348,9 @@ export class ErrorLogger {
         const csvRows = [headers.join(',')];
         
         for(const error of errors) {
-        ';
+        ';'
             const row = headers.map(header => { ')
-        
+        '
         }'
                 let value = error[header]');' }'
                 if (typeof value === 'string'') {' }'
@@ -369,7 +369,7 @@ export class ErrorLogger {
     /**
      * Clear error log'
      */''
-    clearErrorLog('')';
+    clearErrorLog()';
         console.log('[ErrorLogger] Error log cleared');
     }
     
@@ -379,7 +379,7 @@ export class ErrorLogger {
     clearErrorStats(): void { this.errorStats = {
             total: 0,';
             byType: new Map(),'';
-            byContext: new Map('')';
+            byContext: new Map()';
         console.log('[ErrorLogger] Error statistics cleared'), }
     }
     
@@ -435,7 +435,7 @@ export class ErrorLogger {
      */
     destroy(): void { this.errorLog = [];'
         this.errorStats.byType.clear();''
-        this.errorStats.byContext.clear('')';
+        this.errorStats.byContext.clear()';
         console.log('[ErrorLogger] Logger destroyed''); }'
     }''
 }

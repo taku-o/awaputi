@@ -24,14 +24,14 @@ interface CICDConfig { failOnErrors: boolean,
     maxErrorCount: number,
     maxWarningCount: number,
     requiredCompletionRate: number,
-    requiredQualityScore: number; }
+    requiredQualityScore: number }
 }
 
 interface ValidationResult { command: string,
     result: any,
     executedAt: string,
     executionTime: number,
-    options: any; }
+    options: any }
 }
 
 interface CommandResult { success: boolean,
@@ -50,7 +50,7 @@ interface UntranslatedCheckResult { summary: {
                 untranslated: number,
                 empty: number,
                 incomplete: number,
-                total: number; }
+                total: number }
             };
         };
     };
@@ -58,7 +58,7 @@ interface UntranslatedCheckResult { summary: {
             language: string,
             untranslatedItems: any[],
             emptyItems: any[],
-            incompleteItems: any[]; }
+            incompleteItems: any[] }
         };
     };
     passed: boolean,
@@ -87,7 +87,7 @@ interface QualityCheckResult { qualityResults: {
             warningCount: number,
             passedCount: number,
             passed: boolean,
-            threshold: number; }
+            threshold: number }
         };
     };
     summary: { averageScore: number,
@@ -110,7 +110,7 @@ interface ProgressCheckResult { progressResults: {
             passed: boolean,
             requirements: {
                 minCompletion: number,
-                minQuality: number; }
+                minQuality: number }
             };
         };
     };
@@ -161,7 +161,7 @@ interface ReportData { generatedAt: string,
             executionTime: number,
             passed: boolean,
             summary: any,
-            details?: any; }
+            details?: any }
         };
     };
 }
@@ -170,26 +170,26 @@ interface ReportResult { format: string,
     content: string,
     size: number,
     outputPath: string | null,
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 interface FormatIssue { key: string,
     issue: string,
     baseParams: string[],
-    targetParams: string[]; }
+    targetParams: string[] }
 }
 
 interface CommandInfo { name: string,
     displayName: string,
     description: string,
-    options?: CommandOptions;
+    options?: CommandOptions
     }
 }
 
 interface CommandStats { registeredCommands: number,
     executedCommands: number,
     cicdConfig: CICDConfig,
-    availableCommands: string[]; }
+    availableCommands: string[] }
 }
 
 /**
@@ -211,8 +211,8 @@ export class ValidationCommands {
         // コマンド登録
         this.commands = new Map();
         this.registerBuiltinCommands();
-        ';
-        // 検証結果''
+        ;
+        // 検証結果
         this.lastValidationResults = new Map('';
     }
     })'
@@ -234,7 +234,7 @@ export class ValidationCommands {
             }''
         }');
         ';
-        // 翻訳整合性チェックコマンド''
+        // 翻訳整合性チェックコマンド
         this.registerCommand('check-consistency', { ')'
             name: '翻訳整合性チェック',')';
             description: '翻訳データの整合性をチェックします'),'';
@@ -246,7 +246,7 @@ export class ValidationCommands {
             }''
         }');
         ';
-        // 翻訳品質検証コマンド''
+        // 翻訳品質検証コマンド
         this.registerCommand('check-quality', { ')'
             name: '翻訳品質検証',')';
             description: '翻訳品質を包括的に検証します'),'';
@@ -258,7 +258,7 @@ export class ValidationCommands {
             }''
         }');
         ';
-        // 進捗検証コマンド''
+        // 進捗検証コマンド
         this.registerCommand('check-progress', { ')'
             name: '進捗検証',')';
             description: '翻訳進捗の要件を検証します'),'';
@@ -270,7 +270,7 @@ export class ValidationCommands {
             }''
         }');
         ';
-        // キー使用状況検証コマンド''
+        // キー使用状況検証コマンド
         this.registerCommand('check-key-usage', { ')'
             name: 'キー使用状況検証',')';
             description: '翻訳キーの使用状況を検証します'),'';
@@ -282,7 +282,7 @@ export class ValidationCommands {
             }''
         }');
         ';
-        // 統合検証コマンド''
+        // 統合検証コマンド
         this.registerCommand('validate-all', { ')'
             name: '統合検証',')';
             description: 'すべての検証を実行します'),'';
@@ -294,7 +294,7 @@ export class ValidationCommands {
             }''
         }');
         ';
-        // レポート生成コマンド''
+        // レポート生成コマンド
         this.registerCommand('generate-report', { ')'
             name: 'レポート生成',')';
             description: '検証結果のレポートを生成します'),'';
@@ -356,11 +356,11 @@ export class ValidationCommands {
                 result: result, };
                 executionTime: executionTime }
             },
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'VALIDATION_COMMANDS_ERROR', {)
                 command: commandName,);
-                options: options); }
+                options: options) }
             });
             
             return { success: false,
@@ -380,8 +380,7 @@ export class ValidationCommands {
         const results: UntranslatedCheckResult = { summary: {
                 totalLanguages: 0,
                 totalUntranslatedItems: 0, }
-                languageResults: {}
-            },
+                languageResults: {},
             details: {},'
             passed: false,'';
             executedAt: '';
@@ -398,10 +397,10 @@ export class ValidationCommands {
                 incompleteItems: [] }
             },
             
-            // 進捗追跡から未完成項目を取得'
+            // 進捗追跡から未完成項目を取得
             const incompleteItems = this.progressTracker.getIncompleteItems(language, { ')'
                 status: ['empty', 'translated'], // 空または翻訳済みだが品質が低い);
-                category: categories.length > 0 ? categories[0] : null),';
+                category: categories.length > 0 ? categories[0] : null),
             '';
             incompleteItems.forEach((item: any') => { ''
                 if (item.status === 'empty' || !item.value || item.value.trim(') === ''') {''
@@ -447,8 +446,7 @@ export class ValidationCommands {
                 missingKeys: {},
                 extraKeys: {},
                 duplicateKeys: [],
-                formatMismatches: {}
-            },
+                formatMismatches: {},
             summary: { totalIssues: 0,
                 languagesChecked: 0 }
             },'
@@ -520,7 +518,7 @@ export class ValidationCommands {
     }
     
     /**
-     * 翻訳品質検証'
+     * 翻訳品質検証
      */''
     async checkTranslationQuality(options: any'): Promise<QualityCheckResult> { const { languages = [], ;
             rules = [], ;
@@ -543,7 +541,7 @@ export class ValidationCommands {
         let totalIssues = 0;
         
         for(const language of targetLanguages) {
-        ';
+        ';'
             const translations = await this.loadTranslationData(language);''
             if (!translations') {
         
@@ -552,7 +550,7 @@ export class ValidationCommands {
             }
             
             // 品質チェックを実行
-            const qualityResult = await this.qualityChecker.validateTranslations(';
+            const qualityResult = await this.qualityChecker.validateTranslations(;
                 translations,')';
                 'ja',);
                 language);
@@ -724,7 +722,7 @@ export class ValidationCommands {
     }
     
     /**
-     * 統合検証'
+     * 統合検証
      */''
     async validateAll(options: any'): Promise<ValidateAllResult> { const { languages = [], ;
             exitOnError = true, ;
@@ -741,13 +739,13 @@ export class ValidationCommands {
             executedAt: '';
         },
         
-        // 実行するコマンドのリスト'
+        // 実行するコマンドのリスト
         const commandsToRun = ['';
             { name: 'check-untranslated', options: { languages } },''
             { name: 'check-consistency', options: { targetLanguages: languages } },''
             { name: 'check-quality', options: { languages } },''
             { name: 'check-progress', options: { languages } },']'
-            { name: 'check-key-usage', options: {} }]
+            { name: 'check-key-usage', options: {}]
         ];
         
         let totalIssues = 0;
@@ -773,8 +771,8 @@ export class ValidationCommands {
             } else {  results.summary.failedCommands++; }
                 hasErrors = true; }
             }
-            ';
-            // エラー時に終了''
+            ;
+            // エラー時に終了
             if(exitOnError && hasErrors') {'
                 '';
                 console.log('Validation failed, exiting on error');
@@ -787,15 +785,15 @@ export class ValidationCommands {
         results.summary.overallPassed = !hasErrors;
         results.executedAt = new Date().toISOString();
         ';
-        // レポート生成''
+        // レポート生成
         if(generateReport') {'
-            try {''
+            try {'
                 const reportResult = await this.executeCommand('generate-report', {')'
                     format: 'html',);
-                    includeDetails: true),;
+                    includeDetails: true),
         }'
                 results.reportGenerated = reportResult.success;' }'
-            } catch (error') { ''
+            } catch (error) { ''
                 console.warn('Failed to generate report:', error);
                 results.reportGenerated = false; }
             }
@@ -818,8 +816,7 @@ export class ValidationCommands {
                 passedValidations: 0,
                 failedValidations: 0 }
             },
-            results: {}
-        },
+            results: {},
         
         // 最新の検証結果を集計
         for(const [commandName, validationResult] of this.lastValidationResults) {
@@ -829,8 +826,7 @@ export class ValidationCommands {
                 executionTime: validationResult.executionTime,
         }
                 passed: validationResult.result? .passed || false, : undefined }
-                summary: validationResult.result? .summary || {}
-            },
+                summary: validationResult.result? .summary || {},
             
             if (includeDetails && validationResult.result?.details) { reportData.results[commandName].details = validationResult.result.details; }
             }
@@ -840,7 +836,7 @@ export class ValidationCommands {
             }
         }
         
-        // フォーマット別出力 : undefined'
+        // フォーマット別出力 : undefined
         let formattedReport: string,'';
         switch(format') {'
             '';
@@ -885,18 +881,18 @@ export class ValidationCommands {
         }
                 validated[optionName] = optionDef.default; }
             }
-            ';
-            // 型チェック（簡易実装）''
+            ;
+            // 型チェック（簡易実装）
             if(validated[optionName] !== undefined') {
                 const value = validated[optionName];
                 const expectedType = optionDef.type;'
-                ';
+                ';'
             }'
                 if(expectedType === 'array' && !Array.isArray(value) {' }'
                     throw new Error(`Option ${optionName) must be an array`'});'
                 }''
                 if(expectedType === 'boolean' && typeof value !== 'boolean') {'
-                    ';
+                    ';'
                 }'
                     validated[optionName] = Boolean(value'); }'
                 }''
@@ -917,7 +913,7 @@ export class ValidationCommands {
     async loadTranslationData(language: string): Promise<any | null> { // 実際の実装では適切な方法で翻訳データを読み込み
         // ここではモック実装
         try {
-            // ProgressTrackerから翻訳データを取得'
+            // ProgressTrackerから翻訳データを取得
             const progress = this.progressTracker.getLanguageProgress(language);''
             if(!progress') {
                 
@@ -925,7 +921,7 @@ export class ValidationCommands {
                 return null; }
             }
             
-            // 実際の翻訳データを構築（簡略化）'
+            // 実際の翻訳データを構築（簡略化）
             const mockTranslations = { common: {''
                     ok: 'OK','';
                     cancel: 'Cancel','';
@@ -960,13 +956,13 @@ export class ValidationCommands {
                 
                 if (baseValue && targetValue) {
                     const baseParams = this.extractParameters(baseValue);
-                    const targetParams = this.extractParameters(targetValue);'
+                    const targetParams = this.extractParameters(targetValue);
                     '';
                     if (JSON.stringify(baseParams) !== JSON.stringify(targetParams)') {
                         issues.push({'
                             key: key,')';
                             issue: 'parameter_mismatch');
-                            baseParams: baseParams,);
+                            baseParams: baseParams,)
         }
                             targetParams: targetParams); }
                     }
@@ -1004,10 +1000,10 @@ export class ValidationCommands {
         
         return Array.from(params).sort();
     }
-    ';
+    ';'
     formatCommandResult(result: any, format: string): any { ''
         switch(format') {'
-            ';
+            ';'
         }'
             case 'summary': }'
                 return { summary: result.summary, passed: result.passed }''
@@ -1018,7 +1014,7 @@ export class ValidationCommands {
         }
     }'
     '';
-    formatResultAsCSV(result: any'): string { // CSV形式への変換（簡略化）''
+    formatResultAsCSV(result: any'): string { // CSV形式への変換（簡略化）
         const rows = ['Type,Language,Count,Details'];
         
         if(result.details) {
@@ -1047,7 +1043,7 @@ export class ValidationCommands {
                 `"${commandName}"`,")"
                 result.passed ? 'Yes' : 'No')';
                 `${ result.executionTime || 0)ms`,']'
-                (result.summary? .totalIssues || 0).toString('') }]'
+                (result.summary? .totalIssues || 0).toString() }]'
             ].join(',')'});
         }'
         '';
@@ -1095,7 +1091,7 @@ export class ValidationCommands {
                             <td>${result.executionTime || 0}ms</td>
                             <td>${result.summary? .totalIssues || 0}</td>'
                         </tr>'';
-                    `').join('')}
+                    `').join()}
                 </table>;
             </body>;
             </html>;
@@ -1107,7 +1103,7 @@ export class ValidationCommands {
      */ : undefined'
     updateCICDConfig(config: Partial<CICDConfig>): void { ''
         Object.assign(this.cicdConfig, config');''
-        console.log('CI/CD configuration updated:', this.cicdConfig); }
+        console.log('CI/CD configuration updated:', this.cicdConfig) }
     }
     
     /**
@@ -1165,6 +1161,6 @@ let validationCommandsInstance: ValidationCommands | null = null,
 
 /**
  * ValidationCommandsのシングルトンインスタンスを取得
- */'
+ */
 export function getValidationCommands(): ValidationCommands { if (!validationCommandsInstance) {''
         validationCommandsInstance = new ValidationCommands(' })

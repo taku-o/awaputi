@@ -14,7 +14,7 @@ import { getErrorHandler, ErrorHandler } from '../utils/ErrorHandler.js';
 export interface VolumeConfig { master: number,
     sfx: number,
     bgm: number,
-    muted: boolean; }
+    muted: boolean }
 }
 
 /**
@@ -23,7 +23,7 @@ export interface VolumeConfig { master: number,
 export interface QualityConfig { sampleRate: number,
     bufferSize: number,
     channels: number,
-    bitDepth: number; }
+    bitDepth: number }
 }
 
 /**
@@ -33,7 +33,7 @@ export interface CompressorConfig { threshold: number,
     knee: number,
     ratio: number,
     attack: number,
-    release: number; }
+    release: number }
 }
 
 /**
@@ -41,7 +41,7 @@ export interface CompressorConfig { threshold: number,
  */
 export interface ReverbConfig { duration: number,
     decay: number,
-    wet: number; }
+    wet: number }
 }
 
 /**
@@ -51,14 +51,14 @@ export interface EqualizerBands { bass: number,
     lowMid: number,
     mid: number,
     highMid: number,
-    treble: number; }
+    treble: number }
 }
 
 /**
  * イコライザー設定の型定義
  */
 export interface EqualizerConfig { enabled: boolean,
-    bands: EqualizerBands;
+    bands: EqualizerBands
     }
 }
 
@@ -68,7 +68,7 @@ export interface EqualizerConfig { enabled: boolean,
 export interface EffectConfig { reverbEnabled: boolean,
     compression: boolean,
     compressor: CompressorConfig,
-    reverb: ReverbConfig;
+    reverb: ReverbConfig
     }
 }
 
@@ -79,7 +79,7 @@ export interface EnvironmentalConfig { enabled: boolean,
     volume: number,
     currentBiome: string | null,
     currentWeather: string | null,
-    currentTimeOfDay: string | null; }
+    currentTimeOfDay: string | null }
 }
 
 /**
@@ -93,7 +93,7 @@ export interface AccessibilityConfig { visualFeedback: boolean,
     largeFonts: boolean,
     reduceMotion: boolean,
     hapticFeedback: boolean,
-    vibrationIntensity: number; }
+    vibrationIntensity: number }
 }
 
 /**
@@ -102,7 +102,7 @@ export interface AccessibilityConfig { visualFeedback: boolean,
 export interface AudioManagerStatus { masterVolume: number,
     sfxVolume: number,
     bgmVolume: number,
-    isMuted: boolean; }
+    isMuted: boolean }
 }
 
 /**
@@ -139,13 +139,13 @@ export class AudioConfig {
             
             // 音響効果設定の初期化
             this._initializeEffectConfig();
-            ';
-            // 検証ルールの設定''
-            this._setupValidationRules('')';
+            ;
+            // 検証ルールの設定
+            this._setupValidationRules()';
             console.log('[AudioConfig] 初期化完了'); }'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'AudioConfig._initialize'); }
+            getErrorHandler()';
+                context: 'AudioConfig._initialize') }
             });
         }
     }
@@ -154,7 +154,7 @@ export class AudioConfig {
      * 音量設定の初期化
      * @private'
      */''
-    private _initializeVolumeConfig('')';
+    private _initializeVolumeConfig()';
         this.configManager.set('audio', 'volumes.master', 0.7');''
         this.configManager.set('audio', 'volumes.sfx', 0.8');''
         this.configManager.set('audio', 'volumes.bgm', 0.5');''
@@ -165,7 +165,7 @@ export class AudioConfig {
      * 音質設定の初期化
      * @private'
      */''
-    private _initializeQualityConfig('')';
+    private _initializeQualityConfig()';
         this.configManager.set('audio', 'quality.sampleRate', 44100');''
         this.configManager.set('audio', 'quality.bufferSize', 4096');''
         this.configManager.set('audio', 'quality.channels', 1');''
@@ -176,23 +176,23 @@ export class AudioConfig {
      * 音響効果設定の初期化
      * @private'
      */''
-    private _initializeEffectConfig('')';
+    private _initializeEffectConfig()';
         this.configManager.set('audio', 'effects.reverb', true');''
         this.configManager.set('audio', 'effects.compression', true');
         ';
-        // コンプレッサー設定''
+        // コンプレッサー設定
         this.configManager.set('audio', 'effects.compressor.threshold', -20');''
         this.configManager.set('audio', 'effects.compressor.knee', 40');''
         this.configManager.set('audio', 'effects.compressor.ratio', 12');''
         this.configManager.set('audio', 'effects.compressor.attack', 0.003');''
         this.configManager.set('audio', 'effects.compressor.release', 0.25');
         ';
-        // リバーブ設定''
+        // リバーブ設定
         this.configManager.set('audio', 'effects.reverb.duration', 2.0');''
         this.configManager.set('audio', 'effects.reverb.decay', 0.5');''
         this.configManager.set('audio', 'effects.reverb.wet', 0.3');
         ';
-        // イコライザー設定''
+        // イコライザー設定
         this.configManager.set('audio', 'effects.equalizer.enabled', false');''
         this.configManager.set('audio', 'effects.equalizer.bands.bass', 0');''
         this.configManager.set('audio', 'effects.equalizer.bands.lowMid', 0');''
@@ -200,18 +200,18 @@ export class AudioConfig {
         this.configManager.set('audio', 'effects.equalizer.bands.highMid', 0');''
         this.configManager.set('audio', 'effects.equalizer.bands.treble', 0');
         ';
-        // プリセット設定''
+        // プリセット設定
         this.configManager.set('audio', 'presets.user', { )');''
         this.configManager.set('audio', 'presets.lastApplied', null');
         ';
-        // 環境音設定''
+        // 環境音設定
         this.configManager.set('audio', 'environmental.enabled', false');''
         this.configManager.set('audio', 'environmental.volume', 0.3');''
         this.configManager.set('audio', 'environmental.currentBiome', null');''
         this.configManager.set('audio', 'environmental.currentWeather', null');''
         this.configManager.set('audio', 'environmental.currentTimeOfDay', null');
         ';
-        // アクセシビリティ設定''
+        // アクセシビリティ設定
         this.configManager.set('audio', 'accessibility.visualFeedback', true');''
         this.configManager.set('audio', 'accessibility.captioning', false');''
         this.configManager.set('audio', 'accessibility.colorIndication', false');''
@@ -246,7 +246,7 @@ export class AudioConfig {
         this.configManager.setValidationRule('audio', 'volumes.muted', {')'
             type: 'boolean')'),
         ';
-        // 音質設定の検証ルール''
+        // 音質設定の検証ルール
         this.configManager.setValidationRule('audio', 'quality.sampleRate', {')'
             type: 'number'),';
             validator: (value: any) => [8000, 11025, 22050, 44100, 48000, 96000].includes(value);' }'
@@ -257,7 +257,7 @@ export class AudioConfig {
             validator: (value: any) => [256, 512, 1024, 2048, 4096, 8192, 16384].includes(value);' }'
         }');
         ';
-        // 音響効果設定の検証ルール''
+        // 音響効果設定の検証ルール
         this.configManager.setValidationRule('audio', 'effects.compressor.threshold', { ')'
             type: 'number')';
             min: -100,')';
@@ -273,11 +273,11 @@ export class AudioConfig {
             min: 1,')';
             max: 20)'),
         ';
-        // イコライザー設定の検証ルール''
+        // イコライザー設定の検証ルール
         this.configManager.setValidationRule('audio', 'effects.equalizer.enabled', {')'
             type: 'boolean')'),
         
-        // 各バンドのゲイン検証ルール（-20dB to +20dB）'
+        // 各バンドのゲイン検証ルール（-20dB to +20dB）
         const bandValidation = {''
             type: 'number' as const,
             min: -20,
@@ -290,21 +290,21 @@ export class AudioConfig {
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.highMid', bandValidation');''
         this.configManager.setValidationRule('audio', 'effects.equalizer.bands.treble', bandValidation');
         ';
-        // 環境音設定の検証ルール''
+        // 環境音設定の検証ルール
         this.configManager.setValidationRule('audio', 'environmental.enabled', { ')'
             type: 'boolean')'),';
         '';
         this.configManager.setValidationRule('audio', 'environmental.volume', {')'
             type: 'number');
             min: 0,);
-            max: 1); }
+            max: 1) }
     }
 
     /**
      * 音量設定を取得
      * @returns {VolumeConfig} 音量設定'
      */''
-    getVolumeConfig('')';
+    getVolumeConfig()';
             master: this.configManager.get('audio', 'volumes.master', 0.7'),'';
             sfx: this.configManager.get('audio', 'volumes.sfx', 0.8'),'';
             bgm: this.configManager.get('audio', 'volumes.bgm', 0.5'),'';
@@ -316,7 +316,7 @@ export class AudioConfig {
      * マスター音量を取得
      * @returns {number} マスター音量 (0-1)'
      */''
-    getMasterVolume('')';
+    getMasterVolume()';
         return this.configManager.get('audio', 'volumes.master', 0.7);
     }
 
@@ -324,7 +324,7 @@ export class AudioConfig {
      * SFX音量を取得
      * @returns {number} SFX音量 (0-1)'
      */''
-    getSfxVolume('')';
+    getSfxVolume()';
         return this.configManager.get('audio', 'volumes.sfx', 0.8);
     }
 
@@ -332,7 +332,7 @@ export class AudioConfig {
      * BGM音量を取得
      * @returns {number} BGM音量 (0-1)'
      */''
-    getBgmVolume('')';
+    getBgmVolume()';
         return this.configManager.get('audio', 'volumes.bgm', 0.5);
     }
 
@@ -340,7 +340,7 @@ export class AudioConfig {
      * ミュート状態を取得
      * @returns {boolean} ミュート状態'
      */''
-    isMuted('')';
+    isMuted()';
         return this.configManager.get('audio', 'volumes.muted', false);
     }
 
@@ -393,7 +393,7 @@ export class AudioConfig {
      * 音質設定を取得
      * @returns {QualityConfig} 音質設定'
      */''
-    getQualityConfig('')';
+    getQualityConfig()';
             sampleRate: this.configManager.get('audio', 'quality.sampleRate', 44100'),'';
             bufferSize: this.configManager.get('audio', 'quality.bufferSize', 4096'),'';
             channels: this.configManager.get('audio', 'quality.channels', 1'),'';
@@ -405,7 +405,7 @@ export class AudioConfig {
      * サンプルレートを取得
      * @returns {number} サンプルレート (Hz)'
      */''
-    getSampleRate('')';
+    getSampleRate()';
         return this.configManager.get('audio', 'quality.sampleRate', 44100);
     }
 
@@ -413,7 +413,7 @@ export class AudioConfig {
      * バッファサイズを取得
      * @returns {number} バッファサイズ'
      */''
-    getBufferSize('')';
+    getBufferSize()';
         return this.configManager.get('audio', 'quality.bufferSize', 4096);
     }
 
@@ -439,7 +439,7 @@ export class AudioConfig {
      * 音響効果設定を取得
      * @returns {EffectConfig} 音響効果設定'
      */''
-    getEffectConfig('')';
+    getEffectConfig()';
             reverbEnabled: this.configManager.get('audio', 'effects.reverb', true'),'';
             compression: this.configManager.get('audio', 'effects.compression', true'),';
             compressor: { ''
@@ -447,12 +447,12 @@ export class AudioConfig {
                 knee: this.configManager.get('audio', 'effects.compressor.knee', 40'),'';
                 ratio: this.configManager.get('audio', 'effects.compressor.ratio', 12'),'';
                 attack: this.configManager.get('audio', 'effects.compressor.attack', 0.003'),'';
-                release: this.configManager.get('audio', 'effects.compressor.release', 0.25'); }
+                release: this.configManager.get('audio', 'effects.compressor.release', 0.25') }
             },'
             reverb: { ''
                 duration: this.configManager.get('audio', 'effects.reverb.duration', 2.0'),'';
                 decay: this.configManager.get('audio', 'effects.reverb.decay', 0.5'),'';
-                wet: this.configManager.get('audio', 'effects.reverb.wet', 0.3); }
+                wet: this.configManager.get('audio', 'effects.reverb.wet', 0.3) }
             }
         };
     }
@@ -461,7 +461,7 @@ export class AudioConfig {
      * リバーブ効果の有効状態を取得
      * @returns {boolean} リバーブ効果の有効状態'
      */''
-    isReverbEnabled('')';
+    isReverbEnabled()';
         return this.configManager.get('audio', 'effects.reverb', true);
     }
 
@@ -469,7 +469,7 @@ export class AudioConfig {
      * コンプレッション効果の有効状態を取得
      * @returns {boolean} コンプレッション効果の有効状態'
      */''
-    isCompressionEnabled('')';
+    isCompressionEnabled()';
         return this.configManager.get('audio', 'effects.compression', true);
     }
 
@@ -495,7 +495,7 @@ export class AudioConfig {
      * コンプレッサー設定を取得
      * @returns {CompressorConfig} コンプレッサー設定'
      */''
-    getCompressorConfig('')';
+    getCompressorConfig()';
             threshold: this.configManager.get('audio', 'effects.compressor.threshold', -20'),'';
             knee: this.configManager.get('audio', 'effects.compressor.knee', 40'),'';
             ratio: this.configManager.get('audio', 'effects.compressor.ratio', 12'),'';
@@ -508,7 +508,7 @@ export class AudioConfig {
      * リバーブ設定を取得
      * @returns {ReverbConfig} リバーブ設定'
      */''
-    getReverbConfig('')';
+    getReverbConfig()';
             duration: this.configManager.get('audio', 'effects.reverb.duration', 2.0'),'';
             decay: this.configManager.get('audio', 'effects.reverb.decay', 0.5'),'';
             wet: this.configManager.get('audio', 'effects.reverb.wet', 0.3);
@@ -520,28 +520,28 @@ export class AudioConfig {
      * AudioManagerに現在の設定を適用する
      * @param {AudioManager} audioManager - AudioManagerインスタンス
      */'
-    applyToAudioManager(audioManager: AudioManager): void { try {''
+    applyToAudioManager(audioManager: AudioManager): void { try {'
             if(!audioManager') {'
-                ';
+                ';'
             }'
                 throw new Error('AudioManagerが指定されていません'); }
             }
             ';
-            // 音量設定の適用''
-            const volumeConfig = this.getVolumeConfig('')';
+            // 音量設定の適用
+            const volumeConfig = this.getVolumeConfig()';
             audioManager.setVolume('master', volumeConfig.master');''
             audioManager.setVolume('sfx', volumeConfig.sfx');''
             audioManager.setVolume('bgm', volumeConfig.bgm);
             
             // ミュート状態の適用
-            if(volumeConfig.muted !== audioManager.isMuted) {'
+            if(volumeConfig.muted !== audioManager.isMuted) {
                 '';
-                audioManager.toggleMute('');
+                audioManager.toggleMute();
             }'
             console.log('[AudioConfig] AudioManagerに設定を適用しました'); }'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'AudioConfig.applyToAudioManager'); }
+            getErrorHandler()';
+                context: 'AudioConfig.applyToAudioManager') }
             });
         }
     }
@@ -550,9 +550,9 @@ export class AudioConfig {
      * AudioManagerから設定を同期
      * @param {AudioManager} audioManager - AudioManagerインスタンス
      */'
-    syncFromAudioManager(audioManager: AudioManager): void { try {''
+    syncFromAudioManager(audioManager: AudioManager): void { try {'
             if(!audioManager') {'
-                ';
+                ';'
             }'
                 throw new Error('AudioManagerが指定されていません'); }
             }
@@ -562,14 +562,14 @@ export class AudioConfig {
             
             // 音量設定の同期
             this.setMasterVolume(status.masterVolume);
-            this.setSfxVolume(status.sfxVolume);'
+            this.setSfxVolume(status.sfxVolume);
             this.setBgmVolume(status.bgmVolume);''
             this.setMuted(status.isMuted');'
             '';
             console.log('[AudioConfig] AudioManagerから設定を同期しました');'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'AudioConfig.syncFromAudioManager'); }
+            getErrorHandler()';
+                context: 'AudioConfig.syncFromAudioManager') }
             });
         }
     }
@@ -581,6 +581,6 @@ let instance: AudioConfig | null = null,
 /**
  * AudioConfigのシングルトンインスタンスを取得
  * @returns {AudioConfig} インスタンス
- */'
+ */
 export function getAudioConfig(): AudioConfig { if (!instance) {''
         instance = new AudioConfig(' })

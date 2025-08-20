@@ -2,19 +2,19 @@ import { BaseComponent } from '../BaseComponent.js';
 
 // Type definitions
 interface FailurePattern { name: string,
-    keywords: string[],';
+    keywords: string[],
     category: string,'';
     severity: 'low' | 'medium' | 'high' | 'critical',
-    description: string; }
+    description: string }
 }
 
 interface IdentifiedPattern extends FailurePattern { id: string,
-    confidence: number; }
+    confidence: number }
 }
 
 interface PatternStatistics { totalPatterns: number,
     patternsByCategory: Record<string, number>;
-    patternsBySeverity: Record<string, number>; }
+    patternsBySeverity: Record<string, number> }
 }
 
 interface MainController { [key: string]: any, }
@@ -95,7 +95,7 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
             keywords: ['config', 'configuration', 'settings', 'invalid parameter'],'';
             category: 'configuration',')';
             severity: 'medium',')';
-            description: '設定またはパラメータに関連するエラーです'); }
+            description: '設定またはパラメータに関連するエラーです') }
     }
 
     /**
@@ -166,8 +166,7 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
     getPatternStatistics(): PatternStatistics { const stats: PatternStatistics = {
             totalPatterns: this.failurePatterns.size }
             patternsByCategory: {},
-            patternsBySeverity: {}
-        },
+            patternsBySeverity: {},
 
         for(const pattern of this.failurePatterns.values() {
 
@@ -190,6 +189,6 @@ export class FailurePatternAnalyzer extends BaseComponent { private failurePatte
 
     /**
      * クリーンアップ
-     */'
+     */
     cleanup(): void { this.failurePatterns.clear();''
         super.cleanup(') }

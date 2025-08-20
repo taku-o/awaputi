@@ -19,7 +19,7 @@ interface InitializationMetrics { startTime: number | null,
     endTime: number | null,
     componentTimes: Record<string, number>;
     totalExecutionTime: number,
-    optimizationsApplied: string[]; }
+    optimizationsApplied: string[] }
 }
 
 interface LocalModeConfig { enableErrorHandling?: boolean;
@@ -35,18 +35,18 @@ interface ExecutionContext { isLocal: boolean,
     protocol: string,
     url: string,
     domain: string,
-    path: string; }
+    path: string }
 }
-';
+';'
 interface InitializationTask { name: string,''
     task: (') => Promise<any>;''
-    priority: 'high' | 'medium' | 'low'; }
+    priority: 'high' | 'medium' | 'low' }
 }
 
 interface TaskResult { name: string,
     result?: any;
     error?: Error;
-    success: boolean; }
+    success: boolean }
 }
 
 interface InitializationResult { success: boolean,
@@ -77,20 +77,20 @@ export default class LocalModeInitializer { /**
      * @returns 初期化結果
      */
     static async performOptimizedInitialization(;
-        config: LocalModeConfig,
+        config: LocalModeConfig
     );
         componentCache: Map<string, any>);
         logCallback: (message: string) => void';
     ): Promise<InitializationResult> { ''
-        this._initializationMetrics.startTime = performance.now('')';
+        this._initializationMetrics.startTime = performance.now()';
         logCallback('Starting optimized local mode initialization'),
         
         try {
             // 1. 実行コンテキスト検出
-            const executionContext = await this._initializeExecutionContext(componentCache, logCallback);'
+            const executionContext = await this._initializeExecutionContext(componentCache, logCallback);
             '';
             if(!executionContext.isLocal') {'
-                ';
+                ';'
             }'
                 logCallback('Not in local execution mode, skipping local mode initialization'');' }'
                 return { success: false, reason: 'not_local_execution', executionContext };
@@ -132,17 +132,17 @@ export default class LocalModeInitializer { /**
      * @returns 初期化結果
      */
     static async performLegacyInitialization(;
-        config: LocalModeConfig)';
+        config: LocalModeConfig);
         logCallback: (message: string) => void'';
     '): Promise<InitializationResult> { ''
         logCallback('Starting legacy initialization (sequential mode')'),
         
         try {
             // 実行コンテキスト検出
-            const executionContext: ExecutionContext = LocalExecutionDetector.getExecutionContext(),';
+            const executionContext: ExecutionContext = LocalExecutionDetector.getExecutionContext(),
             '';
             if(!executionContext.isLocal') {'
-                ';
+                ';'
             }'
                 logCallback('Not in local execution mode, skipping local mode initialization'');' }'
                 return { success: false, reason: 'not_local_execution', executionContext };
@@ -153,7 +153,7 @@ export default class LocalModeInitializer { /**
             // エラーハンドリング初期化
             if(config.enableErrorHandling) {
                 LocalExecutionErrorHandler.initialize({)
-                    enableMainErrorHandlerIntegration: true,);
+                    enableMainErrorHandlerIntegration: true,)
             }
                     enableDebugLogging: config.debugMode), ErrorHandler); }
                 results.errorHandler = { initialized: true }
@@ -167,7 +167,7 @@ export default class LocalModeInitializer { /**
             // ファビコン生成
             if(config.enableFaviconGeneration) {
                 const faviconResult = await FaviconGenerator.generateMissingFavicons({)
-                    enablePerformanceOptimizations: config.enablePerformanceOptimizations),;
+                    enablePerformanceOptimizations: config.enablePerformanceOptimizations),
             }
                 results.faviconGenerator = faviconResult; }
             }
@@ -176,7 +176,7 @@ export default class LocalModeInitializer { /**
             if(config.enableDeveloperGuidance) {
                 if(!DeveloperGuidanceSystem.isPermanentlyDismissed() {
                     DeveloperGuidanceSystem.showLocalExecutionWarning({)
-                        showWarning: true,);
+                        showWarning: true,)
             }
                         persistDismissal: true); }
                 }
@@ -197,9 +197,9 @@ export default class LocalModeInitializer { /**
      */
     private static async _initializeExecutionContext(;
         componentCache: Map<string, any>);
-        logCallback: (message: string) => void';
+        logCallback: (message: string) => void;
     ): Promise<ExecutionContext> { ''
-        const startTime = performance.now('')';
+        const startTime = performance.now()';
         const cacheKey = 'execution-context';')'
         if (componentCache.has(cacheKey)') {''
             logCallback('Using cached execution context');
@@ -224,7 +224,7 @@ export default class LocalModeInitializer { /**
         
         try {
             LocalExecutionErrorHandler.initialize({
-                enableMainErrorHandlerIntegration: true,);
+                enableMainErrorHandlerIntegration: true);
                 enableDebugLogging: config.debugMode)';
                 enableUserNotifications: true,')';
                 enableFallbackContent: true), ErrorHandler');'
@@ -243,7 +243,7 @@ export default class LocalModeInitializer { /**
      * @private
      */
     private static _createInitializationTasks(;
-        config: LocalModeConfig,
+        config: LocalModeConfig
     );
         executionContext: ExecutionContext);
         logCallback: (message: string) => void;
@@ -263,7 +263,7 @@ export default class LocalModeInitializer { /**
             tasks.push({')'
                 name: 'faviconGenerator'),';
                 task: () => FaviconGenerator.generateMissingFavicons({')'
-                    enablePerformanceOptimizations: config.enablePerformanceOptimizations)'),';
+                    enablePerformanceOptimizations: config.enablePerformanceOptimizations)'),'
         }'
                 priority: 'medium' }
             }),
@@ -325,7 +325,7 @@ export default class LocalModeInitializer { /**
                     return { name, error: error as Error, success: false }
                 }
             });
-            ';
+            ';'
             const batchResults = await Promise.allSettled(batchPromises);''
             batchResults.forEach(result => {  ');' }'
                 if (result.status === 'fulfilled') { }
@@ -342,7 +342,7 @@ export default class LocalModeInitializer { /**
      * @private
      */
     private static async _finalizeInitialization(;
-        results: Record<string, any>, );
+        results: Record<string, any> );
         config: LocalModeConfig);
         logCallback: (message: string) => void;
     ): Promise<void> { // 結果の検証
@@ -350,8 +350,8 @@ export default class LocalModeInitializer { /**
         const totalCount = Object.keys(results).length;
          }
         logCallback(`Initialization completed: ${successCount}/${ totalCount) components succeeded`);
-        ';
-        // 最適化サマリー''
+        ;
+        // 最適化サマリー
         if(config.enablePerformanceOptimizations') {'
             this._initializationMetrics.optimizationsApplied.push('';
                 'lazy-initialization','';

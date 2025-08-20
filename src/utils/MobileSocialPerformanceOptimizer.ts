@@ -15,7 +15,7 @@ interface DeviceThresholds { lowEndDevice: {
     },
     highEndDevice: { memory: number,
         cpu: number,
-        fps: number; }
+        fps: number }
     };
 }
 
@@ -23,19 +23,19 @@ interface OptimizationLevel { imageQuality: number,
     animationReduction: number,
     updateThrottling: number,
     cacheSize: number,
-    lazyLoadDelay: number; }
+    lazyLoadDelay: number }
 }
 
 interface OptimizationLevels { aggressive: OptimizationLevel,
     moderate: OptimizationLevel,
-    minimal: OptimizationLevel;
+    minimal: OptimizationLevel
     }
 }
 
 interface CacheEntry { data: any,
     timestamp: number,
     lastAccess: number,
-    accessCount: number; }
+    accessCount: number }
 }
 
 interface MemoryManager { cache: Map<string, CacheEntry>;
@@ -49,20 +49,20 @@ interface MemoryManager { cache: Map<string, CacheEntry>;
 interface PerformanceMonitoring { enabled: boolean,
     metricsBuffer: PerformanceMetrics[],
     reportInterval: number,
-    lastReport: number; }
+    lastReport: number }
 }
 
 interface ConnectionInfo { effectiveType: string,
     downlink: number,
     rtt: number,
-    saveData: boolean; }
+    saveData: boolean }
 }
 
 interface BrowserPerformanceInfo { cpuBenchmark: number,
     memoryInfo: {
         used: number,
         total: number,
-        limit: number; }
+        limit: number }
     } | null;
     timeOrigin: number,
     _dummyResult: number,
@@ -70,7 +70,7 @@ interface BrowserPerformanceInfo { cpuBenchmark: number,
 
 interface RenderingPerformanceInfo { renderBenchmark: number,
     canvasSupport: boolean,
-    context2D: boolean; }
+    context2D: boolean }
 }
 
 interface DeviceInfo { memory: number,
@@ -80,19 +80,19 @@ interface DeviceInfo { memory: number,
     connection: ConnectionInfo,
     browserPerformance: BrowserPerformanceInfo,
     renderingPerformance: RenderingPerformanceInfo,
-    deviceClass: 'low' | 'medium' | 'high'; }
+    deviceClass: 'low' | 'medium' | 'high' }
 }
-';
+';'
 interface OptimizationSettings extends OptimizationLevel { ''
     level: 'aggressive' | 'moderate' | 'minimal','';
     deviceClass: 'low' | 'medium' | 'high',
-    connectionType: string; }
+    connectionType: string }
 }
 
 interface PerformanceMetrics { timestamp: number,
     memory: {
         used: number,
-        total: number; }
+        total: number }
     } | null;
     timing: PageTimings | null,
     cacheStats: CacheStats,
@@ -102,42 +102,42 @@ interface PerformanceMetrics { timestamp: number,
 interface PageTimings { domContentLoaded: number,
     loadComplete: number,
     firstPaint: number,
-    firstContentfulPaint: number; }
+    firstContentfulPaint: number }
 }
 
 interface CacheStats { size: number,
     maxSize: number,
     hitRate: number,
-    lastCleanup: number; }
+    lastCleanup: number }
 }
 
 interface FPSCounter { frames: number,
     lastTime: number,
-    fps: number; }
+    fps: number }
 }
-';
+';'
 interface MetricsAnalysis { averageFPS: number,''
     memoryTrend: 'increasing' | 'decreasing' | 'stable',
     cacheEfficiency: number,
     performanceScore: {
         overall: number,
         fps: number,
-        memory: number; }
+        memory: number }
     };
 }
-';
+';'
 interface PerformanceRecommendation { ''
     type: 'fps' | 'memory' | 'cache','';
     severity: 'low' | 'medium' | 'high',';
     message: string,'';
-    action: 'increaseAnimationReduction' | 'triggerMemoryCleanup' | 'optimizeCacheStrategy'; }
+    action: 'increaseAnimationReduction' | 'triggerMemoryCleanup' | 'optimizeCacheStrategy' }
 }
 
 interface PerformanceReport { timestamp: number,
     deviceInfo: DeviceInfo,
     optimizationSettings: OptimizationSettings,
     metrics: MetricsAnalysis,
-    recommendations: PerformanceRecommendation[];
+    recommendations: PerformanceRecommendation[]
     }
 }
 
@@ -145,7 +145,7 @@ interface OptimizationInfo { deviceInfo: DeviceInfo,
     optimizationSettings: OptimizationSettings,
     performanceMetrics: MetricsAnalysis,
     cacheStats: CacheStats,
-    isOptimized: boolean; }
+    isOptimized: boolean }
 }
 
 type ThrottledFunction = (...args: any[]) => void;
@@ -175,13 +175,13 @@ declare global { interface Navigator {
     interface Performance { memory?: {
             usedJSHeapSize: number,
             totalJSHeapSize: number,
-            jsHeapSizeLimit: number; }
+            jsHeapSizeLimit: number }
         };
     }
 
     interface PerformanceNavigationTiming { navigationStart: number,
         domContentLoadedEventEnd: number,
-        loadEventEnd: number; }
+        loadEventEnd: number }
     }
 }
 
@@ -210,7 +210,7 @@ export class MobileSocialPerformanceOptimizer {
         this.thresholds = {
             lowEndDevice: {
                 memory: 2, // GB;
-                cpu: 2,    // cores;
+                cpu: 2,    // cores
     }
     }
                 fps: 30 }
@@ -258,7 +258,7 @@ export class MobileSocialPerformanceOptimizer {
         this.monitoring = { enabled: false,
             metricsBuffer: [],
             reportInterval: 30000, // 30秒;
-            lastReport: Date.now(); }
+            lastReport: Date.now() }
         };
     }
 
@@ -280,14 +280,14 @@ export class MobileSocialPerformanceOptimizer {
             
             // 画像最適化を設定
             this.setupImageOptimization();
-            ';
-            // アニメーション最適化を設定''
+            ;
+            // アニメーション最適化を設定
             this.setupAnimationOptimization(''';
             console.log('MobileSocialPerformanceOptimizer initialized:', {)
                 deviceInfo: this.deviceInfo,);
                 optimizationLevel: this.optimizationSettings.level),';
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to initialize MobileSocialPerformanceOptimizer:', error);
             throw error; }
         }
@@ -308,8 +308,8 @@ export class MobileSocialPerformanceOptimizer {
             
             // ブラウザ性能
             browserPerformance: await this.measureBrowserPerformance(),
-            ';
-            // レンダリング性能''
+            ;
+            // レンダリング性能
             renderingPerformance: await this.measureRenderingPerformance(''';
             deviceClass: 'medium' })
         })
@@ -322,7 +322,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * 接続情報の取得
      */
-    getConnectionInfo(): ConnectionInfo { const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;'
+    getConnectionInfo(): ConnectionInfo { const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
         '';
         if(!connection') {'
             return { ''
@@ -333,7 +333,7 @@ export class MobileSocialPerformanceOptimizer {
                 saveData: false }
             },
         }
-        ';
+        ';'
         return { ''
             effectiveType: connection.effectiveType || 'unknown',
             downlink: connection.downlink || 0,
@@ -374,7 +374,7 @@ export class MobileSocialPerformanceOptimizer {
 
     /**
      * レンダリング性能の測定
-     */'
+     */
     async measureRenderingPerformance(): Promise<RenderingPerformanceInfo> { ''
         return new Promise((resolve') => { ''
             const canvas = document.createElement('canvas'');
@@ -385,9 +385,9 @@ export class MobileSocialPerformanceOptimizer {
             if(!ctx) {
             
                 resolve({
-                    renderBenchmark: 0,);
+                    renderBenchmark: 0);
                     canvasSupport: false);
-                    context2D: false;
+                    context2D: false
             }
                 ), }
                 return; }
@@ -404,7 +404,7 @@ export class MobileSocialPerformanceOptimizer {
             requestAnimationFrame(() => {  const renderTime = performance.now() - startTime;
                 
                 resolve({
-                    renderBenchmark: renderTime,);
+                    renderBenchmark: renderTime);
                     canvasSupport: true) }
                     context2D: true }
                 }),
@@ -413,7 +413,7 @@ export class MobileSocialPerformanceOptimizer {
     }
 
     /**
-     * デバイス分類'
+     * デバイス分類
      */''
     classifyDevice(info: DeviceInfo'): 'low' | 'medium' | 'high' { const memoryScore = info.memory >= this.thresholds.highEndDevice.memory ? 3 :
                            info.memory >= this.thresholds.mediumDevice.memory ? 2 : 1;
@@ -436,7 +436,7 @@ export class MobileSocialPerformanceOptimizer {
      */'
     determineOptimizationLevel(): OptimizationSettings { ''
         if(!this.deviceInfo') {'
-            ';
+            ';'
         }'
             throw new Error('Device info not available''); }
         }
@@ -446,20 +446,20 @@ export class MobileSocialPerformanceOptimizer {
         '';
         let level: 'aggressive' | 'moderate' | 'minimal' = 'moderate',
         ';
-        // デバイス性能ベースの判定''
+        // デバイス性能ベースの判定
         if(deviceClass === 'low'') {'
-            ';
+            ';'
         }'
             level = 'aggressive';' }'
         } else if (deviceClass === 'high'') { ''
             level = 'minimal'; }
         }
         
-        // 接続状況による調整'
+        // 接続状況による調整
         if(connection.saveData || '';
             connection.effectiveType === 'slow-2g' || ')';
             connection.effectiveType === '2g'') {'
-            ';
+            ';'
         }'
             level = 'aggressive'; }
         }
@@ -546,9 +546,9 @@ export class MobileSocialPerformanceOptimizer {
     }
 
     /**
-     * ページタイミング情報の取得'
+     * ページタイミング情報の取得
      */''
-    getPageTimings('')';
+    getPageTimings()';
         const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
         if (!navigation) return null;
         
@@ -562,7 +562,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * First Paint時間の取得'
      */''
-    getFirstPaintTime('')';
+    getFirstPaintTime()';
         const paintEntries = performance.getEntriesByType('paint'');''
         const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
         return firstPaint ? firstPaint.startTime: 0 }
@@ -570,7 +570,7 @@ export class MobileSocialPerformanceOptimizer {
     /**
      * First Contentful Paint時間の取得'
      */''
-    getFirstContentfulPaintTime('')';
+    getFirstContentfulPaintTime()';
         const paintEntries = performance.getEntriesByType('paint'');''
         const fcp = paintEntries.find(entry => entry.name === 'first-contentful-paint');
         return fcp ? fcp.startTime: 0 }
@@ -603,7 +603,7 @@ export class MobileSocialPerformanceOptimizer {
 
         const warnings: string[] = [],
         ';
-        // FPS チェック''
+        // FPS チェック
         const targetFPS = this.thresholds[this.deviceInfo.deviceClass + 'Device' as keyof DeviceThresholds];
         if(metrics.fps < targetFPS.fps) {
             
@@ -612,7 +612,7 @@ export class MobileSocialPerformanceOptimizer {
             this.adjustForLowFPS(});
         }
         ';
-        // メモリ使用量チェック''
+        // メモリ使用量チェック
         if(metrics.memory && metrics.memory.used > metrics.memory.total * 0.8') {'
             '';
             warnings.push('High memory usage detected');
@@ -626,7 +626,7 @@ export class MobileSocialPerformanceOptimizer {
     }
 
     /**
-     * パフォーマンス警告の処理'
+     * パフォーマンス警告の処理
      */''
     handlePerformanceWarnings(warnings: string[]'): void { ''
         console.warn('Performance warnings:', warnings);
@@ -716,16 +716,16 @@ export class MobileSocialPerformanceOptimizer {
         
         // キャッシュサイズを一時的に縮小
         this.memoryManager.maxCacheSize = Math.max(10, this.memoryManager.maxCacheSize * 0.7);
-        ';
-        // DOM要素のクリーンアップ''
-        this.cleanupDOMElements('')';
+        ;
+        // DOM要素のクリーンアップ
+        this.cleanupDOMElements()';
         console.log('Emergency memory cleanup performed'); }
     }
 
     /**
      * DOM要素のクリーンアップ'
      */''
-    cleanupDOMElements('')';
+    cleanupDOMElements()';
         const hiddenDialogs = document.querySelectorAll('.share-dialog: not(.open')'),
         hiddenDialogs.forEach(dialog => {  );
             if (dialog.parentNode) { }
@@ -733,7 +733,7 @@ export class MobileSocialPerformanceOptimizer {
             }''
         }');
         ';
-        // 古いトースト通知を削除''
+        // 古いトースト通知を削除
         const oldToasts = document.querySelectorAll('.mobile-toast');
         oldToasts.forEach(toast => {  );
             if (toast.parentNode) { }
@@ -760,7 +760,7 @@ export class MobileSocialPerformanceOptimizer {
 
     /**
      * 画像圧縮
-     */ : undefined'
+     */ : undefined
     compressImage(imageData: string, quality: number): Promise<string>,'';
         return new Promise((resolve') => {  ''
             const canvas = document.createElement('canvas'');''
@@ -780,11 +780,11 @@ export class MobileSocialPerformanceOptimizer {
                 const scale = quality < 0.7 ? 0.8 : 1.0;
                 canvas.width = img.width * scale;
                 canvas.height = img.height * scale;
-                ';
-                // 画像を描画''
+                ;
+                // 画像を描画
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height');
                 ';
-                // 圧縮された画像データを取得''
+                // 圧縮された画像データを取得
                 const compressedData = canvas.toDataURL('image/jpeg', quality); }
                 resolve(compressedData); }
             };
@@ -802,7 +802,7 @@ export class MobileSocialPerformanceOptimizer {
                 this.supportsWebP = (webP.height === 2);' }'
                 resolve(this.supportsWebP'); }'
             };''
-            webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+            webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA;
         });
     }
 
@@ -830,7 +830,7 @@ export class MobileSocialPerformanceOptimizer {
 
         const reduction = this.optimizationSettings.animationReduction;
         ';
-        // CSS アニメーション持続時間の短縮''
+        // CSS アニメーション持続時間の短縮
         const style = document.createElement('style'');''
         style.id = 'mobile-animation-optimization';
         style.textContent = `;
@@ -841,15 +841,15 @@ export class MobileSocialPerformanceOptimizer {
             
             ${ reduction > 0.5 ? ` : undefined
                 .mobile-social-optimized .ripple-effect::after {
-                    display: none; }
+                    display: none }
                 }
                 
-                .mobile-social-optimized .mobile-bottom-sheet { transition: transform 0.1s ease !important; }'
+                .mobile-social-optimized .mobile-bottom-sheet { transition: transform 0.1s ease !important }'
                 }''
             ` : ''}
         `;
         ';
-        // 既存のスタイルを置換''
+        // 既存のスタイルを置換
         const existing = document.getElementById('mobile-animation-optimization');
         if (existing) { existing.parentNode? .removeChild(existing); }
         }
@@ -872,9 +872,9 @@ export class MobileSocialPerformanceOptimizer {
     }
 
     /**
-     * UI更新処理（プレースホルダー）'
+     * UI更新処理（プレースホルダー）
      */''
-    updateUI('')';
+    updateUI()';
         console.log('[MobileSocialPerformanceOptimizer] UI updated');
     }
 
@@ -913,7 +913,7 @@ export class MobileSocialPerformanceOptimizer {
             deviceInfo: this.deviceInfo,
             optimizationSettings: this.optimizationSettings,';
             metrics: this.analyzeMetrics(),'';
-            recommendations: this.generateRecommendations('')';
+            recommendations: this.generateRecommendations()';
         console.log('Performance Report:', report);
         
         // 必要に応じて最適化設定を調整
@@ -943,7 +943,7 @@ export class MobileSocialPerformanceOptimizer {
     }
 
     /**
-     * メモリトレンド計算'
+     * メモリトレンド計算
      */''
     calculateMemoryTrend(metrics: PerformanceMetrics[]'): 'increasing' | 'decreasing' | 'stable' { const memoryValues = metrics
             .filter(m => m.memory);
@@ -994,13 +994,13 @@ export class MobileSocialPerformanceOptimizer {
      */
     generateRecommendations(): PerformanceRecommendation[] { if (!this.deviceInfo) return [];'
 '';
-        const analysis = this.analyzeMetrics('')';
+        const analysis = this.analyzeMetrics()';
         const targetFPS = this.thresholds[this.deviceInfo.deviceClass + 'Device' as keyof DeviceThresholds].fps;')'
         if(analysis.averageFPS < targetFPS') {'
             recommendations.push({''
                 type: 'fps','';
                 severity: 'high',')';
-                message: 'FPSが低下しています。アニメーションの削減を推奨します。',');
+                message: 'FPSが低下しています。アニメーションの削減を推奨します。',')
         }'
                 action: 'increaseAnimationReduction')'); }
         }'
@@ -1009,7 +1009,7 @@ export class MobileSocialPerformanceOptimizer {
             recommendations.push({''
                 type: 'memory','';
                 severity: 'medium',')';
-                message: 'メモリ使用量が増加傾向です。キャッシュクリーンアップを推奨します。',');
+                message: 'メモリ使用量が増加傾向です。キャッシュクリーンアップを推奨します。',')
         }'
                 action: 'triggerMemoryCleanup'); }
         }'
@@ -1018,7 +1018,7 @@ export class MobileSocialPerformanceOptimizer {
             recommendations.push({''
                 type: 'cache','';
                 severity: 'low',')';
-                message: 'キャッシュ効率が低下しています。キャッシュ戦略の見直しを推奨します。',');
+                message: 'キャッシュ効率が低下しています。キャッシュ戦略の見直しを推奨します。',')
         }'
                 action: 'optimizeCacheStrategy'); }
         }
@@ -1032,7 +1032,7 @@ export class MobileSocialPerformanceOptimizer {
     adjustOptimizationSettings(report: PerformanceReport): void { if (!this.optimizationSettings) return;
 
         const recommendations = report.recommendations;
-        ';
+        ';'
         recommendations.forEach(rec => { );''
             switch(rec.action') {'
                 '';
@@ -1041,7 +1041,7 @@ export class MobileSocialPerformanceOptimizer {
                         this.optimizationSettings!.animationReduction + 0.1);''
                     this.applyAnimationOptimization(''';
                 case 'triggerMemoryCleanup':'';
-                    this.triggerMemoryCleanup('')';
+                    this.triggerMemoryCleanup()';
                 case 'optimizeCacheStrategy':);
                     this.memoryManager.maxCacheSize = Math.max(10);
             }
@@ -1104,9 +1104,9 @@ export class MobileSocialPerformanceOptimizer {
 
     /**
      * クリーンアップ
-     */'
+     */
     cleanup(): void { this.monitoring.enabled = false;''
-        this.memoryManager.cache.clear('')';
+        this.memoryManager.cache.clear()';
         const optimizationStyle = document.getElementById('mobile-animation-optimization');
         if(optimizationStyle) {
             
@@ -1140,6 +1140,6 @@ export function reinitializeMobileSocialPerformanceOptimizer(): MobileSocialPerf
     }
     mobileSocialPerformanceOptimizerInstance = new MobileSocialPerformanceOptimizer();
     return mobileSocialPerformanceOptimizerInstance;
-}'
+}
 '';
 export const mobileSocialPerformanceOptimizer = getMobileSocialPerformanceOptimizer(');

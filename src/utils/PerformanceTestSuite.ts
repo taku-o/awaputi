@@ -31,23 +31,23 @@ interface Baselines { frameRate: BaselineConfig,
     memoryUsage: BaselineConfig,
     renderingEfficiency: BaselineConfig,
     networkPerformance: BaselineConfig,
-    batteryOptimization: BaselineConfig;
+    batteryOptimization: BaselineConfig
     }
 }
 
 interface TestSession { id: number,
     startTime: number,
-    endTime?: number;'
+    endTime?: number;
     results: Map<string, TestResult>;''
     status: 'running' | 'completed' | 'failed',
-    error?: string; }
+    error?: string }
 }
 
 interface TestResult { category: string,
     tests: TestDetails,
     passed: boolean,
     summary: string,
-    performanceMetrics?: PerformanceMetrics;
+    performanceMetrics?: PerformanceMetrics
     }
 }
 
@@ -62,7 +62,7 @@ interface TestAnalysis { overallPassed: boolean,
     improvements: Improvement[],
     recommendations: Recommendation[],
     session: TestSession,
-    comparison?: BaselineComparison;
+    comparison?: BaselineComparison
     }
 }
 
@@ -71,28 +71,28 @@ interface Regression { category: string,
     current: number,
     baseline: number,';
     degradation: number,'';
-    severity: 'low' | 'medium' | 'high' | 'critical'; }
+    severity: 'low' | 'medium' | 'high' | 'critical' }
 }
 
 interface Improvement { category: string,
     metric: string,
     current: number,
     baseline: number,
-    improvement: number; }
+    improvement: number }
 }
-';
+';'
 interface Recommendation { type: string,''
     priority: 'low' | 'medium' | 'high' | 'critical',
     description: string,
     actions: string[],
-    category?: string; }
+    category?: string }
 }
 
 interface BaselineComparison { frameRate: ComparisonResult,
     memory: ComparisonResult,
     rendering: ComparisonResult,
     network: ComparisonResult,
-    battery: ComparisonResult;
+    battery: ComparisonResult
     }
 }
 
@@ -100,18 +100,18 @@ interface ComparisonResult { current: number,
     baseline: number,';
     difference: number,'';
     status: 'improved' | 'degraded' | 'stable',
-    withinThreshold: boolean; }
+    withinThreshold: boolean }
 }
 
 interface TestHistory { id: string,
     timestamp: number,
-    passed: boolean; }
+    passed: boolean }
 }
 
 interface ErrorLog { timestamp: number,
     context: string,
     error: string,
-    stack?: string; }
+    stack?: string }
 }
 
 interface FallbackResult { category?: string;
@@ -130,7 +130,7 @@ interface ExportOptions { includeRawData?: boolean;
     includeRecommendations?: boolean;
     dateRange?: {
         start: number,
-        end: number; }
+        end: number }
     };
 }
 
@@ -148,12 +148,12 @@ interface PerformanceMetricsCollector { analyzeResults(results: Map<string, Test
     compareWithBaseline(results: Map<string, TestResult>): BaselineComparison;
     processPerformanceEntries(entries: PerformanceEntry[]): void,
     calculateVariance(values: number[]): number,
-    calculatePercentile(values: number[], percentile: number): number; }
+    calculatePercentile(values: number[], percentile: number): number }
 }
 
 interface PerformanceTestReporter { summarizeResults(results: Map<string, TestResult>): string;
     generateReport(analysis: TestAnalysis, format?: string): string;
-    exportResults(analysis: TestAnalysis, format?: string, options?: ExportOptions): string; }
+    exportResults(analysis: TestAnalysis, format?: string, options?: ExportOptions): string }
 }
 
 // Legacy helper class interfaces
@@ -161,7 +161,7 @@ interface PerformanceTestRunner { runTests?(): Promise<any>;
     }
 }
 
-interface BenchmarkComparator { compare?(baseline: any, current: any): any; }
+interface BenchmarkComparator { compare?(baseline: any, current: any): any }
 }
 
 interface RegressionDetector { detectRegressions?(data: any): Regression[],
@@ -187,7 +187,7 @@ interface MemoryLeakDetector { startMonitoring(): Promise<void>;
 }
 
 interface MemoryLeakReport { suspectedLeaks: any[],
-    totalGrowth: number; }
+    totalGrowth: number }
 }
 
 interface GCMonitor { startMonitoring(): Promise<void>;
@@ -198,7 +198,7 @@ interface GCMonitor { startMonitoring(): Promise<void>;
 interface GCStatistics { averagePauseTime: number,
     collectionCount: number,
     totalPauseTime: number,
-    memoryReclaimed: number; }
+    memoryReclaimed: number }
 }
 
 interface MemoryPressureSimulator { applyPressure(): Promise<void>;
@@ -213,7 +213,7 @@ interface RenderOptimizer { measureDirtyRegionEfficiency(scenario: DirtyRegionTe
 interface DirtyRegionEfficiency { ratio: number,
     totalRegions: number,
     dirtyRegions: number,
-    pixelsRendered: number; }
+    pixelsRendered: number }
 }
 
 interface DirtyRegionTestScenario { setup(): Promise<void>;
@@ -227,7 +227,7 @@ interface ViewportCullingTester { measureCullingEfficiency(): Promise<CullingEff
 interface CullingEfficiency { cullRate: number,
     totalObjects: number,
     culledObjects: number,
-    renderTime: number; }
+    renderTime: number }
 }
 
 interface LayerCompositionTester { measureCompositionPerformance(): Promise<CompositionPerformance>;
@@ -237,7 +237,7 @@ interface LayerCompositionTester { measureCompositionPerformance(): Promise<Comp
 interface CompositionPerformance { compositionTime: number,
     layerCount: number,
     complexity: string,
-    optimizations: string[]; }
+    optimizations: string[] }
 }
 
 interface RenderTimer { measureSingleRenderTime(): Promise<number>;
@@ -304,11 +304,11 @@ export class PerformanceTestSuite {
     /**
      * テストスイートの初期化
      */
-    async initializeTestSuite(): Promise<void> { try {'
-            await this.loadBaselines();''
-            await this.testExecutor.setupTestEnvironment('');'
+    async initializeTestSuite(): Promise<void> { try {
+            await this.loadBaselines();
+            await this.testExecutor.setupTestEnvironment();
             console.log('PerformanceTestSuite initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to initialize PerformanceTestSuite:', error);
             throw error; }
         }
@@ -317,14 +317,14 @@ export class PerformanceTestSuite {
     /**
      * ベースラインデータの読み込み'
      */''
-    async loadBaselines('')';
+    async loadBaselines()';
         const storedBaselines = localStorage.getItem('performance_baselines');
         if(storedBaselines) {
             try {
                 const parsed = JSON.parse(storedBaselines);
         }'
                 this.baselines = new Map(Object.entries({ ...defaultBaselines, ...parsed ));' }'
-            } catch (error') { ''
+            } catch (error) { ''
                 console.warn('Failed to parse stored baselines, using defaults:', error);
                 this.baselines = new Map(Object.entries(defaultBaselines); }
             }
@@ -337,7 +337,7 @@ export class PerformanceTestSuite {
      */'
     async runComprehensiveTests(): Promise<TestAnalysis> { ''
         if(!this.initialized') {'
-            ';
+            ';'
         }'
             throw new Error('PerformanceTestSuite not initialized'); }
         }
@@ -351,9 +351,9 @@ export class PerformanceTestSuite {
             const testSuites = [this.testExecutor.runFrameRateTests(),
                 this.testExecutor.runMemoryTests(),
                 this.testExecutor.runRenderingTests(),
-                this.testExecutor.runNetworkTests(),];
+                this.testExecutor.runNetworkTests()];
                 this.testExecutor.runBatteryTests()];
-            ];'
+            ];
 '';
             const results = await Promise.all(testSuites');'
             this.currentSession.results = new Map([']';
@@ -367,9 +367,9 @@ export class PerformanceTestSuite {
             this.currentSession.status = 'completed';
             this.currentSession.endTime = performance.now();
             
-            // メトリクス収集と分析をサブコンポーネントに委譲'
+            // メトリクス収集と分析をサブコンポーネントに委譲
             return this.analyzeTestResults();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.currentSession.status = 'failed';
             this.currentSession.error = (error as Error).message;
             throw error; }
@@ -381,7 +381,7 @@ export class PerformanceTestSuite {
      */'
     analyzeTestResults(): TestAnalysis { ''
         if(!this.currentSession') {'
-            ';
+            ';'
         }'
             throw new Error('No active test session'); }
         }
@@ -491,25 +491,25 @@ export class PerformanceTestSuite {
         }
 
         const storageKey = `performance_test_${this.currentSession.id}`;'
-        try { ''
+        try {'
             localStorage.setItem(storageKey, JSON.stringify(analysis)');''
             localStorage.setItem('latest_performance_test', storageKey);' }'
-        } catch (error') { ''
-            console.error('Failed to save test results:', error); }
+        } catch (error) { ''
+            console.error('Failed to save test results:', error) }
         }
     }
 
     /**
      * 前回のテスト結果取得'
      */''
-    getPreviousTestResults('')';
+    getPreviousTestResults()';
             const latestKey = localStorage.getItem('latest_performance_test');
             if(latestKey) {
                 const resultsJson = localStorage.getItem(latestKey);
             }'
                 return resultsJson ? JSON.parse(resultsJson) : null;' }'
-            } catch (error') { ''
-            console.error('Failed to get previous test results:', error); }
+            } catch (error) { ''
+            console.error('Failed to get previous test results:', error) }
         }
         return null;
     }
@@ -523,14 +523,14 @@ export class PerformanceTestSuite {
             const key = localStorage.key(i');''
             if(key? .startsWith('performance_test_') {
         }'
-                try {' }'
+                try { }'
                     const result = JSON.parse(localStorage.getItem(key') || '{}');
                     history.push({ : undefined)
                         id: key);
                         timestamp: result.session? .startTime || 0, : undefined)';
                         passed: result.overallPassed || false);' }'
-                } catch (error') { ''
-                    console.error('Failed to parse test history item:', error); }
+                } catch (error) { ''
+                    console.error('Failed to parse test history item:', error) }
                 }
             }
         }
@@ -540,14 +540,14 @@ export class PerformanceTestSuite {
     /**
      * 最新結果取得'
      */''
-    getLatestResults('')';
+    getLatestResults()';
             const latestKey = localStorage.getItem('latest_performance_test');
             if(latestKey) {
                 const resultsJson = localStorage.getItem(latestKey);
             }'
                 return resultsJson ? JSON.parse(resultsJson) : null;' }'
-            } catch (error') { ''
-            console.error('Failed to get latest results:', error); }
+            } catch (error) { ''
+            console.error('Failed to get latest results:', error) }
         }
         return null;
     }
@@ -562,31 +562,31 @@ export class PerformanceTestSuite {
 
     calculatePercentile(values: number[], percentile: number): number { return this.metricsCollector.calculatePercentile(values, percentile); }
     }
-';
-    // レポート生成メソッド（レポート コンポーネントに委譲）''
+;
+    // レポート生成メソッド（レポート コンポーネントに委譲）
     summarizeFrameRateResults(tests: TestDetails'): string { ''
-        return this.testReporter.summarizeResults(new Map([['frameRate', { category: 'frameRate', tests, passed: true, summary: '' )]])); }
+        return this.testReporter.summarizeResults(new Map([['frameRate', { category: 'frameRate', tests, passed: true, summary: '' )]])) }
     }'
 '';
     summarizeMemoryResults(tests: TestDetails'): string { ''
-        return this.testReporter.summarizeResults(new Map([['memory', { category: 'memory', tests, passed: true, summary: '' )]])); }
+        return this.testReporter.summarizeResults(new Map([['memory', { category: 'memory', tests, passed: true, summary: '' )]])) }
     }'
 '';
     summarizeRenderingResults(tests: TestDetails'): string { ''
-        return this.testReporter.summarizeResults(new Map([['rendering', { category: 'rendering', tests, passed: true, summary: '' )]])); }
+        return this.testReporter.summarizeResults(new Map([['rendering', { category: 'rendering', tests, passed: true, summary: '' )]])) }
     }'
 '';
     summarizeNetworkResults(tests: TestDetails'): string { ''
-        return this.testReporter.summarizeResults(new Map([['network', { category: 'network', tests, passed: true, summary: '' )]])); }
+        return this.testReporter.summarizeResults(new Map([['network', { category: 'network', tests, passed: true, summary: '' )]])) }
     }'
 '';
     summarizeBatteryResults(tests: TestDetails'): string { ''
-        return this.testReporter.summarizeResults(new Map([['battery', { category: 'battery', tests, passed: true, summary: '' )]])); }
+        return this.testReporter.summarizeResults(new Map([['battery', { category: 'battery', tests, passed: true, summary: '' )]])) }
     }
 
-    // 公開API - 後方互換性のため'
+    // 公開API - 後方互換性のため
     async runTests(): Promise<TestAnalysis> { ''
-        return await this.runComprehensiveTests('')';
+        return await this.runComprehensiveTests()';
     generateReport(analysis: TestAnalysis, format: string = 'comprehensive'): string {';'
         return this.testReporter.generateReport(analysis, format'); }
     }
@@ -601,20 +601,20 @@ export class PerformanceTestSuite {
     // エラーハンドリング
     handleError(error: Error, context: string): FallbackResult | null { console.error(`PerformanceTestSuite Error in ${context):`, error);
         
-        // エラーログ保存'
+        // エラーログ保存
         const errorLog: ErrorLog = {''
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             const existingLogs: ErrorLog[] = JSON.parse(localStorage.getItem('performance_test_errors'') || '[]'),
             existingLogs.push(errorLog);
             // 最新100件のエラーのみ保持
-            if(existingLogs.length > 100) {'
-                ';
+            if(existingLogs.length > 100) {
+                ';'
             }'
                 existingLogs.splice(0, existingLogs.length - 100'); }'
             }''
             localStorage.setItem('performance_test_errors', JSON.stringify(existingLogs);''
-        } catch (e') { ''
-            console.error('Failed to save error log:', e); }
+        } catch (e) { ''
+            console.error('Failed to save error log:', e) }
         }
 
         // フォールバック値を返す
@@ -623,7 +623,7 @@ export class PerformanceTestSuite {
 
     /**
      * フォールバック結果取得
-     */'
+     */
     getFallbackResult(context: string): FallbackResult { ''
         switch(context') {'
             '';
@@ -642,7 +642,6 @@ export class PerformanceTestSuite {
                 },
             default:;
                 return {}
-        }
     }
 }
 
@@ -667,7 +666,7 @@ class LoadSimulator implements LoadSimulator {
     getAppliedLoad(): any { return {}; }
 }
 
-class SpikeSimulator implements SpikeSimulator {'
+class SpikeSimulator implements SpikeSimulator {
     async createPerformanceSpike(): Promise<void> { /* 実装 */ }''
     getSpikeType('): string { return 'cpu'; }
 }
@@ -701,7 +700,7 @@ class ViewportCullingTester implements ViewportCullingTester { async measureCull
         return { cullRate: 0.7, totalObjects: 100, culledObjects: 70, renderTime: 16 }
     }
 }
-';
+';'
 class LayerCompositionTester implements LayerCompositionTester { ''
     async measureCompositionPerformance('' }'
         return { compositionTime: 8, layerCount: 5, complexity: 'medium', optimizations: [] }

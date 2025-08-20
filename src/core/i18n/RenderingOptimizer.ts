@@ -13,19 +13,19 @@ export interface OptimizationOptions { batchMode?: boolean;
 }
 
 export interface BatchedUpdateOptions { animateTransition: boolean,
-    cacheResults: boolean; }
+    cacheResults: boolean }
 }
 
 export interface ElementMeasurement { rect: DOMRect,
     fontSize: string,
     fontFamily: string,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface ElementUpdate { textContent: string,
     originalSize: ElementMeasurement,
-    needsReflow: boolean; }
+    needsReflow: boolean }
 }
 
 export interface BatchProcessor { enabled: boolean,
@@ -33,30 +33,30 @@ export interface BatchProcessor { enabled: boolean,
     maxWaitTime: number,
     currentBatch: HTMLElement[],
     batchTimer: number | null,
-    maxWaitTimer: number | null; }
+    maxWaitTimer: number | null }
 }
 
 export interface FontOptimizer { preloadedFonts: Set<string>,
     fontLoadPromises: Map<string, Promise<boolean>>,
     fallbackFonts: Map<string, string[]>,
     fontSwapEnabled: boolean,
-    enabled?: boolean; }
+    enabled?: boolean }
 }
 
 export interface AnimationOptimizer { enabled: boolean,
     reducedMotion: boolean,
     animationQueue: AnimationQueueItem[],
     activeAnimations: Set<string>,
-    frameScheduler: number | null; }
+    frameScheduler: number | null }
 }
 
 export interface AnimationQueueItem { element: HTMLElement,
     initialState: AnimationState,
-    startTime: number; }
+    startTime: number }
 }
 
 export interface AnimationState { opacity: string,
-    transform: string; }
+    transform: string }
 }
 
 export interface PerformanceMetrics { renderTimes: number[],
@@ -65,7 +65,7 @@ export interface PerformanceMetrics { renderTimes: number[],
     animationFrameTimes: number[],
     cacheHitRate: number,
     totalRenders: number,
-    optimizedRenders: number; }
+    optimizedRenders: number }
 }
 
 export interface RenderingStats { totalUpdates: number,
@@ -75,7 +75,7 @@ export interface RenderingStats { totalUpdates: number,
     fontLoads: number,
     animationsOptimized: number,
     renderTime: number,
-    lastOptimizationTime: number; }
+    lastOptimizationTime: number }
 }
 
 export interface OptimizationResult { success: boolean,
@@ -102,38 +102,38 @@ export interface OptimizationStatsResult { totalUpdates: number,
     optimizedRenders: number,
     cacheSize: number,
     measurementCacheSize: number,
-    textContentCacheSize: number; }
+    textContentCacheSize: number }
 }
 
 export interface CacheEntry { element: HTMLElement,
     update: ElementUpdate,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface ElementUpdatePair { element: HTMLElement,
-    update: ElementUpdate;
+    update: ElementUpdate
     }
 }
 
 export interface RenderTimeDistribution { min: number,
     max: number,
     median: number,
-    p95: number; }
+    p95: number }
 }
 
 export interface FontLoadStats { totalLoads: number,
     preloadedFonts: number,
-    averageLoadTime: number; }
+    averageLoadTime: number }
 }
 
 export interface AnimationStats { optimizedAnimations: number,
     reducedMotionEnabled: boolean,
-    averageFrameTime: number; }
+    averageFrameTime: number }
 }
 
 export interface DetailedPerformanceStats extends OptimizationStatsResult { renderTimeDistribution: RenderTimeDistribution,
     fontLoadStats: FontLoadStats,
-    animationStats: AnimationStats;
+    animationStats: AnimationStats
     }
 }
 
@@ -142,7 +142,7 @@ export interface ConfigurationUpdate { optimizationLevel?: OptimizationLevel;
     maxBatchSize?: number;
     fontOptimization?: boolean;
     animationOptimization?: boolean; }
-}'
+}
 '';
 export type OptimizationLevel = 'performance' | 'balanced' | 'quality';
 
@@ -153,11 +153,11 @@ declare global { interface Document {
     }
     
     interface FontFaceSet extends EventTarget { load(font: string): Promise<FontFace[]>,
-        addEventListener(type: string, listener: EventListener): void; }
+        addEventListener(type: string, listener: EventListener): void }
     }
     
     interface FontFace { family: string,
-        status: string; }
+        status: string }
     }
 }
 
@@ -187,7 +187,7 @@ export class RenderingOptimizer {
     // パフォーマンス監視
     private performanceMetrics: PerformanceMetrics;
     // 統計情報
-    private stats: RenderingStats';
+    private stats: RenderingStats;
 '';
     constructor(''';
         this.optimizationLevel = 'balanced'; // 'performance', 'balanced', 'quality'
@@ -252,9 +252,9 @@ export class RenderingOptimizer {
             renderTime: 0,
             lastOptimizationTime: 0 }
         },
-        ';
-        // 初期化''
-        this.initializeOptimizer('')';
+        ;
+        // 初期化
+        this.initializeOptimizer()';
         console.log('RenderingOptimizer initialized with level:', this.optimizationLevel);
     }
     
@@ -320,12 +320,12 @@ export class RenderingOptimizer {
                 batchMode, };
                 stats: this.getOptimizationStats(); }
             };
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'RENDERING_OPTIMIZER_ERROR', {')'
                 operation: 'optimizeLanguageSwitch');
                 language,);
-                elementCount: elements.length); }
+                elementCount: elements.length) }
             });
             
             return { success: false,
@@ -404,13 +404,13 @@ export class RenderingOptimizer {
     
     /**
      * 要素の優先度を取得
-     */'
-    private getElementPriority(element: HTMLElement): number { // 可視性チェック''
+     */
+    private getElementPriority(element: HTMLElement): number { // 可視性チェック
         if (!this.isElementVisible(element)') {
             return 0; }
         }
         
-        // 要素タイプによる優先度'
+        // 要素タイプによる優先度
         const tagPriority: Record<string, number> = { ''
             'H1': 10, 'H2': 9, 'H3': 8,'';
             'BUTTON': 7, 'INPUT': 7,'';
@@ -419,7 +419,7 @@ export class RenderingOptimizer {
         
         let priority = tagPriority[element.tagName] || 1;
         ';
-        // クラスによる優先度調整''
+        // クラスによる優先度調整
         if (element.classList.contains('critical')') priority += 5;''
         if(element.classList.contains('above-fold') priority += 3;
         
@@ -498,9 +498,9 @@ export class RenderingOptimizer {
     }
     
     /**
-     * 要素更新の準備'
+     * 要素更新の準備
      */''
-    private async prepareElementUpdate(element: HTMLElement, language: string, measurement: ElementMeasurement'): Promise<ElementUpdate | null> { try {''
+    private async prepareElementUpdate(element: HTMLElement, language: string, measurement: ElementMeasurement'): Promise<ElementUpdate | null> { try {'
             const textContent = element.textContent || ''; }
             const cacheKey = `${language}:${textContent}`;
             
@@ -513,13 +513,13 @@ export class RenderingOptimizer {
             
             const update: ElementUpdate = { textContent: translatedText,
                 originalSize: measurement,
-                needsReflow: this.needsReflow(textContent, translatedText, measurement); }
+                needsReflow: this.needsReflow(textContent, translatedText, measurement) }
             };
             
             this.textContentCache.set(cacheKey, update);
-            return update;'
+            return update;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to prepare element update:', error);
             return null; }
         }
@@ -563,17 +563,17 @@ export class RenderingOptimizer {
                     element,);
                     update);
             }
-                    timestamp: Date.now(); }'
+                    timestamp: Date.now(); }
                 });''
-            } catch (error') { ''
-            console.warn('Failed to apply element update:', error); }
+            } catch (error) { ''
+            console.warn('Failed to apply element update:', error) }
         }
     }
     
     /**
      * リフロー最適化'
      */''
-    private optimizeReflow(element: HTMLElement, update: ElementUpdate'): void { // contain: layout を一時的に適用'
+    private optimizeReflow(element: HTMLElement, update: ElementUpdate'): void { // contain: layout を一時的に適用
         const originalContain = element.style.contain;''
         element.style.contain = 'layout';
         
@@ -614,10 +614,10 @@ export class RenderingOptimizer {
             const loadTime = performance.now() - startTime;
             this.performanceMetrics.fontLoadTimes.push(loadTime);
             
-            console.log(`Fonts preloaded for ${language) in ${loadTime.toFixed(2})}ms`);'
+            console.log(`Fonts preloaded for ${language) in ${loadTime.toFixed(2})}ms`);
             '';
-        } catch (error') { ''
-            console.warn('Font preloading failed:', error); }
+        } catch (error) { ''
+            console.warn('Font preloading failed:', error) }
         }
     }
     
@@ -638,9 +638,9 @@ export class RenderingOptimizer {
     /**
      * フォント読み込み
      */'
-    private async loadFont(fontFamily: string): Promise<boolean> { try {''
+    private async loadFont(fontFamily: string): Promise<boolean> { try {'
             if(document.fonts && document.fonts.load') {'
-                ';
+                ';'
             }'
                 await document.fonts.load(`16px "${fontFamily")"`);" }"
                 this.fontOptimizer.preloadedFonts.add(fontFamily"});
@@ -685,23 +685,23 @@ export class RenderingOptimizer {
      */
     private prepareTransitionAnimation(elements: HTMLElement[]): void { if (!this.animationOptimizer.enabled || this.animationOptimizer.reducedMotion) {
             return; }
-        }'
+        }
         '';
         for(const element of elements') {
-            // 初期状態を記録'
+            // 初期状態を記録
             const initialState: AnimationState = {''
-                opacity: element.style.opacity || '1',';
+                opacity: element.style.opacity || '1','
         }'
                 transform: element.style.transform || 'none' }
             },
             ';
-            // アニメーション準備''
+            // アニメーション準備
             element.style.transition = 'opacity 0.2s ease-out, transform 0.2s ease-out';''
             element.style.opacity = '0.7';
             
-            this.animationOptimizer.animationQueue.push({ element,)
+            this.animationOptimizer.animationQueue.push({ element)
                 initialState);
-                startTime: performance.now(); }
+                startTime: performance.now() }
             });
         }
     }
@@ -722,7 +722,7 @@ export class RenderingOptimizer {
                     element.style.transform = initialState.transform;
                 }
                 
-                // アニメーション完了後のクリーンアップ'
+                // アニメーション完了後のクリーンアップ
                 setTimeout(() => {  ''
                     for (const item of this.animationOptimizer.animationQueue') {' }'
                         item.element.style.transition = ''; }
@@ -755,7 +755,7 @@ export class RenderingOptimizer {
     /**
      * パフォーマンスオブザーバー設定'
      */''
-    private setupPerformanceObserver('')';
+    private setupPerformanceObserver()';
         if(typeof PerformanceObserver !== 'undefined') {
             try {
                 const observer = new PerformanceObserver((list) => { 
@@ -770,8 +770,8 @@ export class RenderingOptimizer {
                 }');'
                 '';
                 observer.observe({ entryTypes: ['measure'] ),' }'
-            } catch (error') { ''
-                console.warn('Performance observer setup failed:', error); }
+            } catch (error) { ''
+                console.warn('Performance observer setup failed:', error) }
             }
         }
     }
@@ -781,7 +781,7 @@ export class RenderingOptimizer {
      */'
     private setupFontLoadMonitoring(): void { ''
         if(document.fonts && document.fonts.addEventListener') {'
-            ';
+            ';'
         }'
             document.fonts.addEventListener('loadingdone', (event: any') => { ' }'
                 console.log('Font loading completed:', event.fontfaces.length, 'fonts');' }'
@@ -798,15 +798,15 @@ export class RenderingOptimizer {
      */'
     private setupResponsiveOptimization(): void { ''
         if(window.matchMedia') {'
-            // モバイルデバイス検出''
+            // モバイルデバイス検出
             const mobileQuery = window.matchMedia('(max-width: 768px')'),
-            ';
+            ';'
             const updateOptimizationLevel = (isMobile: boolean): void => { ''
                 if (isMobile') {''
-                    this.optimizationLevel = 'performance';
+                    this.optimizationLevel = 'performance'
         }
                     this.batchUpdateThreshold = 8; // より積極的なバッチ処理 }
-                    this.maxBatchSize = 25; // 小さなバッチサイズ }'
+                    this.maxBatchSize = 25; // 小さなバッチサイズ }
                 } else {  ''
                     this.optimizationLevel = 'balanced';
                     this.batchUpdateThreshold = 16; }
@@ -912,11 +912,11 @@ export class RenderingOptimizer {
             },
             fontLoadStats: { totalLoads: this.stats.fontLoads,
                 preloadedFonts: this.fontOptimizer.preloadedFonts.size,
-                averageLoadTime: this.calculateAverage(this.performanceMetrics.fontLoadTimes); }
+                averageLoadTime: this.calculateAverage(this.performanceMetrics.fontLoadTimes) }
             },
             animationStats: { optimizedAnimations: this.stats.animationsOptimized,
                 reducedMotionEnabled: this.animationOptimizer.reducedMotion,
-                averageFrameTime: this.calculateAverage(this.performanceMetrics.animationFrameTimes); }
+                averageFrameTime: this.calculateAverage(this.performanceMetrics.animationFrameTimes) }
             }
         };
     }
@@ -966,7 +966,7 @@ export class RenderingOptimizer {
         }
         
         if (config.fontOptimization !== undefined) { this.fontOptimizer.enabled = config.fontOptimization; }
-        }'
+        }
         '';
         if (config.animationOptimization !== undefined') { this.animationOptimizer.enabled = config.animationOptimization; }
         }'
@@ -980,7 +980,7 @@ export class RenderingOptimizer {
     clearCache(): void { this.elementCache.clear();
         this.textContentCache.clear();'
         this.styleCache.clear();''
-        this.measurementCache.clear('')';
+        this.measurementCache.clear()';
         console.log('RenderingOptimizer caches cleared'); }
     }
     
@@ -1000,8 +1000,8 @@ export class RenderingOptimizer {
         
         if (this.batchProcessor.maxWaitTimer) { clearTimeout(this.batchProcessor.maxWaitTimer); }
         }
-        ';
-        // キャッシュをクリア''
+        ;
+        // キャッシュをクリア
         this.clearCache(''';
         document.documentElement.style.contain = '';)'
         ')';

@@ -18,7 +18,7 @@ export interface SettingsManager { configManager: ConfigManager,
 export interface ConfigManager { exportConfig(): Record<string, any>; }
 }
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void; }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
 }
 
 export interface StorageManager { getBackupHistory(): BackupHistoryItem[];
@@ -27,11 +27,11 @@ export interface StorageManager { getBackupHistory(): BackupHistoryItem[];
     }
 }
 
-export interface SettingsValidator { validateSetting(key: string, value: any): boolean; }
+export interface SettingsValidator { validateSetting(key: string, value: any): boolean }
 }
 
 export interface DataManager { getDefaultSettings(): Record<string, any>;
-    mergeSettings(defaultSettings: Record<string, any>, loadedSettings: Record<string, any>): Record<string, any>; }
+    mergeSettings(defaultSettings: Record<string, any>, loadedSettings: Record<string, any>): Record<string, any> }
 }
 
 export interface ExportOptions { includeMetadata?: boolean;
@@ -50,7 +50,7 @@ export interface ExportMetadata { exportTime: string,
     version: string,
     gameVersion?: string;
     platform: string,
-    userAgent: string; }
+    userAgent: string }
 }
 
 export interface ExportData { settings: Record<string, any>,
@@ -62,34 +62,34 @@ export interface ExportData { settings: Record<string, any>,
 export interface ValidationResult { isValid: boolean,
     errors: string[],
     warnings: string[],
-    settingsCount?: number; }
+    settingsCount?: number }
 }
 
 export interface BackupData { settings: Record<string, any>,
     timestamp: string,
-    version: string; }
+    version: string }
 }
 
 export interface BackupInfo { id: string,
     timestamp: string,
-    settingsCount: number; }
+    settingsCount: number }
 }
 
 export interface BackupHistoryItem { id: string,
     timestamp: string,
     version: string,
-    settingsCount: number; }
+    settingsCount: number }
 }
 
 export interface RestoreResult { success: boolean,
     timestamp: string,
-    settingsRestored: number; }
+    settingsRestored: number }
 }
 
 export interface ImportResult { imported: number,
     skipped: number,
     errors: number,
-    details: string[]; }
+    details: string[] }
 }
 
 export interface ExportImportStats { exportCount: number,
@@ -97,7 +97,7 @@ export interface ExportImportStats { exportCount: number,
     validationErrors: number,
     lastExportTime: number,
     lastImportTime: number,
-    backupCount: number; }
+    backupCount: number }
 }
 
 // 列挙型
@@ -127,7 +127,7 @@ export class SettingsExportImport {
     }
     }
             lastImportTime: 0 }
-        },'
+        },
         '';
         console.log('[SettingsExportImport] Component initialized');
     }
@@ -138,7 +138,7 @@ export class SettingsExportImport {
      * @returns JSON形式の設定データ'
      */''
     export(options: ExportOptions = { )'): string {'
-        try {''
+        try {'
             console.log('[SettingsExportImport] Starting settings export'');
             
             const { includeMetadata = true,';
@@ -151,7 +151,7 @@ export class SettingsExportImport {
             
             // エクスポートデータを構築
             const exportData: ExportData = { settings,
-                ...(includeMetadata && {'
+                ...(includeMetadata && {
                     metadata: {''
                         exportTime: new Date().toISOString(''';
                         version: '1.0.0','';
@@ -160,11 +160,11 @@ export class SettingsExportImport {
                         userAgent: navigator.userAgent }
                     })
                 }),
-                ...(includeBackups && { backups: this.storageManager.getBackupHistory(); }
+                ...(includeBackups && { backups: this.storageManager.getBackupHistory() }
                 });
             };
             
-            // フォーマット変換'
+            // フォーマット変換
             let result: string,'';
             switch(format') {'
                 '';
@@ -179,16 +179,16 @@ export class SettingsExportImport {
                     throw new Error(`Unsupported export format: ${format)`}),
             }
             
-            // 統計更新'
+            // 統計更新
             this.stats.exportCount++;''
-            this.stats.lastExportTime = Date.now('')';
+            this.stats.lastExportTime = Date.now()';
             console.log('[SettingsExportImport] Settings export completed');
             return result;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_EXPORT_ERROR', {)'
                 options,')';
-                component: 'SettingsExportImport'); }
+                component: 'SettingsExportImport') }
             });
             throw error;
         }
@@ -201,7 +201,7 @@ export class SettingsExportImport {
      * @returns インポート結果'
      */''
     async import(settingsJson: string, options: ImportOptions = { )'): Promise<ImportResult> {'
-        try {''
+        try {'
             console.log('[SettingsExportImport] Starting settings import'');
             
             const { validateFirst = true,';
@@ -221,7 +221,7 @@ export class SettingsExportImport {
             }
             
             // データ検証
-            if(validateFirst) {'
+            if(validateFirst) {
                 const validation = this.validateImportData(importData);'
             }'
                 if (!validation.isValid && !allowPartialImport') {' }'
@@ -235,16 +235,16 @@ export class SettingsExportImport {
             // インポート実行
             const importResult = await this._performImport(settingsToImport, mergeMode);
             
-            // 統計更新'
+            // 統計更新
             this.stats.importCount++;''
-            this.stats.lastImportTime = Date.now('')';
+            this.stats.lastImportTime = Date.now()';
             console.log('[SettingsExportImport] Settings import completed');
             return importResult;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {)'
                 options,')';
-                component: 'SettingsExportImport'); }
+                component: 'SettingsExportImport') }
             });
             throw error;
         }
@@ -258,19 +258,19 @@ export class SettingsExportImport {
     validateImportData(importData: any'): ValidationResult { const errors: string[] = [],
         const warnings: string[] = [],
         
-        try {'
-            // 基本構造の検証''
+        try {
+            // 基本構造の検証
             if(!importData || typeof importData !== 'object'') {'
-                ';
+                '
             }'
                 errors.push('Import data must be a valid object''); }
                 return { isValid: false, errors, warnings };
             }
             
-            // 設定データの検証'
+            // 設定データの検証
             const settingsData = importData.settings || importData;''
             if(!settingsData || typeof settingsData !== 'object'') {'
-                ';
+                ';'
             }'
                 errors.push('Settings data must be a valid object'); }
                 return { isValid: false, errors, warnings };
@@ -279,23 +279,23 @@ export class SettingsExportImport {
             // 各設定項目の検証
             const validator = this.settingsManager.validator;
             for(const [key, value] of Object.entries(settingsData) {
-                try {'
-                    const isValid = validator.validateSetting(key, value);'
+                try {
+                    const isValid = validator.validateSetting(key, value);
             }'
                     if (!isValid') {' }'
                         warnings.push(`Invalid value for setting '${key}': ${value)`});''
-                    } catch (validationError') { ' }'
+                    } catch (validationError) { ' }'
                     warnings.push(`Validation error for '${key}': ${(validationError as Error}).message}`);
                 }
             }
             ';
-            // メタデータの検証（存在する場合）''
+            // メタデータの検証（存在する場合）
             if(importData.metadata') {'
                 '';
                 if (typeof importData.metadata !== 'object'') {'
             }'
                     warnings.push('Metadata must be an object''); }
-                } else {  // バージョン互換性チェック'
+                } else {  // バージョン互換性チェック
                     const importVersion = importData.metadata.version;' }'
                     if (importVersion && importVersion !== '1.0.0') { }
                         warnings.push(`Version mismatch: importing ${importVersion), current 1.0.0`});
@@ -334,11 +334,11 @@ export class SettingsExportImport {
             return { id: backupId, };
                 timestamp: backupData.timestamp, }
                 settingsCount: Object.keys(backupData.settings}).length
-            },'
+            },
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_BACKUP_ERROR', {')'
-                component: 'SettingsExportImport'); }
+                component: 'SettingsExportImport') }
             });
             throw error;
         }
@@ -354,16 +354,16 @@ export class SettingsExportImport {
             
             // ストレージマネージャーを使用してバックアップ復元
             const restoreResult = await this.storageManager.restoreFromBackup(backupIndex);
-            ';
-            // 設定を再読み込み''
-            await this.settingsManager.load('') };'
+            ;
+            // 設定を再読み込み
+            await this.settingsManager.load() };'
             console.log('[SettingsExportImport] Backup restoration completed'});
             return restoreResult;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_RESTORE_ERROR', {)'
                 backupIndex,')';
-                component: 'SettingsExportImport'); }
+                component: 'SettingsExportImport') }
             });
             throw error;
         }
@@ -373,9 +373,9 @@ export class SettingsExportImport {
      * バックアップ履歴を取得
      * @returns バックアップ履歴
      */
-    getBackupHistory(): BackupHistoryItem[] { try {'
+    getBackupHistory(): BackupHistoryItem[] { try {
             return this.storageManager.getBackupHistory();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[SettingsExportImport] Failed to get backup history:', error);
             return []; }
         }
@@ -410,8 +410,8 @@ export class SettingsExportImport {
             errors: 0,
             details: [] }
         },
-        ';
-        try { ''
+        ';'
+        try {'
             switch(mergeMode') {'
                 '';
                 case 'replace':;
@@ -421,7 +421,7 @@ export class SettingsExportImport {
                             await this.settingsManager.set(key, value);
             }
                             results.imported++; }
-                            results.details.push(`Imported: ${key)`});'
+                            results.details.push(`Imported: ${key)`});
                         } catch (error) { results.errors++;' }'
                             results.details.push(`Error importing ${key}: ${(error as Error}).message}`');
                         }
@@ -442,7 +442,7 @@ export class SettingsExportImport {
                     
                     }
                                 results.imported++; }
-                                results.details.push(`Merged: ${key)`});'
+                                results.details.push(`Merged: ${key)`});
                             } catch (error) { results.errors++;' }'
                                 results.details.push(`Error merging ${key}: ${(error as Error}).message}`');
                             }
@@ -494,9 +494,9 @@ export class SettingsExportImport {
     }
     
     /**
-     * 統計をリセット'
+     * 統計をリセット
      */''
-    resetStats('')';
+    resetStats()';
         console.log('[SettingsExportImport] Statistics reset'');'
     }''
 }

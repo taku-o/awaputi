@@ -70,7 +70,7 @@ export class ProceduralSoundGenerator {
     /**
      * 全効果音を生成
      * @returns {Promise<boolean>} 生成成功フラグ
-     */'
+     */
     async generateAllSounds() { ''
         if(!this.audioContext') {'
             '';
@@ -85,12 +85,12 @@ export class ProceduralSoundGenerator {
             const soundTypes = Object.keys(this.soundParams');
             const totalSounds = soundTypes.length;
             ';
-            // 泡ポップ音''
+            // 泡ポップ音
             this.soundBuffers.set('pop', this.createPopSound()');''
             this.soundBuffers.set('pop_combo', this.createPopSound(true);''
             this.updateProgress(2, totalSounds');
             ';
-            // 特殊効果音''
+            // 特殊効果音
             this.soundBuffers.set('bonus', this.createBonusSound()');''
             this.soundBuffers.set('heal', this.createHealSound()');''
             this.soundBuffers.set('damage', this.createDamageSound()');''
@@ -99,14 +99,14 @@ export class ProceduralSoundGenerator {
             this.soundBuffers.set('time_stop', this.createTimeStopSound();''
             this.updateProgress(8, totalSounds');
             ';
-            // UI音''
+            // UI音
             this.soundBuffers.set('click', this.createClickSound()');''
             this.soundBuffers.set('hover', this.createHoverSound()');''
             this.soundBuffers.set('error', this.createErrorSound()');''
             this.soundBuffers.set('success', this.createSuccessSound();''
             this.updateProgress(12, totalSounds');
             ';
-            // ゲーム状態音''
+            // ゲーム状態音
             this.soundBuffers.set('game_start', this.createGameStartSound()');''
             this.soundBuffers.set('game_over', this.createGameOverSound()');''
             this.soundBuffers.set('warning', this.createWarningSound();
@@ -118,11 +118,11 @@ export class ProceduralSoundGenerator {
              }
             console.log(`Generated ${this.soundBuffers.size) procedural sounds`});
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'ProceduralSoundGenerator',')';
-                operation: 'generateAllSounds'); }
+                operation: 'generateAllSounds') }
             });
             this.isGenerating = false;
             return false;
@@ -519,7 +519,7 @@ export class ProceduralSoundGenerator {
         volumeScale?: number;
         timeStretch?: number;
         noiseLevel?: number; })
-    } = { ): AudioBuffer | null {'
+    } = { ): AudioBuffer | null {
         const baseBuffer = this.soundBuffers.get(baseSoundName);''
         if (!baseBuffer') {' }'
             console.warn(`Base sound '${baseSoundName')' not found`'});
@@ -531,7 +531,7 @@ export class ProceduralSoundGenerator {
             timeStretch = 1.0,
             noiseLevel = 0.0 } = variation;
         ';
-        // pitchShiftは将来の実装で使用予定''
+        // pitchShiftは将来の実装で使用予定
         console.log('Variation settings:', { pitchShift, volumeScale, timeStretch, noiseLevel );
 
         // バリエーション音響を生成
@@ -631,6 +631,6 @@ export function getProceduralSoundGenerator(): ProceduralSoundGenerator { if (!p
  * @returns {ProceduralSoundGenerator} 新しいシングルトンインスタンス
  */
 export function reinitializeProceduralSoundGenerator(): ProceduralSoundGenerator { if (proceduralSoundGeneratorInstance) {
-        proceduralSoundGeneratorInstance.dispose(); }'
+        proceduralSoundGeneratorInstance.dispose(); }
     }''
     proceduralSoundGeneratorInstance = new ProceduralSoundGenerator(');

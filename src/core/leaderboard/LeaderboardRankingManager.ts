@@ -6,7 +6,7 @@
 // 型定義
 export interface LeaderboardManager { data: LeaderboardData,
     config: LeaderboardConfig,
-    clearRelevantCache: (leaderboardKey: string) => void; }
+    clearRelevantCache: (leaderboardKey: string) => void }
 }
 
 export interface LeaderboardData { leaderboards: Record<string, Leaderboard>,
@@ -18,7 +18,7 @@ export interface LeaderboardData { leaderboards: Record<string, Leaderboard>,
 
 export interface Leaderboard { entries: ScoreEntry[],
     lastUpdated: number,
-    metadata?: LeaderboardMetadata;
+    metadata?: LeaderboardMetadata
     }
 }
 
@@ -50,7 +50,7 @@ export interface PeriodLeaderboards { daily?: Record<string, PeriodLeaderboard>;
 export interface PeriodLeaderboard { entries: ScoreEntry[],
     startDate: Date,
     endDate: Date,
-    metadata?: PeriodMetadata;
+    metadata?: PeriodMetadata
     }
 }
 
@@ -59,7 +59,7 @@ export interface PeriodMetadata { totalPlayers: number,
     averageScore: number,
     highestScore: number,
     period: PeriodType,
-    periodKey: string; }
+    periodKey: string }
 }
 
 export interface LeaderboardMetadata { createdAt: number,
@@ -67,17 +67,17 @@ export interface LeaderboardMetadata { createdAt: number,
     totalEntries: number,
     highestScore: number,
     averageScore: number,
-    uniquePlayers: number; }
+    uniquePlayers: number }
 }
 
 export interface SortCriteria { primary: SortField,
     secondary?: SortField;
-    order: SortOrder;
+    order: SortOrder
     }
 }
 
 export interface SortField { field: string,
-    numeric: boolean; }
+    numeric: boolean }
 }
 
 export interface LeaderboardStatistics { totalPlayers: number,
@@ -90,18 +90,18 @@ export interface LeaderboardStatistics { totalPlayers: number,
 
 export interface LeaderboardCache { rankings: Record<string, CachedRanking>,
     statistics: Record<string, CachedStatistics>,
-    lastClearTime: number; }
+    lastClearTime: number }
 }
 
 export interface CachedRanking { data: ScoreEntry[],
     timestamp: number,
-    period?: PeriodType;
+    period?: PeriodType
     }
 }
 
 export interface CachedStatistics { data: LeaderboardStatistics,
     timestamp: number,
-    period?: PeriodType;
+    period?: PeriodType
     }
 }
 
@@ -114,7 +114,7 @@ export interface DateKeyComponents { year: number,
 export interface PeriodRange { start: Date,
     end: Date,
     key: string,
-    period: PeriodType;
+    period: PeriodType
     }
 }
 
@@ -122,24 +122,24 @@ export interface RankingUpdateResult { success: boolean,
     updatedEntries: number,
     newRank?: number;
     previousRank?: number;
-    leaderboardKey: string; }
+    leaderboardKey: string }
 }
 
 export interface BinarySearchResult { found: boolean,
     index: number,
-    exactMatch: boolean; }
+    exactMatch: boolean }
 }
 
 export interface PeriodCalculationParams { date: Date,
     period: PeriodType,
-    weekStartDay?: WeekStartDay;
+    weekStartDay?: WeekStartDay
     }
 }
 
 // 列挙型
 export type PeriodType = 'daily' | 'weekly' | 'monthly' | 'yearly';''
 export type SortOrder = 'asc' | 'desc';'
-export type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = Sunday''
+export type WeekStartDay = 0 | 1 | 2 | 3 | 4 | 5 | 6; // 0 = Sunday
 export type LeaderboardType = 'global' | 'stage' | 'difficulty' | 'period';''
 export type RankingStatus = 'active' | 'expired' | 'calculating' | 'error';
 
@@ -148,16 +148,16 @@ export const DEFAULT_MAX_ENTRIES = 100;
 export const DEFAULT_MAX_PERIOD_ENTRIES = 50;
 export const DEFAULT_WEEK_START_DAY: WeekStartDay = 0; // Sunday
 export const DEFAULT_RANKING_LIMIT = 10;
-export const CACHE_EXPIRY_TIME = 300000; // 5 minutes'
+export const CACHE_EXPIRY_TIME = 300000; // 5 minutes
 '';
 export const PERIOD_TYPES: PeriodType[] = ['daily', 'weekly', 'monthly', 'yearly'];
-';
+';'
 export const DEFAULT_SORT_CRITERIA: SortCriteria = { ' }'
     primary: { field: 'score', numeric: true },''
     secondary: { field: 'timestamp', numeric: true },''
     order: 'desc';
 },
-';
+';'
 export const DATE_KEY_FORMATS = { ''
     daily: 'YYYY-MM-DD','';
     weekly: 'YYYY-WMM-DD','';
@@ -167,7 +167,7 @@ export const DATE_KEY_FORMATS = { ''
 
 // ユーティリティ関数
 export function isValidPeriodType(period: string): period is PeriodType { return PERIOD_TYPES.includes(period as PeriodType); }
-}'
+}
 '';
 export function isValidScoreEntry(entry: any'): entry is ScoreEntry { return entry &&''
            typeof entry.playerName === 'string' &&'';
@@ -177,7 +177,7 @@ export function isValidScoreEntry(entry: any'): entry is ScoreEntry { return ent
 
 export function isValidDate(date: any): date is Date { return date instanceof Date && !isNaN(date.getTime(); }
 }
-';
+';'
 export function isValidLeaderboard(leaderboard: any): leaderboard is Leaderboard { return leaderboard &&''
            Array.isArray(leaderboard.entries') &&'';
            typeof leaderboard.lastUpdated === 'number'; }
@@ -191,13 +191,13 @@ export function calculateAverageScore(scores: number[]): number { return scores.
 
 export function getUniquePlayersCount(entries: ScoreEntry[]): number { return new Set(entries.map(entry => entry.playerName).size; }
 }
-';
+';'
 export function formatDateKey(date: Date, period: PeriodType, weekStartDay: WeekStartDay = DEFAULT_WEEK_START_DAY): string { const year = date.getFullYear();''
     const month = String(date.getMonth() + 1').padStart(2, '0');''
     const day = String(date.getDate()').padStart(2, '0');'
 '';
     switch(period') {'
-        ';
+        ';'
     }'
         case 'daily': }'
             return `${year}-${month}-${day}`;''
@@ -221,7 +221,7 @@ export function getWeekStart(date: Date, weekStartDay: WeekStartDay = DEFAULT_WE
     return new Date(d.setDate(d.getDate() - diff)); }
 }'
 '';
-export function parseDateKey(key: string, period: PeriodType'): Date | null { try {''
+export function parseDateKey(key: string, period: PeriodType'): Date | null { try {'
         const parts = key.split('-');'
         '';
         switch(period') {'
@@ -229,7 +229,7 @@ export function parseDateKey(key: string, period: PeriodType'): Date | null { tr
             case 'daily':'';
                 return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])');''
             case 'weekly':';
-                // 簡化实现：使用键的日期''
+                // 簡化实现：使用键的日期
                 return new Date(parseInt(parts[0]), parseInt(parts[1].slice(1) - 1, parseInt(parts[2])');''
             case 'monthly':'';
                 return new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, 1');''
@@ -257,7 +257,7 @@ export function createDefaultLeaderboard(): Leaderboard { return { entries: [],
 export class LeaderboardRankingManager {
     private leaderboardManager: LeaderboardManager;
     constructor(leaderboardManager: LeaderboardManager) {
-        this.leaderboardManager = leaderboardManager; }
+        this.leaderboardManager = leaderboardManager }
     }
 
     /**
@@ -303,9 +303,9 @@ export class LeaderboardRankingManager {
                 newRank,
                 previousRank, };
                 leaderboardKey }
-            };'
+            };
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[LeaderboardRankingManager] Error updating leaderboard:', error);
             return { success: false,
                 updatedEntries: 0, };
@@ -328,10 +328,10 @@ export class LeaderboardRankingManager {
 
         try { // 各期間での更新
             this.updateDailyLeaderboard(data, scoreEntry, now);
-            this.updateWeeklyLeaderboard(data, scoreEntry, now);'
+            this.updateWeeklyLeaderboard(data, scoreEntry, now);
             this.updateMonthlyLeaderboard(data, scoreEntry, now);' }'
-        } catch (error') { ''
-            console.error('[LeaderboardRankingManager] Error updating period leaderboards:', error); }
+        } catch (error) { ''
+            console.error('[LeaderboardRankingManager] Error updating period leaderboards:', error) }
         }
     }
 
@@ -399,7 +399,7 @@ export class LeaderboardRankingManager {
 
     /**
      * 期間別ランキングの取得
-     */'
+     */
     getPeriodRanking(period: PeriodType, limit: number = DEFAULT_RANKING_LIMIT): ScoreEntry[] { ''
         if (!isValidPeriodType(period)') {''
             console.error('[LeaderboardRankingManager] Invalid period type:', period);
@@ -462,7 +462,7 @@ export class LeaderboardRankingManager {
     /**
      * 期間別ランキングの再計算
      */
-    recalculatePeriodRankings(): void { const data = this.leaderboardManager.data;'
+    recalculatePeriodRankings(): void { const data = this.leaderboardManager.data;
         '';
         if(!data.periodLeaderboards') {
             
@@ -533,7 +533,7 @@ export class LeaderboardRankingManager {
      * 期間の終了日を取得
      */
     getPeriodEndDate(key: string, period: PeriodType): Date | null { const startDate = this.getPeriodStartDate(key, period);
-        if (!startDate) return null;'
+        if (!startDate) return null;
         '';
         switch(period') {'
             '';
@@ -677,7 +677,7 @@ export class LeaderboardRankingManager {
         const uniquePlayers = getUniquePlayersCount(entries);
 
         return { totalPlayers: uniquePlayers,
-            totalScores: entries.length,';
+            totalScores: entries.length,
             averageScore: calculateAverageScore(scores),' };'
             highestScore: entries.length > 0 ? Math.max(...scores') : 0 }
         },'

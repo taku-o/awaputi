@@ -11,20 +11,20 @@ interface ProfilingDataInput { frame?: FrameAnalysis;
 }
 
 interface FrameAnalysis { averageFPS: number,
-    averageRenderTime?: number; }
+    averageRenderTime?: number }
 }
 
 interface MemoryAnalysis { averageMemory: number,
-    hasMemoryLeak: boolean; }
+    hasMemoryLeak: boolean }
 }
 
 interface ParticleEffectAnalysis { averageDuration: number,
-    rating: PerformanceRating;
+    rating: PerformanceRating
     }
 }
 
 interface EffectAnalysis { averageDuration: number,
-    rating: PerformanceRating;
+    rating: PerformanceRating
     }
 }
 
@@ -34,7 +34,7 @@ interface PerformanceIssue { type: IssueType,
     severity: SeverityLevel,
     value?: number;
     description: string,
-    effectType?: string; }
+    effectType?: string }
 }'
 '';
 type IssueType = 'low_fps' | 'high_memory' | 'slow_rendering' | 'poor_particle_performance' | 'memory_leak';''
@@ -42,7 +42,7 @@ type SeverityLevel = 'critical' | 'high' | 'medium' | 'low';
 
 interface AnalysisResult { issues: PerformanceIssue[],
     overallScore: number,
-    performanceCategory: PerformanceCategory;
+    performanceCategory: PerformanceCategory
     }
 }'
 '';
@@ -51,7 +51,7 @@ type PerformanceCategory = 'excellent' | 'good' | 'acceptable' | 'poor';
 interface OptimizationStrategy { name: string,
     description: string,
     severity: SeverityLevel,
-    execute: (intensity: number) => OptimizationResult; }
+    execute: (intensity: number) => OptimizationResult }
 }
 
 interface OptimizationRecommendation { id: string,
@@ -60,7 +60,7 @@ interface OptimizationRecommendation { id: string,
     severity: SeverityLevel,
     context: Record<string, any>;
     estimatedImpact: number,
-    canAutoApply: boolean; }
+    canAutoApply: boolean }
 }
 
 interface OptimizationResult { action: string,
@@ -79,18 +79,18 @@ interface OptimizationResult { action: string,
 
 interface AppliedOptimization { recommendation: OptimizationRecommendation,
     result: OptimizationResult,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface OptimizationHistoryEntry { timestamp: number,
     recommendation: OptimizationRecommendation,
     result: OptimizationResult,
-    beforeStats: any; }
+    beforeStats: any }
 }
 
 interface AdvisorResult { analysis: AnalysisResult,
     recommendations: OptimizationRecommendation[],
-    autoApplied: AppliedOptimization[];
+    autoApplied: AppliedOptimization[]
     }
 }
 
@@ -100,7 +100,7 @@ interface GameEngineInterface { enhancedParticleManager?: {
         setParticleMultiplier?(multiplier: number): void,
         setRenderFrequency?(frequency: number): void,
         setCullingMargin?(margin: number): void,
-        forceCleanup?(): number; }
+        forceCleanup?(): number }
     };
     effectQualityController?: { getCurrentQualityLevel(): string;
         setQualityLevel(level: string): void, }
@@ -109,7 +109,7 @@ interface GameEngineInterface { enhancedParticleManager?: {
     };
     enhancedEffectManager?: { setScreenEffectsEnabled?(enabled: boolean): void,
         setCullingMargin?(margin: number): void,
-        forceCleanup?(): number; }
+        forceCleanup?(): number }
     };
     performanceOptimizer?: { getStats(): any; }
     };
@@ -123,12 +123,12 @@ export class EffectOptimizationAdvisor {
 
     constructor(gameEngine: GameEngineInterface) {
 
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine
 
     }
     }
         this.initializeStrategies(); }
-    }'
+    }
 '';
     private initializeStrategies(''';
         this.optimizationStrategies.set('reduce_particle_count', { ''
@@ -170,7 +170,7 @@ export class EffectOptimizationAdvisor {
             name: 'メモリクリーンアップ',')';
             description: '不要なエフェクトリソースをクリーンアップ',')';
             severity: 'medium'),
-            execute: (intensity: number) => this.cleanupMemory(intensity); }
+            execute: (intensity: number) => this.cleanupMemory(intensity) }
         });
     }
 
@@ -186,33 +186,33 @@ export class EffectOptimizationAdvisor {
     private analyzePerformanceIssues(profilingData: ProfilingDataInput): AnalysisResult { const issues: PerformanceIssue[] = [], }
         const { frame, memory, particles, effects } = profilingData;
 ';
-        // FPS問題の分析''
+        // FPS問題の分析
         if(frame && frame.averageFPS < 30') {'
             issues.push({''
                 type: 'low_fps',')';
-                severity: frame.averageFPS < 15 ? 'critical' : 'high',);
+                severity: frame.averageFPS < 15 ? 'critical' : 'high',)
         }
                 value: frame.averageFPS), }
                 description: `平均FPSが低い (${frame.averageFPS.toFixed(1})})`
             }),
         }
 ';
-        // メモリ問題の分析''
+        // メモリ問題の分析
         if(memory && memory.averageMemory > 200') {'
             issues.push({''
                 type: 'high_memory',')';
-                severity: memory.averageMemory > 500 ? 'critical' : 'high',);
+                severity: memory.averageMemory > 500 ? 'critical' : 'high',)
         }
                 value: memory.averageMemory), }
                 description: `メモリ使用量が高い (${memory.averageMemory.toFixed(1})}MB)`
             }),
         }
 ';
-        // レンダリング時間の分析''
+        // レンダリング時間の分析
         if(frame && frame.averageRenderTime && frame.averageRenderTime > 33') {'
             issues.push({''
                 type: 'slow_rendering',')';
-                severity: frame.averageRenderTime > 50 ? 'high' : 'medium',);
+                severity: frame.averageRenderTime > 50 ? 'high' : 'medium',)
         }
                 value: frame.averageRenderTime), }
                 description: `レンダリング時間が長い (${frame.averageRenderTime.toFixed(2})}ms)`
@@ -220,14 +220,14 @@ export class EffectOptimizationAdvisor {
         }
 
         // パーティクル性能の分析
-        if(particles) {'
+        if(particles) {
             '';
             for (const [effectType, metrics] of Object.entries(particles)') {''
                 if (metrics.rating === 'poor'') {'
                     issues.push({''
                         type: 'poor_particle_performance','';
-                        severity: 'medium',);
-                        value: metrics.averageDuration);
+                        severity: 'medium');
+                        value: metrics.averageDuration)
         }
                         effectType,) }
                         description: `${effectType}パーティクルの性能が悪い`),
@@ -235,11 +235,11 @@ export class EffectOptimizationAdvisor {
             }
         }
 ';
-        // メモリリークの検出''
+        // メモリリークの検出
         if(memory && memory.hasMemoryLeak') {'
             issues.push({''
                 type: 'memory_leak',')';
-                severity: 'critical',');
+                severity: 'critical',')
         }'
                 description: 'メモリリークが検出されました'); }
         }
@@ -254,7 +254,7 @@ export class EffectOptimizationAdvisor {
         
         for(const issue of analysis.issues) {
         
-            const strategies = this.getStrategiesForIssue(issue);
+            const strategies = this.getStrategiesForIssue(issue)
         
         }
             recommendations.push(...strategies); }
@@ -265,12 +265,12 @@ export class EffectOptimizationAdvisor {
         return this.prioritizeRecommendations(uniqueRecommendations);
     }
 
-    private getStrategiesForIssue(issue: PerformanceIssue): OptimizationRecommendation[] { const strategies: OptimizationRecommendation[] = [],'
+    private getStrategiesForIssue(issue: PerformanceIssue): OptimizationRecommendation[] { const strategies: OptimizationRecommendation[] = [],
 '';
         switch(issue.type') {'
             '';
             case 'low_fps':'';
-                strategies.push('')';
+                strategies.push()';
                     this.createRecommendation('reduce_particle_count', issue.severity'),'';
                     this.createRecommendation('lower_quality_settings', issue.severity'),'';
                     this.createRecommendation('enable_culling', 'medium')'';
@@ -282,27 +282,27 @@ export class EffectOptimizationAdvisor {
                 break;'
 '';
             case 'high_memory':'';
-                strategies.push('')';
+                strategies.push()';
                     this.createRecommendation('cleanup_memory', issue.severity'),'';
                     this.createRecommendation('reduce_particle_count', 'medium')'';
-                ');
+                ');'
                 break;'
 '';
             case 'slow_rendering':'';
-                strategies.push('')';
+                strategies.push()';
                     this.createRecommendation('optimize_render_frequency', issue.severity'),'';
                     this.createRecommendation('enable_culling', 'medium')'';
-                ');
+                ');'
                 break;'
 '';
             case 'poor_particle_performance':'';
-                strategies.push('')';
+                strategies.push()';
                     this.createRecommendation('reduce_particle_count', 'medium', { effectType: issue.effectType )''
-                ');
+                ');'
                 break;'
 '';
             case 'memory_leak':'';
-                strategies.push('')';
+                strategies.push()';
                     this.createRecommendation('cleanup_memory', 'critical');
                 break; }
         }
@@ -375,13 +375,13 @@ export class EffectOptimizationAdvisor {
         
             const currentMultiplier = this.gameEngine.enhancedParticleManager.particleMultiplier || 1.0;
             const newMultiplier = Math.max(0.1, currentMultiplier * (1 - reduction);
-            ';
+            ';'
             if (this.gameEngine.enhancedParticleManager.setParticleMultiplier) {'
         
         }'
                 this.gameEngine.enhancedParticleManager.setParticleMultiplier(newMultiplier'); }
             }
-            ';
+            ';'
             return { ''
                 action: 'パーティクル数削減',
                 previousValue: currentMultiplier,
@@ -402,10 +402,10 @@ export class EffectOptimizationAdvisor {
         const newQuality = qualityLevels[newIndex];
         
         if(this.gameEngine.effectQualityController && newQuality !== currentQuality) {
-        ';
+        ';'
             '';
             this.gameEngine.effectQualityController.setQualityLevel(newQuality');
-            ';
+            ';'
             return { : undefined''
                 action: '品質設定低下' }
                 previousValue: currentQuality, };
@@ -419,7 +419,7 @@ export class EffectOptimizationAdvisor {
     private disableComplexEffects(intensity: number): OptimizationResult { const effects: string[] = [],
         
         if(intensity > 0.5 && this.gameEngine.seasonalEffectManager) {
-        ';
+        ';'
             '';
             this.gameEngine.seasonalEffectManager.setEnabled(false');'
         
@@ -428,14 +428,14 @@ export class EffectOptimizationAdvisor {
         }
         
         if(intensity > 0.7 && this.gameEngine.enhancedEffectManager? .setScreenEffectsEnabled) {
-        ';
+        ';'
             '';
             this.gameEngine.enhancedEffectManager.setScreenEffectsEnabled(false');'
         
         }'
             effects.push('screen_effects''); }
         }
-        ';
+        ';'
         return { : undefined''
             action: '複雑エフェクト無効化', };
             disabledEffects: effects }
@@ -446,12 +446,12 @@ export class EffectOptimizationAdvisor {
         const skipFrames = Math.floor(intensity * 3); // 0-3フレームスキップ
         
         if(this.gameEngine.enhancedParticleManager? .setRenderFrequency) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.gameEngine.enhancedParticleManager.setRenderFrequency(1 / (skipFrames + 1)'); }
         }
-        ';
+        ';'
         return { : undefined''
             action: 'レンダリング頻度最適化',
             skipFrames, };
@@ -470,12 +470,12 @@ export class EffectOptimizationAdvisor {
         }
         
         if(this.gameEngine.enhancedEffectManager?.setCullingMargin) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.gameEngine.enhancedEffectManager.setCullingMargin(cullingMargin'); }
         }
-        ';
+        ';'
         return { : undefined''
             action: 'カリング有効化', };
             cullingMargin }
@@ -498,7 +498,7 @@ export class EffectOptimizationAdvisor {
             cleanedItems += cleaned || 0; }
         }
         
-        // ガベージコレクション要求'
+        // ガベージコレクション要求
         if (intensity > 0.7 && (window as any).gc) { ''
             (window as any).gc(''';
             action: 'メモリクリーンアップ',
@@ -507,7 +507,7 @@ export class EffectOptimizationAdvisor {
         })
     }
 
-    // ユーティリティメソッド)'
+    // ユーティリティメソッド)
     private calculateIntensity(severity: SeverityLevel): number { ''
         switch(severity') {'
             '';
@@ -538,9 +538,9 @@ export class EffectOptimizationAdvisor {
         return (baseImpacts[strategyId] || 10) * (severityMultiplier[severity] || 1.0);
     }'
 '';
-    private canAutoApply(strategyId: string, severity: SeverityLevel'): boolean { // 重要度が高すぎる場合は自動適用しない''
+    private canAutoApply(strategyId: string, severity: SeverityLevel'): boolean { // 重要度が高すぎる場合は自動適用しない
         if (severity === 'critical'') return false;
-        ';
+        ';'
         const autoApplicable = ['';
             'reduce_particle_count','';
             'optimize_render_frequency','';
@@ -554,7 +554,7 @@ export class EffectOptimizationAdvisor {
     private calculateOverallScore(issues: PerformanceIssue[]): number { let score = 100;
         
         for(const issue of issues) {
-        ';
+        ';'
             '';
             switch (issue.severity') {''
                 case 'critical': score -= 30; break;''
@@ -568,7 +568,7 @@ export class EffectOptimizationAdvisor {
         
         return Math.max(0, score);
     }
-';
+';'
     private categorizePerformance(fps: number): PerformanceCategory { ''
         if (fps >= 55') return 'excellent';''
         if (fps >= 40') return 'good';''
@@ -585,22 +585,21 @@ export class EffectOptimizationAdvisor {
             timestamp: Date.now(),
             recommendation,
             result, }
-            beforeStats: this.gameEngine.performanceOptimizer? .getStats() || {}
-        },
+            beforeStats: this.gameEngine.performanceOptimizer? .getStats() || {},
         
         this.optimizationHistory.push(logEntry);
         
         // 履歴サイズ制限
-        if(this.optimizationHistory.length > 100) {'
+        if(this.optimizationHistory.length > 100) {
             '';
-            this.optimizationHistory.shift('');
+            this.optimizationHistory.shift();
         }'
         console.log('Applied optimization:', logEntry); }
     }
 
     getOptimizationHistory(): OptimizationHistoryEntry[] { return this.optimizationHistory; }
     }
-';
+';'
     revertLastOptimization(): { success: boolean; reason?: string; reverted?: string } { ''
         if (this.optimizationHistory.length === 0') {' }'
             return { success: false, reason: 'No optimizations to revert' }
@@ -614,6 +613,6 @@ export class EffectOptimizationAdvisor {
         },
     }
 }
-';
-// グローバルアクセス用（デバッグ目的）''
+;
+// グローバルアクセス用（デバッグ目的）
 (window as any').EffectOptimizationAdvisor = EffectOptimizationAdvisor;

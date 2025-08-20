@@ -17,7 +17,7 @@ export interface DataVisualizerOptions { enableInteractivity?: boolean;
 export interface Margin { top: number,
     right: number,
     bottom: number,
-    left: number; }
+    left: number }
 }
 
 export interface VisualizationData { values: number[],
@@ -36,18 +36,18 @@ export interface ScatterPlotData { x: number,
 
 export interface HeatmapData { x: number,
     y: number,
-    value: number; }
+    value: number }
 }
 
 export interface TreeMapData { name: string,
     value: number,
-    children?: TreeMapData[];
+    children?: TreeMapData[]
     }
 }
 
 // Declare D3.js global interface
 declare global { interface Window {
-        d3: any; }
+        d3: any }
     }
     var d3: any,
 }
@@ -71,7 +71,7 @@ export class DataVisualizer {
     }
             defaultHeight: 400, }
             margin: { top: 20, right: 30, bottom: 40, left: 50 },
-            colorScheme: 'category10', // category10, category20, viridis, plasma等'';
+            colorScheme: 'category10', // category10, category20, viridis, plasma等;
             locale: 'ja-JP',
             ...options;
         };
@@ -94,7 +94,7 @@ export class DataVisualizer {
                 this.setupD3Defaults(); }'
             })''
             .catch(error => {  ');''
-                console.error('Failed to load D3.js:', error); }
+                console.error('Failed to load D3.js:', error) }
                 this.fallbackToCanvasRenderer(); }
             });
     }
@@ -106,9 +106,9 @@ export class DataVisualizer {
         return new Promise((resolve, reject') => { ''
             if(typeof d3 !== 'undefined') {'
                 this.d3 = window.d3;''
-                resolve('')';
+                resolve()';
             const script = document.createElement('script'');''
-            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.ts',
+            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.ts,
             script.onload = () => {
             }
                 this.d3 = window.d3; }
@@ -125,7 +125,7 @@ export class DataVisualizer {
     private setupD3Defaults(): void { ''
         if (!this.d3') return;
 ';
-        // ロケール設定''
+        // ロケール設定
         if(this.options.locale === 'ja-JP'') {'
             const jaLocale = this.d3.timeFormatLocale({''
                 dateTime: '%Y年%m月%d日 %H時%M分%S秒','';
@@ -156,7 +156,7 @@ export class DataVisualizer {
         const height = config.height || this.options.defaultHeight;
         const margin = config.margin || this.options.margin;
 ';
-        // SVG要素の作成''
+        // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`')''
             .append('svg'')'';
             .attr('width', width')'';
@@ -172,11 +172,11 @@ export class DataVisualizer {
 
         const yScale = this.d3.scaleLinear();
             .domain(this.d3.extent(data, (d: ScatterPlotData) => d.y));
-            .range([height - margin.top - margin.bottom, 0]);'
+            .range([height - margin.top - margin.bottom, 0]);
 '';
         const colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10');
 ';
-        // 軸の追加''
+        // 軸の追加
         g.append('g'')'';
             .attr('transform', `translate(0,${height - margin.top - margin.bottom)`)''
             .call(this.d3.axisBottom(xScale)');'
@@ -184,7 +184,7 @@ export class DataVisualizer {
         g.append('g')'';
             .call(this.d3.axisLeft(yScale)');
 ';
-        // データポイントの描画''
+        // データポイントの描画
         const dots = g.selectAll('.dot')';
             .data(data)'';
             .enter(').append('circle'')'';
@@ -194,7 +194,7 @@ export class DataVisualizer {
             .attr('cy', (d: ScatterPlotData) => yScale(d.y)')'';
             .style('fill', (d: ScatterPlotData') => d.color || colorScale(d.label || '');
 ';
-        // インタラクティブ機能''
+        // インタラクティブ機能
         if(this.options.enableInteractivity') {'
             '';
             dots.on('mouseover', function(event: any, d: ScatterPlotData') {
@@ -204,7 +204,7 @@ export class DataVisualizer {
             });
         }
 ';
-        // アニメーション''
+        // アニメーション
         if(this.options.enableAnimation') {'
             '';
             dots.style('opacity', 0)';
@@ -213,7 +213,7 @@ export class DataVisualizer {
         }'
                 .style('opacity', 1); }
         }
-';
+';'
         this.svgElements.set(containerId, svg);''
         this.scales.set(containerId, { xScale, yScale, colorScale )');''
         this.visualizations.set(containerId, { type: 'scatterplot', data, config );
@@ -240,8 +240,8 @@ export class DataVisualizer {
 
         const cellWidth = (width - margin.left - margin.right) / xValues.length;
         const cellHeight = (height - margin.top - margin.bottom) / yValues.length;
-';
-        // SVG要素の作成''
+;
+        // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`')''
             .append('svg'')'';
             .attr('width', width')'';
@@ -250,11 +250,11 @@ export class DataVisualizer {
         const g = svg.append('g''})''
             .attr('transform', `translate(${margin.left},${ margin.top)`);
 
-        // カラースケール'
+        // カラースケール
         const colorScale = this.d3.scaleSequential(this.d3.interpolateViridis)'';
             .domain(this.d3.extent(data, (d: HeatmapData) => d.value)');
 ';
-        // ヒートマップセルの描画''
+        // ヒートマップセルの描画
         g.selectAll('.cell')';
             .data(data)'';
             .enter(').append('rect'')'';
@@ -285,7 +285,7 @@ export class DataVisualizer {
         const width = config.width || this.options.defaultWidth;
         const height = config.height || this.options.defaultHeight;
 ';
-        // SVG要素の作成''
+        // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`')''
             .append('svg'')'';
             .attr('width', width')'';
@@ -302,11 +302,11 @@ export class DataVisualizer {
             .sort((a: any, b: any) => b.value - a.value);
 
         treemap(root);
-';
-        // カラースケール''
+;
+        // カラースケール
         const colorScale = this.d3.scaleOrdinal(this.d3.schemeCategory10');
 ';
-        // ノードの描画''
+        // ノードの描画
         const leaf = svg.selectAll('g')';
             .data(root.leaves()'';
             .enter(').append('g'')' }'
@@ -345,7 +345,7 @@ export class DataVisualizer {
         const height = config.height || this.options.defaultHeight;
         const margin = config.margin || this.options.margin;
 ';
-        // SVG要素の作成''
+        // SVG要素の作成
         const svg = this.d3.select(`#${containerId)`')''
             .append('svg'')'';
             .attr('width', width')'';
@@ -365,11 +365,11 @@ export class DataVisualizer {
 
         // ラインジェネレーター
         const line = this.d3.line();
-            .x((_: any, i: number) => xScale(new Date(data.timestamps![i]))';
+            .x((_: any, i: number) => xScale(new Date(data.timestamps![i]));
             .y((d: number) => yScale(d)'';
             .curve(this.d3.curveMonotoneX');
 ';
-        // 軸の追加''
+        // 軸の追加
         g.append('g'')'';
             .attr('transform', `translate(0,${height - margin.top - margin.bottom)`)''
             .call(this.d3.axisBottom(xScale)');'
@@ -377,14 +377,14 @@ export class DataVisualizer {
         g.append('g')'';
             .call(this.d3.axisLeft(yScale)');
 ';
-        // ラインの描画''
+        // ラインの描画
         g.append('path')'';
             .datum(data.values')'';
             .attr('fill', 'none'')'';
             .attr('stroke', '#007bff'')'';
             .attr('stroke-width', 2')'';
             .attr('d', line);
-';
+';'
         this.svgElements.set(containerId, svg);''
         this.scales.set(containerId, { xScale, yScale )');' }'
         this.visualizations.set(containerId, { type: 'timeseries', data, config )});
@@ -397,8 +397,8 @@ export class DataVisualizer {
      */
     updateVisualization(containerId: string, newData: any): boolean { const visualization = this.visualizations.get(containerId);
         if (!visualization) return false;
-';
-        try {''
+';'
+        try {'
             switch(visualization.type') {'
                 '';
                 case 'scatterplot':'';
@@ -411,7 +411,7 @@ export class DataVisualizer {
                     return this.updateTimeSeries(containerId, newData);
             }'
                 default: return false,' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Visualization update failed:', error);
             return false; }
         }
@@ -424,7 +424,7 @@ export class DataVisualizer {
         const scales = this.scales.get(containerId);''
         if (!svg || !scales') return false;
 ';
-        // データポイントの更新''
+        // データポイントの更新
         const dots = svg.selectAll('.dot');
             .data(newData);'
 '';
@@ -465,9 +465,9 @@ export class DataVisualizer {
     }
 
     /**
-     * Canvas APIによるフォールバック描画'
+     * Canvas APIによるフォールバック描画
      */''
-    private fallbackToCanvasRenderer('')';
+    private fallbackToCanvasRenderer()';
         console.warn('D3.js not available, using Canvas API fallback');
         this.useCanvasFallback = true;
     }
@@ -496,9 +496,9 @@ export class DataVisualizer {
             this.removeVisualization(containerId); }
         }
 
-        this.visualizations.clear();'
+        this.visualizations.clear();
         this.svgElements.clear();''
-        this.scales.clear('')';
+        this.scales.clear()';
         console.log('DataVisualizer destroyed'');'
     }''
 }

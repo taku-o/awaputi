@@ -15,18 +15,18 @@ interface FileOperationOptions { silent?: boolean;
     encoding?: BufferEncoding;
     force?: boolean;
     recursive?: boolean;
-    filter?: (file: FileInfo) => boolean; }
+    filter?: (file: FileInfo) => boolean }
 }
 
 interface FileInfo { name: string,
     path: string,
     size: number,
     modified: Date,
-    extension: string; }
+    extension: string }
 }
 
 interface BackupInfo extends FileInfo { originalFile: string,
-    backupDate: Date | null; }
+    backupDate: Date | null }
 }
 
 interface OperationDetails { filePath?: string;
@@ -39,14 +39,14 @@ interface OperationDetails { filePath?: string;
 
 interface OperationRecord { operation: string,
     details: OperationDetails,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface FileOperations { read: (filePath: string, options?: FileOperationOptions) => string | null;
     write: (filePath: string, content: string, options?: FileOperationOptions) => boolean;
     backup: (filePath: string) => string | null,
     restore: (backupPath: string, targetPath: string) => boolean,
-    delete: (filePath: string, options?: FileOperationOptions) => boolean; }
+    delete: (filePath: string, options?: FileOperationOptions) => boolean }
 }
 
 interface TestFileUpdateResult { success: boolean,
@@ -59,14 +59,14 @@ interface TestFileUpdateResult { success: boolean,
 
 interface OperationStatistics { totalOperations: number,
     operationCounts: Record<string, number>;
-    recentOperations: OperationRecord[];
+    recentOperations: OperationRecord[]
     }
 }
 
 interface DirectorySizeInfo { totalFiles: number,
     totalSize: number,
     formattedSize: string,
-    files: FileInfo[];
+    files: FileInfo[]
     }
 }
 
@@ -79,7 +79,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     private dryRun: boolean;
     private testFilePatterns: Record<string, string>;
     private operationHistory: OperationRecord[];
-    private fileOperations!: FileOperations;'
+    private fileOperations!: FileOperations;
 '';
     constructor(mainController: MainController') {'
         '';
@@ -106,14 +106,14 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             write: this.writeFile.bind(this),
             backup: this.createBackup.bind(this),
             restore: this.restoreBackup.bind(this),
-            delete: this.deleteFile.bind(this); }
+            delete: this.deleteFile.bind(this) }
         };
     }
 
     /**
      * ディレクトリ構造を確保'
      */''
-    private ensureDirectoryStructure('')';
+    private ensureDirectoryStructure()';
                 path.join(this.testsDir, 'unit''),'';
                 path.join(this.testsDir, 'integration''),'';
                 path.join(this.testsDir, 'backups');
@@ -131,7 +131,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                         console.log(`[DRY RUN] Would create directory: ${dir)`});
                     }'
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             this._handleError('directory structure setup', error); }
         }
     }
@@ -155,14 +155,14 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 '';
             const content = fs.readFileSync(filePath, options.encoding || 'utf8'');'
             '';
-            this.recordOperation('read', { filePath,)
+            this.recordOperation('read', { filePath)
                 size: content.length),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
 
             return content;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('file read', error);
             return null; }
         }
@@ -185,30 +185,30 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 
             // ディレクトリが存在しない場合は作成
             const dir = path.dirname(filePath);
-            if(!fs.existsSync(dir) { fs.mkdirSync(dir, { recursive: true ); }
+            if(!fs.existsSync(dir) { fs.mkdirSync(dir, { recursive: true ) }
             }
 
             // バックアップ作成（既存ファイルがある場合）
             let backupPath: string | null = null,
-            if(this.backupEnabled && fs.existsSync(filePath) {'
-                ';
+            if(this.backupEnabled && fs.existsSync(filePath) {
+                ';'
             }'
                 backupPath = this.createBackup(filePath'); }
             }
 ';
-            // ファイル書き込み''
+            // ファイル書き込み
             fs.writeFileSync(filePath, content, options.encoding || 'utf8'');'
 '';
             this.recordOperation('write', { filePath)
                 size: content.length,);
                 backupPath);
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
 
             console.log(`[TestFileOperations] ファイル書き込み: ${path.basename(filePath})}`);
             return true;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('file write', error);
             return false; }
         }
@@ -239,15 +239,15 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 '';
             fs.copyFileSync(filePath, backupPath');'
 '';
-            this.recordOperation('backup', { originalPath: filePath,)
+            this.recordOperation('backup', { originalPath: filePath)
                 backupPath);
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
 
             console.log(`[TestFileOperations] バックアップ作成: ${path.basename(backupPath})}`);
             return backupPath;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('backup creation', error);
             return null; }
         }
@@ -276,15 +276,15 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
 '';
             fs.copyFileSync(backupPath, targetPath');'
 '';
-            this.recordOperation('restore', { backupPath,)
+            this.recordOperation('restore', { backupPath)
                 targetPath);
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
 
             console.log(`[TestFileOperations] バックアップ復元: ${path.basename(targetPath})}`);
             return true;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('backup restore', error);
             return false; }
         }
@@ -319,19 +319,19 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             // バックアップ作成（強制削除でない場合）
             let backupPath: string | null = null,
             if (!options.force && this.backupEnabled) { backupPath = this.createBackup(filePath); }
-            }'
+            }
 '';
             fs.unlinkSync(filePath');'
 '';
-            this.recordOperation('delete', { filePath,)
+            this.recordOperation('delete', { filePath)
                 backupPath);
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
 
             console.log(`[TestFileOperations] ファイル削除: ${path.basename(filePath})}`);
             return true;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('file deletion', error);
             return false; }
         }
@@ -400,7 +400,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                         path: filePath,
                         size: stat.size,
                         modified: stat.mtime,
-                        extension: path.extname(file); }
+                        extension: path.extname(file) }
                     };
 
                     // フィルター適用
@@ -414,9 +414,9 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
                 }
             }
 
-            return fileList;'
+            return fileList;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('file listing', error);
             return []; }
         }
@@ -426,16 +426,16 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      * バックアップファイル一覧を取得
      * @returns バックアップファイル一覧'
      */''
-    listBackups('')';
+    listBackups()';
         const backupDir = path.join(this.testsDir, 'backups');'
         const backupFiles = this.listFiles(backupDir, { );''
-            filter: (file') => file.name.includes('.backup.'); }
+            filter: (file') => file.name.includes('.backup.') }
         });
 
         return backupFiles.map(file => ({ )'
             ...file);' }'
             originalFile: file.name.replace(/\.backup\.\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{ 3')Z$/, ''),
-            backupDate: this.parseBackupDate(file.name); }
+            backupDate: this.parseBackupDate(file.name) }
         });
     }
 
@@ -449,7 +449,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
         if(match') {
             
         }'
-            try {' }'
+            try { }'
                 return new Date(match[1].replace(/-/g, ':').replace(/T(\d{2)-(\d{2})-(\d{2}')/, 'T$1: $2:$3')),
             } catch (error) {
                 console.warn(`[TestFileOperations] Invalid backup date format: ${match[1]}`);
@@ -481,9 +481,9 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             }
 
             console.log(`[TestFileOperations] 古いバックアップを削除: ${deletedCount)件`});
-            return deletedCount;'
+            return deletedCount;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('backup cleanup', error);
             return 0; }
         }
@@ -497,7 +497,7 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
     private recordOperation(operation: string, details: OperationDetails): void { this.operationHistory.push({)
             operation,);
             details);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
 
         // 履歴サイズを制限（最大1000件）
@@ -526,10 +526,10 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
      * ファイルサイズを人間可読形式に変換
      * @param bytes - バイト数
      * @returns 人間可読なサイズ
-     */'
+     */
     formatFileSize(bytes: number): string { ''
         if (bytes === 0') return '0 Bytes';
-        ';
+        ';'
         const k = 1024;''
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);'
@@ -549,10 +549,10 @@ export class TestFileOperations extends BaseComponent { private testsDir: string
             return { totalFiles: files.length,
                 totalSize,
                 formattedSize: this.formatFileSize(totalSize), };
-                files }
+                files }'
             };'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('directory size calculation', error');
             return { totalFiles: 0,'
                 totalSize: 0,'';

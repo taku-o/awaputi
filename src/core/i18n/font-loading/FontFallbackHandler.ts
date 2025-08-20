@@ -7,13 +7,13 @@ export interface FontFallbackConfig { development?: {
 export interface FallbackInfo { language: string,
     originalFont: string | null,
     fallbackChain: string[],
-    appliedAt: number; }
+    appliedAt: number }
 }
 
 export interface FallbackStats { totalApplied: number,
     byLanguage: Record<string, number>,
     systemFontsCount: number,
-    availableSystemFonts: string[]; }
+    availableSystemFonts: string[] }
 }
 
 export class FontFallbackHandler {
@@ -44,7 +44,7 @@ export class FontFallbackHandler {
             'default': ['Arial', 'Helvetica', 'sans-serif'] }
         };
     }
-';
+';'
     private _detectSystemFonts(): Set<string> { ''
         const systemFonts = new Set<string>(');'
         const testFonts = ['';
@@ -109,7 +109,7 @@ export class FontFallbackHandler {
         this.appliedFallbacks.set(element, { language: language)
             originalFont: originalFont,);
             fallbackChain: fallbackChain),
-            appliedAt: Date.now(); }
+            appliedAt: Date.now() }
         });
 
         if (this.config.development? .verboseLogging) { : undefined }
@@ -130,7 +130,7 @@ export class FontFallbackHandler {
 
         return appliedCount;
     }
-
+'
     getSystemFontForLanguage(language: string): string { const fallbackChain = this.getFallbackChain(language);'
         '';
         for(const font of fallbackChain') {'
@@ -168,7 +168,7 @@ export class FontFallbackHandler {
         });
 
         if(validFonts.length === 0) {
-';
+';'
             const fallback = this.getSystemFontForLanguage(language);'
 
         }'
@@ -204,7 +204,7 @@ export class FontFallbackHandler {
 
         return stats;
     }
-
+'
     refreshSystemFonts(): number { this.systemFonts = this._detectSystemFonts();'
         '';
         if(this.config.development? .verboseLogging') {'

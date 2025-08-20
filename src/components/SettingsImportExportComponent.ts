@@ -13,21 +13,21 @@ interface GameEngine { version?: string;
 
 interface SettingsManager { get: (key: string) => any,
     set: (key: string, value: any) => void,
-    save: () => void; }
+    save: () => void }
 }
 
 interface AccessibilitySettingsManager { currentProfile?: string;
     getExtendedAccessibilitySettings: () => AccessibilitySetting[],
     getStats: () => any,
-    importSettings: (file: File) => Promise<void>; }
+    importSettings: (file: File) => Promise<void> }
 }
 
 interface AccessibilitySetting { key: string,
     [key: string]: any, }
 }
-';
+';'
 interface ErrorHandler { ''
-    handleError: (error: Error, code: string, context?: any') => void; }
+    handleError: (error: Error, code: string, context?: any') => void }
 }
 
 interface LocalizationManager { // Define methods as needed }
@@ -42,23 +42,23 @@ interface ExportData { timestamp: string,
     metadata: {
         userAgent: string,
         language: string,
-        exportedBy: string; }
+        exportedBy: string }
     };
 }
 
 interface ValidationResult { valid: boolean,
-    error?: string; }
+    error?: string }
 }
 
 interface ApplyResult { appliedCount: number,
-    warnings: string[]; }
+    warnings: string[] }
 }
-';
+';'
 interface OperationRecord { ''
     type: 'export' | 'import',
     timestamp: number,
     filename: string,
-    settingsCount?: number; }
+    settingsCount?: number }
 }
 
 interface Statistics { exportCount: number,
@@ -66,12 +66,12 @@ interface Statistics { exportCount: number,
     errorsCount: number,
     lastExport: string | null,
     lastImport: string | null,
-    sessionStart: number; }
+    sessionStart: number }
 }
 
 interface ExtendedStatistics extends Statistics { lastOperation: OperationRecord | null,
     operationHistory: OperationRecord[],
-    sessionDuration: number; }
+    sessionDuration: number }
 }'
 '';
 type StatusType = 'ready' | 'processing' | 'success' | 'error';
@@ -123,11 +123,11 @@ export class SettingsImportExportComponent {
     private stats: Statistics;
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine;'
+        this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();''
         this.localizationManager = getLocalizationManager(''';
         this.SUPPORTED_FORMATS = ['json'];'
-        this.MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB''
+        this.MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
         this.EXPORT_FILENAME_PREFIX = 'awaputi-settings';
         
         // DOM要素
@@ -153,8 +153,8 @@ export class SettingsImportExportComponent {
             exportCount: 0,
             importCount: 0,
             errorsCount: 0,
-            lastExport: null,);
-            lastImport: null);
+            lastExport: null);
+            lastImport: null)
     }
     }
             sessionStart: Date.now(); }
@@ -165,8 +165,8 @@ export class SettingsImportExportComponent {
      * コンポーネントを初期化してDOMに追加
      * @param parentElement - 親コンテナ要素
      * @returns 作成されたコンテナ要素
-     */'
-    initialize(parentElement: HTMLElement): HTMLElement | null { try {''
+     */
+    initialize(parentElement: HTMLElement): HTMLElement | null { try {'
             if(this.isInitialized') {'
                 '';
                 console.warn('[SettingsImportExportComponent] Already initialized');
@@ -185,9 +185,9 @@ export class SettingsImportExportComponent {
             console.log('[SettingsImportExportComponent] Initialized successfully');
             return this.container;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
             return null;
         }
@@ -197,7 +197,7 @@ export class SettingsImportExportComponent {
      * インポート・エクスポートUIを作成
      * @param parentElement - 親コンテナ'
      */''
-    private createImportExportUI(parentElement: HTMLElement'): void { // メインコンテナ''
+    private createImportExportUI(parentElement: HTMLElement'): void { // メインコンテナ
         this.container = document.createElement('div'');''
         this.container.className = 'settings-import-export-component';
         this.container.style.cssText = `;
@@ -211,7 +211,7 @@ export class SettingsImportExportComponent {
             font-family: Arial, sans-serif;
         `;
         ';
-        // ヘッダー''
+        // ヘッダー
         const header = document.createElement('div'');''
         header.className = 'import-export-header';
         header.style.cssText = `;
@@ -223,7 +223,7 @@ export class SettingsImportExportComponent {
         header.textContent = '設定管理';''
         this.container.appendChild(header');
         ';
-        // 説明文''
+        // 説明文
         const description = document.createElement('p'');''
         description.className = 'import-export-description';
         description.style.cssText = `;
@@ -234,7 +234,7 @@ export class SettingsImportExportComponent {
         description.textContent = '設定をJSONファイルでエクスポート・インポートできます。';''
         this.container.appendChild(description');
         ';
-        // ボタンコンテナ''
+        // ボタンコンテナ
         const buttonContainer = document.createElement('div'');''
         buttonContainer.className = 'button-container';
         buttonContainer.style.cssText = `;
@@ -243,7 +243,7 @@ export class SettingsImportExportComponent {
             align-items: center,
         `;
         ';
-        // エクスポートボタン''
+        // エクスポートボタン
         this.exportButton = document.createElement('button'');''
         this.exportButton.className = 'export-settings-button';''
         this.exportButton.innerHTML = '📤 設定をエクスポート';
@@ -265,7 +265,7 @@ export class SettingsImportExportComponent {
         this.exportButton.addEventListener('keydown', this.handleKeydown.bind(this);''
         buttonContainer.appendChild(this.exportButton');
         ';
-        // インポートボタン''
+        // インポートボタン
         this.importButton = document.createElement('button'');''
         this.importButton.className = 'import-settings-button';''
         this.importButton.innerHTML = '📥 設定をインポート';
@@ -289,7 +289,7 @@ export class SettingsImportExportComponent {
         '';
         this.container.appendChild(buttonContainer');
         ';
-        // 隠しファイル入力''
+        // 隠しファイル入力
         this.fileInput = document.createElement('input'');''
         this.fileInput.type = 'file';''
         this.fileInput.accept = '.json';''
@@ -297,7 +297,7 @@ export class SettingsImportExportComponent {
         this.fileInput.addEventListener('change', this.handleFileSelect.bind(this);''
         this.container.appendChild(this.fileInput');
         ';
-        // プログレスバー''
+        // プログレスバー
         this.progressBar = document.createElement('div'');''
         this.progressBar.className = 'progress-bar';
         this.progressBar.style.cssText = `;
@@ -320,7 +320,7 @@ export class SettingsImportExportComponent {
         this.progressBar.appendChild(progressFill);''
         this.container.appendChild(this.progressBar');
         ';
-        // ステータスインジケーター''
+        // ステータスインジケーター
         this.statusIndicator = document.createElement('div'');''
         this.statusIndicator.className = 'status-indicator';
         this.statusIndicator.style.cssText = `;
@@ -332,7 +332,7 @@ export class SettingsImportExportComponent {
         `;''
         this.container.appendChild(this.statusIndicator');
         ';
-        // 情報パネル''
+        // 情報パネル
         this.infoPanel = document.createElement('div'');''
         this.infoPanel.className = 'info-panel';
         this.infoPanel.style.cssText = `;
@@ -359,7 +359,7 @@ export class SettingsImportExportComponent {
     
     /**
      * ボタンのホバー効果を追加
-     */'
+     */
     private addHoverEffects(): void { ''
         const addHoverEffect = (button: HTMLElement, normalStyle: StyleObject, hoverStyle: StyleObject') => { ''
             button.addEventListener('mouseenter', () => {
@@ -375,7 +375,7 @@ export class SettingsImportExportComponent {
         if(this.exportButton') {'
             addHoverEffect(this.exportButton, {')'
                 background: 'linear-gradient(135deg, #4CAF50, #45a049')','';
-                transform: 'scale(1')',';
+                transform: 'scale(1')','
         }'
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1')' }'
             }, { ''
@@ -388,7 +388,7 @@ export class SettingsImportExportComponent {
         if(this.importButton') {'
             addHoverEffect(this.importButton, {')'
                 background: 'linear-gradient(135deg, #2196F3, #1976D2')','';
-                transform: 'scale(1')',';
+                transform: 'scale(1')','
         }'
                 boxShadow: '0 2px 4px rgba(0,0,0,0.1')' }'
             }, { ''
@@ -405,7 +405,7 @@ export class SettingsImportExportComponent {
     private async handleExportSettings(): Promise<void> { ''
         if (this.isProcessing') return;
         
-        try {'
+        try {
             this.isProcessing = true;''
             this.updateStatusIndicator('processing', '設定をエクスポート中...');
             this.showProgress(true);
@@ -420,24 +420,24 @@ export class SettingsImportExportComponent {
             const filename = this.generateExportFilename();
             this.downloadAsFile(exportData, filename);
             
-            // 統計更新'
+            // 統計更新
             this.stats.exportCount++;''
-            this.stats.lastExport = new Date().toISOString('') }'
+            this.stats.lastExport = new Date().toISOString() }'
             this.lastOperation = { type: 'export', timestamp: Date.now(), filename };
             this.operationHistory.push(this.lastOperation);
             ';
-            // 成功フィードバック''
+            // 成功フィードバック
             await this.delay(500');''
             this.updateStatusIndicator('success', `設定をエクスポートしました: ${ filename)`');
             ';
-            // カスタムイベントの発火''
+            // カスタムイベントの発火
             this.dispatchCustomEvent('settingsExported', {)
                 filename);
                 timestamp: Date.now(), }
                 dataSize: JSON.stringify(exportData}).length
             }),'
             '';
-        } catch (error') { this.stats.errorsCount++;''
+        } catch (error) { this.stats.errorsCount++;''
             this.errorHandler.handleError(error as Error, 'SETTINGS_EXPORT_ERROR', {')'
                 operation: 'export'),' }'
             }');''
@@ -446,7 +446,7 @@ export class SettingsImportExportComponent {
             this.showProgress(false);
             this.setButtonsEnabled(true);
             
-            // 3秒後にステータスをリセット'
+            // 3秒後にステータスをリセット
             setTimeout(() => { ''
                 if (!this.isProcessing') {' }'
                     this.updateStatusIndicator('ready', '設定のインポート・エクスポートが利用可能です'); }
@@ -460,12 +460,12 @@ export class SettingsImportExportComponent {
      */'
     private handleImportSettings(): void { ''
         if (this.isProcessing') return;
-        ';
-        try {''
+        ';'
+        try {'
             this.updateStatusIndicator('processing', 'ファイルを選択してください...');
             this.fileInput? .click();'
             ' }'
-        } catch (error') { this.stats.errorsCount++;''
+        } catch (error) { this.stats.errorsCount++;''
             this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', { : undefined')'
                 operation: 'import_trigger'),' }'
             }');''
@@ -484,7 +484,7 @@ export class SettingsImportExportComponent {
         }
             return; }
         }
-        ';
+        ';'
         try { this.isProcessing = true;''
             this.updateStatusIndicator('processing', 'ファイルを検証中...');
             this.showProgress(true);
@@ -492,44 +492,44 @@ export class SettingsImportExportComponent {
             
             // ファイル検証
             const validationResult = await this.validateImportFile(file);
-            if(!validationResult.valid) {'
-                ';
+            if(!validationResult.valid) {
+                ';'
             }'
                 throw new Error(validationResult.error'); }
             }
             ';
-            // ファイル読み込み''
+            // ファイル読み込み
             this.updateStatusIndicator('processing', 'ファイルを読み込み中...');''
             const importData = await this.readImportFile(file');
             ';
-            // データ検証''
+            // データ検証
             this.updateStatusIndicator('processing', 'データを検証中...');
             const dataValidation = await this.validateImportData(importData);
             if(!dataValidation.valid) {'
-                ';
+                ';'
             }'
                 throw new Error(dataValidation.error'); }
             }
             ';
-            // 設定適用''
+            // 設定適用
             this.updateStatusIndicator('processing', '設定を適用中...');
             const applyResult = await this.applyImportedSettings(importData);
             
-            // 統計更新'
+            // 統計更新
             this.stats.importCount++;''
             this.stats.lastImport = new Date().toISOString(''';
                 type: 'import', ;
-                timestamp: Date.now(, );
+                timestamp: Date.now( );
                 filename: file.name);
                 settingsCount: applyResult.appliedCount';
             };')'
             this.operationHistory.push(this.lastOperation');
             ';
-            // 成功フィードバック''
+            // 成功フィードバック
             this.updateStatusIndicator('success')'';
                 `設定をインポートしました: ${ applyResult.appliedCount)項目が適用されました`');
             ';
-            // カスタムイベントの発火''
+            // カスタムイベントの発火
             this.dispatchCustomEvent('settingsImported', {)
                 filename: file.name), }
                 timestamp: Date.now(}),
@@ -537,7 +537,7 @@ export class SettingsImportExportComponent {
                 warnings: applyResult.warnings;
             }),'
             '';
-        } catch (error') { this.stats.errorsCount++;''
+        } catch (error) { this.stats.errorsCount++;''
             this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_ERROR', {')'
                 operation: 'import_process',)';
                 filename: file.name),' }'
@@ -548,14 +548,14 @@ export class SettingsImportExportComponent {
             this.showProgress(false);
             this.setButtonsEnabled(true);
             ';
-            // ファイル入力をリセット''
+            // ファイル入力をリセット
             if(this.fileInput') {'
-                ';
+                ';'
             }'
                 this.fileInput.value = ''; }
             }
             
-            // 5秒後にステータスをリセット'
+            // 5秒後にステータスをリセット
             setTimeout(() => {  ''
                 if (!this.isProcessing') {' }'
                     this.updateStatusIndicator('ready', '設定のインポート・エクスポートが利用可能です'); }
@@ -614,10 +614,10 @@ export class SettingsImportExportComponent {
                 // プロファイル情報も含める
                 exportData.accessibility.currentProfile = this.accessibilityManager.currentProfile;
                 
-                // 統計情報'
+                // 統計情報
                 exportData.accessibility.stats = this.accessibilityManager.getStats();''
-            } catch (error') { : undefined''
-                console.warn('[SettingsImportExportComponent] Failed to collect accessibility settings:', error); }
+            } catch (error) { : undefined''
+                console.warn('[SettingsImportExportComponent] Failed to collect accessibility settings:', error) }
             }
         }
         
@@ -629,7 +629,7 @@ export class SettingsImportExportComponent {
      * @returns ファイル名
      */'
     private generateExportFilename(): string { const now = new Date();''
-        const dateStr = now.toISOString(').split('T')[0]; // YYYY-MM-DD''
+        const dateStr = now.toISOString(').split('T')[0]; // YYYY-MM-DD
         const timeStr = now.toTimeString(').split(' '')[0].replace(/:/g, ''); // HHMMSS }
         return `${this.EXPORT_FILENAME_PREFIX}-${dateStr}-${timeStr}.json`;
     }
@@ -638,7 +638,7 @@ export class SettingsImportExportComponent {
      * ファイルとしてダウンロード
      * @param data - ダウンロードするデータ
      * @param filename - ファイル名
-     */'
+     */
     private downloadAsFile(data: ExportData, filename: string): void { ''
         const jsonString = JSON.stringify(data, null, 2');''
         const blob = new Blob([jsonString], { type: 'application/json' ),''
@@ -665,13 +665,13 @@ export class SettingsImportExportComponent {
         if(file.size > this.MAX_FILE_SIZE) {
             
         }
-            return {  };'
+            return {  };
                 valid: false,' }'
                 error: `ファイルサイズが大きすぎます (最大: ${this.MAX_FILE_SIZE / 1024 / 1024}MB')`
             },
         }
         ';
-        // ファイル形式チェック''
+        // ファイル形式チェック
         const fileExtension = file.name.split('.').pop()? .toLowerCase(') || '';''
         if (!this.SUPPORTED_FORMATS.includes(fileExtension)') { return { : undefined };'
                 valid: false,' }'
@@ -679,7 +679,7 @@ export class SettingsImportExportComponent {
             };
         }
         ';
-        // MIME Type チェック''
+        // MIME Type チェック
         if (file.type && !file.type.includes('json')') { return { valid: false,' };'
                 error: 'JSONファイルを選択してください' }
             },
@@ -701,7 +701,7 @@ export class SettingsImportExportComponent {
                     const result = event.target? .result as string;
                     const data = JSON.parse(result); }'
                     resolve(data);' }'
-                } catch (error') { ''
+                } catch (error) { ''
                     reject(new Error('JSONファイルの解析に失敗しました'); }
                 }
             };'
@@ -719,12 +719,12 @@ export class SettingsImportExportComponent {
      * @param data - 検証するデータ
      * @returns 検証結果'
      */ : undefined''
-    private async validateImportData(data: any'): Promise<ValidationResult> { // 基本構造チェック''
+    private async validateImportData(data: any'): Promise<ValidationResult> { // 基本構造チェック
         if (!data || typeof data !== 'object'') {' }'
             return { valid: false, error: '無効なデータ形式です' }
         }
         ';
-        // 必須フィールドチェック''
+        // 必須フィールドチェック
         if (!data.timestamp') { ' }'
             return { valid: false, error: 'タイムスタンプが見つかりません' }
         }'
@@ -733,15 +733,15 @@ export class SettingsImportExportComponent {
             return { valid: false, error: 'バージョン情報が見つかりません' }
         }
         ';
-        // 設定データの存在チェック''
+        // 設定データの存在チェック
         if (!data.settings && !data.accessibility') { ' }'
             return { valid: false, error: '設定データが見つかりません' }
         }
         ';
-        // バージョン互換性チェック（将来の拡張用）''
+        // バージョン互換性チェック（将来の拡張用）
         if(data.version && data.version !== '1.0.0'') {'
             '';
-            console.warn('[SettingsImportExportComponent] Version mismatch:', data.version);
+            console.warn('[SettingsImportExportComponent] Version mismatch:', data.version)
         }
             // 現時点では警告のみ }
         }
@@ -775,21 +775,21 @@ export class SettingsImportExportComponent {
         if(data.accessibility && this.accessibilityManager) {
             try {
                 // AccessibilitySettingsManagerのimportSettingsメソッドを利用
-        }'
+        }
                 // 一時的なファイルオブジェクトを作成してインポート処理を実行' }'
                 const settingsBlob = new Blob([JSON.stringify(data')], { type: 'application/json' }');''
                 const settingsFile = new File([settingsBlob], 'temp-import.json', { type: 'application/json' ),
                 
                 await this.accessibilityManager.importSettings(settingsFile);
                 ';
-                // アクセシビリティ設定の数をカウント''
+                // アクセシビリティ設定の数をカウント
                 Object.keys(data.accessibility).forEach(key => { ');''
                     if (key !== 'currentProfile' && key !== 'stats') { }
                         appliedCount++; }
                     }
                 });'
                 '';
-            } catch (error') { ''
+            } catch (error) { ''
                 console.warn('[SettingsImportExportComponent] Failed to apply accessibility settings:', error');''
                 warnings.push('アクセシビリティ設定の適用に一部失敗しました'); }
             }
@@ -813,13 +813,13 @@ export class SettingsImportExportComponent {
     /**
      * ステータスインジケーターの更新
      * @param type - ステータスタイプ (ready/processing/success/error)
-     * @param message - 表示メッセージ
+     * @param message - 表示メッセージ'
      */'
     private updateStatusIndicator(type: StatusType, message: string): void { ''
         if (!this.statusIndicator') return;
         
         this.statusIndicator.textContent = message;
-        ';
+        ';'
         const styles: Record<StatusType, StyleObject> = {' }'
             ready: { backgroundColor: '#e3f2fd', color: '#1976d2', border: '1px solid #bbdefb' },''
             processing: { backgroundColor: '#fff3e0', color: '#f57c00', border: '1px solid #ffcc02' },''
@@ -843,7 +843,7 @@ export class SettingsImportExportComponent {
             '';
             const fill = this.progressBar.querySelector('.progress-fill') as HTMLElement;''
             if (fill') {'
-                // アニメーション効果'
+                // アニメーション効果
         }'
                 fill.style.width = '0%';' }'
                 setTimeout((') => { fill.style.width = '100%'; }, 100);
@@ -912,10 +912,10 @@ export class SettingsImportExportComponent {
     /**
      * 表示/非表示の切り替え
      * @param visible - 表示するかどうか
-     */'
+     */
     setVisible(visible: boolean): void { ''
         if(this.container') {'
-            ';
+            ';'
         }'
             this.container.style.display = visible ? 'flex' : 'none'; }
         }
@@ -924,8 +924,8 @@ export class SettingsImportExportComponent {
     /**
      * コンポーネントのクリーンアップ
      */
-    destroy(): void { try {'
-            // イベントリスナーの削除''
+    destroy(): void { try {
+            // イベントリスナーの削除
             if(this.exportButton') {'
                 '';
                 this.exportButton.removeEventListener('click', this.handleExportSettings.bind(this)');'
@@ -941,14 +941,14 @@ export class SettingsImportExportComponent {
             }'
             '';
             if(this.fileInput') {'
-                ';
+                ';'
             }'
                 this.fileInput.removeEventListener('change', this.handleFileSelect.bind(this); }
             }
             
             // DOM要素の削除
-            if(this.container && this.container.parentElement) {'
-                ';
+            if(this.container && this.container.parentElement) {
+                ';'
             }'
                 this.container.parentElement.removeChild(this.container'); }
             }
@@ -962,11 +962,11 @@ export class SettingsImportExportComponent {
             this.progressBar = null;
             this.infoPanel = null;
             
-            this.isInitialized = false;'
+            this.isInitialized = false;
             '';
             console.log('[SettingsImportExportComponent] Destroyed successfully');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_IMPORT_EXPORT_ERROR', {')'
                 operation: 'destroy'),' }'
             }');

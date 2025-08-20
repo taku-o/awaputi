@@ -7,14 +7,14 @@ interface TestResult { type: string,
     passedTests: number,
     failedTests: number,
     duration: number,
-    details?: TestDetail[];
+    details?: TestDetail[]
     }
 }
 
 interface TestDetail { name: string,
     status: 'passed' | 'failed',
     duration: number,
-    error?: string; }
+    error?: string }
 }
 
 interface BenchmarkResult { type: string,
@@ -22,27 +22,27 @@ interface BenchmarkResult { type: string,
     fps: number,
     memoryUsage: number,
     renderTime: number,
-    score: number; }
+    score: number }
 }
 
 interface TestSummary { total: number,
     passed: number,
     failed: number,
     successRate: number,
-    duration: number; }
+    duration: number }
 }
 
 interface CategoryStats { [category: string]: {
         total: number,
         passed: number,
-        failed: number; }
+        failed: number }
     };
 }
-';
+';'
 interface IntegrationTestResult { name: string,''
     status: 'passed' | 'failed',
     message: string,
-    duration: number; }
+    duration: number }
 }
 
 interface IntegrationTestResults { summary?: TestSummary;
@@ -55,7 +55,7 @@ interface ValidationResult { id: string,'
     name: string,'';
     status: 'passed' | 'failed',
     message: string,
-    duration: number; }
+    duration: number }
 }
 
 interface ValidationResults { summary?: TestSummary;
@@ -68,7 +68,7 @@ interface FinalValidationResult { category: string,'
     name: string,'';
     status: 'passed' | 'failed',
     message: string,
-    duration: number; }
+    duration: number }
 }
 
 interface FinalValidationResults { summary?: TestSummary;
@@ -76,14 +76,14 @@ interface FinalValidationResults { summary?: TestSummary;
         debugOverhead: number,
         memoryIncrease: number,
         initializationTime: number,
-        panelSwitchTime: number; }
+        panelSwitchTime: number }
     };
     categoryStats?: CategoryStats;
     results?: FinalValidationResult[];
     }
 
 interface TestSupportTools { runTests(type: string): Promise<TestResult>,
-    generateTestData(dataType: string, count: number): void; }
+    generateTestData(dataType: string, count: number): void }
 }
 
 interface GameEngine { testSupportTools?: TestSupportTools;
@@ -121,7 +121,7 @@ export class TestPanel {
     /**
      * パネルを作成'
      */''
-    create('')';
+    create()';
         this.element = document.createElement('div'');''
         this.element.className = 'debug-test-panel';'
         this.element.innerHTML = `'';
@@ -239,7 +239,7 @@ export class TestPanel {
             this.runTests('all');' }'
         }');
 ';
-        // モックデータ生成''
+        // モックデータ生成
         this.element.querySelector('#generate-bubbles'')?.addEventListener('click', (') => {  ''
             const countInput = this.element!.querySelector('#bubble-count') as HTMLInputElement;
             const count = parseInt(countInput.value); }'
@@ -258,7 +258,7 @@ export class TestPanel {
             this.setMockGameState(type);' }'
         }');
 ';
-        // ベンチマークボタン''
+        // ベンチマークボタン
         this.element.querySelector('#benchmark-particles'')?.addEventListener('click', (') => {  ' }'
             this.runBenchmark('particles');' }'
         }');'
@@ -275,7 +275,7 @@ export class TestPanel {
             this.runBenchmark('all');' }'
         }');
 ';
-        // 統合テストボタン''
+        // 統合テストボタン
         this.element.querySelector('#run-integration-tests'')?.addEventListener('click', () => { this.runIntegrationTests();' }'
         }');'
 '';
@@ -290,14 +290,14 @@ export class TestPanel {
         this.element.querySelector('#export-test-results'')?.addEventListener('click', () => { this.exportIntegrationTestResults();' }'
         }');
 ';
-        // 要件検証テストボタン''
+        // 要件検証テストボタン
         this.element.querySelector('#run-requirements-validation'')?.addEventListener('click', () => { this.runRequirementsValidation();' }'
         }');'
 '';
         this.element.querySelector('#export-validation-results'')?.addEventListener('click', () => { this.exportValidationResults();' }'
         }');
 ';
-        // 最終検証テストボタン''
+        // 最終検証テストボタン
         this.element.querySelector('#run-final-validation'')?.addEventListener('click', () => { this.runFinalValidation();' }'
         }');'
 '';
@@ -316,7 +316,7 @@ export class TestPanel {
                 this.displayTestResults(results); }
             } else {  // フォールバック：基本的なテスト実行
                 const results = await this.runBasicTests(type); }
-                this.displayTestResults(results); }'
+                this.displayTestResults(results); }
             } catch (error) { ' }'
             this.addTestResult(`テスト実行エラー: ${(error as Error'}).message}`, 'error');
         }
@@ -333,7 +333,7 @@ export class TestPanel {
             totalTests: 15,
             passedTests: 13,
             failedTests: 2,
-            duration: 1234,';
+            duration: 1234,
             details: [' }'
                 { name: 'GameEngine初期化テスト', status: 'passed', duration: 45 },''
                 { name: 'バブル生成テスト', status: 'passed', duration: 23 },''
@@ -358,7 +358,7 @@ export class TestPanel {
             results.details.forEach(detail => {});''
                 const message = `${detail.name}: ${detail.status} (${ detail.duration)ms')`;''
                 this.addTestResult(message, detail.status === 'passed' ? 'success' : 'error');
-                ';
+                ';'
                 if (detail.error) {' }'
                     this.addTestResult(`  → ${detail.error')`, 'error'});
                 }
@@ -369,9 +369,9 @@ export class TestPanel {
     /**
      * モックバブルを生成
      */'
-    private generateMockBubbles(count: number): void { try {''
+    private generateMockBubbles(count: number): void { try {'
             if(this.testSupportTools && this.testSupportTools.generateTestData') {'
-                ';
+                ';'
             }'
                 this.testSupportTools.generateTestData('bubbles', count); }
             } else {  // フォールバック：基本的なバブル生成シミュレーション
@@ -379,7 +379,7 @@ export class TestPanel {
                     // モックバブル生成の簡単なシミュレーション }
                     console.log(`Mock bubble ${i + 1) generated`});
                 }
-            }'
+            }
             '';
             this.addTestResult(`${count')個のテスト用バブルを生成しました`, 'success'});'
         } catch (error) { ' }'
@@ -399,7 +399,7 @@ export class TestPanel {
 
             const data = mockData[type];
             if(data && this.gameEngine.playerData) {'
-                // プレイヤーデータを一時的に設定（実際のゲームでは注意が必要）'
+                // プレイヤーデータを一時的に設定（実際のゲームでは注意が必要）
             }'
                 console.log(`Mock player data set:`, data'); }
             }'
@@ -413,23 +413,23 @@ export class TestPanel {
     /**
      * モックゲーム状態を設定
      */'
-    private setMockGameState(type: string): void { try {''
+    private setMockGameState(type: string): void { try {'
             switch(type') {'
                 '';
                 case 'normal':;
-                    // 通常状態に設定'
+                    // 通常状態に設定
                     break;''
                 case 'bonus':';
                     if (this.gameEngine.activateBonusTime) {'
             }'
                         this.gameEngine.activateBonusTime(10000'); // 10秒間 }
-                    }'
+                    }
                     break;''
                 case 'timestop':;
                     if (this.gameEngine.activateTimeStop) { this.gameEngine.activateTimeStop(5000); // 5秒間 }
                     }
                     break;
-            }'
+            }
 '';
             this.addTestResult(`ゲーム状態を${type')に設定しました`, 'success'});'
         } catch (error) { ' }'
@@ -477,7 +477,7 @@ export class TestPanel {
 
     /**
      * ベンチマーク結果を表示
-     */'
+     */
     private displayBenchmarkResults(results: BenchmarkResult): void { ''
         if (!this.element') return;'
 '';
@@ -511,7 +511,7 @@ export class TestPanel {
             // "結果がありません"メッセージを削除""
             const noResults = results.querySelector('.no-results');'
             if (noResults) {''
-                noResults.remove('');
+                noResults.remove();
         }'
             const div = document.createElement('div''); }
             div.className = `test-result test-${type}`;'
@@ -535,7 +535,7 @@ export class TestPanel {
      */'
     show(): void { ''
         if(this.element') {'
-            ';
+            ';'
         }'
             this.element.style.display = 'block'; }
         }
@@ -546,7 +546,7 @@ export class TestPanel {
      */'
     hide(): void { ''
         if(this.element') {'
-            ';
+            ';'
         }'
             this.element.style.display = 'none'; }
         }
@@ -555,9 +555,9 @@ export class TestPanel {
     /**
      * パネルサイズを更新（レスポンシブレイアウト用）
      */'
-    updateSize(): void { // パネルサイズ変更時の処理''
+    updateSize(): void { // パネルサイズ変更時の処理
         if(this.element') {'
-            // ベンチマーク結果の表示を調整''
+            // ベンチマーク結果の表示を調整
             const resultsDiv = this.element.querySelector('#benchmark-results') as HTMLElement;
             if (resultsDiv) {
                 // 必要に応じてスクロール位置を調整
@@ -568,9 +568,9 @@ export class TestPanel {
     }
 
     /**
-     * 統合テストを実行'
+     * 統合テストを実行
      */''
-    private async runIntegrationTests('')';
+    private async runIntegrationTests()';
         this.addTestResult('統合テストを開始中...', 'info');
         
         try { if (this.debugInterface && this.debugInterface.runIntegrationTests) {'
@@ -594,7 +594,7 @@ export class TestPanel {
             'errorHandling': 'エラーハンドリング','';
             'memoryManagement': 'メモリ管理' }
         };
-';
+';'
         const categoryName = categoryNames[category] || category;''
         this.addTestResult(`${ categoryName')テストを開始中...`, 'info');
         
@@ -621,7 +621,7 @@ export class TestPanel {
         if (!integrationResults) return;
 
         // 結果サマリー表示
-        if(results.summary) {'
+        if(results.summary) {
             const summary = results.summary;''
             const successRate = summary.successRate.toFixed(1');'
             '';
@@ -659,13 +659,13 @@ export class TestPanel {
             });
         }
 ';
-        // 詳細結果表示''
+        // 詳細結果表示
         if(results.results && results.results.length > 0') {'
             '';
             const detailsDiv = document.createElement('div'');''
             detailsDiv.className = 'integration-details';''
             detailsDiv.innerHTML = '<h6>詳細結果</h6>';'
-            ';
+            ';'
         }'
             results.results.forEach(result => { ');' }'
                 const resultDiv = document.createElement('div''); }
@@ -704,7 +704,7 @@ export class TestPanel {
     /**
      * 要件検証テストを実行'
      */''
-    private async runRequirementsValidation('')';
+    private async runRequirementsValidation()';
         this.addTestResult('要件検証テストを開始中...', 'info');
         
         try { if (this.debugInterface && this.debugInterface.runRequirementsValidation) {'
@@ -727,7 +727,7 @@ export class TestPanel {
         if (!validationResults) return;
 
         // 結果サマリー表示
-        if(results.summary) {'
+        if(results.summary) {
             const summary = results.summary;''
             const successRate = summary.successRate.toFixed(1');'
             '';
@@ -765,13 +765,13 @@ export class TestPanel {
             });
         }
 ';
-        // 詳細結果表示''
+        // 詳細結果表示
         if(results.results && results.results.length > 0') {'
             '';
             const detailsDiv = document.createElement('div'');''
             detailsDiv.className = 'validation-details';''
             detailsDiv.innerHTML = '<h6>詳細結果</h6>';'
-            ';
+            ';'
         }'
             results.results.forEach(result => { ');' }'
                 const resultDiv = document.createElement('div''); }
@@ -811,7 +811,7 @@ export class TestPanel {
     /**
      * 最終検証テストを実行'
      */''
-    private async runFinalValidation('')';
+    private async runFinalValidation()';
         this.addTestResult('最終検証テストを開始中...', 'info');
         
         try { if (this.debugInterface && this.debugInterface.runFinalValidation) {'
@@ -834,7 +834,7 @@ export class TestPanel {
         if (!finalValidationResults) return;
 
         // 結果サマリー表示
-        if(results.summary) {'
+        if(results.summary) {
             const summary = results.summary;''
             const successRate = summary.successRate.toFixed(1');'
             '';
@@ -890,13 +890,13 @@ export class TestPanel {
             });
         }
 ';
-        // 詳細結果表示''
+        // 詳細結果表示
         if(results.results && results.results.length > 0') {'
             '';
             const detailsDiv = document.createElement('div'');''
             detailsDiv.className = 'final-validation-details';''
             detailsDiv.innerHTML = '<h6>詳細結果</h6>';'
-            ';
+            ';'
         }'
             results.results.forEach(result => { ');' }'
                 const resultDiv = document.createElement('div''); }

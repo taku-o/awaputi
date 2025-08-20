@@ -10,7 +10,7 @@ export class PerformanceDataCollector {
             memoryInterval: 30000, // メモリ測定間隔（30秒）;
             enableDetailedTiming: true,
             enableResourceTiming: true,
-            maxDataPoints: 1000, // 保持するデータポイント数;
+            maxDataPoints: 1000, // 保持するデータポイント数
     }
     }
             ...options }
@@ -76,7 +76,7 @@ export class PerformanceDataCollector {
                 
                 this.recordFPSData({
                     timestamp: currentTime,
-                    fps: fps,);
+                    fps: fps);
                     frameTime: frameTime);
                     frameCount: frameCount,);
                     sessionId: this.sessionId),
@@ -149,12 +149,12 @@ export class PerformanceDataCollector {
                 navigationType: navigation.type,
     }
                 sessionId: this.sessionId }
-            },'
+            },
 '';
             this.recordLoadTimeData(loadTimeData');
         }
 ';
-        // Performance Observer for more detailed metrics''
+        // Performance Observer for more detailed metrics
         if (typeof PerformanceObserver !== 'undefined') { this.setupPerformanceObserver(); }
         }
     }
@@ -168,7 +168,7 @@ export class PerformanceDataCollector {
             const navObserver = new PerformanceObserver((list) => { 
     }
                 for(const entry of list.getEntries() { }
-                    this.recordNavigationTiming(entry); }'
+                    this.recordNavigationTiming(entry); }
                 }''
             }');''
             navObserver.observe({ entryTypes: ['navigation'] });
@@ -176,7 +176,7 @@ export class PerformanceDataCollector {
 
             // Resource timing
             const resourceObserver = new PerformanceObserver((list) => {  for(const entry of list.getEntries() { }
-                    this.recordResourceTiming(entry); }'
+                    this.recordResourceTiming(entry); }
                 }''
             }');''
             resourceObserver.observe({ entryTypes: ['resource'] });
@@ -184,14 +184,14 @@ export class PerformanceDataCollector {
 
             // Measure timing
             const measureObserver = new PerformanceObserver((list) => {  for(const entry of list.getEntries() { }
-                    this.recordMeasureTiming(entry); }'
+                    this.recordMeasureTiming(entry); }
                 }''
             }');''
             measureObserver.observe({ entryTypes: ['measure'] });
             this.eventListeners.push(() => measureObserver.disconnect();'
 '';
-        } catch (error') { ''
-            console.warn('Performance Observer setup failed:', error); }
+        } catch (error) { ''
+            console.warn('Performance Observer setup failed:', error) }
         }
     }
 
@@ -207,7 +207,7 @@ export class PerformanceDataCollector {
                 
                 this.recordResourceLoadTime({);'
                     timestamp: performance.now(),'';
-                    resourceType: target.tagName.toLowerCase('';
+                    resourceType: target.tagName.toLowerCase(''
     })'
                     success: event.type === 'load') }
                     sessionId: this.sessionId) }
@@ -215,9 +215,9 @@ export class PerformanceDataCollector {
             }
         };
 
-        // リソースの読み込み開始時間を記録'
+        // リソースの読み込み開始時間を記録
         const recordLoadStart = (event) => {  if (event.target) {''
-                event.target.loadStartTime = performance.now('')';
+                event.target.loadStartTime = performance.now()';
         document.addEventListener('loadstart', recordLoadStart, true');''
         document.addEventListener('load', trackResourceLoad, true');''
         document.addEventListener('error', trackResourceLoad, true);'
@@ -249,9 +249,9 @@ export class PerformanceDataCollector {
 );
             this.recordErrorData(errorData);
         };
-';
+';'
         const trackUnhandledRejection = (event) => {  const errorData = {''
-                timestamp: performance.now('')';
+                timestamp: performance.now()';
                 type: 'unhandledrejection',')';
                 message: event.reason ? event.reason.toString(') : 'Unhandled promise rejection',
                 stack: event.reason && event.reason.stack ? event.reason.stack : null,
@@ -278,7 +278,7 @@ export class PerformanceDataCollector {
     start() {'
         '';
         if (this.isRunning') return;
-        ';
+        ';'
         this.isRunning = true;''
         console.log('Performance data collection started');
 
@@ -296,10 +296,10 @@ export class PerformanceDataCollector {
     /**
      * データ収集停止
      */
-    stop() {'
+    stop() {
         '';
         if (!this.isRunning') return;
-        ';
+        ';'
         this.isRunning = false;''
         console.log('Performance data collection stopped');
 
@@ -318,16 +318,16 @@ export class PerformanceDataCollector {
     /**
      * FPSデータの記録
      */
-    recordFPSData(data) {'
+    recordFPSData(data) {
         '';
         this.performanceData.fps.push(data');''
         this.trimDataArray('fps');
 ';
-        // 低FPS警告''
+        // 低FPS警告
         if (data.fps < 30') {''
             this.triggerPerformanceWarning('low_fps', {)
                 currentFPS: data.fps);
-                frameTime: data.frameTime,);
+                frameTime: data.frameTime,)
     }
                 threshold: 30); }
         }
@@ -341,12 +341,12 @@ export class PerformanceDataCollector {
         this.performanceData.memory.push(data');''
         this.trimDataArray('memory');
 ';
-        // 高メモリ使用量警告''
+        // 高メモリ使用量警告
         if (data.usagePercent > 80') {''
             this.triggerPerformanceWarning('high_memory_usage', {
-                usagePercent: data.usagePercent,);
+                usagePercent: data.usagePercent);
                 used: data.used);
-                limit: data.limit,);
+                limit: data.limit,)
     }
                 threshold: 80); }
         }
@@ -360,10 +360,10 @@ export class PerformanceDataCollector {
         this.performanceData.loadTimes.push(data');''
         this.trimDataArray('loadTimes');
 ';
-        // 遅いロード時間警告''
-        if (data.loadComplete > 5000') { // 5秒以上''
+        // 遅いロード時間警告
+        if (data.loadComplete > 5000') { // 5秒以上
             this.triggerPerformanceWarning('slow_load_time', {)
-                loadTime: data.loadComplete,);
+                loadTime: data.loadComplete,)
     }
                 threshold: 5000); }
         }
@@ -430,12 +430,12 @@ export class PerformanceDataCollector {
         this.performanceData.networkRequests.push(data');''
         this.trimDataArray('networkRequests');
 ';
-        // 遅いリソース読み込み警告''
-        if (data.loadTime > 3000') { // 3秒以上''
+        // 遅いリソース読み込み警告
+        if (data.loadTime > 3000') { // 3秒以上
             this.triggerPerformanceWarning('slow_resource_load', {
-                resourceType: data.resourceType,);
+                resourceType: data.resourceType);
                 src: data.src);
-                loadTime: data.loadTime,);
+                loadTime: data.loadTime,)
     }
                 threshold: 3000); }
         }
@@ -448,8 +448,8 @@ export class PerformanceDataCollector {
         '';
         this.performanceData.errorEvents.push(data');''
         this.trimDataArray('errorEvents'');
-';
-        // エラー発生の通知'
+';'
+        // エラー発生の通知
     }'
         this.triggerPerformanceWarning('error_occurred', data); }
     }
@@ -510,7 +510,7 @@ export class PerformanceDataCollector {
      * カスタムタイミング測定の開始'
      */''
     startMeasure(name, startMark = null') {'
-        ';
+        ';'
     }'
         if (typeof performance.mark === 'function') { }
             const markName = startMark || `${name}-start`;
@@ -524,16 +524,16 @@ export class PerformanceDataCollector {
      * カスタムタイミング測定の終了'
      */''
     endMeasure(name, startMark = null') {'
-        ';
+        ';'
     }'
         if (typeof performance.mark === 'function' && typeof performance.measure === 'function') { }
             const endMarkName = `${name}-end`;
             const startMarkName = startMark || `${name}-start`;
-            ';
+            ';'
             performance.mark(endMarkName);''
             performance.measure(name, startMarkName, endMarkName');
             ';
-            // 測定結果を取得''
+            // 測定結果を取得
             const measures = performance.getEntriesByName(name, 'measure');
             if(measures.length > 0) {
                 const measure = measures[measures.length - 1];
@@ -553,8 +553,7 @@ export class PerformanceDataCollector {
         const stats = {
             sessionId: this.sessionId }
             collectionDuration: performance.now(), }
-            dataPointCounts: {}
-        },
+            dataPointCounts: {},
 
         // 各カテゴリのデータポイント数
         Object.keys(this.performanceData).forEach(key => {  )
@@ -711,7 +710,7 @@ export class PerformanceDataCollector {
 
         return { requestCount: networkData.length,
             averageLoadTime: durations.length > 0 ? Math.round(durations.reduce((sum, val) => sum + val, 0) / durations.length) : 0,
-    }'
+    }
             totalDataTransferred: sizes.reduce((sum, val) => sum + val, 0),' };'
             averageResourceSize: sizes.length > 0 ? Math.round(sizes.reduce((sum, val) => sum + val, 0) / sizes.length') : 0 }
         };
@@ -734,7 +733,7 @@ export class PerformanceDataCollector {
                 return JSON.stringify(exportData, null, 2');''
             case 'csv':;
                 return this.convertToCSV(exportData);
-            default: return exportData; }
+            default: return exportData }
         }
     }
 
@@ -742,7 +741,7 @@ export class PerformanceDataCollector {
      * CSVフォーマットへの変換'
      */''
     convertToCSV(data') {'
-        // FPSデータのCSV変換''
+        // FPSデータのCSV変換
         let csv = 'Type,Timestamp,Value,Details\n';
         
     }
@@ -760,7 +759,7 @@ export class PerformanceDataCollector {
      * データのクリア
      */
     clearData() {'
-        Object.keys(this.performanceData).forEach(key => { ')
+        Object.keys(this.performanceData).forEach(key => { ')'
     }'
             this.performanceData[key] = [])');' }'
         console.log('Performance data cleared'); }
@@ -780,7 +779,7 @@ export class PerformanceDataCollector {
      */
     destroy() {'
         this.stop();''
-        this.clearData('');
+        this.clearData();
     }'
         console.log('PerformanceDataCollector destroyed''); }'
     }''

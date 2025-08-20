@@ -26,7 +26,7 @@ export interface HelpDatabase { gameBasics: HelpItem,
 
 export interface HelpItem { category: HelpCategory,
     priority: HelpPriority,
-    content: HelpContent;
+    content: HelpContent
     }
 }
 
@@ -92,7 +92,7 @@ export interface BubbleType { name: string,
 
 export interface BubbleCondition { type: ConditionType,
     value: string | number,
-    operator?: ComparisonOperator;
+    operator?: ComparisonOperator
     }
 }
 
@@ -109,7 +109,7 @@ export interface Strategy { name: string,
 
 export interface GameSituation { scenario: string,
     recommendation: string,
-    priority: number; }
+    priority: number }
 }
 
 export interface AccessibilityFeature { name: string,
@@ -141,7 +141,7 @@ export interface MediaAsset { type: MediaType,
 export interface HelpLink { title: string,
     url: string,
     type: LinkType,
-    description?: string; }
+    description?: string }
 }
 
 export interface SearchOptions { category?: HelpCategory;
@@ -156,34 +156,34 @@ export interface SearchOptions { category?: HelpCategory;
 export interface SearchResult { key: string,
     item: HelpItem,
     score: number,
-    matches: SearchMatch[];
+    matches: SearchMatch[]
     }
 }
 
 export interface SearchMatch { field: string,
     text: string,
     position: number,
-    context: string; }
+    context: string }
 }
 
 export interface SearchIndexEntry { key: string,
     keywords: string[],
     weight: number,
-    lastIndexed: Date;
+    lastIndexed: Date
     }
 }
 
 export interface CategoryIndex { category: HelpCategory,
     keys: string[],
     count: number,
-    priority: HelpPriority;
+    priority: HelpPriority
     }
 }
 
 export interface DifficultyIndex { difficulty: DifficultyLevel,
     keys: string[],
     count: number,
-    averageComplexity: number; }
+    averageComplexity: number }
 }
 
 export interface ContentStatistics { totalItems: number,
@@ -191,7 +191,7 @@ export interface ContentStatistics { totalItems: number,
     difficultyCounts: Record<DifficultyLevel, number>,
     priorityCounts: Record<HelpPriority, number>,
     averageReadingTime: number,
-    mostSearchedTopics: string[]; }
+    mostSearchedTopics: string[] }
 }
 
 export interface RelatedContentOptions { maxResults?: number;
@@ -202,19 +202,19 @@ export interface RelatedContentOptions { maxResults?: number;
 
 export interface ContentValidation { isValid: boolean,
     errors: ValidationError[],
-    warnings: ValidationWarning[];
+    warnings: ValidationWarning[]
     }
 }
 
 export interface ValidationError { field: string,
     message: string,
-    severity: ErrorSeverity;
+    severity: ErrorSeverity
     }
 }
 
 export interface ValidationWarning { field: string,
     message: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 // 列挙型
@@ -233,19 +233,19 @@ export type ConditionType = 'score' | 'level' | 'time' | 'combo' | 'health';''
 export type ComparisonOperator = 'eq' | 'ne' | 'gt' | 'lt' | 'gte' | 'lte';''
 export type ErrorSeverity = 'low' | 'medium' | 'high' | 'critical';
 
-// 定数'
+// 定数
 export const HELP_CATEGORIES: readonly HelpCategory[] = [']';
     'basic', 'gameplay', 'advanced', 'settings', 'troubleshooting'];
 ] as const;
-';
+';'
 export const DIFFICULTY_LEVELS: readonly DifficultyLevel[] = [']';
     'beginner', 'intermediate', 'advanced', 'expert'];
 ] as const;
-';
+';'
 export const HELP_PRIORITIES: readonly HelpPriority[] = [']';
     'low', 'medium', 'high', 'critical'];
 ] as const;
-';
+';'
 export const BUBBLE_COLORS: readonly BubbleColor[] = [']';
     'normal', 'rainbow', 'pink', 'blue', 'yellow', 'green', 'red', 'purple', 'orange'];
 ] as const;
@@ -276,16 +276,16 @@ export function isValidDifficultyLevel(difficulty: string): difficulty is Diffic
 }
 
 export function isValidHelpPriority(priority: string): priority is HelpPriority { return HELP_PRIORITIES.includes(priority as HelpPriority); }
-}'
+}
 '';
 export function calculateReadingTime(content: HelpContent'): number { const wordsPerMinute = 200; // 平均読書速度
-    let wordCount = 0;'
+    let wordCount = 0;
     '';
     wordCount += content.title.split(' '').length;''
     wordCount += content.description.split(' ').length;
     
-    if(content.sections) {
-    ';
+    if(content.sections) {'
+    ';'
         '';
         content.sections.forEach(section => { ');''
             wordCount += section.content.split(' ').length;'
@@ -297,9 +297,9 @@ export function calculateReadingTime(content: HelpContent'): number { const word
         });
     }
     
-    if(content.steps) {
-    ';
-        ';
+    if(content.steps) {'
+    ';'
+        ';'
     }'
         content.steps.forEach(step => { ');' }'
             wordCount += step.description.split(' ').length; }
@@ -311,10 +311,10 @@ export function calculateReadingTime(content: HelpContent'): number { const word
 
 export function generateContentId(): string {
     return `help_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
-}
-';
+}'
+';'
 export function sanitizeKeyword(keyword: string): string { ''
-    return keyword.toLowerCase('')';
+    return keyword.toLowerCase()';
         .replace(/[^\w\s]/g, '');
         .trim(); }
 }
@@ -603,7 +603,7 @@ export class HelpContentManager {
                     difficulty: 'beginner',';
                     metadata: { readingTime: 6,')'
                         tags: ['アクセシビリティ', 'キーボード', '視覚', '時間調整']);
-                        lastUpdated: new Date(); }
+                        lastUpdated: new Date() }
                     }
                 }
             }
@@ -640,9 +640,9 @@ export class HelpContentManager {
         if(!this.categoryIndex.has(category) {
         
             this.categoryIndex.set(category, {
-                category,);
+                category);
                 keys: []);
-                count: 0,);
+                count: 0,)
         }
                 priority: item.priority); }
         }
@@ -660,9 +660,9 @@ export class HelpContentManager {
         if(!this.difficultyIndex.has(difficulty) {
         
             this.difficultyIndex.set(difficulty, {
-                difficulty,);
+                difficulty);
                 keys: []);
-                count: 0,);
+                count: 0,)
         }
                 averageComplexity: 0); }
         }
@@ -685,7 +685,7 @@ export class HelpContentManager {
             key,);
             keywords);
             weight: this.calculateContentWeight(item),
-            lastIndexed: new Date(); }
+            lastIndexed: new Date() }
         });
         
         keywords.forEach(keyword => {  );
@@ -831,7 +831,7 @@ export class HelpContentManager {
                         existing.score += score; }
                         existing.matches.push(...matches); }
                     } else {  results.set(key, {
-                            key,);
+                            key);
                             item);
                             score,) }
                             matches); }
@@ -891,24 +891,24 @@ export class HelpContentManager {
     private findMatches(keyword: string, item: HelpItem): SearchMatch[] { const matches: SearchMatch[] = [],
         const content = item.content;
         
-        // タイトルでのマッチ'
+        // タイトルでのマッチ
         const titleIndex = content.title.toLowerCase().indexOf(keyword);''
         if(titleIndex !== -1') {'
             matches.push({''
-                field: 'title',);
+                field: 'title');
                 text: keyword);
-                position: titleIndex,);
+                position: titleIndex,)
         }
                 context: content.title); }
         }
         
-        // 説明でのマッチ'
+        // 説明でのマッチ
         const descIndex = content.description.toLowerCase().indexOf(keyword);''
         if(descIndex !== -1') {'
             matches.push({''
-                field: 'description',);
+                field: 'description');
                 text: keyword);
-                position: descIndex,);
+                position: descIndex,)
         }
                 context: content.description); }
         }
@@ -1037,7 +1037,7 @@ export class HelpContentManager {
 
     /**
      * コンテンツの妥当性を検証
-     */'
+     */
     validateContent(key: string): ContentValidation { const item = this.getContent(key);''
         if(!item') {
             
@@ -1052,20 +1052,20 @@ export class HelpContentManager {
         const errors: ValidationError[] = [],
         const warnings: ValidationWarning[] = [],
         ';
-        // 必須フィールドのチェック''
+        // 必須フィールドのチェック
         if (!item.content.title.trim()') { ''
-            errors.push({ field: 'title', message: 'Title is required', severity: 'high' ); }
+            errors.push({ field: 'title', message: 'Title is required', severity: 'high' ) }
         }'
         '';
         if (!item.content.description.trim()') { ''
-            errors.push({ field: 'description', message: 'Description is required', severity: 'high' ); }
+            errors.push({ field: 'description', message: 'Description is required', severity: 'high' ) }
         }
         ';
-        // 読みやすさのチェック''
+        // 読みやすさのチェック
         if(item.content.title.length > 100') {'
             warnings.push({''
                 field: 'title',')';
-                message: 'Title is very long',');
+                message: 'Title is very long',')
         }'
                 suggestion: 'Consider shortening the title to improve readability'); }
         }
@@ -1125,6 +1125,6 @@ export class HelpContentManager {
     removeContent(key: string): boolean { if (!this.helpDatabase[key]) {
             return false; // 存在しない }
         }
-        ';
+        ';'
         delete this.helpDatabase[key];''
         this.buildSearchIndexes(')');

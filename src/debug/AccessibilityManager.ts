@@ -8,13 +8,13 @@ interface DebugInterface { debugPanel?: HTMLElement;
 
 interface FocusManagement { focusableElements: Element[],
     currentFocusIndex: number,
-    focusTrap: boolean; }
+    focusTrap: boolean }
 }
 
 interface AccessibilityInfo { screenReaderDetected: boolean,
     keyboardNavigationEnabled: boolean,
     focusableElementsCount: number,
-    currentFocusIndex: number; }
+    currentFocusIndex: number }
 }
 
 export class DebugAccessibilityManager {
@@ -71,11 +71,11 @@ export class DebugAccessibilityManager {
     /**
      * キーボードナビゲーションを設定'
      */''
-    private setupKeyboardNavigation('')';
+    private setupKeyboardNavigation()';
         document.addEventListener('keydown', (event) => {  ''
             if (!this.keyboardNavigationEnabled') return;
             ';
-            // デバッグパネルが表示されている場合のみ処理''
+            // デバッグパネルが表示されている場合のみ処理
             if (!this.debugInterface.debugPanel || this.debugInterface.debugPanel.style.display === 'none') { }
                 return; }
             }
@@ -90,25 +90,25 @@ export class DebugAccessibilityManager {
     private handleKeyboardNavigation(event: KeyboardEvent'): void {
         const { key, ctrlKey, altKey, shiftKey } = event;
 ';
-        // ESCキーでフォーカスを外す''
+        // ESCキーでフォーカスを外す
         if(key === 'Escape') {'
             '';
-            this.clearFocus('')';
+            this.clearFocus()';
         if (key === 'Tab') {
             event.preventDefault();
             if (shiftKey) {
         }
                 this.focusPrevious(); }'
             } else {  ''
-                this.focusNext('')';
+                this.focusNext()';
         if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key) {'
-            ';
+            ';'
         }'
             this.handleArrowKeyNavigation(event'); }
             return; }
         }
 ';
-        // Enterキーまたはスペースキーでアクティベート''
+        // Enterキーまたはスペースキーでアクティベート
         if(key === 'Enter' || key === ' ') {
             this.activateCurrentElement(event);
         }
@@ -131,13 +131,13 @@ export class DebugAccessibilityManager {
         const { key } = event;
         const currentElement = document.activeElement;
         ';
-        // タブ内での矢印キー移動''
+        // タブ内での矢印キー移動
         if(currentElement && currentElement.classList.contains('debug-tab') {'
             '';
-            event.preventDefault('')';
+            event.preventDefault()';
             const tabs = Array.from(this.debugInterface.debugPanel!.querySelectorAll('.debug-tab');''
             const currentIndex = tabs.indexOf(currentElement');
-            ';
+            ';'
             let nextIndex: number | undefined,'';
             if (key === 'ArrowLeft'') {
         }'
@@ -181,7 +181,7 @@ export class DebugAccessibilityManager {
     private setupARIASupport(): void { const debugPanel = this.debugInterface.debugPanel;''
         if (!debugPanel') return;
 ';
-        // メインパネルにrole属性を設定''
+        // メインパネルにrole属性を設定
         debugPanel.setAttribute('role', 'application'');''
         debugPanel.setAttribute('aria-label', 'Debug Interface');
 
@@ -194,7 +194,7 @@ export class DebugAccessibilityManager {
 
     /**
      * タブのARIA属性を設定
-     */'
+     */
     private setupTabsARIA(): void { ''
         if (!this.debugInterface.debugPanel') return;'
         '';
@@ -208,7 +208,7 @@ export class DebugAccessibilityManager {
         }'
             tabsContainer.setAttribute('aria-label', 'Debug panels'); }
         }
-';
+';'
         tabs.forEach((tab, index) => {  ''
             const panelName = (tab as HTMLElement').dataset.panel;'
             ' }'
@@ -234,7 +234,7 @@ export class DebugAccessibilityManager {
     private setupPanelContentARIA(): void { ''
         if (!this.debugInterface.debugPanel') return;
         ';
-        // ライブリージョンの設定''
+        // ライブリージョンの設定
         const statusElement = this.debugInterface.debugPanel.querySelector('#debug-status-text');''
         if(statusElement') {'
             '';
@@ -243,7 +243,7 @@ export class DebugAccessibilityManager {
             statusElement.setAttribute('aria-atomic', 'true''); }
         }
 ';
-        // エラーパネルのライブリージョン''
+        // エラーパネルのライブリージョン
         const errorList = this.debugInterface.debugPanel.querySelector('#error-list');''
         if(errorList') {'
             '';
@@ -252,7 +252,7 @@ export class DebugAccessibilityManager {
             errorList.setAttribute('aria-label', 'Error messages''); }
         }
 ';
-        // コンソール出力のライブリージョン''
+        // コンソール出力のライブリージョン
         const consoleOutput = this.debugInterface.debugPanel.querySelector('#console-output');''
         if(consoleOutput') {'
             '';
@@ -267,10 +267,10 @@ export class DebugAccessibilityManager {
      */
     private setupFocusManagement(): void { this.updateFocusableElements();
         
-        // フォーカストラップの設定'
+        // フォーカストラップの設定
         const debugPanel = this.debugInterface.debugPanel;''
         if(debugPanel') {'
-            ';
+            ';'
         }'
             debugPanel.addEventListener('focusin', () => {  }'
                 this.focusManagement.focusTrap = true;' }'
@@ -286,10 +286,10 @@ export class DebugAccessibilityManager {
 
     /**
      * フォーカス可能な要素を更新
-     */'
+     */
     updateFocusableElements(): void { const debugPanel = this.debugInterface.debugPanel;''
         if (!debugPanel') return;
-';
+';'
         const focusableSelectors = [']';
             'button:not([disabled]')','';
             'input:not([disabled]')','';
@@ -299,7 +299,7 @@ export class DebugAccessibilityManager {
             '[tabindex]:not([tabindex="-1"]")';
         ];'
 '';
-        this.focusManagement.focusableElements = Array.from('')';
+        this.focusManagement.focusableElements = Array.from()';
             debugPanel.querySelectorAll(focusableSelectors.join(', ');
         ).filter(el => { )
             // 非表示要素を除外);
@@ -353,7 +353,7 @@ export class DebugAccessibilityManager {
     private enableScreenReaderSupport(): void { const debugPanel = this.debugInterface.debugPanel;''
         if (!debugPanel') return;
 ';
-        // スクリーンリーダー用の説明テキストを追加''
+        // スクリーンリーダー用の説明テキストを追加
         const description = document.createElement('div'');''
         description.className = 'sr-only';''
         description.textContent = 'Debug interface with multiple panels. Use Tab to navigate, Ctrl+1-6 to switch panels, Escape to exit.';
@@ -364,9 +364,9 @@ export class DebugAccessibilityManager {
     }
 
     /**
-     * ライブリージョンを設定'
+     * ライブリージョンを設定
      */''
-    private setupLiveRegions('')';
+    private setupLiveRegions()';
         const assertiveRegion = document.createElement('div'');''
         assertiveRegion.className = 'sr-only';''
         assertiveRegion.setAttribute('aria-live', 'assertive'');''
@@ -374,7 +374,7 @@ export class DebugAccessibilityManager {
         assertiveRegion.id = 'debug-assertive-live-region';''
         document.body.appendChild(assertiveRegion');
 ';
-        // ポライトなライブリージョン（一般的な更新用）''
+        // ポライトなライブリージョン（一般的な更新用）
         const politeRegion = document.createElement('div'');''
         politeRegion.className = 'sr-only';''
         politeRegion.setAttribute('aria-live', 'polite'');''
@@ -393,8 +393,8 @@ export class DebugAccessibilityManager {
         const region = document.getElementById(regionId);
         if(region) {
             region.textContent = message;
-            ';
-            // 一定時間後にクリア（重複を避けるため）'
+            ';'
+            // 一定時間後にクリア（重複を避けるため）
         }'
             setTimeout((') => { ' }'
                 region.textContent = ''; }
@@ -405,7 +405,7 @@ export class DebugAccessibilityManager {
     /**
      * アクセシビリティスタイルを追加'
      */''
-    private addAccessibilityStyles('')';
+    private addAccessibilityStyles()';
         if (document.getElementById('debug-accessibility-styles')') return;'
         '';
         const style = document.createElement('style'');''
@@ -420,7 +420,7 @@ export class DebugAccessibilityManager {
                 overflow: hidden,
                 clip: rect(0, 0, 0, 0),
                 white-space: nowrap,
-                border: 0; }
+                border: 0 }
             }
 
             /* フォーカス表示の強化 */
@@ -434,12 +434,12 @@ export class DebugAccessibilityManager {
 
             /* キーボードナビゲーション用のホバー効果 */
             .enhanced-debug-interface button:focus,
-            .enhanced-debug-interface .debug-tab:focus { background-color: rgba(0, 102, 204, 0.3); }
+            .enhanced-debug-interface .debug-tab:focus { background-color: rgba(0, 102, 204, 0.3) }
             }
 
             .enhanced-debug-interface.theme-high-contrast button:focus,
             .enhanced-debug-interface.theme-high-contrast .debug-tab:focus { background-color: #ffff00,
-                color: #000000; }
+                color: #000000 }
             }
 
             /* アクセシブルなボタンサイズ */
@@ -464,7 +464,7 @@ export class DebugAccessibilityManager {
                 border-radius: 4px, }
             }
 
-            .debug-skip-link:focus { top: 6px; }
+            .debug-skip-link:focus { top: 6px }
             }
 
             /* 動きを抑制 */
@@ -494,10 +494,10 @@ export class DebugAccessibilityManager {
         '';
         debugPanel.insertBefore(skipLink, debugPanel.firstChild');
 ';
-        // コンテンツエリアにIDを設定''
+        // コンテンツエリアにIDを設定
         const content = debugPanel.querySelector('.debug-content');''
         if(content && !content.id') {'
-            ';
+            ';'
         }'
             content.id = 'debug-content'; }
         }
@@ -509,7 +509,7 @@ export class DebugAccessibilityManager {
     onPanelSwitch(panelName: string): void { ''
         if (!this.debugInterface.debugPanel') return;
         ';
-        // ARIA属性の更新''
+        // ARIA属性の更新
         const tabs = this.debugInterface.debugPanel.querySelectorAll('.debug-tab');'
         tabs.forEach(tab => { );''
             const isActive = (tab as HTMLElement').dataset.panel === panelName;''
@@ -541,13 +541,13 @@ export class DebugAccessibilityManager {
     }
 
     /**
-     * 破棄'
+     * 破棄
      */''
-    destroy('')';
+    destroy()';
         const assertiveRegion = document.getElementById('debug-assertive-live-region'');''
         const politeRegion = document.getElementById('debug-polite-live-region');
-        ';
+        ';'
         if (assertiveRegion) assertiveRegion.remove();''
-        if (politeRegion) politeRegion.remove('')';
+        if (politeRegion) politeRegion.remove()';
         const style = document.getElementById('debug-accessibility-styles');''
         if (style) style.remove(');

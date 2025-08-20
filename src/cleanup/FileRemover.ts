@@ -8,21 +8,21 @@ interface BackupRecord { originalPath: string,
     lastModified: Date | null,
     backupTimestamp: string,
     backupCreated: boolean,
-    error: string | null; }
+    error: string | null }
 }
 
 interface RemovalResult { deleted: boolean,
     error: string | null,
-    timestamp: string; }
+    timestamp: string }
 }
 
 interface VerificationResult { verified: boolean,
-    error: string | null; }
+    error: string | null }
 }
 
 interface RollbackResult { rolledBack: boolean,
     error: string | null,
-    restoredPath?: string; }
+    restoredPath?: string }
 }
 
 interface SafeRemovalResult { filePath: string,
@@ -34,7 +34,7 @@ interface SafeRemovalResult { filePath: string,
     backupRecord: BackupRecord | null,
     removalResult: RemovalResult | null,
     verificationResult: VerificationResult | null,
-    rollbackResult?: RollbackResult;
+    rollbackResult?: RollbackResult
     }
 }
 
@@ -42,7 +42,7 @@ export interface DeletionResults { results: SafeRemovalResult[],
     totalFiles: number,
     successCount: number,
     failureCount: number,
-    timestamp: string; }
+    timestamp: string }
 }
 
 interface BackupCleanupResult { cleanedCount: number,
@@ -54,7 +54,7 @@ interface BackupCleanupResult { cleanedCount: number,
 export class FileRemover {
     private backupDirectory: string;
     constructor() {
-';
+';'
         '';
         this.backupDirectory = path.join(process.cwd('), '.cleanup-backups');
 
@@ -63,14 +63,14 @@ export class FileRemover {
         this.ensureBackupDirectory(); }
     }
 
-    private async ensureBackupDirectory(): Promise<void> { try {'
+    private async ensureBackupDirectory(): Promise<void> { try {
             await fs.promises.mkdir(this.backupDirectory, { recursive: true ),' }'
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',';'
-            console.error('Error creating backup directory:', errorMessage); }
+            console.error('Error creating backup directory:', errorMessage) }
         }
     }
-';
+';'
     async createBackupRecord(filePath: string): Promise<BackupRecord> { ''
         const timestamp = new Date().toISOString(').replace(/[:.]/g, '-');
         const fileName = path.basename(filePath); }
@@ -95,9 +95,9 @@ export class FileRemover {
             // Save backup metadata
             const metadataPath = path.join(this.backupDirectory, `${timestamp}_${ fileName).meta.json`); }
             await fs.promises.writeFile(metadataPath, JSON.stringify(backupRecord, null, 2)});
-';
+';'
             return backupRecord;''
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return { originalPath: filePath,
                 backupPath: null,
@@ -117,7 +117,7 @@ export class FileRemover {
                 error: null, };
                 timestamp: new Date().toISOString(); }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return {  };
                 deleted: false, }
@@ -126,8 +126,8 @@ export class FileRemover {
             };
         }
     }
-';
-    async verifyRemoval(filePath: string): Promise<VerificationResult> { try {''
+';'
+    async verifyRemoval(filePath: string): Promise<VerificationResult> { try {'
             await fs.promises.access(filePath, fs.constants.F_OK');'
             return { verified: false,' };'
                 error: 'File still exists after deletion attempt' }'
@@ -146,7 +146,7 @@ export class FileRemover {
             },
         }
     }
-';
+';'
     async rollbackIfNeeded(backupRecord: BackupRecord): Promise<RollbackResult> { ''
         if(!backupRecord.backupCreated || !backupRecord.backupPath') {
             
@@ -161,7 +161,7 @@ export class FileRemover {
                 error: null, };
                 restoredPath: backupRecord.originalPath }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return {  };
                 rolledBack: false, }
@@ -218,9 +218,9 @@ export class FileRemover {
             }
                 result.error = `Verification failed: ${verificationResult.error}`;
                 // Attempt rollback
-                const rollbackResult = await this.rollbackIfNeeded(backupRecord);'
+                const rollbackResult = await this.rollbackIfNeeded(backupRecord);
                 result.rollbackResult = rollbackResult;''
-            } catch (error') { ''
+            } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error' }
             result.error = `Unexpected error during removal: ${errorMessage}`;
         }
@@ -252,14 +252,14 @@ export class FileRemover {
             timestamp: new Date().toISOString(); }
         };
     }
-';
-    async listBackups(): Promise<BackupRecord[]> { try {''
+';'
+    async listBackups(): Promise<BackupRecord[]> { try {'
             const files = await fs.promises.readdir(this.backupDirectory');''
             const metaFiles = files.filter(file => file.endsWith('.meta.json');
             
             const backups: BackupRecord[] = [],
             for(const metaFile of metaFiles) {'
-                try {''
+                try {'
                     const metaPath = path.join(this.backupDirectory, metaFile');''
                     const content = await fs.promises.readFile(metaPath, 'utf8');
                     const metadata = JSON.parse(content) as BackupRecord;
@@ -270,9 +270,9 @@ export class FileRemover {
                 }
             }
 
-            return backups.sort((a, b) => ';
+            return backups.sort((a, b) => ';'
                 new Date(b.backupTimestamp).getTime() - new Date(a.backupTimestamp).getTime();''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Error listing backups:', error);
             return []; }
         }
@@ -289,7 +289,7 @@ export class FileRemover {
 
             let cleanedCount = 0;
             for(const backup of oldBackups) {
-                try {'
+                try {
                     if(backup.backupPath && await this.fileExists(backup.backupPath) {';
             }'
                         await fs.promises.unlink(backup.backupPath'); }
@@ -309,14 +309,14 @@ export class FileRemover {
                 totalOld: oldBackups.length, };
                 cutoffDate: cutoffDate.toISOString(); }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error','';
-            console.error('Error cleaning old backups:', error); }
+            console.error('Error cleaning old backups:', error) }
             return { cleanedCount: 0, totalOld: 0, error: errorMessage }
         }
     }
-';
-    async fileExists(filePath: string): Promise<boolean> { try {''
+';'
+    async fileExists(filePath: string): Promise<boolean> { try {'
             await fs.promises.access(filePath, fs.constants.F_OK');
             return true; }
         } catch { return false; }

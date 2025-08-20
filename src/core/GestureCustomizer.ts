@@ -34,7 +34,7 @@ export class GestureCustomizer {
                 maxTime: 1000,        // 最大ジェスチャー時間（ミリ秒）;
                 minVelocity: 0.1,     // 最小速度（ピクセル/ミリ秒）;
                 maxVelocity: 5.0,     // 最大速度;
-                angleThreshold: 15,   // 角度許容度（度）;
+                angleThreshold: 15,   // 角度許容度（度）
     }
     }
                 pressureThreshold: 0.5 // 圧力閾値（0-1） }
@@ -71,8 +71,8 @@ export class GestureCustomizer {
         this.recognitionEngine = new GestureRecognitionEngine(this.config);
         this.deviceManager = new GestureDeviceManager(this.config, this.recognitionState);
         this.adaptationSystem = new GestureAdaptationSystem(this.config, this.gameEngine);
-        ';
-        // デバイスマネージャーにイベントハンドラーを設定''
+        ;
+        // デバイスマネージャーにイベントハンドラーを設定
         this.deviceManager.setGestureEventHandler(this.handleGestureEvent.bind(this)');'
         '';
         console.log('GestureCustomizer initialized');
@@ -82,11 +82,11 @@ export class GestureCustomizer {
     /**
      * 初期化'
      */''
-    initialize('')';
+    initialize()';
             console.log('GestureCustomizer initialized successfully');'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'GESTURE_CUSTOMIZER_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -129,7 +129,7 @@ export class GestureCustomizer {
         if (result) {
             this.executeGesture(result.gesture, gestureData);
     }
-            this.adaptationSystem.updateAdaptiveLearning(result.gesture, gestureData, true); }'
+            this.adaptationSystem.updateAdaptiveLearning(result.gesture, gestureData, true); }
         } else {  ''
             this.handleUnrecognizedGesture(gestureData');' }'
             this.adaptationSystem.updateAdaptiveLearning('unknown', gestureData, false); }
@@ -164,34 +164,34 @@ export class GestureCustomizer {
      * キーボードジェスチャーの処理'
      */''
     processKeyboardGesture(keyboardGesture') {
-        // キーコンボをジェスチャーとして処理'
+        // キーコンボをジェスチャーとして処理
         const gestureData = {''
             type: 'keyboard',
             combo: keyboardGesture.combo,
     }
             modifiers: keyboardGesture.modifiers }
         },
-        ';
+        ';'
         this.executeAlternativeAction({ ')'
             type: 'key');
             key: keyboardGesture.key,);
-            modifiers: keyboardGesture.modifiers), gestureData); }
+            modifiers: keyboardGesture.modifiers), gestureData) }
     }
     
     /**
      * ゲームパッドジェスチャーの処理
      */
     processGamepadGesture(gamepadGesture) { // スティック入力をスワイプとして解釈 }
-        const { leftStick, rightStick } = gamepadGesture;'
+        const { leftStick, rightStick } = gamepadGesture;
         '';
         if (Math.abs(leftStick.x) > 0.5 || Math.abs(leftStick.y) > 0.5') { const gestureData = {''
                 type: 'gamepad',
                 direction: Math.atan2(leftStick.y, leftStick.x) * 180 / Math.PI,
-                magnitude: Math.sqrt(leftStick.x * leftStick.x + leftStick.y * leftStick.y); }
+                magnitude: Math.sqrt(leftStick.x * leftStick.x + leftStick.y * leftStick.y) }
             };'
             '';
             if(leftStick.y < -0.5') {'
-                ';
+                ';'
             }'
                 this.executeStandardAction('scrollUp', gestureData);' }'
             } else if (leftStick.y > 0.5') { ''
@@ -235,7 +235,7 @@ export class GestureCustomizer {
     /**
      * 標準アクションの実行
      */
-    executeStandardAction(action, gestureData) {'
+    executeStandardAction(action, gestureData) {
         '';
         switch (action') {''
             case 'click':'';
@@ -262,10 +262,10 @@ export class GestureCustomizer {
             case 'navigateBack':'';
                 this.navigateBack(''';
             case 'navigateForward':'';
-                this.navigateForward('')';
+                this.navigateForward()';
             case 'showMenu':);
                 this.showContextMenu(gestureData.endPosition || { x: 100, y: 100 ),
-                break;
+                break
     }
             default: }
                 console.warn(`Unknown action: ${action)`}),
@@ -295,7 +295,7 @@ export class GestureCustomizer {
     }
     
     /**
-     * 未認識ジェスチャーの処理'
+     * 未認識ジェスチャーの処理
      */''
     handleUnrecognizedGesture(gestureData') {'
         '';
@@ -315,13 +315,13 @@ export class GestureCustomizer {
      */
     simulateClick(position) {
         if (!position) return;
-        ';
+        ';'
         const element = document.elementFromPoint(position.x, position.y);''
         if (element') {''
             const clickEvent = new MouseEvent('click', {
                 bubbles: true,
                 cancelable: true,
-                view: window,);
+                view: window);
                 clientX: position.x);
                 clientY: position.y;
             ),
@@ -344,13 +344,13 @@ export class GestureCustomizer {
      */
     simulateRightClick(position) {
         if (!position) return;
-        ';
+        ';'
         const element = document.elementFromPoint(position.x, position.y);''
         if (element') {''
             const contextEvent = new MouseEvent('contextmenu', {
                 bubbles: true,
                 cancelable: true,
-                view: window,);
+                view: window);
                 clientX: position.x);
                 clientY: position.y;
             ),
@@ -366,7 +366,7 @@ export class GestureCustomizer {
         '';
         const deviceSettings = this.deviceManager.getDeviceSettings(''';
         const wheelEvent = new WheelEvent('wheel', {
-            bubbles: true,);
+            bubbles: true);
             cancelable: true);
             view: window,);
             deltaY: deltaY * deviceSettings.mouse.wheelSensitivity;
@@ -389,7 +389,7 @@ export class GestureCustomizer {
     }
     
     /**
-     * キープレスシミュレーション'
+     * キープレスシミュレーション
      */''
     simulateKeyPress(key, modifiers = { )') {''
         const keyEvent = new KeyboardEvent('keydown', { : undefined
@@ -397,21 +397,21 @@ export class GestureCustomizer {
             cancelable: true,
             key: key,
             ctrlKey: modifiers.ctrl || false,
-            altKey: modifiers.alt || false,);
+            altKey: modifiers.alt || false);
             shiftKey: modifiers.shift || false);
             metaKey: modifiers.meta || false;
         ),
         
         document.dispatchEvent(keyEvent);
         ';
-        // keyup イベントも発火''
+        // keyup イベントも発火
         setTimeout((') => { ''
             const keyUpEvent = new KeyboardEvent('keyup', {
                 bubbles: true,
                 cancelable: true,
                 key: key,
                 ctrlKey: modifiers.ctrl || false,
-                altKey: modifiers.alt || false,);
+                altKey: modifiers.alt || false);
                 shiftKey: modifiers.shift || false) }
                 metaKey: modifiers.meta || false }
             }),
@@ -446,7 +446,7 @@ export class GestureCustomizer {
      */''
     showContextMenu(position') {'
         : undefined'';
-        console.log('Showing context menu at:', position);
+        console.log('Showing context menu at:', position)
     }
         // コンテキストメニューの実装 }
     }
@@ -464,16 +464,16 @@ export class GestureCustomizer {
     // パブリックAPI
     
     /**
-     * ジェスチャーカスタマイザーの有効化'
+     * ジェスチャーカスタマイザーの有効化
      */''
-    enable('')';
+    enable()';
         console.log('Gesture customizer enabled');
     }
     
     /**
      * ジェスチャーカスタマイザーの無効化'
      */''
-    disable('')';
+    disable()';
         console.log('Gesture customizer disabled');
     }
     
@@ -573,7 +573,7 @@ export class GestureCustomizer {
         if (config.motor? .gestureCustomizer) {
             Object.assign(this.config, config.motor.gestureCustomizer);
             
-            // 各コンポーネントに設定を反映'
+            // 各コンポーネントに設定を反映
             this.recognitionEngine.updateConfig(this.config);'
     }'
             this.deviceManager.updateSettings(config.motor.gestureCustomizer.deviceSettings || {)'); }
@@ -621,14 +621,14 @@ export class GestureCustomizer {
     }
             this.enable(); }'
         } else {  ' }'
-            this.disable('') }'
+            this.disable() }'
         console.log(`GestureCustomizer ${enabled ? 'enabled' : 'disabled')`});
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying GestureCustomizer...');
         
         // ジェスチャーカスタマイザーを無効化
@@ -642,9 +642,9 @@ export class GestureCustomizer {
         }
         
         if(this.adaptationSystem) {
-        ';
+        ';'
             '';
-            this.adaptationSystem.destroy('');
+            this.adaptationSystem.destroy();
         }'
         console.log('GestureCustomizer destroyed''); }'
     }''

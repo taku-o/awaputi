@@ -18,30 +18,30 @@ interface ValidationRule { validate: (value: ConfigurationValue) => boolean,
     pattern?: RegExp;
     }
 }
-';
+';'
 interface WatcherCallback { ''
-    (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue'): void; }
+    (key: string, newValue: ConfigurationValue, oldValue: ConfigurationValue'): void }
 }
 
 interface AccessStats { totalAccesses: number,
     cacheHits: number,
     cacheMisses: number,
     frequentKeys: Map<string, number>;
-    lastOptimization: number; }
+    lastOptimization: number }
 }
 
 interface ChangeHistoryEntry { key: string,
     oldValue: ConfigurationValue,
     newValue: ConfigurationValue,
     timestamp: number,
-    source?: string; }
+    source?: string }
 }
 
 interface BubbleTypeConfig { name: string,
     baseScore: number,
     maxAge: number,
     speed: number,
-    size: number; }
+    size: number }
 }'
 '';
 type ConfigurationCategory = 'game' | 'audio' | 'effects' | 'performance' | 'ui' | 'accessibility' | 'controls';
@@ -100,11 +100,11 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     }
             lastOptimization: Date.now(); }
         };
-        ';
-        // 遅延読み込み用の設定ローダー（将来の拡張機能用）''
+        ;
+        // 遅延読み込み用の設定ローダー（将来の拡張機能用）
         this.__lazyLoaders = new Map<string, () => ConfigurationValue>(');
         
-        // 頻繁にアクセスされるキーのプリロード設定（将来の拡張機能用）'
+        // 頻繁にアクセスされるキーのプリロード設定（将来の拡張機能用）
         this.__preloadKeys = new Set(['';
             'game.scoring.baseScores','';
             'game.bubbles.maxAge','';
@@ -118,7 +118,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     }
     
     /**
-     * 初期化処理'
+     * 初期化処理
      */''
     private _initialize(''';
             'game', 'audio', 'effects', 'performance', 'ui', 'accessibility', 'controls';
@@ -129,14 +129,14 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             this.defaultValues.set(category, new Map<string, ConfigurationValue>();' }'
         }');
         ';
-        // 基本パフォーマンス設定のデフォルト値を設定''
+        // 基本パフォーマンス設定のデフォルト値を設定
         this.setDefaultValue('performance', 'targetFPS', 60');''
         this.setDefaultValue('performance', 'adaptiveMode', true');''
         this.setDefaultValue('performance', 'performanceLevel', 'high'');''
         this.setDefaultValue('performance', 'maxBubbles', 20');''
         this.setDefaultValue('performance', 'maxParticles', 500');
         ';
-        // パフォーマンス最適化設定のデフォルト値を設定''
+        // パフォーマンス最適化設定のデフォルト値を設定
         this.setDefaultValue('performance', 'optimization.targetFPS', 60');''
         this.setDefaultValue('performance', 'optimization.adaptiveMode', true');''
         this.setDefaultValue('performance', 'optimization.optimizationInterval', 1000');''
@@ -147,7 +147,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         this.setDefaultValue('performance', 'optimization.workloadDistribution', true');''
         this.setDefaultValue('performance', 'optimization.maxTimePerFrame', 8');
         ';
-        // エフェクト設定のデフォルト値を設定''
+        // エフェクト設定のデフォルト値を設定
         this.setDefaultValue('effects', 'quality.level', 'high'');''
         this.setDefaultValue('effects', 'quality.autoAdjust', true');''
         this.setDefaultValue('effects', 'seasonal.enabled', true');''
@@ -158,18 +158,18 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         this.setDefaultValue('effects', 'particles.maxCount', 500');''
         this.setDefaultValue('effects', 'particles.quality', 'high'');
         ';
-        // オーディオ設定のデフォルト値を設定''
+        // オーディオ設定のデフォルト値を設定
         this.setDefaultValue('audio', 'volumes.master', 0.8');''
         this.setDefaultValue('audio', 'volumes.effects', 0.7');''
         this.setDefaultValue('audio', 'volumes.music', 0.6');''
         this.setDefaultValue('audio', 'enabled', true');
         ';
-        // テスト互換性のため、SettingsManagerで使用される設定キーも設定''
+        // テスト互換性のため、SettingsManagerで使用される設定キーも設定
         this.setDefaultValue('audio', 'masterVolume', 0.7');''
         this.setDefaultValue('audio', 'sfxVolume', 0.8');''
         this.setDefaultValue('audio', 'bgmVolume', 0.5');
         ';
-        // UI設定のデフォルト値を設定''
+        // UI設定のデフォルト値を設定
         this.setDefaultValue('ui', 'language', 'en'');''
         this.setDefaultValue('ui', 'quality', 'auto'');''
         this.setDefaultValue('ui', 'theme', 'default'');''
@@ -180,19 +180,19 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         this.setDefaultValue('ui', 'animationSpeed', 1.0');''
         this.setDefaultValue('ui', 'uiScale', 1.0');
         ';
-        // アクセシビリティ設定のデフォルト値を設定''
+        // アクセシビリティ設定のデフォルト値を設定
         this.setDefaultValue('accessibility', 'highContrast', false');''
         this.setDefaultValue('accessibility', 'reducedMotion', false');''
         this.setDefaultValue('accessibility', 'largeText', false');''
         this.setDefaultValue('accessibility', 'screenReader', false');''
         this.setDefaultValue('accessibility', 'colorBlindSupport', false');
         ';
-        // 操作設定のデフォルト値を設定''
+        // 操作設定のデフォルト値を設定
         this.setDefaultValue('controls', 'keyboardEnabled', true');''
         this.setDefaultValue('controls', 'mouseEnabled', true');''
         this.setDefaultValue('controls', 'touchEnabled', true');
         ';
-        // ゲーム設定のデフォルト値を設定''
+        // ゲーム設定のデフォルト値を設定
         this.setDefaultValue('game', 'scoring.baseScores', { )');''
         this.setDefaultValue('game', 'bubbles.maxAge', 30000');''
         this.setDefaultValue('game', 'difficulty', 'normal');
@@ -204,10 +204,10 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         this._setupValidationRules();
         
         // エラーハンドラを取得
-        try {'
+        try {
             this.errorHandler = getErrorHandler();' }'
-        } catch (error') { ''
-            console.warn('[ConfigurationManager] ErrorHandler not available:', error'); }
+        } catch (error) { ''
+            console.warn('[ConfigurationManager] ErrorHandler not available:', error') }
         }'
         '';
         console.log('[ConfigurationManager] Configuration system initialized');
@@ -234,21 +234,21 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     /**
      * 検証ルールを設定'
      */''
-    private _setupValidationRules('')';
+    private _setupValidationRules()';
         this.addValidationRule('performance.targetFPS', { );''
             validate: (value: ConfigurationValue') => '';
                 typeof value === 'number' && value >= 30 && value <= 120,'';
             errorMessage: 'Target FPS must be between 30 and 120'' }'
         }'),
         ';
-        // オーディオボリューム検証''
+        // オーディオボリューム検証
         this.addValidationRule('audio.volumes.*', { );''
             validate: (value: ConfigurationValue') => '';
                 typeof value === 'number' && value >= 0 && value <= 1,'';
             errorMessage: 'Volume must be between 0 and 1'' }'
         }'),
         ';
-        // UI設定検証''
+        // UI設定検証
         this.addValidationRule('ui.language', { );''
             validate: (value: ConfigurationValue') => '';
                 typeof value === 'string' && ['en', 'ja', 'ko', 'zh-CN', 'zh-TW'].includes(value'),'';
@@ -281,20 +281,20 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             
             // 遅延読み込みローダーをチェック
             const lazyLoader = this.__lazyLoaders.get(finalKey);
-            if(lazyLoader) {'
+            if(lazyLoader) {
                 '';
-                const lazyValue = lazyLoader('')';
+                const lazyValue = lazyLoader()';
                 const [category, ...pathParts] = finalKey.split('.'');''
                 const path = pathParts.join('.');
                 this._setValueInternal(category, path, lazyValue);
                 this.cache.set(cacheKey, lazyValue);'
-                // ローダーを削除（一度だけ実行）''
-                this.__lazyLoaders.delete(finalKey');
+                // ローダーを削除（一度だけ実行）
+                this.__lazyLoaders.delete(finalKey);
             }
                 return lazyValue as T; }
             }
             ';
-            // キーを解析''
+            // キーを解析
             const [category, ...pathParts] = finalKey.split('.'');''
             const path = pathParts.join('.');
             
@@ -309,9 +309,9 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             // キャッシュに保存
             this.cache.set(cacheKey, value as ConfigurationValue);
             
-            return value as T;'
+            return value as T;
             '';
-        } catch (error') {'
+        } catch (error) {'
             const keyForError = key ? `${keyOrNamespace}.${key}` : keyOrNamespace;''
             this._handleError(error, 'get', { key: keyForError });
             return null;
@@ -327,12 +327,12 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             // 引数の処理 }
             const finalKey = value !== undefined ? `${keyOrNamespace}.${keyOrValue}` : keyOrNamespace;
             const finalValue = value !== undefined ? value: keyOrValue as T,
-            ';
-            // 検証''
+            ;
+            // 検証
             if (!this._validateValue(finalKey, finalValue)') { return false; }
             }
             ';
-            // キーを解析''
+            // キーを解析
             const [category, ...pathParts] = finalKey.split('.'');''
             const path = pathParts.join('.');
             
@@ -360,9 +360,9 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             // ウォッチャーに通知
             this._notifyWatchers(finalKey, finalValue as ConfigurationValue, oldValue);
             
-            return true;'
+            return true;
             '';
-        } catch (error') {
+        } catch (error) {
             const keyForError = value !== undefined ? `${keyOrNamespace}.${keyOrValue}` : keyOrNamespace;'
             const valueForError = value !== undefined ? value: keyOrValue,'';
             this._handleError(error, 'set', { key: keyForError, value: valueForError });
@@ -390,7 +390,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     /**
      * 設定値を削除'
      */''
-    remove(key: string'): boolean { try {''
+    remove(key: string'): boolean { try {'
             const [category, ...pathParts] = key.split('.'');''
             const path = pathParts.join('.');
             
@@ -415,9 +415,9 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
                 this._notifyWatchers(key, undefined, oldValue);
             }
             
-            return result;'
+            return result;
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this._handleError(error, 'remove', { key });
             return false;
         }
@@ -427,7 +427,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
      * すべての設定をクリア
      */'
     clear(): void { this.configurations.clear();''
-        this.cache.clear('')';
+        this.cache.clear()';
         console.log('[ConfigurationManager] All configurations cleared'); }
     }
     
@@ -495,8 +495,8 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     
     private _validateValue(key: string, value: ConfigurationValue): boolean { for(const ruleEntry of Array.from(this.validationRules.entries()) {
             const [ruleKey, rule] = ruleEntry;
-            if(this._matchesPattern(key, ruleKey) {'
-                ';
+            if(this._matchesPattern(key, ruleKey) {
+                ';'
             }'
                 if (!rule.validate(value)') {' }'
                     this._logWarning(`Validation failed for ${key}: ${rule.errorMessage || 'Invalid value')`, key});
@@ -510,9 +510,9 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         }
         
         return true;
-    }'
+    }
     '';
-    private _matchesPattern(key: string, pattern: string'): boolean { // Simple pattern matching with wildcards''
+    private _matchesPattern(key: string, pattern: string'): boolean { // Simple pattern matching with wildcards
         const regex = new RegExp(pattern.replace(/\*/g, '.*');
         return regex.test(key); }
     }
@@ -534,7 +534,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             key,
             oldValue,
             newValue,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         
         this.changeHistory.push(change);
@@ -550,11 +550,11 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         }
             return; }
         }
-        ';
+        ';'
         watchers.forEach(callback => {  ')'
-            try {');' }'
+            try {);' }'
                 callback(typeof key === 'string' ? key : String(key), newValue, oldValue);' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
                 this._handleError(error, 'watcher', { key, callback });
             }
         });
@@ -576,7 +576,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
             this.warningCache.set(key, now});
         }
     }
-    ';
+    ';'
     private _handleError(error: any, operation: string, context: any): void { ''
         if(this.errorHandler && this.errorHandler.handleError') {'
             '';
@@ -605,7 +605,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
         
         if (!rule) return true;
         ';
-        // 基本的なバリデーション''
+        // 基本的なバリデーション
         if (rule.type && typeof value !== rule.type') { return false; }
         }'
         '';
@@ -650,7 +650,7 @@ class ConfigurationManager { private configurations: Map<string, Map<string, Con
     getChangeHistory(): Array<{ key: string,
         timestamp: number,
         oldValue: ConfigurationValue,
-        newValue: ConfigurationValue;
+        newValue: ConfigurationValue
     }
     }> { return [...this.changeHistory]; }
     }
@@ -736,6 +736,6 @@ let configurationManagerInstance: ConfigurationManager | null = null,
 
 /**
  * Get ConfigurationManager singleton
- */'
+ */
 export function getConfigurationManager(): ConfigurationManager { if (!configurationManagerInstance) {''
         configurationManagerInstance = new ConfigurationManager(' })

@@ -9,30 +9,30 @@ import { getRegionalSettingsManager } from './RegionalSettingsManager.js';
 export interface FormatParams { [key: string]: any, }
 }
 
-export interface FormatterInterface { format(value: any, language: string, region?: string | null, options?: any): string; }
+export interface FormatterInterface { format(value: any, language: string, region?: string | null, options?: any): string }
 }
 
 export interface NumberFormatterInterface extends FormatterInterface { formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format?: string): string;
-    getLocale(language: string, region?: string | null): string; }
+    getLocale(language: string, region?: string | null): string }
 }
 
 export interface DateFormatterInterface extends FormatterInterface { formatWithSettings(value: any, dateFormatSettings: DateFormatSettings | null, format?: string, regionInfo?: RegionInfo): string;
     formatTimeWithSettings(value: any, timeFormatSettings: TimeFormatSettings | null, format?: string, regionInfo?: RegionInfo): string;
     getMonthNames(regionInfo: RegionInfo): string[],
-    getLocale(language: string, region?: string | null): string; }
+    getLocale(language: string, region?: string | null): string }
 }
 
 export interface CurrencyFormatterInterface extends FormatterInterface { formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format?: string): string;
     getCurrencyCode(language: string, region?: string | null): string;
-    getLocale(language: string, region?: string | null): string; }
+    getLocale(language: string, region?: string | null): string }
 }
 
-export interface RelativeTimeFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string; }
+export interface RelativeTimeFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string }
 }
 
-export interface ListFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string; }
+export interface ListFormatterInterface extends FormatterInterface { getLocale(language: string, region?: string | null): string }
 }
-';
+';'
 export interface PluralFormatterInterface extends FormatterInterface { getPluralRules(language: string): Intl.PluralRules | PluralRuleFallback,''
     makeEnglishPlural(text: string'): string, }
 }
@@ -83,14 +83,14 @@ export interface RegionalSettings { language: string,
     dateFormat: DateFormatSettings,
     timeFormat: TimeFormatSettings,
     currencyFormat: CurrencyFormatSettings,
-    regionInfo: RegionInfo;
+    regionInfo: RegionInfo
     }
 }
 
 export interface FormatterStats { availableFormatters: string[],
     regionalSettings: any,
     supportedLanguages: string[],
-    supportedRegions: string[]; }
+    supportedRegions: string[] }
 }
 
 export interface PluralObject { zero?: string;
@@ -101,11 +101,11 @@ export interface PluralObject { zero?: string;
     other: string,
     [key: string]: string | undefined, }
 }
-';
+';'
 export interface PluralRuleFallback { ''
     select(n: number'): string, }
 }
-';
+';'
 export interface DateTimeFormatOptions { ''
     year?: 'numeric' | '2-digit';''
     month?: 'numeric' | '2-digit' | 'long' | 'short' | 'narrow';''
@@ -118,7 +118,7 @@ export interface DateTimeFormatOptions { ''
     timeZoneName?: 'long' | 'short';
     [key: string]: any, }
 }
-';
+';'
 export interface ListFormatOptions { ''
     style?: 'long' | 'short' | 'narrow';''
     type?: 'conjunction' | 'disjunction' | 'unit'; }
@@ -133,7 +133,7 @@ export interface FormatterConfiguration { enabled?: boolean;
 
 export interface AdvancedFormatPattern { pattern: RegExp,
     replacement: (match: string, ...groups: string[]) => string,
-    priority: number; }
+    priority: number }
 }
 
 export interface FormatterRegistry { [name: string]: FormatterInterface,
@@ -154,7 +154,7 @@ export class FormatterEngine {
             ['plural', new PluralFormatter()];
         ]);
         ';
-        // 地域設定マネージャーの参照''
+        // 地域設定マネージャーの参照
         this.regionalSettingsManager = getRegionalSettingsManager(''';
             defaultLanguage: 'en',
             defaultRegion: null,
@@ -167,7 +167,7 @@ export class FormatterEngine {
      * テキストをフォーマット'
      */''
     format(text: any, params: FormatParams = { ), language: string, region: string | null = null'): string {'
-        try {''
+        try {'
             if(typeof text !== 'string') {
                 
             }
@@ -185,13 +185,13 @@ export class FormatterEngine {
             // 特殊フォーマット処理
             formatted = this.processSpecialFormats(formatted, params, language);
             
-            return formatted;'
+            return formatted;
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {''
-                operation: 'format',);
+                operation: 'format');
                 text: text);
                 language: language,);
-                region: region); }
+                region: region) }
             });
             return String(text);
         }
@@ -213,10 +213,10 @@ export class FormatterEngine {
      */
     private applyRegionalFormatting(text: string, params: FormatParams, language: string, region: string | null): string { let formatted = text;
          }
-        // 数値フォーマット: {{number:key}}'
+        // 数値フォーマット: {{number:key}}
         formatted = formatted.replace(/\{\{number:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('number') as NumberFormatterInterface; }
                 return formatter.format(value, language, region); }
@@ -224,10 +224,10 @@ export class FormatterEngine {
             return match;
         });
         
-        // 日付フォーマット: {{date:key}}'
+        // 日付フォーマット: {{date:key}}
         formatted = formatted.replace(/\{\{date:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('date') as DateFormatterInterface; }
                 return formatter.format(value, language, region); }
@@ -235,10 +235,10 @@ export class FormatterEngine {
             return match;
         });
         
-        // 通貨フォーマット: {{currency:key}}'
+        // 通貨フォーマット: {{currency:key}}
         formatted = formatted.replace(/\{\{currency:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('currency') as CurrencyFormatterInterface; }
                 return formatter.format(value, language, region); }
@@ -246,10 +246,10 @@ export class FormatterEngine {
             return match;
         });
         
-        // 相対時間フォーマット: {{relative:key}}'
+        // 相対時間フォーマット: {{relative:key}}
         formatted = formatted.replace(/\{\{relative:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('relative') as RelativeTimeFormatterInterface; }
                 return formatter.format(value, language, region); }
@@ -257,7 +257,7 @@ export class FormatterEngine {
             return match;
         });
         
-        // リストフォーマット: {{list:key}}'
+        // リストフォーマット: {{list:key}}
         formatted = formatted.replace(/\{\{list:(\w+)\}\}/g, (match, key) => {  const value = params[key];''
             if (value !== undefined && Array.isArray(value)') {''
                 const formatter = this.formatters.get('list') as ListFormatterInterface; }
@@ -275,10 +275,10 @@ export class FormatterEngine {
     private processSpecialFormats(text: string, params: FormatParams, language: string): string { let formatted = text;
          }
         // 複数形フォーマット: {{plural:key:count}}
-        formatted = formatted.replace(/\{\{plural:(\w+):(\w+)\}\}/g, (match, key, countKey) => {  const count = params[countKey];'
+        formatted = formatted.replace(/\{\{plural:(\w+):(\w+)\}\}/g, (match, key, countKey) => {  const count = params[countKey];
             const baseText = params[key];''
             if(count !== undefined && baseText !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('plural') as PluralFormatterInterface; }
                 return formatter.format(baseText, count, language); }
@@ -292,9 +292,9 @@ export class FormatterEngine {
     /**
      * フォーマッターを追加'
      */''
-    addFormatter(name: string, formatter: FormatterInterface'): boolean { try {''
+    addFormatter(name: string, formatter: FormatterInterface'): boolean { try {'
             if(typeof formatter.format !== 'function'') {'
-                ';
+                ';'
             }'
                 throw new Error('Formatter must have a format method'); }
             }
@@ -305,7 +305,7 @@ export class FormatterEngine {
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {')'
                 operation: 'addFormatter',);
-                name: name); }
+                name: name) }
             });
             return false;
         }
@@ -327,7 +327,7 @@ export class FormatterEngine {
      * 地域設定に基づく包括的フォーマット'
      */''
     formatWithRegionalSettings(text: any, params: FormatParams = { ), language: string, region: string | null = null'): string {'
-        try {''
+        try {'
             if(typeof text !== 'string') {
                 
             }
@@ -348,13 +348,13 @@ export class FormatterEngine {
             // 特殊フォーマット処理
             formatted = this.processSpecialFormats(formatted, params, language);
             
-            return formatted;'
+            return formatted;
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'FORMATTER_ERROR', {''
-                operation: 'formatWithRegionalSettings',);
+                operation: 'formatWithRegionalSettings');
                 text: text);
                 language: language,);
-                region: region); }
+                region: region) }
             });
             return String(text);
         }
@@ -365,10 +365,10 @@ export class FormatterEngine {
      */
     private applyAdvancedRegionalFormatting(text: string, params: FormatParams, settings: RegionalSettings): string { let formatted = text;
          }
-        // 数値フォーマット（地域設定適用）: {{number:key:format}}'
+        // 数値フォーマット（地域設定適用）: {{number:key:format}}
         formatted = formatted.replace(/\{\{number:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('number') as NumberFormatterInterface; }
                 return formatter.formatWithSettings(value, settings.numberFormat, format); }
@@ -376,10 +376,10 @@ export class FormatterEngine {
             return match;
         });
          : undefined;
-        // 日付フォーマット（地域設定適用）: {{date:key:format}}'
+        // 日付フォーマット（地域設定適用）: {{date:key:format}}
         formatted = formatted.replace(/\{\{date:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('date') as DateFormatterInterface; }
                 return formatter.formatWithSettings(value, settings.dateFormat, format, settings.regionInfo); }
@@ -387,10 +387,10 @@ export class FormatterEngine {
             return match;
         });
          : undefined;
-        // 通貨フォーマット（地域設定適用）: {{currency:key:format}}'
+        // 通貨フォーマット（地域設定適用）: {{currency:key:format}}
         formatted = formatted.replace(/\{\{currency:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('currency') as CurrencyFormatterInterface; }
                 return formatter.formatWithSettings(value, settings.currencyFormat, format); }
@@ -398,10 +398,10 @@ export class FormatterEngine {
             return match;
         });
          : undefined;
-        // 時刻フォーマット（地域設定適用）: {{time:key:format}}'
+        // 時刻フォーマット（地域設定適用）: {{time:key:format}}
         formatted = formatted.replace(/\{\{time:(\w+)(?::(\w+))? \}\}/g, (match, key, format) => {  const value = params[key];''
             if(value !== undefined') {'
-                ';
+                ';'
             }'
                 const formatter = this.formatters.get('date') as DateFormatterInterface; }
                 return formatter.formatTimeWithSettings(value, settings.timeFormat, format, settings.regionInfo); }
@@ -472,16 +472,16 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
     formatWithSettings(value: any, numberFormatSettings: NumberFormatSettings | null, format: string = 'default'): string { try {
             const number = Number(value);
             if(isNaN(number) {'
-                ';
+                ';'
             }'
                 return String(value'); }
             }
             ';
-            // カスタム数値フォーマット設定を適用''
+            // カスタム数値フォーマット設定を適用
             const decimalSeparator = numberFormatSettings? .decimal || '.';''
             const thousandsSeparator = numberFormatSettings?.thousands || ',';'
             '';
-            let formatted = number.toString('')';
+            let formatted = number.toString()';
             const parts = formatted.split('.');
             
             // 千の位区切りを適用
@@ -499,12 +499,12 @@ export class NumberFormatter implements NumberFormatterInterface { format(value:
             return String(value); }
         }
     }
-    ';
+    ';'
     getLocale(language: string, region?: string | null): string { ''
         if (region') { }
             return `${language}-${region}`;
         }
-        ';
+        ';'
         const localeMap: Record<string, string> = { ''
             'ja': 'ja-JP','';
             'en': 'en-US','';
@@ -551,10 +551,10 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
                 return String(value'); }
             }
             ';
-            // フォーマット設定から適切なパターンを取得''
+            // フォーマット設定から適切なパターンを取得
             const formatPattern = dateFormatSettings? .[format] || dateFormatSettings?.medium || 'YYYY/MM/DD';
             
-            // 基本的な日付フォーマット置換'
+            // 基本的な日付フォーマット置換
             const year = date.getFullYear();''
             const month = String(date.getMonth() + 1').padStart(2, '0');''
             const day = String(date.getDate()').padStart(2, '0''); : undefined''
@@ -566,7 +566,7 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
                 .replace(/DD/g, day)'';
                 .replace(/ddd/g, weekday');
             ';
-            // 言語固有の月名処理''
+            // 言語固有の月名処理
             if(formatted.includes('MMM') {
                 const monthNames = this.getMonthNames(regionInfo);
                 const monthName = monthNames[date.getMonth()];
@@ -589,16 +589,16 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
                 return String(value'); }
             }
             ';
-            // フォーマット設定から適切なパターンを取得''
+            // フォーマット設定から適切なパターンを取得
             const formatPattern = timeFormatSettings?.[format] || timeFormatSettings?.medium || 'HH: mm:ss',
             
             // 基本的な時刻要素
-            const hours24 = date.getHours();'
+            const hours24 = date.getHours();
             const hours12 = hours24 % 12 || 12;''
             const minutes = String(date.getMinutes()').padStart(2, '0');''
             const seconds = String(date.getSeconds()').padStart(2, '0'');''
             const ampm = hours24 < 12 ? 'AM' : 'PM';
-            ';
+            ';'
             let formatted = String(formatPattern)'';
                 .replace(/HH/g, String(hours24').padStart(2, '0');
                 .replace(/h/g, String(hours12);
@@ -615,18 +615,18 @@ export class DateFormatter implements DateFormatterInterface { format(value: any
     /**
      * 月名を取得'
      */''
-    getMonthNames(regionInfo: RegionInfo'): string[] { // 簡略化された月名マップ'
+    getMonthNames(regionInfo: RegionInfo'): string[] { // 簡略化された月名マップ
         return ['';
             'January', 'February', 'March', 'April', 'May', 'June',']';
             'July', 'August', 'September', 'October', 'November', 'December'];
         ]; }
     }
-    ';
+    ';'
     getLocale(language: string, region?: string | null): string { ''
         if (region') { }
             return `${language}-${region}`;
         }
-        ';
+        ';'
         const localeMap: Record<string, string> = { ''
             'ja': 'ja-JP','';
             'en': 'en-US','';
@@ -650,25 +650,25 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
             }
                 return String(value); }
             }
-            ';
+            ';'
             const locale = this.getLocale(language, region);''
             const currencyCode = currency || this.getCurrencyCode(language, region');
-            ';
+            ';'
             return new Intl.NumberFormat(locale, { ')'
                 style: 'currency',);
-                currency: currencyCode)).format(number); }
+                currency: currencyCode)).format(number) }
         } catch (error) {
             console.warn(`Currency formatting failed for ${language}:`, error);
             const currencyCode = currency || this.getCurrencyCode(language, region);
             return `${currencyCode} ${value}`;
         }
     }
-    ';
+    ';'
     getLocale(language: string, region?: string | null): string { ''
         if (region') { }
             return `${language}-${region}`;
         }
-        ';
+        ';'
         const localeMap: Record<string, string> = { ''
             'ja': 'ja-JP','';
             'en': 'en-US','';
@@ -686,7 +686,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
     formatWithSettings(value: any, currencyFormatSettings: CurrencyFormatSettings | null, format: string = 'default'): string { try {
             const number = Number(value);
             if(isNaN(number) {'
-                ';
+                ';'
             }'
                 return String(value'); }
             }'
@@ -696,11 +696,11 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
             const position = currencyFormatSettings?.position || 'before';
             const space = currencyFormatSettings?.space || false;
             ';
-            // 数値をフォーマット（千の位区切り）''
+            // 数値をフォーマット（千の位区切り）
             const formattedNumber = new Intl.NumberFormat('en-US').format(Math.abs(number)'); : undefined''
             const sign = number < 0 ? '-' : '';
             
-            // 通貨記号の位置に応じてフォーマット'
+            // 通貨記号の位置に応じてフォーマット
             let formatted: string,'';
             if (position === 'before'') { ' }'
                 formatted = `${sign}${symbol}${space ? ' ' : ''}${formattedNumber}`;'
@@ -727,7 +727,7 @@ export class CurrencyFormatter implements CurrencyFormatterInterface { format(va
             'ko': 'KRW','';
             'ko-KR': 'KRW' }
         };
-        ';
+        ';'
         const key = region ? `${language}-${region}` : language;''
         return currencyMap[key] || 'USD';
     }
@@ -749,19 +749,19 @@ export class RelativeTimeFormatter implements RelativeTimeFormatterInterface { f
             const absDiff = Math.abs(diffMs);
             
             if(absDiff < 60000) {
-            ';
-                // 1分未満''
+            ;
+                // 1分未満
                 const seconds = Math.round(diffMs / 1000');'
             
             }'
                 return rtf.format(seconds, 'second'); }'
-            } else if (absDiff < 3600000) { // 1時間未満''
+            } else if (absDiff < 3600000) { // 1時間未満
                 const minutes = Math.round(diffMs / 60000');''
                 return rtf.format(minutes, 'minute'); }'
-            } else if (absDiff < 86400000) { // 1日未満''
+            } else if (absDiff < 86400000) { // 1日未満
                 const hours = Math.round(diffMs / 3600000');''
                 return rtf.format(hours, 'hour'); }'
-            } else {  // 1日以上''
+            } else {  // 1日以上
                 const days = Math.round(diffMs / 86400000');' }'
                 return rtf.format(days, 'day'); }
             } catch (error) {
@@ -769,12 +769,12 @@ export class RelativeTimeFormatter implements RelativeTimeFormatterInterface { f
             return String(value);
         }
     }
-    ';
+    ';'
     getLocale(language: string, region?: string | null): string { ''
         if (region') { }
             return `${language}-${region}`;
         }
-        ';
+        ';'
         const localeMap: Record<string, string> = { ''
             'ja': 'ja-JP','';
             'en': 'en-US','';
@@ -808,16 +808,16 @@ export class ListFormatter implements ListFormatterInterface { format(value: any
             return new Intl.ListFormat(locale, formatOptions).format(value);
         } catch (error) {
             console.warn(`List formatting failed for ${language}:`, error);'
-            // フォールバック: カンマ区切り''
+            // フォールバック: カンマ区切り
             return Array.isArray(value') ? value.join(', ') : String(value);
         }
-    }
-    ';
+    }'
+    ';'
     getLocale(language: string, region?: string | null): string { ''
         if (region') { }
             return `${language}-${region}`;
         }
-        ';
+        ';'
         const localeMap: Record<string, string> = { ''
             'ja': 'ja-JP','';
             'en': 'en-US','';
@@ -841,18 +841,18 @@ export class PluralFormatter implements PluralFormatterInterface { format(text: 
             }
                 return String(text); }
             }
-            ';
+            ';'
             const rules = this.getPluralRules(language);''
             const rule = rules.select(number');
             ';
-            // テキストが複数形ルールを含む場合''
+            // テキストが複数形ルールを含む場合
             if(typeof text === 'object' && text !== null) {'
                 const pluralObj = text as PluralObject;'
             }'
                 return pluralObj[rule] || pluralObj.other || pluralObj.one || String(text'); }
             }
             ';
-            // シンプル複数形ルール（英語）''
+            // シンプル複数形ルール（英語）
             if (language === 'en') { return number === 1 ? String(text) : this.makeEnglishPlural(String(text); }
             }
             
@@ -867,16 +867,16 @@ export class PluralFormatter implements PluralFormatterInterface { format(text: 
             return new Intl.PluralRules(language); }
         } catch (error) {
             console.warn(`PluralRules not supported for ${language}, using fallback`);
-            // フォールバック実装'
+            // フォールバック実装
             return { ' };'
                 select: (n: number') => n === 1 ? 'one' : 'other' }
             },
         }
     }'
     '';
-    makeEnglishPlural(text: string'): string { // 簡単な英語複数形ルール''
+    makeEnglishPlural(text: string'): string { // 簡単な英語複数形ルール
         if(text.endsWith('y') {'
-            ';
+            ';'
         }'
             return text.slice(0, -1') + 'ies';' }'
         } else if (text.endsWith('s'') || text.endsWith('x'') || text.endsWith('z'') || ''

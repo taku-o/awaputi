@@ -7,16 +7,16 @@ import { GameEngine } from '../../core/GameEngine';''
 import { LocalizationManager } from '../../i18n/LocalizationManager';''
 import { AccessibilityManager } from '../../accessibility/AccessibilityManager';
 
-// フォーカス可能要素インターフェース'
+// フォーカス可能要素インターフェース
 interface FocusableElement { id: string,''
     type: 'input' | 'list' | 'region' | 'button',
-    label: string; }
+    label: string }
 }
 
 // ARIAラベル情報インターフェース
 interface AriaLabelInfo { label: string,
     role: string,
-    description: string; }
+    description: string }
 }
 
 // アクセシビリティ状態インターフェース
@@ -24,13 +24,13 @@ interface AccessibilityState { screenReaderMode: boolean,
     highContrastMode: boolean,
     largeTextMode: boolean,
     currentFocusIndex: number,
-    announcementQueueLength: number; }
+    announcementQueueLength: number }
 }
 
-// アナウンスメント情報インターフェース'
+// アナウンスメント情報インターフェース
 interface Announcement { message: string,''
     priority: 'polite' | 'assertive',
-    timestamp: number; }
+    timestamp: number }
 }
 
 /**
@@ -79,7 +79,7 @@ export class HelpAccessibilityManager {
     }
     }
         this.initialize(); }
-    }'
+    }
 '';
     private async initialize(''';
                 { id: 'searchBar', type: 'input', label: 'help.searchBar.label' },''
@@ -91,13 +91,13 @@ export class HelpAccessibilityManager {
             
             // ARIAラベルの設定)
             this.setupAriaLabels();
-            ';
-            // スクリーンリーダー対応の準備''
-            this.prepareScreenReaderSupport('')';
+            ;
+            // スクリーンリーダー対応の準備
+            this.prepareScreenReaderSupport()';
             console.log('HelpAccessibilityManager initialized');'
             '';
-        } catch (error') { ''
-            console.error('Failed to initialize HelpAccessibilityManager:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize HelpAccessibilityManager:', error) }
         }
     }
 
@@ -134,7 +134,7 @@ export class HelpAccessibilityManager {
         this.ariaLabels.set('backButton', { ');''
             label: t('help.accessibility.backButton', '戻るボタン''),'';
             role: 'button','';
-            description: t('help.accessibility.backButtonDesc', 'メインメニューに戻ります'); }
+            description: t('help.accessibility.backButtonDesc', 'メインメニューに戻ります') }
         });
     }
 
@@ -147,9 +147,9 @@ export class HelpAccessibilityManager {
         // 自動アナウンス設定
         this.setupAutoAnnouncements(); }
     }
-';
-    private detectScreenReader(): void { // スクリーンリーダーの検出（簡易版）''
-        const userAgent = navigator.userAgent.toLowerCase('')';
+;
+    private detectScreenReader(): void { // スクリーンリーダーの検出（簡易版）
+        const userAgent = navigator.userAgent.toLowerCase()';
         this.screenReaderMode = userAgent.includes('nvda'') || '';
                                userAgent.includes('jaws'') || '';
                                userAgent.includes('voiceover') ||;
@@ -161,9 +161,9 @@ export class HelpAccessibilityManager {
         this.enableDetailedDescriptions = true;
         this.enableNavigationAnnouncements = true;
         this.enableProgressAnnouncements = true; }
-    }'
+    }
 '';
-    public enableScreenReaderMode('')';
+    public enableScreenReaderMode()';
         this.announceToScreenReader('help.accessibility.screenReaderEnabled', 'assertive');
         
         // スクリーンリーダー向けの追加設定
@@ -171,12 +171,12 @@ export class HelpAccessibilityManager {
         this.enableNavigationAnnouncements = true;
         this.enableProgressAnnouncements = true;
         
-        // UI調整'
+        // UI調整
         this.enableHighContrastMode();''
-        this.enableLargeTextMode('')';
+        this.enableLargeTextMode()';
     public announceToScreenReader(message: string, priority: 'polite' | 'assertive' = 'polite'): void { ''
         if(this.screenReaderMode && this.accessibilityManager') {'
-            ';
+            ';'
         }'
             this.safeCall(this.accessibilityManager, 'announce', message, priority); }
             this.announcementQueue.push({ message, priority, timestamp: Date.now() });
@@ -186,7 +186,7 @@ export class HelpAccessibilityManager {
     /**
      * Safe method call - prevents errors from undefined methods'
      */''
-    private safeCall(obj: any, methodName: string, ...args: any[]'): any { try {''
+    private safeCall(obj: any, methodName: string, ...args: any[]'): any { try {'
             if(obj && typeof obj[methodName] === 'function') {
                 
             }
@@ -203,13 +203,13 @@ export class HelpAccessibilityManager {
     /**
      * アクセシビリティキーの処理'
      */''
-    public handleAccessibilityKeys(event: KeyboardEvent'): boolean { // F1: アクセシビリティヘルプ''
+    public handleAccessibilityKeys(event: KeyboardEvent'): boolean { // F1: アクセシビリティヘルプ
         if(event.key === 'F1') {'
             event.preventDefault();''
-            this.showAccessibilityHelp('')';
+            this.showAccessibilityHelp()';
         if (event.altKey && event.key === 'h') {'
             event.preventDefault();''
-            this.announceKeyboardShortcuts('')';
+            this.announceKeyboardShortcuts()';
         if (event.ctrlKey && event.shiftKey && event.key === '? ') {
             event.preventDefault();
             this.toggleAccessibilityFeatures();
@@ -227,8 +227,8 @@ export class HelpAccessibilityManager {
         key: string, ;
         categories: any[], ;
         selectedCategory: string, ;
-        selectedTopicIndex: number, );
-        isSearching: boolean);
+        selectedTopicIndex: number );
+        isSearching: boolean);'
         searchResults: any[]';
     ): void { ''
         if (!this.announceNavigation') return,';
@@ -267,7 +267,7 @@ export class HelpAccessibilityManager {
         }
     }'
 '';
-    private showAccessibilityHelp('')';
+    private showAccessibilityHelp()';
         this.announceToScreenReader(helpMessage, 'assertive');
     }
 
@@ -291,10 +291,10 @@ export class HelpAccessibilityManager {
         '';
         this.announceToScreenReader(`キーボードショートカット：${shortcuts')`, 'polite'});
     }
-';
+';'
     public enableAccessibilityFeatures(): void { this.screenReaderMode = true;''
         if(this.accessibilityManager') {'
-            // Safe call mechanism - call methods only if they exist''
+            // Safe call mechanism - call methods only if they exist
             this.safeCall(this.accessibilityManager, 'enableHighContrast'');''
             this.safeCall(this.accessibilityManager, 'enableLargeText'');''
             this.safeCall(this.accessibilityManager, 'enableAudioCues'');''
@@ -302,16 +302,16 @@ export class HelpAccessibilityManager {
         }'
             this.safeCall(this.accessibilityManager, 'enableScreenReaderSupport'); }
         }
-        ';
+        ';'
         this.enableHighContrastMode();''
-        this.enableLargeTextMode('')';
+        this.enableLargeTextMode()';
         this.announceToScreenReader('アクセシビリティ機能が有効になりました', 'assertive');
     }
 
     public disableAccessibilityFeatures(): void { this.screenReaderMode = false;'
         '';
         if(this.accessibilityManager') {'
-            // Safe call mechanism - call methods only if they exist''
+            // Safe call mechanism - call methods only if they exist
             this.safeCall(this.accessibilityManager, 'disableHighContrast'');''
             this.safeCall(this.accessibilityManager, 'disableLargeText'');'
         }'
@@ -328,19 +328,19 @@ export class HelpAccessibilityManager {
         }
     }'
 '';
-    public enableHighContrastMode('')';
+    public enableHighContrastMode()';
         document.body.classList.add('high-contrast-help');
     }'
 '';
-    public disableHighContrastMode('')';
+    public disableHighContrastMode()';
         document.body.classList.remove('high-contrast-help');
     }'
 '';
-    public enableLargeTextMode('')';
+    public enableLargeTextMode()';
         document.body.classList.add('large-text-help');
     }'
 '';
-    public disableLargeTextMode('')';
+    public disableLargeTextMode()';
         document.body.classList.remove('large-text-help');
     }
 
@@ -403,7 +403,7 @@ export class HelpAccessibilityManager {
 export class HelpAccessibilityRenderer {
     private accessibilityManager: HelpAccessibilityManager;
     constructor(accessibilityManager: HelpAccessibilityManager) {
-        this.accessibilityManager = accessibilityManager; }
+        this.accessibilityManager = accessibilityManager }
     }
 
     /**
@@ -415,14 +415,14 @@ export class HelpAccessibilityRenderer {
         focused: boolean = false;
     ): void {
         const state = this.accessibilityManager.getAccessibilityState(),
-        if (!focused || !state.screenReaderMode) return;'
+        if (!focused || !state.screenReaderMode) return;
 '';
         ctx.save(''';
         ctx.strokeStyle = state.highContrastMode ? '#FFFF00' : '#4A90E2';)
         ctx.lineWidth = 3;)
         ctx.setLineDash([5, 5]);'
         ctx.strokeRect(rect.x - 2, rect.y - 2, rect.width + 4, rect.height + 4);''
-        ctx.restore('')';
+        ctx.restore()';
     public getAccessibleColor(baseColor: string, type: 'text' | 'background' | 'selected' | 'border' = 'text'): string {
         const state = this.accessibilityManager.getAccessibilityState();
         if(!state.highContrastMode) {
@@ -465,7 +465,7 @@ export class HelpAccessibilityRenderer {
         ctx: CanvasRenderingContext2D,
         text: string, ;
         x: number, ;
-        y: number, );
+        y: number );
         options: { fontSize?: number)
             color?: string;
             bold?: boolean;
@@ -482,7 +482,7 @@ export class HelpAccessibilityRenderer {
         ctx.textAlign = options.align || 'left';''
         ctx.textBaseline = options.baseline || 'top';
         );
-        // 高コントラストモードでの縁取り)'
+        // 高コントラストモードでの縁取り)
         const state = this.accessibilityManager.getAccessibilityState();''
         if(state.highContrastMode && options.outline') {'
             '';
@@ -491,6 +491,6 @@ export class HelpAccessibilityRenderer {
         }
             ctx.strokeText(text, x, y); }
         }
-        ';
+        ';'
         ctx.fillText(text, x, y);''
         ctx.restore(');

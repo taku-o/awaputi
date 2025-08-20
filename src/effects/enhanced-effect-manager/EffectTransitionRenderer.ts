@@ -24,7 +24,7 @@ interface TransitionEffect { id: number,''
     transitionType: string,
     duration: number,
     elapsed: number,
-    options: TransitionOptions;
+    options: TransitionOptions
     }
 }
 
@@ -37,7 +37,7 @@ export class EffectTransitionRenderer {
     private errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas;
+        this.canvas = canvas
 
     }
     }
@@ -47,15 +47,15 @@ export class EffectTransitionRenderer {
     /**
      * フェード遷移をレンダリング'
      */''
-    renderFadeTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number'): void { try {''
+    renderFadeTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number'): void { try {'
             const alpha = effect.options.direction === 'in' ? progress: (1 - progress),';
             '';
-            context.save('')';
+            context.save()';
             context.fillStyle = effect.options.color || '#000000';)
             context.fillRect(0, 0, this.canvas.width, this.canvas.height);'
             context.restore();' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EffectTransitionRenderer.renderFadeTransition'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EffectTransitionRenderer.renderFadeTransition') }
             });
         }
     }
@@ -87,13 +87,13 @@ export class EffectTransitionRenderer {
             context.save(''';
             context.fillStyle = effect.options.color || '#000000';
             context.fillRect(;
-                offsetX,);
+                offsetX);
                 offsetY);
                 canvas.width,);
                 canvas.height);'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EffectTransitionRenderer.renderSlideTransition'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EffectTransitionRenderer.renderSlideTransition') }
             });
         }
     }
@@ -101,21 +101,21 @@ export class EffectTransitionRenderer {
     /**
      * ズーム遷移をレンダリング'
      */''
-    renderZoomTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number'): void { try {''
+    renderZoomTransition(context: CanvasRenderingContext2D, effect: TransitionEffect, progress: number'): void { try {'
             const scale = effect.options.zoomType === 'in' ? progress: (1 - progress) }
             const center = effect.options.center || { x: this.canvas.width / 2, y: this.canvas.height / 2 }
             context.save();
             context.translate(center.x, center.y);'
             context.scale(scale, scale);''
             context.translate(-center.x, -center.y');
-            ';
+            ';'
             context.globalAlpha = 1 - progress;''
             context.fillStyle = effect.options.color || '#000000';
             context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EffectTransitionRenderer.renderZoomTransition'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EffectTransitionRenderer.renderZoomTransition') }
             });
         }
     }
@@ -147,10 +147,10 @@ export class EffectTransitionRenderer {
             }
                     break; }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EffectTransitionRenderer.renderWipeTransition'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EffectTransitionRenderer.renderWipeTransition') }
             });
         }
     }
@@ -173,10 +173,10 @@ export class EffectTransitionRenderer {
                     data[i + 3] = 0; // アルファ値を0に }
                 }
             }
-            ';
+            ';'
             context.putImageData(imageData, 0, 0);''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'EffectTransitionRenderer.renderDissolveTransition'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'EffectTransitionRenderer.renderDissolveTransition') }
             });
         }
     }

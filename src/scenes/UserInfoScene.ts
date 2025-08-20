@@ -4,7 +4,7 @@
  */
 import { Scene } from '../core/Scene';
 ';
-// コンポーネントシステム''
+// コンポーネントシステム
 import { ScenesDialogManager } from './components/ScenesDialogManager';''
 import { ComponentEventBus } from './components/ComponentEventBus';''
 import { SceneState } from './components/SceneState';''
@@ -12,7 +12,7 @@ import { UsernameDialog } from './components/UsernameDialog';''
 import { ScenesExportDialog } from './components/ScenesExportDialog';''
 import { ScenesImportDialog } from './components/ScenesImportDialog';
 ';
-// 既存の分離コンポーネント''
+// 既存の分離コンポーネント
 import { UserProfileManager } from './components/user-info/UserProfileManager';''
 import { UserStatisticsRenderer } from './components/user-info/UserStatisticsRenderer';''
 import { UserAchievementDisplay } from './components/user-info/UserAchievementDisplay';''
@@ -22,7 +22,7 @@ import { UserInfoTabManager } from './components/user-info/UserInfoTabManager';'
 import { UserInfoRenderer } from './components/user-info/UserInfoRenderer';''
 import { UserInfoEventHandler } from './components/user-info/UserInfoEventHandler';
 ';
-// 新しいサブコンポーネント''
+// 新しいサブコンポーネント
 import { UserInterfaceController } from './user-info-scene/UserInterfaceController';''
 import { UserDataManager } from './user-info-scene/UserDataManager';
 
@@ -44,11 +44,11 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     private userAchievementDisplay!: UserAchievementDisplay;
     private userDataExporter!: UserDataExporter;
     private userHelpIntegration!: UserHelpIntegration;
-    ';
-    // レガシー互換性プロパティ''
+    ;
+    // レガシー互換性プロパティ
     private lastCleanupTime: number = Date.now(''';
     public currentTab: string = 'profile',
-    public isDialogOpen: boolean = false,);
+    public isDialogOpen: boolean = false);
     public activeDialog: string | null = null);
     );
     constructor(gameEngine: any) {
@@ -58,10 +58,10 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.initializeControllers();
         this.initializeComponentSystem();
         this.initializeUserComponents();
-        ';
-        // レガシー互換性プロパティ''
-        this.lastCleanupTime = Date.now('');
-    }
+        ;
+        // レガシー互換性プロパティ
+        this.lastCleanupTime = Date.now();
+    }'
     }'
         console.log('[UserInfoScene] Main Controller Pattern初期化完了'); }
     }
@@ -73,7 +73,7 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
         this.eventBus = new ComponentEventBus();
         this.sceneState = new SceneState(this.gameEngine);
         
-        // サブコントローラーの初期化'
+        // サブコントローラーの初期化
         this.uiController = new UserInterfaceController(this.gameEngine, this.eventBus, this.sceneState);''
         this.dataManager = new UserDataManager(this.gameEngine, this.eventBus, this.sceneState');'
         '';
@@ -83,10 +83,10 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     /**
      * コンポーネントシステムの初期化
      */'
-    private initializeComponentSystem(): void { // ダイアログマネージャー作成''
-        this.dialogManager = new ScenesDialogManager(this.gameEngine, this.eventBus, this.sceneState');
+    private initializeComponentSystem(): void { // ダイアログマネージャー作成
+        this.dialogManager = new ScenesDialogManager(this.gameEngine, this.eventBus, this.sceneState);
         ';
-        // ダイアログコンポーネントを登録''
+        // ダイアログコンポーネントを登録
         this.dialogManager.registerDialog('username', UsernameDialog');''
         this.dialogManager.registerDialog('export', ScenesExportDialog');''
         this.dialogManager.registerDialog('import', ScenesImportDialog);
@@ -112,13 +112,13 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     }
     
     /**
-     * レガシー互換性のセットアップ'
+     * レガシー互換性のセットアップ
      */''
     private setupLegacyCompatibility(''';
         this.currentTab = 'profile';
         this.isDialogOpen = false;
         this.activeDialog = null;
-        ';
+        ';'
         // UIコントローラーとの同期')'
         this.eventBus.on('tabSwitched', (tabId: string) => { this.currentTab = tabId;' }'
         }');'
@@ -146,9 +146,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             // ダイアログレンダリング
             if(this.isDialogOpen && this.activeDialog) {
                 
-            }'
+            }
                 this.dialogManager.render(context);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('[UserInfoScene] レンダリングエラー:', error); }
         }
     }
@@ -161,9 +161,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             this.updateComponents(deltaTime);
             
             // 定期クリーンアップ
-            this.performPeriodicCleanup();'
+            this.performPeriodicCleanup();
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[UserInfoScene] 更新エラー:', error); }
         }
     }
@@ -175,9 +175,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             // 処理されなかった場合は他のコンポーネントに委譲
             if(!handled) {
                 
-            }'
+            }
                 this.eventHandler.handleClick(x, y);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('[UserInfoScene] クリック処理エラー:', error); }
         }
     }
@@ -189,9 +189,9 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             // 処理されなかった場合は他のコンポーネントに委譲
             if(!handled) {
                 
-            }'
+            }
                 this.eventHandler.handleKeyDown(key);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('[UserInfoScene] キー処理エラー:', error); }
         }
     }
@@ -201,13 +201,13 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
     // ========================================
     
     switchTab(tabId: string): void { this.uiController.switchTab(tabId); }
-    }'
+    }
     '';
     openDialog(dialogType: string'): void { ''
         this.eventBus.emit('openDialog', dialogType); }
     }'
     '';
-    closeDialog('')';
+    closeDialog()';
         this.eventBus.emit('closeDialog');
     }
     
@@ -273,14 +273,14 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             }
             
             if(this.dataManager) {
-            ';
+            ';'
                 '';
-                (this.dataManager as any).cleanup('')';
+                (this.dataManager as any).cleanup()';
             console.log('[UserInfoScene] 定期クリーンアップ完了');
             
             }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[UserInfoScene] クリーンアップエラー:', error); }
         }
     }
@@ -293,13 +293,13 @@ export class UserInfoScene extends Scene { // コンポーネントシステム
             this.cleanup();
             
             // イベントリスナーの削除
-            if(this.eventBus) {'
+            if(this.eventBus) {
                 '';
-                this.eventBus.removeAllListeners('')';
+                this.eventBus.removeAllListeners()';
             console.log('[UserInfoScene] シーン破棄完了');
             }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[UserInfoScene] シーン破棄エラー:', error'); }
         }'
     }''

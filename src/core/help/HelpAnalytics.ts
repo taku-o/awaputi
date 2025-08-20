@@ -28,7 +28,7 @@ export interface AnalyticsConfig { sessionTimeout: number,
     maxEvents: number,
     enableRealTimeTracking: boolean,
     enableOfflineStorage: boolean,
-    dataRetentionDays: number; };
+    dataRetentionDays: number };
 }
 export interface HelpUsageAnalytics { totalSessions: number,
     totalPageViews: number,
@@ -44,11 +44,11 @@ export interface ContentAnalytics { topicViews: Map<string, TopicViewStats>,
 }
 export interface TopicViewStats { viewCount: number,
     totalViewTime: number,
-    exitCount: number; };
+    exitCount: number };
 }
 export interface CategoryViewStats { viewCount: number,
     totalViewTime: number,
-    exitCount: number; };
+    exitCount: number };
 }
 export interface TutorialUsageAnalytics { totalStarts: number,
     totalCompletions: number,
@@ -62,17 +62,17 @@ export interface UserBehaviorAnalytics { navigationPatterns: Map<string, number>
     timeSpentBySection: Map<string, TimeStats>,
     commonUserJourneys: Map<string, number>,
     bounceRate: number,
-    returnUserRate: number; };
+    returnUserRate: number };
 }
 export interface TimeStats { total: number,
     count: number,
-    average: number; };
+    average: number };
 }
 export interface EffectivenessAnalytics { helpfulnessRatings: Map<string, RatingData>,
     problemResolutionRate: number,
     userSatisfactionScore: number,
     contentGaps: Map<string, number>,
-    improvementSuggestions: ImprovementSuggestion[];
+    improvementSuggestions: ImprovementSuggestion[]
     };
 }
 export interface RatingData { totalRatings: number,
@@ -81,15 +81,15 @@ export interface RatingData { totalRatings: number,
 }
 export interface ImprovementSuggestion { type: string,
     contentId?: string;
-    query?: string;'
+    query?: string;
     suggestion: string,'';
-    priority: 'high' | 'medium' | 'low'; };
+    priority: 'high' | 'medium' | 'low' };
 }
 export interface Analytics { helpUsage: HelpUsageAnalytics,
     content: ContentAnalytics,
     tutorialUsage: TutorialUsageAnalytics,
     userBehavior: UserBehaviorAnalytics,
-    effectiveness: EffectivenessAnalytics;
+    effectiveness: EffectivenessAnalytics
     };
 }
 export interface HelpSession { id: string,
@@ -105,121 +105,121 @@ export interface HelpSession { id: string,
     searchQueries: SearchQuery[],
     currentPage: string | null,
     lastActivityTime: number,
-    active?: boolean; };
+    active?: boolean };
 }
 export interface AnalyticsEvent { type: string,
     data: any,
     timestamp: number,
-    sessionId: string | null; };
+    sessionId: string | null };
 }
 export interface PageView { page: string,
     timestamp: number,
     data: any,
-    timeSpent: number; };
+    timeSpent: number };
 }
 export interface SearchQuery { query: string,
     timestamp: number,
     resultCount: number,
-    results: SearchResult[];
+    results: SearchResult[]
     };
 }
 export interface SearchResult { id: string,
     title: string,
-    category: string; };
+    category: string };
 }
 export interface CacheConfig { maxContentCacheSize: number,
     maxSearchCacheSize: number,
     cacheExpiryTime: number,
-    enableCompression: boolean; };
+    enableCompression: boolean };
 }
 export interface CacheEntry { data: any,
     timestamp: number,
     accessCount: number,
-    compressed: boolean; };
+    compressed: boolean };
 }
 export interface PerformanceMetrics { operations: Map<string, OperationMetrics>,
     cacheHitRate: number,
     averageResponseTime: number,
     errorRate: number,
-    memoryUsage: number; };
+    memoryUsage: number };
 }
 export interface OperationMetrics { totalCalls: number,
     totalDuration: number,
     averageDuration: number,
     errorCount: number,
-    lastCall: number; };
+    lastCall: number };
 }
 export interface ValidationResult { isValid: boolean,
     sanitizedData: any,
-    errors: string[]; };
+    errors: string[] };
 }
 export interface ValidationComponents { analytics: boolean,
     feedback: boolean,
     search: boolean,
     content: boolean,
-    accessibility: boolean; };
+    accessibility: boolean };
 }
 export interface SystemValidationResult { isValid: boolean,
     errors: string[],
     warnings: string[],
-    components: ValidationComponents;
+    components: ValidationComponents
     };
 }
 export interface FallbackInterface { isActive: boolean,
     container: HTMLElement | null,';
     content: Map<string, FallbackContent>,'';
-    keydownHandler?: (event: KeyboardEvent') => void; };
+    keydownHandler?: (event: KeyboardEvent') => void };
 }
 export interface FallbackContent { title: string,
-    content: string[]; };
+    content: string[] };
 }
 export interface UsageReport { generatedAt: number,
     period: ReportPeriod,
     usage: UsageReportData,
     effectiveness: EffectivenessReportData,
     performance: PerformanceReportData,
-    recommendations: ImprovementSuggestion[];
+    recommendations: ImprovementSuggestion[]
     };
 }
 export interface ReportPeriod { start: number,
-    end: number; };
+    end: number };
 }
 export interface UsageReportData { totalSessions: number,
     totalPageViews: number,
     averageSessionDuration: number,
     searchQueries: number,
     topCategories: TopItem[],
-    topSearches: TopItem[];
+    topSearches: TopItem[]
     };
 }
 export interface EffectivenessReportData { averageRating: number,
     totalFeedbacks: number,
     satisfactionScore: number,
-    problemAreas: ProblemArea[];
+    problemAreas: ProblemArea[]
     };
 }
 export interface PerformanceReportData { cacheHitRate: number,
     errorRate: number,
-    operationsCount: number; };
+    operationsCount: number };
 }
 export interface TopItem { category?: string;
     topic?: string;
     query?: string;
-    count: number; };
+    count: number };
 }
-';
+';'
 export interface ProblemArea { ''
     type: 'low_rating' | 'content_gap',
     contentId?: string;
     query?: string;
     rating?: number;'
     searchCount?: number;''
-    severity: 'high' | 'medium' | 'low'; };
+    severity: 'high' | 'medium' | 'low' };
 }
 export interface ContentPerformance { [contentId: string]: {
         averageRating: number,';
         totalRatings: number,'';
-        helpfulness: 'high' | 'medium' | 'low'; }
+        helpfulness: 'high' | 'medium' | 'low' }
     };
 }
 
@@ -233,31 +233,31 @@ export interface AnalyticsReport { generatedAt: number,
     reportType: string,
     period: string,
     data: ReportData,
-    error?: string; };
+    error?: string };
 }
 export interface SummaryReportData { overview: {
         totalHelpSessions: number,
         totalPageViews: number,
         uniqueUsers: number,
         averageSessionDuration: number,
-        tutorialCompletionRate: number ;
+        tutorialCompletionRate: number 
 }
     },
     topContent: { categories: TopItem[],
         topics: TopItem[],
-        searchQueries: TopItem[] ;
+        searchQueries: TopItem[] 
 }
     },
     userSatisfaction: { averageRating: number,
         totalFeedbacks: number,
-        satisfactionScore: number; }
+        satisfactionScore: number }
     };
 }
 
 export interface EffectivenessReportDetailed { contentPerformance: ContentPerformance,
     userBehavior: UserBehaviorReport,
     problemAreas: ProblemArea[],
-    improvements: ImprovementSuggestion[];
+    improvements: ImprovementSuggestion[]
     };
 }
 export interface SanitizationOptions { maxLength?: number;
@@ -267,7 +267,7 @@ export interface SanitizationOptions { maxLength?: number;
 export interface StoredAnalyticsData { analytics: Analytics,
     sessions: Array<[string, HelpSession]>,
     events: Array<[string, AnalyticsEvent]>,
-    lastSaved: number; }
+    lastSaved: number }
 }'
 '';
 export type DataType = 'categoryId' | 'topicId' | 'searchQuery' | 'feedback' | 'context';
@@ -312,7 +312,7 @@ export class HelpAnalytics {
             sessionTimeout: 30 * 60 * 1000, // 30分;
             maxEvents: 1000,
             enableRealTimeTracking: true,
-            enableOfflineStorage: true;
+            enableOfflineStorage: true
 };
 }
             dataRetentionDays: 30 ;
@@ -328,10 +328,10 @@ export class HelpAnalytics {
                 topHelpCategories: new Map<string, number>(),
                 topHelpTopics: new Map<string, number>(),
                 searchQueries: new Map<string, number>(),
-                exitPoints: new Map<string, number>(); }
+                exitPoints: new Map<string, number>() }
             },
             content: { topicViews: new Map<string, TopicViewStats>(),
-                categoryViews: new Map<string, CategoryViewStats>(); }
+                categoryViews: new Map<string, CategoryViewStats>() }
             },
             tutorialUsage: { totalStarts: 0,
                 totalCompletions: 0,
@@ -339,20 +339,20 @@ export class HelpAnalytics {
                 averageCompletionTime: 0,
                 dropOffPoints: new Map<string, number>(),
                 skipRates: new Map<string, number>(),
-                retryRates: new Map<string, number>(); }
+                retryRates: new Map<string, number>() }
             },
             userBehavior: { navigationPatterns: new Map<string, number>(),
                 timeSpentBySection: new Map<string, TimeStats>(),
                 commonUserJourneys: new Map<string, number>(),
                 bounceRate: 0,
-                returnUserRate: 0 ;
+                returnUserRate: 0 
 }
             },
             effectiveness: { helpfulnessRatings: new Map<string, RatingData>(),
                 problemResolutionRate: 0,
                 userSatisfactionScore: 0,
                 contentGaps: new Map<string, number>(),
-                improvementSuggestions: [] ;
+                improvementSuggestions: [] 
 };
 }
         },
@@ -391,13 +391,13 @@ export class HelpAnalytics {
             // 定期的なデータ保存とメンテナンス
             this.setupPeriodicSave();
             this.setupPeriodicMaintenance();
-            ';
-            // ページ離脱時の処理''
+            ;
+            // ページ離脱時の処理
             this.setupUnloadHandlers(''';
             this.loggingSystem.info('HelpAnalytics', 'Help analytics initialized', { ')'
                 validation: validationResult.isValid ? 'passed' : 'failed',)';
                 fallbackReady: !!this.fallbackInterface);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to initialize help analytics', error');''
             ErrorHandler.handle(error as Error, 'HelpAnalytics.initialize'); };
 }
@@ -417,13 +417,13 @@ export class HelpAnalytics {
 }
             if(!(this.analytics.helpUsage.searchQueries instanceof Map) { this.analytics.helpUsage.searchQueries = new Map<string, number>(); };
 }
-            if(!(this.analytics.helpUsage.exitPoints instanceof Map) {'
-                ';
+            if(!(this.analytics.helpUsage.exitPoints instanceof Map) {
+                ';'
             }'
                 this.analytics.helpUsage.exitPoints = new Map<string, number>('); };
 }
             ';
-            // contentセクション''
+            // contentセクション
             if(!this.analytics.content || typeof this.analytics.content !== 'object') {
                 this.analytics.content = {
                     topicViews: new Map<string, TopicViewStats>(),
@@ -450,14 +450,14 @@ export class HelpAnalytics {
 }
             if(!(this.analytics.effectiveness.helpfulnessRatings instanceof Map) { this.analytics.effectiveness.helpfulnessRatings = new Map<string, RatingData>(); };
 }
-            if(!(this.analytics.effectiveness.contentGaps instanceof Map) {'
-                ';
+            if(!(this.analytics.effectiveness.contentGaps instanceof Map) {
+                ';'
             }'
                 this.analytics.effectiveness.contentGaps = new Map<string, number>('); }
             }'
             '';
             this.loggingSystem.debug('HelpAnalytics', 'Map initialization completed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to ensure map initialization', error); };
 }
     }
@@ -481,20 +481,20 @@ export class HelpAnalytics {
                 pageViews: [],
                 searchQueries: [],
                 currentPage: null,
-                lastActivityTime: timestamp ;
+                lastActivityTime: timestamp 
 }
             },'
             '';
             this.sessions.set(sessionId, this.currentSession');
             this.analytics.helpUsage.totalSessions++;
             ';
-            // エントリーポイントの追跡''
+            // エントリーポイントの追跡
             this.trackEvent('help_session_start', { sessionId: sessionId)'
                 entryPoint: entryPoint,')';
                 context: context)'),';
             ' }'
             this.loggingSystem.debug('HelpAnalytics', `Help session started: ${sessionId} from ${entryPoint)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to start help session', error); };
 }
     }
@@ -516,21 +516,21 @@ export class HelpAnalytics {
             this.currentSession.duration = duration;
             this.currentSession.exitPoint = exitPoint;
             this.currentSession.exitContext = exitContext;
-            ';
-            // 統計の更新''
+            ;
+            // 統計の更新
             this.updateSessionStatistics(this.currentSession');
             ';
-            // 終了イベントの追跡''
+            // 終了イベントの追跡
             this.trackEvent('help_session_end', {
                 sessionId: this.currentSession.id,
-                duration: duration,);
+                duration: duration);
                 exitPoint: exitPoint)';
                 pageViews: this.currentSession.pageViews.length,')';
                 searchCount: this.currentSession.searchQueries.length)'),';
             ' }'
             this.loggingSystem.debug('HelpAnalytics', `Help session ended: ${this.currentSession.id}, duration: ${duration)ms`});'
             this.currentSession = null;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to end help session', error); };
 }
     }
@@ -547,7 +547,7 @@ export class HelpAnalytics {
                 page: page,
                 timestamp: timestamp,
                 data: pageData,
-                timeSpent: 0 ;
+                timeSpent: 0 
 }
             },
             
@@ -569,7 +569,7 @@ export class HelpAnalytics {
                 this.currentSession.lastActivityTime = timestamp;
             }
             
-            // 統計の更新'
+            // 統計の更新
             this.analytics.helpUsage.totalPageViews++;''
             this.updateCategoryStatistics(page');'
             '';
@@ -577,7 +577,7 @@ export class HelpAnalytics {
                 data: pageData)'),';
             ' }'
             this.loggingSystem.debug('HelpAnalytics', `Page view tracked: ${page)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to track page view', error); };
 }
     }
@@ -594,7 +594,7 @@ export class HelpAnalytics {
                 query: query,
                 timestamp: timestamp,
                 resultCount: resultCount,
-                results: results.map(r => ({ id: r.id, title: r.title, category: r.category )); }
+                results: results.map(r => ({ id: r.id, title: r.title, category: r.category )) }
             };
             
             if(this.currentSession) {
@@ -604,7 +604,7 @@ export class HelpAnalytics {
             }
                 this.currentSession.lastActivityTime = timestamp; };
 }
-            // 検索統計の更新'
+            // 検索統計の更新
             const currentCount = this.analytics.helpUsage.searchQueries.get(query) || 0;''
             this.analytics.helpUsage.searchQueries.set(query, currentCount + 1');'
             '';
@@ -632,7 +632,7 @@ export class HelpAnalytics {
                 context: context)'),';
             ' }'
             this.loggingSystem.debug('HelpAnalytics', `Tutorial start tracked: ${tutorialId)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial start', error); };
 }
     }
@@ -643,7 +643,7 @@ export class HelpAnalytics {
      * @param completionTime - 完了時間
      * @param stepsCompleted - 完了ステップ数
      */
-    trackTutorialCompletion(tutorialId: string, completionTime: number, stepsCompleted: number): void { try {'
+    trackTutorialCompletion(tutorialId: string, completionTime: number, stepsCompleted: number): void { try {
             this.analytics.tutorialUsage.totalCompletions++;''
             this.updateTutorialStatistics(tutorialId, completionTime, stepsCompleted, true');'
             '';
@@ -653,7 +653,7 @@ export class HelpAnalytics {
                 stepsCompleted: stepsCompleted)'),';
             ' }'
             this.loggingSystem.debug('HelpAnalytics', `Tutorial completion tracked: ${tutorialId} (${completionTime)ms)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial completion', error'); };
 }
     }
@@ -674,7 +674,7 @@ export class HelpAnalytics {
                 reason: reason)'),';
             ' }'
             this.loggingSystem.debug('HelpAnalytics', `Tutorial drop-off tracked: ${tutorialId} at step ${stepIndex)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to track tutorial drop-off', error); };
 }
     }
@@ -693,13 +693,13 @@ export class HelpAnalytics {
                 rating: rating,
                 feedback: feedback,
                 context: context,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };
             
             // 評価統計の更新
             if(!this.analytics.effectiveness.helpfulnessRatings.has(contentId) {
                 this.analytics.effectiveness.helpfulnessRatings.set(contentId, {)
-                    totalRatings: 0);
+                    totalRatings: 0)
             }
                     averageRating: 0,) }
                     ratingCount: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 });
@@ -709,7 +709,7 @@ export class HelpAnalytics {
             ratingData.totalRatings++;
             ratingData.ratingCount[rating]++;
             
-            // 平均評価の再計算'
+            // 平均評価の再計算
             let totalScore = 0;''
             for (let i = 1; i <= 5; i++') { totalScore += i * ratingData.ratingCount[i]; };
 }
@@ -718,7 +718,7 @@ export class HelpAnalytics {
             this.trackEvent('user_feedback', feedbackData');'
             '';
             this.loggingSystem.debug('HelpAnalytics', `User feedback tracked: ${contentId} (rating: ${rating)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to track user feedback', error); };
 }
     }
@@ -730,12 +730,12 @@ export class HelpAnalytics {
      */''
     recordCategorySelection(categoryId: string, context: any = { )'): void {''
         this.executeWithValidation('recordCategorySelection', (') => { '
-            // データの検証とサニタイゼーション''
+            // データの検証とサニタイゼーション
             const categoryValidation = this.validateAndSanitizeData(categoryId, 'categoryId'');''
             const contextValidation = this.validateAndSanitizeData(context, 'context');'
 '';
             if(!categoryValidation.isValid') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.error('HelpAnalytics', 'Invalid category ID for recording', categoryValidation.errors); }
                 return; };
@@ -751,7 +751,7 @@ export class HelpAnalytics {
             // カテゴリ統計の更新')'
             this.updateCategoryStatistics(sanitizedCategoryId');
             ';
-            // イベント記録''
+            // イベント記録
             this.trackEvent('category_selection', selectionData');'
              : undefined'';
             this.loggingSystem.debug('HelpAnalytics', `Category selection tracked: ${sanitizedCategoryId)`});
@@ -766,12 +766,12 @@ export class HelpAnalytics {
      */''
     recordTopicExit(topicId: string, content: any, exitContext: any = { )'): void {''
         this.executeWithValidation('recordTopicExit', (') => { '
-            // データの検証とサニタイゼーション''
+            // データの検証とサニタイゼーション
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
             const contextValidation = this.validateAndSanitizeData(exitContext, 'context');'
 '';
             if(!topicValidation.isValid') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.error('HelpAnalytics', 'Invalid topic ID for recording exit', topicValidation.errors'); }
                 return; };
@@ -779,7 +779,7 @@ export class HelpAnalytics {
             const sanitizedTopicId = topicValidation.sanitizedData;
             const sanitizedContext = contextValidation.sanitizedData;
 ';
-            // コンテンツの基本サニタイゼーション''
+            // コンテンツの基本サニタイゼーション
             const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined;
                 this.sanitizeObject(content) : {};
 
@@ -793,15 +793,15 @@ export class HelpAnalytics {
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) {
                 this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
                     viewCount: 0);
-                    totalViewTime: 0,);
+                    totalViewTime: 0,)
             }
                     exitCount: 0); }
-            }'
+            }
             '';
             const topicStats = this.analytics.content.topicViews.get(sanitizedTopicId')!;
             topicStats.exitCount++;
             ';
-            // イベント記録''
+            // イベント記録
             this.trackEvent('topic_exit', exitData');'
             '';
             this.loggingSystem.debug('HelpAnalytics', `Topic exit tracked: ${sanitizedTopicId)`});
@@ -816,12 +816,12 @@ export class HelpAnalytics {
      */''
     recordTopicView(topicId: string, content: any, viewContext: any = { )'): void {''
         this.executeWithValidation('recordTopicView', (') => { '
-            // データの検証とサニタイゼーション''
+            // データの検証とサニタイゼーション
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
             const contextValidation = this.validateAndSanitizeData(viewContext, 'context');'
 '';
             if(!topicValidation.isValid') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.error('HelpAnalytics', 'Invalid topic ID for recording view', topicValidation.errors'); }
                 return; };
@@ -829,7 +829,7 @@ export class HelpAnalytics {
             const sanitizedTopicId = topicValidation.sanitizedData;
             const sanitizedContext = contextValidation.sanitizedData;
 ';
-            // コンテンツの基本サニタイゼーション''
+            // コンテンツの基本サニタイゼーション
             const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined;
                 this.sanitizeObject(content) : {};
 
@@ -843,15 +843,15 @@ export class HelpAnalytics {
             if(!this.analytics.content.topicViews.has(sanitizedTopicId) {
                 this.analytics.content.topicViews.set(sanitizedTopicId, { : undefined)
                     viewCount: 0);
-                    totalViewTime: 0,);
+                    totalViewTime: 0,)
             }
                     exitCount: 0); }
-            }'
+            }
             '';
             const topicStats = this.analytics.content.topicViews.get(sanitizedTopicId')!;
             topicStats.viewCount++;
             ';
-            // イベント記録''
+            // イベント記録
             this.trackEvent('topic_view', viewData');'
             '';
             this.loggingSystem.debug('HelpAnalytics', `Topic view tracked: ${sanitizedTopicId)`});
@@ -866,12 +866,12 @@ export class HelpAnalytics {
      */''
     recordFeedback(topicId: string, content: any, feedback: any'): void { ''
         this.executeWithValidation('recordFeedback', (') => { '
-            // データの検証とサニタイゼーション''
+            // データの検証とサニタイゼーション
             const topicValidation = this.validateAndSanitizeData(topicId, 'topicId'');''
             const feedbackValidation = this.validateAndSanitizeData(feedback, 'feedback');'
 '';
             if(!topicValidation.isValid') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.error('HelpAnalytics', 'Invalid topic ID for recording feedback', topicValidation.errors); }
                 return; }
@@ -886,7 +886,7 @@ export class HelpAnalytics {
             const sanitizedTopicId = topicValidation.sanitizedData;
             const sanitizedFeedback = feedbackValidation.sanitizedData;
 ';
-            // コンテンツの基本サニタイゼーション''
+            // コンテンツの基本サニタイゼーション
             const sanitizedContent = typeof content === 'object' && content !== null ?   : undefined;
                 this.sanitizeObject(content) : {};
 
@@ -904,7 +904,7 @@ export class HelpAnalytics {
                     content: sanitizedContent)'); };
 }
             ';
-            // イベント記録''
+            // イベント記録
             this.trackEvent('topic_feedback', feedbackData');'
             '';
             this.loggingSystem.debug('HelpAnalytics', `Topic feedback tracked: ${sanitizedTopicId)`});
@@ -918,22 +918,22 @@ export class HelpAnalytics {
      */''
     recordSearchQuery(query: string, resultCount: number = 0'): void { ''
         this.executeWithValidation('recordSearchQuery', (') => { '
-            // データの検証とサニタイゼーション''
+            // データの検証とサニタイゼーション
             const queryValidation = this.validateAndSanitizeData(query, 'searchQuery');'
 '';
             if(!queryValidation.isValid') {'
-                ';
+                ';'
             }'
                 this.loggingSystem.error('HelpAnalytics', 'Invalid search query', queryValidation.errors'); }
                 return; };
 }
             const sanitizedQuery = queryValidation.sanitizedData;
             ';
-            // 結果数の検証''
+            // 結果数の検証
             const sanitizedResultCount = typeof resultCount === 'number' && isFinite(resultCount) && resultCount >= 0 ?   : undefined;
                 Math.floor(resultCount) : 0;
 ';
-            // 既存のtrackSearchQueryメソッドを内部的に呼び出し''
+            // 既存のtrackSearchQueryメソッドを内部的に呼び出し
             this.trackSearchQuery(sanitizedQuery, [], sanitizedResultCount');'
             '';
             this.loggingSystem.debug('HelpAnalytics', `Search query recorded: "${sanitizedQuery}" (${sanitizedResultCount) results)`});
@@ -950,7 +950,7 @@ export class HelpAnalytics {
             const result: ValidationResult = {
                 isValid: true,
                 sanitizedData: null,
-                errors: [] ;
+                errors: [] 
 }
             },"
 "";
@@ -977,7 +977,7 @@ export class HelpAnalytics {
                 case 'searchQuery':'';
                     result.sanitizedData = this.sanitizeString(data, { maxLength: 200, preserveWhitespace: true )'),
                     // 検索クエリは空でも有効
-                    break;'
+                    break;
 '';
                 case 'feedback':'';
                     if(typeof data === 'object' && data !== null) {'
@@ -1011,9 +1011,9 @@ export class HelpAnalytics {
             if (!result.isValid') { ' }'
                 this.loggingSystem.warn('HelpAnalytics', `Data validation failed for ${type):`, result.errors});
             }
-';
+';'
             return result;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to validate and sanitize data', error);
             return { isValid: false,
                 sanitizedData: null, };
@@ -1029,7 +1029,7 @@ export class HelpAnalytics {
      * @returns サニタイズされた文字列'
      */''
     private sanitizeString(input: any, options: SanitizationOptions = { )'): string {'
-        try {''
+        try {'
             if(typeof input !== 'string') {
                 
             }
@@ -1037,33 +1037,33 @@ export class HelpAnalytics {
 }
             let sanitized = input;
 ';
-            // HTML/スクリプトタグの除去''
+            // HTML/スクリプトタグの除去
             sanitized = sanitized.replace(/<script\b[^<]*(?:(? !<\/script>)<[^<]*')*<\/script>/gi, ''');''
             sanitized = sanitized.replace(/<[^>]*>/g, ''');
 ';
-            // 危険な文字の置換''
+            // 危険な文字の置換
             sanitized = sanitized.replace(/[<>]/g, '''); : undefined''
             sanitized = sanitized.replace(/javascript:/gi, ''');''
             sanitized = sanitized.replace(/data:/gi, '');
 ';
-            // 特殊文字の制限''
+            // 特殊文字の制限
             if(!options.allowSpecialChars') {'
-                ';
+                ';'
             }'
                 sanitized = sanitized.replace(/[^\w\s\-_.]/g, ''); };
 }
             // 空白の処理
-            if(!options.preserveWhitespace) {'
-                ';
+            if(!options.preserveWhitespace) {
+                ';'
             }'
                 sanitized = sanitized.trim(').replace(/\s+/g, ' '); };
 }
             // 長さ制限
             if (options.maxLength && sanitized.length > options.maxLength) { sanitized = sanitized.substring(0, options.maxLength); };
 }
-';
+';'
             return sanitized;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to sanitize string', error');''
             return ''; };
 }
@@ -1075,17 +1075,17 @@ export class HelpAnalytics {
      * @param maxDepth - 最大深度
      * @returns サニタイズされたオブジェクト'
      */''
-    private sanitizeObject(obj: any, maxDepth: number = 3'): any { try {''
+    private sanitizeObject(obj: any, maxDepth: number = 3'): any { try {'
             if (maxDepth <= 0 || typeof obj !== 'object' || obj === null') { }
                 return {};
             }
-';
+';'
             const sanitized: any = {}''
             const allowedKeys = ['sessionId', 'timestamp', 'source', 'target', 'type', 'data'];
 
             for(const [key, value] of Object.entries(obj) {
 
-                // キーの検証'
+                // キーの検証
                 const sanitizedKey = this.sanitizeString(key, { maxLength: 50, allowSpecialChars: false ),''
                 if (!sanitizedKey || !allowedKeys.includes(sanitizedKey)') {
 
@@ -1093,9 +1093,9 @@ export class HelpAnalytics {
                     continue; };
 }
 ';
-                // 値の処理''
+                // 値の処理
                 if(typeof value === 'string') {'
-                    ';
+                    ';'
                 }'
                     sanitized[sanitizedKey] = this.sanitizeString(value, { maxLength: 500, preserveWhitespace: true )'),' }'
                 } else if (typeof value === 'number' && isFinite(value)') { sanitized[sanitizedKey] = value;' }'
@@ -1103,9 +1103,9 @@ export class HelpAnalytics {
                 } else if (typeof value === 'object' && value !== null) { sanitized[sanitizedKey] = this.sanitizeObject(value, maxDepth - 1); };
 }
             }
-';
+';'
             return sanitized;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to sanitize object', error); }
             return {};
         };
@@ -1130,18 +1130,18 @@ export class HelpAnalytics {
      * @param data - 検証対象データ
      * @returns 構造が有効かどうか'
      */''
-    private validateAnalyticsStructure(data: any'): boolean { try {''
+    private validateAnalyticsStructure(data: any'): boolean { try {'
             const requiredSections = ['helpUsage', 'content', 'tutorialUsage', 'userBehavior', 'effectiveness'];'
             '';
             for(const section of requiredSections') {'
-                ';
+                ';'
             }'
                 if (!data[section] || typeof data[section] !== 'object'') {' }'
                     this.loggingSystem.error('HelpAnalytics', `Missing or invalid section: ${section)`'});
                     return false;
                 };
 }
-            // Map オブジェクトの検証'
+            // Map オブジェクトの検証
             const mapFields = ['';
                 'helpUsage.topHelpCategories','';
                 'helpUsage.topHelpTopics','';
@@ -1151,7 +1151,7 @@ export class HelpAnalytics {
             ];
 
             for(const field of mapFields) {
-';
+';'
                 const fieldValue = this.getNestedValue(data, field);'
 
             }'
@@ -1159,9 +1159,9 @@ export class HelpAnalytics {
                     this.loggingSystem.warn('HelpAnalytics', `Field ${field) is not a Map object`});
                 };
 }
-';
+';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to validate analytics structure', error);
             return false; };
 }
@@ -1193,19 +1193,18 @@ export class HelpAnalytics {
 }
             // 操作の実行
             const result = dataOperation();
-';
-            // 操作後の検証''
+;
+            // 操作後の検証
             if (!this.validateAnalyticsStructure(this.analytics)') { ''
                 this.loggingSystem.error('HelpAnalytics', `Data corruption detected after ${operation)`); }
                 this.ensureMapInitialization(});
             }
-';
+';'
             return result;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpAnalytics', `Failed to execute ${operation} with validation`, error);
             ErrorHandler.handle(error as Error, `HelpAnalytics.${operation}`);
-            throw error;
-        };
+            throw error; }
 }
     /**
      * ヘルプコンテンツキャッシング機能
@@ -1217,16 +1216,16 @@ export class HelpAnalytics {
                 maxContentCacheSize: 50,
                 maxSearchCacheSize: 100,
                 cacheExpiryTime: 15 * 60 * 1000, // 15分;
-                enableCompression: true ;
+                enableCompression: true 
 }
             },
 
-            // キャッシュクリーンアップ'
+            // キャッシュクリーンアップ
             setInterval(() => { this.cleanupExpiredCache();' }'
-            }, 5 * 60 * 1000'); // 5分間隔'
+            }, 5 * 60 * 1000'); // 5分間隔
 '';
             this.loggingSystem.debug('HelpAnalytics', 'Content caching initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to initialize content caching', error); };
 }
     }
@@ -1245,17 +1244,17 @@ export class HelpAnalytics {
             const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(content) : content,
                 timestamp: Date.now(),
                 accessCount: 0,
-                compressed: this.cacheConfig!.enableCompression ;
+                compressed: this.cacheConfig!.enableCompression 
 }
             },
 
             // キャッシュサイズ制限
             if (this.contentCache!.size >= this.cacheConfig!.maxContentCacheSize) { this.evictLeastUsedContent(); }
-            }'
+            }
 '';
             this.contentCache!.set(contentId, cacheEntry');''
             this.loggingSystem.debug('HelpAnalytics', `Content cached: ${contentId)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to cache content', error); };
 }
     }
@@ -1280,13 +1279,13 @@ export class HelpAnalytics {
             // アクセス統計の更新
             cacheEntry.accessCount++;
             
-            // データの展開'
+            // データの展開
             const content = cacheEntry.compressed ?   : undefined'';
                 this.decompressData(cacheEntry.data') : cacheEntry.data;'
 '';
             this.loggingSystem.debug('HelpAnalytics', `Content retrieved from cache: ${contentId)`});'
             return content;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to get cached content', error);
             return null; };
 }
@@ -1307,13 +1306,13 @@ export class HelpAnalytics {
             const cacheEntry: CacheEntry = { data: this.cacheConfig!.enableCompression ? this.compressData(results) : results,
                 timestamp: Date.now(),
                 accessCount: 0,
-                compressed: this.cacheConfig!.enableCompression ;
+                compressed: this.cacheConfig!.enableCompression 
 }
             },
 
             // キャッシュサイズ制限
             if (this.searchCache!.size >= this.cacheConfig!.maxSearchCacheSize) { this.evictLeastUsedSearchResults(); }
-            }'
+            }
 '';
             this.searchCache!.set(cacheKey, cacheEntry');''
             this.loggingSystem.debug('HelpAnalytics', `Search results cached: "${query")"`});""
@@ -1345,7 +1344,7 @@ export class HelpAnalytics {
             // アクセス統計の更新
             cacheEntry.accessCount++;
             
-            // データの展開'
+            // データの展開
             const results = cacheEntry.compressed ?   : undefined'';
                 this.decompressData(cacheEntry.data') : cacheEntry.data;'
 '';
@@ -1366,16 +1365,16 @@ export class HelpAnalytics {
                 cacheHitRate: 0,
                 averageResponseTime: 0,
                 errorRate: 0,
-                memoryUsage: 0 ;
+                memoryUsage: 0 
 }
             },
 
-            // 定期的なメトリクス収集'
+            // 定期的なメトリクス収集
             setInterval(() => { this.collectPerformanceMetrics();' }'
-            }, 30000'); // 30秒間隔'
+            }, 30000'); // 30秒間隔
 '';
             this.loggingSystem.debug('HelpAnalytics', 'Performance monitoring initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to initialize performance monitoring', error); };
 }
     }
@@ -1390,7 +1389,7 @@ export class HelpAnalytics {
         let error: Error | null = null,
         let result: T,
         try {
-            result = operation(); }
+            result = operation() }
         } catch (err) { error = err as Error;
             throw err; }
         } finally { const endTime = performance.now();
@@ -1411,9 +1410,9 @@ export class HelpAnalytics {
             if(!this.performanceMetrics!.operations.has(operationName) {
                 this.performanceMetrics!.operations.set(operationName, {
                     totalCalls: 0,
-                    totalDuration: 0,);
+                    totalDuration: 0);
                     averageDuration: 0);
-                    errorCount: 0,);
+                    errorCount: 0,)
             }
                     lastCall: 0); };
 }
@@ -1426,10 +1425,10 @@ export class HelpAnalytics {
             if (error) { metrics.errorCount++; };
 }
 ';
-            // パフォーマンス警告''
+            // パフォーマンス警告
             if (duration > 1000') { // 1秒以上' }'
                 this.loggingSystem.warn('HelpAnalytics', `Slow operation detected: ${operationName) took ${duration.toFixed(2})}ms`);''
-            } catch (err') { ''
+            } catch (err) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to record operation metrics', err); };
 }
     }
@@ -1461,11 +1460,11 @@ export class HelpAnalytics {
                     if (entry.accessCount > 0) cacheHits++; };
 }
             }
-';
+';'
             this.performanceMetrics!.cacheHitRate = totalCacheRequests > 0 ?   : undefined'';
                 (cacheHits / totalCacheRequests') * 100 : 0;
 ';
-            // メモリ使用量の推定''
+            // メモリ使用量の推定
             if (typeof process !== 'undefined' && process.memoryUsage) { this.performanceMetrics!.memoryUsage = process.memoryUsage().heapUsed; };
 }
             // エラー率の計算
@@ -1479,7 +1478,7 @@ export class HelpAnalytics {
             }
                 totalErrors += metrics.errorCount; };
 }
-';
+';'
             this.performanceMetrics!.errorRate = totalOperations > 0 ?   : undefined'';
                 (totalErrors / totalOperations') * 100 : 0;'
 '';
@@ -1487,7 +1486,7 @@ export class HelpAnalytics {
                 cacheHitRate: this.performanceMetrics!.cacheHitRate.toFixed(2') + '%','';
                 errorRate: this.performanceMetrics!.errorRate.toFixed(2') + '%' }'
             });''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to collect performance metrics', error); };
 }
     }
@@ -1501,11 +1500,11 @@ export class HelpAnalytics {
 
             // データベースの最適化（該当する場合）
             this.optimizeDataStorage();
-';
-            // メモリの最適化''
-            this.optimizeMemoryUsage('')';
+;
+            // メモリの最適化
+            this.optimizeMemoryUsage()';
             this.loggingSystem.info('HelpAnalytics', 'Performance optimization completed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to optimize performance', error); };
 }
     }
@@ -1514,22 +1513,22 @@ export class HelpAnalytics {
      * ユーティリティメソッド群
      */
     private compressData(data: any): string { try {
-            // シンプルなJSON圧縮（実際の実装ではより効率的な圧縮を使用）'
+            // シンプルなJSON圧縮（実際の実装ではより効率的な圧縮を使用）
             return JSON.stringify(data);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to compress data', error);
             return data; };
 }
     }
 
-    private decompressData(compressedData: string): any { try {'
+    private decompressData(compressedData: string): any { try {
             return JSON.parse(compressedData);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to decompress data', error);
             return compressedData; };
 }
     }
-';
+';'
     private generateSearchCacheKey(query: string): string { ' }'
         return `search_${query.toLowerCase(').replace(/\s+/g, '_'})}`;
     }
@@ -1635,12 +1634,12 @@ export class HelpAnalytics {
      */
     private initializeFallbackInterface(): void { try {
             this.fallbackInterface = {
-                isActive: false,';
+                isActive: false,
                 container: null,'';
-                content: new Map<string, FallbackContent>('); }
+                content: new Map<string, FallbackContent>(') }
             };
 ';
-            // 基本的なヘルプコンテンツ''
+            // 基本的なヘルプコンテンツ
             this.fallbackInterface.content.set('basic-help', { ')'
                 title: 'ゲームヘルプ（簡易版）')';
                 content: ['';
@@ -1660,7 +1659,7 @@ export class HelpAnalytics {
                 ])');'
 '';
             this.loggingSystem.debug('HelpAnalytics', 'Fallback interface initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to initialize fallback interface', error); };
 }
     }
@@ -1668,10 +1667,10 @@ export class HelpAnalytics {
     /**
      * フォールバックインターフェースを表示
      */'
-    showFallbackInterface(): void { try {''
+    showFallbackInterface(): void { try {'
             if (this.fallbackInterface!.isActive') return;
 ';
-            // コンテナ要素を作成''
+            // コンテナ要素を作成
             this.fallbackInterface!.container = document.createElement('div'');''
             this.fallbackInterface!.container.id = 'help-fallback-interface';
             this.fallbackInterface!.container.style.cssText = `;
@@ -1694,7 +1693,7 @@ export class HelpAnalytics {
                 border: 2px solid #4CAF50,
             `;
 ';
-            // ヘルプコンテンツを追加''
+            // ヘルプコンテンツを追加
             const helpContent = this.fallbackInterface!.content.get('basic-help'')!;''
             const contentDiv = document.createElement('div'');'
             '';
@@ -1710,7 +1709,7 @@ export class HelpAnalytics {
                 contentDiv.appendChild(p);' }'
             }');
 ';
-            // 閉じるボタンを追加''
+            // 閉じるボタンを追加
             const closeButton = document.createElement('button'');''
             closeButton.textContent = '閉じる (ESC')';
             closeButton.style.cssText = `;
@@ -1730,21 +1729,21 @@ export class HelpAnalytics {
 
             this.fallbackInterface!.container.appendChild(contentDiv);
 ';
-            // キーボードイベント''
+            // キーボードイベント
             const handleKeyDown = (event: KeyboardEvent') => {  ''
                 if(event.key === 'Escape') {'
                     '';
-                    this.hideFallbackInterface('')';
+                    this.hideFallbackInterface()';
             document.addEventListener('keydown', handleKeyDown);
             this.fallbackInterface!.keydownHandler = handleKeyDown;
 ';
-            // DOMに追加''
+            // DOMに追加
             document.body.appendChild(this.fallbackInterface!.container');
             this.fallbackInterface!.isActive = true;
                 }'
 ' }'
             this.loggingSystem.info('HelpAnalytics', 'Fallback interface displayed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to show fallback interface', error); };
 }
     }
@@ -1755,7 +1754,7 @@ export class HelpAnalytics {
     private hideFallbackInterface(): void { try {
             if (!this.fallbackInterface!.isActive || !this.fallbackInterface!.container) return;
 ';
-            // イベントリスナーを削除''
+            // イベントリスナーを削除
             if(this.fallbackInterface!.keydownHandler') {'
                 '';
                 document.removeEventListener('keydown', this.fallbackInterface!.keydownHandler);
@@ -1763,13 +1762,13 @@ export class HelpAnalytics {
                 this.fallbackInterface!.keydownHandler = undefined; };
 }
 ';
-            // DOMから削除''
+            // DOMから削除
             document.body.removeChild(this.fallbackInterface!.container');
             this.fallbackInterface!.container = null;
             this.fallbackInterface!.isActive = false;'
 '';
             this.loggingSystem.debug('HelpAnalytics', 'Fallback interface hidden');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to hide fallback interface', error); };
 }
     }
@@ -1787,47 +1786,47 @@ export class HelpAnalytics {
                     feedback: false,
                     search: false,
                     content: false,
-                    accessibility: false ;
+                    accessibility: false 
 };
 }
             },
 ';
-            // アナリティクスコンポーネントの検証''
+            // アナリティクスコンポーネントの検証
             if (this.analytics && this.validateAnalyticsStructure(this.analytics)') { validationResult.components.analytics = true; }'
             } else {  ''
                 validationResult.errors.push('Analytics component validation failed'); }
                 validationResult.isValid = false; };
 }
 ';
-            // フィードバックシステムの検証''
+            // フィードバックシステムの検証
             if (this.gameEngine && this.gameEngine.helpFeedbackSystem') { validationResult.components.feedback = true; }'
             } else {  ' }'
                 validationResult.warnings.push('Feedback system not available'); };
 }
 ';
-            // 検索エンジンの検証''
+            // 検索エンジンの検証
             if (this.gameEngine && this.gameEngine.helpManager && this.gameEngine.helpManager.searchEngine') { validationResult.components.search = true; }'
             } else {  ''
                 validationResult.errors.push('Search engine not available'); }
                 validationResult.isValid = false; };
 }
 ';
-            // コンテンツマネージャーの検証''
+            // コンテンツマネージャーの検証
             if (this.gameEngine && this.gameEngine.helpManager') { validationResult.components.content = true; }'
             } else {  ''
                 validationResult.errors.push('Content manager not available'); }
                 validationResult.isValid = false; };
 }
 ';
-            // アクセシビリティの検証''
+            // アクセシビリティの検証
             if (this.gameEngine && this.gameEngine.accessibilityManager') { validationResult.components.accessibility = true; }'
             } else {  ' }'
                 validationResult.warnings.push('Accessibility manager not available'); };
 }
             // 初期化の準備
-            if(!validationResult.isValid) {'
+            if(!validationResult.isValid) {
                 '';
-                this.initializeFallbackInterface('');
+                this.initializeFallbackInterface();
             }'
                 validationResult.warnings.push('Fallback interface prepared due to validation failures''); }
             }'
@@ -1835,9 +1834,9 @@ export class HelpAnalytics {
             this.loggingSystem.info('HelpAnalytics', 'Help system validation completed', { isValid: validationResult.isValid)
                 errors: validationResult.errors.length,);
                 warnings: validationResult.warnings.length),
-';
+';'
             return validationResult;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to validate help system initialization', error);
             return { isValid: false,
                 errors: [(error as Error).message],
@@ -1861,34 +1860,34 @@ export class HelpAnalytics {
                 generatedAt: Date.now(),
                 period: {
                     start: Date.now() - (7 * 24 * 60 * 60 * 1000), // 7日前;
-                    end: Date.now(); }
+                    end: Date.now() }
                 },
                 usage: { totalSessions: this.analytics.helpUsage.totalSessions,
                     totalPageViews: this.analytics.helpUsage.totalPageViews,
                     averageSessionDuration: this.calculateAverageSessionDuration(),
                     searchQueries: this.analytics.helpUsage.searchQueries.size,
                     topCategories: this.getTopCategories(5),
-                    topSearches: this.getTopSearchQueries(10); }
+                    topSearches: this.getTopSearchQueries(10) }
                 },
                 effectiveness: { averageRating: this.calculateAverageRating(),
                     totalFeedbacks: this.getTotalFeedbackCount(),
                     satisfactionScore: this.calculateSatisfactionScore(),
-                    problemAreas: this.identifyProblemAreas(); }
+                    problemAreas: this.identifyProblemAreas() }
                 },
                 performance: { cacheHitRate: this.performanceMetrics ? this.performanceMetrics.cacheHitRate : 0,
                     errorRate: this.performanceMetrics ? this.performanceMetrics.errorRate : 0,
-                    operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0 ;
+                    operationsCount: this.performanceMetrics ? this.performanceMetrics.operations.size : 0 
 }
                 },
                 recommendations: this.generateImprovementSuggestions(),
             };
-';
-            // レポートの保存''
+;
+            // レポートの保存
             this.saveUsageReport(report');'
 '';
             this.loggingSystem.info('HelpAnalytics', 'Usage report generated');'
             return report;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to generate usage report', error);
             return null; };
 }
@@ -1897,13 +1896,13 @@ export class HelpAnalytics {
     /**
      * 使用統計レポートの保存
      */'
-    private saveUsageReport(report: UsageReport): void { try {' }'
+    private saveUsageReport(report: UsageReport): void { try { }'
             const reportKey = `help_usage_report_${new Date(report.generatedAt).toISOString(').split('T'})[0]}`;
             localStorage.setItem(reportKey, JSON.stringify(report);
 
             // 古いレポートのクリーンアップ（30日以上古いものを削除）
             const cutoffDate = Date.now() - (30 * 24 * 60 * 60 * 1000);
-            for(let i = 0; i < localStorage.length; i++) {'
+            for(let i = 0; i < localStorage.length; i++) {
                 '';
                 const key = localStorage.key(i');''
                 if(key && key.startsWith('help_usage_report_') {
@@ -1916,7 +1915,7 @@ export class HelpAnalytics {
             }'
 '';
             this.loggingSystem.debug('HelpAnalytics', `Usage report saved: ${reportKey)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to save usage report', error); };
 }
     }
@@ -1944,12 +1943,12 @@ export class HelpAnalytics {
             this.optimizeCache();
 
             // データ構造の検証と修復
-            if(!this.validateAnalyticsStructure(this.analytics) {'
-                ';
+            if(!this.validateAnalyticsStructure(this.analytics) {
+                ';'
             }'
-                this.ensureMapInitialization('') }'
+                this.ensureMapInitialization() }'
             this.loggingSystem.info('HelpAnalytics', `Data maintenance completed, cleaned ${cleanedItems) items`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to perform data maintenance', error); };
 }
     }
@@ -1965,7 +1964,7 @@ export class HelpAnalytics {
                 type: eventType,
                 data: eventData,
                 timestamp: Date.now(),
-                sessionId: this.currentSession ? this.currentSession.id : null ;
+                sessionId: this.currentSession ? this.currentSession.id : null 
 }
             },
             
@@ -1982,9 +1981,9 @@ export class HelpAnalytics {
             // イベント数制限のチェック
             if (this.events.size > this.config.maxEvents) { this.cleanupOldEvents(); };
 }
-            // リアルタイム処理（必要に応じて）'
+            // リアルタイム処理（必要に応じて）
             if (this.config.enableRealTimeTracking) { this.processEventRealTime(event);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to track event', error'); };
 }
     }
@@ -1996,10 +1995,10 @@ export class HelpAnalytics {
      * @returns 分析レポート'
      */''
     generateReport(reportType: string = 'summary', options: any = { ): AnalyticsReport {
-        try {'
+        try {
             const report: AnalyticsReport = {''
                 generatedAt: Date.now(''';
-                period: options.period || 'all';
+                period: options.period || 'all'
 }
                 data: {})
             })'
@@ -2028,7 +2027,7 @@ export class HelpAnalytics {
             this.loggingSystem.debug('HelpAnalytics', `Report generated: ${reportType)`});
             return report;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to generate report', error);'
             return { ''
                 generatedAt: Date.now('' };'
@@ -2057,11 +2056,11 @@ export class HelpAnalytics {
             },
             topContent: { categories: this.getTopCategories(5),
                 topics: this.getTopTopics(10),
-                searchQueries: this.getTopSearchQueries(10); }
+                searchQueries: this.getTopSearchQueries(10) }
             },
             userSatisfaction: { averageRating: this.calculateAverageRating(),
                 totalFeedbacks: this.getTotalFeedbackCount(),
-                satisfactionScore: this.calculateSatisfactionScore(); };
+                satisfactionScore: this.calculateSatisfactionScore() };
 }
         };
     }
@@ -2117,12 +2116,12 @@ export class HelpAnalytics {
             
             const dataToSave: StoredAnalyticsData = {
                 analytics: this.analytics,
-                sessions: Array.from(this.sessions.entries(),';
-                events: Array.from(this.events.entries().slice(-100), // 最新100件のみ'';
-                lastSaved: Date.now('')';
+                sessions: Array.from(this.sessions.entries(),
+                events: Array.from(this.events.entries().slice(-100), // 最新100件のみ;
+                lastSaved: Date.now()';
             localStorage.setItem('help_analytics_data', JSON.stringify(dataToSave)');''
             this.loggingSystem.debug('HelpAnalytics', 'Analytics data saved to localStorage');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to save analytics data', error); };
 }
     }
@@ -2130,7 +2129,7 @@ export class HelpAnalytics {
     /**
      * データの読み込み
      */'
-    private loadAnalyticsData(): void { try {''
+    private loadAnalyticsData(): void { try {'
             if (!this.config.enableOfflineStorage') return;'
             '';
             const savedData = localStorage.getItem('help_analytics_data');
@@ -2141,7 +2140,7 @@ export class HelpAnalytics {
             // データの復元
             if(data.analytics) {
                 // Mapオブジェクトの復元
-                Object.keys(data.analytics).forEach(category => { );'
+                Object.keys(data.analytics).forEach(category => { );
                     const categoryData = (data.analytics as any)[category];''
                     Object.keys(categoryData).forEach(key => {');'
             }'
@@ -2157,14 +2156,14 @@ export class HelpAnalytics {
             if (data.sessions) { this.sessions = new Map(data.sessions); };
 }
             if(data.events) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 this.events = new Map(data.events'); }
             }'
             '';
             this.loggingSystem.debug('HelpAnalytics', 'Analytics data loaded from localStorage');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to load analytics data', error); };
 }
     }
@@ -2172,11 +2171,11 @@ export class HelpAnalytics {
     /**
      * ユーティリティメソッド群'
      */''
-    private generateSessionId('')';
+    private generateSessionId()';
         return 'session_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
     }'
     '';
-    private generateEventId('')';
+    private generateEventId()';
         return 'event_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
     }
     
@@ -2221,9 +2220,9 @@ export class HelpAnalytics {
         // 使用統計レポートを週次で生成
         setInterval(() => { this.generateUsageReport(); }
         }, 7 * 24 * 60 * 60 * 1000);
-    }'
+    }
     '';
-    private setupUnloadHandlers('')';
+    private setupUnloadHandlers()';
         window.addEventListener('beforeunload', () => {  ''
             if (this.currentSession') {' }'
                 this.endHelpSession('page_unload'); };
@@ -2236,8 +2235,8 @@ export class HelpAnalytics {
         setInterval(() => { 
             if(this.currentSession) {
                 const now = Date.now();
-                const inactive = now - this.currentSession.lastActivityTime;'
-                ';
+                const inactive = now - this.currentSession.lastActivityTime;
+                ';'
             }'
                 if (inactive > this.config.sessionTimeout') {' }'
                     this.endHelpSession('timeout'); };
@@ -2259,9 +2258,9 @@ export class HelpAnalytics {
         }
         
         eventsToDelete.forEach(eventId => this.events.delete(eventId);
-    }'
+    }
     '';
-    private processEventRealTime(event: AnalyticsEvent'): void { // リアルタイム処理（必要に応じて拡張）''
+    private processEventRealTime(event: AnalyticsEvent'): void { // リアルタイム処理（必要に応じて拡張）
         if(event.type === 'search_query' && event.data.resultCount === 0) {
             // 検索結果が0件の場合は改善の余地ありとして記録
             const query = event.data.query;
@@ -2279,7 +2278,7 @@ export class HelpAnalytics {
         if(!timeStats.has(page) {
             
         }
-            timeStats.set(page, { total: 0, count: 0, average: 0 ); };
+            timeStats.set(page, { total: 0, count: 0, average: 0 ) };
 }
         const stats = timeStats.get(page)!;
         stats.total += timeSpent;
@@ -2326,12 +2325,12 @@ export class HelpAnalytics {
     private calculateSatisfactionScore(): number { const avgRating = this.calculateAverageRating();
         return Math.round((avgRating / 5) * 100); // 100点満点に換算 };
 }
-    private analyzeContentPerformance(): ContentPerformance { // コンテンツのパフォーマンス分析 }'
+    private analyzeContentPerformance(): ContentPerformance { // コンテンツのパフォーマンス分析 }
         const performance: ContentPerformance = {}''
         for (const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries()') { performance[contentId] = {
                 averageRating: ratingData.averageRating,';
                 totalRatings: ratingData.totalRatings,'';
-                helpfulness: ratingData.averageRating >= 4 ? 'high' : ratingData.averageRating >= 3 ? 'medium' : 'low' ;
+                helpfulness: ratingData.averageRating >= 4 ? 'high' : ratingData.averageRating >= 3 ? 'medium' : 'low' 
 }
             },
         }
@@ -2350,26 +2349,26 @@ export class HelpAnalytics {
         const problems: ProblemArea[] = [],
         
         // 低評価のコンテンツ
-        for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries() {'
+        for(const [contentId, ratingData] of this.analytics.effectiveness.helpfulnessRatings.entries() {
             '';
             if (ratingData.averageRating < 3 && ratingData.totalRatings >= 5') {'
                 problems.push({''
-                    type: 'low_rating',);
+                    type: 'low_rating');
                     contentId: contentId)';
-                    rating: ratingData.averageRating,');
+                    rating: ratingData.averageRating,')
         }'
                     severity: 'high'); };
 }
         }
         
         // 検索結果が見つからないクエリ
-        for(const [query, count] of this.analytics.effectiveness.contentGaps.entries() {'
+        for(const [query, count] of this.analytics.effectiveness.contentGaps.entries() {
             '';
             if (count >= 3') {'
                 problems.push({''
-                    type: 'content_gap',);
+                    type: 'content_gap');
                     query: query)';
-                    searchCount: count,');
+                    searchCount: count,')
         }'
                     severity: 'medium'); };
 }
@@ -2380,7 +2379,7 @@ export class HelpAnalytics {
     
     private generateImprovementSuggestions(): ImprovementSuggestion[] { // 改善提案の生成
         const suggestions: ImprovementSuggestion[] = [],
-        const problems = this.identifyProblemAreas();'
+        const problems = this.identifyProblemAreas();
         '';
         problems.forEach(problem => { ');''
             if(problem.type === 'low_rating'') {'
@@ -2395,7 +2394,7 @@ export class HelpAnalytics {
             '';
             if(problem.type === 'content_gap'') {'
                 suggestions.push({')'
-                    type: 'content_creation');
+                    type: 'content_creation')
             }'
                     query: problem.query,' }'
                     suggestion: `"${problem.query}" に関するヘルプコンテンツの作成を検討してください`,")"
@@ -2409,16 +2408,16 @@ export class HelpAnalytics {
     /**
      * クリーンアップ処理
      */'
-    cleanup(): void { try {''
+    cleanup(): void { try {'
             if(this.currentSession') {'
-                ';
+                ';'
             }'
                 this.endHelpSession('cleanup'); }
             }'
             '';
-            this.saveAnalyticsData('')';
+            this.saveAnalyticsData()';
             this.loggingSystem.info('HelpAnalytics', 'Help analytics cleaned up');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpAnalytics', 'Failed to cleanup help analytics', error); };
 }
     };
@@ -2443,7 +2442,7 @@ export function getHelpAnalytics(gameEngine: GameEngine): HelpAnalytics | null {
  * @returns 新しいHelpAnalyticsインスタンス
  */
 export function reinitializeHelpAnalytics(gameEngine: GameEngine): HelpAnalytics | null { if (helpAnalyticsInstance) {
-        helpAnalyticsInstance.cleanup(); }'
+        helpAnalyticsInstance.cleanup(); }
     }''
     helpAnalyticsInstance = gameEngine ? new HelpAnalytics(gameEngine') : null;'
     return helpAnalyticsInstance;''

@@ -10,7 +10,7 @@ import type { DeveloperConsole } from './DeveloperConsole';
 interface CommandParameter { name: string,
     type: string,
     required: boolean,
-    description: string; }
+    description: string }
 }
 
 interface CommandOptions { description: string,
@@ -24,7 +24,7 @@ interface ChangeHistoryEntry { timestamp: string,
     path: string,
     oldValue: any,
     newValue: any,
-    source: string; }
+    source: string }
 }
 
 interface ConfigurationSetOptions { validate?: boolean;
@@ -32,33 +32,33 @@ interface ConfigurationSetOptions { validate?: boolean;
 }
 
 interface ImportResult { path: string,
-    value: any; }
+    value: any }
 }
 
 interface ImportError { path: string,
-    message: string; }
+    message: string }
 }
 
 interface DiffEntry { path: string,
     current: any,
-    default: any; }
+    default: any }
 }
 
 interface ConfigurationTemplate { [key: string]: any, }
 }
 
 interface TemplateResult { path: string,
-    value: any; }
+    value: any }
 }
 
 interface TemplateError { path: string,
-    error: string; }
+    error: string }
 }
 
 interface ValidationResult { isValid: boolean,
     errors: Array<{
         path: string,
-        message: string; }
+        message: string }
     }>;
 }
 
@@ -79,9 +79,9 @@ export class ConfigurationCommands {
     }
 
     /**
-     * コマンドをコンソールに登録'
+     * コマンドをコンソールに登録
      */''
-    registerCommands(console: DeveloperConsole'): void { // 設定値取得コマンド''
+    registerCommands(console: DeveloperConsole'): void { // 設定値取得コマンド
         console.register('config.get', this.getConfig.bind(this'), {''
             description: 'Get configuration value','';
             usage: 'config.get <path>',';
@@ -96,7 +96,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 設定値設定コマンド''
+        // 設定値設定コマンド
         console.register('config.set', this.setConfig.bind(this'), { ''
             description: 'Set configuration value with validation','';
             usage: 'config.set <path> <value>',';
@@ -112,7 +112,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 設定値リセットコマンド''
+        // 設定値リセットコマンド
         console.register('config.reset', this.resetConfig.bind(this'), { ''
             description: 'Reset configuration value to default','';
             usage: 'config.reset <path>',';
@@ -126,7 +126,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 設定一覧表示コマンド''
+        // 設定一覧表示コマンド
         console.register('config.list', this.listConfig.bind(this'), { ''
             description: 'List configuration values','';
             usage: 'config.list [prefix]',';
@@ -141,7 +141,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 設定検証コマンド''
+        // 設定検証コマンド
         console.register('config.validate', this.validateConfig.bind(this'), { ''
             description: 'Validate configuration integrity','';
             usage: 'config.validate [path]',';
@@ -155,7 +155,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 設定エクスポートコマンド''
+        // 設定エクスポートコマンド
         console.register('config.export', this.exportConfig.bind(this'), { ''
             description: 'Export configuration to JSON','';
             usage: 'config.export [path]',';
@@ -170,7 +170,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 設定インポートコマンド''
+        // 設定インポートコマンド
         console.register('config.import', this.importConfig.bind(this'), { ''
             description: 'Import configuration from JSON','';
             usage: 'config.import <json>',';
@@ -184,7 +184,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 変更履歴表示コマンド''
+        // 変更履歴表示コマンド
         console.register('config.history', this.showHistory.bind(this'), { ''
             description: 'Show configuration change history','';
             usage: 'config.history [count]',';
@@ -198,14 +198,14 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 変更をすべて元に戻すコマンド''
+        // 変更をすべて元に戻すコマンド
         console.register('config.revert', this.revertChanges.bind(this'), { ''
             description: 'Revert all configuration changes made during this session','';
             usage: 'config.revert','';
             group: 'config'' }'
         }'),
 ';
-        // 設定の比較コマンド''
+        // 設定の比較コマンド
         console.register('config.diff', this.diffConfig.bind(this'), { ''
             description: 'Show differences from default configuration','';
             usage: 'config.diff [path]',';
@@ -219,7 +219,7 @@ export class ConfigurationCommands {
             group: 'config''';
         }'),
 ';
-        // 設定テンプレート適用コマンド''
+        // 設定テンプレート適用コマンド
         console.register('config.template', this.applyTemplate.bind(this'), { ''
             description: 'Apply configuration template','';
             usage: 'config.template <template>',';
@@ -245,7 +245,7 @@ export class ConfigurationCommands {
             if (value === undefined') {' }'
                 return `Configuration path '${path}' not found.`;
             }
-            ';
+            ';'
             const type = typeof value;''
             const displayValue = type === 'object' ? JSON.stringify(value, null, 2) : String(value);
             
@@ -258,7 +258,7 @@ export class ConfigurationCommands {
     /**
      * 設定値設定
      */
-    private setConfig(args: string[]): string { try {'
+    private setConfig(args: string[]): string { try {
             const path = args[0];''
             const valueStr = args.slice(1').join(' ');
             
@@ -273,7 +273,7 @@ export class ConfigurationCommands {
             const convertedValue = this.convertValue(valueStr);
             
             // 設定値の設定（バリデーション付き）
-            this.configManager.set(path, convertedValue, { validate: true,)
+            this.configManager.set(path, convertedValue, { validate: true)
                 saveToStorage: false // セッション中のみの変更) as ConfigurationSetOptions),
             
             // 変更履歴に記録
@@ -298,7 +298,7 @@ export class ConfigurationCommands {
             const path = args[0];
             
             // デフォルト値を取得
-            const defaultValue = this.configManager.getDefault(path);'
+            const defaultValue = this.configManager.getDefault(path);
             '';
             if (defaultValue === undefined') {' }'
                 return `Configuration path '${path}' not found or has no default value.`;
@@ -312,12 +312,12 @@ export class ConfigurationCommands {
             }
             
             // デフォルト値に設定
-            this.configManager.set(path, defaultValue, { validate: true,)
+            this.configManager.set(path, defaultValue, { validate: true)
                 saveToStorage: false) as ConfigurationSetOptions),
             
             // 変更履歴に記録
             this.changeHistory.push({);
-                timestamp: new Date().toISOString(),';
+                timestamp: new Date().toISOString(),
                 path,'';
                 oldValue: this.configManager.get(path'),';
                 newValue: defaultValue,'';
@@ -333,7 +333,7 @@ export class ConfigurationCommands {
     /**
      * 設定一覧表示'
      */''
-    private listConfig(args: string[]'): string { try {''
+    private listConfig(args: string[]'): string { try {'
             const prefix = args.length > 0 ? args[0] : '';
             const allConfigs = this.configManager.getAll();
             
@@ -344,7 +344,7 @@ export class ConfigurationCommands {
                     ? `No configuration found with prefix '${prefix}'.`''
                     : 'No configuration available.';
             }
-            ';
+            ';'
             let output = prefix '';
                 ? `Configuration values (prefix: ${ prefix)'):\n`''
                 : 'All configuration values: \n',';
@@ -419,14 +419,14 @@ export class ConfigurationCommands {
     }
 
     /**
-     * 設定インポート'
+     * 設定インポート
      */''
-    private importConfig(args: string[]'): string { try {''
+    private importConfig(args: string[]'): string { try {'
             const jsonStr = args.join(' ');
             
             let config: any,
-            try {
-                config = JSON.parse(jsonStr); }'
+            try {'
+                config = JSON.parse(jsonStr) }'
             } catch (parseError) { ' }'
                 return `Invalid JSON format: ${(parseError as Error'}).message}`;
             }
@@ -449,8 +449,8 @@ export class ConfigurationCommands {
             }
             
             if(errors.length > 0) {
-            ';
-                output += `\nErrors during import: \n`,';
+            ';'
+                output += `\nErrors during import: \n`,'
             }'
                 for (const error of errors') { }
                     output += `  ${error.path}: ${error.message}\n`;
@@ -469,7 +469,7 @@ export class ConfigurationCommands {
     private showHistory(args: string[]): string { const count = args.length > 0 ? parseInt(args[0]) : 10;'
         '';
         if(this.changeHistory.length === 0') {'
-            ';
+            ';'
         }'
             return 'No configuration changes made during this session.'; }
         }
@@ -496,7 +496,7 @@ export class ConfigurationCommands {
      */'
     private revertChanges(): string { ''
         if(this.originalValues.size === 0') {'
-            ';
+            ';'
         }'
             return 'No configuration changes to revert.'; }
         }
@@ -542,9 +542,9 @@ export class ConfigurationCommands {
      */
     private diffConfig(args: string[]): string { try {
             const path = args.length > 0 ? args[0] : null;
-            ';
+            ';'
             const current = path ? this.configManager.get(path) : this.configManager.getAll();''
-            const defaults = path ? this.configManager.getDefault(path) : this.configManager.getAllDefaults('')';
+            const defaults = path ? this.configManager.getDefault(path) : this.configManager.getAllDefaults()';
             const differences = this.findDifferences(current, defaults, path || '');'
             '';
             if(differences.length === 0') {
@@ -554,7 +554,7 @@ export class ConfigurationCommands {
                     ? `Configuration '${path}' matches default values.`''
                     : 'All configuration matches default values.';
             }
-            ';
+            ';'
             let output = path '';
                 ? `Differences from default for '${path}':\n`''
                 : 'Differences from default configuration: \n',
@@ -598,7 +598,7 @@ export class ConfigurationCommands {
                 'game.difficulty.modifier': 0.5 }
             }
         };
-        ';
+        ';'
         const template = templates[templateName];''
         if (!template') { ' }'
             return `Template '${templateName}' not found. Available templates: ${Object.keys(templates').join(', '})}`;
@@ -618,7 +618,7 @@ export class ConfigurationCommands {
                     this.originalValues.set(path, originalValue); }
                 }
                 
-                this.configManager.set(path, value, { validate: true,)
+                this.configManager.set(path, value, { validate: true)
                     saveToStorage: false) as ConfigurationSetOptions),
                 
                 applyResults.push({ path, value );
@@ -659,22 +659,22 @@ export class ConfigurationCommands {
     // ヘルパーメソッド
 
     /**
-     * 値の型推論と変換'
+     * 値の型推論と変換
      */''
-    private convertValue(valueStr: string'): any { // null, undefined''
+    private convertValue(valueStr: string'): any { // null, undefined
         if (valueStr === 'null'') return null;''
         if (valueStr === 'undefined'') return undefined;
         ';
-        // boolean''
+        // boolean
         if (valueStr === 'true'') return true;''
         if (valueStr === 'false') return false;
         
-        // number'
+        // number
         if (!isNaN(valueStr as any) && !isNaN(parseFloat(valueStr)) {''
             return parseFloat(valueStr'); }
         }
         ';
-        // JSON object/array''
+        // JSON object/array
         if (valueStr.startsWith('{ '') || valueStr.startsWith('[') {
             try {
                 return JSON.parse(valueStr); }
@@ -688,7 +688,7 @@ export class ConfigurationCommands {
 
     /**
      * プレフィックスによる設定フィルタリング
-     */'
+     */
     private filterConfigByPrefix(config: any, prefix: string): any { ''
         if (!prefix') return config;
          }'
@@ -706,7 +706,7 @@ export class ConfigurationCommands {
                     this.filterConfigRecursive(value, prefix, fullPath, result[key]);
                 } else { result[key] = value; }'
                 }''
-            } else if (prefix.startsWith(fullPath)') { // 子要素が条件を満たす可能性がある''
+            } else if (prefix.startsWith(fullPath)') { // 子要素が条件を満たす可能性がある
                 if (typeof value === 'object' && value !== null) { }
                     const childResult: any = {}
                     this.filterConfigRecursive(value, prefix, fullPath, childResult);
@@ -753,14 +753,14 @@ export class ConfigurationCommands {
                         this.originalValues.set(fullPath, originalValue); }
                     }
                     
-                    this.configManager.set(fullPath, value, { validate: true,)
+                    this.configManager.set(fullPath, value, { validate: true)
                         saveToStorage: false) as ConfigurationSetOptions),
                     
                     results.push({ path: fullPath, value );
                     
                     // 変更履歴に記録
                     this.changeHistory.push({);
-                        timestamp: new Date().toISOString(),';
+                        timestamp: new Date().toISOString(),
                         path: fullPath,'';
                         oldValue: this.configManager.get(fullPath'),';
                         newValue: value,'';
@@ -781,7 +781,7 @@ export class ConfigurationCommands {
         if(typeof current === 'object' && current !== null && ')';
             typeof defaults === 'object' && defaults !== null) {
             // オブジェクトの場合は再帰的に比較
-            const allKeys = new Set([...Object.keys(current),];
+            const allKeys = new Set([...Object.keys(current)];
                 ...Object.keys(defaults)];
             ]);
             
@@ -798,7 +798,7 @@ export class ConfigurationCommands {
             differences.push({)
                 path: basePath);
                 current: current,);
-                default: defaults); }
+                default: defaults) }
         }
         
         return differences;
@@ -806,6 +806,6 @@ export class ConfigurationCommands {
 
     /**
      * クリーンアップ
-     */'
+     */
     destroy(): void { ''
         this.originalValues.clear(') }

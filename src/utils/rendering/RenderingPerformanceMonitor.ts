@@ -8,18 +8,18 @@ interface PerformanceMetrics { frameTime: number,
     cullingEfficiency: number,
     cacheEfficiency: number,
     overallEfficiency: number,
-    performanceGain?: number; }
+    performanceGain?: number }
 }
 
 interface PerformanceBaseline { renderTime: number,
     drawCalls: number,
-    pixelsRendered: number; }
+    pixelsRendered: number }
 }
 
 interface PerformanceFrameData { timestamp: number,
     renderTime: number,
     totalObjects: number,
-    efficiency: number; }
+    efficiency: number }
 }
 
 interface PerformanceConfig { enabled: boolean,
@@ -29,7 +29,7 @@ interface PerformanceConfig { enabled: boolean,
     adaptiveMode: boolean,
     performanceTarget: number,
     optimizationTrigger: number,
-    baseline: PerformanceBaseline;
+    baseline: PerformanceBaseline
     }
 }
 
@@ -37,7 +37,7 @@ interface PerformanceStats extends PerformanceMetrics { uptime: number,
     totalFrames: number,
     avgFPS: number,
     baseline: PerformanceBaseline,
-    optimizationLevel: string; }
+    optimizationLevel: string }
 }
 
 type OptimizationLevel = 'conservative' | 'balanced' | 'aggressive';''
@@ -136,10 +136,10 @@ export class RenderingPerformanceMonitor {
     }
 
     /**
-     * Establish performance baseline'
+     * Establish performance baseline
      */''
     establishPerformanceBaseline(''';
-        // For now, we'll use reasonable defaults
+        // For now, well use reasonable defaults
         
         const baseline = this.config.baseline;
         baseline.renderTime = 10.0; // 10ms baseline render time
@@ -273,10 +273,10 @@ export class RenderingPerformanceMonitor {
         const renderTime = this.config.metrics.renderTime;'
         '';
         if(renderTime > 25.0') {'
-            // < 40fps - aggressive optimization'
+            // < 40fps - aggressive optimization
         }'
             this.setOptimizationLevel('aggressive');' }'
-        } else if (renderTime > 20.0') { // < 50fps - balanced optimization''
+        } else if (renderTime > 20.0') { // < 50fps - balanced optimization
             this.setOptimizationLevel('balanced''); }'
         } else {  ' }'
             this.setOptimizationLevel('conservative'); }
@@ -289,7 +289,7 @@ export class RenderingPerformanceMonitor {
     relaxOptimizations(): void { const renderTime = this.config.metrics.renderTime;'
         '';
         if(renderTime < 12.0') {'
-            // > 80fps - can relax optimizations'
+            // > 80fps - can relax optimizations
         }'
             this.setOptimizationLevel('conservative'); }
         }
@@ -306,7 +306,7 @@ export class RenderingPerformanceMonitor {
     /**
      * Get performance statistics
      */
-    getStats(): PerformanceStats { const uptime = (performance.now() - this.monitoringStartTime) / 1000;'
+    getStats(): PerformanceStats { const uptime = (performance.now() - this.monitoringStartTime) / 1000;
         const totalFrames = this.config.history.length;''
         const avgFPS = totalFrames > 0 ? totalFrames / (uptime || 1') : 0;
         

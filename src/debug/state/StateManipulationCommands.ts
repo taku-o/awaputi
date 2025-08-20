@@ -12,6 +12,6 @@ export class StateManipulationCommands {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

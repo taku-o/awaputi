@@ -5,7 +5,7 @@
 
 // Validation interfaces
 interface ValidationRule { type: 'number' | 'boolean' | 'string',
-    constraints?: ValidationConstraints;
+    constraints?: ValidationConstraints
     }
 }
 
@@ -21,7 +21,7 @@ interface ValidationResult { valid: boolean,
 }
 
 interface ValidationError { key: string,
-    error: string; }
+    error: string }
 }
 
 interface FileValidationResult { valid: boolean,
@@ -40,19 +40,19 @@ interface CategoryValidationResult { valid: boolean,
     category: string,
     issues: ValidationIssue[],
     warnings: string[],
-    result?: SubValidationResult;
+    result?: SubValidationResult
     }
 }
 
 interface SubValidationResult { valid: boolean,
-    issues: ValidationIssue[];
+    issues: ValidationIssue[]
     }
 }
 
 interface ValidatorStatus { rulesCount: number,
     validatorsCount: number,
     strictMode: boolean,
-    supportedTypes: string[]; }
+    supportedTypes: string[] }
 }
 
 interface ValidatorConfig { strictMode?: boolean;
@@ -72,12 +72,12 @@ export class ConfigurationValidator {
     private strictMode: boolean;
     constructor(mainController: MainController) {
 
-        this.mainController = mainController;'
+        this.mainController = mainController;
         this.validators = new Map<string, ValidatorFunction>();''
         this.rules = new Map<string, ValidationRule>(');
         this.strictMode = false;'
         ';
-    }
+    }'
     }'
         console.log('[ConfigurationValidator] Validator component initialized'); }
     }
@@ -86,14 +86,14 @@ export class ConfigurationValidator {
      * Initialize validator components
      */'
     async initialize(): Promise<void> { this.setupValidators();''
-        this.setupValidationRules('')';
+        this.setupValidationRules()';
         console.log('[ConfigurationValidator] All validation components initialized'); }
     }
     
     /**
      * Setup basic validators'
      */''
-    private setupValidators('')';
+    private setupValidators()';
         this.validators.set('number', (value: any, constraints: ValidationConstraints') => {  ''
             if (typeof value !== 'number'') throw new Error('Value must be a number'); }
             if (constraints.min !== undefined && value < constraints.min) { }
@@ -118,7 +118,7 @@ export class ConfigurationValidator {
         });
     }
     
-    /**
+    /**'
      * Setup validation rules for different configuration categories'
      */''
     private setupValidationRules(''';
@@ -140,7 +140,7 @@ export class ConfigurationValidator {
             type: 'number',') }'
             constraints: { min: 1, max: 20 })');
 ';
-        // メモリ管理設定の検証ルール''
+        // メモリ管理設定の検証ルール
         this.rules.set('memoryManagement.maxUsage', { ')'
             type: 'number',') }'
             constraints: { min: 10 * 1024 * 1024, max: 1024 * 1024 * 1024 } // 10MB-1GB)');'
@@ -158,7 +158,7 @@ export class ConfigurationValidator {
         this.rules.set('memoryManagement.leakDetection', {')'
             type: 'boolean')'),
 ';
-        // 品質制御設定の検証ルール''
+        // 品質制御設定の検証ルール
         this.rules.set('qualityControl.qualityLevel', {')'
             type: 'string',') }'
             constraints: { enum: ['low', 'medium', 'high', 'ultra'] })');'
@@ -177,7 +177,7 @@ export class ConfigurationValidator {
             type: 'string',') }'
             constraints: { enum: ['low', 'medium', 'high'] })');
 ';
-        // レンダリング最適化設定の検証ルール''
+        // レンダリング最適化設定の検証ルール
         this.rules.set('rendering.enableOptimization', { ')'
             type: 'boolean')'),';
 '';
@@ -193,7 +193,7 @@ export class ConfigurationValidator {
         this.rules.set('rendering.layerCaching', {')'
             type: 'boolean')'),
 ';
-        // モバイル最適化設定の検証ルール''
+        // モバイル最適化設定の検証ルール
         this.rules.set('mobile.enableOptimization', {')'
             type: 'boolean')'),';
 '';
@@ -207,7 +207,7 @@ export class ConfigurationValidator {
             type: 'boolean')'),';
 '';
         this.rules.set('mobile.touchOptimization', {')'
-            type: 'boolean'); }
+            type: 'boolean') }
     }
     
     /**
@@ -260,7 +260,7 @@ export class ConfigurationValidator {
                 } catch (error) { results.valid = false;
                 results.errors!.push({)
                     key);
-                    error: error instanceof Error ? error.message : String(error); }
+                    error: error instanceof Error ? error.message : String(error) }
                 });
             }
         }
@@ -272,7 +272,7 @@ export class ConfigurationValidator {
      * Validate configuration file
      * @param file - Configuration file path/name
      * @returns File validation result
-     */'
+     */
     async validateConfigFile(file: string): Promise<FileValidationResult> { ' }'
         console.log(`Validating config file: ${file)`'});
         
@@ -282,21 +282,21 @@ export class ConfigurationValidator {
                 file,
                 timestamp: Date.now(,
                 issues: [] })
-            })'
+            })
             // 基本的な検証')'
             if(!file || typeof file !== 'string'') {
                 validation.valid = false;'
                 validation.issues!.push({')'
-                    type: 'invalid_file_path',');
+                    type: 'invalid_file_path',')
             }'
                     message: 'Invalid file path provided'); }
             }
 ';
-            // ファイル拡張子チェック''
+            // ファイル拡張子チェック
             if (file && !file.match(/\.(json|js|yaml|yml)$/i)') { validation.issues!.push({''
                     type: 'unsupported_format',')';
                     message: 'File format may not be supported',')';
-                    severity: 'warning'); }
+                    severity: 'warning') }
             }
 
             return validation;
@@ -322,7 +322,7 @@ export class ConfigurationValidator {
             warnings: [] }
         },
 ';
-        // カテゴリ特有の検証ロジック''
+        // カテゴリ特有の検証ロジック
         switch(category') {'
             '';
             case 'frameStabilization':'';
@@ -360,27 +360,27 @@ export class ConfigurationValidator {
      */
     private async validateFrameStabilizationConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
 ';
-        // targetFPS vs minFPS consistency check''
+        // targetFPS vs minFPS consistency check
         if(config.targetFPS && config.minFPS && config.targetFPS <= config.minFPS') {'
             issues.push({''
                 type: 'consistency_error',')';
-                message: 'targetFPS must be greater than minFPS',');
+                message: 'targetFPS must be greater than minFPS',')
         }'
                 severity: 'error'); }
         }
 
         // Stability threshold reasonableness
-        if(config.stabilityThreshold && config.targetFPS) {'
+        if(config.stabilityThreshold && config.targetFPS) {
             '';
             if (config.stabilityThreshold > config.targetFPS * 0.5') {'
                 issues.push({''
                     type: 'configuration_warning',')';
-                    message: 'stabilityThreshold seems too high relative to targetFPS',');
+                    message: 'stabilityThreshold seems too high relative to targetFPS',')
         }'
                     severity: 'warning')'); }
             }
         }
-';
+';'
         return { ''
             valid: issues.filter(i = > i.severity === 'error').length === 0 };
     issues }
@@ -394,24 +394,24 @@ export class ConfigurationValidator {
      */
     private async validateMemoryManagementConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
 ';
-        // GC interval vs aggressive cleanup consistency''
+        // GC interval vs aggressive cleanup consistency
         if(config.aggressiveCleanup && config.gcInterval > 60000') {'
             issues.push({''
                 type: 'consistency_warning',')';
-                message: 'Long GC interval with aggressive cleanup may be ineffective',');
+                message: 'Long GC interval with aggressive cleanup may be ineffective',')
         }'
                 severity: 'warning'); }
         }
 ';
-        // Memory limit reasonableness''
+        // Memory limit reasonableness
         if(config.maxUsage && config.maxUsage < 50 * 1024 * 1024') {'
             issues.push({''
                 type: 'configuration_warning',')';
-                message: 'Very low memory limit may cause performance issues',');
+                message: 'Very low memory limit may cause performance issues',')
         }'
                 severity: 'warning')'); }
         }
-';
+';'
         return { ''
             valid: issues.filter(i = > i.severity === 'error').length === 0 };
     issues }
@@ -425,7 +425,7 @@ export class ConfigurationValidator {
      */''
     private async validateQualityControlConfig(config: Record<string, any>'): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
 ';
-        // Quality level vs min quality consistency''
+        // Quality level vs min quality consistency
         const qualityLevels = ['low', 'medium', 'high', 'ultra'];
         if(config.qualityLevel && config.minQuality) {
             const currentIndex = qualityLevels.indexOf(config.qualityLevel);
@@ -434,12 +434,12 @@ export class ConfigurationValidator {
             if (currentIndex < minIndex') {'
                 issues.push({''
                     type: 'consistency_error',')';
-                    message: 'qualityLevel cannot be lower than minQuality',');
+                    message: 'qualityLevel cannot be lower than minQuality',')
         }'
                     severity: 'error')'); }
             }
         }
-';
+';'
         return { ''
             valid: issues.filter(i = > i.severity === 'error').length === 0 };
     issues }
@@ -453,7 +453,7 @@ export class ConfigurationValidator {
      */
     private async validateRenderingConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
 ';
-        // Check for conflicting optimization settings''
+        // Check for conflicting optimization settings
         if(config.enableOptimization === false') {'
             '';
             const optimizationOptions = ['dirtyRegions', 'viewportCulling', 'batchRendering', 'layerCaching'];
@@ -468,7 +468,7 @@ export class ConfigurationValidator {
                 }'),
             }
         }
-';
+';'
         return { ''
             valid: issues.filter(i = > i.severity === 'error').length === 0 };
     issues }
@@ -482,15 +482,15 @@ export class ConfigurationValidator {
      */
     private async validateMobileConfig(config: Record<string, any>): Promise<SubValidationResult> { const issues: ValidationIssue[] = [],
 ';
-        // Battery optimization with thermal management''
+        // Battery optimization with thermal management
         if(config.batteryOptimization && !config.thermalManagement') {'
             issues.push({''
                 type: 'consistency_warning',')';
-                message: 'Battery optimization works better with thermal management enabled',');
+                message: 'Battery optimization works better with thermal management enabled',')
         }'
                 severity: 'warning')'); }
         }
-';
+';'
         return { ''
             valid: issues.filter(i = > i.severity === 'error').length === 0 };
     issues }
@@ -558,7 +558,7 @@ export class ConfigurationValidator {
      * Cleanup validator resources
      */'
     destroy(): void { this.validators.clear();''
-        this.rules.clear('')';
+        this.rules.clear()';
         console.log('[ConfigurationValidator] Validator destroyed''); }'
     }''
 }

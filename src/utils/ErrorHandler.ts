@@ -16,28 +16,28 @@ interface ErrorInfo { id: string,
     context: string,
     metadata: Record<string, any>;
     timestamp: number,
-    severity?: string; }
+    severity?: string }
 }
 
 interface ErrorStats { total: number,
     byType: Map<string, number>;
     byContext: Map<string, number>;
     critical: number,
-    recovered: number; }
+    recovered: number }
 }
 
 interface FallbackState { audioDisabled: boolean,
     canvasDisabled: boolean,
     storageDisabled: boolean,
     reducedEffects: boolean,
-    safeMode: boolean; }
-}'
+    safeMode: boolean }
+}
 '';
 type ErrorSeverity = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
 
 interface PerformanceMemory { usedJSHeapSize: number,
     jsHeapSizeLimit: number,
-    totalJSHeapSize?: number; }
+    totalJSHeapSize?: number }
 }
 
 declare global { interface Performance {
@@ -45,7 +45,7 @@ declare global { interface Performance {
     }
     }
     
-    interface Window { performance: Performance;
+    interface Window { performance: Performance
     }
     }
 }
@@ -70,7 +70,7 @@ export class ErrorHandler {
     public errorStats: ErrorStats,
     // Delegated properties from sub-components
     public recoveryStrategies: Map<string, Function>;
-    public fallbackState: FallbackState,';
+    public fallbackState: FallbackState,
     '';
     constructor(''';
         this.isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';''
@@ -117,11 +117,11 @@ export class ErrorHandler {
      */
     initialize(): void { if (this.isInitialized) return;
         
-        try {'
-            this.setupGlobalErrorHandlers();''
-            this.setupPerformanceMonitoring('')';
+        try {
+            this.setupGlobalErrorHandlers();
+            this.setupPerformanceMonitoring()';
             console.log('[ErrorHandler] Main controller initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[ErrorHandler] Failed to initialize:', error);
             // Fallback to safe mode
             this.enableSafeMode(); }
@@ -130,8 +130,8 @@ export class ErrorHandler {
     
     /**
      * Setup global error handlers
-     */'
-    private setupGlobalErrorHandlers(): void { // Browser environment only''
+     */
+    private setupGlobalErrorHandlers(): void { // Browser environment only
         if(!this.isBrowser') {'
             '';
             console.log('[ErrorHandler] Skipping global error handlers in non-browser environment'');
@@ -139,25 +139,25 @@ export class ErrorHandler {
             return; }
         }
         ';
-        // Unhandled JavaScript errors''
+        // Unhandled JavaScript errors
         window.addEventListener('error', (event: ErrorEvent') => {  ''
             this.handleError(event.error, 'GLOBAL_ERROR', {
-                filename: event.filename,);
+                filename: event.filename);
                 lineno: event.lineno);
                 colno: event.colno,) }
                 message: event.message); }'
             });''
         }');
         ';
-        // Unhandled Promise rejections''
+        // Unhandled Promise rejections
         window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent') => {  ''
             this.handleError(event.reason, 'PROMISE_REJECTION', {) }
                 promise: event.promise); }
             });'
-            event.preventDefault(); // Prevent default console output''
-        }');
+            event.preventDefault(); // Prevent default console output
+        });
         ';
-        // Resource loading errors''
+        // Resource loading errors
         window.addEventListener('error', (event: Event) => {  }
             const target = event.target as HTMLElement & { src?: string; href?: string; tagName?: string };'
             if(target && target !== (window as any) { this.handleError();' }'
@@ -174,7 +174,7 @@ export class ErrorHandler {
     /**
      * Setup performance monitoring
      */'
-    private setupPerformanceMonitoring(): void { // Browser environment only''
+    private setupPerformanceMonitoring(): void { // Browser environment only
         if(!this.isBrowser') {'
             '';
             console.log('[ErrorHandler] Skipping performance monitoring in non-browser environment');
@@ -191,13 +191,13 @@ export class ErrorHandler {
                 
                 // Memory usage over 80%
         }
-                if (usedMB / limitMB > 0.8) { }'
+                if (usedMB / limitMB > 0.8) { }
                     this.handleError();' }'
                         new Error(`High memory usage: ${Math.round(usedMB})}MB / ${Math.round(limitMB})}MB`'), ''
                         'MEMORY_WARNING', ;
                         { usedMB: Math.round(usedMB),
                             limitMB: Math.round(limitMB),
-                            percentage: Math.round((usedMB / limitMB) * 100); }
+                            percentage: Math.round((usedMB / limitMB) * 100) }
                         }
                     );
                 }
@@ -220,7 +220,7 @@ export class ErrorHandler {
                 // FPS below 30
             
             }
-                if (fps < 30) { }'
+                if (fps < 30) { }
                     this.handleError();' }'
                         new Error(`Low FPS detected: ${fps)`'}), ''
                         'PERFORMANCE_WARNING', ;
@@ -243,9 +243,9 @@ export class ErrorHandler {
     handleError(error: Error | any, context: string = 'UNKNOWN', metadata: Record<string, any> = { ): void {
         try {
             // Normalize error using analyzer
-            const normalizedError = this.analyzer.normalizeError(error);'
+            const normalizedError = this.analyzer.normalizeError(error);
             const errorInfo: ErrorInfo = {''
-                id: normalizedError.id || crypto.randomUUID('')';
+                id: normalizedError.id || crypto.randomUUID()';
                 message: normalizedError.message || 'Unknown error',')';
                 timestamp: typeof normalizedError.timestamp === 'number' ? normalizedError.timestamp : Date.now(),
                 ...normalizedError,
@@ -261,17 +261,17 @@ export class ErrorHandler {
             
             // Determine severity using analyzer
             const severity: ErrorSeverity = this.analyzer.determineSeverity(errorInfo) as ErrorSeverity,
-            ';
-            // Log error using logger''
+            ;
+            // Log error using logger
             this.logger.logStructuredError(errorInfo, severity');
             ';
-            // Attempt recovery using recovery system''
+            // Attempt recovery using recovery system
             if (severity !== 'LOW') { this.recovery.attemptRecovery(errorInfo); }
             }'
             '';
             // Notify user using reporter (for critical errors');''
             if (severity === 'CRITICAL') { this.reporter.notifyUser(errorInfo);' }'
-            } catch (handlingError') { // Error in error handling - ultimate fallback''
+            } catch (handlingError) { // Error in error handling - ultimate fallback
             console.error('[ErrorHandler] Critical: Error in error handling:', handlingError);
             this.enableSafeMode(); }
         }
@@ -280,10 +280,10 @@ export class ErrorHandler {
     /**
      * Enable safe mode - ultimate fallback'
      */''
-    private enableSafeMode('')';
+    private enableSafeMode()';
         console.warn('[ErrorHandler] Safe mode enabled - reduced functionality active');
         ';
-        // Notify user if possible''
+        // Notify user if possible
         if(this.isBrowser && document.body') {'
             '';
             const safeMsg = document.createElement('div'');''
@@ -326,14 +326,14 @@ export class ErrorHandler {
     clearErrorLog(): void { this.errorLog = [];
         this.errorStats.total = 0;'
         this.errorStats.byType.clear();''
-        this.errorStats.byContext.clear('')';
+        this.errorStats.byContext.clear()';
         console.log('[ErrorHandler] Error log cleared'); }
     }
     
     /**
      * Test error handling (for development)'
      */''
-    testErrorHandling('')';
+    testErrorHandling()';
         if (process.env.NODE_ENV === 'development' || this.isNode') {'
         '';
             console.log('[ErrorHandler] Testing error handling...'');
@@ -364,6 +364,6 @@ let errorHandlerInstance: ErrorHandler | null = null,
 /**
  * Get singleton ErrorHandler instance
  * @returns ErrorHandler instance
- */'
+ */
 export function getErrorHandler(): ErrorHandler { if (!errorHandlerInstance) {''
         errorHandlerInstance = new ErrorHandler(' })

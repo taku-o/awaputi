@@ -11,7 +11,7 @@ interface ChartConfig { label: string,
     min: number,
     max: number,
     warning: number,
-    critical: number; }
+    critical: number }
 }
 
 interface ChartConfigs { [key: string]: ChartConfig,
@@ -26,13 +26,13 @@ interface Metrics { fps: number,
     memory: number,
     drawCalls: number,
     particleCount: number,
-    effectCount: number; }
+    effectCount: number }
 }
-';
+';'
 interface Alert { ''
     level: 'warning' | 'critical',
     metric: string,
-    message: string; }
+    message: string }
 }
 
 interface ProfilingResults { component: string,
@@ -44,18 +44,18 @@ interface ProfilingResults { component: string,
             avgTime: number,
             minTime: number,
             maxTime: number,
-            totalTime: number; }
+            totalTime: number }
         };
     };
 }
 
 interface Threshold { warning: number,
-    critical: number; }
+    critical: number }
 }
 
 interface PanelState { thresholds: {
         fps?: Threshold,
-        memory?: Threshold;
+        memory?: Threshold
     }
     };
 }
@@ -88,8 +88,8 @@ export class PerformancePanel {
         
         // パフォーマンスモニター
         this.monitor = new AdvancedPerformanceMonitor(gameEngine);
-        ';
-        // チャート管理''
+        ;
+        // チャート管理
         this.charts = new Map(''';
                 label: 'FPS', '';
                 color: '#00ff00', ;
@@ -136,10 +136,10 @@ export class PerformancePanel {
         this.setupAlertCallbacks(); }
     }'
 '';
-    private createUI('')';
+    private createUI()';
         const panelElement = document.getElementById('panel-performance');''
         if (!panelElement') return;
-        ';
+        ';'
         panelElement.innerHTML = `'';
             <div class="performance-panel">";
                 <!-- リアルタイム統計 -->"";
@@ -243,7 +243,7 @@ export class PerformancePanel {
         this.profilingContainer = panelElement.querySelector('#profile-results');
     }'
 '';
-    private addStyles('')';
+    private addStyles()';
         if (document.getElementById('performance-panel-styles')') return;'
         '';
         const style = document.createElement('style'');''
@@ -279,13 +279,13 @@ export class PerformancePanel {
             
             .stat-value { font-size: 16px,
                 font-weight: bold,
-                color: #fff; }
+                color: #fff }
             }
             
-            .stat-value.warning { color: #ffaa00; }
+            .stat-value.warning { color: #ffaa00 }
             }
             
-            .stat-value.critical { color: #ff3333; }
+            .stat-value.critical { color: #ff3333 }
             }
             
             .performance-alerts { margin-bottom: 15px, }
@@ -315,7 +315,7 @@ export class PerformancePanel {
             .no-alerts, .no-results { color: #666,
                 font-style: italic,
                 text-align: center,
-                padding: 20px; }
+                padding: 20px }
             }
             
             .charts-container { background: rgba(0, 0, 0, 0.3),
@@ -325,7 +325,7 @@ export class PerformancePanel {
             }
             
             .charts-container canvas { margin-bottom: 10px,
-                border: 1px solid #333; }
+                border: 1px solid #333 }
             }
             
             .profiling-controls { display: flex,
@@ -339,14 +339,14 @@ export class PerformancePanel {
                 border: 1px solid #555,
                 color: white,
                 border-radius: 3px,
-                cursor: pointer; }
+                cursor: pointer }
             }
             
-            .profiling-controls button:hover:not(:disabled) { background: #444; }
+            .profiling-controls button:hover:not(:disabled) { background: #444 }
             }
             
             .profiling-controls button:disabled { opacity: 0.5,
-                cursor: not-allowed; }
+                cursor: not-allowed }
             }
             
             .profiling-results { background: rgba(0, 0, 0, 0.3),
@@ -372,11 +372,11 @@ export class PerformancePanel {
             .threshold-item { margin-bottom: 10px,
                 display: flex,
                 align-items: center,
-                gap: 10px; }
+                gap: 10px }
             }
             
             .threshold-item label { font-size: 11px,
-                color: #ccc; }
+                color: #ccc }
             }
             
             .threshold-item input { width: 50px,
@@ -393,16 +393,16 @@ export class PerformancePanel {
                 border: none,
                 color: white,
                 border-radius: 3px,
-                cursor: pointer; }
+                cursor: pointer }
             }
             
-            #threshold-apply:hover { background: #0088ff; }
+            #threshold-apply:hover { background: #0088ff }
             }
         `;
         document.head.appendChild(style);
     }
 
-    private setupCharts(): void { // 各メトリクスのチャートを作成'
+    private setupCharts(): void { // 各メトリクスのチャートを作成
         for(const [metric, config] of Object.entries(this.chartConfig) {' }'
             const canvas = document.getElementById(`chart-${metric.replace(/([A-Z]')/g, '-$1').toLowerCase(})}`) as HTMLCanvasElement;
             if(canvas) {
@@ -414,7 +414,7 @@ export class PerformancePanel {
         }
     }'
 '';
-    private bindEvents('')';
+    private bindEvents()';
         const startBtn = document.getElementById('profile-start'') as HTMLButtonElement;''
         const stopBtn = document.getElementById('profile-stop'') as HTMLButtonElement;''
         const componentSelect = document.getElementById('profile-component'') as HTMLSelectElement;'
@@ -438,7 +438,7 @@ export class PerformancePanel {
             }
         };
         ';
-        // 閾値設定''
+        // 閾値設定
         const applyButton = document.getElementById('threshold-apply'') as HTMLButtonElement;''
         applyButton?.addEventListener('click', () => { this.applyThresholds(); }
         };
@@ -475,9 +475,9 @@ export class PerformancePanel {
             this.updateInterval = null; }
         }
     }
-';
+';'
     private updateStats(): void { ''
-        const metrics = this.monitor.getCurrentMetrics('')';
+        const metrics = this.monitor.getCurrentMetrics()';
         const fpsElement = document.getElementById('perf-fps');
         if(fpsElement) {'
             '';
@@ -486,7 +486,7 @@ export class PerformancePanel {
             this.updateStatClass(fpsElement, 'fps', metrics.fps'); }
         }
         ';
-        // Frame Time''
+        // Frame Time
         const frameTimeElement = document.getElementById('perf-frame-time');
         if(frameTimeElement) {'
             '';
@@ -495,7 +495,7 @@ export class PerformancePanel {
             this.updateStatClass(frameTimeElement, 'frameTime', metrics.frameTime'); }
         }
         ';
-        // Memory''
+        // Memory
         const memoryElement = document.getElementById('perf-memory');
         if(memoryElement) {'
             '';
@@ -504,41 +504,41 @@ export class PerformancePanel {
             this.updateStatClass(memoryElement, 'memory', metrics.memory'); }
         }
         ';
-        // Draw Calls''
+        // Draw Calls
         const drawCallsElement = document.getElementById('perf-draw-calls');
         if(drawCallsElement) {'
             '';
-            drawCallsElement.textContent = metrics.drawCalls.toString('');
+            drawCallsElement.textContent = metrics.drawCalls.toString();
         }'
             this.updateStatClass(drawCallsElement, 'drawCalls', metrics.drawCalls'); }
         }
         ';
-        // Particles''
+        // Particles
         const particlesElement = document.getElementById('perf-particles');
         if(particlesElement) {'
             '';
-            particlesElement.textContent = metrics.particleCount.toString('')';
+            particlesElement.textContent = metrics.particleCount.toString()';
         const effectsElement = document.getElementById('perf-effects');
         if (effectsElement) {
         }
             effectsElement.textContent = metrics.effectCount.toString(); }
         }
     }
-';
+';'
     private updateStatClass(element: HTMLElement, metric: string, value: number): void { const thresholds = (this.monitor as any).thresholds[metric];''
         if (!thresholds') return;'
         '';
         element.classList.remove('warning', 'critical'');'
         '';
         if(metric === 'fps') {'
-            // FPSは低い値が問題''
+            // FPSは低い値が問題
             if (value < thresholds.critical') {'
         }'
                 element.classList.add('critical');' }'
             } else if (value < thresholds.warning') { ''
                 element.classList.add('warning'); }
             }'
-        } else {  // その他は高い値が問題''
+        } else {  // その他は高い値が問題
             if (value > thresholds.critical') {' }'
                 element.classList.add('critical');' }'
             } else if (value > thresholds.warning') { ''
@@ -552,7 +552,7 @@ export class PerformancePanel {
         if (!this.alertsContainer) return;'
 '';
         if(alerts.length === 0') {'
-            ';
+            ';'
         }'
             this.alertsContainer.innerHTML = '<div class="no-alerts">No active alerts</div>'; }'
         } else {  ' }'
@@ -560,14 +560,14 @@ export class PerformancePanel {
                 <div class="alert-item ${alert.level}">
                     <strong>${alert.metric}:</strong> ${alert.message}"
                 </div>"";
-            `").join('');
+            `").join();
         }
     }
 
     private displayAlert(alert: Alert): void { // 新しいアラートの表示（オプション: 通知やアニメーション） }
         console.log(`Performance Alert [${alert.level}]: ${alert.message)`});
     }
-';
+';'
     private displayProfilingResults(results: ProfilingResults): void { ''
         if (!this.profilingContainer') return;'
 '';
@@ -599,14 +599,14 @@ export class PerformancePanel {
         const fpsCritical = parseFloat(fpsCriticalElement.value');''
         this.monitor.setThreshold('fps', fpsWarning, fpsCritical');
         ';
-        // メモリ閾値''
+        // メモリ閾値
         const memoryWarningElement = document.getElementById('threshold-memory-warning'') as HTMLInputElement;''
         const memoryCriticalElement = document.getElementById('threshold-memory-critical') as HTMLInputElement;'
         const memoryWarning = parseFloat(memoryWarningElement.value);''
         const memoryCritical = parseFloat(memoryCriticalElement.value');''
         this.monitor.setThreshold('memory', memoryWarning, memoryCritical');
         ';
-        // チャート設定も更新''
+        // チャート設定も更新
         if (this.charts.has('fps')') {''
             const chart = this.charts.get('fps')!;''
             (chart as any).updateThresholds(fpsWarning, fpsCritical'); }'
@@ -616,7 +616,7 @@ export class PerformancePanel {
             (chart as any).updateThresholds(memoryWarning, memoryCritical'); }
         }
         ';
-        // フィードバック''
+        // フィードバック
         const button = document.getElementById('threshold-apply'') as HTMLButtonElement;''
         button.textContent = 'Applied!';''
         setTimeout((') => {  ' }'
@@ -630,7 +630,7 @@ export class PerformancePanel {
             }
         },
     }
-';
+';'
     setState(state: PanelState): void { if (state.thresholds) {''
             if(state.thresholds.fps') {'
                 '';
@@ -665,9 +665,9 @@ export class PerformancePanel {
         this.charts.clear();
         
         // モニターのクリーンアップ
-        if(this.monitor) {'
+        if(this.monitor) {
             '';
-            this.monitor.destroy('')';
+            this.monitor.destroy()';
         const style = document.getElementById('performance-panel-styles');'
         if (style) {'
         }'

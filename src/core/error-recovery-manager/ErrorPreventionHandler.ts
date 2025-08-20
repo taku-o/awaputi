@@ -20,32 +20,32 @@ export interface PreventionConfig { doubleClickPrevention: number,
     safetyDelays: SafetyDelayConfig,
     warningThresholds: WarningThresholdConfig,
     rapidClickThreshold: number,
-    maxClickHistorySize: number; }
+    maxClickHistorySize: number }
 }
 
 export interface SafetyDelayConfig { gameReset: number,
     destructiveAction: number,
     criticalAction: number,
-    settingsChange: number; }
+    settingsChange: number }
 }
 
 export interface WarningThresholdConfig { lowHP: number,
     lowScore: number,
     timeRunningOut: number,
-    highErrorRate: number; }
+    highErrorRate: number }
 }
 
 export interface PreventionState { lastClickTimes: Map<string, number>,
     clickHistories: Map<string, number[]>,
     pendingConfirmations: Map<string, ConfirmationContext>,
-    warningThresholds: WarningThresholdConfig;
+    warningThresholds: WarningThresholdConfig
     }
 }
 
 export interface CriticalActionDefinition { classes: string[],
     attributes: string[],
     patterns: string[],
-    selectors: string[]; }
+    selectors: string[] }
 }
 
 export interface UIComponents { confirmDialog: HTMLElement,
@@ -61,7 +61,7 @@ export interface ConfirmationContext { title: string,
     onConfirm: () => void,
     onCancel: () => void,
     timestamp: number,
-    priority: ConfirmationPriority;
+    priority: ConfirmationPriority
     }
 }
 
@@ -70,7 +70,7 @@ export interface GameStateWarning { type: WarningType,
     message: string,
     suggestion?: string;
     timestamp: number,
-    acknowledged: boolean; }
+    acknowledged: boolean }
 }
 
 export interface GameState { hp: number,
@@ -80,7 +80,7 @@ export interface GameState { hp: number,
     combo: number,
     level: number,
     errors: number,
-    totalActions: number; }
+    totalActions: number }
 }
 
 export interface PreventionActionInfo { type: PreventionType,
@@ -110,7 +110,7 @@ export interface PreventionStatistics { preventedDoubleClicks: number,
     warningsGenerated: number,
     actionsConfirmed: number,
     actionsCancelled: number,
-    averageConfirmationTime: number; }
+    averageConfirmationTime: number }
 }
 
 export interface ElementIdentifier { id?: string;
@@ -124,14 +124,14 @@ export interface ClickAnalysis { isDoubleClick: boolean,
     isRapidClick: boolean,
     timeSinceLastClick: number,
     clickFrequency: number,
-    pattern: ClickPattern;
+    pattern: ClickPattern
     }
 }
 
 export interface ConfirmationResult { confirmed: boolean,
     timestamp: number,
     responseTime: number,
-    element: HTMLElement;
+    element: HTMLElement
     }
 }
 
@@ -159,14 +159,14 @@ export const DEFAULT_PREVENTION_CONFIG: PreventionConfig = { doubleClickPreventi
     rapidClickThreshold: 5,
     maxClickHistorySize: 10;
 } as const,
-';
+';'
 export const CRITICAL_ACTIONS: CriticalActionDefinition = { ''
     classes: ['reset-btn', 'delete-btn', 'clear-btn', 'new-game-btn', 'quit-btn', 'logout-btn'],'';
     attributes: ['data-confirm-action', 'data-destructive', 'data-critical'],'';
     patterns: ['reset', 'delete', 'clear', 'newgame', 'quit', 'logout', 'restart'],'';
     selectors: ['.danger-action', '.critical-button', '[role="button"][aria-describedby*="warning"]'] }
 } as const;
-';
+';'
 export const WARNING_MESSAGES = { ''
     reset: 'この操作により、現在の進行状況が失われます。','';
     delete: 'このデータは削除すると復元できません。','';
@@ -175,7 +175,7 @@ export const WARNING_MESSAGES = { ''
     quit: 'ゲームを終了します。進行状況は保存されます。','';
     logout: 'ログアウトします。未保存のデータは失われる可能性があります。' }
 } as const,
-';
+';'
 export const DIALOG_TEXTS = { ''
     confirmTitle: '操作の確認','';
     cancelButton: 'キャンセル','';
@@ -189,8 +189,8 @@ export const CLICK_THRESHOLDS = { DOUBLE_CLICK_MAX: 500,
     SPAM_CLICK_COUNT: 10,
     ACCIDENTAL_CLICK_THRESHOLD: 50 }
 } as const,
-
-// ユーティリティ関数'
+'
+// ユーティリティ関数
 export function generateElementId(element: HTMLElement): string { ''
     if (element.id') return element.id;'
     '';
@@ -207,7 +207,7 @@ export function generateElementId(element: HTMLElement): string { ''
     
     return `${element.tagName}@${position}`;
 }
-';
+';'
 export function analyzeClickPattern(clickHistory: number[], currentTime: number): ClickAnalysis { ''
     if(clickHistory.length === 0') {
         return { isDoubleClick: false,
@@ -222,17 +222,17 @@ export function analyzeClickPattern(clickHistory: number[], currentTime: number)
     const lastClickTime = clickHistory[clickHistory.length - 1];
     const timeSinceLastClick = currentTime - lastClickTime;
     ';
-    // 最近1秒間のクリック数''
+    // 最近1秒間のクリック数
     const recentClicks = clickHistory.filter(time => currentTime - time < CLICK_THRESHOLDS.RAPID_CLICK_WINDOW');
     const clickFrequency = recentClicks.length;
     ';
-    // パターン判定''
+    // パターン判定
     let pattern: ClickPattern = 'normal',
     const isDoubleClick = timeSinceLastClick < CLICK_THRESHOLDS.DOUBLE_CLICK_MAX;
     const isRapidClick = clickFrequency >= CLICK_THRESHOLDS.RAPID_CLICK_COUNT;'
     '';
     if(clickFrequency >= CLICK_THRESHOLDS.SPAM_CLICK_COUNT') {'
-        ';
+        ';'
     }'
         pattern = 'spam';' }'
     } else if (isRapidClick') { ''
@@ -269,11 +269,11 @@ export function isCriticalElement(element: HTMLElement): boolean { // クラス�
             return element.matches(selector); }
         } catch { return false; }
         }
-    });'
+    });
     '';
     if (matchesCriticalSelector') return true;
     ';
-    // テキストパターンチェック''
+    // テキストパターンチェック
     const elementText = (element.textContent || '').toLowerCase(').replace(/\s/g, '');
     const hasPattern = CRITICAL_ACTIONS.patterns.some(pattern => );
         elementText.includes(pattern.toLowerCase();
@@ -288,7 +288,7 @@ export function getActionWarningMessage(element: HTMLElement): string | null { f
         }
     }
     ';
-    // データ属性から警告メッセージを取得''
+    // データ属性から警告メッセージを取得
     const customWarning = element.getAttribute('data-warning');
     if (customWarning) return customWarning;
     
@@ -298,9 +298,9 @@ export function getActionWarningMessage(element: HTMLElement): string | null { f
 export function createConfirmationEvent(element: HTMLElement, confirmed: boolean'): CustomEvent { ''
     return new CustomEvent('confirmation-result', {
         detail: {
-            element,);
+            element);
             confirmed);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         },
         bubbles: true,
         cancelable: false;
@@ -324,9 +324,9 @@ export class ErrorPreventionHandler {
         this.criticalActions = { ...CRITICAL_ACTIONS };
         
         // 状態管理初期化
-        this.state = { lastClickTimes: new Map(),'
+        this.state = { lastClickTimes: new Map(),
             clickHistories: new Map(),'';
-            pendingConfirmations: new Map('')';
+            pendingConfirmations: new Map()';
         console.log('[ErrorPreventionHandler] Component initialized'), }
     }
 
@@ -353,15 +353,15 @@ export class ErrorPreventionHandler {
         const analysis = analyzeClickPattern(clickHistory, now);
         
         // ダブルクリック防止
-        if(this.config.doubleClickPrevention > 0 && analysis.isDoubleClick) {'
+        if(this.config.doubleClickPrevention > 0 && analysis.isDoubleClick) {
             event.preventDefault();''
             event.stopPropagation(''';
                 type: 'input','';
                 subtype: 'doubleClick','';
                 severity: 'low',';
                 element,'';
-                message: '同じ要素を短時間で複数回クリックしました',);
-                timestamp: now);
+                message: '同じ要素を短時間で複数回クリックしました');
+                timestamp: now)
         }
                 preventionTime: analysis.timeSinceLastClick,) }
                 metadata: { pattern: analysis.pattern }),
@@ -370,7 +370,7 @@ export class ErrorPreventionHandler {
         }
         
         // 連続クリック防止
-        if(analysis.isRapidClick) {'
+        if(analysis.isRapidClick) {
             event.preventDefault();''
             event.stopPropagation(''';
                 type: 'input','';
@@ -380,7 +380,7 @@ export class ErrorPreventionHandler {
                 message: analysis.pattern === 'spam' ? 'スパムクリックが検出されました' : 'クリックが速すぎます',
                 timestamp: now,
                 metadata: { )
-                    pattern: analysis.pattern);
+                    pattern: analysis.pattern)
         }
                     frequency: analysis.clickFrequency) }
                 }),
@@ -420,9 +420,9 @@ export class ErrorPreventionHandler {
 
     /**
      * アクション確認を要求
-     */ : undefined'
+     */ : undefined
     private requestActionConfirmation(element: HTMLElement): void { ''
-        const actionName = element.textContent? .trim('')';
+        const actionName = element.textContent? .trim()';
                           element.getAttribute('aria-label'') || '';
                           element.getAttribute('title'') || '';
                           '操作';
@@ -471,7 +471,7 @@ export class ErrorPreventionHandler {
             return; }
         }
         ';
-        // コンテンツを設定''
+        // コンテンツを設定
         const titleElement = dialog.querySelector('.confirm-title'');''
         const descriptionElement = dialog.querySelector('.confirm-description'');''
         const warningElement = dialog.querySelector('.confirm-warning');
@@ -480,7 +480,7 @@ export class ErrorPreventionHandler {
         if (descriptionElement) descriptionElement.textContent = context.description;
         
         // 警告メッセージ
-        if(warningElement) {'
+        if(warningElement) {
             '';
             if (context.warning') {''
                 warningElement.style.display = 'block';''
@@ -496,22 +496,22 @@ export class ErrorPreventionHandler {
         
         // 優先度に応じたスタイル設定
         dialog.className = `confirm-dialog priority-${context.priority}`;
-        ';
-        // ボタンイベント''
+        ;
+        // ボタンイベント
         this.setupConfirmDialogEvents(dialog, context');
         ';
-        // ダイアログを表示''
+        // ダイアログを表示
         dialog.classList.remove('hidden'');
         ';
-        // フォーカス管理（キャンセルボタンから開始）''
+        // フォーカス管理（キャンセルボタンから開始）
         const cancelBtn = dialog.querySelector('.confirm-btn.cancel') as HTMLButtonElement;
         if(cancelBtn) {'
-            ';
+            ';'
         }'
             setTimeout(() => cancelBtn.focus(), 100'); }
         }
         ';
-        // アクセシビリティ''
+        // アクセシビリティ
         dialog.setAttribute('aria-modal', 'true'');''
         dialog.setAttribute('role', 'alertdialog');
         
@@ -522,7 +522,7 @@ export class ErrorPreventionHandler {
     }
 
     /**
-     * 確認ダイアログのイベントを設定'
+     * 確認ダイアログのイベントを設定
      */''
     private setupConfirmDialogEvents(dialog: HTMLElement, context: ConfirmationContext'): void { ''
         const cancelBtn = dialog.querySelector('.confirm-btn.cancel'') as HTMLButtonElement;''
@@ -545,19 +545,19 @@ export class ErrorPreventionHandler {
         
         cancelBtn.parentNode? .replaceChild(newCancelBtn, cancelBtn);
         proceedBtn.parentNode?.replaceChild(newProceedBtn, proceedBtn);
-        ';
-        // イベントリスナー設定''
-        const startTime = Date.now('')';
+        ;
+        // イベントリスナー設定
+        const startTime = Date.now()';
         newCancelBtn.addEventListener('click', () => {  this.hideConfirmDialog();'
             this.recordConfirmationResult(context, false, Date.now() - startTime);''
-            context.onCancel('')';
+            context.onCancel()';
         newProceedBtn.addEventListener('click', () => {
             this.hideConfirmDialog();
             this.recordConfirmationResult(context, true, Date.now() - startTime); }
             context.onConfirm(); }
         };
         
-        // キーボードイベント : undefined'
+        // キーボードイベント : undefined
         const keyHandler = (e: KeyboardEvent): void => {  ''
             switch(e.key') {'
                 '';
@@ -565,28 +565,28 @@ export class ErrorPreventionHandler {
                     e.preventDefault();
                     this.hideConfirmDialog();'
                     this.recordConfirmationResult(context, false, Date.now() - startTime);''
-                    context.onCancel('')';
+                    context.onCancel()';
                     document.removeEventListener('keydown', keyHandler');
                     break;'
                 '';
                 case 'Enter':;
                     if (document.activeElement === newProceedBtn) {'
                         e.preventDefault();''
-                        newProceedBtn.click('')';
+                        newProceedBtn.click()';
         document.addEventListener('keydown', keyHandler);
         
         // ダイアログ外クリックで閉じる
         const outsideClickHandler = (e: MouseEvent): void => {
             if(!dialog.contains(e.target as Node) {
-                this.hideConfirmDialog();'
+                this.hideConfirmDialog();
                 this.recordConfirmationResult(context, false, Date.now() - startTime);'
             }'
-                context.onCancel('') }'
+                context.onCancel() }'
                 document.removeEventListener('click', outsideClickHandler); }
             }
         };
         ';
-        // 少し遅れて設定（現在のクリックイベントを避けるため）''
+        // 少し遅れて設定（現在のクリックイベントを避けるため）
         setTimeout((') => {  ' }'
             document.addEventListener('click', outsideClickHandler); }
         }, 100);
@@ -622,7 +622,7 @@ export class ErrorPreventionHandler {
 
     /**
      * 確認ダイアログを非表示
-     */'
+     */
     private hideConfirmDialog(): void { const dialog = this.ui.confirmDialog;''
         if(dialog') {'
             '';
@@ -639,9 +639,9 @@ export class ErrorPreventionHandler {
     private executeConfirmedAction(element: HTMLElement): void { const delay = this.getSafetyDelay(element);'
         '';
         setTimeout((') => { '
-            // 確認済みクリックイベントを作成''
+            // 確認済みクリックイベントを作成
             const clickEvent = new MouseEvent('click', {
-                bubbles: true,);
+                bubbles: true);
                 cancelable: true) }
                 view: window }
             }),
@@ -663,17 +663,17 @@ export class ErrorPreventionHandler {
 
     /**
      * アクションをキャンセル
-     */'
+     */
     private cancelAction(element: HTMLElement): void { const elementId = generateElementId(element);''
         this.state.pendingConfirmations.delete(elementId');
-        ';
+        ';'
         this.reportPreventionAction({''
             type: 'interface','';
             subtype: 'actionCancelled',')';
             severity: 'low')';
             element,')';
             message: 'ユーザーがアクションをキャンセルしました'),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
 
@@ -700,31 +700,31 @@ export class ErrorPreventionHandler {
     checkGameStateWarnings(gameState: GameState): GameStateWarning[] { const warnings: GameStateWarning[] = [],
         const now = Date.now();
         ';
-        // HP警告''
+        // HP警告
         if(gameState.hp <= this.state.warningThresholds.lowHP') {'
             warnings.push({''
                 type: 'gameplay','';
                 severity: gameState.hp <= this.state.warningThresholds.lowHP / 2 ? 'critical' : 'high','';
                 message: 'HPが危険レベルです',')';
                 suggestion: 'ピンクバブルでHP回復を推奨');
-                timestamp: now,);
+                timestamp: now,)
         }
                 acknowledged: false); }
         }
         ';
-        // スコア警告''
+        // スコア警告
         if(gameState.score <= this.state.warningThresholds.lowScore') {'
             warnings.push({''
                 type: 'gameplay','';
                 severity: 'medium','';
                 message: 'スコアが低めです',')';
                 suggestion: 'コンボを狙ってスコアアップ');
-                timestamp: now,);
+                timestamp: now,)
         }
                 acknowledged: false); }
         }
         ';
-        // 時間警告''
+        // 時間警告
         if(gameState.timeRemaining <= this.state.warningThresholds.timeRunningOut') {'
             '';
             const severity: WarningSeverity = gameState.timeRemaining <= 5000 ? 'critical' : 'high',';
@@ -733,12 +733,12 @@ export class ErrorPreventionHandler {
                 severity,'';
                 message: '残り時間が少なくなっています',')';
                 suggestion: '集中してプレイしてください');
-                timestamp: now,);
+                timestamp: now,)
         }
                 acknowledged: false); }
         }
         
-        // エラー率警告'
+        // エラー率警告
         const errorRate = gameState.totalActions > 0 ? gameState.errors / gameState.totalActions: 0,'';
         if(errorRate >= this.state.warningThresholds.highErrorRate') {'
             warnings.push({''
@@ -746,7 +746,7 @@ export class ErrorPreventionHandler {
                 severity: errorRate >= 0.5 ? 'high' : 'medium','';
                 message: 'エラー率が高くなっています',')';
                 suggestion: 'ゆっくりと正確な操作を心がけてください');
-                timestamp: now,);
+                timestamp: now,)
         }
                 acknowledged: false); }
         }
@@ -768,8 +768,8 @@ export class ErrorPreventionHandler {
      * 防止アクションを報告
      */
     private reportPreventionAction(actionInfo: PreventionActionInfo): void { // イベントを発火
-        if(this.onPreventionAction) {'
-            ';
+        if(this.onPreventionAction) {
+            ';'
         }'
             this.onPreventionAction(actionInfo'); }
         }'
@@ -820,7 +820,7 @@ export class ErrorPreventionHandler {
     /**
      * 統計情報をリセット'
      */''
-    resetStatistics('')';
+    resetStatistics()';
         console.log('[ErrorPreventionHandler] Statistics reset');
     }
 
@@ -828,7 +828,7 @@ export class ErrorPreventionHandler {
      * クリック履歴をクリア
      */'
     clearClickHistories(): void { this.state.lastClickTimes.clear();''
-        this.state.clickHistories.clear('')';
+        this.state.clickHistories.clear()';
         console.log('[ErrorPreventionHandler] Click histories cleared'); }
     }
 
@@ -838,9 +838,9 @@ export class ErrorPreventionHandler {
     destroy(): void { // 確認待ちダイアログを全て閉じる
         this.state.pendingConfirmations.clear();
         this.hideConfirmDialog();
-        ';
-        // 状態をクリア''
-        this.clearClickHistories('')';
+        ;
+        // 状態をクリア
+        this.clearClickHistories()';
         console.log('[ErrorPreventionHandler] Component destroyed''); }'
     }''
 }

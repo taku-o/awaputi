@@ -12,13 +12,13 @@ interface TTSConfig { enabled: boolean,
     queueAnnouncements: boolean,
     maxQueueSize: number,
     interruptOnNew: boolean,
-    pauseBetweenAnnouncements: number; }
+    pauseBetweenAnnouncements: number }
 }
 
 interface SpeechSettings { rate: number,
     pitch: number,
     volume: number,
-    voice: SpeechSynthesisVoice | null; }
+    voice: SpeechSynthesisVoice | null }
 }
 
 interface AnnouncementOptions { priority?: 'normal' | 'high';
@@ -26,7 +26,7 @@ interface AnnouncementOptions { priority?: 'normal' | 'high';
     speechSettings?: Partial<SpeechSettings>;
     }
 }
-';
+';'
 interface Announcement { text: string,''
     priority: 'normal' | 'high',
     interrupt: boolean,
@@ -40,21 +40,21 @@ interface PerformanceMetrics { totalAnnouncements: number,
     queuedAnnouncements: number,
     completedAnnouncements: number,
     averageProcessingTime: number,
-    speechDurations: number[]; }
+    speechDurations: number[] }
 }
 
 interface EventHandlers { onStart: ((announcement: Announcement) => void) | null,
     onEnd: ((announcement: Announcement, duration: number) => void) | null;
     onError: ((event: SpeechSynthesisErrorEvent, announcement: Announcement) => void) | null;
     onPause: ((announcement: Announcement) => void) | null,
-    onResume: ((announcement: Announcement) => void) | null; }
+    onResume: ((announcement: Announcement) => void) | null }
 }
 
 interface VoiceInfo { name: string,
     lang: string,
     gender: string,
     localService: boolean,
-    default: boolean; }
+    default: boolean }
 }
 
 interface QueueStatus { queueLength: number,
@@ -63,7 +63,7 @@ interface QueueStatus { queueLength: number,
         text: string,
         rate: number,
         pitch: number,
-        volume: number; }
+        volume: number }
     } | null;
 }
 
@@ -71,10 +71,10 @@ interface PerformanceReport { totalAnnouncements: number,
     queuedAnnouncements: number,
     completedAnnouncements: number,
     averageSpeechDuration: number,
-    queueEfficiency: number; }
+    queueEfficiency: number }
 }
 
-interface CurrentSpeechSettings extends SpeechSettings { voiceName: string; }
+interface CurrentSpeechSettings extends SpeechSettings { voiceName: string }
 }
 
 export class TextToSpeechController {
@@ -142,7 +142,7 @@ export class TextToSpeechController {
 
     /**
      * Initialize text-to-speech controller
-     */'
+     */
     initialize(): boolean { ''
         if(!this.config.enabled') {'
             '';
@@ -151,15 +151,15 @@ export class TextToSpeechController {
             return false; }
         }
 ';
-        // Check for speech synthesis support''
+        // Check for speech synthesis support
         if('speechSynthesis' in window) {
             this.speechSynthesis = window.speechSynthesis;
             this.loadVoices();
             
             // Listen for voice changes
-            if (speechSynthesis.onvoiceschanged !== undefined) {'
+            if (speechSynthesis.onvoiceschanged !== undefined) {
                 speechSynthesis.onvoiceschanged = () => { ''
-                    this.loadVoices('');
+                    this.loadVoices();
         }'
             console.log('TextToSpeechController: Initialized with speech synthesis support''), }
             return true; }'
@@ -177,8 +177,8 @@ export class TextToSpeechController {
         this.voices = this.speechSynthesis.getVoices();
         
         // Set default voice if not already set
-        if(!this.currentVoice && this.voices.length > 0) {'
-            // Try to find system default or English voice''
+        if(!this.currentVoice && this.voices.length > 0) {
+            // Try to find system default or English voice
             this.currentVoice = this.voices.find(voice => voice.default') ||'';
                               this.voices.find(voice => voice.lang.startsWith('en') ||;
                               this.voices[0];
@@ -199,7 +199,7 @@ export class TextToSpeechController {
         }
             return Promise.resolve(); }
         }
-';
+';'
         const announcement: Announcement = { ''
             text: this.formatSpeechOutput(text'),'';
             priority: options.priority || 'normal',
@@ -222,9 +222,9 @@ export class TextToSpeechController {
             announcement.reject = reject;
 
             // Handle interruption
-            if(announcement.interrupt) {'
+            if(announcement.interrupt) {
                 this.stopSpeech();''
-                this.clearQueue('');
+                this.clearQueue();
             }'
             if (announcement.priority === 'high') { }
                 this.announcementQueue.unshift(announcement); }
@@ -233,7 +233,7 @@ export class TextToSpeechController {
 
             // Limit queue size
             if(this.announcementQueue.length > this.config.maxQueueSize) {
-                const dropped = this.announcementQueue.splice(this.config.maxQueueSize);'
+                const dropped = this.announcementQueue.splice(this.config.maxQueueSize);
                 dropped.forEach(item => { );'
             }'
                     if (item.reject') {' }'
@@ -277,9 +277,9 @@ export class TextToSpeechController {
 
             this.performance.completedAnnouncements++;
 
-            // Pause between announcements'
+            // Pause between announcements
             if (this.config.pauseBetweenAnnouncements > 0 && this.announcementQueue.length > 0) { await this.delay(this.config.pauseBetweenAnnouncements);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('TextToSpeechController: Speech error:', error);
             
             if(announcement.reject) {
@@ -303,10 +303,10 @@ export class TextToSpeechController {
     /**
      * Speak individual announcement
      */
-    private speakAnnouncement(announcement: Announcement): Promise<void>,';
+    private speakAnnouncement(announcement: Announcement): Promise<void>,
         return new Promise((resolve, reject) => {  ''
             if(!this.speechSynthesis') {'
-                ';
+                ';'
             }'
                 reject(new Error('Speech synthesis not available'); }
                 return; }
@@ -373,7 +373,7 @@ export class TextToSpeechController {
 
     /**
      * Format speech output for better pronunciation
-     */'
+     */
     private formatSpeechOutput(text: string): string { ''
         if (!text') return '';'
 '';
@@ -390,13 +390,13 @@ export class TextToSpeechController {
         };)
 );
         for(const [abbr, pronunciation] of Object.entries(abbreviations) {'
-            ';
+            ';'
         }'
             const regex = new RegExp(`\\b${abbr')\\b`, 'gi');' }'
             formatted = formatted.replace(regex, pronunciation'});
         }
 
-        // Handle symbols and special characters'
+        // Handle symbols and special characters
         const symbols: Record<string, string> = { ''
             '&': ' and ','';
             '@': ' at ','';
@@ -412,19 +412,19 @@ export class TextToSpeechController {
             '/': ' slash ','';
             '*': ' asterisk ','';
             '^': ' caret ','';
-            '~': ' tilde ' }
+            '~': ' tilde ' }'
         };'
 '';
         for (const [symbol, pronunciation] of Object.entries(symbols)') { ''
             formatted = formatted.replace(new RegExp('\\' + symbol, 'g'), pronunciation); }
         }
 ';
-        // Handle numbers and units''
+        // Handle numbers and units
         formatted = formatted.replace(/(\d+')px/g, '$1 pixels');''
         formatted = formatted.replace(/(\d+')%/g, '$1 percent');''
         formatted = formatted.replace(/(\d+')em/g, '$1 em'');
 ';
-        // Clean up extra spaces''
+        // Clean up extra spaces
         formatted = formatted.replace(/\s+/g, ' ').trim();
 
         return formatted;
@@ -459,8 +459,8 @@ export class TextToSpeechController {
 
     /**
      * Clear announcement queue
-     */
-    clearQueue(): void { // Reject all pending announcements'
+     */'
+    clearQueue(): void { // Reject all pending announcements
         this.announcementQueue.forEach(announcement => { );''
             if (announcement.reject') {' }'
                 announcement.reject(new Error('Announcement cancelled'); }
@@ -517,7 +517,7 @@ export class TextToSpeechController {
             console.log(`TextToSpeechController: Voice set to ${voice.name)`'});
             return true;'
         } else {  ''
-            console.warn('TextToSpeechController: Voice not found:', voiceName); }
+            console.warn('TextToSpeechController: Voice not found:', voiceName) }
             return false; }
         }
     }
@@ -526,7 +526,7 @@ export class TextToSpeechController {
      * Get available voices'
      */''
     getAvailableVoices(''';
-            gender: 'unknown', // SpeechSynthesisVoice doesn't have gender property);
+            gender: 'unknown', // SpeechSynthesisVoice doesnt have gender property);
             localService: voice.localService);
             default: voice.default))),
     }
@@ -580,11 +580,11 @@ export class TextToSpeechController {
     /**
      * Test speech synthesis'
      */''
-    async testSpeech(text: string = 'Screen reader test announcement''): Promise<boolean> { try {''
+    async testSpeech(text: string = 'Screen reader test announcement''): Promise<boolean> { try {'
             await this.announce(text, { priority: 'high' )'),''
-            console.log('TextToSpeechController: Speech test successful'),;'
+            console.log('TextToSpeechController: Speech test successful'),'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('TextToSpeechController: Speech test failed:', error);
             return false; }
         }
@@ -615,7 +615,7 @@ export class TextToSpeechController {
     }
 
     /**
-     * Check if speech synthesis is supported'
+     * Check if speech synthesis is supported
      */''
     isSupported(''';
         return 'speechSynthesis' in window;
@@ -649,7 +649,7 @@ export class TextToSpeechController {
      * Destroy and cleanup
      */'
     destroy(): void { this.stopSpeech();''
-        this.clearQueue('')';
+        this.clearQueue()';
         console.log('TextToSpeechController: Destroyed''), }'
     }''
 }

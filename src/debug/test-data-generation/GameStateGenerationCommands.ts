@@ -12,6 +12,6 @@ export class GameStateGenerationCommands {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

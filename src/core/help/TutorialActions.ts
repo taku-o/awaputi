@@ -18,14 +18,14 @@ export interface GameEngine { eventBus?: EventBus;
 }
 
 export interface EventBus { on(event: string, callback: (data: any) => void): void;
-    off?(event: string, callback: (data: any) => void): void; }
+    off?(event: string, callback: (data: any) => void): void }
 }
 
 export interface BubbleManager { popBubble(bubble: Bubble): boolean,
-    getActiveBubbleCount(): number; }
+    getActiveBubbleCount(): number }
 }
 
-export interface InputManager { on(event: string, callback: (data: DragData) => void): void; }
+export interface InputManager { on(event: string, callback: (data: DragData) => void): void }
 }
 
 export interface ScoreManager { getCurrentScore(): number;
@@ -45,11 +45,11 @@ export interface Bubble { id: string,
     type: string,
     x: number,
     y: number,
-    score?: number; }
+    score?: number }
 }
 
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface DragData { targetType: string,
@@ -57,7 +57,7 @@ export interface DragData { targetType: string,
     startX: number,
     startY: number,
     endX: number,
-    endY: number; }
+    endY: number }
 }
 
 export interface ActionData { actionType: string,
@@ -70,55 +70,55 @@ export interface BubblePopData extends ActionData { bubbleId: string,
     bubbleType: string,
     position: Position,
     score: number,
-    comboMultiplier: number; }
+    comboMultiplier: number }
 }
 
 export interface BubbleDragData extends ActionData { bubbleId: string,
     startPosition: Position,
     endPosition: Position,
     dragDistance: number,
-    dragDirection: number; }
+    dragDirection: number }
 }
 
 export interface SpecialBubblePopData extends ActionData { bubbleId: string,
     bubbleType: string,
     specialEffect: string,
     affectedBubbles: string[],
-    effectDuration: number; }
+    effectDuration: number }
 }
 
 export interface ComboAchievedData extends ActionData { comboCount: number,
     comboScore: number,
     comboMultiplier: number,
-    comboDuration: number; }
+    comboDuration: number }
 }
 
 export interface ScoreReachedData extends ActionData { score: number,
     milestone: number,
     previousScore: number,
-    scoreIncrease: number; }
+    scoreIncrease: number }
 }
 
 export interface HPChangedData extends ActionData { currentHP: number,
     previousHP: number,
     hpChange: number,
-    changeReason: string; }
+    changeReason: string }
 }
 
 export interface KeyPressedData extends ActionData { key: string,
     code: string,
     ctrlKey: boolean,
     shiftKey: boolean,
-    altKey: boolean; }
+    altKey: boolean }
 }
 
 export interface ClickData extends ActionData { position: Position,
     target: string,
-    button: number; }
+    button: number }
 }
 
 export interface TouchStartData extends ActionData { position: Position,
-    touchCount: number; }
+    touchCount: number }
 }
 
 export interface GameState { currentScene: string,
@@ -126,13 +126,13 @@ export interface GameState { currentScene: string,
     combo: number,
     hp: number,
     activeBubbles: number,
-    gameTime: number; }
+    gameTime: number }
 }
 
 export interface ActionListenerInfo { callback: ActionCallback,
     options: ActionOptions,
     registeredAt: number,
-    triggerCount: number; }
+    triggerCount: number }
 }
 
 export interface ActionOptions { requiredCombo?: number;
@@ -143,16 +143,16 @@ export interface ActionOptions { requiredCombo?: number;
 export interface ActionStats { totalActions: number,
     actionsByType: Map<string, number>,
     averageResponseTime: Map<string, number>,
-    lastActionTime: number; }
+    lastActionTime: number }
 }
 
 export interface ActionStatistics { totalActions: number,
     actionsByType: Record<string, number>,
     averageResponseTime: Record<string, number>,
     activeListeners: number,
-    stateWatchers: number; }
+    stateWatchers: number }
 }
-';
+';'
 export type ActionCallback = (data: ActionData) => void;''
 export type StateWatcher = (') => void;''
 export type ActionType = 'bubble_pop' | 'bubble_drag' | 'special_bubble_pop' | 'combo_achieved' | 'score_reached' | 'hp_changed' | 'key_pressed' | 'click' | 'touch_start';
@@ -211,11 +211,11 @@ export class TutorialActions {
             
             // DOM イベントの監視設定
             this.setupDOMEventListeners();
-            ';
-            // 状態監視の開始''
-            this.startStateMonitoring('')';
+            ;
+            // 状態監視の開始
+            this.startStateMonitoring()';
             this.loggingSystem.info('TutorialActions', 'Tutorial action system initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialActions', 'Failed to initialize tutorial actions', error');''
             ErrorHandler.handle(error as Error, 'TutorialActions.initialize'); }
         }
@@ -238,11 +238,11 @@ export class TutorialActions {
             
             this.actionCallbacks.set(actionType, listenerInfo);
             ';
-            // アクションタイプ別の監視設定''
+            // アクションタイプ別の監視設定
             this.setupActionSpecificListeners(actionType, options');'
             '';
             this.loggingSystem.debug('TutorialActions', `Action listener registered: ${actionType)`});''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('TutorialActions', `Failed to register action listener: ${actionType}`, error);
         }
     }
@@ -257,7 +257,7 @@ export class TutorialActions {
             }'
                 this.cleanupActionListeners(actionType');' }'
                 this.loggingSystem.debug('TutorialActions', `Action listener unregistered: ${actionType)`});''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             this.loggingSystem.error('TutorialActions', `Failed to unregister action listener: ${actionType}`, error);
         }
     }
@@ -280,13 +280,13 @@ export class TutorialActions {
             
             // 統計の更新
             this.updateActionStats(actionType, actionData);
-            ';
-            // コールバックの実行''
+            ;
+            // コールバックの実行
             listenerInfo.callback(actionData');
             listenerInfo.triggerCount++;'
             '';
             this.loggingSystem.debug('TutorialActions', `Action triggered: ${actionType)`, actionData});''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('TutorialActions', `Failed to trigger action: ${actionType}`, error);
         }
     }
@@ -304,7 +304,7 @@ export class TutorialActions {
             ...eventData }
         };
 ';
-        // アクションタイプ別の追加データ''
+        // アクションタイプ別の追加データ
         switch(actionType') {'
             '';
             case 'bubble_pop': return { ...baseData;
@@ -350,7 +350,7 @@ export class TutorialActions {
                     previousHP: eventData.previousHP || 0,';
                     hpChange: eventData.hpChange || 0,' };'
                     changeReason: eventData.changeReason || 'unknown' }
-                },
+                }
 );
             default: return baseData);
         }
@@ -368,7 +368,7 @@ export class TutorialActions {
 
         const eventBus = this.gameEngine.eventBus;
 ';
-        // バブル関連イベント''
+        // バブル関連イベント
         eventBus.on('bubble_popped', (data') => {  ' }'
             this.triggerAction('bubble_pop', data);' }'
         }');'
@@ -381,7 +381,7 @@ export class TutorialActions {
             this.triggerAction('special_bubble_pop', data);' }'
         }');
 ';
-        // スコア・コンボ関連イベント''
+        // スコア・コンボ関連イベント
         eventBus.on('combo_achieved', (data') => {  ' }'
             this.triggerAction('combo_achieved', data);' }'
         }');'
@@ -397,12 +397,12 @@ export class TutorialActions {
             }''
         }');
 ';
-        // HP関連イベント''
+        // HP関連イベント
         eventBus.on('hp_changed', (data') => {  ' }'
             this.triggerAction('hp_changed', data);' }'
         }');
 ';
-        // ゲーム状態イベント''
+        // ゲーム状態イベント
         eventBus.on('game_state_changed', (data) => { this.updateGameState(data); }
         });
     }
@@ -410,18 +410,18 @@ export class TutorialActions {
     /**
      * DOM イベントリスナーの設定'
      */''
-    setupDOMEventListeners('')';
+    setupDOMEventListeners()';
         document.addEventListener('keydown', (event: KeyboardEvent') => {  ''
             this.triggerAction('key_pressed', {
                 key: event.key,
-                code: event.code,);
+                code: event.code);
                 ctrlKey: event.ctrlKey);
                 shiftKey: event.shiftKey,) }
                 altKey: event.altKey); }'
             });''
         }');
 ';
-        // マウス・タッチイベント''
+        // マウス・タッチイベント
         document.addEventListener('click', (event: MouseEvent') => {  ' }'
             this.triggerAction('click', { })
                 position: { x: event.clientX, y: event.clientY })
@@ -473,7 +473,7 @@ export class TutorialActions {
         if(this.gameEngine.bubbleManager) {
             const originalPop = this.gameEngine.bubbleManager.popBubble;
             this.gameEngine.bubbleManager.popBubble = (bubble: Bubble) => { 
-                const result = originalPop.call(this.gameEngine.bubbleManager, bubble);'
+                const result = originalPop.call(this.gameEngine.bubbleManager, bubble);
                 '';
                 if (result') {''
                     this.triggerAction('bubble_pop', {
@@ -494,24 +494,24 @@ export class TutorialActions {
      * バブルドラッグリスナーの設定
      * @param options - オプション設定
      */'
-    setupBubbleDragListener(options: ActionOptions): void { // 入力マネージャーとの統合''
-        if(this.gameEngine.inputManager') {
+    setupBubbleDragListener(options: ActionOptions): void { // 入力マネージャーとの統合
+        if(this.gameEngine.inputManager) {
             const inputManager = this.gameEngine.inputManager;'
             '';
             inputManager.on('drag_end', (data: DragData') => { ''
                 if (data.targetType === 'bubble') {
                     const dragDistance = Math.sqrt();
-                        Math.pow(data.endX - data.startX, 2) + ';
+                        Math.pow(data.endX - data.startX, 2) + ';'
                         Math.pow(data.endY - data.startY, 2)'';
                     ');'
-                    ';
+                    ';'
         }'
                     this.triggerAction('bubble_drag', { })
                         bubbleId: data.targetId,) }
                         startPosition: { x: data.startX, y: data.startY });
                         endPosition: { x: data.endX, y: data.endY ),
                         dragDistance: dragDistance,
-                        dragDirection: Math.atan2(data.endY - data.startY, data.endX - data.startX); }
+                        dragDirection: Math.atan2(data.endY - data.startY, data.endX - data.startX) }
                     });
                 }
             });
@@ -527,7 +527,7 @@ export class TutorialActions {
             const scoreManager = this.gameEngine.scoreManager;
             let lastComboCount = 0;
             ';
-            // スコア更新時にコンボをチェック''
+            // スコア更新時にコンボをチェック
             this.gameStateWatchers.set('combo_watcher', () => { '
                 const currentCombo = scoreManager.getCurrentCombo();''
                 if (currentCombo > lastComboCount && currentCombo >= (options.requiredCombo || 1)') {''
@@ -558,8 +558,8 @@ export class TutorialActions {
                     const milestone = options.requiredScore || 100;''
                     if (currentScore >= milestone && lastScore < milestone') {''
                         this.triggerAction('score_reached', {
-                            score: currentScore,);
-                            milestone: milestone);
+                            score: currentScore);
+                            milestone: milestone)
         }
                             previousScore: lastScore,) }
                             scoreIncrease: currentScore - lastScore); }
@@ -578,9 +578,9 @@ export class TutorialActions {
             for(const [name, watcher] of this.gameStateWatchers) {
                 
             }
-                try { }'
+                try { }
                     watcher();' }'
-                } catch (error') { ' }'
+                } catch (error) { ' }'
                     this.loggingSystem.error('TutorialActions', `State watcher error: ${name}`, error);
                 }
             }
@@ -595,7 +595,7 @@ export class TutorialActions {
         if (!this.gameEngine') { }
             return {};
         }
-';
+';'
         return { ''
             currentScene: this.gameEngine.currentScene? .constructor.name || 'unknown', : undefined;
             score: this.gameEngine.scoreManager? .getCurrentScore() || 0, : undefined;
@@ -646,12 +646,12 @@ export class TutorialActions {
         // レスポンス時間の計算（前回のアクションからの時間）
         if(this.actionStats.lastActionTime > 0) {
             const responseTime = actionData.timestamp - this.actionStats.lastActionTime;
-            const avgResponseTime = this.actionStats.averageResponseTime.get(actionType) || 0;'
+            const avgResponseTime = this.actionStats.averageResponseTime.get(actionType) || 0;
             const newAvg = avgResponseTime > 0 ? (avgResponseTime + responseTime) / 2 : responseTime;'
         }'
             this.actionStats.averageResponseTime.set(actionType, newAvg'); }
         }
-        ';
+        ';'
         this.actionStats.lastActionTime = actionData.timestamp;''
         this.lastKnownStates.set('score', actionData.gameState.score);
     }
@@ -710,11 +710,11 @@ export class TutorialActions {
             }
             
             // データのクリア
-            this.actionCallbacks.clear();'
+            this.actionCallbacks.clear();
             this.gameStateWatchers.clear();''
-            this.lastKnownStates.clear('')';
+            this.lastKnownStates.clear()';
             this.loggingSystem.info('TutorialActions', 'Tutorial action system cleaned up');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialActions', 'Failed to cleanup tutorial actions', error); }
         }
     }
@@ -723,7 +723,7 @@ export class TutorialActions {
      * システムの破棄
      */'
     destroy(): void { ''
-        this.cleanup('')';
+        this.cleanup()';
         this.loggingSystem.info('TutorialActions', 'Tutorial action system destroyed'); }
     }
 }
@@ -748,7 +748,7 @@ export function getTutorialActions(gameEngine: GameEngine): TutorialActions { if
  * @returns 新しいTutorialActionsインスタンス
  */
 export function reinitializeTutorialActions(gameEngine: GameEngine): TutorialActions { if (tutorialActionsInstance) {
-        tutorialActionsInstance.destroy(); }'
+        tutorialActionsInstance.destroy(); }
     }''
     tutorialActionsInstance = new TutorialActions(gameEngine');'
     return tutorialActionsInstance;''

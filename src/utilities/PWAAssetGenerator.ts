@@ -8,13 +8,13 @@
 interface DecorativeBubble { x: number,
     y: number,
     size: number,
-    alpha: number; }
+    alpha: number }
 }
 
 interface GeneratedAssets { standard: Map<number, Blob>;
     maskable: Map<number, Blob>;
     favicons: Map<number, Blob>;
-    apple: Map<number, Blob>; }
+    apple: Map<number, Blob> }
 }
 
 export class PWAAssetGenerator {
@@ -37,12 +37,12 @@ export class PWAAssetGenerator {
         this.ctx = this.canvas.getContext('2d');'
         '';
         if(!this.ctx') {'
-            ';
+            ';'
         }'
             throw new Error('Failed to get 2D context from canvas''); }
         }
         ';
-        // Canvas要素をDOMに追加（hidden状態）''
+        // Canvas要素をDOMに追加（hidden状態）
         this.canvas.style.display = 'none';
         document.body.appendChild(this.canvas);
     }
@@ -55,7 +55,7 @@ export class PWAAssetGenerator {
      */'
     drawBubbleIcon(size: number, maskable: boolean = false): HTMLCanvasElement { ''
         if(!this.canvas || !this.ctx') {'
-            ';
+            ';'
         }'
             throw new Error('Canvas not initialized'); }
         }
@@ -73,7 +73,7 @@ export class PWAAssetGenerator {
         
         // グラデーション背景（BubblePopのテーマカラー）
         const gradient = this.ctx.createRadialGradient(;
-            size / 2, size / 2, 0,)';
+            size / 2, size / 2, 0);
             size / 2, size / 2, bubbleSize / 2)'';
         ');''
         gradient.addColorStop(0, '#4CAF50'');''
@@ -88,7 +88,7 @@ export class PWAAssetGenerator {
         
         // ハイライト効果
         const highlightGradient = this.ctx.createRadialGradient(;
-            size / 2 - bubbleSize / 6, size / 2 - bubbleSize / 6, 0,)';
+            size / 2 - bubbleSize / 6, size / 2 - bubbleSize / 6, 0);
             size / 2 - bubbleSize / 6, size / 2 - bubbleSize / 6, bubbleSize / 4)'';
         ');''
         highlightGradient.addColorStop(0, 'rgba(255, 255, 255, 0.8')'');''
@@ -120,7 +120,7 @@ export class PWAAssetGenerator {
 
         const decorBubbles: DecorativeBubble[] = [}
             { x: 0.7, y: 0.3, size: 0.12, alpha: 0.6 },
-            { x: 0.8, y: 0.7, size: 0.08, alpha: 0.5 },]
+            { x: 0.8, y: 0.7, size: 0.08, alpha: 0.5 }]
             { x: 0.3, y: 0.8, size: 0.1, alpha: 0.4 }]
         ];
         
@@ -150,7 +150,7 @@ export class PWAAssetGenerator {
      * ゲームタイトルを描画
      * @param size - アイコンサイズ
      */
-    private drawGameTitle(size: number): void { if (!this.ctx) return;'
+    private drawGameTitle(size: number): void { if (!this.ctx) return;
 '';
         const fontSize = Math.max(size * 0.08, 12'); }'
         this.ctx.font = `bold ${fontSize}px Arial, sans-serif`;''
@@ -158,7 +158,7 @@ export class PWAAssetGenerator {
         this.ctx.textAlign = 'center';''
         this.ctx.textBaseline = 'middle';
         ';
-        // テキストに影を追加''
+        // テキストに影を追加
         this.ctx.shadowColor = 'rgba(0, 0, 0, 0.5')';
         this.ctx.shadowBlur = 2;
         this.ctx.shadowOffsetX = 1;
@@ -166,7 +166,7 @@ export class PWAAssetGenerator {
         '';
         this.ctx.fillText('BubblePop', size / 2, size * 0.85');
         ';
-        // 影をリセット''
+        // 影をリセット
         this.ctx.shadowColor = 'transparent';
         this.ctx.shadowBlur = 0;
         this.ctx.shadowOffsetX = 0;
@@ -180,7 +180,7 @@ export class PWAAssetGenerator {
      */'
     drawFaviconIcon(size: number): HTMLCanvasElement { ''
         if(!this.canvas || !this.ctx') {'
-            ';
+            ';'
         }'
             throw new Error('Canvas not initialized'); }
         }
@@ -193,7 +193,7 @@ export class PWAAssetGenerator {
         
         // シンプルな円形の泡
         const gradient = this.ctx.createRadialGradient(;
-            size / 2, size / 2, 0,)';
+            size / 2, size / 2, 0);
             size / 2, size / 2, size / 2 - 1)'';
         ');''
         gradient.addColorStop(0, '#4CAF50'');''
@@ -202,11 +202,11 @@ export class PWAAssetGenerator {
         this.ctx.fillStyle = gradient;
         this.ctx.beginPath();'
         this.ctx.arc(size / 2, size / 2, size / 2 - 1, 0, Math.PI * 2);''
-        this.ctx.fill('')';
+        this.ctx.fill()';
         this.ctx.fillStyle = 'rgba(255, 255, 255, 0.6')';
         this.ctx.beginPath();'
         this.ctx.arc(size / 2 - size / 4, size / 2 - size / 4, size / 6, 0, Math.PI * 2);''
-        this.ctx.fill('')';
+        this.ctx.fill()';
     async canvasToBlob(canvas: HTMLCanvasElement, mimeType: string = 'image/png', quality: number = 0.9): Promise<Blob> { return new Promise((resolve, reject) => { 
             canvas.toBlob((blob) => {'
                 if (blob) {' }'
@@ -271,7 +271,7 @@ export class PWAAssetGenerator {
         const [standard, maskable, favicons, apple] = await Promise.all([);
             this.generateMultipleSizes(standardSizes, false),
             this.generateMultipleSizes(maskableSizes, true),
-            this.generateFaviconSizes(faviconSizes),];
+            this.generateFaviconSizes(faviconSizes)];
             this.generateMultipleSizes(appleSizes, false)];
         ]);
         
@@ -321,7 +321,7 @@ export class PWAAssetGenerator {
         const previewCtx = previewCanvas.getContext('2d');'
         '';
         if(!previewCtx') {'
-            ';
+            ';'
         }'
             throw new Error('Failed to get 2D context from preview canvas'); }
         }
@@ -352,6 +352,6 @@ let pwaAssetGeneratorInstance: PWAAssetGenerator | null = null,
 /**
  * PWAAssetGeneratorのシングルトンインスタンスを取得
  * @returns インスタンス
- */'
+ */
 export function getPWAAssetGenerator(): PWAAssetGenerator { if (!pwaAssetGeneratorInstance) {''
         pwaAssetGeneratorInstance = new PWAAssetGenerator(' })

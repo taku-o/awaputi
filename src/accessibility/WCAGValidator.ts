@@ -8,14 +8,14 @@ import { WCAGRuleEngine } from './wcag-validation/WCAGRuleEngine.js';''
 import { AccessibilityAuditor } from './wcag-validation/AccessibilityAuditor.js';''
 import { ComplianceReporter } from './wcag-validation/ComplianceReporter.js';
 
-// Interfaces for WCAG validation'
+// Interfaces for WCAG validation
 interface ValidatorConfig { enabled: boolean,''
     level: 'A' | 'AA' | 'AAA',
     version: string,
     realTimeValidation: boolean,
     autoFix: boolean,
     reportGeneration: boolean,
-    trendAnalysis: boolean; }
+    trendAnalysis: boolean }
 }
 
 interface ValidationResults { lastValidation: number | null,
@@ -26,7 +26,7 @@ interface ValidationResults { lastValidation: number | null,
     passedTests: string[],
     failedTests: string[],
     history: HistoryEntry[],
-    trends: ValidationTrends;
+    trends: ValidationTrends
     }
 }
 
@@ -37,7 +37,7 @@ interface ValidationIssue { id: string,
     message: string,'';
     severity: 'critical' | 'high' | 'medium' | 'low',
     wcagCriteria: string,
-    suggestion?: string; }
+    suggestion?: string }
 }
 
 interface ValidationWarning { id: string,
@@ -45,7 +45,7 @@ interface ValidationWarning { id: string,
     element?: HTMLElement;
     selector?: string;'
     message: string,'';
-    type: 'potential' | 'manual-check' | 'recommendation'; }
+    type: 'potential' | 'manual-check' | 'recommendation' }
 }
 
 interface HistoryEntry { timestamp: number,
@@ -53,37 +53,37 @@ interface HistoryEntry { timestamp: number,
     categoryScores: Record<string, number>;
     failedTestsCount: number,
     passedTestsCount: number,
-    warningsCount: number; }
+    warningsCount: number }
 }
 
 interface ValidationTrends { weekly: TrendEntry[],
     monthly: TrendEntry[],
     improvements: TrendChange[],
-    regressions: TrendChange[];
+    regressions: TrendChange[]
     }
 }
 
 interface TrendEntry { timestamp: number,
     score: number,
-    issues: number; }
+    issues: number }
 }
-';
+';'
 interface TrendChange { timestamp: number,''
     type: 'improvement' | 'regression',
     scoreDiff: number,
     previousScore: number,
-    currentScore: number; }
+    currentScore: number }
 }
 
 interface ValidationStatistics { totalValidations: number,
     averageScore: number,
     mostCommonIssues: Map<string, number>;
-    fixedIssues: Map<string, number>; }
+    fixedIssues: Map<string, number> }
 }
 
 interface AuditResults { timestamp: number,
     categories: Record<string, CategoryResult>;
-    summary: AuditSummary;
+    summary: AuditSummary
     }
 }
 
@@ -92,13 +92,13 @@ interface CategoryResult { id: string,
     score: number,
     guidelines: Record<string, GuidelineResult>;
     issues: ValidationIssue[],
-    warnings: ValidationWarning[];
+    warnings: ValidationWarning[]
     }
 }
 
 interface GuidelineResult { id: string,
     name: string,
-    tests: Record<string, TestResult>; }
+    tests: Record<string, TestResult> }
 }
 
 interface TestResult { name: string,
@@ -113,26 +113,26 @@ interface AuditSummary { overallScore: number,
     criticalIssues: number,
     highIssues: number,
     mediumIssues: number,
-    lowIssues: number; }
+    lowIssues: number }
 }
 
 interface ValidationReport { timestamp: number,
     score: {
         overall: number,
         adjusted: number,
-        categories: Record<string, number>; }
+        categories: Record<string, number> }
     };
     summary: AuditSummary,
     issues: ValidationIssue[],
     warnings: ValidationWarning[],
     recommendations: string[],
 }
-';
+';'
 interface ReportOptions { ''
     type: 'summary' | 'detailed' | 'executive','';
-    format: 'json' | 'html' | 'pdf'; }
+    format: 'json' | 'html' | 'pdf' }
 }
-';
+';'
 interface QuickAuditOptions { ''
     level?: 'A' | 'AA' | 'AAA'; }
 }
@@ -140,22 +140,22 @@ interface QuickAuditOptions { ''
 // Sub-component interfaces
 interface RuleEngineConfig { enabled: boolean,
     level: string,
-    autoFixEnabled: boolean; }
+    autoFixEnabled: boolean }
 }
 
 interface AuditorConfig { enabled: boolean,
-    autoAudit: boolean; }
+    autoAudit: boolean }
 }
 
 interface ReporterConfig { enabled: boolean,
-    trackTrends: boolean; }
+    trackTrends: boolean }
 }
 
 // AccessibilityManager interface (minimal definition);
 interface AccessibilityManager { gameEngine?: any;
     eventSystem?: {
         emit: (event: string, data: any) => void,
-        on: (event: string, handler: () => void) => void; }
+        on: (event: string, handler: () => void) => void }
     };
 }
 
@@ -172,16 +172,16 @@ export class WCAGValidator {
     private validationInterval: number;
     private initialized: boolean;
     private observer: MutationObserver | null;
-    private revalidationTimeout: number | null';
+    private revalidationTimeout: number | null;
 '';
     constructor(accessibilityManager: AccessibilityManager | null') {
         this.accessibilityManager = accessibilityManager;
         this.gameEngine = accessibilityManager? .gameEngine;
         
         // WCAG検証設定
-        this.config = { : undefined'
+        this.config = { : undefined
             enabled: true,'';
-            level: 'AA', // A, AA, AAA'';
+            level: 'AA', // A, AA, AAA;
             version: '2.1',
             realTimeValidation: true,
             autoFix: false,
@@ -211,11 +211,11 @@ export class WCAGValidator {
         this.stats = { totalValidations: 0,
             averageScore: 0,
             mostCommonIssues: new Map(),
-            fixedIssues: new Map(); }
+            fixedIssues: new Map() }
         };
         
         // Initialize sub-components
-        this.ruleEngine = new WCAGRuleEngine({ enabled: this.config.enabled,)
+        this.ruleEngine = new WCAGRuleEngine({ enabled: this.config.enabled)
             level: this.config.level);
             autoFixEnabled: this.config.autoFix;
         ),
@@ -254,9 +254,9 @@ export class WCAGValidator {
         this.bindEvents();
         
         // リアルタイム監視の設定
-        if(this.config.realTimeValidation) {'
+        if(this.config.realTimeValidation) {
             '';
-            this.setupRealTimeMonitoring('');
+            this.setupRealTimeMonitoring();
         }'
         console.log('WCAGValidator initialized'); }
     }
@@ -264,26 +264,26 @@ export class WCAGValidator {
     /**
      * 完全なWCAG検証を実行'
      */''
-    async runFullValidation('')';
+    async runFullValidation()';
         console.log('Running full WCAG validation...');
         this.results.lastValidation = Date.now();
         this.stats.totalValidations++;
         
         try { // Run full audit
             const auditResults = await this.auditor.runFullAudit({)
-                level: this.config.level),';
+                level: this.config.level),
             '';
             if(!auditResults') {'
                 '';
-                console.error('WCAGValidator: Audit failed'),;
+                console.error('WCAGValidator: Audit failed'),
             }
                 return null; }
             }
             ';
-            // Process results''
+            // Process results
             this.processAuditResults(auditResults');
             
-            // Generate report'
+            // Generate report
             const report = this.reporter.generateReport(auditResults, { ')'
                 type: 'detailed',')';
                 format: 'json'),
@@ -296,9 +296,9 @@ export class WCAGValidator {
             
             // Notify completion
             this.notifyValidationComplete(report);
-            ';
+            ';'
             return report;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('WCAGValidator: Full validation error:', error);' }'
             getErrorHandler(')? .logError('WCAG validation failed', { error });
             return null;
@@ -349,8 +349,8 @@ export class WCAGValidator {
             .map(h => h.overallScore);
             .concat(this.results.overallScore);
         this.stats.averageScore = allScores.reduce((a, b) => a + b, 0) / allScores.length;
-        ';
-        // Track most common issues''
+        ;
+        // Track most common issues
         for(const issue of this.results.issues') {'
             '';
             const guideline = issue.guideline || 'unknown';
@@ -384,7 +384,7 @@ export class WCAGValidator {
      * Quick validation
      */'
     async runQuickValidation(): Promise<ValidationReport | null> { ''
-        return await this.auditor.runQuickAudit('')';
+        return await this.auditor.runQuickAudit()';
     generateValidationReport(type: ReportOptions['type'] = 'summary', format: ReportOptions['format'] = 'json'): ValidationReport {
         const auditResults: AuditResults = {
             timestamp: Date.now(),
@@ -396,10 +396,10 @@ export class WCAGValidator {
                         score, }
                         guidelines: {},
                         issues: this.results.issues.filter(i => i.guideline === id),
-                        warnings: this.results.warnings.filter(w => w.guideline === id),];
+                        warnings: this.results.warnings.filter(w => w.guideline === id)];
                     }]'
                 ])'';
-            '),
+            '),'
             summary: { overallScore: this.results.overallScore,'
                 totalIssues: this.results.issues.length,'';
                 criticalIssues: this.results.issues.filter(i => i.severity === 'critical'').length,'';
@@ -415,15 +415,15 @@ export class WCAGValidator {
     /**
      * リアルタイム監視の設定'
      */''
-    private setupRealTimeMonitoring('')';
+    private setupRealTimeMonitoring()';
         if (typeof MutationObserver !== 'undefined') { this.observer = new MutationObserver((mutations) => {  }'
                 this.scheduleRevalidation();' }'
             }');
             
-            this.observer.observe(document.body, { childList: true,)
+            this.observer.observe(document.body, { childList: true)
                 subtree: true)';
                 attributes: true,')';
-                attributeFilter: ['alt', 'aria-label', 'aria-labelledby', 'role']); }
+                attributeFilter: ['alt', 'aria-label', 'aria-labelledby', 'role']) }
             });
         }
         
@@ -463,10 +463,10 @@ export class WCAGValidator {
         if(this.results.trends.weekly.length >= 2) {
             const current = this.results.trends.weekly[this.results.trends.weekly.length - 1];
             const previous = this.results.trends.weekly[this.results.trends.weekly.length - 2];
-            ';
+            ';'
             const scoreDiff = current.score - previous.score;''
             if (Math.abs(scoreDiff) >= 5') { // 5%以上の変化
-                const trend: TrendChange = {'
+                const trend: TrendChange = {
                     timestamp: now,'';
                     type: scoreDiff > 0 ? 'improvement' : 'regression',
                     scoreDiff,
@@ -498,32 +498,32 @@ export class WCAGValidator {
             this.results.history.unshift(historyEntry);
             
             // 履歴を最新50件に制限
-            if(this.results.history.length > 50) {'
-                ';
+            if(this.results.history.length > 50) {
+                ';'
             }'
                 this.results.history = this.results.history.slice(0, 50'); }
             }
             ';
-            // LocalStorageに保存''
-            localStorage.setItem('wcagValidator_results', JSON.stringify({ history: this.results.history,)
+            // LocalStorageに保存
+            localStorage.setItem('wcagValidator_results', JSON.stringify({ history: this.results.history)
                 trends: this.results.trends);
                 stats: {
                     totalValidations: this.stats.totalValidations,);
                     averageScore: this.stats.averageScore),
                     mostCommonIssues: Array.from(this.stats.mostCommonIssues.entries(),
-                    fixedIssues: Array.from(this.stats.fixedIssues.entries(); }
+                    fixedIssues: Array.from(this.stats.fixedIssues.entries() }
                 }
             });'
             '';
-        } catch (error') { ''
-            console.warn('Failed to save WCAG validation results:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save WCAG validation results:', error) }
         }
     }
     
     /**
      * 検証履歴の読み込み'
      */''
-    private loadValidationHistory('')';
+    private loadValidationHistory()';
             const saved = localStorage.getItem('wcagValidator_results');
             if(saved) {
                 const data = JSON.parse(saved);
@@ -539,17 +539,17 @@ export class WCAGValidator {
                         fixedIssues: new Map(data.stats.fixedIssues || []); }
                     };'
                 }''
-            } catch (error') { ''
-            console.warn('Failed to load WCAG validation history:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load WCAG validation history:', error) }
         }
     }
     
     /**
      * イベントバインド
      */'
-    private bindEvents(): void { // アクセシビリティマネージャーのイベントを監視''
+    private bindEvents(): void { // アクセシビリティマネージャーのイベントを監視
         if(this.accessibilityManager? .eventSystem') {'
-            ';
+            ';'
         }'
             this.accessibilityManager.eventSystem.on('accessibility-change', () => {  }'
                 this.scheduleRevalidation();' }'
@@ -567,9 +567,9 @@ export class WCAGValidator {
         if(this.accessibilityManager? .eventSystem') {'
             '';
             this.accessibilityManager.eventSystem.emit('wcag-validation-complete', { : undefined
-                score: report.score.adjusted,);
+                score: report.score.adjusted);
                 issues: this.results.issues.length)';
-                warnings: this.results.warnings.length,');
+                warnings: this.results.warnings.length,')
         }'
                 report)'); }
         }
@@ -615,7 +615,7 @@ export class WCAGValidator {
         issues: ValidationIssue[],
         warnings: ValidationWarning[],
         passedTests: number,
-        failedTests: number; }
+        failedTests: number }
     } { return { lastValidation: this.results.lastValidation,
             overallScore: this.results.overallScore,
             categoryScores: this.results.categoryScores,
@@ -631,7 +631,7 @@ export class WCAGValidator {
      */
     getScoreHistory(): Array<{ timestamp: number; score: number }> { return this.results.history.map(entry => ({)
             timestamp: entry.timestamp,);
-            score: entry.overallScore))); }
+            score: entry.overallScore))) }
     }
     
     /**
@@ -653,7 +653,7 @@ export class WCAGValidator {
         
         this.reporter.updateConfig({)
             enabled: this.config.reportGeneration,);
-            trackTrends: this.config.trendAnalysis); }
+            trackTrends: this.config.trendAnalysis) }
     }
     
     /**
@@ -692,9 +692,9 @@ export class WCAGValidator {
         this.ruleEngine.destroy();
         this.auditor.destroy();
         this.reporter.destroy();
-        ';
-        // 結果の保存''
-        this.saveValidationResults('')';
+        ;
+        // 結果の保存
+        this.saveValidationResults()';
         console.log('WCAGValidator destroyed'');'
     }''
 }

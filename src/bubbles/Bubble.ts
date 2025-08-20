@@ -21,7 +21,7 @@ export class Bubble implements BubbleInterface { public id: string,
     public clickCount: number,
 
     constructor(type: BubbleType, position: Position) {
-        this.type = type; }
+        this.type = type }
         this.position = { ...position };
         this.velocity = { x: 0, y: 0 }
         this.size = 50;
@@ -98,7 +98,7 @@ export class Bubble implements BubbleInterface { public id: string,
     /**
      * ConfigurationManagerから特殊効果設定を取得
      */
-    private _getSpecialEffectsFromConfig(configManager: any): Partial<BubbleConfig> {'
+    private _getSpecialEffectsFromConfig(configManager: any): Partial<BubbleConfig> {
         const effects: Partial<BubbleConfig> = {}''
         switch(this.type') {'
             '';
@@ -170,11 +170,11 @@ export class Bubble implements BubbleInterface { public id: string,
             },
             iron: { health: 3,
                 size: 60,';
-                maxAge: 20000, // 変更なし'';
+                maxAge: 20000, // 変更なし;
                 color: '#708090',
                 score: 40 }
             },
-            diamond: { health: 4, // 5 -> 4 (少し弱く);'
+            diamond: { health: 4, // 5 -> 4 (少し弱く);
                 size: 65,'';
                 maxAge: 22000, // 25000 -> 22000 (少し短く');''
                 color: '#B0E0E6',
@@ -185,109 +185,109 @@ export class Bubble implements BubbleInterface { public id: string,
                 maxAge: 10000, // 8000 -> 10000 (少し長く');''
                 color: '#FFB6C1',
                 score: 20,
-                healAmount: 25 // 20 -> 25 (回復量増加); }
+                healAmount: 25 // 20 -> 25 (回復量増加) }
             },
-            poison: { health: 1,'
+            poison: { health: 1,
                 size: 48,'';
                 maxAge: 14000, // 12000 -> 14000 (少し長く');''
                 color: '#9370DB',
                 score: 30,
-                damageAmount: 8 // 10 -> 8 (ダメージ軽減); }
+                damageAmount: 8 // 10 -> 8 (ダメージ軽減) }
             },
-            spiky: { health: 1,'
+            spiky: { health: 1,
                 size: 52,'';
                 maxAge: 13000, // 12000 -> 13000 (少し長く');''
                 color: '#FF6347',
                 score: 35,
-                chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く); }
+                chainRadius: 120 // 150 -> 120 (連鎖範囲を少し狭く) }
             },
-            rainbow: { health: 1,'
+            rainbow: { health: 1,
                 size: 55,'';
                 maxAge: 16000, // 15000 -> 16000 (少し長く');''
                 color: '#FF69B4',
                 score: 400,
-                bonusTimeMs: 8000 // 10000 -> 8000 (ボーナス時間短縮); }
+                bonusTimeMs: 8000 // 10000 -> 8000 (ボーナス時間短縮) }
             },
-            clock: { health: 1,'
+            clock: { health: 1,
                 size: 50,'';
                 maxAge: 20000, // 18000 -> 20000 (少し長く');''
                 color: '#FFD700',
                 score: 180,
-                timeStopMs: 2500 // 3000 -> 2500 (時間停止短縮); }
+                timeStopMs: 2500 // 3000 -> 2500 (時間停止短縮) }
             },
-            score: { health: 1,'
+            score: { health: 1,
                 size: 48,'';
                 maxAge: 9000, // 8000 -> 9000 (少し長く');''
                 color: '#32CD32',
                 score: 250,
-                bonusScore: 80 // 100 -> 80 (ボーナス軽減); }
+                bonusScore: 80 // 100 -> 80 (ボーナス軽減) }
             },
-            electric: { health: 1,'
+            electric: { health: 1,
                 size: 50,'';
                 maxAge: 13000, // 12000 -> 13000 (少し長く');''
                 color: '#FFFF00',
                 score: 20,
                 shakeIntensity: 15, // 20 -> 15 (揺れ軽減);
-                disableDuration: 1500 // 2000 -> 1500 (操作不能時間短縮); }
+                disableDuration: 1500 // 2000 -> 1500 (操作不能時間短縮) }
             },
-            escaping: { health: 1,'
+            escaping: { health: 1,
                 size: 45,'';
                 maxAge: 16000, // 15000 -> 16000 (少し長く');''
                 color: '#FF8C00',
                 score: 50,
                 escapeSpeed: 180, // 200 -> 180 (逃げる速度軽減);
-                escapeRadius: 90 // 100 -> 90 (逃げる範囲縮小); }
+                escapeRadius: 90 // 100 -> 90 (逃げる範囲縮小) }
             },
-            cracked: { health: 1,'
+            cracked: { health: 1,
                 size: 52,'';
                 maxAge: 6000, // 5000 -> 6000 (少し長く');''
                 color: '#8B4513',
                 score: 30 }
             },
-            boss: { health: 8, // 10 -> 8 (少し弱く);'
-                size: 90, // 100 -> 90 (少し小さく);''
+            boss: { health: 8, // 10 -> 8 (少し弱く);
+                size: 90, // 100 -> 90 (少し小さく);
                 maxAge: 35000, // 30000 -> 35000 (少し長く');''
                 color: '#8B0000',
                 score: 100 }
             },
             // 新しい泡タイプ
             golden: { health: 1,
-                size: 55,';
+                size: 55,
                 maxAge: 8000,'';
                 color: '#FFD700',
                 score: 500,
                 multiplier: 2.0 // スコア倍率 }
             },
             frozen: { health: 2,
-                size: 50,';
-                maxAge: 25000, // 長時間持続'';
+                size: 50,
+                maxAge: 25000, // 長時間持続;
                 color: '#87CEEB',
                 score: 100,
                 slowEffect: 0.5 // 周囲の泡の動きを遅くする }
             },
             magnetic: { health: 1,
-                size: 48,';
+                size: 48,
                 maxAge: 15000,'';
                 color: '#FF1493',
                 score: 150,
                 magnetRadius: 100 // 他の泡を引き寄せる }
             },
             explosive: { health: 1,
-                size: 52,';
+                size: 52,
                 maxAge: 10000,'';
                 color: '#FF4500',
                 score: 200,
                 explosionRadius: 150 // 爆発範囲 }
             },
             phantom: { health: 1,
-                size: 45,';
+                size: 45,
                 maxAge: 12000,'';
                 color: '#9370DB',
                 score: 300,
                 phaseChance: 0.3 // クリックをすり抜ける確率 }
             },
             multiplier: { health: 1,
-                size: 50,';
+                size: 50,
                 maxAge: 18000,'';
                 color: '#32CD32',
                 score: 100,
@@ -300,13 +300,13 @@ export class Bubble implements BubbleInterface { public id: string,
     
     /**
      * 泡を更新
-     */'
+     */
     public update(deltaTime: number, mousePosition: Position | null = null): void { ''
         if (!this.isAlive') return;
         
         this.age += deltaTime;
         ';
-        // 逃げる泡の特殊行動''
+        // 逃げる泡の特殊行動
         if(this.type === 'escaping' && mousePosition) {
             
         }
@@ -326,9 +326,9 @@ export class Bubble implements BubbleInterface { public id: string,
     }
     
     /**
-     * 逃げる泡の行動処理'
+     * 逃げる泡の行動処理
      */''
-    public handleEscapingBehavior(mousePosition: Position, deltaTime: number'): void { // deltaTimeは将来のアニメーション補間で使用予定''
+    public handleEscapingBehavior(mousePosition: Position, deltaTime: number'): void { // deltaTimeは将来のアニメーション補間で使用予定
         console.log('Escape behavior update with deltaTime:', deltaTime);
         const config = this.getTypeConfig();
         const dx = this.position.x - mousePosition.x;
@@ -426,16 +426,16 @@ export class Bubble implements BubbleInterface { public id: string,
         
         // 年齢による色の変化（危険度表示）
         const ageRatio = this.age / this.maxAge;
-        let fillColor = config.color;'
+        let fillColor = config.color;
         '';
         if(ageRatio > 0.7') {'
-            // 危険状態：赤みを増す'
+            // 危険状態：赤みを増す
         }'
             fillColor = this.blendColors(config.color, '#FF4444', (ageRatio - 0.7) / 0.3); }
         }
         ';
-        // 泡の描画''
-        context.save('')';
+        // 泡の描画
+        context.save()';
         context.shadowColor = 'rgba(0,0,0,0.3')';
         context.shadowBlur = 10;
         context.shadowOffsetX = 3;
@@ -449,15 +449,15 @@ export class Bubble implements BubbleInterface { public id: string,
         
         // 光沢効果
         const gradient = context.createRadialGradient(;
-            centerX - this.size * 0.3, centerY - this.size * 0.3, 0,)';
+            centerX - this.size * 0.3, centerY - this.size * 0.3, 0);
             centerX, centerY, this.size)'';
         ');''
         gradient.addColorStop(0, 'rgba(255,255,255,0.6')'');''
         gradient.addColorStop(0.3, 'rgba(255,255,255,0.2')'');''
         gradient.addColorStop(1, 'rgba(255,255,255,0')');
-        ';
+        ';'
         context.fillStyle = gradient;''
-        context.fill('')';
+        context.fill()';
         if(this.type === 'stone' || this.type === 'iron' || this.type === 'diamond'') {'
             '';
             context.fillStyle = '#FFFFFF';''
@@ -475,7 +475,7 @@ export class Bubble implements BubbleInterface { public id: string,
     }
     
     /**
-     * 特殊泡のアイコンを描画'
+     * 特殊泡のアイコンを描画
      */''
     public renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number'): void { ''
         context.fillStyle = '#FFFFFF';''
@@ -504,7 +504,7 @@ export class Bubble implements BubbleInterface { public id: string,
                 context.fillText('✦', centerX, centerY - 5');'
                 break;''
             case 'rainbow':;
-                // 虹色効果のため複数色で描画'
+                // 虹色効果のため複数色で描画
                 context.save();''
                 const gradient = context.createLinearGradient(centerX - 10, centerY - 10, centerX + 10, centerY + 10');''
                 gradient.addColorStop(0, '#FF0000'');''
@@ -513,7 +513,7 @@ export class Bubble implements BubbleInterface { public id: string,
                 gradient.addColorStop(1, '#FF00FF'');'
                 context.fillStyle = gradient;''
                 context.fillText('◉', centerX, centerY - 5);''
-                context.restore('')';
+                context.restore()';
             case 'clock':')';
                 context.fillText('⏰', centerX, centerY - 5');'
                 break;''
@@ -533,11 +533,11 @@ export class Bubble implements BubbleInterface { public id: string,
                 context.fillStyle = '#FFFFFF';''
                 context.font = 'bold 24px Arial';''
                 context.fillText('👑', centerX, centerY - 5');'
-                // ボス泡の場合、耐久値も表示''
+                // ボス泡の場合、耐久値も表示
                 context.font = 'bold 16px Arial';''
                 context.fillText(this.health.toString(), centerX, centerY + 15');
                 break;'
-            // 新しい泡タイプのアイコン''
+            // 新しい泡タイプのアイコン
             case 'golden':'';
                 context.fillText('★', centerX, centerY - 5');'
                 break;''
@@ -551,7 +551,7 @@ export class Bubble implements BubbleInterface { public id: string,
                 context.fillText('💣', centerX, centerY - 5');'
                 break;''
             case 'phantom':'';
-                context.fillStyle = 'rgba(255,255,255,0.7')'; // 半透明''
+                context.fillStyle = 'rgba(255,255,255,0.7')'; // 半透明
                 context.fillText('👻', centerX, centerY - 5');'
                 break;''
             case 'multiplier':'';
@@ -564,11 +564,11 @@ export class Bubble implements BubbleInterface { public id: string,
     /**
      * 色をブレンド'
      */''
-    public blendColors(color1: string, color2: string, ratio: number'): string { // 色ブレンド実装（将来的にはより詳細な補間を行う予定）''
+    public blendColors(color1: string, color2: string, ratio: number'): string { // 色ブレンド実装（将来的にはより詳細な補間を行う予定）
         console.log('Color blending:', { color1, color2, ratio );
         
         // 現在は簡略化だが、ratioに基づく補間を将来実装
-        return ratio > 0.5 ? color2: color1; }
+        return ratio > 0.5 ? color2: color1 }
     }
     
     /**
@@ -604,26 +604,26 @@ export class Bubble implements BubbleInterface { public id: string,
     /**
      * 特殊効果を発動
      */
-    public triggerSpecialEffect(): void { const config = this.getTypeConfig();'
+    public triggerSpecialEffect(): void { const config = this.getTypeConfig();
         '';
         switch(this.type') {'
             '';
             case 'pink':;
-                // HP回復効果'
+                // HP回復効果
                 this.effects.push({')'
                     type: 'heal',')';
                     amount: config.healAmount || 25)'),
                 break;'
                 '';
             case 'poison':;
-                // ダメージ効果'
+                // ダメージ効果
                 this.effects.push({')'
                     type: 'damage',')';
                     amount: config.damageAmount || 8)'),
                 break;'
                 '';
             case 'spiky':;
-                // とげとげの泡：連鎖破壊効果'
+                // とげとげの泡：連鎖破壊効果
                 this.effects.push({'
         }'
                     type: 'chain_destroy', })'
@@ -632,28 +632,28 @@ export class Bubble implements BubbleInterface { public id: string,
                 break;'
                 '';
             case 'rainbow':;
-                // 虹色の泡：ボーナスタイム効果'
+                // 虹色の泡：ボーナスタイム効果
                 this.effects.push({ ')'
                     type: 'bonus_time',')';
                     duration: config.bonusTimeMs || 8000)'),
                 break;'
                 '';
             case 'clock':;
-                // 時計の泡：時間停止効果'
+                // 時計の泡：時間停止効果
                 this.effects.push({')'
                     type: 'time_stop',')';
                     duration: config.timeStopMs || 2500)'),
                 break;'
                 '';
             case 'score':;
-                // S字の泡：追加スコア効果'
+                // S字の泡：追加スコア効果
                 this.effects.push({')'
                     type: 'bonus_score',')';
                     amount: config.bonusScore || 80)'),
                 break;'
                 '';
             case 'electric':;
-                // ビリビリの泡：画面揺れ・操作不能効果'
+                // ビリビリの泡：画面揺れ・操作不能効果
                 this.effects.push({')'
                     type: 'screen_shake')';
                     intensity: config.shakeIntensity || 15,')';
@@ -662,37 +662,37 @@ export class Bubble implements BubbleInterface { public id: string,
                 '';
             case 'escaping':;
                 // 逃げる泡：通常の効果なし（逃げる行動は update で処理）
-                break;'
+                break;
                 '';
             case 'cracked':;
                 // ひび割れの泡：通常の効果なし（早期破裂は maxAge で処理済み）
-                break;'
+                break;
                 '';
             case 'boss':;
                 // ボス泡：通常の効果なし（高スコア・高耐久は設定済み）
                 break;
-                ';
-            // 新しい泡タイプの特殊効果''
+                ;
+            // 新しい泡タイプの特殊効果
             case 'golden':;
-                // 黄金の泡：スコア倍率効果'
+                // 黄金の泡：スコア倍率効果
                 this.effects.push({')'
                     type: 'score_multiplier')';
                     multiplier: config.multiplier || 2.0,')';
-                    duration: 5000 // 5秒間)'),
+                    duration: 5000 // 5秒間)),
                 break;'
                 '';
             case 'frozen':;
-                // 氷の泡：周囲の泡を遅くする効果'
+                // 氷の泡：周囲の泡を遅くする効果
                 this.effects.push({''
                     type: 'slow_area', }
-                    position: { ...this.position },)
+                    position: { ...this.position })
                     radius: 120)';
                     slowFactor: config.slowEffect || 0.5,')';
-                    duration: 8000 // 8秒間)'),
+                    duration: 8000 // 8秒間)),
                 break;'
                 '';
             case 'magnetic':;
-                // 磁石の泡：他の泡を引き寄せる効果'
+                // 磁石の泡：他の泡を引き寄せる効果
                 this.effects.push({ ''
                     type: 'magnetic_pull', })
                     position: { ...this.position })'
@@ -701,7 +701,7 @@ export class Bubble implements BubbleInterface { public id: string,
                 break;'
                 '';
             case 'explosive':;
-                // 爆発の泡：大きな爆発効果'
+                // 爆発の泡：大きな爆発効果
                 this.effects.push({ ''
                     type: 'big_explosion', })
                     position: { ...this.position })'
@@ -711,15 +711,15 @@ export class Bubble implements BubbleInterface { public id: string,
                 '';
             case 'phantom':;
                 // 幻の泡：特殊効果なし（すり抜け効果は別途処理）
-                break;'
+                break;
                 '';
             case 'multiplier':;
-                // 倍率の泡：次の泡のスコアを倍増'
+                // 倍率の泡：次の泡のスコアを倍増
                 this.effects.push({ ')'
                     type: 'next_score_multiplier');
                     multiplier: config.scoreMultiplier || 3.0,);
                     duration: 10000 // 10秒間),
-                break; }
+                break }
         }
     }
     
@@ -752,9 +752,9 @@ export class Bubble implements BubbleInterface { public id: string,
     }
     
     /**
-     * 特殊タイプの振る舞い更新'
+     * 特殊タイプの振る舞い更新
      */''
-    public updateSpecialBehavior(deltaTime: number, mousePosition?: Position'): void { // deltaTimeは将来のフレーム補間で使用予定''
+    public updateSpecialBehavior(deltaTime: number, mousePosition?: Position'): void { // deltaTimeは将来のフレーム補間で使用予定
         console.log('Special behavior update with deltaTime:', deltaTime);''
         switch(this.type') {'
             '';
@@ -766,7 +766,7 @@ export class Bubble implements BubbleInterface { public id: string,
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     
                     if (distance < 100 && distance > 0) {
-                        const escapeForce = 50 / distance;'
+                        const escapeForce = 50 / distance;
                         this.velocity.x += (dx / distance) * escapeForce;'
         }'
                         this.velocity.y += (dy / distance') * escapeForce; }
@@ -776,7 +776,7 @@ export class Bubble implements BubbleInterface { public id: string,
                 '';
             case 'magnetic':;
                 // 磁力の泡：他の泡を引き寄せる効果（ここでは位置のみ更新）
-                break;'
+                break;
                 '';
             case 'frozen':;
                 // 凍った泡：動きを制限
@@ -787,6 +787,6 @@ export class Bubble implements BubbleInterface { public id: string,
     }
     
     /**
-     * 効果を取得してクリア'
+     * 効果を取得してクリア
      */''
     public getAndClearEffects(');

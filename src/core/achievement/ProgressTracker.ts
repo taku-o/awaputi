@@ -12,11 +12,11 @@ interface ProgressData { [key: string]: any, }
 
 interface ProgressHistoryEntry { timestamp: number,
     eventType: string,
-    data: any; }
+    data: any }
 }
 
 interface EventListener { event: string,
-    callback: (data: any) => void; }
+    callback: (data: any) => void }
 }
 
 export class ProgressTracker {
@@ -87,8 +87,8 @@ export class ProgressTracker {
      */
     updateProgress(eventType: string, data: any): void { // 履歴に追加
         this.addToHistory(eventType, data);
-';
-        // イベントタイプに応じて進捗データを更新''
+;
+        // イベントタイプに応じて進捗データを更新
         switch(eventType') {'
             '';
             case 'bubblePopped':'';
@@ -113,13 +113,13 @@ export class ProgressTracker {
                 this.updateComboProgress(data);
                 break;
             default:';
-                // カスタムイベントとして処理'
+                // カスタムイベントとして処理
         }'
                 this.updateCustomProgress(eventType, data'); }
         }
 ';
-        // 進捗更新イベントを発火''
-        this.fireEvent('progressUpdated', { eventType, data, progressData: this.progressData ); }
+        // 進捗更新イベントを発火
+        this.fireEvent('progressUpdated', { eventType, data, progressData: this.progressData ) }
     }
 
     /**
@@ -128,7 +128,7 @@ export class ProgressTracker {
     private updateBubbleProgress(data: any): void { this.progressData.bubblesPopped = (this.progressData.bubblesPopped || 0) + 1;
         
         if(data.bubbleType) {
-        ';
+        ';'
             '';
             if (!this.progressData.bubblesPoppedByType[data.bubbleType]') {
         
@@ -137,7 +137,7 @@ export class ProgressTracker {
             }
             this.progressData.bubblesPoppedByType[data.bubbleType]++;
             ';
-            // 特殊バブルのカウント''
+            // 特殊バブルのカウント
             const specialTypes = ['rainbow', 'bomb', 'lightning', 'ice', 'fire'];
             if(specialTypes.includes(data.bubbleType) { this.progressData.specialBubblesPopped = (this.progressData.specialBubblesPopped || 0) + 1; }
             }
@@ -250,7 +250,7 @@ export class ProgressTracker {
 
     /**
      * 条件を評価
-     */'
+     */
     private evaluateCondition(condition: any): boolean { ''
         switch(condition.type') {'
             '';
@@ -364,9 +364,9 @@ export class ProgressTracker {
      * 複合条件を評価
      */
     private evaluateCompositeCondition(condition: any): boolean { if (condition.all) {
-            return condition.all.every((subCondition: any) => this.evaluateCondition(subCondition); }
+            return condition.all.every((subCondition: any) => this.evaluateCondition(subCondition) }
         }
-        if (condition.any) { return condition.any.some((subCondition: any) => this.evaluateCondition(subCondition); }
+        if (condition.any) { return condition.any.some((subCondition: any) => this.evaluateCondition(subCondition) }
         }
         return false;
     }
@@ -383,7 +383,7 @@ export class ProgressTracker {
                     return Math.min(1, (this.progressData.highScore || 0) / condition.threshold); }
                 }
                 if(condition.total) {'
-                    ';
+                    ';'
                 }'
                     return Math.min(1, (this.progressData.totalScore || 0) / condition.total'); }
                 }'
@@ -401,14 +401,14 @@ export class ProgressTracker {
                 if (condition.played) { return Math.min(1, (this.progressData.gamesPlayed || 0) / condition.played); }
                 }
                 if(condition.won) {'
-                    ';
+                    ';'
                 }'
                     return Math.min(1, (this.progressData.gamesWon || 0) / condition.won'); }
                 }'
                 break;''
             case 'composite':;
                 if(condition.all) {
-                    const progresses = condition.all.map((sub: any) => this.calculateProgress(sub);
+                    const progresses = condition.all.map((sub: any) => this.calculateProgress(sub)
                 }
                     return progresses.reduce((sum: number, p: number) => sum + p, 0) / progresses.length; }
                 }
@@ -430,11 +430,11 @@ export class ProgressTracker {
             this.unlockedAchievements.add(achievementId);''
             this.progressData.achievementsUnlocked = (this.progressData.achievementsUnlocked || 0') + 1;
             ';
-            // 実績解除イベントを発火''
+            // 実績解除イベントを発火
             this.fireEvent('achievementUnlocked', {)
                 achievementId,);
                 achievement);
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
         }
     }
@@ -486,8 +486,8 @@ export class ProgressTracker {
         });
 
         // 履歴の上限を超えたら古いものを削除
-        if(this.progressHistory.length > this.historyLimit) {'
-            ';
+        if(this.progressHistory.length > this.historyLimit) {
+            ';'
         }'
             this.progressHistory = this.progressHistory.slice(-this.historyLimit'); }
         }'

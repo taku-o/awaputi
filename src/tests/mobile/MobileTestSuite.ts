@@ -7,7 +7,7 @@
 // Jest types are globally available in test environment
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 ';
-// サブコンポーネントのインポート''
+// サブコンポーネントのインポート
 import { MobileTestRunner } from './mobile-test-suite/MobileTestRunner.js';''
 import { MobileDeviceSimulator } from './mobile-test-suite/MobileDeviceSimulator.js';''
 import { MobileTestReporter } from './mobile-test-suite/MobileTestReporter.js';
@@ -23,7 +23,7 @@ interface TestFunction { name: string,
     run: (context?: any) => Promise<TestResult>,
     setup?: (context: any) => Promise<void>;
     cleanup?: (context: any) => Promise<void>;
-    errorCleanup?: (context: any, error: Error) => Promise<void>; }
+    errorCleanup?: (context: any, error: Error) => Promise<void> }
 }
 
 interface TestSuiteInterface { getTests(): TestFunction[];
@@ -35,25 +35,25 @@ interface TestResults { passed: number,
     skipped: number,
     errors: TestError[],
     performance: Map<string, PerformanceResult>;
-    compatibility: Map<string, CompatibilityResult>; }
+    compatibility: Map<string, CompatibilityResult> }
 }
 
 interface TestError { suite: string,
     test: string,
     error: string,
     stack?: string;
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface PerformanceResult { duration: number,
     metrics: Record<string, any>;
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface CompatibilityResult { device: string,
     browser: string,
     results: Record<string, any>;
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Event;
@@ -61,7 +61,7 @@ interface DeviceUtils { createTouchEvent: (type: string, touches: any[]) => Even
     createDeviceInfo: (device: string) => any,
     measurePerformance: (testFunction: () => Promise<void>) => Promise<number>,
     wait: (ms: number) => Promise<void>,
-    randomDelay: (min: number, max: number) => Promise<void>; }
+    randomDelay: (min: number, max: number) => Promise<void> }
 }
 
 interface DebugInfo { mainController: {
@@ -71,14 +71,14 @@ interface DebugInfo { mainController: {
             failed: number,
             errors: number,
             performance: number,
-            compatibility: number; }
+            compatibility: number }
         };
     };
     testRunner: any,
     deviceSimulator: any,
     components: { testRunner: boolean,
         deviceSimulator: boolean,
-        testReporter: boolean; }
+        testReporter: boolean }
     };
 }
 
@@ -89,7 +89,7 @@ interface HealthCheckResult { healthy: boolean,
         deviceSimulator: boolean,
         testReporter: boolean,
         testSuites: number,
-        testContainer: boolean; }
+        testContainer: boolean }
     };
 }
 
@@ -97,11 +97,11 @@ interface HealthCheckResult { healthy: boolean,
 class TouchTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
     constructor(mobileTestSuite: MobileTestSuite) {
-        this.mobileTestSuite = mobileTestSuite; }
-    }'
+        this.mobileTestSuite = mobileTestSuite }
+    }
     '';
-    getTests('')';
-            { name: 'touch_basic', run: () => this.testBasicTouch('') }'
+    getTests()';
+            { name: 'touch_basic', run: () => this.testBasicTouch() }'
             { name: 'touch_multipoint', run: () => this.testMultiPointTouch() }
         ];
     }
@@ -118,11 +118,11 @@ class TouchTestSuite implements TestSuiteInterface { private mobileTestSuite: Mo
 class GestureTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
     constructor(mobileTestSuite: MobileTestSuite) {
-        this.mobileTestSuite = mobileTestSuite; }
+        this.mobileTestSuite = mobileTestSuite }
     }'
     '';
-    getTests('')';
-            { name: 'gesture_swipe', run: () => this.testSwipeGesture('') }'
+    getTests()';
+            { name: 'gesture_swipe', run: () => this.testSwipeGesture() }'
             { name: 'gesture_pinch', run: () => this.testPinchGesture() }
         ];
     }
@@ -139,11 +139,11 @@ class GestureTestSuite implements TestSuiteInterface { private mobileTestSuite: 
 class ResponsiveTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
     constructor(mobileTestSuite: MobileTestSuite) {
-        this.mobileTestSuite = mobileTestSuite; }
+        this.mobileTestSuite = mobileTestSuite }
     }'
     '';
-    getTests('')';
-            { name: 'responsive_layout', run: () => this.testResponsiveLayout('') }'
+    getTests()';
+            { name: 'responsive_layout', run: () => this.testResponsiveLayout() }'
             { name: 'responsive_images', run: () => this.testResponsiveImages() }
         ];
     }
@@ -160,11 +160,11 @@ class ResponsiveTestSuite implements TestSuiteInterface { private mobileTestSuit
 class PerformanceTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
     constructor(mobileTestSuite: MobileTestSuite) {
-        this.mobileTestSuite = mobileTestSuite; }
+        this.mobileTestSuite = mobileTestSuite }
     }'
     '';
-    getTests('')';
-            { name: 'performance_fps', run: () => this.testFPS('') }'
+    getTests()';
+            { name: 'performance_fps', run: () => this.testFPS() }'
             { name: 'performance_memory', run: () => this.testMemoryUsage() }
         ];
     }
@@ -181,11 +181,11 @@ class PerformanceTestSuite implements TestSuiteInterface { private mobileTestSui
 class PWATestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
     constructor(mobileTestSuite: MobileTestSuite) {
-        this.mobileTestSuite = mobileTestSuite; }
+        this.mobileTestSuite = mobileTestSuite }
     }'
     '';
-    getTests('')';
-            { name: 'pwa_install', run: () => this.testPWAInstallation('') }'
+    getTests()';
+            { name: 'pwa_install', run: () => this.testPWAInstallation() }'
             { name: 'pwa_offline', run: () => this.testOfflineCapability() }
         ];
     }
@@ -202,11 +202,11 @@ class PWATestSuite implements TestSuiteInterface { private mobileTestSuite: Mobi
 class AccessibilityTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
     constructor(mobileTestSuite: MobileTestSuite) {
-        this.mobileTestSuite = mobileTestSuite; }
+        this.mobileTestSuite = mobileTestSuite }
     }'
     '';
-    getTests('')';
-            { name: 'a11y_contrast', run: () => this.testColorContrast('') }'
+    getTests()';
+            { name: 'a11y_contrast', run: () => this.testColorContrast() }'
             { name: 'a11y_navigation', run: () => this.testKeyboardNavigation() }
         ];
     }
@@ -223,11 +223,11 @@ class AccessibilityTestSuite implements TestSuiteInterface { private mobileTestS
 class CompatibilityTestSuite implements TestSuiteInterface { private mobileTestSuite: MobileTestSuite
 
     constructor(mobileTestSuite: MobileTestSuite) {
-        this.mobileTestSuite = mobileTestSuite; }
+        this.mobileTestSuite = mobileTestSuite }
     }'
     '';
-    getTests('')';
-            { name: 'compat_browser', run: () => this.testBrowserCompatibility('') }'
+    getTests()';
+            { name: 'compat_browser', run: () => this.testBrowserCompatibility() }'
             { name: 'compat_device', run: () => this.testDeviceCompatibility() }
         ];
     }
@@ -289,11 +289,11 @@ export class MobileTestSuite {
     /**
      * 初期化（軽量化）
      */
-    private initialize(): void { try {'
-            this.setupTestEnvironment();''
-            this.registerTestSuites('')';
+    private initialize(): void { try {
+            this.setupTestEnvironment();
+            this.registerTestSuites()';
             console.log('[MobileTestSuite] モバイルテストスイート初期化完了');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'MobileTestSuite.initialize'); }
         }
     }
@@ -307,7 +307,7 @@ export class MobileTestSuite {
     /**
      * テストコンテナ作成（従来との互換性のため維持）'
      */''
-    private createTestContainer('')';
+    private createTestContainer()';
         this.testContainer = document.createElement('div'');''
         this.testContainer.id = 'mobile-test-container';
         this.testContainer.style.cssText = `;
@@ -324,25 +324,25 @@ export class MobileTestSuite {
     /**
      * テストスイート登録（従来との互換性のため維持）'
      */''
-    private registerTestSuites('')';
+    private registerTestSuites()';
         this.testSuites.set('touch', new TouchTestSuite(this)');
         ';
-        // ジェスチャーテスト''
+        // ジェスチャーテスト
         this.testSuites.set('gesture', new GestureTestSuite(this)');
         ';
-        // レスポンシブテスト''
+        // レスポンシブテスト
         this.testSuites.set('responsive', new ResponsiveTestSuite(this)');
         ';
-        // パフォーマンステスト''
+        // パフォーマンステスト
         this.testSuites.set('performance', new PerformanceTestSuite(this)');
         ';
-        // PWAテスト''
+        // PWAテスト
         this.testSuites.set('pwa', new PWATestSuite(this)');
         ';
-        // アクセシビリティテスト''
+        // アクセシビリティテスト
         this.testSuites.set('accessibility', new AccessibilityTestSuite(this)');
         ';
-        // 互換性テスト''
+        // 互換性テスト
         this.testSuites.set('compatibility', new CompatibilityTestSuite(this);
     }
     
@@ -370,11 +370,11 @@ export class MobileTestSuite {
     
     /**
      * テスト実行中断（MobileTestRunnerに委譲）
-     */'
+     */
     abortTests(): boolean { ''
-        return this.testRunner.abortTests('')';
+        return this.testRunner.abortTests()';
     async startDeviceSimulation(deviceName: string = 'iPhone 12'): Promise<void> {
-        return await this.deviceSimulator.startSimulation(deviceName); }
+        return await this.deviceSimulator.startSimulation(deviceName) }
     }
     
     /**
@@ -423,19 +423,19 @@ export class MobileTestSuite {
             skipped: 0,
             errors: [],
             performance: new Map<string, PerformanceResult>(),
-            compatibility: new Map<string, CompatibilityResult>(); }
+            compatibility: new Map<string, CompatibilityResult>() }
         };
     }
     
     /**
-     * テストエラー記録'
+     * テストエラー記録
      */''
     recordTestError(suiteName: string, testName: string, error: Error | string'): void { this.testResults.errors.push({'
             suite: suiteName,'';
             test: testName || 'unknown',')';
             error: typeof error === 'string' ? error : error.message,')';
             stack: typeof error === 'object' && error.stack ? error.stack : undefined),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -452,7 +452,7 @@ export class MobileTestSuite {
         this.testResults.performance.set(testName, {)
             duration,);
             metrics);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -464,7 +464,7 @@ export class MobileTestSuite {
         this.testResults.compatibility.set(key, { device)
             browser,);
             results);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -570,18 +570,18 @@ export class MobileTestSuite {
      * システム健全性チェック
      */
     performHealthCheck(): HealthCheckResult { const issues: string[] = [],
-        ';
-        // サブコンポーネントの存在確認''
+        ;
+        // サブコンポーネントの存在確認
         if (!this.testRunner') issues.push('MobileTestRunner not initialized');''
         if (!this.deviceSimulator') issues.push('MobileDeviceSimulator not initialized');''
         if (!this.testReporter') issues.push('MobileTestReporter not initialized');
         ';
-        // テストスイートの確認''
+        // テストスイートの確認
         if (this.testSuites.size === 0') issues.push('No test suites registered');
         ';
-        // テストコンテナの確認''
+        // テストコンテナの確認
         if(!this.testContainer || !this.testContainer.parentNode') {'
-            ';
+            ';'
         }'
             issues.push('Test container not properly mounted'); }
         }
@@ -618,14 +618,14 @@ export class MobileTestSuite {
             }
             
             // テストコンテナ削除
-            if(this.testContainer && this.testContainer.parentNode) {'
-                ';
+            if(this.testContainer && this.testContainer.parentNode) {
+                ';'
             }'
                 this.testContainer.parentNode.removeChild(this.testContainer'); }
             }'
             '';
             console.log('[MobileTestSuite] クリーンアップ完了');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'MobileTestSuite.cleanup'); }
         }
     }
@@ -639,6 +639,6 @@ let mobileTestSuiteInstance: MobileTestSuite | null = null,
 
 /**
  * MobileTestSuiteシングルトンインスタンス取得
- */'
+ */
 export function getMobileTestSuite(): MobileTestSuite { if (!mobileTestSuiteInstance) {''
         mobileTestSuiteInstance = new MobileTestSuite(' })

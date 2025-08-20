@@ -32,14 +32,14 @@ export interface CustomTheme { id: string,
 export interface ThemeHistoryEntry { action: 'save' | 'delete' | 'import' | 'export',
     themeName: string,
     timestamp: string,
-    themeId: string; }
+    themeId: string }
 }
 
 export interface ThemeListItem { name: string,
     displayName: string,
     author: string,
     created: string,
-    id: string; }
+    id: string }
 }
 
 export interface ThemeStatistics { totalThemes: number,
@@ -52,11 +52,11 @@ export interface ThemeStatistics { totalThemes: number,
 export interface ThemeBackup { themes: [string, CustomTheme][],
     history: ThemeHistoryEntry[],
     timestamp: string,
-    version: string; }
+    version: string }
 }
 
 export interface StorageData { themes: [string, CustomTheme][],
-    history: ThemeHistoryEntry[];
+    history: ThemeHistoryEntry[]
     }
 }
 
@@ -68,7 +68,7 @@ export class CustomThemeManager {
     private readonly storageKey: string,
     
     constructor() {
-    ';
+    ';'
         this.customThemes = new Map<string, CustomTheme>();''
         this.userThemes = new Map<string, CustomTheme>(');
         this.themeHistory = [];'
@@ -86,7 +86,7 @@ export class CustomThemeManager {
      * @param author - 作成者
      * @returns 保存成功かどうか'
      */''
-    saveCustomTheme(name: string, theme: Partial<CustomTheme>, author: string = 'user'): boolean { try {''
+    saveCustomTheme(name: string, theme: Partial<CustomTheme>, author: string = 'user'): boolean { try {'
             if (!this._validateTheme(theme)') {''
                 throw new Error('Invalid theme data'); }
             }
@@ -102,9 +102,9 @@ export class CustomThemeManager {
             this.customThemes.set(name, themeData');''
             this._addToHistory('save', name, themeData);
             this._persistToStorage();
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to save custom theme:', error);
             return false; }
         }
@@ -154,9 +154,9 @@ export class CustomThemeManager {
     exportTheme(name: string): string | null { const theme = this.customThemes.get(name);
         if (!theme) return null;
         
-        try {'
+        try {
             return JSON.stringify(theme, null, 2);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to export theme:', error);
             return null; }
         }
@@ -179,7 +179,7 @@ export class CustomThemeManager {
             const uniqueName = this._generateUniqueName(name');'
             '';
             return this.saveCustomTheme(uniqueName, theme, theme.author || 'imported');''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to import theme:', error);
             return false; }
         }
@@ -198,7 +198,7 @@ export class CustomThemeManager {
             ...sourceTheme,';
             name: newName,'';
             author: sourceTheme.author + ' (copy')',
-            created: new Date().toISOString(); }
+            created: new Date().toISOString() }
         };
         
         return this.saveCustomTheme(newName, duplicatedTheme);
@@ -217,8 +217,8 @@ export class CustomThemeManager {
                 }
                 if (data.history) { this.themeHistory = data.history; }'
                 }''
-            } catch (error') { ''
-            console.error('Failed to load themes from storage:', error); }
+            } catch (error) { ''
+            console.error('Failed to load themes from storage:', error) }
         }
     }
     
@@ -302,7 +302,7 @@ export class CustomThemeManager {
      */
     private _generateUniqueName(baseName: string): string { let counter = 1;
         let uniqueName = baseName;
-        ';
+        ';'
         while(this.customThemes.has(uniqueName) {' }'
             uniqueName = `${baseName} (${counter}')`;
             counter++;
@@ -340,10 +340,10 @@ export class CustomThemeManager {
             const data: StorageData = {
                 themes: Array.from(this.customThemes.entries(),
                 history: this.themeHistory }
-            },'
+            },
             localStorage.setItem(this.storageKey, JSON.stringify(data);''
-        } catch (error') { ''
-            console.error('Failed to persist themes to storage:', error); }
+        } catch (error) { ''
+            console.error('Failed to persist themes to storage:', error) }
         }
     }
     
@@ -381,7 +381,7 @@ export class CustomThemeManager {
             
             this._persistToStorage();'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to restore from backup:', error');
             return false; }
         }'

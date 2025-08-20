@@ -10,7 +10,7 @@ import { EasingType } from './AnimationEngineCore.js';
  * Position interface
  */
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 /**
@@ -69,7 +69,7 @@ export interface Bubble { x: number,
  * Type settings interface
  */
 export interface TypeSettings { enabled: boolean,
-    speedMultiplier: number; }
+    speedMultiplier: number }
 }
 
 /**
@@ -127,7 +127,7 @@ export interface BubbleSpawnAnimation { ''
     easing: EasingType,
     startValues: AnimationValues,
     endValues: AnimationValues,
-    options: BubbleSpawnOptions;
+    options: BubbleSpawnOptions
     }
 }
 
@@ -143,7 +143,7 @@ export interface BubbleDestroyAnimation { ''
     easing: EasingType,
     startValues: AnimationValues,
     endValues: AnimationValues,
-    options: BubbleDestroyOptions;
+    options: BubbleDestroyOptions
     }
 }
 
@@ -158,7 +158,7 @@ export interface BubbleMovementAnimation { ''
     easing: EasingType,
     startValues: Position,
     endValues: Position,
-    options: BubbleMovementOptions;
+    options: BubbleMovementOptions
     }
 }
 
@@ -206,7 +206,7 @@ export interface UIElementAnimation { ''
     easing: EasingType,
     startValues: AnimationValues,
     endValues: AnimationValues,
-    options: UIAnimationOptions;
+    options: UIAnimationOptions
     }
 }
 
@@ -258,7 +258,7 @@ export interface MenuExitAnimation { ''
     easing: EasingType,
     startValues: AnimationValues,
     endValues: AnimationValues,
-    options: MenuTransitionOptions;
+    options: MenuTransitionOptions
     }
 }
 
@@ -307,7 +307,7 @@ export interface LoadingAnimation { ''
     dotPhases?: number[];
     waveOffset?: number;
     completionTriggered?: boolean;
-    options: LoadingAnimationOptions;
+    options: LoadingAnimationOptions
     }
 }
 
@@ -315,7 +315,7 @@ export interface LoadingAnimation { ''
  * Canvas interface
  */
 export interface Canvas { width: number,
-    height: number; }
+    height: number }
 }
 
 /**
@@ -325,9 +325,9 @@ export interface Canvas { width: number,
 export class BubbleAnimationHandler {
     private typeSettings: TypeSettings';
     '';
-    constructor('')';
+    constructor()';
     createBubbleSpawnAnimation(bubble: Bubble, spawnType: BubbleSpawnType = 'scale', options: BubbleSpawnOptions = {)'): BubbleSpawnAnimation | null {
-        try {'
+        try {
             return { ''
                 type: 'bubbleSpawn',
                 target: bubble,
@@ -345,7 +345,7 @@ export class BubbleAnimationHandler {
                 }
             };'
         } catch (error) { ''
-            getErrorHandler('')';
+            getErrorHandler()';
                 context: 'BubbleAnimationHandler.createBubbleSpawnAnimation'),' }'
             }');
             return null;
@@ -356,7 +356,7 @@ export class BubbleAnimationHandler {
      * バブル破壊アニメーション作成'
      */''
     createBubbleDestroyAnimation(bubble: Bubble, destroyType: BubbleDestroyType = 'shrink', options: BubbleDestroyOptions = { )'): BubbleDestroyAnimation | null {
-        try {'
+        try {
             return { ''
                 type: 'bubbleDestroy',
                 target: bubble,
@@ -373,8 +373,8 @@ export class BubbleAnimationHandler {
                 }
             };'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'BubbleAnimationHandler.createBubbleDestroyAnimation'); }
+            getErrorHandler()';
+                context: 'BubbleAnimationHandler.createBubbleDestroyAnimation') }
             });
             return null;
         }
@@ -384,7 +384,7 @@ export class BubbleAnimationHandler {
      * バブル移動アニメーション作成'
      */''
     createBubbleMovementAnimation(bubble: Bubble, targetPosition: Position, duration: number = 1000, options: BubbleMovementOptions = { )'): BubbleMovementAnimation | null {
-        try {'
+        try {
             return { ''
                 type: 'bubbleMovement',
                 target: bubble,
@@ -401,8 +401,8 @@ export class BubbleAnimationHandler {
                 }
             };'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'BubbleAnimationHandler.createBubbleMovementAnimation'); }
+            getErrorHandler()';
+                context: 'BubbleAnimationHandler.createBubbleMovementAnimation') }
             });
             return null;
         }
@@ -444,8 +444,8 @@ export class BubbleAnimationHandler {
         }
         if (start.rotation !== undefined && end.rotation !== undefined) { target.rotation = start.rotation + (end.rotation - start.rotation) * progress; }
         }
-        ';
-        // スポーンタイプ別の特殊処理''
+        ;
+        // スポーンタイプ別の特殊処理
         switch(animation.spawnType') {'
             '';
             case 'bounce':';
@@ -492,7 +492,7 @@ export class BubbleAnimationHandler {
         if (start.rotation !== undefined && end.rotation !== undefined) { target.rotation = start.rotation + (end.rotation - start.rotation) * progress; }
         }
         ';
-        // 破壊タイプ別の特殊処理''
+        // 破壊タイプ別の特殊処理
         switch(animation.destroyType') {'
             '';
             case 'explode':;
@@ -515,7 +515,7 @@ export class BubbleAnimationHandler {
      */
     private updateBubbleMovementAnimation(animation: BubbleMovementAnimation, progress: number): void { const start = animation.startValues;
         const end = animation.endValues;
-        const target = animation.target;'
+        const target = animation.target;
         '';
         switch(animation.options.path') {'
             '';
@@ -553,10 +553,10 @@ export class BubbleAnimationHandler {
             alpha: bubble.alpha || 1,
             rotation: bubble.rotation || 0,
             scale: bubble.scale || 1 }
-        },'
+        },
         '';
         switch(animationType') {'
-            ';
+            ';'
         }'
             case 'scale': }'
                 return { ...baseValues, scale: 0 }''
@@ -597,7 +597,7 @@ export class BubbleAnimationHandler {
         },'
         '';
         switch(destroyType') {'
-            ';
+            ';'
         }'
             case 'shrink': }'
                 return { ...baseValues, scale: 0 }''
@@ -633,7 +633,7 @@ export class UIAnimationHandler {
      * UIエレメントアニメーション作成'
      */''
     createUIElementAnimation(element: UIElement, animationType: UIAnimationType, duration: number = 500, options: UIAnimationOptions = { )'): UIElementAnimation | null {
-        try {'
+        try {
             return { ''
                 type: 'uiElement',
                 target: element,
@@ -651,8 +651,8 @@ export class UIAnimationHandler {
                 }
             };'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'UIAnimationHandler.createUIElementAnimation'); }
+            getErrorHandler()';
+                context: 'UIAnimationHandler.createUIElementAnimation') }
             });
             return null;
         }
@@ -680,8 +680,8 @@ export class UIAnimationHandler {
                 }
             };'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'UIAnimationHandler.createScoreChangeAnimation'); }
+            getErrorHandler()';
+                context: 'UIAnimationHandler.createScoreChangeAnimation') }
             });
             return null;
         }
@@ -722,8 +722,8 @@ export class UIAnimationHandler {
         }
         if (start.scale !== undefined && end.scale !== undefined) { target.scale = start.scale + (end.scale - start.scale) * progress; }
         }
-        ';
-        // アニメーションタイプ別の特殊処理''
+        ;
+        // アニメーションタイプ別の特殊処理
         switch(animation.animationType') {'
             '';
             case 'pulse':'';
@@ -778,10 +778,10 @@ export class UIAnimationHandler {
             alpha: element.alpha || 1,
             scale: element.scale || 1,
             rotation: element.rotation || 0 }
-        },'
+        },
         '';
         switch(animationType') {'
-            ';
+            ';'
         }'
             case 'fadeIn': }'
                 return { ...baseValues, alpha: 0 }''
@@ -871,15 +871,15 @@ export class MenuAnimationHandler {
     createMenuTransitionAnimations(fromMenu: MenuElement | null, toMenu: MenuElement | null, transitionType: MenuTransitionType = 'slide', options: MenuTransitionOptions = { ): (MenuExitAnimation | MenuEnterAnimation)[] {
         const animations: (MenuExitAnimation | MenuEnterAnimation)[] = [],
         
-        try {'
-            // 退出アニメーション''
+        try {
+            // 退出アニメーション
             if(fromMenu') {'
                 const exitAnimation: MenuExitAnimation = {''
                     type: 'menuExit',
                     target: fromMenu,
                     transitionType,
                     duration: options.duration || 600,';
-                    elapsed: 0,';
+                    elapsed: 0,'
             }'
                     easing: options.exitEasing || 'easeInQuad', }
                     startValues: { alpha: 1, x: 0, y: 0, scale: 1 },
@@ -889,7 +889,7 @@ export class MenuAnimationHandler {
                 animations.push(exitAnimation);
             }
             ';
-            // 入場アニメーション''
+            // 入場アニメーション
             if(toMenu') {'
                 const enterAnimation: MenuEnterAnimation = {''
                     type: 'menuEnter',
@@ -910,8 +910,8 @@ export class MenuAnimationHandler {
             
             return animations;'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'MenuAnimationHandler.createMenuTransitionAnimations'); }
+            getErrorHandler()';
+                context: 'MenuAnimationHandler.createMenuTransitionAnimations') }
             });
             return [];
         }
@@ -1018,13 +1018,13 @@ export class LoadingAnimationHandler {
         try {
             const centerX = position? .x || this.canvas.width / 2;
             const centerY = position?.y || this.canvas.height / 2;
-            ';
+            ';'
             return { : undefined''
                 type: 'loading' };
                 loadingType: type, }
                 position: { x: centerX, y: centerY },
                 size,
-                duration: options.duration || Number.MAX_SAFE_INTEGER, // 無限ループ';
+                duration: options.duration || Number.MAX_SAFE_INTEGER, // 無限ループ;
                 elapsed: 0,'';
                 easing: 'linear',';
                 options: { ''
@@ -1036,8 +1036,8 @@ export class LoadingAnimationHandler {
                 }
             };'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'LoadingAnimationHandler.createLoadingAnimation'); }
+            getErrorHandler()';
+                context: 'LoadingAnimationHandler.createLoadingAnimation') }
             });
             return null;
         }
@@ -1049,7 +1049,7 @@ export class LoadingAnimationHandler {
     updateLoadingAnimation(animation: LoadingAnimation, deltaTime: number): void { animation.rotation = (animation.rotation || 0) + (deltaTime * 0.003 * animation.options.speed!);
         animation.phase = (animation.phase || 0) + (deltaTime * 0.002 * animation.options.speed!);
         ';
-        // ローディングタイプ別の状態更新''
+        // ローディングタイプ別の状態更新
         switch(animation.loadingType') {'
             '';
             case 'dots':;
@@ -1071,12 +1071,12 @@ export class LoadingAnimationHandler {
     createProgressLoadingAnimation(position: Position, size: number, options: LoadingAnimationOptions = { )'): LoadingAnimation | null {''
         const animation = this.createLoadingAnimation('progress', position, size, {)
             ...options);
-            progress: 0, // 初期進行状況';
+            progress: 0, // 初期進行状況;
             showPercentage: options.showPercentage !== false,'';
             backgroundColor: options.backgroundColor || '#EEEEEE',')';
             foregroundColor: options.foregroundColor || '#4A90E2'),
         
-        return animation; }
+        return animation }
     }
     
     /**
@@ -1086,13 +1086,13 @@ export class LoadingAnimationHandler {
         if(animation && animation.loadingType === 'progress') {
             animation.options.progress = Math.max(0, Math.min(1, progress);
             ';
-            // 100%完了時の特別アニメーション''
+            // 100%完了時の特別アニメーション
             if (animation.options.progress >= 1 && !animation.completionTriggered') {
                 animation.completionTriggered = true;
         }
                 return true; // 完了フラグを返す }
             }
         }
-        return false;'
+        return false;
     }''
 }

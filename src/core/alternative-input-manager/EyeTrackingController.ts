@@ -11,14 +11,14 @@ export interface EyeTrackingConfig { enabled: boolean,
     gazeTolerance: number,
     smoothingFactor: number,
     blinkDetection: boolean,
-    blinkThreshold: number; }
+    blinkThreshold: number }
 }
 
 export interface GazePoint { x: number,
-    y: number; }
+    y: number }
 }
 
-export interface GazeData extends GazePoint { timestamp: number; }
+export interface GazeData extends GazePoint { timestamp: number }
 }
 
 export interface CalibrationPoint extends GazePoint { id?: string; }
@@ -26,7 +26,7 @@ export interface CalibrationPoint extends GazePoint { id?: string; }
 
 export interface CalibrationData { points: CalibrationPoint[],
     accuracy: number,
-    completed: boolean; }
+    completed: boolean }
 }
 
 export interface EyeState { isCalibrated: boolean,
@@ -34,7 +34,7 @@ export interface EyeState { isCalibrated: boolean,
     dwellTimer: number | null,
     gazeHistory: GazeData[],
     lastBlink: number,
-    calibrationData: CalibrationData;
+    calibrationData: CalibrationData
     }
 }
 
@@ -42,21 +42,21 @@ export interface EyeTrackingStats { gazeEvents: number,
     dwellActivations: number,
     calibrationAttempts: number,
     averageAccuracy: number,
-    blinkEvents: number; }
+    blinkEvents: number }
 }
 
 export interface DetailedEyeTrackingStats extends EyeTrackingStats { isCalibrated: boolean,
     calibrationAccuracy: number,
     currentGaze: GazePoint,
-    gazeHistoryLength: number; }
+    gazeHistoryLength: number }
 }
 
 export interface CalibrationResult { success: boolean,
-    accuracy: number; }
+    accuracy: number }
 }
 
 export interface ElementActivationData { element: HTMLElement,
-    position: GazePoint;
+    position: GazePoint
     }
 }
 
@@ -76,7 +76,7 @@ export interface EyeFeature { x: number,
     y: number,
     width: number,
     height: number,
-    confidence: number; }
+    confidence: number }
 }
 
 export interface WebGazerInstance { setGazeListener: (callback: GazeListenerCallback) => WebGazerInstance,
@@ -89,12 +89,12 @@ export interface WebGazerInstance { setGazeListener: (callback: GazeListenerCall
     recordScreenPosition: (x: number, y: number, type: string) => WebGazerInstance,
     params: {
         imgWidth: number,
-        imgHeight: number; }
+        imgHeight: number }
     };
 }
 
 export interface TrackingUIElement extends HTMLElement { className: string,
-    style: CSSStyleDeclaration;
+    style: CSSStyleDeclaration
     }
 }
 
@@ -105,7 +105,7 @@ export type FeedbackType = '';
     | 'dwell_activated' | 'blink_detected' | 'double_blink' '';
     | 'element_activated' | 'calibration_started' | 'calibration_completed';
 ';
-// コールバック型''
+// コールバック型
 export type GazeListenerCallback = (data: WebGazerPrediction | null, timestamp: number') => void;
 
 // 定数
@@ -121,9 +121,9 @@ export const ACCURACY_DISTANCE_THRESHOLD = 200;
 export const CALIBRATION_POINT_DISPLAY_TIME = 2000;
 export const ACCURACY_TEST_SAMPLES = 10;
 export const ACCURACY_TEST_TIMEOUT = 3000;
-';
-// WebGazer CDN URL''
-export const WEBGAZER_CDN_URL = 'https: //webgazer.cs.brown.edu/webgazer.js',
+;
+// WebGazer CDN URL
+export const WEBGAZER_CDN_URL = 'https: //webgazer.cs.brown.edu/webgazer.js,
 
 // CSS Keyframes
 export const DWELL_PROGRESS_KEYFRAMES = `;
@@ -133,13 +133,13 @@ export const DWELL_PROGRESS_KEYFRAMES = `;
             border-bottom-color: transparent,
             border-left-color: transparent, }
         }
-        25% { border-right-color: rgba(0, 255, 0, 0.8); }
+        25% { border-right-color: rgba(0, 255, 0, 0.8) }
         }
-        50% { border-bottom-color: rgba(0, 255, 0, 0.8); }
+        50% { border-bottom-color: rgba(0, 255, 0, 0.8) }
         }
-        75% { border-left-color: rgba(0, 255, 0, 0.8); }
+        75% { border-left-color: rgba(0, 255, 0, 0.8) }
         }
-        to { border-color: rgba(0, 255, 0, 0.8); }
+        to { border-color: rgba(0, 255, 0, 0.8) }
         }
     }
 `;
@@ -148,17 +148,17 @@ export const PULSE_KEYFRAMES = `;
     @keyframes pulse {
         0% { transform: scale(1); opacity: 1 }
         50% { transform: scale(1.2); opacity: 0.7, }
-        100% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(1); opacity: 1 }
     }
 `;
 ';
-// 型ガード''
+// 型ガード
 export function isValidGazePoint(point: any'): point is GazePoint { return point && ''
            typeof point.x === 'number' && '';
            typeof point.y === 'number' &&;
            !isNaN(point.x) && !isNaN(point.y); }
 }
-';
+';'
 export function isValidGazeData(data: any): data is GazeData { ''
     return isValidGazePoint(data') && '';
            typeof data.timestamp === 'number' &&;
@@ -168,7 +168,7 @@ export function isValidGazeData(data: any): data is GazeData { ''
 export function isClickableElement(element: HTMLElement'): boolean { ''
     const clickableTags = ['BUTTON', 'A', 'INPUT'];''
     const clickableClasses = ['bubble', 'clickable', 'btn'];
-    ';
+    ';'
     if(clickableTags.includes(element.tagName) return true;''
     if(clickableClasses.some(cls => element.classList.contains(cls)') return true;''
     if (element.hasAttribute('onclick')') return true;''
@@ -188,7 +188,7 @@ export function isWebGazerPrediction(data: any): data is WebGazerPrediction { ''
 
 // Window拡張（WebGazerグローバル）
 declare global { interface Window {
-        webgazer: WebGazerInstance;
+        webgazer: WebGazerInstance
     }
     }
 }
@@ -204,9 +204,9 @@ export class EyeTrackingController {
     private webgazer: WebGazerInstance | null;
     private webgazerLoaded: boolean;
     // 統計
-    private stats: EyeTrackingStats';
+    private stats: EyeTrackingStats;
 '';
-    constructor('')';
+    constructor()';
         console.log('[EyeTrackingController] Initialized'); }
     }
     
@@ -221,9 +221,9 @@ export class EyeTrackingController {
         try {
             await this.loadWebGazer();'
             this.setupEyeTracking();''
-            this.createGazeInterface('')';
+            this.createGazeInterface()';
             console.log('[EyeTrackingController] Eye tracking initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[EyeTrackingController] Initialization failed:', error);
             throw error; }
         }
@@ -235,7 +235,7 @@ export class EyeTrackingController {
     private async loadWebGazer(): Promise<void> { if (this.webgazerLoaded) return;'
         '';
         return new Promise<void>((resolve, reject') => { '
-            // WebGazer.jsスクリプトをロード''
+            // WebGazer.jsスクリプトをロード
             const script = document.createElement('script');
             script.src = WEBGAZER_CDN_URL;
             script.onload = () => {
@@ -265,7 +265,7 @@ export class EyeTrackingController {
                 if (data) { }
                     this.handleGazeData(data, clock); }
                 }
-            })'
+            })
             .begin()'';
             .showPredictionPoints(false');
         
@@ -273,7 +273,7 @@ export class EyeTrackingController {
         this.webgazer.params.imgWidth = 320;
         this.webgazer.params.imgHeight = 240;
         
-        // 予測モデル設定'
+        // 予測モデル設定
         this.webgazer'';
             .setRegression('weightedRidge'')'';
             .setTracker('clmtrackr');
@@ -291,7 +291,7 @@ export class EyeTrackingController {
      * 視線ポインターを作成
      */'
     private createGazePointer(): void { if (this.gazePointer) {''
-            this.gazePointer.remove('')';
+            this.gazePointer.remove()';
         this.gazePointer = document.createElement('div'') as TrackingUIElement;''
         this.gazePointer.className = 'gaze-pointer';
         this.gazePointer.style.cssText = `;
@@ -315,7 +315,7 @@ export class EyeTrackingController {
      * 滞留インジケーターを作成
      */'
     private createDwellIndicator(): void { if (this.dwellIndicator) {''
-            this.dwellIndicator.remove('')';
+            this.dwellIndicator.remove()';
         this.dwellIndicator = document.createElement('div'') as TrackingUIElement;''
         this.dwellIndicator.className = 'dwell-indicator';
         this.dwellIndicator.style.cssText = `;
@@ -338,9 +338,9 @@ export class EyeTrackingController {
     }
     
     /**
-     * CSS アニメーションを追加'
+     * CSS アニメーションを追加
      */''
-    private addCSSAnimations('')';
+    private addCSSAnimations()';
         const existingStyle = document.getElementById('eye-tracking-animations');''
         if (existingStyle') return;'
         '';
@@ -353,7 +353,7 @@ export class EyeTrackingController {
     /**
      * キャリブレーションインターフェースを作成'
      */''
-    private createCalibrationInterface('')';
+    private createCalibrationInterface()';
         this.calibrationInterface = document.createElement('div'') as TrackingUIElement;''
         this.calibrationInterface.className = 'calibration-interface';
         this.calibrationInterface.style.cssText = `;
@@ -425,7 +425,7 @@ export class EyeTrackingController {
     
     /**
      * 視線ポインターを更新
-     */'
+     */
     private updateGazePointer(gazeData: GazePoint): void { ''
         if (!this.gazePointer') return;'
         '';
@@ -474,10 +474,10 @@ export class EyeTrackingController {
             
         }
             this.activateGazeElement(element, gazeData); }
-        }'
+        }
         '';
-        this.hideDwellIndicator('')';
-        this.provideFeedback('dwell_activated', { x: gazeData.x, y: gazeData.y ); }
+        this.hideDwellIndicator()';
+        this.provideFeedback('dwell_activated', { x: gazeData.x, y: gazeData.y ) }
     }
     
     /**
@@ -491,12 +491,12 @@ export class EyeTrackingController {
             // 要素をクリック
             setTimeout(() => { 
         }
-                element.click(); }'
+                element.click(); }
                 this.unhighlightElement(element);' }'
             }, 100');'
             '';
-            this.provideFeedback('element_activated', { element: element.tagName, )
-                position: gazeData ); }
+            this.provideFeedback('element_activated', { element: element.tagName )
+                position: gazeData ) }
             } as ElementActivationData);
         }
     }
@@ -534,10 +534,10 @@ export class EyeTrackingController {
     
     /**
      * 滞留インジケーターを隠す
-     */'
+     */
     private hideDwellIndicator(): void { ''
         if(this.dwellIndicator') {'
-            ';
+            ';'
         }'
             this.dwellIndicator.style.display = 'none'; }
         }
@@ -566,9 +566,9 @@ export class EyeTrackingController {
     private handleBlinkEvent(timestamp: number): void { this.stats.blinkEvents++;
         
         // まばたきによる特別なアクション
-        if(this.stats.blinkEvents % 2 === 0) {'
-            // ダブルまばたき検出''
-            this.handleDoubleBlinkAction('');
+        if(this.stats.blinkEvents % 2 === 0) {
+            // ダブルまばたき検出
+            this.handleDoubleBlinkAction();
         }'
         this.provideFeedback('blink_detected'); }
     }
@@ -576,7 +576,7 @@ export class EyeTrackingController {
     /**
      * ダブルまばたきアクションを処理'
      */''
-    private handleDoubleBlinkAction('')';
+    private handleDoubleBlinkAction()';
         console.log('[EyeTrackingController] Double blink detected'');''
         this.provideFeedback('double_blink');
     }
@@ -602,15 +602,15 @@ export class EyeTrackingController {
             // キャリブレーション精度をテスト
             const accuracy = await this.testCalibrationAccuracy();
             this.eyeState.calibrationData.accuracy = accuracy;
-            this.eyeState.isCalibrated = accuracy > CALIBRATION_ACCURACY_THRESHOLD;'
+            this.eyeState.isCalibrated = accuracy > CALIBRATION_ACCURACY_THRESHOLD;
             ' }'
             console.log(`[EyeTrackingController] Calibration completed with ${(accuracy * 100).toFixed(1})}% accuracy`');'
             '';
             this.provideFeedback('calibration_completed', { accuracy ); }
             return { success: this.eyeState.isCalibrated, accuracy };'
         } catch (error) { ''
-            this.hideCalibrationInterface('')';
-            console.error('[EyeTrackingController] Calibration failed:', error); }
+            this.hideCalibrationInterface()';
+            console.error('[EyeTrackingController] Calibration failed:', error) }
             return { success: false, accuracy: 0 }
         }
     }
@@ -620,7 +620,7 @@ export class EyeTrackingController {
      */'
     private showCalibrationInterface(): void { ''
         if(this.calibrationInterface') {'
-            ';
+            ';'
         }'
             this.calibrationInterface.style.display = 'flex'; }
         }
@@ -631,7 +631,7 @@ export class EyeTrackingController {
      */'
     private hideCalibrationInterface(): void { ''
         if(this.calibrationInterface') {'
-            ';
+            ';'
         }'
             this.calibrationInterface.style.display = 'none'; }
         }
@@ -677,10 +677,10 @@ export class EyeTrackingController {
     
     /**
      * 単一ポイントをキャリブレート
-     */'
+     */
     private async calibratePoint(point: CalibrationPoint): Promise<void> { ''
         return new Promise<void>((resolve') => { '
-            // キャリブレーションポイントを表示''
+            // キャリブレーションポイントを表示
             const calibrationDot = document.createElement('div');
             calibrationDot.style.cssText = ` }
                 position: fixed, }
@@ -696,7 +696,7 @@ export class EyeTrackingController {
             
             this.calibrationInterface? .appendChild(calibrationDot);
             
-            // WebGazerにキャリブレーションポイントを登録'
+            // WebGazerにキャリブレーションポイントを登録
             setTimeout(() => {  ''
                 if (this.webgazer') {' }'
                     this.webgazer.recordScreenPosition(point.x, point.y, 'click'); }
@@ -794,7 +794,7 @@ export class EyeTrackingController {
     
     /**
      * 設定を更新
-     */'
+     */
     updateConfig(newConfig: Partial<EyeTrackingConfig>): void { ''
         Object.assign(this.eyeTrackingConfig, newConfig');''
         console.log('[EyeTrackingController] Configuration updated'); }
@@ -825,7 +825,7 @@ export class EyeTrackingController {
      */'
     toggleGazePointer(show: boolean): void { ''
         if(this.gazePointer') {'
-            ';
+            ';'
         }'
             this.gazePointer.style.display = show ? 'block' : 'none'; }
         }
@@ -836,7 +836,7 @@ export class EyeTrackingController {
      */'
     toggleDwellIndicator(show: boolean): void { ''
         if(this.dwellIndicator') {'
-            ';
+            ';'
         }'
             this.dwellIndicator.style.display = show ? 'block' : 'none'; }
         }
@@ -853,14 +853,14 @@ export class EyeTrackingController {
     /**
      * キャリブレーション状態をリセット'
      */''
-    resetCalibration('')';
+    resetCalibration()';
         console.log('[EyeTrackingController] Calibration reset');
     }
     
     /**
      * 視線履歴をクリア'
      */''
-    clearGazeHistory('')';
+    clearGazeHistory()';
         console.log('[EyeTrackingController] Gaze history cleared');
     }
     
@@ -874,15 +874,15 @@ export class EyeTrackingController {
         // UI要素を削除
         [this.gazePointer, this.dwellIndicator, this.calibrationInterface].forEach(element => {  );
             if (element) { }
-                element.remove(); }'
+                element.remove(); }
             }''
         }');
         ';
-        // CSS スタイルを削除''
+        // CSS スタイルを削除
         const animationStyle = document.getElementById('eye-tracking-animations');
         if(animationStyle) {'
             '';
-            animationStyle.remove('');
+            animationStyle.remove();
         }'
         console.log('[EyeTrackingController] Cleaned up''); }'
     }''

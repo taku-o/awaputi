@@ -28,13 +28,13 @@ interface StructuredDataResult { valid: boolean,
 
 interface IndexablePage { url: string,
     title: string,
-    priority: number; }
+    priority: number }
 }
 
 interface SearchConsoleAPIReadiness { hasVerificationTag: boolean,
     hasGoogleAnalytics: boolean,
     hasSitemap: boolean,
-    hasRobotsTxt: boolean; }
+    hasRobotsTxt: boolean }
 }
 
 interface SearchConsoleIntegrationData { timestamp: number,
@@ -44,17 +44,17 @@ interface SearchConsoleIntegrationData { timestamp: number,
     pages: IndexablePage[],
     readyForIntegration: boolean,
     verificationMethods: string[],
-    apiReady: SearchConsoleAPIReadiness;
+    apiReady: SearchConsoleAPIReadiness
     }
 }
 
-interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[];
+interface MonitoringData { searchConsoleMetrics: SearchConsoleIntegrationData[]
     }
 }
 
 declare global { interface Window {
         gtag?: (...args: any[]) => void;
-        ga?: (...args: any[]) => void; }
+        ga?: (...args: any[]) => void }
     }
 }
 
@@ -63,7 +63,7 @@ export class SearchConsoleIntegrator {
     private monitoringData: MonitoringData;
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
-        this.config = config;
+        this.config = config
 
     }
     }
@@ -94,7 +94,7 @@ export class SearchConsoleIntegrator {
             console.log('Search Console integration prepared', integrationData);
             return integrationData;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to prepare Search Console integration', error);
             return null; }
         }
@@ -103,13 +103,13 @@ export class SearchConsoleIntegrator {
     /**
      * サイトマップの検証'
      */''
-    private async validateSitemap('')';
+    private async validateSitemap()';
             const response = await fetch('/sitemap.xml'');
             return { exists: response.ok,'
                 status: response.status,' };'
                 lastModified: response.headers.get('last-modified'); }'
             };''
-        } catch (error') { return { exists: false, ' };'
+        } catch (error) { return { exists: false, ' };'
                 error: error instanceof Error ? error.message : 'Unknown error'  }
             },
         }
@@ -118,13 +118,13 @@ export class SearchConsoleIntegrator {
     /**
      * robots.txtの検証'
      */''
-    private async validateRobotsTxt('')';
+    private async validateRobotsTxt()';
             const response = await fetch('/robots.txt');
             return { exists: response.ok,
                 status: response.status, };
                 content: response.ok ? await response.text() : null };'
             };''
-        } catch (error') { return { exists: false, ' };'
+        } catch (error) { return { exists: false, ' };'
                 error: error instanceof Error ? error.message : 'Unknown error'  }
             },
         }
@@ -133,20 +133,20 @@ export class SearchConsoleIntegrator {
     /**
      * 構造化データの検証'
      */''
-    private validateStructuredData('')';
+    private validateStructuredData()';
         if (typeof document === 'undefined'') { return []; }
         }'
         '';
         const scripts = document.querySelectorAll('script[type="application/ld+json"]');
         const results: StructuredDataResult[] = [],
-        ';
+        ';'
         scripts.forEach(script => {  ')'
-            try {');' }'
+            try {);' }'
                 const data = JSON.parse(script.textContent || ''');' }'
                 results.push({ valid: true, type: data['@type'], data });''
-            } catch (error') { results.push({ )'
+            } catch (error) { results.push({ )'
                     valid: false, ')';
-                    error: error instanceof Error ? error.message : 'Unknown error' ); }
+                    error: error instanceof Error ? error.message : 'Unknown error' ) }
                 });
             }
         });
@@ -157,7 +157,7 @@ export class SearchConsoleIntegrator {
     /**
      * インデックス可能ページの取得'
      */''
-    private getIndexablePages('')';
+    private getIndexablePages()';
         const defaultTitle = typeof document !== 'undefined' ? document.title: 'BubblePop')';
         return ['';
             { url: '/', title: defaultTitle, priority: 1.0 },']'
@@ -168,7 +168,7 @@ export class SearchConsoleIntegrator {
     /**
      * Search Console API準備状況のチェック'
      */''
-    private checkSearchConsoleAPIReadiness('')';
+    private checkSearchConsoleAPIReadiness()';
         if(typeof document === 'undefined' || typeof window === 'undefined'') {
             return { hasVerificationTag: false,
                 hasGoogleAnalytics: false,
@@ -177,7 +177,7 @@ export class SearchConsoleIntegrator {
                 hasRobotsTxt: true }
             },
         }
-        ';
+        ';'
         return { ''
             hasVerificationTag: !!document.querySelector('meta[name="google-site-verification"]''),
             hasGoogleAnalytics: !!window.gtag || !!window.ga,

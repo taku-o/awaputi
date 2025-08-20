@@ -15,11 +15,11 @@
  */
 
 // 型定義
-export interface ChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement;
+export interface ChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement
     }
 }
 
-export interface ChartRenderer { render: (context: ChartContext, data: any[], options: ChartOptions) => ChartRenderResult; }
+export interface ChartRenderer { render: (context: ChartContext, data: any[], options: ChartOptions) => ChartRenderResult }
 }
 
 export interface ChartRenderResult { type: ChartType,
@@ -70,12 +70,12 @@ export interface ThemeColors { primary: string,
     background: string,
     text: string,
     grid: string,
-    axis: string; }
+    axis: string }
 }
 
 export interface ThemeGradients { primary: string[],
     secondary: string[],
-    accent: string[]; }
+    accent: string[] }
 }
 
 export interface AnimationConfig { enabled: boolean,
@@ -87,7 +87,7 @@ export interface AnimationConfig { enabled: boolean,
 
 export interface InteractionConfig { hover: HoverConfig,
     click: ClickConfig,
-    tooltip: TooltipConfig;
+    tooltip: TooltipConfig
     }
 }
 
@@ -106,7 +106,7 @@ export interface TooltipConfig { enabled: boolean,
     template?: string;
     position?: TooltipPosition;
     style?: TooltipStyle;
-    formatter?: (data: any) => string; }
+    formatter?: (data: any) => string }
 }
 
 export interface TooltipStyle { background: string,
@@ -116,7 +116,7 @@ export interface TooltipStyle { background: string,
     padding: number,
     fontSize: number,
     fontFamily: string,
-    shadow?: string; }
+    shadow?: string }
 }
 
 export interface LayoutConfig { type: LayoutType,
@@ -129,7 +129,7 @@ export interface LayoutConfig { type: LayoutType,
 export interface ChartArea { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface ChartScales { xScale: number,
@@ -148,34 +148,34 @@ export interface AnimationFrame { id: string,
     startTime: number,
     easing: EasingFunction,
     update: (progress: number) => void,
-    complete?: () => void; }
+    complete?: () => void }
 }
 
 export interface ActiveInteraction { type: InteractionType,
     element?: HTMLElement;
     data?: any;
     startTime: number,
-    position?: InteractionPosition;
+    position?: InteractionPosition
     }
 }
 
 export interface InteractionPosition { x: number,
     y: number,
     clientX: number,
-    clientY: number; }
+    clientY: number }
 }
 
 export interface LayoutArea { x: number,
     y: number,
     width: number,
     height: number,
-    index: number; }
+    index: number }
 }
 
 export interface LayoutResult { areas: LayoutArea[],
     totalArea: ChartArea,
     columns: number,
-    rows: number; }
+    rows: number }
 }
 
 export interface AreaChartData { x: number,
@@ -188,7 +188,7 @@ export interface AreaChartData { x: number,
 export interface AreaData { path: AreaChartData[],
     gradient: CanvasGradient,
     color: string,
-    opacity: number; }
+    opacity: number }
 }
 
 export interface ScatterChartData { x: number,
@@ -205,7 +205,7 @@ export interface ScatterPoint { x: number,
     dataX: number,
     dataY: number,
     label?: string;
-    color: string; }
+    color: string }
 }
 
 export interface ProgressData { value: number,
@@ -222,7 +222,7 @@ export interface ProgressBarData { x: number,
     value: number,
     max: number,
     percentage: number,
-    color: string; }
+    color: string }
 }
 
 export interface RenderPerformance { renderTime: number,
@@ -239,7 +239,7 @@ export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right' | 'follow' | '
 export type LayoutType = 'grid' | 'flex' | 'stack' | 'float' | 'absolute';
 
 // 定数
-export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { enabled: true,'
+export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { enabled: true,
     duration: 1000,'';
     easing: 'ease-out',
     staggerDelay: 50,
@@ -267,7 +267,7 @@ export const DEFAULT_INTERACTION_CONFIG: InteractionConfig = { hover: {'
         }
     }
 } as const;
-';
+';'
 export const EASING_FUNCTIONS: Record<EasingFunction, (t: number) => number> = { linear: (t) => t,''
     ease: (t) => t * t * (3 - 2 * t'),'';
     'ease-in': (t') => t * t,'';
@@ -308,7 +308,7 @@ export const PROGRESS_CONFIG = { DEFAULT_HEIGHT: 30,
 // ユーティリティ関数
 export function interpolate(start: number, end: number, progress: number): number { return start + (end - start) * progress; }
 }
-';
+';'
 export function clamp(value: number, min: number, max: number): number { ''
     return Math.min(Math.max(value, min), max'); }
 }'
@@ -376,7 +376,7 @@ export class ChartAnimationEngine {
                 easing: animationConfig.easing,
                 update: (progress) => { 
                     // データのアニメーション補間
-                    const animatedData = this.interpolateData(data, progress, animationConfig); }
+                    const animatedData = this.interpolateData(data, progress, animationConfig) }
                     renderer.render(context, animatedData, options); }
                 },
                 complete: () => {  const finalResult = renderer.render(context, data, options); }
@@ -395,7 +395,7 @@ export class ChartAnimationEngine {
     private interpolateData(data: any[], progress: number, config: AnimationConfig): any[] { const easingFunc = EASING_FUNCTIONS[config.easing];
         const easedProgress = easingFunc(progress);
         
-        return data.map((item, index) => { '
+        return data.map((item, index) => { 
             const delay = (config.staggerDelay || 0) * index;''
             const adjustedProgress = clamp((progress * config.duration - delay) / config.duration, 0, 1');'
             '';
@@ -521,9 +521,9 @@ export class ChartInteractionManager {
             } else { this.hideTooltip(); }
             }
         };
-        ';
+        ';'
         const mouseLeaveHandler = () => {  ''
-            this.hideTooltip('')';
+            this.hideTooltip()';
         this.addEventListener(canvas, 'mousemove', mouseMoveHandler');' }'
         this.addEventListener(canvas, 'mouseleave', mouseLeaveHandler); }
     }
@@ -553,7 +553,7 @@ export class ChartInteractionManager {
             const y = event.clientY - rect.top;
             
             const dataPoint = this.getDataPointAtPosition(x, y, renderResult);
-            ';
+            ';'
             if (dataPoint && config.callback) {' }'
                 config.callback(dataPoint, event'); }
             }
@@ -587,7 +587,7 @@ export class ChartInteractionManager {
     }
 
     /**
-     * ツールチップ要素の作成'
+     * ツールチップ要素の作成
      */''
     private createTooltipElement(style: TooltipStyle'): void { ''
         this.tooltipElement = document.createElement('div'');
@@ -629,7 +629,7 @@ export class ChartInteractionManager {
         
         }
             x = event.clientX - rect.width - 10; }
-        }'
+        }
         '';
         if (y < 0') { y = event.clientY + 10; }
         }
@@ -644,7 +644,7 @@ export class ChartInteractionManager {
      */'
     private hideTooltip(): void { ''
         if(this.tooltipElement') {'
-            ';
+            ';'
         }'
             this.tooltipElement.style.opacity = '0'; }
         }
@@ -705,9 +705,9 @@ export class ChartInteractionManager {
             this.tooltipElement.parentNode.removeChild(this.tooltipElement);
         }
             this.tooltipElement = null; }
-        }'
+        }
         '';
-        this.activeInteractions.clear('')';
+        this.activeInteractions.clear()';
     calculateLayout(context: ChartContext, chartCount: number, layout: LayoutConfig = { type: 'grid' ): LayoutResult {
         const canvas = context.canvas;
         const totalWidth = canvas.width;
@@ -845,10 +845,10 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
             // グリッドの描画
             if (options.showGrid) { this.renderGrid(context, chartArea, scales, options); }
             }
-            ';
-            // エリアの描画''
+            ;
+            // エリアの描画
             const areas = this.renderAreas(context, processedData, chartArea, scales, options');
-            ';
+            ';'
             return { ''
                 type: 'area',
                 dataPoints: processedData.length,
@@ -861,7 +861,7 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
                 scales }
             };'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Area chart rendering failed:', error');'
             return { ''
                 type: 'area',  };
@@ -880,7 +880,7 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
             height: canvas.height - (padding * 2); }
         };
     }
-';
+';'
     private processData(data: (number | AreaChartData)[]): AreaChartData[] { ''
         return data.map((item, index') => { ' }'
             if (typeof item === 'number') { }
@@ -923,7 +923,7 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
         context.moveTo(chartArea.x, chartArea.y + chartArea.height);
         context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height);
         context.stroke(); }
-    }'
+    }
 '';
     private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions'): void { ''
         context.strokeStyle = '#E5E7EB';
@@ -960,9 +960,9 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
         });
         
         // 底辺に戻る
-        const lastX = chartArea.x + (data[data.length - 1].x - scales.xMin) * scales.xScale;'
+        const lastX = chartArea.x + (data[data.length - 1].x - scales.xMin) * scales.xScale;
         context.lineTo(lastX, baseY);''
-        context.closePath('')';
+        context.closePath()';
         const gradient = generateGradient(context, chartArea, [areaColor + '80', areaColor + '20']);
         
         context.fillStyle = gradient;
@@ -975,7 +975,7 @@ export class AreaChartRenderer implements ChartRenderer { render(context: ChartC
         
         return [{ path: data,
             gradient,
-            color: areaColor,];
+            color: areaColor];
             opacity: AREA_CONFIG.DEFAULT_OPACITY }]
         }],
     }
@@ -1003,10 +1003,10 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             // グリッドの描画
             if (options.showGrid) { this.renderGrid(context, chartArea, scales, options); }
             }
-            ';
-            // 散布点の描画''
+            ;
+            // 散布点の描画
             const points = this.renderPoints(context, processedData, chartArea, scales, options');
-            ';
+            ';'
             return { ''
                 type: 'scatter',
                 dataPoints: processedData.length,
@@ -1019,7 +1019,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
                 scales }
             };'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Scatter chart rendering failed:', error');'
             return { ''
                 type: 'scatter',  };
@@ -1038,7 +1038,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             height: canvas.height - (padding * 2); }
         };
     }
-';
+';'
     private processData(data: (number | ScatterChartData)[]): ScatterChartData[] { ''
         return data.map((item, index') => { ' }'
             if (typeof item === 'number') { }
@@ -1087,7 +1087,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
         context.moveTo(chartArea.x, chartArea.y + chartArea.height);
         context.lineTo(chartArea.x + chartArea.width, chartArea.y + chartArea.height);
         context.stroke(); }
-    }'
+    }
 '';
     private renderGrid(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions'): void { ''
         context.strokeStyle = '#E5E7EB';
@@ -1126,7 +1126,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
             
             // 散布点の描画
             context.fillStyle = color;
-            context.beginPath();'
+            context.beginPath();
             context.arc(x, y, radius, 0, 2 * Math.PI);''
             context.fill(''';
             context.strokeStyle = '#FFFFFF';)
@@ -1137,7 +1137,7 @@ export class ScatterChartRenderer implements ChartRenderer { render(context: Cha
                 x,
                 y,
                 radius,
-                dataX: item.x,);
+                dataX: item.x);
                 dataY: item.y);
                 label: item.label,) }
                 color); }
@@ -1156,9 +1156,9 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             const chartArea = this.calculateChartArea(canvas, options);
             const processedData = this.processData(data);
             ';
-            // プログレスバーの描画''
+            // プログレスバーの描画
             const bars = this.renderProgressBars(context, processedData, chartArea, options');
-            ';
+            ';'
             return { ''
                 type: 'progress',
                 dataPoints: processedData.length,
@@ -1166,7 +1166,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
                 chartArea }
             };'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Progress bar rendering failed:', error');'
             return { ''
                 type: 'progress',  };
@@ -1185,7 +1185,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             height: canvas.height - (padding * 2); }
         };
     }
-';
+';'
     private processData(data: (number | ProgressData)[]): ProgressData[] { ''
         return data.map((item, index') => { ''
             if (typeof item === 'number') { }
@@ -1214,7 +1214,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             const progressWidth = (item.value / item.max') * chartArea.width;
             const color = item.color || options.theme.palette[index % options.theme.palette.length];
             ';
-            // 背景バー''
+            // 背景バー
             context.fillStyle = '#E5E7EB';
             context.fillRect(chartArea.x, y, chartArea.width, barHeight);
             
@@ -1223,11 +1223,11 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             context.fillRect(chartArea.x, y, progressWidth, barHeight);
             
             // 枠線
-            context.strokeStyle = options.theme.colors.dark;'
+            context.strokeStyle = options.theme.colors.dark;
             context.lineWidth = 1;''
             context.strokeRect(chartArea.x, y, chartArea.width, barHeight');
             
-            // ラベルとパーセンテージ }'
+            // ラベルとパーセンテージ }
             context.fillStyle = options.theme.colors.dark;' }'
             context.font = `${options.fontSize || 12}px ${options.fontFamily || 'Arial'}`;''
             context.textAlign = 'left';
@@ -1235,8 +1235,8 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             // ラベル
             if (item.label) { context.fillText(item.label, chartArea.x, y - 5); }
             }
-            ';
-            // パーセンテージ''
+            ;
+            // パーセンテージ
             const percentage = formatPercentage(item.value, item.max');''
             context.textAlign = 'right';
             context.fillText(percentage, chartArea.x + chartArea.width, y - 5);
@@ -1244,7 +1244,7 @@ export class ProgressBarRenderer implements ChartRenderer { render(context: Char
             bars.push({ x: chartArea.x,
                 y,
                 width: chartArea.width,
-                height: barHeight,);
+                height: barHeight);
                 progressWidth)';
                 value: item.value,')';
                 max: item.max'),'';

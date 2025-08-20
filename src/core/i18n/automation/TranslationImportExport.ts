@@ -6,7 +6,7 @@ interface FormatInfo { name: string,
     extensions: string[],
     mimeType: string,
     supportsNesting: boolean,
-    supportsMetadata: boolean; }
+    supportsMetadata: boolean }
 }
 
 interface ExportConfig { includeMetadata: boolean,
@@ -16,7 +16,7 @@ interface ExportConfig { includeMetadata: boolean,
     flattenStructure: boolean,
     encoding: string,
     dateFormat: string,
-    includeStatistics: boolean; }
+    includeStatistics: boolean }
 }
 
 interface ImportConfig { validateKeys: boolean,
@@ -25,7 +25,7 @@ interface ImportConfig { validateKeys: boolean,
     strictMode: boolean,
     skipInvalidEntries: boolean,
     updateMetadata: boolean,
-    createBackup: boolean; }
+    createBackup: boolean }
 }
 
 interface ExportOptions { format?: string;
@@ -73,23 +73,23 @@ interface ExportStatistics { totalKeys: number,
     emptyKeys: number,
     format: string,
     categories: string[],
-    estimatedFileSize: number; }
+    estimatedFileSize: number }
 }
 
 interface ImportStatistics { totalKeys: number,
     importedKeys: number,
     skippedKeys: number,
     updatedKeys: number,
-    newKeys: number; }
+    newKeys: number }
 }
 
 interface ValidationResult { valid: boolean,
     errors: string[],
-    warnings?: string[]; }
+    warnings?: string[] }
 }
 
 interface BackupInfo { created: boolean,
-    timestamp: string; }
+    timestamp: string }
 }
 
 interface Backup { id: string,
@@ -103,7 +103,7 @@ interface Backup { id: string,
         creator: string,
         compressionLevel: string,
         originalSize: number,
-        compressedSize?: number; }
+        compressedSize?: number }
     };
     compressed?: boolean;
 }
@@ -113,7 +113,7 @@ interface DifferenceOptions { generatePatch?: boolean;
     ignoreWhitespace?: boolean;
     contextLines?: number; }
 }
-';
+';'
 interface DifferenceChange { key: string,''
     type: 'added' | 'modified' | 'deleted',
     value?: any;
@@ -127,12 +127,12 @@ interface Differences { timestamp: string,
     changes: {
         added: Map<string, DifferenceChange>;
         modified: Map<string, DifferenceChange>;
-        deleted: Map<string, DifferenceChange>; }
+        deleted: Map<string, DifferenceChange> }
     };
     statistics: { totalChanges: number,
         addedCount: number,
         modifiedCount: number,
-        deletedCount: number; }
+        deletedCount: number }
     };
     patch?: string;
 }
@@ -147,7 +147,7 @@ interface RestoreResult { success: boolean,
         totalKeys: number }
     },
     restorePoint: { id: string,
-        timestamp: string; }
+        timestamp: string }
     } | null;
 }
 
@@ -155,7 +155,7 @@ interface IntegrationResult { totalKeys: number,
     importedKeys: number,
     skippedKeys: number,
     updatedKeys: number,
-    newKeys: number; }
+    newKeys: number }
 }
 
 /**
@@ -168,7 +168,7 @@ export class TranslationImportExport {
     private exportConfig: ExportConfig;
     private importConfig: ImportConfig;
     constructor() {
-';
+';'
         this.keyManager = getTranslationKeyManager();''
         this.progressTracker = getProgressTracker(''';
             ['json', { ']'
@@ -205,7 +205,7 @@ export class TranslationImportExport {
             ['properties', { ']'
                 name: 'Properties', ']';
                 extensions: ['.properties'], '';
-                mimeType: 'text/plain',);
+                mimeType: 'text/plain');
                 supportsNesting: false);
                 supportsMetadata: false }'
             }]''
@@ -215,7 +215,7 @@ export class TranslationImportExport {
         this.exportConfig = { includeMetadata: true,
             includeComments: true,
             includeEmptyKeys: false,
-            sortKeys: true,';
+            sortKeys: true,
             flattenStructure: false,'';
             encoding: 'UTF-8','';
             dateFormat: 'ISO',
@@ -230,7 +230,7 @@ export class TranslationImportExport {
             skipInvalidEntries: true,
             updateMetadata: true,
             createBackup: true }
-        },'
+        },
         '';
         console.log('TranslationImportExport initialized');
     }
@@ -239,7 +239,7 @@ export class TranslationImportExport {
      * 翻訳データをエクスポート'
      */''
     async exportTranslations(language: string, options: ExportOptions = { )'): Promise<ExportResult> {
-        try {'
+        try {
             const {''
                 format = 'json',
                 categories = [],
@@ -247,8 +247,7 @@ export class TranslationImportExport {
                 includeMetadata = this.exportConfig.includeMetadata,
                 includeEmptyKeys = this.exportConfig.includeEmptyKeys,
                 flattenStructure = this.exportConfig.flattenStructure }
-                customConfig = {}
-            } = options;
+                customConfig = {} = options;
             
             // フォーマット検証
             if(!this.supportedFormats.has(format) {
@@ -273,7 +272,7 @@ export class TranslationImportExport {
             // フォーマット別エクスポート
             const exportedContent = await this.formatExportData(;
                 translationData,
-                format,);
+                format);
                 { flattenStructure: flattenStructure)
                     language: language,);
                     ...customConfig);
@@ -303,14 +302,14 @@ export class TranslationImportExport {
             
             console.log(`Successfully exported ${statistics.totalKeys} keys in ${format) format`});
             return exportResult;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'TRANSLATION_IMPORT_EXPORT_ERROR', {')'
                 operation: 'exportTranslations');
                 language: language,);
-                format: options.format); }
+                format: options.format) }
             });
-            ';
+            ';'
             return { success: false,''
                 error: error instanceof Error ? error.message : String(error'),';
                 language: language,' };'
@@ -323,7 +322,7 @@ export class TranslationImportExport {
      * 翻訳データをインポート'
      */''
     async importTranslations(content: string, options: ImportOptions = { )'): Promise<ImportResult> {
-        try {'
+        try {
             const {''
                 format = 'auto',
                 language = null,
@@ -331,10 +330,9 @@ export class TranslationImportExport {
                 preserveExisting = this.importConfig.preserveExisting,
                 strictMode = this.importConfig.strictMode,
                 createBackup = this.importConfig.createBackup }
-                customConfig = {}
-            } = options;
+                customConfig = {} = options;
             ';
-            // フォーマット自動検出''
+            // フォーマット自動検出
             const detectedFormat = format === 'auto' ?   : undefined;
                 this.detectFileFormat(content, options.fileName) : format;
             
@@ -355,11 +353,11 @@ export class TranslationImportExport {
             }
             
             // コンテンツをパース
-            const parsedData = await this.parseImportContent(content, detectedFormat, { strictMode: strictMode,);
-                ...customConfig);'
+            const parsedData = await this.parseImportContent(content, detectedFormat, { strictMode: strictMode);
+                ...customConfig);
             '';
             if(!parsedData') {'
-                ';
+                ';'
             }'
                 throw new Error('Failed to parse import content'); }
             }
@@ -367,7 +365,7 @@ export class TranslationImportExport {
             // データを検証
             const validationResult = await this.validateImportData(parsedData, { validateKeys: validateKeys)
                 language: language,);
-                strictMode: strictMode),';
+                strictMode: strictMode),
             '';
             if (!validationResult.valid && strictMode') {' };'
                 throw new Error(`Import validation failed: ${validationResult.errors.join(', '})}`);
@@ -375,7 +373,7 @@ export class TranslationImportExport {
             
             // 翻訳データを統合
             const integrationResult = await this.integrateTranslationData(;
-                parsedData,);
+                parsedData);
                 language || parsedData.language);
                 { preserveExisting: preserveExisting,)
                     validationResult: validationResult);
@@ -397,18 +395,18 @@ export class TranslationImportExport {
                     created: true,
                     timestamp: backupData.timestamp }
                 } : null,
-                importedAt: new Date().toISOString(),;
+                importedAt: new Date().toISOString(),
             };
             
             console.log(`Successfully imported ${importResult.statistics!.importedKeys) keys`});
             return importResult;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'TRANSLATION_IMPORT_EXPORT_ERROR', {')'
                 operation: 'importTranslations',);
-                format: options.format); }
+                format: options.format) }
             });
-            ';
+            ';'
             return { success: false,''
                 error: error instanceof Error ? error.message : String(error'),' };'
                 format: options.format || 'auto' }
@@ -431,7 +429,7 @@ export class TranslationImportExport {
             changes: {
                 added: new Map(),
                 modified: new Map(),
-                deleted: new Map(); }
+                deleted: new Map() }
             },
             statistics: { totalChanges: 0,
                 addedCount: 0,
@@ -445,7 +443,7 @@ export class TranslationImportExport {
         const newFlat = this.flattenTranslationData(newVersion);
         
         // 追加されたキーを検出
-        for(const [key, value] of Object.entries(newFlat) {'
+        for(const [key, value] of Object.entries(newFlat) {
             '';
             if (!baseFlat.hasOwnProperty(key)') {
                 differences.changes.added.set(key, {)
@@ -458,7 +456,7 @@ export class TranslationImportExport {
         }
         
         // 削除されたキーを検出
-        for(const [key, value] of Object.entries(baseFlat) {'
+        for(const [key, value] of Object.entries(baseFlat) {
             '';
             if (!newFlat.hasOwnProperty(key)') {
                 differences.changes.deleted.set(key, {)
@@ -472,11 +470,11 @@ export class TranslationImportExport {
         
         // 変更されたキーを検出
         for(const [key, newValue] of Object.entries(newFlat) {
-            if(baseFlat.hasOwnProperty(key) {'
+            if(baseFlat.hasOwnProperty(key) {
                 const baseValue = baseFlat[key];''
                 if(!this.compareValues(baseValue, newValue, { ignoreWhitespace )') {
                     differences.changes.modified.set(key, {
-                        key: key,);
+                        key: key);
                         oldValue: baseValue)';
                         newValue: newValue,')';
                         type: 'modified'),
@@ -494,7 +492,7 @@ export class TranslationImportExport {
         // パッチ生成
         if(generatePatch) {
             differences.patch = this.generatePatch(differences, {)
-                contextLines: contextLines,);
+                contextLines: contextLines,)
         }
                 includeMetadata: includeMetadata); }
         }
@@ -506,7 +504,7 @@ export class TranslationImportExport {
      * バックアップ機能
      */
     async createBackup(language: string, options: { includeMetadata?: boolean;
-        compressionLevel?: string;'
+        compressionLevel?: string;
         description?: string;' })'
     } = { )'): Promise<Backup>;
         const { '
@@ -517,7 +515,7 @@ export class TranslationImportExport {
         const timestamp = new Date().toISOString();
         const backupId = `backup_${language}_${Date.now(})}`;
         
-        // 現在の翻訳データを収集'
+        // 現在の翻訳データを収集
         const translationData = await this.collectTranslationData(language, { ')'
             includeMetadata: includeMetadata)'),
         
@@ -535,7 +533,7 @@ export class TranslationImportExport {
                 originalSize: JSON.stringify(translationData').length }
             }
         },
-        ';
+        ';'
         // 圧縮（実際の実装では適切な圧縮を使用）';'
         if(compressionLevel !== 'none') {
             backup.compressed = true;
@@ -559,7 +557,7 @@ export class TranslationImportExport {
             createRestorePoint = true } = options;
         
         if(validateBackup) {
-        ';
+        ';'
             const isValid = this.validateBackup(backup);'
         
         }'
@@ -567,8 +565,8 @@ export class TranslationImportExport {
                 throw new Error(`Invalid backup: ${isValid.errors.join(', '})}`);
             }
         }
-        
-        // 現在の状態の復元ポイントを作成'
+        '
+        // 現在の状態の復元ポイントを作成
         let restorePoint: Backup | null = null,'';
         if(createRestorePoint') {'
             restorePoint = await this.createBackup(backup.language, {')
@@ -578,7 +576,7 @@ export class TranslationImportExport {
         
         // バックアップからデータを復元
         const restorationResult = await this.integrateTranslationData(;
-            backup.data,);
+            backup.data);
             backup.language);
             { preserveExisting: false, // バックアップは完全復元)
                 isRestore: true);
@@ -622,7 +620,7 @@ export class TranslationImportExport {
                 return null; }
             }
             
-            const translationData: any = { _metadata: includeMetadata ? { : undefined'
+            const translationData: any = { _metadata: includeMetadata ? { : undefined
                     language: language,'';
                     exportedAt: new Date().toISOString(''';
                     version: '1.0.0',';
@@ -631,7 +629,7 @@ export class TranslationImportExport {
                 } : undefined
             },
             
-            // モック翻訳データ（実際の実装では適切にデータを取得）'
+            // モック翻訳データ（実際の実装では適切にデータを取得）
             const mockCategories: { [key: string]: any } = { common: {''
                     ok: language === 'en' ? 'OK' : 'OK','';
                     cancel: language === 'en' ? 'Cancel' : 'キャンセル','';
@@ -704,10 +702,10 @@ export class TranslationImportExport {
                 }
             }
         }
-        ';
-        // コンテンツから推測''
-        const trimmed = content.trim('')';
-        if (trimmed.startsWith('{ '') && trimmed.endsWith('')')') {''
+        ;
+        // コンテンツから推測
+        const trimmed = content.trim()';
+        if (trimmed.startsWith('{ '') && trimmed.endsWith()')') {''
             return 'json'; }'
         }''
         if (trimmed.startsWith('<?xml'') || trimmed.startsWith('<')') { ''
@@ -727,8 +725,8 @@ export class TranslationImportExport {
         [key: string]: any, })
     } = { ): Promise<any | null>; }
         const { strictMode = false } = options;
-        ';
-        try { ''
+        ';'
+        try {'
             switch(format') {'
                 '';
                 case 'json':'';
@@ -765,7 +763,7 @@ export class TranslationImportExport {
         '';
         for (const [key, value] of Object.entries(flattened)') { ''
             if(key.startsWith('_') continue; // メタデータをスキップ
-            ';
+            ';'
             const category = this.keyManager.categorizeKey(key);''
             rows.push([')'';
                 `"${key")"`," }"
@@ -781,7 +779,7 @@ export class TranslationImportExport {
     private parseCSV(content: string, options: any = { )'): any {''
         const lines = content.split('\n').map(line => line.trim().filter(line => line);''
         if(lines.length < 2') {'
-            ';
+            ';'
         }'
             throw new Error('Invalid CSV format: missing header or data''); }
         }'
@@ -791,11 +789,11 @@ export class TranslationImportExport {
         const valueIndex = headers.findIndex(h => h.toLowerCase(').includes('value');'
         '';
         if(keyIndex === -1 || valueIndex === -1') {'
-            ';
+            ';'
         }'
             throw new Error('Invalid CSV format: missing key or value columns'); }
         }
-        ';
+        ';'
         const translations: { [key: string]: string } = {}''
         for(let i = 1; i < lines.length; i++') {'
             '';
@@ -818,7 +816,7 @@ export class TranslationImportExport {
         for (const [key, value] of Object.entries(data)') { ''
             if (key.startsWith('_')') continue; // メタデータをスキップ
              }
-            const fullKey = prefix ? `${prefix}.${key}` : key;'
+            const fullKey = prefix ? `${prefix}.${key}` : key;
             '';
             if(typeof value === 'object' && value !== null && !Array.isArray(value) { Object.assign(flattened, this.flattenTranslationData(value, fullKey); }
             } else { flattened[fullKey] = value; }
@@ -829,7 +827,7 @@ export class TranslationImportExport {
     }
     
     private generateExportStatistics(translationData: any, format: string): ExportStatistics { const flattened = this.flattenTranslationData(translationData);
-        ';
+        ';'
         return { totalKeys: Object.keys(flattened).length,''
             emptyKeys: Object.values(flattened).filter(v => !v || String(v).trim(') === '').length,
             format: format,
@@ -840,29 +838,29 @@ export class TranslationImportExport {
         },
     }
     ';
-    // Mock implementations for missing methods''
-    private convertToXLSX(data: any, options: any'): string { // Mock implementation''
+    // Mock implementations for missing methods
+    private convertToXLSX(data: any, options: any'): string { // Mock implementation
         return ''; }
     }'
     '';
-    private convertToXML(data: any, options: any'): string { // Mock implementation''
+    private convertToXML(data: any, options: any'): string { // Mock implementation
         return '<translations></translations>'; }
     }'
     '';
-    private convertToProperties(data: any, options: any'): string { // Mock implementation''
+    private convertToProperties(data: any, options: any'): string { // Mock implementation
         return ''; }
     }
     
     private parseXLSX(content: string, options: any): any { // Mock implementation }
-        return { translations: {} }
+        return { translations: {}
     }
     
     private parseXML(content: string, options: any): any { // Mock implementation }
-        return { translations: {} }
+        return { translations: {}
     }
     
     private parseProperties(content: string, options: any): any { // Mock implementation }
-        return { translations: {} }
+        return { translations: {}
     }
     
     private async validateImportData(data: any, options: any): Promise<ValidationResult> { // Mock implementation }
@@ -891,7 +889,7 @@ export class TranslationImportExport {
         return JSON.stringify(differences, null, 2); }
     }
     
-    private validateBackup(backup: Backup): ValidationResult { const errors: string[] = [],'
+    private validateBackup(backup: Backup): ValidationResult { const errors: string[] = [],
         '';
         if (!backup.id') errors.push('Missing backup ID');''
         if (!backup.language') errors.push('Missing language');''
@@ -911,7 +909,7 @@ export class TranslationImportExport {
         extensions: string[],
         mimeType: string,
         supportsNesting: boolean,
-        supportsMetadata: boolean; }
+        supportsMetadata: boolean }
     }> { return Array.from(this.supportedFormats.entries().map(([code, info]) => ({
             code: code,
             name: info.name,
@@ -928,7 +926,7 @@ export class TranslationImportExport {
     getStats(): { supportedFormats: number,
         exportConfig: ExportConfig,
         importConfig: ImportConfig,
-        operationsPerformed: number; }
+        operationsPerformed: number }
     } { return { supportedFormats: this.supportedFormats.size,
             exportConfig: this.exportConfig,
             importConfig: this.importConfig, };
@@ -942,6 +940,6 @@ let translationImportExportInstance: TranslationImportExport | null = null,
 
 /**
  * TranslationImportExportのシングルトンインスタンスを取得
- */'
+ */
 export function getTranslationImportExport(): TranslationImportExport { if (!translationImportExportInstance) {''
         translationImportExportInstance = new TranslationImportExport(' })

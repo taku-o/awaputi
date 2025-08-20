@@ -11,7 +11,7 @@ export class SocialPlatformAdapters {
             twitter: {
                 maxTextLength: 280,
                 hashtagLimit: 3,
-                urlLength: 23, // Twitter t.co短縮URL長;
+                urlLength: 23, // Twitter t.co短縮URL長
     }
     }
                 imageSupported: true }
@@ -22,7 +22,7 @@ export class SocialPlatformAdapters {
                 imageSupported: true }
             },
             webShare: { supported: this.isWebShareSupported(),
-                filesSupported: navigator.canShare && navigator.canShare({ files: [] ); }
+                filesSupported: navigator.canShare && navigator.canShare({ files: [] ) }
             }
         };
     }
@@ -68,7 +68,7 @@ export class SocialPlatformAdapters {
         let text = shareData.text || '';
         let hashtags = shareData.hashtags || [];
         ';
-        // テキスト長制限への対応''
+        // テキスト長制限への対応
         const hashtagText = hashtags.slice(0, config.hashtagLimit').join(' ');
         const urlLength = shareData.url ? config.urlLength: 0,
         const availableLength = config.maxTextLength - urlLength - hashtagText.length - 5; // 余裕分
@@ -77,12 +77,12 @@ export class SocialPlatformAdapters {
     }
             text = this.truncateForTwitter(text, availableLength); }
         }
-';
+';'
         const params = new URLSearchParams();''
         if (text') params.append('text', text);''
         if (shareData.url') params.append('url', shareData.url);''
         if(hashtags.length > 0') {'
-            ';
+            ';'
         }'
             params.append('hashtags', hashtags.slice(0, config.hashtagLimit').join(','); }
         }
@@ -94,7 +94,7 @@ export class SocialPlatformAdapters {
      * TwitterでのWeb Share API使用共有
      * @param {Object} shareData - 共有データ
      * @returns {Promise<void>}
-     */'
+     */
     async shareViaTwitterWebAPI(shareData) { ''
         if (!this.isWebShareSupported()') {''
             throw new Error('Web Share API not supported''); }
@@ -108,11 +108,11 @@ export class SocialPlatformAdapters {
 
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files; }
         }
-';
-        try { ''
+';'
+        try {'
             await navigator.share(data');' }'
             return { success: true, platform: 'twitter-web' }''
-        } catch (error') { ''
+        } catch (error) { ''
             if (error.name === 'AbortError'') {' }'
                 return { success: false, reason: 'user_cancelled' }
             }
@@ -134,7 +134,7 @@ export class SocialPlatformAdapters {
         const params = new URLSearchParams();'
         '';
         if(shareData.url') {'
-            ';
+            ';'
         }'
             params.append('u', shareData.url); }
         }'
@@ -145,10 +145,10 @@ export class SocialPlatformAdapters {
         }'
             params.append('display', display'); }
         }
-';
+';'
         const baseUrl = useDialog ?   : undefined'';
             'https://www.facebook.com/dialog/share' : '';
-            'https: //www.facebook.com/sharer/sharer.php',
+            'https: //www.facebook.com/sharer/sharer.php,
 
         return `${baseUrl}? ${params.toString(})}`;
     }
@@ -169,11 +169,11 @@ export class SocialPlatformAdapters {
             text: shareData.description || shareData.text,
             url: shareData.url }
         },
-';
-        try { ''
+';'
+        try {'
             await navigator.share(data');' }'
             return { success: true, platform: 'facebook-web' }''
-        } catch (error') { ''
+        } catch (error) { ''
             if (error.name === 'AbortError'') {' }'
                 return { success: false, reason: 'user_cancelled' }
             }
@@ -190,23 +190,23 @@ export class SocialPlatformAdapters {
         const hashtags = [];
         const config = this.platformConfig.twitter;
         ';
-        // ゲーム固有のハッシュタグ''
+        // ゲーム固有のハッシュタグ
         hashtags.push('BubblePop');
         
-        // スコア関連'
+        // スコア関連
         if (shareData.score) {''
             if (shareData.score >= 100000') {'
     }'
                 hashtags.push('HighScore'); }'
             }''
             if(shareData.isPersonalBest') {'
-                ';
+                ';'
             }'
                 hashtags.push('PersonalBest'); }
             }
         }
         ';
-        // 実績関連''
+        // 実績関連
         if(shareData.achievement') {'
             '';
             hashtags.push('Achievement');''
@@ -231,13 +231,13 @@ export class SocialPlatformAdapters {
             return text; }
         }
         ';
-        // 単語境界で切り詰め''
+        // 単語境界で切り詰め
         const truncated = text.substring(0, maxLength - 3');''
         const lastSpace = truncated.lastIndexOf(' ');
         
-        if(lastSpace > maxLength * 0.7) {
-        ';
-            ';
+        if(lastSpace > maxLength * 0.7) {'
+        ';'
+            ';'
         }'
             return truncated.substring(0, lastSpace') + '...'; }'
         } else {  ' }'
@@ -259,7 +259,7 @@ export class SocialPlatformAdapters {
         '';
         switch (platform') {''
             case 'twitter':;
-                // Twitter向け最適化'
+                // Twitter向け最適化
                 const hashtags = this.generateTwitterHashtags(shareData);''
                 const hashtagText = hashtags.map(tag => `#${tag)`').join(' ');
                 const availableLength = config.maxTextLength - hashtagText.length - 10; // URL分
@@ -283,7 +283,7 @@ export class SocialPlatformAdapters {
      * Web Share APIを使用した共有
      * @param {Object} shareData - 共有データ
      * @returns {Promise<Object>} 共有結果
-     */'
+     */
     async shareViaWebAPI(shareData) { ''
         if (!this.isWebShareSupported()') {''
             throw new Error('Web Share API not supported'); }
@@ -297,14 +297,14 @@ export class SocialPlatformAdapters {
         // ファイル共有対応
         if (shareData.files && this.platformConfig.webShare.filesSupported) { data.files = shareData.files; }
         }
-';
-        try { ''
+';'
+        try {'
             await navigator.share(data');'
             return { success: true, ''
                 platform: 'web-share', };
                 timestamp: Date.now(); }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             if(error.name === 'AbortError'') {'
                 return { success: false, '
             }'
@@ -338,7 +338,7 @@ export class SocialPlatformAdapters {
      * 全プラットフォームの対応状況取得
      * @returns {Object} 全プラットフォーム対応状況'
      */''
-    getAllPlatformCapabilities('')';
+    getAllPlatformCapabilities()';
             twitter: this.getPlatformCapabilities('twitter''),'';
             facebook: this.getPlatformCapabilities('facebook''),'';
             webShare: this.getPlatformCapabilities('webShare'),
@@ -354,16 +354,16 @@ export class SocialPlatformAdapters {
     sanitizeUrl(url) {'
         '';
         if (!url') return '';
-        ';
-        try {''
+        ';'
+        try {'
             const urlObj = new URL(url');'
-            // HTTP/HTTPSのみ許可''
+            // HTTP/HTTPSのみ許可
             if (urlObj.protocol !== 'http:' && urlObj.protocol !== 'https:'') {'
     }'
                 return ''; }
             }'
             return urlObj.toString();''
-        } catch (error') { ''
+        } catch (error) { ''
             return ''; }
         }
     }
@@ -383,14 +383,14 @@ export class SocialPlatformAdapters {
             return { valid: false, errors, warnings };
         }
 ';
-        // 必須フィールドの確認''
+        // 必須フィールドの確認
         if(!shareData.text && !shareData.title') {'
-            ';
+            ';'
         }'
             errors.push('テキストまたはタイトルが必要です'); }
         }
 ';
-        // URL検証''
+        // URL検証
         if (shareData.url && !this.sanitizeUrl(shareData.url)') { ''
             errors.push('無効なURLです'); }
         }
@@ -401,7 +401,7 @@ export class SocialPlatformAdapters {
         }
             if (!config) { }
                 warnings.push(`未対応のプラットフォーム: ${shareData.platform)`});
-            } else {  // テキスト長チェック }'
+            } else {  // テキスト長チェック }
                 if (shareData.text && shareData.text.length > config.maxTextLength) {' }'
                     warnings.push(`テキストが長すぎます (${shareData.text.length}/${config.maxTextLength)`'});
                 }

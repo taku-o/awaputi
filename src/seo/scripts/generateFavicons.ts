@@ -10,22 +10,22 @@ interface FaviconResult { filename: string,
     size: string,
     type: string,
     category: string,
-    dataUrl: string; }
+    dataUrl: string }
 }
 
 interface FaviconError { filename: string,
-    error: string; }
+    error: string }
 }
 
 interface GenerationResults { generated: FaviconResult[],
-    errors: FaviconError[];
+    errors: FaviconError[]
     }
 }
 
 interface ValidationResult { isValid: boolean,
     generatedCount: number,
     issues: string[],
-    warnings: string[]; }
+    warnings: string[] }
 }
 
 // Window オブジェクト拡張の型定義
@@ -37,30 +37,30 @@ declare global { interface Window {
 }
 
 /**
- * ファビコン生成のメイン関数'
+ * ファビコン生成のメイン関数
  */''
-async function generateAllFavicons('')';
+async function generateAllFavicons()';
         console.log('Starting favicon generation...');
         
         // FaviconManagerの初期化
         const faviconManager = new FaviconManager();
         
-        // 全ファビコンの生成'
+        // 全ファビコンの生成
         const results = await faviconManager.generateAllFavicons({ ')'
             forceRegenerate: true)'),
-        ';
+        ';'
         // 結果の表示';'
         console.log('\n=== Favicon Generation Results ===');
         console.log(`Generated: ${results.generated.length) favicons`),
         console.log(`Errors: ${results.errors.length)`),'
         '';
         if(results.generated.length > 0') {'
-            ';
+            ';'
         }'
             console.log('\nGenerated favicons: '), }
             results.generated.forEach(favicon => {});
                 console.log(`  ✓ ${favicon.filename} (${favicon.size}, ${favicon.type)`});
-            });
+            });'
         }'
         '';
         if(results.errors.length > 0') {'
@@ -70,34 +70,34 @@ async function generateAllFavicons('')';
             results.errors.forEach(error => {); }
                 console.log(`  ✗ ${error.filename}: ${error.error)`});
             });
-        }
+        }'
         ';
-        // ファビコンのHTML生成''
-        const htmlTags = faviconManager.generateFaviconMetaTags('')';
+        // ファビコンのHTML生成
+        const htmlTags = faviconManager.generateFaviconMetaTags()';
         console.log('\n=== HTML Meta Tags ===');
         console.log(htmlTags);
         ';
-        // 検証結果''
-        const validation = faviconManager.validateFaviconSetup('')';
+        // 検証結果
+        const validation = faviconManager.validateFaviconSetup()';
         console.log('\n=== Validation Results ===');
         console.log(`Valid: ${ validation.isValid)`),
         console.log(`Generated count: ${validation.generatedCount)`),'
         '';
         if(validation.issues.length > 0') {'
-            ';
+            ';'
         }'
             console.log('Issues: '), }
-            validation.issues.forEach(issue => console.log(`  ✗ ${issue)`)});
+            validation.issues.forEach(issue => console.log(`  ✗ ${issue)`)});'
         }'
         '';
         if(validation.warnings.length > 0') {'
-            ';
+            ';'
         }'
             console.log('Warnings: '),' }'
             validation.warnings.forEach(warning => console.log(`  ⚠ ${warning)`)'});
         }
         ';
-        // ファビコンファイルの保存を提案''
+        // ファビコンファイルの保存を提案
         if(typeof window !== 'undefined' && results.generated.length > 0') {'
             '';
             console.log('\n=== File Save Options ==='');''
@@ -105,7 +105,7 @@ async function generateAllFavicons('')';
             console.log('1. Use faviconManager.writeFaviconFiles(results.generated')'');''
             console.log('2. Or manually download using the browser File System Access API'');
             ';
-            // ユーザーに保存オプションを提供''
+            // ユーザーに保存オプションを提供
             const shouldSave = confirm('Would you like to save favicon files to your system? ');'
             if (shouldSave) {''
                 await faviconManager.writeFaviconFiles(results.generated');'
@@ -114,12 +114,12 @@ async function generateAllFavicons('')';
             }
         }
         ';
-        // メモリクリーンアップ''
-        faviconManager.cleanup('')';
+        // メモリクリーンアップ
+        faviconManager.cleanup()';
         console.log('\nFavicon generation completed successfully!');
         return results;'
         '';
-    } catch (error') { : undefined''
+    } catch (error) { : undefined''
         console.error('Failed to generate favicons:', error);
         throw error; }
     }
@@ -140,7 +140,7 @@ async function generateFaviconCategory(category: string): Promise<FaviconResult[
             favicon.category === category);
         
         console.log(`Generated ${categoryFavicons.length} ${ category) favicons: `),
-        categoryFavicons.forEach(favicon => {); }
+        categoryFavicons.forEach(favicon => {) }
             console.log(`  ✓ ${favicon.filename)`});
         });
         
@@ -154,15 +154,15 @@ async function generateFaviconCategory(category: string): Promise<FaviconResult[
 }
 
 /**
- * ファビコンプレビュー生成'
+ * ファビコンプレビュー生成
  */''
-async function generateFaviconPreview('')';
+async function generateFaviconPreview()';
         console.log('Generating favicon preview...');
-        ';
+        ';'
         const faviconManager = new FaviconManager();''
         const results = await faviconManager.generateAllFavicons(');
         
-        // プレビュー用のHTMLページを生成'
+        // プレビュー用のHTMLページを生成
         let html = `<!DOCTYPE html>'';
 <html lang="ja">";
 <head>"";
@@ -206,7 +206,7 @@ async function generateFaviconPreview('')';
         '';
         html += '</body></html>';
         ';
-        // プレビューファイルの保存''
+        // プレビューファイルの保存
         const blob = new Blob([html], { type: 'text/html' ),''
         const url = URL.createObjectURL(blob');'
         '';
@@ -219,7 +219,7 @@ async function generateFaviconPreview('')';
             link.click();'
             document.body.removeChild(link);''
             URL.revokeObjectURL(url');'
-            ';
+            ';'
         }'
             console.log('Favicon preview saved as favicon-preview.html'); }
         }
@@ -227,21 +227,21 @@ async function generateFaviconPreview('')';
         faviconManager.cleanup();
         return html;'
         '';
-    } catch (error') { ''
+    } catch (error) { ''
         console.error('Failed to generate favicon preview:', error');
         throw error; }
     }
 }
 ';
-// スクリプトが直接実行された場合''
+// スクリプトが直接実行された場合
 if (typeof window !== 'undefined'') { // ブラウザ環境での実行
     window.generateAllFavicons = generateAllFavicons;
     window.generateFaviconCategory = generateFaviconCategory;
     window.generateFaviconPreview = generateFaviconPreview;
-    ';
-    // 自動実行（オプション）''
+    ;
+    // 自動実行（オプション）
     if(window.location && window.location.search.includes('autorun=true') {'
-        ';
+        ';'
     }'
         generateAllFavicons().catch(console.error'); }
     }

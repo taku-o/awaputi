@@ -22,7 +22,7 @@ interface EventConfig { clickThreshold: number,
     touchThreshold: number,
     keyboardRepeatDelay: number,
     wheelSensitivity: number,
-    gestureMinDistance: number; }
+    gestureMinDistance: number }
 }
 
 /**
@@ -33,7 +33,7 @@ interface TouchData { startX: number,
     currentX: number,
     currentY: number,
     startTime: number,
-    moved: boolean; }
+    moved: boolean }
 }
 
 /**
@@ -49,7 +49,7 @@ interface EventState { lastClickTime: number,
     dragStartY: number,
     lastKeyTime: number,
     lastKeyCode: string | null,
-    touches: Map<number, TouchData>; }
+    touches: Map<number, TouchData> }
 }
 
 /**
@@ -68,7 +68,7 @@ interface GestureConfig { distance: number,
 interface Bounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 /**
@@ -84,9 +84,9 @@ interface UIElement { bounds: Bounds,
 
 /**
  * Event target interface
- */'
+ */
 interface EventTarget extends UIElement { ''
-    type: 'tab' | 'sortOption' | 'entry' | 'button' | 'scrollbar'; }
+    type: 'tab' | 'sortOption' | 'entry' | 'button' | 'scrollbar' }
 }
 
 /**
@@ -96,7 +96,7 @@ interface UIElements { tabs: UIElement[],
     sortOptions: UIElement[],
     entries: UIElement[],
     buttons: UIElement[],
-    scrollbar: UIElement | null; }
+    scrollbar: UIElement | null }
 }
 
 /**
@@ -106,7 +106,7 @@ interface SelectionState { selectedView: string,
     selectedSort: string,
     selectedEntry: any | null,
     selectedEntryIndex: number,
-    showingDetails: boolean; }
+    showingDetails: boolean }
 }
 
 /**
@@ -114,7 +114,7 @@ interface SelectionState { selectedView: string,
  */
 interface Touch { identifier: number,
     clientX: number,
-    clientY: number; }
+    clientY: number }
 }
 
 /**
@@ -123,11 +123,11 @@ interface Touch { identifier: number,
 interface ClickEventData { x: number,
     y: number,
     target: EventTarget | null,
-    options: any; }
+    options: any }
 }
 
 interface HoverEventData { target: EventTarget,
-    options?: any; }
+    options?: any }
 }
 
 interface ScrollEventData { deltaX?: number;
@@ -141,28 +141,28 @@ interface ScrollEventData { deltaX?: number;
 
 interface KeyDownEventData { keyCode: string,
     action?: string;
-    options: any; }
+    options: any }
 }
 
-interface ViewChangeEventData { view: string; }
+interface ViewChangeEventData { view: string }
 }
 
-interface SortChangeEventData { sortBy: string; }
+interface SortChangeEventData { sortBy: string }
 }
 
 interface EntrySelectEventData { entry?: any;
-    index: number; }
+    index: number }
 }
 
 interface DetailsToggleEventData { entry?: any;
-    show: boolean; }
+    show: boolean }
 }
 
 interface RefreshEventData {}
 
 interface GestureData { deltaX: number,
     deltaY: number,
-    velocity: number; }
+    velocity: number }
 }
 
 /**
@@ -211,7 +211,7 @@ export class LeaderboardEventHandler {
         dragStartY: 0,
         lastKeyTime: 0,
         lastKeyCode: null,
-        touches: new Map(); }
+        touches: new Map() }
     };
     
     // コールバック管理
@@ -223,12 +223,12 @@ export class LeaderboardEventHandler {
         onKeyDown: new Set<KeyDownCallback>(),
         onViewChange: new Set<ViewChangeCallback>(),
         onSortChange: new Set<SortChangeCallback>(),
-        onEntrySelect: new Set<EntrySelectCallback>(),';
+        onEntrySelect: new Set<EntrySelectCallback>(),
         onDetailsToggle: new Set<DetailsToggleCallback>(),'';
-        onRefresh: new Set<RefreshCallback>('); }
+        onRefresh: new Set<RefreshCallback>(') }
     };
     
-    // キーボードショートカット'
+    // キーボードショートカット
     private shortcuts: Record<string, string> = { ''
         'ArrowUp': 'selectPrevious','';
         'ArrowDown': 'selectNext','';
@@ -242,7 +242,7 @@ export class LeaderboardEventHandler {
         'End': 'goToBottom' }
     };
     
-    // タッチジェスチャー'
+    // タッチジェスチャー
     private gestures: Record<string, GestureConfig> = { ' }'
         swipeUp: { distance: 50, direction: 'vertical', velocity: 0.5 },''
         swipeDown: { distance: 50, direction: 'vertical', velocity: 0.5 },''
@@ -260,7 +260,7 @@ export class LeaderboardEventHandler {
         scrollbar: null }
     },
     
-    // 現在の選択状態'
+    // 現在の選択状態
     private selectionState: SelectionState = { ''
         selectedView: 'overall''';
         selectedSort: 'score',
@@ -283,9 +283,9 @@ export class LeaderboardEventHandler {
     /**
      * イベントハンドラーを初期化'
      */''
-    initialize('')';
+    initialize()';
             console.log('[LeaderboardEventHandler] Event handler initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.initialize'); }
         }
     }
@@ -317,9 +317,9 @@ export class LeaderboardEventHandler {
             }
             
             this.eventState.lastClickTime = currentTime;
-            this.eventState.lastClickTarget = target;'
+            this.eventState.lastClickTarget = target;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleClick'); }
         }
     }
@@ -333,9 +333,9 @@ export class LeaderboardEventHandler {
      */
     handleSingleClick(x: number, y: number, target: EventTarget | null, options: any): void { if (!target) {
             // 背景クリック - 詳細を閉じる
-            if(this.selectionState.showingDetails) {'
+            if(this.selectionState.showingDetails) {
                 '';
-                this.closeDetails('')';
+                this.closeDetails()';
             this.executeCallbacks('onClick', { x, y, target, options );
             }
             return; }
@@ -365,7 +365,7 @@ export class LeaderboardEventHandler {
                 break; }
         }
         ';
-        // コールバック実行''
+        // コールバック実行
         this.executeCallbacks('onClick', { x, y, target, options ); }
     }
     
@@ -378,12 +378,12 @@ export class LeaderboardEventHandler {
      */''
     handleDoubleClick(x: number, y: number, target: EventTarget | null, options: any'): void { ''
         if(target && target.type === 'entry') {'
-            // エントリーダブルクリック - 詳細表示'
+            // エントリーダブルクリック - 詳細表示
         }'
             this.toggleDetails(target.data'); }
         }
         ';
-        // コールバック実行''
+        // コールバック実行
         this.executeCallbacks('onDoubleClick', { x, y, target, options ); }
     }
     
@@ -412,9 +412,9 @@ export class LeaderboardEventHandler {
             if (target) { this.startHover(target, options); }
             }
             
-            this.eventState.lastHoverTarget = target;'
+            this.eventState.lastHoverTarget = target;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleHover'); }
         }
     }
@@ -429,7 +429,7 @@ export class LeaderboardEventHandler {
             
         }
             clearTimeout(this.eventState.hoverTimer); }
-        }'
+        }
         '';
         this.eventState.hoverTimer = window.setTimeout((') => { // コールバック実行' }'
             this.executeCallbacks('onHover', { target, options });
@@ -445,7 +445,7 @@ export class LeaderboardEventHandler {
             this.eventState.hoverTimer = null; }
         }
         ';
-        // コールバック実行''
+        // コールバック実行
         this.executeCallbacks('onHoverEnd', { target ); }
     }
     
@@ -459,13 +459,13 @@ export class LeaderboardEventHandler {
         try {
             const scrollAmount = deltaY * this.eventConfig.wheelSensitivity;
             ';
-            // コールバック実行''
+            // コールバック実行
             this.executeCallbacks('onScroll', { )
                 deltaX);
                 deltaY: scrollAmount, );
                 options );'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleScroll'); }
         }
     }
@@ -492,16 +492,16 @@ export class LeaderboardEventHandler {
             
             // ショートカット処理
             const action = this.shortcuts[keyCode];
-            if(action) {'
-                ';
+            if(action) {
+                ';'
             }'
                 this.executeShortcut(action, options'); }
             }
             ';
-            // コールバック実行''
+            // コールバック実行
             this.executeCallbacks('onKeyDown', { keyCode, action, options );'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleKeyDown'); }
         }
     }
@@ -515,7 +515,7 @@ export class LeaderboardEventHandler {
         try {
             touches.forEach(touch => { 
                 this.eventState.touches.set(touch.identifier, {
-                    startX: touch.clientX,);
+                    startX: touch.clientX);
                     startY: touch.clientY);
                     currentX: touch.clientX,);
                     currentY: touch.clientY),
@@ -524,7 +524,7 @@ export class LeaderboardEventHandler {
                 }),
             });'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchStart'); }
         }
     }
@@ -556,11 +556,11 @@ export class LeaderboardEventHandler {
                 }
                 
                 // スクロール処理（単一タッチ）
-                if (this.eventState.touches.size === 1) { this.handleScroll(deltaX, deltaY, { isTouchEvent: true ); }
+                if (this.eventState.touches.size === 1) { this.handleScroll(deltaX, deltaY, { isTouchEvent: true ) }
                 }
-            });'
+            });
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchMove'); }
         }
     }
@@ -582,7 +582,7 @@ export class LeaderboardEventHandler {
                 
                 // タップ判定
                 if (!touchData.moved && duration < this.eventConfig.clickThreshold) { }
-                    this.handleClick(touch.clientX, touch.clientY, { isTouchEvent: true ); }
+                    this.handleClick(touch.clientX, touch.clientY, { isTouchEvent: true ) }
                 }
                 
                 // ジェスチャー判定
@@ -590,9 +590,9 @@ export class LeaderboardEventHandler {
                 }
                 
                 this.eventState.touches.delete(touch.identifier);
-            });'
+            });
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardEventHandler.handleTouchEnd'); }
         }
     }
@@ -607,14 +607,14 @@ export class LeaderboardEventHandler {
         const velocity = distance / duration;
         
         // スワイプジェスチャー
-        if(distance > this.eventConfig.gestureMinDistance && velocity > 0.3) {'
+        if(distance > this.eventConfig.gestureMinDistance && velocity > 0.3) {
             '';
             if (Math.abs(deltaX) > Math.abs(deltaY)') {'
-                // 横方向スワイプ''
+                // 横方向スワイプ
                 const gesture = deltaX > 0 ? 'swipeRight' : 'swipeLeft';'
         }'
                 this.handleGesture(gesture, { deltaX, deltaY, velocity )'); }'
-            } else {  // 縦方向スワイプ''
+            } else {  // 縦方向スワイプ
                 const gesture = deltaY > 0 ? 'swipeDown' : 'swipeUp'; }
                 this.handleGesture(gesture, { deltaX, deltaY, velocity ); }
             }
@@ -638,7 +638,7 @@ export class LeaderboardEventHandler {
                 break;'
                 '';
             case 'swipeLeft':'';
-                this.switchToNextView('')';
+                this.switchToNextView()';
             case 'swipeRight':);
                 this.switchToPreviousView();
         }
@@ -654,7 +654,7 @@ export class LeaderboardEventHandler {
         if(target.view && target.view !== this.selectionState.selectedView') {'
             this.selectionState.selectedView = target.view;'
         }'
-            this.executeCallbacks('onViewChange', { view: target.view ); }
+            this.executeCallbacks('onViewChange', { view: target.view ) }
         }
     }
     
@@ -666,7 +666,7 @@ export class LeaderboardEventHandler {
         if(target.sortBy && target.sortBy !== this.selectionState.selectedSort') {'
             this.selectionState.selectedSort = target.sortBy;'
         }'
-            this.executeCallbacks('onSortChange', { sortBy: target.sortBy ); }
+            this.executeCallbacks('onSortChange', { sortBy: target.sortBy ) }
         }
     }
     
@@ -676,7 +676,7 @@ export class LeaderboardEventHandler {
      */''
     handleEntryClick(target: EventTarget'): void { this.selectionState.selectedEntry = target.data;'
         this.selectionState.selectedEntryIndex = target.index || -1;''
-        this.executeCallbacks('onEntrySelect', { entry: target.data, index: target.index || -1 ); }
+        this.executeCallbacks('onEntrySelect', { entry: target.data, index: target.index || -1 ) }
     }
     
     /**
@@ -694,7 +694,7 @@ export class LeaderboardEventHandler {
                 this.closeDetails(''';
             case 'filter':;
                 // フィルター機能（将来実装）
-                break;'
+                break;
                 '';
             case 'export':;
                 // エクスポート機能（将来実装）
@@ -707,15 +707,15 @@ export class LeaderboardEventHandler {
      * スクロールバークリックを処理
      * @param {number} x - X座標
      * @param {number} y - Y座標
-     * @param {Object} target - ターゲット)'
+     * @param {Object} target - ターゲット)
      */')'
     handleScrollbarClick(x: number, y: number, target: EventTarget'): void { // スクロールバーの位置計算
         const relativeY = y - target.bounds.y;
-        const scrollRatio = relativeY / target.bounds.height;'
+        const scrollRatio = relativeY / target.bounds.height;
         '';
         this.executeCallbacks('onScroll', { )
             scrollRatio, );
-            isScrollbarClick: true ); }
+            isScrollbarClick: true ) }
     }
     
     /**
@@ -729,7 +729,7 @@ export class LeaderboardEventHandler {
             case 'selectPrevious':'';
                 this.selectPreviousEntry(''';
             case 'selectNext':'';
-                this.selectNextEntry('')';
+                this.selectNextEntry()';
             case 'openDetails':)';
                 if (this.selectionState.selectedEntry) {'
         }'
@@ -738,7 +738,7 @@ export class LeaderboardEventHandler {
                 break;'
                 '';
             case 'closeDetails':'';
-                this.closeDetails('')';
+                this.closeDetails()';
             case 'refresh':')';
                 this.executeCallbacks('onRefresh', { )');
                 break;'
@@ -757,7 +757,7 @@ export class LeaderboardEventHandler {
                 '';
             case 'goToBottom':'';
                 this.executeCallbacks('onScroll', { scrollTo: 'bottom' ),
-                break; }
+                break }
         }
     }
     
@@ -767,9 +767,9 @@ export class LeaderboardEventHandler {
     selectPreviousEntry(): void { const newIndex = Math.max(0, this.selectionState.selectedEntryIndex - 1);''
         if(newIndex !== this.selectionState.selectedEntryIndex') {
             this.selectionState.selectedEntryIndex = newIndex;'
-            // エントリーデータは外部から提供される必要がある'
+            // エントリーデータは外部から提供される必要がある
         }'
-            this.executeCallbacks('onEntrySelect', { index: newIndex ); }
+            this.executeCallbacks('onEntrySelect', { index: newIndex ) }
         }
     }
     
@@ -778,12 +778,12 @@ export class LeaderboardEventHandler {
      */
     selectNextEntry(): void { // 最大インデックスは外部から提供される必要がある
         const maxIndex = this.uiElements.entries.length - 1;
-        const newIndex = Math.min(maxIndex, this.selectionState.selectedEntryIndex + 1);'
+        const newIndex = Math.min(maxIndex, this.selectionState.selectedEntryIndex + 1);
         '';
         if(newIndex !== this.selectionState.selectedEntryIndex') {'
             this.selectionState.selectedEntryIndex = newIndex;'
         }'
-            this.executeCallbacks('onEntrySelect', { index: newIndex ); }
+            this.executeCallbacks('onEntrySelect', { index: newIndex ) }
         }
     }
     
@@ -794,9 +794,9 @@ export class LeaderboardEventHandler {
         const views = ['overall', 'daily', 'weekly', 'monthly', 'stage'];)'
         const currentIndex = views.indexOf(this.selectionState.selectedView);''
         const nextIndex = (currentIndex + 1') % views.length;
-        ';
+        ';'
         this.selectionState.selectedView = views[nextIndex];''
-        this.executeCallbacks('onViewChange', { view: views[nextIndex] ); }
+        this.executeCallbacks('onViewChange', { view: views[nextIndex] ) }
     }
     
     /**
@@ -806,9 +806,9 @@ export class LeaderboardEventHandler {
         const views = ['overall', 'daily', 'weekly', 'monthly', 'stage'];)'
         const currentIndex = views.indexOf(this.selectionState.selectedView);''
         const prevIndex = (currentIndex - 1 + views.length') % views.length;
-        ';
+        ';'
         this.selectionState.selectedView = views[prevIndex];''
-        this.executeCallbacks('onViewChange', { view: views[prevIndex] ); }
+        this.executeCallbacks('onViewChange', { view: views[prevIndex] ) }
     }
     
     /**
@@ -816,14 +816,14 @@ export class LeaderboardEventHandler {
      * @param {Object} entry - エントリーデータ'
      */''
     openDetails(entry: any'): void { this.selectionState.showingDetails = true;''
-        this.executeCallbacks('onDetailsToggle', { entry, show: true ); }
+        this.executeCallbacks('onDetailsToggle', { entry, show: true ) }
     }
     
     /**
      * 詳細を閉じる'
      */''
-    closeDetails('')';
-        this.executeCallbacks('onDetailsToggle', { show: false ); }
+    closeDetails()';
+        this.executeCallbacks('onDetailsToggle', { show: false ) }
     }
     
     /**
@@ -843,8 +843,8 @@ export class LeaderboardEventHandler {
      * @returns {Object|null} ターゲット
      */
     getTargetAt(x: number, y: number): EventTarget | null { // タブチェック
-        for(const tab of this.uiElements.tabs) {'
-            ';
+        for(const tab of this.uiElements.tabs) {
+            ';'
         }'
             if (this.isPointInBounds(x, y, tab.bounds)') {' }'
                 return { type: 'tab', ...tab };
@@ -852,8 +852,8 @@ export class LeaderboardEventHandler {
         }
         
         // ソートオプションチェック
-        for(const option of this.uiElements.sortOptions) {'
-            ';
+        for(const option of this.uiElements.sortOptions) {
+            ';'
         }'
             if (this.isPointInBounds(x, y, option.bounds)') {' }'
                 return { type: 'sortOption', ...option };
@@ -861,8 +861,8 @@ export class LeaderboardEventHandler {
         }
         
         // エントリーチェック
-        for(const entry of this.uiElements.entries) {'
-            ';
+        for(const entry of this.uiElements.entries) {
+            ';'
         }'
             if (this.isPointInBounds(x, y, entry.bounds)') {' }'
                 return { type: 'entry', ...entry };
@@ -870,15 +870,15 @@ export class LeaderboardEventHandler {
         }
         
         // ボタンチェック
-        for(const button of this.uiElements.buttons) {'
-            ';
+        for(const button of this.uiElements.buttons) {
+            ';'
         }'
             if (this.isPointInBounds(x, y, button.bounds)') {' }'
                 return { type: 'button', ...button };
             }
         }
         
-        // スクロールバーチェック'
+        // スクロールバーチェック
         if (this.uiElements.scrollbar && '';
             this.isPointInBounds(x, y, this.uiElements.scrollbar.bounds)') { ' }'
             return { type: 'scrollbar', ...this.uiElements.scrollbar };
@@ -933,7 +933,7 @@ export class LeaderboardEventHandler {
         callback: typeof this.callbacks[K] extends Set<infer T> ? T : never;
     ): void { const callbackSet = this.callbacks[eventType],
         if(callbackSet) {'
-            ';
+            ';'
         }'
             (callbackSet as any).delete(callback'); }
         }
@@ -961,8 +961,8 @@ export class LeaderboardEventHandler {
         }
                 try { }'
                     callback(data);' }'
-                } catch (error') { ''
-                    console.warn('[LeaderboardEventHandler] Callback error:', error); }
+                } catch (error) { ''
+                    console.warn('[LeaderboardEventHandler] Callback error:', error) }
                 }
             });
         }
@@ -993,7 +993,7 @@ export class LeaderboardEventHandler {
         if (newConfig.shortcuts) { Object.assign(this.shortcuts, newConfig.shortcuts); }
         }
         if(newConfig.gestures) {'
-            ';
+            ';'
         }'
             Object.assign(this.gestures, newConfig.gestures'); }
         }'
@@ -1012,14 +1012,14 @@ export class LeaderboardEventHandler {
         this.eventState.touches.clear();
         
         if(this.eventState.hoverTimer) {
-        ';
+        ';'
             '';
             clearTimeout(this.eventState.hoverTimer');
         
         }
             this.eventState.hoverTimer = null; }
         }
-        ';
+        ';'
         this.selectionState = { ''
             selectedView: 'overall','';
             selectedSort: 'score',
@@ -1037,7 +1037,7 @@ export class LeaderboardEventHandler {
     dispose(): void { this.reset();
         
         // 全コールバックをクリア
-        Object.values(this.callbacks).forEach(callbackSet => { ); }'
+        Object.values(this.callbacks).forEach(callbackSet => { ); }
             callbackSet.clear();' }'
         }');'
         '';

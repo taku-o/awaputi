@@ -1,8 +1,8 @@
 interface ProgressCalculator { calculate: (current: number, increment: unknown, target: number, context?: CalculationContext) => number;
-    getPercentage: (current: number, target: number) => number; }
+    getPercentage: (current: number, target: number) => number }
 }
 
-interface ConditionEvaluator { (value: unknown, condition: EvaluationCondition): boolean; }
+interface ConditionEvaluator { (value: unknown, condition: EvaluationCondition): boolean }
 }
 
 interface Validator { (value: unknown, ...args: unknown[]): boolean, }
@@ -11,7 +11,7 @@ interface Validator { (value: unknown, ...args: unknown[]): boolean, }
 interface PerformanceStats { calculationCount: number,
     totalCalculationTime: number,
     averageCalculationTime: number,
-    errorCount: number; }
+    errorCount: number }
 }
 
 interface CalculationContext { isConsecutive?: boolean;
@@ -47,11 +47,11 @@ interface Milestone { id: string,
 interface ProgressResult { progress: number,
     percentage: number,
     milestones: Milestone[],
-    isComplete: boolean; }
+    isComplete: boolean }
 }
 
 interface ConditionSet { conditions: EvaluationCondition[],
-    operator: 'AND' | 'OR' | 'XOR' | 'NOT'; }
+    operator: 'AND' | 'OR' | 'XOR' | 'NOT' }
 }
 
 interface AchievementDefinition { target?: number; }
@@ -74,7 +74,7 @@ interface DiagnosticsInfo { performance: PerformanceStats & {
     memoryUsage: { calculators: number,
         evaluators: number,
         validators: number,
-        milestoneTrackers: number; }
+        milestoneTrackers: number }
     };
 }
 
@@ -114,36 +114,36 @@ export class AchievementProgressEngine {
     /**
      * エンジンを初期化
      */
-    private initialize(): void { this.registerDefaultCalculators();'
+    private initialize(): void { this.registerDefaultCalculators();
         this.registerDefaultValidators();''
-        this.registerDefaultEvaluators('')';
+        this.registerDefaultEvaluators()';
         console.log('Achievement Progress Engine initialized'); }
     }
     
     /**
      * デフォルトの進捗計算機を登録'
      */''
-    private registerDefaultCalculators('')';
+    private registerDefaultCalculators()';
         this.calculators.set('cumulative', { );
             calculate: (current: number, increment: unknown, target: number): number => { 
-                const incrementValue = Number(increment) || 0; }
+                const incrementValue = Number(increment) || 0 }
                 return Math.min(current + incrementValue, target); }
             },
             getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0; }'
             }''
         }');
         ';
-        // 最大値型進捗計算''
+        // 最大値型進捗計算
         this.calculators.set('maximum', { );
             calculate: (current: number, newValue: unknown, target: number): number => { 
-                const value = Number(newValue) || 0; }
+                const value = Number(newValue) || 0 }
                 return Math.max(current, value); }
             },
             getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0; }'
             }''
         }');
         ';
-        // 連続型進捗計算''
+        // 連続型進捗計算
         this.calculators.set('consecutive', { );
             calculate: (current: number, newValue: unknown, target: number, context?: CalculationContext): number => { 
                 if (context && context.isConsecutive) { }
@@ -151,11 +151,11 @@ export class AchievementProgressEngine {
                 } else { return 0; // 連続が途切れた場合はリセット }
                 }
             },
-            getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0; }'
+            getPercentage: (current: number, target: number): number => { return target > 0 ? (current / target) * 100 : 0; }
             }''
         }');
         ';
-        // 条件達成型進捗計算''
+        // 条件達成型進捗計算
         this.calculators.set('conditional', { );
             calculate: (current: number, conditionsMet: unknown, target: number): number => { 
                 if(Array.isArray(conditionsMet) { }
@@ -167,7 +167,7 @@ export class AchievementProgressEngine {
             }''
         }');
         ';
-        // 複合型進捗計算''
+        // 複合型進捗計算
         this.calculators.set('composite', { );
             calculate: (current: number, data: unknown, target: number, context?: CalculationContext): number => { 
                 if (!context || !context.subConditions) return current;
@@ -190,7 +190,7 @@ export class AchievementProgressEngine {
     /**
      * デフォルトの条件評価器を登録'
      */''
-    private registerDefaultEvaluators('')';
+    private registerDefaultEvaluators()';
         this.conditionEvaluators.set('equals', (value, condition) => { return value === condition.target;' }'
         }');'
         '';
@@ -206,9 +206,9 @@ export class AchievementProgressEngine {
         this.conditionEvaluators.set('range', (value, condition) => { return value >= condition.min && value <= condition.max;' }'
         }');
         ';
-        // 時間ベース条件''
+        // 時間ベース条件
         this.conditionEvaluators.set('time_window', (value, condition) => {  const now = Date.now();
-            const timeWindow = condition.windowMs || 24 * 60 * 60 * 1000; // デフォルト24時間 }'
+            const timeWindow = condition.windowMs || 24 * 60 * 60 * 1000; // デフォルト24時間 }
             return (now - value) <= timeWindow;' }'
         }');'
         '';
@@ -218,7 +218,7 @@ export class AchievementProgressEngine {
             return date >= startDate && date <= endDate;' }'
         }');
         ';
-        // 複数条件組み合わせ''
+        // 複数条件組み合わせ
         this.conditionEvaluators.set('all_of', (values, condition) => {  return condition.subConditions.every(subCondition => ); }'
                 this.evaluateCondition(values, subCondition);' }'
         }');'
@@ -231,12 +231,12 @@ export class AchievementProgressEngine {
                 this.evaluateCondition(values, subCondition);' }'
         }');
         ';
-        // パターンマッチング''
+        // パターンマッチング
         this.conditionEvaluators.set('pattern', (value, condition) => {  const pattern = new RegExp(condition.pattern); }'
             return pattern.test(String(value);' }'
         }');
         ';
-        // 配列操作''
+        // 配列操作
         this.conditionEvaluators.set('array_contains', (array, condition) => { return Array.isArray(array) && array.includes(condition.target);' }'
         }');'
         '';
@@ -244,7 +244,7 @@ export class AchievementProgressEngine {
             return this.conditionEvaluators.get(condition.operator)(array.length, condition);' }'
         }');
         ';
-        // セット操作''
+        // セット操作
         this.conditionEvaluators.set('set_contains_all', (set, condition) => {  if(!(set instanceof Set) return false; }'
             return condition.targets.every(target => set.has(target);' }'
         }');'
@@ -257,7 +257,7 @@ export class AchievementProgressEngine {
     /**
      * デフォルトのバリデーターを登録'
      */''
-    private registerDefaultValidators('')';
+    private registerDefaultValidators()';
         this.validators.set('number', (value') => {  ' }'
             return typeof value === 'number' && !isNaN(value) && isFinite(value);' }'
         }');'
@@ -274,28 +274,28 @@ export class AchievementProgressEngine {
             return this.validators.get('integer')(value) && value >= 0;' }'
         }');
         ';
-        // 範囲検証''
+        // 範囲検証
         this.validators.set('range', (value, min, max') => {  ' }'
             return this.validators.get('number')(value) && value >= min && value <= max;' }'
         }');
         ';
-        // 日時検証''
+        // 日時検証
         this.validators.set('date', (value) => {  const date = new Date(value); }'
             return !isNaN(date.getTime();' }'
         }');
         ';
-        // 配列検証''
+        // 配列検証
         this.validators.set('array', (value) => { return Array.isArray(value);' }'
         }');'
         '';
         this.validators.set('non_empty_array', (value) => { return Array.isArray(value) && value.length > 0;' }'
         }');
         ';
-        // セット検証''
+        // セット検証
         this.validators.set('set', (value) => { return value instanceof Set;' }'
         }');
         ';
-        // オブジェクト検証''
+        // オブジェクト検証
         this.validators.set('object', (value') => {  ' }'
             return value !== null && typeof value === 'object' && !Array.isArray(value); }
         });
@@ -333,9 +333,9 @@ export class AchievementProgressEngine {
                 percentage: calculator.getPercentage(newProgress, targetValue),
                 milestones: milestones, };
                 isComplete: newProgress >= targetValue }
-            },'
+            },
             '';
-        } catch (error') { this.performanceStats.errorCount++;''
+        } catch (error) { this.performanceStats.errorCount++;''
             console.error('Progress calculation error:', error);
             throw error; }
         }
@@ -354,9 +354,9 @@ export class AchievementProgressEngine {
             // データから対象値を取得
             const value = this.extractValueFromData(data, condition.field);
             
-            return evaluator(value, condition);'
+            return evaluator(value, condition);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Condition evaluation error:', error);
             return false; }
         }
@@ -375,7 +375,7 @@ export class AchievementProgressEngine {
             const results = conditionSet.conditions.map(condition => );
                 this.evaluateCondition(data, condition);
             ';
-            // 論理演算子に基づいて結果を結合''
+            // 論理演算子に基づいて結果を結合
             switch(conditionSet.operator') {'
                 '';
                 case 'AND':'';
@@ -389,7 +389,7 @@ export class AchievementProgressEngine {
                 default:;
             }'
                     return results.every(result => result === true); // デフォルトはAND' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Complex condition evaluation error:', error);
             return false; }
         }
@@ -407,7 +407,7 @@ export class AchievementProgressEngine {
                 
                 if (currentProgress >= milestoneTarget && !milestone.achieved) {
                     milestones.push({
-                        id: milestone.id,);
+                        id: milestone.id);
                         name: milestone.name);
                         percentage: milestone.percentage,);
                         reward: milestone.reward || null),
@@ -424,17 +424,17 @@ export class AchievementProgressEngine {
     /**
      * 進捗データを検証'
      */''
-    private validateProgressData(currentProgress: number, newData: unknown, targetValue: number, context: CalculationContext'): void { // 現在進捗の検証''
+    private validateProgressData(currentProgress: number, newData: unknown, targetValue: number, context: CalculationContext'): void { // 現在進捗の検証
         if (!this.validators.get('positive_number')(currentProgress)') {''
             throw new Error('Invalid current progress value''); }
         }
         ';
-        // 目標値の検証''
+        // 目標値の検証
         if (!this.validators.get('positive_number')(targetValue) || targetValue <= 0') { ''
             throw new Error('Invalid target value'); }
         }
         ';
-        // 新データの検証（型に応じて）''
+        // 新データの検証（型に応じて）
         if(newData !== null && newData !== undefined') {'
             '';
             const dataType = context.dataType || 'number';
@@ -462,7 +462,7 @@ export class AchievementProgressEngine {
     
     /**
      * データから値を抽出
-     */'
+     */
     private extractValueFromData(data: unknown, fieldPath: string): unknown { ''
         if (!fieldPath') return data;'
         '';
@@ -489,7 +489,7 @@ export class AchievementProgressEngine {
             const isConditionMet = this.evaluateCondition(data, condition);
             return isConditionMet ? condition.weight || 1 : 0;'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Sub-condition progress calculation error:', error);
             return 0; }
         }
@@ -500,7 +500,7 @@ export class AchievementProgressEngine {
      */'
     public registerCalculator(type: string, calculator: ProgressCalculator): void { ''
         if(!calculator.calculate || !calculator.getPercentage') {'
-            ';
+            ';'
         }'
             throw new Error('Calculator must have calculate and getPercentage methods'); }
         }
@@ -513,7 +513,7 @@ export class AchievementProgressEngine {
      */''
     public registerConditionEvaluator(type: string, evaluator: ConditionEvaluator'): void { ''
         if(typeof evaluator !== 'function'') {'
-            ';
+            ';'
         }'
             throw new Error('Condition evaluator must be a function'); }
         }
@@ -526,7 +526,7 @@ export class AchievementProgressEngine {
      */''
     public registerValidator(type: string, validator: Validator'): void { ''
         if(typeof validator !== 'function'') {'
-            ';
+            ';'
         }'
             throw new Error('Validator must be a function'); }
         }
@@ -558,13 +558,13 @@ export class AchievementProgressEngine {
     public repairProgressData(progressData: ProgressData, achievementDefinition: AchievementDefinition): ProgressData {
         const repaired = { ...progressData };
         
-        try { // 基本構造の修正'
+        try { // 基本構造の修正
             if (!repaired.current) repaired.current = 0;''
             if (!repaired.target') repaired.target = achievementDefinition.target || 1;
             ';
-            // 型の修正''
+            // 型の修正
             if(typeof repaired.current !== 'number') {'
-                ';
+                ';'
             }'
                 repaired.current = parseFloat(repaired.current') || 0; }
             }'
@@ -584,9 +584,9 @@ export class AchievementProgressEngine {
             if(repaired.milestones && !Array.isArray(repaired.milestones) { repaired.milestones = []; }
             }
             
-            return repaired;'
+            return repaired;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Progress data repair error:', error);
             return { current: 0,
                 target: achievementDefinition.target || 1, };

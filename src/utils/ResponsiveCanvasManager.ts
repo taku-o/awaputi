@@ -7,37 +7,37 @@ interface CanvasSize { displayWidth: number,
     actualWidth: number,
     actualHeight: number,
     scale: number,
-    pixelRatio?: number; }
+    pixelRatio?: number }
 }
 
 interface OptimalCanvasSize { displayWidth: number,
     displayHeight: number,
     actualWidth: number,
     actualHeight: number,
-    pixelRatio: number; }
+    pixelRatio: number }
 }
 
 interface Coordinates { x: number,
-    y: number; }
+    y: number }
 }
 
 interface Size { width: number,
-    height: number; }
+    height: number }
 }
 
 interface CanvasInfo extends CanvasSize { baseWidth: number,
     baseHeight: number,
     aspectRatio: number,
-    deviceInfo: any; }
+    deviceInfo: any }
 }
 
-interface GameEngine { onCanvasResize?: (size: CanvasSize) => void; }
+interface GameEngine { onCanvasResize?: (size: CanvasSize) => void }
 }
 
 interface BrowserCompatibility { calculateOptimalCanvasSize(): OptimalCanvasSize;
     deviceInfo: any,
     browserInfo: {
-        name: string; }
+        name: string }
     };
     getOrientation(): string;
 }
@@ -57,7 +57,7 @@ export class ResponsiveCanvasManager {
     private resizeTimeout: number | null;
     private isInitialized: boolean;
     // ScaledCoordinateManager を初期化
-    private readonly scaledCoordinateManager: ScaledCoordinateManager,';
+    private readonly scaledCoordinateManager: ScaledCoordinateManager,
     '';
     constructor(canvas: HTMLCanvasElement, gameEngine: GameEngine | null = null') {
         this.canvas = canvas;
@@ -100,15 +100,15 @@ export class ResponsiveCanvasManager {
     }
     
     /**
-     * イベントリスナーを設定'
+     * イベントリスナーを設定
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         window.addEventListener('resize', () => { this.handleResize(); }
         });
         ';
-        // 画面の向き変更''
+        // 画面の向き変更
         if(screen.orientation') {'
-            ';
+            ';'
         }'
             screen.orientation.addEventListener('change', () => {  }'
                 this.handleOrientationChange();' }'
@@ -119,11 +119,11 @@ export class ResponsiveCanvasManager {
             }');
         }
         ';
-        // ビューポート変更（モバイルブラウザ）''
+        // ビューポート変更（モバイルブラウザ）
         window.addEventListener('scroll', () => { this.handleViewportChange();' }'
         }');
         ';
-        // フルスクリーン変更''
+        // フルスクリーン変更
         document.addEventListener('fullscreenchange', () => { this.handleFullscreenChange(); }
         });
     }
@@ -150,7 +150,7 @@ export class ResponsiveCanvasManager {
         
         // スケール比を計算
         const scale = Math.min(;
-            optimalSize.displayWidth / this.baseWidth,);
+            optimalSize.displayWidth / this.baseWidth);
             optimalSize.displayHeight / this.baseHeight);
         
         this.currentSize = { displayWidth: optimalSize.displayWidth,
@@ -175,16 +175,16 @@ export class ResponsiveCanvasManager {
     
     /**
      * Canvas を中央に配置
-     */ : undefined'
+     */ : undefined
     private centerCanvas(): void { const container = this.canvas.parentElement;''
         if (!container') return;
         ';
-        // Canvas を中央に配置するスタイルを適用''
+        // Canvas を中央に配置するスタイルを適用
         this.canvas.style.position = 'relative';''
         this.canvas.style.display = 'block';''
         this.canvas.style.margin = '0 auto';
         ';
-        // コンテナのスタイルも調整''
+        // コンテナのスタイルも調整
         container.style.display = 'flex';''
         container.style.justifyContent = 'center';''
         container.style.alignItems = 'center';''
@@ -291,14 +291,14 @@ export class ResponsiveCanvasManager {
      * 向き変更メッセージを表示
      */
     private showOrientationMessage(): void { const browserCompat = getBrowserCompatibility() as BrowserCompatibility;
-        if (!browserCompat.deviceInfo.isMobile) return;'
+        if (!browserCompat.deviceInfo.isMobile) return;
         '';
-        const orientation = browserCompat.getOrientation('')';
+        const orientation = browserCompat.getOrientation()';
         const isLandscape = orientation.includes('landscape');
         ';
-        // 縦向きの場合は横向きを推奨''
+        // 縦向きの場合は横向きを推奨
         if(!isLandscape && this.currentSize.displayWidth < 500') {'
-            ';
+            ';'
         }'
             this.showTemporaryMessage('横向きでのプレイを推奨します', 3000); }
         }
@@ -373,20 +373,20 @@ export class ResponsiveCanvasManager {
     
     /**
      * デバイス固有の最適化を適用
-     */'
+     */
     applyDeviceOptimizations(): void { ''
-        const browserCompat = getBrowserCompatibility('')';
+        const browserCompat = getBrowserCompatibility()';
         if(browserCompat.browserInfo.name === 'safari' && deviceInfo.isMobile') {'
-            // タッチ操作の最適化''
+            // タッチ操作の最適化
             this.canvas.style.touchAction = 'none';''
             (this.canvas.style as any').webkitTouchCallout = 'none';'
         }'
             (this.canvas.style as any').webkitUserSelect = 'none'; }
         }
         ';
-        // Android Chrome 固有の最適化''
+        // Android Chrome 固有の最適化
         if(browserCompat.browserInfo.name === 'chrome' && deviceInfo.isMobile') {'
-            // ハードウェアアクセラレーションの有効化''
+            // ハードウェアアクセラレーションの有効化
             this.canvas.style.willChange = 'transform';'
         }'
             this.canvas.style.transform = 'translateZ(0')'; }
@@ -400,8 +400,8 @@ export class ResponsiveCanvasManager {
         }
         
         // 高解像度デバイスでの最適化
-        if(deviceInfo.screenInfo.pixelRatio > 2) {'
-            // 描画品質を調整'
+        if(deviceInfo.screenInfo.pixelRatio > 2) {
+            // 描画品質を調整
         }'
             (this.context as any').imageSmoothingQuality = 'high'; }
         }
@@ -414,13 +414,13 @@ export class ResponsiveCanvasManager {
             clearTimeout(this.resizeTimeout'); }
         }
         
-        // イベントリスナーを削除'
-        // Note: Due to arrow functions, we need to store references to remove them properly''
+        // イベントリスナーを削除
+        // Note: Due to arrow functions, we need to store references to remove them properly
         // For now, we'll just log the limitation''
         console.log('[ResponsiveCanvasManager] Note: Event listeners need manual cleanup'),
         
         // ScaledCoordinateManagerのクリーンアップ
-        if(this.scaledCoordinateManager) {'
-            ';
+        if(this.scaledCoordinateManager) {
+            ';'
         }'
             this.scaledCoordinateManager.cleanup(') }

@@ -3,10 +3,10 @@ import { CoordinateCalculator } from '../../utils/CoordinateCalculator.js';''
 import type { MenuItem } from '../../types/game';
 
 // インターフェース定義
-interface MenuItemWithLabel extends MenuItem { label: string; }
+interface MenuItemWithLabel extends MenuItem { label: string }
 }
 
-interface PlayerData { username: string; }
+interface PlayerData { username: string }
 }
 
 /**
@@ -67,12 +67,12 @@ export class MainMenuRenderer {
             
             // タイトル
             context.save();
-            ';
-            // フォント読み込みのフォールバック処理''
+            ;
+            // フォント読み込みのフォールバック処理
             const titleFontSize = calc.scaleFontSize(60');'
             const titleFonts = [' }'
                 `bold ${titleFontSize}px 'Noto Sans JP', Arial, sans-serif`,
-                `bold ${titleFontSize}px Arial, sans-serif`,]
+                `bold ${titleFontSize}px Arial, sans-serif`]
                 `bold ${titleFontSize}px sans-serif`]
             ];
             
@@ -85,7 +85,7 @@ export class MainMenuRenderer {
                     break; }
                 } catch (e) { // フォント設定エラーを無視して次のフォントを試す }
                 }
-            }'
+            }
             '';
             if(!fontSet') {
                 
@@ -110,8 +110,8 @@ export class MainMenuRenderer {
             }
             
             context.fillText(titleText, titleX, titleY);
-            ';
-            // サブタイトル''
+            ;
+            // サブタイトル
             const subtitleFontSize = calc.scaleFontSize(22');'
             context.font = `${subtitleFontSize}px Arial`;''
             context.fillStyle = '#CCCCCC';''
@@ -122,9 +122,9 @@ export class MainMenuRenderer {
             
             // プレイヤー情報表示
             const playerData = this.gameEngine.playerData as PlayerData;
-            if(playerData.username) {'
+            if(playerData.username) {
                 '';
-                context.save('')';
+                context.save()';
                 context.fillStyle = '#AAAAAA';')
             }'
                 const playerFontSize = calc.scaleFontSize(16'); }'
@@ -146,15 +146,15 @@ export class MainMenuRenderer {
             // Canvas状態の復元
             context.restore();
         } catch (error) { // エラー発生時もCanvas状態を復元
-            try {'
+            try {
                 context.restore();' }'
-            } catch (restoreError') { // 復元エラーは無視 }
-            }'
+            } catch (restoreError) { // 復元エラーは無視 }
+            }
             '';
             this.errorHandler.handleError(error, 'RENDER_ERROR', { ')'
                 context: 'MainMenuRenderer.renderMainMenu');
                 canvasWidth: this.gameEngine.canvas? .width, : undefined);
-                canvasHeight: this.gameEngine.canvas? .height); }
+                canvasHeight: this.gameEngine.canvas? .height) }
             });
         }
     }
@@ -178,18 +178,18 @@ export class MainMenuRenderer {
             menuItems.forEach((item, index) => { 
                 const baseY = baseStartY + index * (baseItemHeight + baseSpacing);
                 const canvasY = calc.toCanvasCoordinates(0, baseY).y;
-                const isSelected = index === selectedMenuIndex;'
+                const isSelected = index === selectedMenuIndex;
                 '';
-                context.save('')';
+                context.save()';
                 context.fillStyle = isSelected ? '#0066CC' : '#333333';')'
                 context.fillRect(itemX, canvasY, itemSize.width, itemSize.height');
                 ';
-                // 枠線''
+                // 枠線
                 context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';'
                 context.lineWidth = calc.uniformScale * 2;''
                 context.strokeRect(itemX, canvasY, itemSize.width, itemSize.height');
                 ';
-                // テキスト''
+                // テキスト
                 context.fillStyle = '#FFFFFF';' }'
                 const menuFontSize = calc.scaleFontSize(20'); }'
                 context.font = `bold ${menuFontSize}px Arial`;''
@@ -202,9 +202,9 @@ export class MainMenuRenderer {
                 
                 context.restore();'
             });''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
-                context: 'MainMenuRenderer.renderMenuItems'); }
+                context: 'MainMenuRenderer.renderMenuItems') }
             });
         }
     }
@@ -216,7 +216,7 @@ export class MainMenuRenderer {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             const calc = this.coordinateCalculator!;'
             '';
-            context.save('')';
+            context.save()';
             context.fillStyle = '#AAAAAA';')'
             const controlFontSize = calc.scaleFontSize(16'); }'
             context.font = `${controlFontSize}px Arial`;''
@@ -224,7 +224,7 @@ export class MainMenuRenderer {
             context.textBaseline = 'bottom';
             
             // 画面下部からの固定マージン
-            const bottomMargin = calc.toCanvasSize(0, 60).height;'
+            const bottomMargin = calc.toCanvasSize(0, 60).height;
             const controlsY = canvas.height - bottomMargin;''
             const lineSpacing = calc.toCanvasSize(0, 25').height;'
             '';
@@ -234,9 +234,9 @@ export class MainMenuRenderer {
             const controlX2 = calc.getTextCenterX(context, controlText2);
             context.fillText(controlText1, controlX1, controlsY);
             context.fillText(controlText2, controlX2, controlsY + lineSpacing);
-            ';
+            ';'
             context.restore();''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
                 context: 'MainMenuRenderer.renderControls'),' }'
             }');

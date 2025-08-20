@@ -3,7 +3,7 @@ import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 interface ColorSettings { lucky: string[],
     unlucky: string[],
     preferred: string[],
-    avoided: string[]; }
+    avoided: string[] }
 }
 
 interface NumberSettings { lucky: number[],
@@ -22,14 +22,14 @@ interface GestureSettings { pointing?: string,
     receiving?: string;
     handshake?: string; }
 }
-';
+';'
 interface LayoutSettings { ''
     readingOrder: 'left-to-right-top-to-bottom' | 'right-to-left' | 'top-to-bottom-right-to-left' | 'top-to-bottom-left-to-right','';
     preferredAlignment: 'left' | 'right' | 'center','';
     whitespaceImportance: 'low' | 'medium' | 'high','';
-    hierarchyStyle: 'subtle' | 'clear' | 'traditional' | 'strict'; }
+    hierarchyStyle: 'subtle' | 'clear' | 'traditional' | 'strict' }
 }
-';
+';'
 interface CommunicationSettings { ''
     directness: 'direct' | 'moderate' | 'indirect' | 'very-indirect','';
     politenessLevel: 'medium' | 'high' | 'very-high','';
@@ -45,32 +45,32 @@ interface CulturalSettings { colors: ColorSettings,
     numbers: NumberSettings,
     gestures: GestureSettings,
     layout: LayoutSettings,
-    communication: CommunicationSettings;
+    communication: CommunicationSettings
     }
 }
 
 interface CulturalTaboos { visual: string[],
     behavioral: string[],
     content: string[],
-    interaction: string[]; }
+    interaction: string[] }
 }
 
 interface CurrentCulture { language: string,
     region: string | null,
     cultureKey: string,
     settings: CulturalSettings,
-    appliedAt: string; }
+    appliedAt: string }
 }
-';
+';'
 interface TabooWarning { type: string,''
     severity: 'medium' | 'high',
     suggestion: string,
-    culturalContext?: string; }
+    culturalContext?: string }
 }
 
 interface TabooValidationResult { valid: boolean,
     warnings: TabooWarning[],
-    culture?: string; }
+    culture?: string }
 }
 
 /**
@@ -78,21 +78,21 @@ interface TabooValidationResult { valid: boolean,
  */
 export class CulturalAdaptationSystem {
     private culturalSettings: Map<string, CulturalSettings>;
-    private culturalTaboos: Map<string, CulturalTaboos>; }
+    private culturalTaboos: Map<string, CulturalTaboos> }
     private gestureInterpretations: Map<string, { [key: string]: string }>;
     private currentCulture: CurrentCulture | null;
     private appliedAdaptations: Set<string>';
 '';
     constructor(''';
             ['ja', { colors: {']'
-                    lucky: ['#FF0000', '#FFD700', '#FFFFFF'], // 赤、金、白'';
-                    unlucky: ['#000000', '#800080'], // 黒、紫'';
-                    preferred: ['#FF69B4', '#87CEEB', '#98FB98'], // 桜色、空色、若草色'';
+                    lucky: ['#FF0000', '#FFD700', '#FFFFFF'], // 赤、金、白;
+                    unlucky: ['#000000', '#800080'], // 黒、紫;
+                    preferred: ['#FF69B4', '#87CEEB', '#98FB98'], // 桜色、空色、若草色;
                     avoided: ['#8B4513', '#2F4F4F'] // 茶色、暗い青緑 }
                 },
                 numbers: { lucky: [7, 8],
                     unlucky: [4, 9], // 死、苦;
-                    preferred: [3, 5, 7],';
+                    preferred: [3, 5, 7],;
                     symbolism: {''
                         4: '死（し）を連想','';
                         8: '末広がりで縁起が良い','';
@@ -100,35 +100,35 @@ export class CulturalAdaptationSystem {
                     }
                 },'
                 gestures: { ''
-                    pointing: 'avoid-direct', // 直接指差しを避ける'';
-                    beckoning: 'palm-down', // 手のひらを下にして招く'';
-                    thumbsUp: 'positive', // 親指立ては肯定的'';
+                    pointing: 'avoid-direct', // 直接指差しを避ける;
+                    beckoning: 'palm-down', // 手のひらを下にして招く;
+                    thumbsUp: 'positive', // 親指立ては肯定的;
                     okSign: 'money-symbol' // OKサインはお金を表す }
-                },'
+                },
                 layout: { ''
                     readingOrder: 'top-to-bottom-right-to-left','';
                     preferredAlignment: 'center','';
-                    whitespaceImportance: 'high', // 余白の重要性が高い'';
+                    whitespaceImportance: 'high', // 余白の重要性が高い;
                     hierarchyStyle: 'subtle' // 控えめな階層表現 }
-                },'
+                },
                 communication: { ''
-                    directness: 'indirect', // 間接的コミュニケーション'';
-                    politenessLevel: 'high', // 高い敬語レベル'';
-                    contextDependency: 'high', // 高コンテキスト文化'';
+                    directness: 'indirect', // 間接的コミュニケーション;
+                    politenessLevel: 'high', // 高い敬語レベル;
+                    contextDependency: 'high', // 高コンテキスト文化;
                     silenceComfort: 'high' // 沈黙への耐性が高い }
                 }
             }],
-            ';
-            // アラビア文化''
+            ;
+            // アラビア文化
             ['ar', { colors: {']'
-                    lucky: ['#008000', '#FFFFFF', '#FFD700'], // 緑、白、金'';
-                    unlucky: ['#FF0000', '#000000'], // 赤、黒（文脈による）'';
-                    preferred: ['#0066CC', '#228B22', '#DAA520'], // 青、緑、金'';
+                    lucky: ['#008000', '#FFFFFF', '#FFD700'], // 緑、白、金;
+                    unlucky: ['#FF0000', '#000000'], // 赤、黒（文脈による）;
+                    preferred: ['#0066CC', '#228B22', '#DAA520'], // 青、緑、金;
                     avoided: ['#FF69B4', '#800080'] // ピンク、紫 }
                 },
                 numbers: { lucky: [7, 9],
                     unlucky: [13],
-                    preferred: [3, 7, 9],';
+                    preferred: [3, 7, 9],;
                     symbolism: {''
                         7: '神聖な数字','';
                         9: '完全性を表す','';
@@ -136,35 +136,35 @@ export class CulturalAdaptationSystem {
                     }
                 },'
                 gestures: { ''
-                    pointing: 'use-full-hand', // 全手で指示'';
-                    beckoning: 'palm-up', // 手のひらを上にして招く'';
-                    thumbsUp: 'offensive', // 親指立ては侮辱的'';
+                    pointing: 'use-full-hand', // 全手で指示;
+                    beckoning: 'palm-up', // 手のひらを上にして招く;
+                    thumbsUp: 'offensive', // 親指立ては侮辱的;
                     showingSole: 'offensive' // 足の裏を見せるのは侮辱的 }
-                },'
+                },
                 layout: { ''
                     readingOrder: 'right-to-left','';
                     preferredAlignment: 'right','';
                     whitespaceImportance: 'medium','';
                     hierarchyStyle: 'clear' // 明確な階層表現 }
-                },'
+                },
                 communication: { ''
-                    directness: 'moderate', // 中程度の直接性'';
-                    politenessLevel: 'high', // 高い礼儀レベル'';
-                    contextDependency: 'high', // 高コンテキスト文化'';
+                    directness: 'moderate', // 中程度の直接性;
+                    politenessLevel: 'high', // 高い礼儀レベル;
+                    contextDependency: 'high', // 高コンテキスト文化;
                     hospitalityImportance: 'very-high' // おもてなしの重要性が非常に高い }
                 }
             }],
-            ';
-            // 中国文化''
+            ;
+            // 中国文化
             ['zh', { colors: {']'
-                    lucky: ['#FF0000', '#FFD700', '#FF8C00'], // 赤、金、オレンジ'';
-                    unlucky: ['#FFFFFF', '#000000'], // 白、黒（葬儀を連想）'';
-                    preferred: ['#DC143C', '#FF6347', '#FFD700'], // 深紅、朱色、金'';
+                    lucky: ['#FF0000', '#FFD700', '#FF8C00'], // 赤、金、オレンジ;
+                    unlucky: ['#FFFFFF', '#000000'], // 白、黒（葬儀を連想）;
+                    preferred: ['#DC143C', '#FF6347', '#FFD700'], // 深紅、朱色、金;
                     avoided: ['#FFFFFF', '#808080'] // 白、グレー }
                 },
                 numbers: { lucky: [6, 8, 9],
                     unlucky: [4],
-                    preferred: [2, 3, 6, 8, 9],';
+                    preferred: [2, 3, 6, 8, 9],;
                     symbolism: {''
                         4: '死を意味する音','';
                         6: '順調を意味','';
@@ -173,35 +173,35 @@ export class CulturalAdaptationSystem {
                     }
                 },'
                 gestures: { ''
-                    pointing: 'avoid-single-finger', // 一本指での指差しを避ける'';
-                    beckoning: 'palm-down', // 手のひらを下にして招く'';
-                    bowing: 'respectful', // お辞儀は敬意を表す'';
+                    pointing: 'avoid-single-finger', // 一本指での指差しを避ける;
+                    beckoning: 'palm-down', // 手のひらを下にして招く;
+                    bowing: 'respectful', // お辞儀は敬意を表す;
                     giftReceiving: 'both-hands' // 両手で受け取る }
-                },'
+                },
                 layout: { ''
                     readingOrder: 'top-to-bottom-left-to-right','';
                     preferredAlignment: 'center','';
                     whitespaceImportance: 'medium','';
                     hierarchyStyle: 'traditional' // 伝統的階層表現 }
-                },'
+                },
                 communication: { ''
-                    directness: 'indirect', // 間接的コミュニケーション'';
-                    politenessLevel: 'very-high', // 非常に高い礼儀レベル'';
-                    contextDependency: 'very-high', // 非常に高コンテキスト文化'';
+                    directness: 'indirect', // 間接的コミュニケーション;
+                    politenessLevel: 'very-high', // 非常に高い礼儀レベル;
+                    contextDependency: 'very-high', // 非常に高コンテキスト文化;
                     faceImportance: 'very-high' // 面子の重要性が非常に高い }
                 }
             }],
-            ';
-            // 韓国文化''
+            ;
+            // 韓国文化
             ['ko', { colors: {']'
-                    lucky: ['#FF0000', '#0066CC', '#FFFFFF'], // 赤、青、白'';
-                    unlucky: ['#000000', '#FFD700'], // 黒、金（葬儀色）'';
-                    preferred: ['#FF1493', '#4169E1', '#32CD32'], // 深いピンク、ロイヤルブルー、ライムグリーン'';
+                    lucky: ['#FF0000', '#0066CC', '#FFFFFF'], // 赤、青、白;
+                    unlucky: ['#000000', '#FFD700'], // 黒、金（葬儀色）;
+                    preferred: ['#FF1493', '#4169E1', '#32CD32'], // 深いピンク、ロイヤルブルー、ライムグリーン;
                     avoided: ['#000000', '#8B4513'] // 黒、茶色 }
                 },
                 numbers: { lucky: [7, 8],
                     unlucky: [4],
-                    preferred: [3, 7, 8, 9],';
+                    preferred: [3, 7, 8, 9],;
                     symbolism: {''
                         4: '死を意味','';
                         7: '幸運の数字','';
@@ -209,62 +209,62 @@ export class CulturalAdaptationSystem {
                     }
                 },'
                 gestures: { ''
-                    pointing: 'avoid-direct', // 直接指差しを避ける'';
-                    beckoning: 'palm-down', // 手のひらを下にして招く'';
-                    bowing: 'essential', // お辞儀は必須'';
+                    pointing: 'avoid-direct', // 直接指差しを避ける;
+                    beckoning: 'palm-down', // 手のひらを下にして招く;
+                    bowing: 'essential', // お辞儀は必須;
                     receiving: 'both-hands' // 両手で受け取る }
-                },'
+                },
                 layout: { ''
                     readingOrder: 'left-to-right-top-to-bottom','';
                     preferredAlignment: 'left','';
                     whitespaceImportance: 'high','';
                     hierarchyStyle: 'strict' // 厳格な階層表現 }
-                },'
+                },
                 communication: { ''
-                    directness: 'very-indirect', // 非常に間接的'';
-                    politenessLevel: 'very-high', // 非常に高い敬語レベル'';
-                    contextDependency: 'very-high', // 非常に高コンテキスト文化'';
+                    directness: 'very-indirect', // 非常に間接的;
+                    politenessLevel: 'very-high', // 非常に高い敬語レベル;
+                    contextDependency: 'very-high', // 非常に高コンテキスト文化;
                     hierarchyImportance: 'very-high' // 階層の重要性が非常に高い }
                 }
             }],
-            ';
-            // 西欧文化（デフォルト）''
+            ;
+            // 西欧文化（デフォルト）
             ['en', { colors: {']'
-                    lucky: ['#008000', '#0066CC', '#FFD700'], // 緑、青、金'';
-                    unlucky: ['#000000'], // 黒'';
+                    lucky: ['#008000', '#0066CC', '#FFD700'], // 緑、青、金;
+                    unlucky: ['#000000'], // 黒;
                     preferred: ['#FF0000', '#0066CC', '#008000'], // 赤、青、緑;
                     avoided: [] }
                 },
                 numbers: { lucky: [7],
                     unlucky: [13],
-                    preferred: [1, 3, 7, 10],';
+                    preferred: [1, 3, 7, 10],;
                     symbolism: {''
                         7: 'lucky number','';
                         13: 'unlucky number' }
                     }
                 },'
                 gestures: { ''
-                    pointing: 'acceptable', // 指差しは受け入れられる'';
-                    beckoning: 'palm-up', // 手のひらを上にして招く'';
-                    thumbsUp: 'very-positive', // 親指立ては非常に肯定的'';
+                    pointing: 'acceptable', // 指差しは受け入れられる;
+                    beckoning: 'palm-up', // 手のひらを上にして招く;
+                    thumbsUp: 'very-positive', // 親指立ては非常に肯定的;
                     handshake: 'standard' // 握手は標準的 }
-                },'
+                },
                 layout: { ''
                     readingOrder: 'left-to-right-top-to-bottom','';
                     preferredAlignment: 'left','';
                     whitespaceImportance: 'medium','';
                     hierarchyStyle: 'clear' // 明確な階層表現 })
-                })'
+                })
                 communication: { ''
-                    directness: 'direct', // 直接的コミュニケーション'';
-                    politenessLevel: 'medium', // 中程度の礼儀レベル'';
-                    contextDependency: 'low', // 低コンテキスト文化'';
+                    directness: 'direct', // 直接的コミュニケーション;
+                    politenessLevel: 'medium', // 中程度の礼儀レベル;
+                    contextDependency: 'low', // 低コンテキスト文化;
                     individualismImportance: 'high' // 個人主義の重要性が高い }
-                }'
+                }
             }]''
         ]'),
         
-        // 地域別タブー情報'
+        // 地域別タブー情報
         this.culturalTaboos = new Map<string, CulturalTaboos>([']';
             ['ja', { ']'
                 visual: ['pointing-directly', 'showing-soles', 'number-4-emphasis'],'';
@@ -292,7 +292,7 @@ export class CulturalAdaptationSystem {
             }]''
         ]');
         
-        // ジェスチャー解釈データベース'
+        // ジェスチャー解釈データベース
         this.gestureInterpretations = new Map<string, { [key: string]: string }>([''
             ['pointing', { ''
                 'ja': 'rude-avoid-direct','';
@@ -324,9 +324,9 @@ export class CulturalAdaptationSystem {
             }]
         ]);
         
-        // 現在の文化的設定'
+        // 現在の文化的設定
         this.currentCulture = null;''
-        this.appliedAdaptations = new Set('')';
+        this.appliedAdaptations = new Set()';
         console.log('CulturalAdaptationSystem initialized');
     }
     
@@ -337,13 +337,13 @@ export class CulturalAdaptationSystem {
             const cultureKey = region ? `${language}-${region}` : language;''
             const primaryLanguage = language.split('-')[0];
             
-            // 文化設定を取得'
+            // 文化設定を取得
             let culturalSettings = this.culturalSettings.get(cultureKey) || '';
                                  this.culturalSettings.get(primaryLanguage') ||'';
-                                 this.culturalSettings.get('en'); // デフォルト'
+                                 this.culturalSettings.get('en'); // デフォルト
             '';
             if(!culturalSettings') {'
-                ';
+                ';'
             }'
                 throw new Error('Cultural settings not found'); }
             }
@@ -352,7 +352,7 @@ export class CulturalAdaptationSystem {
                 region: region,
                 cultureKey: cultureKey,
                 settings: culturalSettings,
-                appliedAt: new Date().toISOString(); }
+                appliedAt: new Date().toISOString() }
             };
             
             // 文化的適応を適用
@@ -360,7 +360,7 @@ export class CulturalAdaptationSystem {
             
             console.log(`Cultural adaptation set for: ${cultureKey)`});
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CULTURAL_ADAPTATION_ERROR', {)
                 language: language,)';
@@ -376,15 +376,15 @@ export class CulturalAdaptationSystem {
     adaptColors(element: HTMLElement, colorUsage: string = 'general''): boolean { ' }'
         if (!this.currentCulture || this.appliedAdaptations.has(`color-${element.id || 'anonymous')`)}) { return false; }
         }
-        ';
+        ';'
         try { const colorSettings = this.currentCulture.settings.colors;''
             const computedStyle = window.getComputedStyle(element');
             
             // 現在の色を分析
             const currentBgColor = computedStyle.backgroundColor;
             const currentTextColor = computedStyle.color;
-            ';
-            // 不適切な色を検出して調整''
+            ;
+            // 不適切な色を検出して調整
             if (this.isColorInappropriate(currentBgColor, 'background')') {''
                 const appropriateColor = this.suggestAppropriateColor('background', colorUsage');
                 element.style.backgroundColor = appropriateColor; }
@@ -395,18 +395,18 @@ export class CulturalAdaptationSystem {
                 element.style.color = appropriateColor; }
             }
             ';
-            // 幸運な色を強調''
+            // 幸運な色を強調
             if(colorUsage === 'accent' || colorUsage === 'important') {'
-                ';
+                ';'
             }'
-                const luckyColor = this.getLuckyColor('') }'
+                const luckyColor = this.getLuckyColor() }'
             this.appliedAdaptations.add(`color-${element.id || 'anonymous')`});
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'COLOR_ADAPTATION_ERROR', {)
                 element: element.tagName,);
-                colorUsage: colorUsage); }
+                colorUsage: colorUsage) }
             });
             return false;
         }
@@ -423,15 +423,15 @@ export class CulturalAdaptationSystem {
             
             // 不適切な数字を検出
             let adaptedContent = textContent;
-            ';
+            ';'
             numberSettings.unlucky.forEach(unluckyNumber => { );''
                 const regex = new RegExp(`\\b${unluckyNumber')\\b`, 'g');
                 if(regex.test(adaptedContent) {
-                    // 不吉な数字を代替案に置換'
+                    // 不吉な数字を代替案に置換
                     const alternative = this.suggestAlternativeNumber(unluckyNumber);''
                     adaptedContent = adaptedContent.replace(regex, `${alternative)`');
-                    ';
-                    // 警告クラスを追加'
+                    ';'
+                    // 警告クラスを追加
                 }'
                     element.classList.add('cultural-number-adapted'');' }'
                     element.setAttribute('data-original-number', unluckyNumber.toString()');' }'
@@ -439,7 +439,7 @@ export class CulturalAdaptationSystem {
                 }
             });
             
-            // 幸運な数字を強調'
+            // 幸運な数字を強調
             numberSettings.lucky.forEach(luckyNumber => {  );' }'
                 const regex = new RegExp(`\\b${luckyNumber')\\b`, 'g');' }'
                 adaptedContent = adaptedContent.replace(regex'})''
@@ -458,7 +458,7 @@ export class CulturalAdaptationSystem {
             ";
         } catch (error) { ""
             getErrorHandler(").handleError(error, 'NUMBER_ADAPTATION_ERROR', {)
-                element: element.tagName); }
+                element: element.tagName) }
             });
             return false;
         }
@@ -469,8 +469,8 @@ export class CulturalAdaptationSystem {
      */'
     adaptGestures(element: HTMLElement): boolean { ''
         if (!this.currentCulture') return false;
-        ';
-        try {''
+        ';'
+        try {'
             const gestureElements = element.querySelectorAll('[data-gesture], .gesture-icon, .emoji');
             let adaptationsApplied = 0;'
             '';
@@ -479,18 +479,18 @@ export class CulturalAdaptationSystem {
                                  this.detectGestureType(gestureEl as HTMLElement);
                 
                 if(gestureType) {
-                ';
+                ';'
                     '';
                     const interpretation = this.getGestureInterpretation(gestureType');'
                     '';
                     if (interpretation.includes('offensive'') || interpretation.includes('rude') {
-                        // 不適切なジェスチャーを代替案に置換'
+                        // 不適切なジェスチャーを代替案に置換
                         const alternative = this.suggestAlternativeGesture(gestureType);'
                 
                 }'
                         this.replaceGestureElement(gestureEl as HTMLElement, alternative'); }'
                         adaptationsApplied++;' }'
-                    } else if (interpretation.includes('avoid'') || interpretation.includes('inappropriate')') { // 避けるべきジェスチャーを隠すか警告を表示''
+                    } else if (interpretation.includes('avoid'') || interpretation.includes('inappropriate')') { // 避けるべきジェスチャーを隠すか警告を表示
                         gestureEl.classList.add('cultural-gesture-warning'');''
                         gestureEl.setAttribute('title', '文化的に不適切な可能性があります');
                         adaptationsApplied++; }
@@ -499,10 +499,10 @@ export class CulturalAdaptationSystem {
             });
             
             return adaptationsApplied > 0;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'GESTURE_ADAPTATION_ERROR', {)
-                element: element.tagName); }
+                element: element.tagName) }
             });
             return false;
         }
@@ -516,7 +516,7 @@ export class CulturalAdaptationSystem {
         try {
             const layoutSettings = this.currentCulture.settings.layout;
             ';
-            // 読み順に応じた調整''
+            // 読み順に応じた調整
             switch(layoutSettings.readingOrder') {'
                 '';
                 case 'right-to-left':'';
@@ -529,12 +529,12 @@ export class CulturalAdaptationSystem {
                     break;''
                 case 'left-to-right-top-to-bottom':'';
                 default: element.style.direction = 'ltr',
-                    element.style.textAlign = layoutSettings.preferredAlignment;
+                    element.style.textAlign = layoutSettings.preferredAlignment
             }
                     break; }
             }
             ';
-            // 余白の重要性に応じた調整''
+            // 余白の重要性に応じた調整
             switch(layoutSettings.whitespaceImportance') {'
                 '';
                 case 'high':'';
@@ -552,7 +552,7 @@ export class CulturalAdaptationSystem {
                     break; }
             }
             ';
-            // 階層表現スタイル''
+            // 階層表現スタイル
             switch(layoutSettings.hierarchyStyle') {'
                 '';
                 case 'subtle':'';
@@ -571,10 +571,10 @@ export class CulturalAdaptationSystem {
             }
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'LAYOUT_ADAPTATION_ERROR', {)
-                element: element.tagName); }
+                element: element.tagName) }
             });
             return false;
         }
@@ -589,26 +589,26 @@ export class CulturalAdaptationSystem {
         try {
             const commSettings = this.currentCulture.settings.communication;
             ';
-            // 直接性レベルに応じた調整''
+            // 直接性レベルに応じた調整
             if(commSettings.directness === 'indirect' || commSettings.directness === 'very-indirect') {'
-                // 間接的表現に調整'
+                // 間接的表現に調整
             }'
                 this.softenDirectLanguage(element'); }
             }
             ';
-            // 礼儀レベルに応じた調整''
+            // 礼儀レベルに応じた調整
             if(commSettings.politenessLevel === 'high' || commSettings.politenessLevel === 'very-high') {'
-                ';
+                ';'
             }'
                 this.increasePolitenessLevel(element'); }
             }
             ';
-            // コンテキスト依存度に応じた調整''
+            // コンテキスト依存度に応じた調整
             if (commSettings.contextDependency === 'high' || commSettings.contextDependency === 'very-high') { this.addContextualInformation(element); }
             }
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'COMMUNICATION_ADAPTATION_ERROR', {)'
                 element: element.tagName),' }'
@@ -653,13 +653,13 @@ export class CulturalAdaptationSystem {
      * ヘルパー関数群
      */
     ';
-    private applyGlobalCulturalAdaptations(): void { // ドキュメント全体にカルチャクラスを追加''
+    private applyGlobalCulturalAdaptations(): void { // ドキュメント全体にカルチャクラスを追加
         document.body.classList.add(`culture-${this.currentCulture!.cultureKey)`');''
         document.documentElement.setAttribute('data-culture', this.currentCulture!.cultureKey');
         
         // 基本的なCSSカスタムプロパティを設定
         const root = document.documentElement;
-        const colors = this.currentCulture!.settings.colors;'
+        const colors = this.currentCulture!.settings.colors;
         '';
         root.style.setProperty('--cultural-primary-color', colors.preferred[0] || '#0066CC'');''
         root.style.setProperty('--cultural-secondary-color', colors.preferred[1] || '#008000'');''
@@ -667,13 +667,13 @@ export class CulturalAdaptationSystem {
         
         // 文化的スタイルシートを動的に追加 }
         this.injectCulturalCSS(});
-    }'
+    }
     '';
-    private injectCulturalCSS('')';
+    private injectCulturalCSS()';
         const existingStyle = document.getElementById('cultural-adaptation-styles');
         if(existingStyle) {'
             '';
-            existingStyle.remove('')';
+            existingStyle.remove()';
         const style = document.createElement('style'');''
         style.id = 'cultural-adaptation-styles';
         style.textContent = this.generateCulturalCSS();
@@ -691,20 +691,20 @@ export class CulturalAdaptationSystem {
                 text-shadow: 0 0 2px ${settings.colors.lucky[0]}40;
             }
             
-            .culture-${cultureKey} .cultural-number-adapted { position: relative; }
+            .culture-${cultureKey} .cultural-number-adapted { position: relative }
             }
-            ';
+            ';'
             .culture-${cultureKey} .cultural-number-adapted::after { ''
                 content: "📝",
                 position: absolute,
                 top: -5px,
                 right: -5px,
                 font-size: 10px,
-                opacity: 0.7; }
+                opacity: 0.7 }
             }
             
             .culture-${cultureKey} .cultural-gesture-warning { opacity: 0.6,
-                filter: grayscale(0.5); }
+                filter: grayscale(0.5) }
             }
             
             .culture-${cultureKey} .subtle-hierarchy h1,
@@ -763,7 +763,7 @@ export class CulturalAdaptationSystem {
         return preferredNumbers.find(num => Math.abs(num - unluckyNumber) <= 2) || ;
                preferredNumbers[0] || ;
                unluckyNumber + 1; }
-    }'
+    }
     '';
     private getGestureInterpretation(gestureType: string'): string { ''
         const cultureKey = this.currentCulture!.language.split('-')[0];''
@@ -783,7 +783,7 @@ export class CulturalAdaptationSystem {
     }
     
     private detectTabooViolation(content: string, taboo: string): boolean { // 簡略化したタブー検出ロジック
-        const contentLower = content.toLowerCase();'
+        const contentLower = content.toLowerCase();
         '';
         switch(taboo') {'
             '';
@@ -812,15 +812,15 @@ export class CulturalAdaptationSystem {
         return alternatives[taboo] || '文化的により適切な代替案を検討してください';
     }'
     '';
-    private getTabooContext(taboo: string'): string { // Mock implementation''
+    private getTabooContext(taboo: string'): string { // Mock implementation
         return ''; }
     }'
     '';
-    private suggestAlternativeGesture(gestureType: string'): string { // Mock implementation''
+    private suggestAlternativeGesture(gestureType: string'): string { // Mock implementation
         return 'alternative-gesture'; }
     }'
     '';
-    private replaceGestureElement(element: HTMLElement, alternative: string'): void { // Mock implementation''
+    private replaceGestureElement(element: HTMLElement, alternative: string'): void { // Mock implementation
         element.setAttribute('data-gesture', alternative); }
     }
     
@@ -872,7 +872,7 @@ export class CulturalAdaptationSystem {
         currentCulture: string | null,
         appliedAdaptations: number,
         gestureInterpretations: number,
-        culturalTaboos: number; }
+        culturalTaboos: number }
     } { return { supportedCultures: this.culturalSettings.size,
             currentCulture: this.currentCulture ? this.currentCulture.cultureKey : null,
             appliedAdaptations: this.appliedAdaptations.size,
@@ -888,6 +888,6 @@ let culturalAdaptationSystemInstance: CulturalAdaptationSystem | null = null,
 
 /**
  * CulturalAdaptationSystemのシングルトンインスタンスを取得
- */'
+ */
 export function getCulturalAdaptationSystem(): CulturalAdaptationSystem { if (!culturalAdaptationSystemInstance) {''
         culturalAdaptationSystemInstance = new CulturalAdaptationSystem(' })

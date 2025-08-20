@@ -15,7 +15,7 @@ export class TimeSeriesDataManager {
         // 設定
         this.maxDataPoints = {
             daily: 365,      // 1年間;
-            weekly: 52,      // 52週間;
+            weekly: 52,      // 52週間
     }
     }
             monthly: 24      // 2年間 }
@@ -74,8 +74,7 @@ export class TimeSeriesDataManager {
                 categories: new Map(),
     }
                 totalDataPoints: 0, }
-                metadata: {}
-            }),
+                metadata: {}),
         }
         
         const periodData = dataMap.get(periodKey);
@@ -86,10 +85,10 @@ export class TimeSeriesDataManager {
                 values: [],
                 total: 0,
                 average: 0,
-                min: Infinity,
+                min: Infinity
     );
                 max: -Infinity);
-                count: 0,);
+                count: 0,)
         }
                 trend: 'stable'); }
         }
@@ -125,12 +124,12 @@ export class TimeSeriesDataManager {
     /**
      * トレンドの計算
      */
-    calculateTrend(values) {'
+    calculateTrend(values) {
         '';
         if (values.length < 3') return 'stable';
         
         const recent = values.slice(-10); // 最新10個のデータポイント
-        const older = values.slice(-20, -10); // その前の10個'
+        const older = values.slice(-20, -10); // その前の10個
         '';
         if (recent.length === 0 || older.length === 0') return 'stable';
         
@@ -186,8 +185,7 @@ export class TimeSeriesDataManager {
             const entry = { period: periodKey,
                 timestamp: periodData.timestamp,
                 totalDataPoints: periodData.totalDataPoints, }
-                categories: {}
-            },
+                categories: {},
             
             // カテゴリフィルター
             if(category) {
@@ -219,14 +217,14 @@ export class TimeSeriesDataManager {
             min: categoryData.min === Infinity ? 0 : categoryData.min,
             max: categoryData.max === -Infinity ? 0 : categoryData.max,
             count: categoryData.count,
-    }'
+    }
             trend: categoryData.trend,' };'
             recentValues: categoryData.values.slice(-10') // 最新10個 }
         },
     }
     
     /**
-     * 集計データの取得'
+     * 集計データの取得
      */''
     getAggregatedData(category, period, aggregationType = 'sum') {
         const timeSeriesData = this.getTimeSeriesData(period, category);
@@ -272,7 +270,7 @@ export class TimeSeriesDataManager {
     comparePerformance(category, period1, period2') {'
         '';
         const data1 = this.getTimeSeriesData('daily', category);
-            this.getDateFromPeriod(period1.start), ';
+            this.getDateFromPeriod(period1.start), ';'
             this.getDateFromPeriod(period1.end)'';
         ');'
         '';
@@ -345,7 +343,7 @@ export class TimeSeriesDataManager {
         const week = this.getWeekNumber(date);' }'
         return `${year}-W${String(week').padStart(2, '0'})}`;
     }
-    ';
+    ';'
     getMonthKey(date) { ' }'
         return `${date.getFullYear(})}-${String(date.getMonth() + 1').padStart(2, '0'})}`;
     }
@@ -360,7 +358,7 @@ export class TimeSeriesDataManager {
     }
     
     parsePeriodKey(periodKey, period) {
-    ';
+    ';'
         '';
         switch (period') {''
             case 'daily':'';
@@ -447,11 +445,11 @@ export class TimeSeriesDataManager {
     /**
      * 自動保存の設定
      */
-    setupAutoSave() { setInterval(() => {  }'
+    setupAutoSave() { setInterval(() => {  }
             this.save();' }'
         }, this.saveInterval');
         ';
-        // ページ離脱時の保存''
+        // ページ離脱時の保存
         window.addEventListener('beforeunload', () => { this.save(); }
         });
     }
@@ -482,19 +480,19 @@ export class TimeSeriesDataManager {
                 lastSaveTime: Date.now(); }
             };
             ';
-            // Mapを配列に変換してから保存''
+            // Mapを配列に変換してから保存
             const serializedData = this.serializeData(data');''
             localStorage.setItem('bubblePop_timeSeries', JSON.stringify(serializedData);'
             '';
-        } catch (error') { ''
-            console.error('Failed to save time series data:', error); }
+        } catch (error) { ''
+            console.error('Failed to save time series data:', error) }
         }
     }
     
     /**
      * データの読み込み'
      */''
-    load('')';
+    load()';
             const savedData = localStorage.getItem('bubblePop_timeSeries');
             if(savedData) {
                 const data = JSON.parse(savedData);
@@ -505,7 +503,7 @@ export class TimeSeriesDataManager {
                 this.monthlyData = new Map(deserializedData.monthly || []);
             }'
                 this.currentPeriodKeys = deserializedData.currentPeriodKeys || this.updateCurrentPeriodKeys();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to load time series data:', error);
             this.dailyData = new Map();
             this.weeklyData = new Map();
@@ -521,7 +519,7 @@ export class TimeSeriesDataManager {
     }
         const serialized = { ...data };
         ';
-        // Map内のMapをオブジェクトに変換''
+        // Map内のMapをオブジェクトに変換
         ['daily', 'weekly', 'monthly'].forEach(period => {  );
             serialized[period] = data[period].map(([key, value]) => [key,
                 {
@@ -542,7 +540,7 @@ export class TimeSeriesDataManager {
     }
         const deserialized = { ...data };
         ';
-        // オブジェクトをMapに変換''
+        // オブジェクトをMapに変換
         ['daily', 'weekly', 'monthly'].forEach(period => {  );
             if(data[period]) {
                 deserialized[period] = data[period].map(([key, value]) => [key,
@@ -610,7 +608,7 @@ export class TimeSeriesDataManager {
      */
     getDateRange() {
         const allKeys = [...Array.from(this.dailyData.keys(),
-            ...Array.from(this.weeklyData.keys(),];
+            ...Array.from(this.weeklyData.keys()];
             ...Array.from(this.monthlyData.keys()];
         ];
         
@@ -638,9 +636,9 @@ class DataCompressionManager { constructor() {
         // 簡単な圧縮実装（実際にはより複雑な圧縮アルゴリズムを使用）
         try {
     
-    }'
+    }
             return JSON.stringify(data);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Data compression failed:', error);
             return data; }
         }
@@ -652,7 +650,7 @@ class DataCompressionManager { constructor() {
     
     }'
             return JSON.parse(compressedData);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Data decompression failed:', error);
             return compressedData; }
         }
@@ -689,7 +687,7 @@ class DataArchiveManager { constructor() {
     }
     
     clearArchive() {
-    ';
-        ';
+    ';'
+        ';'
     }'
         this.archiveStorage.clear(') }

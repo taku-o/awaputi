@@ -29,22 +29,22 @@ interface AccessibilitySettingsManager { currentProfile?: string;
 
 interface SettingsManager { get: (key: string) => any,
     set: (key: string, value: any) => void,
-    save: () => void; }
+    save: () => void }
 }
-';
+';'
 interface ErrorHandler { ''
-    handleError: (error: Error, code: string, context?: any') => void; }
+    handleError: (error: Error, code: string, context?: any') => void }
 }
 
 interface LocalizationManager { // Define methods as needed }
-}'
+}
 '';
 type StatusType = 'info' | 'success' | 'error';
 
 interface ProfileInfo { id: string,
     name: string,
     description: string,
-    icon: string; }
+    icon: string }
 }
 
 /**
@@ -82,7 +82,7 @@ export class AccessibilityProfileComponent {
     private accessibilityManager: AccessibilitySettingsManager | undefined;
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine;'
+        this.gameEngine = gameEngine;
         this.errorHandler = getErrorHandler();''
         this.localizationManager = getLocalizationManager(''';
                 id: 'default','';
@@ -133,7 +133,7 @@ export class AccessibilityProfileComponent {
             }
         ];
         ';
-        // 現在のプロファイル''
+        // 現在のプロファイル
         this.currentProfile = 'default';
         
         // DOM要素
@@ -157,18 +157,18 @@ export class AccessibilityProfileComponent {
     
     /**
      * 現在のプロファイルを初期化
-     */ : undefined'
-    private initializeCurrentProfile(): void { try {''
+     */ : undefined
+    private initializeCurrentProfile(): void { try {'
             if(this.accessibilityManager') {'
-                // AccessibilitySettingsManagerから現在のプロファイルを取得'
+                // AccessibilitySettingsManagerから現在のプロファイルを取得
             }'
                 this.currentProfile = this.accessibilityManager.currentProfile || 'default';' }'
-            } else if (this.gameEngine.settingsManager') { // SettingsManagerから現在のプロファイルを取得''
+            } else if (this.gameEngine.settingsManager') { // SettingsManagerから現在のプロファイルを取得
                 this.currentProfile = this.gameEngine.settingsManager.get('accessibility.profile'') || 'default'; }
             }'
             '';
             console.log('[AccessibilityProfileComponent] Initialized with profile:', this.currentProfile);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_INIT_ERROR', {')'
                 operation: 'initializeCurrentProfile'),' }'
             }');''
@@ -181,7 +181,7 @@ export class AccessibilityProfileComponent {
      * @param parentElement - 親要素
      * @returns 作成されたコンテナ要素
      */'
-    initialize(parentElement?: HTMLElement): HTMLElement | null { try {''
+    initialize(parentElement?: HTMLElement): HTMLElement | null { try {'
             if(this.isInitialized') {'
                 '';
                 console.warn('[AccessibilityProfileComponent] Already initialized');
@@ -194,19 +194,19 @@ export class AccessibilityProfileComponent {
             this.updateUI();
             
             if(parentElement && this.container) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 parentElement.appendChild(this.container'); }
             }
-            ';
+            ';'
             this.isInitialized = true;''
             console.log('[AccessibilityProfileComponent] Component initialized');
-            ';
+            ';'
             return this.container;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_INIT_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
             return null;
         }
@@ -215,23 +215,23 @@ export class AccessibilityProfileComponent {
     /**
      * DOM要素を作成'
      */''
-    private createElements('')';
+    private createElements()';
         this.container = document.createElement('div'');''
         this.container.className = 'accessibility-profile-component';''
         this.container.setAttribute('role', 'group'');''
         this.container.setAttribute('aria-label', 'アクセシビリティプロファイル選択'');
         ';
-        // タイトル''
+        // タイトル
         const title = document.createElement('h3'');''
         title.textContent = 'アクセシビリティプロファイル';''
         title.className = 'profile-title';''
         this.container.appendChild(title');
         ';
-        // プロファイル選択エリア''
+        // プロファイル選択エリア
         const selectionArea = document.createElement('div'');''
         selectionArea.className = 'profile-selection-area';
         ';
-        // ドロップダウンボタン''
+        // ドロップダウンボタン
         this.profileDropdown = document.createElement('button'');''
         this.profileDropdown.className = 'profile-dropdown-button';''
         this.profileDropdown.setAttribute('type', 'button'');''
@@ -239,7 +239,7 @@ export class AccessibilityProfileComponent {
         this.profileDropdown.setAttribute('aria-expanded', 'false'');''
         this.profileDropdown.setAttribute('aria-label', 'プロファイルを選択'');
         ';
-        // ドロップダウンの内容''
+        // ドロップダウンの内容
         const dropdownContent = document.createElement('div'');''
         dropdownContent.className = 'dropdown-content';'
         '';
@@ -258,13 +258,13 @@ export class AccessibilityProfileComponent {
         '';
         this.profileDropdown.appendChild(dropdownContent');
         ';
-        // ドロップダウンオプション''
+        // ドロップダウンオプション
         const dropdownOptions = document.createElement('div'');''
         dropdownOptions.className = 'dropdown-options';''
         dropdownOptions.setAttribute('role', 'listbox'');''
         dropdownOptions.style.display = 'none';
         ';
-        // 各プロファイルオプションを作成''
+        // 各プロファイルオプションを作成
         this.profiles.forEach((profile, index') => {  ''
             const option = document.createElement('div'');''
             option.className = 'dropdown-option';''
@@ -301,21 +301,21 @@ export class AccessibilityProfileComponent {
         selectionArea.appendChild(dropdownOptions);''
         this.container.appendChild(selectionArea');
         ';
-        // プロファイル説明''
+        // プロファイル説明
         this.profileDescription = document.createElement('div'');''
         this.profileDescription.className = 'profile-description';''
         this.profileDescription.setAttribute('aria-live', 'polite');''
         this.container.appendChild(this.profileDescription');
         ';
-        // 適用ボタン''
+        // 適用ボタン
         this.applyButton = document.createElement('button'');''
         this.applyButton.className = 'profile-apply-button';''
         this.applyButton.textContent = 'プロファイルを適用';''
         this.applyButton.setAttribute('type', 'button');'
-        this.applyButton.disabled = true; // 初期状態では無効''
-        this.container.appendChild(this.applyButton');
+        this.applyButton.disabled = true; // 初期状態では無効
+        this.container.appendChild(this.applyButton);
         ';
-        // ステータスインジケーター''
+        // ステータスインジケーター
         this.statusIndicator = document.createElement('div'');''
         this.statusIndicator.className = 'profile-status-indicator';''
         this.statusIndicator.setAttribute('aria-live', 'polite'');''
@@ -327,11 +327,11 @@ export class AccessibilityProfileComponent {
     }
     
     /**
-     * CSSスタイルを追加'
+     * CSSスタイルを追加
      */''
-    private addStyles('')';
+    private addStyles()';
         if (document.getElementById('accessibility-profile-component-styles')') { return; // 既に追加済み }
-        }'
+        }
         '';
         const style = document.createElement('style'');''
         style.id = 'accessibility-profile-component-styles';
@@ -343,13 +343,13 @@ export class AccessibilityProfileComponent {
                 border-radius: 8px,
                 padding: 16px,
                 margin: 8px 0,
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1) }
             }
             
             .profile-title { margin: 0 0 12px 0,
                 font-size: 16px,
                 font-weight: 600,
-                color: #333; }
+                color: #333 }
             }
             
             .profile-selection-area { position: relative,
@@ -363,16 +363,16 @@ export class AccessibilityProfileComponent {
                 background: #fff,
                 cursor: pointer,
                 font-size: 14px,
-                transition: all 0.2s ease; }
+                transition: all 0.2s ease }
             }
             
             .profile-dropdown-button:hover { border-color: #007bff,
-                box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); }
+                box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25) }
             }
             
             .profile-dropdown-button:focus { outline: none,'
                 border-color: #007bff,'';
-                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25'); }
+                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25') }
             }
             
             .dropdown-content { display: flex,
@@ -390,10 +390,10 @@ export class AccessibilityProfileComponent {
             
             .dropdown-arrow { font-size: 12px,
                 color: #666,
-                transition: transform 0.2s ease; }
+                transition: transform 0.2s ease }
             }'
             '';
-            .profile-dropdown-button[aria-expanded="true"] .dropdown-arrow { transform: rotate(180deg); }
+            .profile-dropdown-button[aria-expanded="true"] .dropdown-arrow { transform: rotate(180deg) }
             }
             
             .dropdown-options { position: absolute,
@@ -414,7 +414,7 @@ export class AccessibilityProfileComponent {
                 padding: 12px 16px,
                 cursor: pointer,
                 border-bottom: 1px solid #f0f0f0,
-                transition: background-color 0.2s ease; }
+                transition: background-color 0.2s ease }
             }
             
             .dropdown-option:last-child { border-bottom: none, }
@@ -422,7 +422,7 @@ export class AccessibilityProfileComponent {
             
             .dropdown-option:hover,
             .dropdown-option:focus { background: #f8f9fa,
-                outline: none; }
+                outline: none }
             }"
             "";
             .dropdown-option[aria-selected="true"] { background: #e3f2fd,
@@ -434,7 +434,7 @@ export class AccessibilityProfileComponent {
                 min-width: 20px, }
             }
             
-            .option-content { flex: 1; }
+            .option-content { flex: 1 }
             }
             
             .option-name { font-weight: 500,
@@ -443,7 +443,7 @@ export class AccessibilityProfileComponent {
             }
             
             .option-description { font-size: 12px,
-                color: #666; }
+                color: #666 }
             }
             
             .profile-description { background: #f8f9fa,
@@ -452,7 +452,7 @@ export class AccessibilityProfileComponent {
                 padding: 12px,
                 margin-bottom: 12px,
                 font-size: 14px,
-                color: #495057; }
+                color: #495057 }
             }
             
             .profile-apply-button { width: 100%,
@@ -464,21 +464,21 @@ export class AccessibilityProfileComponent {
                 font-size: 14px,
                 font-weight: 500,
                 cursor: pointer,
-                transition: all 0.2s ease; }
+                transition: all 0.2s ease }
             }
             
             .profile-apply-button:hover:not(:disabled) { background: #218838,
                 transform: translateY(-1px),
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1) }
             }
             
             .profile-apply-button:focus { outline: none,
-                box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25); }
+                box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25) }
             }
             
             .profile-apply-button:disabled { background: #6c757d,
                 cursor: not-allowed,
-                opacity: 0.6; }
+                opacity: 0.6 }
             }
             
             .profile-status-indicator { margin-top: 8px,
@@ -486,22 +486,22 @@ export class AccessibilityProfileComponent {
                 border-radius: 4px,
                 font-size: 13px,
                 text-align: center,
-                transition: all 0.3s ease; }
+                transition: all 0.3s ease }
             }
             
             .profile-status-indicator.success { background: #d4edda,
                 color: #155724,
-                border: 1px solid #c3e6cb; }
+                border: 1px solid #c3e6cb }
             }
             
             .profile-status-indicator.error { background: #f8d7da,
                 color: #721c24,
-                border: 1px solid #f5c6cb; }
+                border: 1px solid #f5c6cb }
             }
             
             .profile-status-indicator.info { background: #d1ecf1,
                 color: #0c5460,
-                border: 1px solid #bee5eb; }
+                border: 1px solid #bee5eb }
             }
             
             /* アクセシビリティ向上 */
@@ -517,7 +517,7 @@ export class AccessibilityProfileComponent {
             /* ハイコントラストモード */
             @media (prefers-contrast: high) { .accessibility-profile-component {
                     border-color: #000,
-                    background: #fff; }
+                    background: #fff }
                 }
                 
                 .profile-dropdown-button { border-color: #000, }
@@ -540,21 +540,21 @@ export class AccessibilityProfileComponent {
         // ドロップダウンボタンのクリック""
         this.profileDropdown.addEventListener('click', this.handleDropdownToggle.bind(this)');
         ';
-        // ドロップダウンオプションのクリック''
+        // ドロップダウンオプションのクリック
         const dropdownOptions = this.container.querySelector('.dropdown-options');''
         if(dropdownOptions') {'
-            ';
+            ';'
         }'
             dropdownOptions.addEventListener('click', this.handleProfileSelect.bind(this)'); }
         }
         ';
-        // 適用ボタンのクリック''
+        // 適用ボタンのクリック
         this.applyButton.addEventListener('click', this.handleApplyProfile.bind(this)');
         ';
-        // キーボードナビゲーション''
+        // キーボードナビゲーション
         this.container.addEventListener('keydown', this.handleKeydown.bind(this)');
         ';
-        // ドロップダウン外クリックで閉じる''
+        // ドロップダウン外クリックで閉じる
         document.addEventListener('click', this.handleDropdownClose.bind(this);
     }
     
@@ -563,7 +563,7 @@ export class AccessibilityProfileComponent {
      */'
     private handleDropdownToggle(): void { ''
         if (!this.container || !this.profileDropdown') return;
-';
+';'
         this.isDropdownOpen = !this.isDropdownOpen;''
         const dropdownOptions = this.container.querySelector('.dropdown-options') as HTMLElement;'
         '';
@@ -572,7 +572,7 @@ export class AccessibilityProfileComponent {
             dropdownOptions.style.display = 'block';''
             this.profileDropdown.setAttribute('aria-expanded', 'true'');
             ';
-            // 現在のプロファイルにフォーカス''
+            // 現在のプロファイルにフォーカス
             const currentOption = dropdownOptions.querySelector(`[data-profile-id="${this.currentProfile")"]`) as HTMLElement;
         }
             if (currentOption) { }
@@ -612,7 +612,7 @@ export class AccessibilityProfileComponent {
     
     /**
      * プロファイルを選択
-     */'
+     */
     private selectProfile(profileId: string): void { const profile = this.profiles.find(p => p.id === profileId);''
         if(!profile') {'
             '';
@@ -626,7 +626,7 @@ export class AccessibilityProfileComponent {
         if (this.applyButton) { this.applyButton.disabled = false; }
         }
         ';
-        // ステータス表示''
+        // ステータス表示
         this.showStatus(`${ profile.name')を選択しました。適用ボタンを押してください。`, 'info'');'
         ' }'
         console.log('[AccessibilityProfileComponent] Profile selected:', profileId});
@@ -642,23 +642,23 @@ export class AccessibilityProfileComponent {
             this.isApplying = true;'
             this.applyButton.disabled = true;''
             this.showStatus('プロファイルを適用中...', 'info');
-            ';
+            ';'
             const profile = this.profiles.find(p => p.id === this.currentProfile);''
             if(!profile') {'
-                ';
+                ';'
             }'
                 throw new Error('選択されたプロファイルが見つかりません'); }
             }
             
             // プロファイル設定を適用
             await this.applyProfileSettings(profile);
-            ';
-            // 成功メッセージ''
+            ;
+            // 成功メッセージ
             this.showStatus(`${ profile.name')が正常に適用されました`, 'success'');'
             ' }'
             console.log('[AccessibilityProfileComponent] Profile applied successfully:', this.currentProfile});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_APPLY_ERROR', {)'
                 profileId: this.currentProfile),' }'
             }');''
@@ -686,8 +686,8 @@ export class AccessibilityProfileComponent {
             }
                 await this.accessibilityManager.applyProfile(profile.id, profile.settings); }
             }
-            ';
-            // SettingsManagerに保存''
+            ;
+            // SettingsManagerに保存
             if(this.gameEngine.settingsManager') {'
                 '';
                 this.gameEngine.settingsManager.set('accessibility.profile', profile.id);
@@ -702,9 +702,9 @@ export class AccessibilityProfileComponent {
             }
             
             // 即座にUIに反映
-            this.triggerSettingsUpdate();'
+            this.triggerSettingsUpdate();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[AccessibilityProfileComponent] Error applying profile settings:', error);
             throw error; }
         }
@@ -720,55 +720,55 @@ export class AccessibilityProfileComponent {
             }
                 this.accessibilityManager.notifySettingsChanged(); }
             }
-            ';
-            // ゲームエンジンにカスタムイベントを送信''
+            ;
+            // ゲームエンジンにカスタムイベントを送信
             if(this.gameEngine.emit') {'
                 '';
                 this.gameEngine.emit('accessibilitySettingsChanged', {)'
-                    profile: this.currentProfile,');
+                    profile: this.currentProfile,')
             }'
                     source: 'AccessibilityProfileComponent'); }
             }
             ';
-            // DOMカスタムイベントを発火''
+            // DOMカスタムイベントを発火
             if(this.container') {'
                 '';
                 const event = new CustomEvent('accessibilityProfileChanged', {
                     detail: {)
-                        profileId: this.currentProfile);
+                        profileId: this.currentProfile)
             }
                         timestamp: Date.now(); }
                     },
                     bubbles: true;
                 }),'
                 this.container.dispatchEvent(event);''
-            } catch (error') { ''
-            console.warn('[AccessibilityProfileComponent] Error triggering settings update:', error); }
+            } catch (error) { ''
+            console.warn('[AccessibilityProfileComponent] Error triggering settings update:', error) }
         }
     }
     
     /**
      * UIを更新
      */
-    private updateUI(): void { try {'
+    private updateUI(): void { try {
             const profile = this.profiles.find(p => p.id === this.currentProfile);''
             if (!profile || !this.container || !this.profileDropdown') return;
             ';
-            // ドロップダウンボタンの更新''
+            // ドロップダウンボタンの更新
             const profileIcon = this.profileDropdown.querySelector('.profile-icon'');''
             const profileName = this.profileDropdown.querySelector('.profile-name');
             
             if (profileIcon) profileIcon.textContent = profile.icon;
             if (profileName) profileName.textContent = profile.name;
             ';
-            // 説明の更新''
+            // 説明の更新
             if(this.profileDescription') {
                 
             }
                 this.profileDescription.textContent = profile.description; }
             }
             ';
-            // ドロップダウンオプションの選択状態更新''
+            // ドロップダウンオプションの選択状態更新
             const options = this.container.querySelectorAll('.dropdown-option');''
             options.forEach(option => {  ');''
                 const profileId = option.getAttribute('data-profile-id');''
@@ -779,8 +779,8 @@ export class AccessibilityProfileComponent {
                 }
             });'
             '';
-        } catch (error') { ''
-            console.error('[AccessibilityProfileComponent] Error updating UI:', error'); }
+        } catch (error) { ''
+            console.error('[AccessibilityProfileComponent] Error updating UI:', error') }
         }
     }
     
@@ -792,10 +792,10 @@ export class AccessibilityProfileComponent {
         this.statusIndicator.textContent = message; }
         this.statusIndicator.className = `profile-status-indicator ${type}`;
         
-        // 5秒後にクリア'
+        // 5秒後にクリア
         setTimeout(() => {  ''
             if(this.statusIndicator') {'
-                ';
+                ';'
             }'
                 this.statusIndicator.textContent = '';' }'
                 this.statusIndicator.className = 'profile-status-indicator'; }
@@ -809,14 +809,14 @@ export class AccessibilityProfileComponent {
     private handleKeydown(event: KeyboardEvent): void { if (!this.container) return;'
 '';
         if(!this.isDropdownOpen') {'
-            // ドロップダウンが閉じている場合''
+            // ドロップダウンが閉じている場合
             if (event.key === 'Enter' || event.key === ' ') {
                 if (event.target === this.profileDropdown) {
                     event.preventDefault();
-        }
+        }'
                     this.handleDropdownToggle(); }'
                 } else if (event.target === this.applyButton) { event.preventDefault();''
-                    this.handleApplyProfile('')';
+                    this.handleApplyProfile()';
         const options = Array.from(this.container.querySelectorAll('.dropdown-option') as HTMLElement[];
         const currentIndex = options.findIndex(option => option === document.activeElement);'
         '';
@@ -825,7 +825,7 @@ export class AccessibilityProfileComponent {
             case 'ArrowDown':;
                 event.preventDefault();'
                 const nextIndex = currentIndex < options.length - 1 ? currentIndex + 1 : 0;''
-                options[nextIndex].focus('')';
+                options[nextIndex].focus()';
             case 'ArrowUp':);
                 event.preventDefault();'
                 const prevIndex = currentIndex > 0 ? currentIndex - 1 : options.length - 1;''
@@ -837,7 +837,7 @@ export class AccessibilityProfileComponent {
                     const profileId = options[currentIndex].getAttribute('data-profile-id');
                     if (profileId) {'
                         this.selectProfile(profileId);''
-                        this.handleDropdownToggle('')';
+                        this.handleDropdownToggle()';
             case 'Escape':);
                 event.preventDefault();
                 this.handleDropdownToggle();
@@ -869,21 +869,21 @@ export class AccessibilityProfileComponent {
      * 利用可能なプロファイル一覧を取得
      */
     getAvailableProfiles(): ProfileInfo[] { return this.profiles.map(profile => ({
-            id: profile.id,);
+            id: profile.id);
             name: profile.name);
             description: profile.description,);
-            icon: profile.icon))); }
+            icon: profile.icon))) }
     }
     
     /**
      * コンポーネントを破棄'
      */''
-    destroy('')';
+    destroy()';
             document.removeEventListener('click', this.handleDropdownClose.bind(this);
             
             // DOM要素の削除
-            if(this.container && this.container.parentNode) {'
-                ';
+            if(this.container && this.container.parentNode) {
+                ';'
             }'
                 this.container.parentNode.removeChild(this.container'); }
             }
@@ -895,10 +895,10 @@ export class AccessibilityProfileComponent {
             this.applyButton = null;
             this.statusIndicator = null;
             
-            this.isInitialized = false;'
+            this.isInitialized = false;
             '';
             console.log('[AccessibilityProfileComponent] Component destroyed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'ACCESSIBILITY_PROFILE_DESTROY_ERROR', {')'
                 operation: 'destroy'),' }'
             }');

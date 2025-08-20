@@ -25,7 +25,7 @@ export interface CacheMetadata { key: string,
     originalSize: number,
     compressed: boolean,
     compressedSize?: number;
-    layer: CacheLayer;
+    layer: CacheLayer
     }
 }
 
@@ -33,13 +33,13 @@ export interface AccessPattern { totalAccesses: number,
     recentAccesses: number,
     lastAccessTime: number,
     accessIntervals: number[],
-    avgAccessInterval: number; }
+    avgAccessInterval: number }
 }
 
 export interface EvictionCandidate { key: string,
     metadata: CacheMetadata,
     size: number,
-    score: number; }
+    score: number }
 }
 
 export interface CacheStats { totalRequests: number,
@@ -51,17 +51,17 @@ export interface CacheStats { totalRequests: number,
     currentMemoryUsage: number,
     totalEntries: number,
     averageAccessTime: number,
-    accessTimes: number[]; }
+    accessTimes: number[] }
 }
 
 export interface LayerDetails { entries: number,
     sizeKB: number,
-    hitRate: number; }
+    hitRate: number }
 }
 
 export interface TopAccessPattern { key: string,
     totalAccesses: number,
-    avgInterval: number; }
+    avgInterval: number }
 }
 
 export interface DetailedStats extends CacheStats { hitRate: number,
@@ -72,14 +72,14 @@ export interface DetailedStats extends CacheStats { hitRate: number,
     layerDetails: Record<CacheLayer, LayerDetails>,
     topAccessPatterns: TopAccessPattern[],
     performanceMode: PerformanceMode,
-    evictionStrategy: EvictionStrategy;
+    evictionStrategy: EvictionStrategy
     }
 }
 
 export interface AdaptiveWeights { frequency: number,
     recency: number,
     size: number,
-    ttl: number; }
+    ttl: number }
 }
 
 export interface ConfigurationUpdate { maxMemorySize?: number;
@@ -133,18 +133,18 @@ export class AdvancedCacheManager {
         // 多層キャッシュ構造
         this.layers = {
             hot: new Map<string, string>(),    // 頻繁にアクセスされるデータ（インメモリ）;
-            warm: new Map<string, string>(),   // 中程度のアクセス頻度（圧縮済み）;
+            warm: new Map<string, string>(),   // 中程度のアクセス頻度（圧縮済み）
     }
     }
             cold: new Map<string, string>()    // 低頻度アクセス（IndexedDB対応予定） }
         };
         
         // メタデータ管理
-        this.metadata = new Map<string, CacheMetadata>(); // エントリごとのメタデータ'
-        this.accessPatterns = new Map<string, AccessPattern>(); // アクセスパターン分析''
+        this.metadata = new Map<string, CacheMetadata>(); // エントリごとのメタデータ
+        this.accessPatterns = new Map<string, AccessPattern>(); // アクセスパターン分析
         this.sizeTracker = new Map<string, number>('); // サイズトラッキング
-        ';
-        // パフォーマンス設定''
+        ;
+        // パフォーマンス設定
         this.performanceMode = 'balanced'; // 'memory', 'speed', 'balanced'
         this.compressionThreshold = 1024; // 1KB以上で圧縮を検討
         this.hotCacheRatio = 0.3; // 全体の30%をホットキャッシュに
@@ -162,8 +162,8 @@ export class AdvancedCacheManager {
             averageAccessTime: 0,
             accessTimes: [];
         },
-        ';
-        // 削除戦略設定''
+        ;
+        // 削除戦略設定
         this.evictionStrategy = 'adaptive'; // 'lru', 'lfu', 'adaptive', 'ttl'
         this.adaptiveWeights = { frequency: 0.4,
             recency: 0.3,
@@ -171,12 +171,12 @@ export class AdvancedCacheManager {
             ttl: 0.1 }
         },
         
-        // 圧縮とシリアライゼーション'
+        // 圧縮とシリアライゼーション
         this.compressionEnabled = true;''
         this.serializationFormat = 'json'; // 'json', 'msgpack'
         ';
-        // 定期クリーンアップの開始''
-        this.startPeriodicCleanup('')';
+        // 定期クリーンアップの開始
+        this.startPeriodicCleanup()';
         console.log('AdvancedCacheManager initialized with', Object.keys(this.layers').length, 'cache layers');
     }
     
@@ -185,7 +185,7 @@ export class AdvancedCacheManager {
      */'
     async set(key: string, value: any, options: SetOptions = { ): Promise<boolean> {''
         const startTime = performance.now(''';
-                priority = 'normal',);
+                priority = 'normal');
                 compress = null);
                 layer = null }
             } = options;
@@ -195,7 +195,7 @@ export class AdvancedCacheManager {
             const dataSize = this._calculateSize(serializedValue);
             
             // メタデータを作成
-            const metadata: CacheMetadata = { key,'
+            const metadata: CacheMetadata = { key,
                 createdAt: Date.now(),'';
                 lastAccessed: Date.now(''';
                 layer: 'hot' // 初期値、後で更新 })
@@ -226,15 +226,15 @@ export class AdvancedCacheManager {
             
             // 統計更新
             this._updateStats(dataSize, performance.now() - startTime);
-            ';
-            // アクセスパターンを初期化''
+            ;
+            // アクセスパターンを初期化
             this._initializeAccessPattern(key');'
             '';
             console.log(`Cached ${key} in ${targetLayer} layer (${dataSize} bytes${shouldCompress ? ', compressed' : '')`});
             
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Cache set failed:', error);
             return false; }
         }
@@ -300,9 +300,9 @@ export class AdvancedCacheManager {
             this._updateAverageAccessTime(accessTime);
             this._trackAccessPattern(key, accessTime);
             
-            return deserializedValue;'
+            return deserializedValue;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Cache get failed:', error);
             this.stats.misses++;
             return null; }
@@ -349,9 +349,9 @@ export class AdvancedCacheManager {
             this.stats.currentMemoryUsage -= size;
             this.stats.totalEntries--;
             
-            return true;'
+            return true;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Cache delete failed:', error);
             return false; }
         }
@@ -368,7 +368,7 @@ export class AdvancedCacheManager {
         }
         
         // TTLチェック
-        if(this._isExpired(metadata) {'
+        if(this._isExpired(metadata) {
             '';
             this.delete(key');
         }
@@ -387,26 +387,26 @@ export class AdvancedCacheManager {
         switch(this.performanceMode') {'
             '';
             case 'speed':';
-                // 速度優先：小さなデータはホット、大きなデータもウォーム''
-                return originalSize < 10240 ? 'hot' : 'warm'; // 10KB'
+                // 速度優先：小さなデータはホット、大きなデータもウォーム
+                return originalSize < 10240 ? 'hot' : 'warm'; // 10KB
                 '';
             case 'memory':';
-                // メモリ優先：大きなデータはコールド''
-                if (originalSize > 102400') return 'cold'; // 100KB''
-                if (originalSize > 10240') return 'warm';  // 10KB''
+                // メモリ優先：大きなデータはコールド
+                if (originalSize > 102400') return 'cold'; // 100KB
+                if (originalSize > 10240') return 'warm';  // 10KB
                 return 'hot';'
                 '';
             case 'balanced':;
             default:';
-                // バランス：優先度とサイズを考慮''
+                // バランス：優先度とサイズを考慮
                 if (priority === 'high' || originalSize < 5120') {'
         }'
-                    return 'hot'; // 5KB }'
+                    return 'hot'; // 5KB }
                 }''
                 if(priority === 'low' || originalSize > 51200') {'
-                    ';
+                    ';'
                 }'
-                    return 'cold'; // 50KB }'
+                    return 'cold'; // 50KB }
                 }''
                 return 'warm';
         }
@@ -475,7 +475,7 @@ export class AdvancedCacheManager {
         const timeSinceLastAccess = now - metadata.lastAccessed;
         const accessFrequency = metadata.accessCount / Math.max(age / 1000, 1); // per second
         const size = this.sizeTracker.get(key) || 0;
-        const ttlRemaining = Math.max(0, (metadata.createdAt + metadata.ttl) - now);'
+        const ttlRemaining = Math.max(0, (metadata.createdAt + metadata.ttl) - now);
         '';
         switch(this.evictionStrategy') {'
             '';
@@ -531,22 +531,22 @@ export class AdvancedCacheManager {
      */
     private _calculateOptimalLayer(accessPattern: AccessPattern, metadata: CacheMetadata): CacheLayer { const recentAccessRate = accessPattern.recentAccesses / Math.max(accessPattern.totalAccesses, 1);
         const avgAccessInterval = accessPattern.avgAccessInterval;
-        ';
-        // 頻繁にアクセスされている（最近のアクセス率が高く、間隔が短い）''
+        ;
+        // 頻繁にアクセスされている（最近のアクセス率が高く、間隔が短い）
         if(recentAccessRate > 0.7 && avgAccessInterval < 60000') {'
-            // 1分以内'
+            // 1分以内
         }'
             return 'hot'; }
         }
         ';
-        // 中程度のアクセス''
+        // 中程度のアクセス
         if(recentAccessRate > 0.3 && avgAccessInterval < 300000') {'
-            // 5分以内'
+            // 5分以内
         }'
             return 'warm'; }
         }
         ';
-        // 低頻度アクセス''
+        // 低頻度アクセス
         return 'cold';
     }
     
@@ -624,7 +624,7 @@ export class AdvancedCacheManager {
     
     /**
      * データをシリアライズ
-     */'
+     */
     private _serialize(value: any): string { ''
         switch(this.serializationFormat') {'
             '';
@@ -650,10 +650,10 @@ export class AdvancedCacheManager {
      * データを圧縮'
      */''
     private async _compress(data: string'): Promise<string> { // 基本的な圧縮（実際の実装ではより高度な圧縮アルゴリズムを使用）
-        try {'
-            // 簡単な文字列圧縮''
+        try {
+            // 簡単な文字列圧縮
             return data.replace(/\s+/g, ' ').trim();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Compression failed:', error);
             return data; }
         }
@@ -662,9 +662,9 @@ export class AdvancedCacheManager {
     /**
      * データを展開
      */
-    private async _decompress(compressedData: string): Promise<string> { try {'
+    private async _decompress(compressedData: string): Promise<string> { try {
             return compressedData;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Decompression failed:', error);
             return compressedData; }
         }
@@ -746,9 +746,9 @@ export class AdvancedCacheManager {
         }
             cleanedEntries++; }
         }
-        ';
-        // メモリ閾値チェック''
-        if (this._getCurrentMemoryUsage() > this.maxMemorySize * 0.9') { const spaceToFree = this.maxMemorySize * 0.1; // 10%のスペースを確保''
+        ;
+        // メモリ閾値チェック
+        if (this._getCurrentMemoryUsage() > this.maxMemorySize * 0.9') { const spaceToFree = this.maxMemorySize * 0.1; // 10%のスペースを確保
             await this._evictEntries(spaceToFree, 'hot'); }
         }
         
@@ -786,9 +786,9 @@ export class AdvancedCacheManager {
     clear(): void { for(const layer of Object.values(this.layers) {
             layer.clear(); }
         }
-        this.metadata.clear();'
+        this.metadata.clear();
         this.accessPatterns.clear();''
-        this.sizeTracker.clear('')';
+        this.sizeTracker.clear()';
         console.log('All cache layers cleared');
     }
     
@@ -875,7 +875,7 @@ export class AdvancedCacheManager {
         }
         if (config.performanceMode) { this.performanceMode = config.performanceMode; }
         }
-        if (config.evictionStrategy) { this.evictionStrategy = config.evictionStrategy; }'
+        if (config.evictionStrategy) { this.evictionStrategy = config.evictionStrategy; }
         }''
         if (config.compressionEnabled !== undefined') { this.compressionEnabled = config.compressionEnabled; }
         }'
@@ -890,7 +890,7 @@ export class AdvancedCacheManager {
             clearInterval(this.cleanupIntervalId); }
         }'
         '';
-        this.clear('')';
+        this.clear()';
         console.log('AdvancedCacheManager cleaned up'');'
     }''
 }

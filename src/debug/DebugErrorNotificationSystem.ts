@@ -7,41 +7,41 @@ import type { DebugErrorReporter } from './DebugErrorReporter';
 
 interface NotificationChannel { enabled: boolean,
     level: string,
-    url?: string; }
+    url?: string }
 }
 
 interface NotificationChannels { console: NotificationChannel,
     ui: NotificationChannel,
     storage: NotificationChannel,
-    webhook: NotificationChannel;
+    webhook: NotificationChannel
     }
 }
 
 interface RateLimit { maxPerMinute: number,
     maxPerHour: number,
-    burstLimit: number; }
+    burstLimit: number }
 }
 
 interface NotificationFilters { categories: string[],
     severities: string[],
     patterns: string[],
-    excludePatterns: string[]; }
+    excludePatterns: string[] }
 }
 
 interface NotificationThreshold { count: number,
-    timeWindow: number; }
+    timeWindow: number }
 }
 
 interface NotificationThresholds { critical: NotificationThreshold,
     high: NotificationThreshold,
     medium: NotificationThreshold,
-    low: NotificationThreshold;
+    low: NotificationThreshold
     }
 }
 
 interface AggregationConfig { enabled: boolean,
     windowSize: number,
-    maxAggregatedNotifications: number; }
+    maxAggregatedNotifications: number }
 }
 
 interface NotificationConfig { enabled: boolean,
@@ -49,16 +49,16 @@ interface NotificationConfig { enabled: boolean,
     rateLimit: RateLimit,
     filters: NotificationFilters,
     thresholds: NotificationThresholds,
-    aggregation: AggregationConfig;
+    aggregation: AggregationConfig
     }
 }
 
 interface RateLimitCounter { count: number,
-    resetTime: number; }
+    resetTime: number }
 }
 
 interface RateLimitCounters { minute: RateLimitCounter,
-    hour: RateLimitCounter;
+    hour: RateLimitCounter
     }
 }
 
@@ -68,7 +68,7 @@ interface NotificationError { id: string,
     category: string,
     fingerprint: string,
     count: number,
-    gameState?: any; }
+    gameState?: any }
 }
 
 interface Notification { id: string,
@@ -76,23 +76,23 @@ interface Notification { id: string,
     type: string,
     error: NotificationError,
     additionalInfo?: any;
-    channels: string[]; }
+    channels: string[] }
 }
 
 interface AggregatedNotification { key: string,
     notifications: Notification[],
     firstSeen: number,
-    lastSeen: number; }
+    lastSeen: number }
 }
 
 interface UINotificationData { element: HTMLElement,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface StoredNotification { id: string,
     timestamp: number,
     type: string,
-    error: NotificationError;
+    error: NotificationError
     }
 }
 
@@ -101,7 +101,7 @@ interface WebhookPayload { timestamp: number,
     error: NotificationError,
     gameInfo: {
         sessionId: string,
-        gameState: any; }
+        gameState: any }
     };
 }
 
@@ -122,7 +122,7 @@ export class DebugErrorNotificationSystem {
         // 通知設定
         this.notificationConfig = {
             enabled: true }
-    }'
+    }
             channels: {' }'
                 console: { enabled: true, level: 'all' },''
                 ui: { enabled: true, level: 'high' },''
@@ -133,7 +133,7 @@ export class DebugErrorNotificationSystem {
                 maxPerHour: 100,
                 burstLimit: 5 }
             },'
-            filters: { categories: [], // 空の場合は全カテゴリを通知''
+            filters: { categories: [], // 空の場合は全カテゴリを通知
                 severities: ['medium', 'high', 'critical'],
                 patterns: [], // 特定パターンのみ通知;
                 excludePatterns: [] // 除外パターン }
@@ -171,9 +171,9 @@ export class DebugErrorNotificationSystem {
     /**
      * 初期化
      */
-    private initialize(): void { this.setupUIContainer();'
+    private initialize(): void { this.setupUIContainer();
         this.loadSettings();''
-        this.startRateLimitReset('')';
+        this.startRateLimitReset()';
         console.log('ErrorNotificationSystem initialized''); }
     }
     
@@ -196,11 +196,11 @@ export class DebugErrorNotificationSystem {
         }
             return false; }
         }
-        ';
-        // 通知オブジェクトの作成''
+        ;
+        // 通知オブジェクトの作成
         const notification = this.createNotification(error, type, additionalInfo');
         ';
-        // 集約処理''
+        // 集約処理
         if(this.notificationConfig.aggregation.enabled && type !== 'critical') {
             this.addToAggregation(notification);
         }
@@ -306,7 +306,7 @@ export class DebugErrorNotificationSystem {
                 severity: error.severity,
                 category: error.category,
                 fingerprint: error.fingerprint,
-                count: this.getErrorCount(error.fingerprint); }
+                count: this.getErrorCount(error.fingerprint) }
             },
             additionalInfo,
             channels: this.determineChannels(error, type);
@@ -342,7 +342,7 @@ export class DebugErrorNotificationSystem {
     }
     
     /**
-     * チャンネル使用判定'
+     * チャンネル使用判定
      */''
     private shouldUseChannel(channel: string, settings: NotificationChannel, error: NotificationError, type: string'): boolean { const level = settings.level;'
         '';
@@ -362,9 +362,9 @@ export class DebugErrorNotificationSystem {
         if(!this.pendingNotifications.has(key) {
         
             this.pendingNotifications.set(key, {
-                key,);
+                key);
                 notifications: []);
-                firstSeen: notification.timestamp,);
+                firstSeen: notification.timestamp,)
         }
                 lastSeen: notification.timestamp); }
         }
@@ -403,14 +403,14 @@ export class DebugErrorNotificationSystem {
      */
     private createAggregatedNotification(group: AggregatedNotification): Notification { const notifications = group.notifications;
         const firstNotification = notifications[0];
-        ';
+        ';'
         return { id: this.generateNotificationId(),''
             timestamp: Date.now(''';
             type: 'aggregated',';
             error: {''
                 id: '',
                 category: firstNotification.error.category,
-                severity: firstNotification.error.severity,);
+                severity: firstNotification.error.severity);
                 count: notifications.length)';
                 timespan: group.lastSeen - group.firstSeen,')';
                 messages: [...new Set(notifications.map(n => n.error.message)].slice(0, 3'),'';
@@ -443,7 +443,7 @@ export class DebugErrorNotificationSystem {
     
     /**
      * チャンネル別送信
-     */'
+     */
     private sendToChannel(channel: string, notification: Notification): void { ''
         switch(channel') {'
             '';
@@ -519,15 +519,15 @@ export class DebugErrorNotificationSystem {
     }
     
     /**
-     * UI通知要素の作成'
+     * UI通知要素の作成
      */''
     private createUINotificationElement(notification: Notification'): HTMLElement { ''
         const element = document.createElement('div'); }
         element.className = `error-notification ${notification.error.severity}`;
         element.id = `notification-${notification.id}`;
-        ';
+        ';'
         const emoji = this.getSeverityEmoji(notification.error.severity);''
-        const timestamp = new Date(notification.timestamp).toLocaleTimeString('')';
+        const timestamp = new Date(notification.timestamp).toLocaleTimeString()';
         if(notification.type === 'aggregated'') {'
             element.innerHTML = `';
         }'
@@ -563,7 +563,7 @@ export class DebugErrorNotificationSystem {
             margin-bottom: 10px,
             padding: 12px,
             border-radius: 6px,
-            border-left: 4px solid ${this.getSeverityColor(notification.error.severity})},'
+            border-left: 4px solid ${this.getSeverityColor(notification.error.severity})},
             background: ${this.getSeverityBackground(notification.error.severity})}''
             box-shadow: 0 2px 4px rgba(0,0,0,0.1');''
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -577,24 +577,24 @@ export class DebugErrorNotificationSystem {
     /**
      * ストレージ通知'
      */''
-    private sendStorageNotification(notification: Notification'): void { try {''
+    private sendStorageNotification(notification: Notification'): void { try {'
             const stored: StoredNotification[] = JSON.parse(localStorage.getItem('error_notifications'') || '[]'),
             stored.push({
-                id: notification.id,);
+                id: notification.id);
                 timestamp: notification.timestamp);
                 type: notification.type,);
                 error: notification.error),
             
             // 最新100件のみ保持
-            if(stored.length > 100) {'
-                ';
+            if(stored.length > 100) {
+                '
             }'
                 stored.splice(0, stored.length - 100'); }
             }'
             '';
             localStorage.setItem('error_notifications', JSON.stringify(stored);''
-        } catch (error') { ''
-            console.warn('Failed to store notification:', (error as Error).message); }
+        } catch (error) { ''
+            console.warn('Failed to store notification:', (error as Error).message) }
         }
     }
     
@@ -614,7 +614,7 @@ export class DebugErrorNotificationSystem {
                     gameState: notification.error.gameState }
                 }
             },
-            ';
+            ';'
             await fetch(webhookUrl, { ')'
                 method: 'POST')';
                 headers: {''
@@ -622,15 +622,15 @@ export class DebugErrorNotificationSystem {
                 ),
                 body: JSON.stringify(payload), };'
             };''
-        } catch (error') { ''
-            console.warn('Webhook notification failed:', (error as Error).message); }
+        } catch (error) { ''
+            console.warn('Webhook notification failed:', (error as Error).message) }
         }
     }
     
     /**
      * UI通知コンテナの設定'
      */''
-    private setupUIContainer('')';
+    private setupUIContainer()';
         this.uiContainer = document.createElement('div'');''
         this.uiContainer.id = 'error-notification-container';
         this.uiContainer.style.cssText = `;
@@ -644,12 +644,12 @@ export class DebugErrorNotificationSystem {
             pointer-events: none,
         `;
         ';
-        // 子要素のクリックイベントを有効化''
+        // 子要素のクリックイベントを有効化
         this.uiContainer.addEventListener('click', (e) => {  ' }'
             (e.target as HTMLElement').style.pointerEvents = 'auto'; }
         };
         ';
-        // 通知要素にはpointer-eventsを有効化''
+        // 通知要素にはpointer-eventsを有効化
         const style = document.createElement('style');
         style.textContent = `;
             .error-notification { pointer-events: auto !important }
@@ -671,7 +671,7 @@ export class DebugErrorNotificationSystem {
             }
             @keyframes slideIn {
                 from { transform: translateX(100%); opacity: 0, }
-                to { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(0); opacity: 1 }
             }
         `;
         
@@ -745,9 +745,9 @@ export class DebugErrorNotificationSystem {
     
     private getErrorCount(fingerprint: string): number { const pattern = this.errorReporter.errorPatterns.get(fingerprint);
         return pattern ? pattern.count: 1 }
-    }'
+    }
     '';
-    private generateNotificationId('')';
+    private generateNotificationId()';
         return 'notification_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
     }
     
@@ -767,13 +767,13 @@ export class DebugErrorNotificationSystem {
             }
         }, 10000); // 10秒ごとにチェック
     }
-    ';
-    private handleRateLimitExceeded(error: NotificationError): void { // レート制限超過時の処理''
+    ;
+    private handleRateLimitExceeded(error: NotificationError): void { // レート制限超過時の処理
         if (this.rateLimitExceededNotificationSent') return;'
         '';
         console.warn('🚫 Error notification rate limit exceeded'');
         
-        // 一度だけ警告通知を送信'
+        // 一度だけ警告通知を送信
         this.sendConsoleNotification({')'
             id: ''),'';
             timestamp: Date.now(''';
@@ -796,26 +796,26 @@ export class DebugErrorNotificationSystem {
     }
     
     /**
-     * 設定の読み込み'
+     * 設定の読み込み
      */''
-    private loadSettings('')';
+    private loadSettings()';
             const stored = localStorage.getItem('error_notification_settings');
             if(stored) {
                 const settings = JSON.parse(stored);
             }'
                 Object.assign(this.notificationConfig, settings);' }'
-            } catch (error') { ''
-            console.warn('Failed to load notification settings:', (error as Error).message); }
+            } catch (error) { ''
+            console.warn('Failed to load notification settings:', (error as Error).message) }
         }
     }
     
     /**
      * 設定の保存'
      */''
-    private saveSettings('')';
+    private saveSettings()';
             localStorage.setItem('error_notification_settings', JSON.stringify(this.notificationConfig);''
-        } catch (error') { ''
-            console.warn('Failed to save notification settings:', (error as Error).message); }
+        } catch (error) { ''
+            console.warn('Failed to save notification settings:', (error as Error).message) }
         }
     }
     
@@ -823,8 +823,8 @@ export class DebugErrorNotificationSystem {
      * 設定の更新
      */'
     updateSettings(newSettings: Partial<NotificationConfig>): void { Object.assign(this.notificationConfig, newSettings);''
-        this.saveSettings('')';
-        console.log('Notification settings updated:', newSettings); }
+        this.saveSettings()';
+        console.log('Notification settings updated:', newSettings) }
     }
     
     /**
@@ -835,7 +835,7 @@ export class DebugErrorNotificationSystem {
         const oneDay = 24 * oneHour;
         
         const recentNotifications = this.notificationHistory.filter(n => now - n.timestamp < oneDay);
-        ';
+        ';'
         return { total: this.notificationHistory.length,''
             lastHour: recentNotifications.filter(n => now - n.timestamp < oneHour').length,';
             lastDay: recentNotifications.length,'';
@@ -848,7 +848,7 @@ export class DebugErrorNotificationSystem {
             }
         },
     }
-    ';
+    ';'
     private groupBy(array: any[], path: string): Record<string, number> { ''
         return array.reduce((groups, item') => { ''
             const value = path.split('.').reduce((obj, key) => obj? .[key], item);
@@ -871,9 +871,9 @@ export class DebugErrorNotificationSystem {
         }
         
         if(this.uiContainer) {
-        ';
+        ';'
             '';
-            this.uiContainer.remove('');
+            this.uiContainer.remove();
         }'
         console.log('ErrorNotificationSystem destroyed''); }'
     }''

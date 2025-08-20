@@ -11,14 +11,14 @@ interface QualityLevel { particleMultiplier: number,
     enableTrails: boolean,
     enableGlow: boolean,
     textureQuality: number,
-    updateFrequency: number; }
+    updateFrequency: number }
 }
 
 interface QualityLevels { minimal: QualityLevel,
     low: QualityLevel,
     medium: QualityLevel,
     high: QualityLevel,
-    ultra: QualityLevel;
+    ultra: QualityLevel
     }
 }
 
@@ -27,14 +27,14 @@ type QualityLevelName = keyof QualityLevels;
 interface QualityConfig { enabled: boolean,
     adaptiveQuality: boolean,
     currentLevel: QualityLevelName,
-    levels: QualityLevels;
+    levels: QualityLevels
     }
 }
 
 // Performance monitoring interfaces
 interface PerformanceThresholds { downgrade: number,
     upgrade: number,
-    critical: number; }
+    critical: number }
 }
 
 interface PerformanceMonitor { enabled: boolean,
@@ -48,7 +48,7 @@ interface PerformanceMonitor { enabled: boolean,
     lastAdaptation: number,
     adaptationCooldown: number,
     stabilityFrames: number,
-    requiredStability: number; }
+    requiredStability: number }
 }
 
 // Scaling system interfaces
@@ -57,13 +57,13 @@ interface ScalingFactors { particleCount: number,
     updateRate: number,
     effectIntensity: number,
     textureDetail: number,
-    physicsAccuracy: number; }
+    physicsAccuracy: number }
 }
 
 interface ScalingPresets { battery_saving: ScalingFactors,
     performance: ScalingFactors,
     balanced: ScalingFactors,
-    quality: ScalingFactors;
+    quality: ScalingFactors
     }
 }
 
@@ -73,7 +73,7 @@ interface ScalingSystem { enabled: boolean,
     factors: ScalingFactors,
     scalingSpeed: number,
     targetFactors: ScalingFactors,
-    presets: ScalingPresets;
+    presets: ScalingPresets
     }
 }
 
@@ -87,7 +87,7 @@ interface QualityStats { qualityAdjustments: number,
     performanceGain: number,
     currentQualityScore: number,
     adaptationActive: boolean,
-    lastAdaptationReason: string; }
+    lastAdaptationReason: string }
 }
 
 // Particle interfaces for quality management
@@ -115,7 +115,7 @@ interface ParticleGlow { enabled: boolean,
 }
 
 interface ParticleVelocity { x: number,
-    y: number; }
+    y: number }
 }
 
 interface QualityManagedParticle { x: number,
@@ -310,7 +310,7 @@ export class ParticleQualityManager {
             performanceGain: 0,
             
             // Current state
-            currentQualityScore: 1.0,';
+            currentQualityScore: 1.0,
             adaptationActive: false,'';
             lastAdaptationReason: 'none' }
         },
@@ -480,14 +480,14 @@ export class ParticleQualityManager {
     }
     
     /**
-     * Emergency quality reduction for critical performance'
+     * Emergency quality reduction for critical performance
      */''
-    private emergencyQualityReduction('')';
+    private emergencyQualityReduction()';
         console.warn('[ParticleQualityManager] Emergency quality reduction triggered'');'
         '';
         this.setQualityLevel('minimal'');''
         this.applyScalingPreset('battery_saving'');
-        ';
+        ';'
         this.stats.emergencyReductions++;''
         this.stats.lastAdaptationReason = 'emergency';
         this.performanceMonitor.lastAdaptation = Date.now();
@@ -508,7 +508,7 @@ export class ParticleQualityManager {
         }'
             ' }'
             console.log(`[ParticleQualityManager] Quality downgraded: ${currentLevel} -> ${newLevel)`'});
-            ';
+            ';'
             this.stats.automaticDowngrades++;''
             this.stats.lastAdaptationReason = 'performance';
         } else {  // Already at minimum, apply additional scaling }
@@ -531,10 +531,10 @@ export class ParticleQualityManager {
             const newLevel = levels[currentIndex + 1];
             this.setQualityLevel(newLevel);
         
-        }'
+        }
             ' }'
             console.log(`[ParticleQualityManager] Quality upgraded: ${currentLevel} -> ${newLevel)`'});
-            ';
+            ';'
             this.stats.automaticUpgrades++;''
             this.stats.lastAdaptationReason = 'headroom';
         } else {  // Already at maximum, can increase scaling factors }
@@ -607,7 +607,7 @@ export class ParticleQualityManager {
         
         // Clamp to minimum values
         factors.particleCount = Math.max(0.1, factors.particleCount);
-        factors.particleSize = Math.max(0.5, factors.particleSize);'
+        factors.particleSize = Math.max(0.5, factors.particleSize);
         factors.updateRate = Math.max(0.3, factors.updateRate);''
         factors.effectIntensity = Math.max(0.2, factors.effectIntensity');'
         '';
@@ -621,7 +621,7 @@ export class ParticleQualityManager {
         const increase = 1.1; // 10% increase
         
         factors.particleCount = Math.min(1.5, factors.particleCount * increase);
-        factors.particleSize = Math.min(1.2, factors.particleSize * increase);'
+        factors.particleSize = Math.min(1.2, factors.particleSize * increase);
         factors.updateRate = Math.min(1.0, factors.updateRate * increase);''
         factors.effectIntensity = Math.min(1.0, factors.effectIntensity * increase');'
         '';

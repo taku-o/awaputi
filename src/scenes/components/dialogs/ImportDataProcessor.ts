@@ -16,15 +16,15 @@ export interface ValidationRules { [key: string]: ValidationRule,
 }
 
 export interface ValidationResult { valid: boolean,
-    error?: string; }
+    error?: string }
 }
 
 export interface DataIntegrityResult { valid: boolean,
-    issues: string[]; }
+    issues: string[] }
 }
 
 export interface VersionCompatibilityResult { compatible: boolean,
-    error?: string; }
+    error?: string }
 }
 
 export interface PlayerData { username?: string | null;
@@ -32,7 +32,7 @@ export interface PlayerData { username?: string | null;
     tap: number,
     highScore: number,
     unlockedStages: string[],
-    ownedItems: string[]; }
+    ownedItems: string[] }
 }
 
 export interface StatisticsData { totalPlayTime?: number;
@@ -43,7 +43,7 @@ export interface StatisticsData { totalPlayTime?: number;
 
 export interface AchievementData { id: string,
     unlocked: boolean,
-    unlockedAt?: string; }
+    unlockedAt?: string }
 }
 
 export interface ImportData { version: string,
@@ -64,7 +64,7 @@ export interface Layout { contentX: number,
     contentWidth: number,
     buttonY: number,
     x: number,
-    width: number; }
+    width: number }
 }
 
 export interface MainController { data: {
@@ -104,7 +104,7 @@ export class ImportDataProcessor {
     private validationRules: ValidationRules;
     constructor(mainController: MainController) {
 
-        this.mainController = mainController;
+        this.mainController = mainController
 
     }
     }
@@ -200,15 +200,15 @@ export class ImportDataProcessor {
             return false; }
         }
         
-        // データを解析'
-        try { ''
+        // データを解析
+        try {'
             const parsedData = JSON.parse(this.mainController.data.importData') as ImportData;'
             this.mainController.data.parsedData = parsedData;''
             this.mainController.data.step = 'confirm';
             this.mainController.data.error = undefined;
             this.mainController.setupButtons();'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.mainController.data.error = 'JSONデータの形式が正しくありません';
             return false; }
         }
@@ -217,18 +217,18 @@ export class ImportDataProcessor {
     /**
      * インポートデータを検証'
      */''
-    async validateImportData(data: any'): Promise<ValidationResult> { // 基本構造チェック''
+    async validateImportData(data: any'): Promise<ValidationResult> { // 基本構造チェック
         if (!data || typeof data !== 'object'') {' }'
             return { valid: false, error: 'データが正しい形式ではありません' }
         }
         ';
-        // バージョンチェック''
+        // バージョンチェック
         if (!data.version') { ' }'
             return { valid: false, error: 'バージョン情報が見つかりません' }
         }
         
         // プレイヤーデータのチェック
-        if(data.playerData) {'
+        if(data.playerData) {
             const validation = this.validatePlayerData(data.playerData);''
             if (!validation.valid') {
         }
@@ -260,7 +260,7 @@ export class ImportDataProcessor {
     }
 
     /**
-     * プレイヤーデータの検証'
+     * プレイヤーデータの検証
      */''
     validatePlayerData(playerData: any'): ValidationResult { ''
         if (typeof playerData.username !== 'string' && playerData.username !== null') {' }'
@@ -299,12 +299,12 @@ export class ImportDataProcessor {
             return { valid: false, error: '所有アイテムのデータ型が正しくありません' }
         }
         ';
-        // ユーザー名の長さチェック''
+        // ユーザー名の長さチェック
         if (playerData.username && playerData.username.length > 20') { ' }'
             return { valid: false, error: 'ユーザー名は20文字以下である必要があります' }
         }
         ';
-        // APとTAPの関係チェック''
+        // APとTAPの関係チェック
         if (playerData.ap > playerData.tap') { ' }'
             return { valid: false, error: 'APは総獲得AP以下である必要があります' }
         }
@@ -320,10 +320,10 @@ export class ImportDataProcessor {
             return { valid: false, error: '統計データが正しい形式ではありません' }
         }
         ';
-        // 基本的な統計項目のチェック''
+        // 基本的な統計項目のチェック
         const requiredStats = ['totalPlayTime', 'bubblesPopped', 'gamesPlayed'];
         for(const stat of requiredStats) {'
-            ';
+            ';'
         }'
             if (statistics.hasOwnProperty(stat') && typeof statistics[stat] !== 'number') { }
                 return { valid: false, error: `統計データ「${stat}」の型が正しくありません` }
@@ -341,7 +341,7 @@ export class ImportDataProcessor {
             return { valid: false, error: '実績データが正しい形式ではありません' }
         }
         ';
-        // 各実績の構造をチェック''
+        // 各実績の構造をチェック
         for(let i = 0; i < achievements.length; i++') {'
             const achievement = achievements[i];'
         }'
@@ -397,7 +397,7 @@ export class ImportDataProcessor {
 
     /**
      * プレイヤーデータの復元
-     */'
+     */
     async restorePlayerData(playerData: PlayerDataInterface, importedData: PlayerData): Promise<void> { if (importedData.username) {''
             playerData.setUsername(importedData.username'); }
         }'
@@ -464,7 +464,7 @@ export class ImportDataProcessor {
             
         
         }
-            return {  };'
+            return {  };
                 valid: false,' }'
                 error: `データサイズが大きすぎます（${Math.round(sizeInBytes / 1024'})}KB > ${maxSize / 1024}KB）`
             },
@@ -476,7 +476,7 @@ export class ImportDataProcessor {
     /**
      * バージョン互換性の確認'
      */''
-    checkVersionCompatibility(dataVersion: string, currentVersion: string = '1.0.0'): VersionCompatibilityResult { // 簡易バージョン比較''
+    checkVersionCompatibility(dataVersion: string, currentVersion: string = '1.0.0'): VersionCompatibilityResult { // 簡易バージョン比較
         const parseVersion = (version: string'): number[] => { ' }'
             return version.split('.').map(num => parseInt(num, 10); }
         };
@@ -493,9 +493,9 @@ export class ImportDataProcessor {
                     error: `互換性のないバージョンです（データ: v${dataVersion}, 現在: v${currentVersion}）`
                 };
             }
-            ';
+            ';'
             return { compatible: true }''
-        } catch (error') { return { compatible: false,' };'
+        } catch (error) { return { compatible: false,' };'
                 error: 'バージョン形式が正しくありません' }
             },
         }
@@ -504,7 +504,7 @@ export class ImportDataProcessor {
     /**
      * 選択ステップから進めるかチェック'
      */''
-    canProceedFromSelect('')';
+    canProceedFromSelect()';
         if (this.mainController.data.importMethod === 'file' && this.mainController.data.importData') { return true; }'
         }''
         if (this.mainController.data.importMethod === 'text' && this.mainController.data.importData.trim().length > 0) { return true; }
@@ -517,13 +517,13 @@ export class ImportDataProcessor {
      */
     checkDataIntegrity(data: ImportData): DataIntegrityResult { const issues: string[] = [],
         ';
-        // 必須フィールドの存在確認''
+        // 必須フィールドの存在確認
         if (!data.version') issues.push('バージョン情報が不足');''
         if (!data.playerData') issues.push('プレイヤーデータが不足');''
         if (!data.timestamp') issues.push('タイムスタンプが不足');
         
         // データの一貫性チェック
-        if(data.playerData) {'
+        if(data.playerData) {
             '';
             if (data.playerData.ap > data.playerData.tap') {'
         }'
@@ -531,7 +531,7 @@ export class ImportDataProcessor {
             }'
             '';
             if(data.playerData.highScore < 0') {'
-                ';
+                ';'
             }'
                 issues.push('ハイスコアが負の値です'); }
             }
@@ -550,6 +550,6 @@ export class ImportDataProcessor {
             validationRules: Object.keys(this.validationRules'),'';
             supportedFormats: ['json'],
             maxDataSize: 1024 * 1024 // 1MB;
-        },'
+        },
     }''
 }

@@ -12,7 +12,7 @@ export class SocialAccessibilityManager {'
         
         // 設定
         this.config = {
-            // WCAG 準拠設定'
+            // WCAG 準拠設定
             wcag: {''
                 level: 'AA', // A, AA, AAA;
                 colorContrast: {
@@ -20,7 +20,7 @@ export class SocialAccessibilityManager {'
     }
     }
                     large: 3.0 }
-                },'
+                },
                 focusIndicator: { ''
                     width: '3px','';
                     color: '#005fcc' }
@@ -29,19 +29,19 @@ export class SocialAccessibilityManager {'
             
             // スクリーンリーダー設定
             screenReader: { enabled: true,
-                announcements: true,';
+                announcements: true,
                 verbose: false,'';
                 language: 'ja' }
             },
             
-            // キーボードナビゲーション設定'
+            // キーボードナビゲーション設定
             keyboard: { enabled: true,''
                 tabSequence: 'logical',
                 shortcuts: true,
                 focusTrapping: true }
             },
             
-            // 高コントラスト設定'
+            // 高コントラスト設定
             highContrast: { enabled: false,''
                 backgroundColor: '#000000','';
                 textColor: '#ffffff','';
@@ -73,12 +73,12 @@ export class SocialAccessibilityManager {'
         // イベントハンドラー
         this.handlers = { keydown: this.handleKeydown.bind(this),
             focus: this.handleFocus.bind(this),
-            blur: this.handleBlur.bind(this),';
+            blur: this.handleBlur.bind(this),
             preferredColorSchemeChange: this.handlePreferredColorSchemeChange.bind(this),'';
-            preferredReducedMotionChange: this.handlePreferredReducedMotionChange.bind(this'); }
+            preferredReducedMotionChange: this.handlePreferredReducedMotionChange.bind(this') }
         };
         
-        // ショートカットキー定義'
+        // ショートカットキー定義
         this.shortcuts = { ''
             'Alt+1': 'focusMainShareButton','';
             'Alt+2': 'showShareDialog','';
@@ -117,13 +117,13 @@ export class SocialAccessibilityManager {'
             
             // 初期設定の適用
             this.applyInitialSettings();
-            ';
-            // ARIA Live Regionsの設定''
-            this.setupLiveRegions('')';
+            ;
+            // ARIA Live Regionsの設定
+            this.setupLiveRegions()';
             this.log('SocialAccessibilityManager初期化完了');
     }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('ACCESSIBILITY_INIT_FAILED', error); }
         }
     }
@@ -131,15 +131,15 @@ export class SocialAccessibilityManager {'
     /**
      * ユーザー設定の検出'
      */''
-    detectUserPreferences('')';
+    detectUserPreferences()';
         if (window.matchMedia('(prefers-contrast: high')').matches') { this.config.highContrast.enabled = true; }
         }
         ';
-        // 動きの軽減の検出''
+        // 動きの軽減の検出
         if (window.matchMedia('(prefers-reduced-motion: reduce')').matches') { this.config.reducedMotion.enabled = true; }
         }
         ';
-        // カラースキームの検出''
+        // カラースキームの検出
         const darkMode = window.matchMedia('(prefers-color-scheme: dark')').matches,'';
         if(darkMode') {'
             '';
@@ -148,19 +148,19 @@ export class SocialAccessibilityManager {'
             this.config.highContrast.textColor = '#ffffff'; }
         }
         ';
-        // 言語設定の検出''
+        // 言語設定の検出
         const language = navigator.language || 'ja';''
         this.config.screenReader.language = language.split('-'')[0];'
         '';
         this.log('ユーザー設定検出完了', { highContrast: this.config.highContrast.enabled)
             reducedMotion: this.config.reducedMotion.enabled,);
-            language: this.config.screenReader.language); }
+            language: this.config.screenReader.language) }
     }
     
     /**
      * アクセシビリティ要素の作成'
      */''
-    createAccessibilityElements('')';
+    createAccessibilityElements()';
         this.elements.announcer = document.createElement('div'');''
         this.elements.announcer.id = 'social-accessibility-announcer';''
         this.elements.announcer.setAttribute('aria-live', 'polite'');''
@@ -176,7 +176,7 @@ export class SocialAccessibilityManager {'
             clip-path: inset(50%') !important,
         `;
         ';
-        // スキップリンク''
+        // スキップリンク
         this.elements.skipLinks = document.createElement('div'');''
         this.elements.skipLinks.id = 'social-skip-links';''
         this.elements.skipLinks.className = 'skip-links';'
@@ -188,7 +188,7 @@ export class SocialAccessibilityManager {'
         ";
         // フォーカス表示の強化""
         this.elements.focusIndicator = document.createElement('style');''
-        this.elements.focusIndicator.textContent = this.generateFocusStyles('')';
+        this.elements.focusIndicator.textContent = this.generateFocusStyles()';
         this.elements.contrastOverlay = document.createElement('div'');''
         this.elements.contrastOverlay.id = 'social-contrast-overlay';''
         this.elements.contrastOverlay.style.display = 'none';
@@ -268,16 +268,16 @@ export class SocialAccessibilityManager {'
     }
     
     /**
-     * イベントリスナーの設定'
+     * イベントリスナーの設定
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         document.addEventListener('keydown', this.handlers.keydown');
         ';
-        // フォーカスイベント''
+        // フォーカスイベント
         document.addEventListener('focusin', this.handlers.focus');''
         document.addEventListener('focusout', this.handlers.blur');
         ';
-        // メディアクエリの監視''
+        // メディアクエリの監視
         window.matchMedia('(prefers-contrast: high')'').addEventListener('change'),'';
             this.handlers.preferredColorSchemeChange');''
         window.matchMedia('(prefers-reduced-motion: reduce')'').addEventListener('change'),
@@ -288,24 +288,24 @@ export class SocialAccessibilityManager {'
      * スクリーンリーダーの検出
      */
     detectScreenReader() {'
-        // 一般的なスクリーンリーダーの検出''
+        // 一般的なスクリーンリーダーの検出
         const userAgent = navigator.userAgent.toLowerCase(''';
         const screenReaders = ['nvda', 'jaws', 'voiceover', 'talkback', 'orca'];)'
         ')';
         this.state.screenReaderActive = screenReaders.some(sr => userAgent.includes(sr)');
         ';
-        // より詳細な検出（Windows環境でのScreen Reader API）''
+        // より詳細な検出（Windows環境でのScreen Reader API）
         if ('speechSynthesis' in window) {
     }
             this.state.screenReaderActive = true; }
         }
         ';
-        // Accessibility APIの検出''
+        // Accessibility APIの検出
         if(navigator.userAgentData && navigator.userAgentData.getHighEntropyValues') {'
-            ';
+            ';'
         }'
             navigator.userAgentData.getHighEntropyValues(['uaFullVersion']).then(ua => { ') }'
-                // より詳細な検出ロジック)'); }
+                // より詳細な検出ロジック)); }
         }'
         '';
         this.log('スクリーンリーダー検出', { active: this.state.screenReaderActive });
@@ -352,28 +352,28 @@ export class SocialAccessibilityManager {'
         
         // ショートカットキーの処理
         const shortcutKey = this.getShortcutKey(event);
-        if (shortcutKey && this.shortcuts[shortcutKey]) {'
+        if (shortcutKey && this.shortcuts[shortcutKey]) {
             event.preventDefault();''
             this.executeShortcut(this.shortcuts[shortcutKey]');
     }
             return; }
         }
         ';
-        // Tab キーによるフォーカス管理''
+        // Tab キーによるフォーカス管理
         if(event.key === 'Tab') {'
-            ';
+            ';'
         }'
             this.handleTabNavigation(event'); }
         }
         ';
-        // Escape キーによるダイアログ閉じる''
+        // Escape キーによるダイアログ閉じる
         if(event.key === 'Escape') {'
-            ';
+            ';'
         }'
             this.handleEscapeKey(event'); }
         }
         ';
-        // 矢印キーによるナビゲーション''
+        // 矢印キーによるナビゲーション
         if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key) { this.handleArrowNavigation(event); }
         }
     }
@@ -407,7 +407,7 @@ export class SocialAccessibilityManager {'
             case 'toggleHighContrast':'';
                 this.toggleHighContrast(''';
             case 'announceCurrentState':'';
-                this.announceCurrentState('')';
+                this.announceCurrentState()';
             case 'closeCurrentDialog':);
                 this.closeCurrentDialog();
     }
@@ -446,10 +446,10 @@ export class SocialAccessibilityManager {'
     }
     
     /**
-     * ARIAステートの更新'
+     * ARIAステートの更新
      */''
     updateAriaState(element') {'
-        // 共有ボタンの状態更新''
+        // 共有ボタンの状態更新
         if (element.classList.contains('share-button-main')') {''
             const expanded = element.getAttribute('aria-expanded'') === 'true';''
             if (expanded') {'
@@ -458,11 +458,11 @@ export class SocialAccessibilityManager {'
             }
         }
         ';
-        // ダイアログの状態更新''
+        // ダイアログの状態更新
         if (element.closest('.share-dialog')') { ''
             const dialog = element.closest('.share-dialog'');''
             if(dialog.style.display !== 'none'') {'
-                ';
+                ';'
             }'
                 this.announce('共有ダイアログが開いています''); }
             }
@@ -479,19 +479,19 @@ export class SocialAccessibilityManager {'
         }
         
         this.stats.announcements++;
-        this.state.announcements.push({ message,)
+        this.state.announcements.push({ message)
             priority);'
             timestamp: Date.now(),' }'
         }');
         ';
-        // 適切なLive Regionを選択''
+        // 適切なLive Regionを選択
         const regionId = priority === 'assertive' ?   : undefined'';
             'social-urgent-announcements' : 'social-status-announcements';
         
         const region = document.getElementById(regionId) || this.elements.announcer;'
         '';
         if(region') {'
-            // 一度クリアしてから新しいメッセージを設定''
+            // 一度クリアしてから新しいメッセージを設定
             region.textContent = '';
         }
             setTimeout(() => {  }'
@@ -505,7 +505,7 @@ export class SocialAccessibilityManager {'
     /**
      * 高コントラストモードの有効化'
      */''
-    enableHighContrast('')';
+    enableHighContrast()';
         document.body.classList.add('high-contrast-mode'');'
         this.config.highContrast.enabled = true;''
         this.announce('高コントラストモードが有効になりました'');''
@@ -515,7 +515,7 @@ export class SocialAccessibilityManager {'
     /**
      * 高コントラストモードの無効化'
      */''
-    disableHighContrast('')';
+    disableHighContrast()';
         document.body.classList.remove('high-contrast-mode'');'
         this.config.highContrast.enabled = false;''
         this.announce('高コントラストモードが無効になりました'');''
@@ -536,7 +536,7 @@ export class SocialAccessibilityManager {'
     /**
      * 動きの軽減モードの有効化'
      */''
-    enableReducedMotion('')';
+    enableReducedMotion()';
         document.body.classList.add('reduced-motion-mode'');'
         this.config.reducedMotion.enabled = true;''
         this.announce('動きの軽減モードが有効になりました'');''
@@ -546,7 +546,7 @@ export class SocialAccessibilityManager {'
     /**
      * 動きの軽減モードの無効化'
      */''
-    disableReducedMotion('')';
+    disableReducedMotion()';
         document.body.classList.remove('reduced-motion-mode'');'
         this.config.reducedMotion.enabled = false;''
         this.announce('動きの軽減モードが無効になりました'');''
@@ -556,11 +556,11 @@ export class SocialAccessibilityManager {'
     /**
      * メイン共有ボタンにフォーカス'
      */''
-    focusMainShareButton('')';
+    focusMainShareButton()';
         const mainButton = document.querySelector('.share-button-main');
         if(mainButton) {'
             '';
-            mainButton.focus('');
+            mainButton.focus();
         }'
             this.announce('メイン共有ボタンにフォーカスしました'); }
         }
@@ -573,8 +573,8 @@ export class SocialAccessibilityManager {'
         '';
         if (this.socialSharingManager') {
             // デフォルト共有データで表示
-            this.socialSharingManager.promptShareScore({)'
-                score: 0,');
+            this.socialSharingManager.promptShareScore({)
+                score: 0,')
     }'
                 stage: 'default'); }
         }
@@ -585,7 +585,7 @@ export class SocialAccessibilityManager {'
      */
     announceCurrentState() {'
         '';
-        const state = this.getCurrentState('');
+        const state = this.getCurrentState();
     }'
         this.announce(state, 'assertive'); }
     }
@@ -598,7 +598,7 @@ export class SocialAccessibilityManager {'
         ')';
         if (this.state.currentFocus') {'
         const element = this.state.currentFocus;''
-            const role = element.getAttribute('role') || element.tagName.toLowerCase('')';
+            const role = element.getAttribute('role') || element.tagName.toLowerCase()';
             const label = element.getAttribute('aria-label') || element.textContent;
     }
              }
@@ -606,13 +606,13 @@ export class SocialAccessibilityManager {'
         }'
         '';
         if(this.config.highContrast.enabled') {'
-            ';
+            ';'
         }'
             state += '高コントラストモード有効。'; }
         }'
         '';
         if(this.config.reducedMotion.enabled') {'
-            ';
+            ';'
         }'
             state += '動きの軽減モード有効。'; }
         }
@@ -623,13 +623,13 @@ export class SocialAccessibilityManager {'
     /**
      * 現在のダイアログを閉じる'
      */''
-    closeCurrentDialog('')';
+    closeCurrentDialog()';
         const openDialog = document.querySelector('.share-dialog[style*="block"]');''
         if(openDialog') {'
             '';
             const closeButton = openDialog.querySelector('.dialog-close');'
             if (closeButton) {''
-                closeButton.click('');
+                closeButton.click();
         }'
                 this.announce('ダイアログを閉じました'); }
             }
@@ -662,7 +662,7 @@ export class SocialAccessibilityManager {'
      * Tabナビゲーションの処理'
      */''
     handleTabNavigation(event') {'
-        // フォーカストラップの実装''
+        // フォーカストラップの実装
         const dialog = event.target.closest('[role="dialog"]');
         if (dialog) {
     }
@@ -675,7 +675,7 @@ export class SocialAccessibilityManager {'
      */
     handleDialogTabNavigation(event, dialog) {'
         '';
-        const focusableElements = dialog.querySelectorAll('')';
+        const focusableElements = dialog.querySelectorAll()';
             'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]")';
         );
         
@@ -702,10 +702,10 @@ export class SocialAccessibilityManager {'
     }
     
     /**
-     * Escapeキーの処理'
+     * Escapeキーの処理
      */''
     handleEscapeKey(event') {'
-        // 最上位のモーダルを閉じる''
+        // 最上位のモーダルを閉じる
         const modals = document.querySelectorAll('[role="dialog"]:not([style*="none"]")');''
         if (modals.length > 0') {'
             const topModal = modals[modals.length - 1];''
@@ -721,13 +721,13 @@ export class SocialAccessibilityManager {'
      * 矢印キーナビゲーションの処理'
      */''
     handleArrowNavigation(event') {'
-        // プラットフォームボタン間のナビゲーション''
+        // プラットフォームボタン間のナビゲーション
         if(event.target.classList.contains('share-button-platform') {'
     }'
             this.handlePlatformButtonNavigation(event'); }
         }
         ';
-        // リーダーボード項目間のナビゲーション''
+        // リーダーボード項目間のナビゲーション
         if(event.target.classList.contains('leaderboard-entry') { this.handleLeaderboardNavigation(event); }
         }
     }
@@ -741,7 +741,7 @@ export class SocialAccessibilityManager {'
         const currentIndex = buttons.indexOf(event.target);
         
         if (currentIndex === -1) return;
-        ';
+        ';'
         let nextIndex;''
         switch (event.key') {''
             case 'ArrowUp':'';
@@ -768,11 +768,11 @@ export class SocialAccessibilityManager {'
         const currentIndex = entries.indexOf(event.target);
         
         if (currentIndex === -1) return;
-        ';
+        ';'
         let nextIndex;''
         switch (event.key') {''
             case 'ArrowUp':'';
-                event.preventDefault('')';
+                event.preventDefault()';
             case 'ArrowDown':);
                 event.preventDefault();
                 nextIndex = currentIndex === entries.length - 1 ? 0 : currentIndex + 1;
@@ -787,7 +787,7 @@ export class SocialAccessibilityManager {'
     /**
      * アクセシビリティ検証'
      */''
-    validateAccessibility('')';
+    validateAccessibility()';
         const focusableElements = document.querySelectorAll('button, [href], input, select, textarea');''
         focusableElements.forEach(element => {  ');''
             if (!element.hasAttribute('tabindex') && element.tabIndex < 0') {'
@@ -799,7 +799,7 @@ export class SocialAccessibilityManager {'
             }''
         }');
         ';
-        // ARIA属性の検証''
+        // ARIA属性の検証
         const ariaElements = document.querySelectorAll('[aria-label], [aria-labelledby], [aria-describedby]');''
         ariaElements.forEach(element => {  ');''
             const labelledby = element.getAttribute('aria-labelledby');''
@@ -829,7 +829,7 @@ export class SocialAccessibilityManager {'
         this.stats.accessibilityViolations = violations.length;'
         '';
         if(violations.length > 0') {'
-            ';
+            ';'
         }'
             this.log('アクセシビリティ違反検出', { violations '), 'warn'); }
         }
@@ -884,7 +884,7 @@ export class SocialAccessibilityManager {'
             screenReaderActive: this.state.screenReaderActive,
             highContrastEnabled: this.config.highContrast.enabled,
             reducedMotionEnabled: this.config.reducedMotion.enabled,
-            currentFocus: this.state.currentFocus? .tagName || null, : undefined;
+            currentFocus: this.state.currentFocus? .tagName || null, : undefined
     }
             focusHistoryLength: this.state.focusHistory.length, };
             announcementsCount: this.state.announcements.length }
@@ -896,9 +896,9 @@ export class SocialAccessibilityManager {'
      */
     updateConfig(newConfig) {
         
-    }'
+    }
         this.config = { ...this.config, ...newConfig };''
-        this.applyInitialSettings('')';
+        this.applyInitialSettings()';
         this.log('アクセシビリティ設定更新', newConfig);
     }
     
@@ -947,7 +947,7 @@ export class SocialAccessibilityManager {'
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         document.removeEventListener('keydown', this.handlers.keydown');''
         document.removeEventListener('focusin', this.handlers.focus');''
         document.removeEventListener('focusout', this.handlers.blur);
@@ -955,7 +955,7 @@ export class SocialAccessibilityManager {'
         // DOM要素の削除
         Object.values(this.elements).forEach(element => {  );
             if (element && element.parentNode) { }
-                element.parentNode.removeChild(element); }'
+                element.parentNode.removeChild(element); }
             }''
         }');'
         '';
@@ -975,7 +975,7 @@ export class SocialAccessibilityManager {'
         };'
         '';
         if(ErrorHandler') {'
-            ';
+            ';'
         }'
             ErrorHandler.handleError(error, 'SocialAccessibilityManager', context'); }
         }'
@@ -989,7 +989,7 @@ export class SocialAccessibilityManager {'
     log(message, data = null, level = 'info') {'
         const logEntry = {''
             timestamp: Date.now(''';
-        const consoleMethod = level === 'error' ? 'error' : ';
+        const consoleMethod = level === 'error' ? 'error' : ';'
     })'
                             level === 'warn' ? 'warn' : 'log';') }'
         console[consoleMethod](`[SocialAccessibilityManager] ${message}`, data || ''');'

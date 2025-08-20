@@ -5,23 +5,23 @@
 
 // Type definitions
 interface DataPoint { x: number,
-    y: number; }
+    y: number }
 }
 
 interface AnalysisDataPoint { timestamp: number,
-    metrics: Map<string, any>; }
+    metrics: Map<string, any> }
 }
 
 interface StatisticalProcessor { metrics?: string[];
     metricPairs?: [string, string][];
     method?: string;
-    calculate: (data: AnalysisDataPoint[]) => any; }
+    calculate: (data: AnalysisDataPoint[]) => any }
 }
 
 interface TrendData { trend: 'stable' | 'increasing' | 'decreasing',
     confidence: number,
     timestamp: number,
-    analyzer: string; }
+    analyzer: string }
 }
 
 interface DescriptiveStats { count: number,
@@ -32,13 +32,13 @@ interface DescriptiveStats { count: number,
     max: number,
     p25: number,
     p75: number,
-    p95: number; }
+    p95: number }
 }
 
 interface HistogramData { bins: number[],
     binWidth: number,
     min: number,
-    max: number; }
+    max: number }
 }
 
 interface OutlierData { outliers: number[], }
@@ -48,20 +48,20 @@ interface OutlierData { outliers: number[], }
 
 interface StatisticalData { timestamp: number,
     stats: any,
-    dataPoints: number; }
+    dataPoints: number }
 }
 
 interface HistoryPoint { timestamp: number,
-    value: number; }
+    value: number }
 }
-';
+';'
 interface TrendAnalyzer { ''
     type: 'moving_average' | 'linear_regression' | 'exponential_smoothing',
     window: number,
     sensitivity?: number;
     alpha?: number;'
     history: HistoryPoint[],'';
-    trend: 'stable' | 'increasing' | 'decreasing'; }
+    trend: 'stable' | 'increasing' | 'decreasing' }
 }
 
 interface MainController { trendAnalyzers: Map<string, TrendAnalyzer>;
@@ -91,9 +91,9 @@ export class PerformanceDataProcessor {
         // Statistical processing data
         this.statisticalData = new Map();
         
-        // Initialize processors'
+        // Initialize processors
         this.statisticalProcessors = new Map();''
-        this.initializeStatisticalProcessors('');
+        this.initializeStatisticalProcessors();
     }
     }'
         console.log('[PerformanceDataProcessor] Data processing component initialized'); }
@@ -102,13 +102,13 @@ export class PerformanceDataProcessor {
     /**
      * Initialize statistical processors'
      */''
-    private initializeStatisticalProcessors('')';
+    private initializeStatisticalProcessors()';
         this.statisticalProcessors.set('descriptive', { ')'
             metrics: ['fps', 'memory_used', 'frame_time', 'network_latency']);'
             calculate: (data: AnalysisDataPoint[]) => this.calculateDescriptiveStats(data);' }'
         }');
         ';
-        // Correlation analysis processor''
+        // Correlation analysis processor
         this.statisticalProcessors.set('correlation', { metricPairs: [']'
                 ['fps', 'frame_time'],'';
                 ['memory_used', 'frame_variance'],')';
@@ -117,17 +117,17 @@ export class PerformanceDataProcessor {
             calculate: (data: AnalysisDataPoint[]) => this.calculateCorrelations(data);' }'
         }');
         ';
-        // Performance distribution processor''
+        // Performance distribution processor
         this.statisticalProcessors.set('distribution', { ')'
             metrics: ['fps', 'frame_time']);'
             calculate: (data: AnalysisDataPoint[]) => this.calculateDistributions(data);' }'
         }');
         ';
-        // Outlier detection processor''
+        // Outlier detection processor
         this.statisticalProcessors.set('outliers', { ')'
             metrics: ['fps', 'memory_used', 'frame_time'],')';
             method: 'iqr', // interquartile range);
-            calculate: (data: AnalysisDataPoint[]) => this.detectOutliers(data); }
+            calculate: (data: AnalysisDataPoint[]) => this.detectOutliers(data) }
         });
     }
     
@@ -171,7 +171,7 @@ export class PerformanceDataProcessor {
     /**
      * Calculate trend for analyzer
      * @param analyzer - Trend analyzer
-     * @returns Trend direction'
+     * @returns Trend direction
      */''
     private calculateTrend(analyzer: TrendAnalyzer'): 'stable' | 'increasing' | 'decreasing' { ''
         if (analyzer.history.length < 3') return 'stable';'
@@ -290,7 +290,7 @@ export class PerformanceDataProcessor {
                 this.statisticalData.set(processorId, {)
                     timestamp);
                     stats,);
-                    dataPoints: recentData.length);
+                    dataPoints: recentData.length)
         
         }
                  }
@@ -303,7 +303,7 @@ export class PerformanceDataProcessor {
     /**
      * Calculate descriptive statistics
      * @param data - Data points
-     * @returns Descriptive statistics'
+     * @returns Descriptive statistics
      */''
     private calculateDescriptiveStats(data: AnalysisDataPoint[]'): Record<string, DescriptiveStats> {
         const stats: Record<string, DescriptiveStats> = {};'
@@ -312,7 +312,7 @@ export class PerformanceDataProcessor {
         if (!descriptiveProcessor? .metrics) return stats;
         
         for(const processor of descriptiveProcessor.metrics) {
-        ';
+        ';'
             '';
             const values = data.map(point => point.metrics.get(processor)')'';
                               .filter(val => typeof val === 'number') as number[];
@@ -349,7 +349,7 @@ export class PerformanceDataProcessor {
         if (!correlationProcessor? .metricPairs) return correlations;
         
         for(const [metric1, metric2] of correlationProcessor.metricPairs) {
-        ';
+        ';'
             '';
             const values1 = data.map(point => point.metrics.get(metric1)')'';
                                .filter(val => typeof val === 'number') as number[];''
@@ -378,7 +378,7 @@ export class PerformanceDataProcessor {
         if (!distributionProcessor? .metrics) return distributions;
         
         for(const metricId of distributionProcessor.metrics) {
-        ';
+        ';'
             '';
             const values = data.map(point => point.metrics.get(metricId)')'';
                               .filter(val => typeof val === 'number') as number[];
@@ -405,7 +405,7 @@ export class PerformanceDataProcessor {
         if (!outliersProcessor? .metrics) return outliers;
         
         for(const metricId of outliersProcessor.metrics) {
-        ';
+        ';'
             '';
             const values = data.map(point => point.metrics.get(metricId)')'';
                               .filter(val => typeof val === 'number') as number[];
@@ -529,9 +529,9 @@ export class PerformanceDataProcessor {
     
     /**
      * Clear processing data
-     */'
+     */
     clearData(): void { this.trends.clear();''
-        this.statisticalData.clear('')';
+        this.statisticalData.clear()';
         console.log('[PerformanceDataProcessor] Processing data cleared'); }
     }
     
@@ -540,7 +540,7 @@ export class PerformanceDataProcessor {
      */
     destroy(): void { this.trends.clear();'
         this.statisticalData.clear();''
-        this.statisticalProcessors.clear('')';
+        this.statisticalProcessors.clear()';
         console.log('[PerformanceDataProcessor] Processor destroyed''); }'
     }''
 }

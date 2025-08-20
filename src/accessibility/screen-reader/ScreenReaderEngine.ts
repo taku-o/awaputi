@@ -8,7 +8,7 @@ interface EngineConfig { enabled: boolean,
     defaultReader: ReaderType,
     simulateDelay: boolean,
     verbosityLevel: 'off' | 'some' | 'most' | 'all' | 'standard',
-    supportedReaders: ReaderType[];
+    supportedReaders: ReaderType[]
     }
 }'
 '';
@@ -35,7 +35,7 @@ interface ScreenReaderDefinition { name: string,
     verbosityOptions: string[],';
     supportedLanguages: string[],'';
     platform: 'windows' | 'macos' | 'linux',
-    features: ScreenReaderFeatures;
+    features: ScreenReaderFeatures
     }
 }
 
@@ -43,23 +43,23 @@ interface SimulationState { running: boolean,
     currentReader: ReaderType,
     currentElement: Element | null,
     focusHistory: FocusHistoryEntry[],
-    readingPosition: number; }
+    readingPosition: number }
 }
 
 interface FocusHistoryEntry { element: Element,
     timestamp: number,
-    readerType: ReaderType;
+    readerType: ReaderType
     }
 }
 
 interface PerformanceMetrics { simulationTime: number[],
     averageElementProcessingTime: number,
-    totalElementsProcessed: number; }
+    totalElementsProcessed: number }
 }
 
 interface CompatibilityResult { compatible: boolean,
     issues: any[],
-    features: ScreenReaderFeatures;
+    features: ScreenReaderFeatures
     }
 }
 
@@ -70,30 +70,30 @@ interface Announcement { readerType: ReaderType,
     level?: number;
     role?: string;
     announcement: string,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface SimulationResults { compatibility: Map<ReaderType, CompatibilityResult>;
     issues: any[],
     announcements: Announcement[],
-    navigationTests: Map<string, any>; }
+    navigationTests: Map<string, any> }
 }
 
 interface SimulationResult { simulationTime: number,
     results: SimulationResults,
-    performance: PerformanceMetrics;
+    performance: PerformanceMetrics
     }
 }
 
 interface RoleAnnouncements { nvda: Record<string, string>;
     jaws: Record<string, string>;
-    voiceover: Record<string, string>; }
+    voiceover: Record<string, string> }
 }
 
 interface NavigationElements { links: NodeListOf<Element>,
     buttons: NodeListOf<Element>,
     formFields: NodeListOf<Element>,
-    graphics: NodeListOf<Element>;
+    graphics: NodeListOf<Element>
     }
 }
 
@@ -114,7 +114,7 @@ export class ScreenReaderEngine {
             ...config }
         };
 
-        // Screen reader configurations'
+        // Screen reader configurations
         this.screenReaders = { nvda: {''
                 name: 'NVDA','';
                 version: '2023.1',';
@@ -178,9 +178,9 @@ export class ScreenReaderEngine {
 
         // Results storage
         this.results = { compatibility: new Map(),
-            issues: [],';
+            issues: [],
             announcements: [],'';
-            navigationTests: new Map('')';
+            navigationTests: new Map()';
     async runFullSimulation(readerType: ReaderType | 'all' = 'all'): Promise<SimulationResult | null> {''
         if(this.simulationState.running') {'
             '';
@@ -189,7 +189,7 @@ export class ScreenReaderEngine {
             return null; }
         }'
 '';
-        const startTime = performance.now('')';
+        const startTime = performance.now()';
             const readers: ReaderType[] = readerType === 'all' ?   : undefined);
                 Object.keys(this.screenReaders) as ReaderType[] : [readerType];
 
@@ -207,9 +207,9 @@ export class ScreenReaderEngine {
             return { simulationTime,
                 results: this.results, };
                 performance: this.performance }
-            },'
+            },
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ScreenReaderEngine: Simulation error:', error);
             return null; }
         } finally { this.simulationState.running = false; }
@@ -242,7 +242,7 @@ export class ScreenReaderEngine {
         // Store compatibility results
         this.results.compatibility.set(readerType, { compatible: true)
             issues: [],);
-            features: reader.features); }
+            features: reader.features) }
     }
 
     /**
@@ -281,7 +281,7 @@ export class ScreenReaderEngine {
         for(const element of focusableElements) {
 
             // Simulate focus event
-            const focusAnnouncement = this.generateFocusAnnouncement(element, readerType);'
+            const focusAnnouncement = this.generateFocusAnnouncement(element, readerType);
             '';
             if (focusAnnouncement') {
                 this.results.announcements.push({'
@@ -315,11 +315,11 @@ export class ScreenReaderEngine {
         
         // Simulate heading navigation
         await this.simulateHeadingNavigation(readerType);
-        ';
-        // Simulate landmark navigation''
+        ;
+        // Simulate landmark navigation
         await this.simulateLandmarkNavigation(readerType');
 ';
-        // Test quick navigation keys''
+        // Test quick navigation keys
         if(readerType === 'nvda' || readerType === 'jaws') {
             
         }
@@ -334,7 +334,7 @@ export class ScreenReaderEngine {
         const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6, [role="heading"]');
         
         for(const heading of headings) {
-        ';
+        ';'
             '';
             const announcement = this.generateHeadingAnnouncement(heading, readerType');
             
@@ -357,7 +357,7 @@ export class ScreenReaderEngine {
             '[role="banner"], [role="navigation"], [role="main"], [role="complementary"], [role="contentinfo"], nav, main, header, footer, aside');
         
         for(const landmark of landmarks) {
-        ';
+        ';'
             '';
             const announcement = this.generateLandmarkAnnouncement(landmark, readerType');
             
@@ -380,11 +380,11 @@ export class ScreenReaderEngine {
             links: document.querySelectorAll('a[href]''),'';
             buttons: document.querySelectorAll('button''),'';
             formFields: document.querySelectorAll('input, textarea, select''),'';
-            graphics: document.querySelectorAll('img, svg, canvas'); }
+            graphics: document.querySelectorAll('img, svg, canvas') }
         };
 
         for(const [type, elements] of Object.entries(navigationElements) {
-';
+';'
             for (const element of elements) {''
                 const announcement = this.generateQuickNavAnnouncement(element, type, readerType');
                 
@@ -409,7 +409,7 @@ export class ScreenReaderEngine {
         const elements = document.querySelectorAll(selector);
         
         return Array.from(elements).filter(element => {  )'
-            // Filter out hidden elements);''
+            // Filter out hidden elements);
             const styles = window.getComputedStyle(element');''
             return styles.display !== 'none' && '';
                    styles.visibility !== 'hidden' &&  }
@@ -420,10 +420,10 @@ export class ScreenReaderEngine {
     /**
      * Get focusable elements'
      */ : undefined''
-    private getFocusableElements('')';
+    private getFocusableElements()';
         const selector = 'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"]")';
         const elements = document.querySelectorAll(selector);
-        ';
+        ';'
         return Array.from(elements).filter(element => {  );''
             const styles = window.getComputedStyle(element');''
             return styles.display !== 'none' && '';
@@ -438,10 +438,10 @@ export class ScreenReaderEngine {
     private generateAnnouncement(element: Element, readerType: ReaderType'): string { const reader = this.screenReaders[readerType];''
         let announcement = '';
 
-        // Get accessible name'
+        // Get accessible name
         const accessibleName = this.getAccessibleName(element);''
         if(accessibleName') {'
-            ';
+            ';'
         }'
             announcement += accessibleName + ' '; }
         }
@@ -449,15 +449,15 @@ export class ScreenReaderEngine {
         // Get role information
         const role = this.getElementRole(element);
         if(role) {'
-            ';
+            ';'
         }'
             announcement += this.getRoleAnnouncement(role, readerType') + ' '; }
         }
-
-        // Get state information'
+'
+        // Get state information
         const states = this.getElementStates(element);''
         if(states.length > 0') {'
-            ';
+            ';'
         }'
             announcement += states.join(', '') + ' '; }
         }
@@ -472,7 +472,7 @@ export class ScreenReaderEngine {
     private generateFocusAnnouncement(element: Element, readerType: ReaderType): string { ''
         let announcement = this.generateAnnouncement(element, readerType');
         ';
-        // Add focus-specific information''
+        // Add focus-specific information
         if(element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
             const value = (element as HTMLInputElement).value;
         }
@@ -520,27 +520,27 @@ export class ScreenReaderEngine {
     /**
      * Get accessible name for element'
      */''
-    private getAccessibleName(element: Element'): string { // aria-label takes precedence''
+    private getAccessibleName(element: Element'): string { // aria-label takes precedence
         if (element.hasAttribute('aria-label')') {''
             return element.getAttribute('aria-label'') || ''; }
         }
 ';
-        // aria-labelledby''
+        // aria-labelledby
         if (element.hasAttribute('aria-labelledby')') { ''
-            const labelIds = element.getAttribute('aria-labelledby'')? .split(' ') || [];
+            const labelIds = element.getAttribute('aria-labelledby'')? .split(' ') || [];'
             const labels = labelIds.map(id => { );'
                 const labelElement = document.getElementById(id); : undefined' }'
                 return labelElement ? labelElement.textContent?.trim(') : ''; }
             }).filter(Boolean);'
             '';
             if(labels.length > 0') {'
-                ';
+                ';'
             }'
                 return labels.join(' ''); }
             }
         }
 ';
-        // For form elements, check associated label''
+        // For form elements, check associated label
         if(element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT'') {'
             '';
             const label = document.querySelector(`label[for="${element.id")"]`);
@@ -550,14 +550,14 @@ export class ScreenReaderEngine {
             }
         }
 ';
-        // For images, use alt text''
+        // For images, use alt text
         if(element.tagName === 'IMG'') {'
-            ';
+            ';'
         }'
             return element.getAttribute('alt'') || 'image'; }
         }
 ';
-        // Use text content as fallback''
+        // Use text content as fallback
         return element.textContent?.trim(') || '';
     }
 
@@ -689,7 +689,7 @@ export class ScreenReaderEngine {
      */ : undefined''
     private getHeadingLevel(heading: Element'): number { ''
         if(['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(heading.tagName) {'
-            ';
+            ';'
         }'
             return parseInt(heading.tagName.charAt(1)'); }
         }'
@@ -705,18 +705,18 @@ export class ScreenReaderEngine {
      * Adjust announcement for specific reader
      */
     private adjustAnnouncementForReader(announcement: string, readerType: ReaderType): string { const reader = this.screenReaders[readerType];
-        ';
-        // Apply reader-specific adjustments''
+        ;
+        // Apply reader-specific adjustments
         switch(readerType') {'
             '';
             case 'nvda':;
-                // NVDA tends to be more verbose'
+                // NVDA tends to be more verbose
                 return announcement;''
             case 'jaws':';
-                // JAWS has different punctuation handling''
+                // JAWS has different punctuation handling
                 return announcement.replace(/,/g, ', '');''
             case 'voiceover':;
-                // VoiceOver uses different terminology'
+                // VoiceOver uses different terminology
                 return announcement'';
                     .replace('edit', 'text field'')'';
                     .replace('combo box', 'pop up button');
@@ -730,7 +730,7 @@ export class ScreenReaderEngine {
      */'
     private async simulateReadingDelay(text: string, speechRate: number): Promise<void> { ''
         if (!this.config.simulateDelay') return;
-';
+';'
         const wordsPerMinute = speechRate;''
         const words = text.split(' ').length;
         const readingTimeMs = (words / wordsPerMinute) * 60 * 1000;
@@ -757,7 +757,7 @@ export class ScreenReaderEngine {
      */
     getSimulationResults(): { results: SimulationResults,
         performance: PerformanceMetrics,
-        state: SimulationState;
+        state: SimulationState
     }
     } { return { results: this.results,
             performance: this.performance, };
@@ -772,7 +772,7 @@ export class ScreenReaderEngine {
             compatibility: new Map(),
             issues: [],
             announcements: [],
-            navigationTests: new Map(); }
+            navigationTests: new Map() }
         };
         this.performance = { simulationTime: [],
             averageElementProcessingTime: 0,

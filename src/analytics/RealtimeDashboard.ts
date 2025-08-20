@@ -121,7 +121,7 @@ export class RealtimeDashboard {
                 border-bottom: 1px solid ${this.options.theme === 'dark' ? '#333' : '#ddd'}
             }
             .dashboard-controls { display: flex,
-                gap: 10px; }
+                gap: 10px }
             }'
             .control-btn { padding: 8px 16px,' }'
                 background: ${this.options.theme === 'dark' ? '#2196f3' : '#4caf50'},
@@ -131,7 +131,7 @@ export class RealtimeDashboard {
                 cursor: pointer,
                 transition: background 0.3s,
             }
-            .control-btn:hover { opacity: 0.9; }
+            .control-btn:hover { opacity: 0.9 }
             }'
             .control-btn.active { ' }'
                 background: ${this.options.theme === 'dark' ? '#f44336' : '#ff9800'},
@@ -228,7 +228,7 @@ export class RealtimeDashboard {
                 }
             })
         })'
-        // FPSチャート''
+        // FPSチャート
         if(this.options.enableFPS') {'
             '';
             const fpsCanvas = document.getElementById('fps-chart');''
@@ -265,7 +265,7 @@ export class RealtimeDashboard {
             }
         }
 ';
-        // メモリチャート''
+        // メモリチャート
         if(this.options.enableMemory') {'
             '';
             const memoryCanvas = document.getElementById('memory-chart');''
@@ -302,7 +302,7 @@ export class RealtimeDashboard {
             }
         }
 ';
-        // エラーチャート''
+        // エラーチャート
         if(this.options.enableErrors') {'
             '';
             const errorsCanvas = document.getElementById('errors-chart');''
@@ -334,7 +334,7 @@ export class RealtimeDashboard {
             }
         }
 ';
-        // レイテンシチャート''
+        // レイテンシチャート
         if(this.options.enableLatency') {'
             '';
             const latencyCanvas = document.getElementById('latency-chart');''
@@ -373,7 +373,7 @@ export class RealtimeDashboard {
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         const toggleBtn = document.getElementById('toggle-monitoring');''
         if(toggleBtn') {'
             '';
@@ -384,34 +384,34 @@ export class RealtimeDashboard {
                     toggleBtn.textContent = '監視開始';') }'
                     toggleBtn.classList.remove('active'); }'
                 } else {  ''
-                    this.startUpdates('')';
+                    this.startUpdates()';
                     toggleBtn.textContent = '監視停止';') }'
                     toggleBtn.classList.add('active'); }'
                 }''
             }');
         }
 ';
-        // データクリアボタン''
+        // データクリアボタン
         const clearBtn = document.getElementById('clear-data');''
         if(clearBtn') {'
-            ';
+            ';'
         }'
             clearBtn.addEventListener('click', () => {  }'
                 this.clearHistory();' }'
             }');
         }
 ';
-        // エクスポートボタン''
+        // エクスポートボタン
         const exportBtn = document.getElementById('export-data');''
         if(exportBtn') {'
-            ';
+            ';'
         }'
             exportBtn.addEventListener('click', () => {  }'
                 this.exportData();' }'
             }');
         }
 ';
-        // リアルタイムアラートリスナー''
+        // リアルタイムアラートリスナー
         window.addEventListener('realtime-alert', (event) => { this.displayAlert(event.detail); }
         });
     }
@@ -485,46 +485,46 @@ export class RealtimeDashboard {
     }
 
     /**
-     * チャートの更新'
+     * チャートの更新
      */''
-    updateCharts('')';
+    updateCharts()';
         const fpsChart = this.charts.get('fps');
         if(fpsChart) {
             fpsChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({ : undefined
-                x: time);
+                x: time)
         }'
                 y: this.dataHistory.fps[i]' }'
             }');''
             fpsChart.update('none'');
         }
 ';
-        // メモリチャート更新''
+        // メモリチャート更新
         const memoryChart = this.charts.get('memory');
         if(memoryChart) {
             memoryChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
-                x: time);
+                x: time)
         }'
                 y: this.dataHistory.memory[i]' }'
             }');''
             memoryChart.update('none'');
         }
 ';
-        // エラーチャート更新''
+        // エラーチャート更新
         const errorsChart = this.charts.get('errors');
         if(errorsChart) {
             errorsChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
-                x: time);
+                x: time)
         }'
                 y: this.dataHistory.errors[i]' }'
             }');''
             errorsChart.update('none'');
         }
 ';
-        // レイテンシチャート更新''
+        // レイテンシチャート更新
         const latencyChart = this.charts.get('latency');
         if(latencyChart) {
             latencyChart.data.datasets[0].data = this.dataHistory.timestamps.map((time, i) => ({
-                x: time);
+                x: time)
         }'
                 y: this.dataHistory.latency[i]' }'
             }');''
@@ -536,7 +536,7 @@ export class RealtimeDashboard {
      * 統計情報の更新
      */
     updateStats() {'
-        // FPS統計''
+        // FPS統計
         if (this.options.enableFPS') {''
             const fpsStats = document.getElementById('fps-stats');
             if (fpsStats) {
@@ -555,7 +555,7 @@ export class RealtimeDashboard {
             }
         }
 ';
-        // メモリ統計''
+        // メモリ統計
         if(this.options.enableMemory') {'
             '';
             const memoryStats = document.getElementById('memory-stats');
@@ -571,7 +571,7 @@ export class RealtimeDashboard {
             }
         }
 ';
-        // エラー統計''
+        // エラー統計
         if(this.options.enableErrors') {'
             '';
             const errorsStats = document.getElementById('errors-stats');
@@ -587,7 +587,7 @@ export class RealtimeDashboard {
             }
         }
 ';
-        // レイテンシ統計''
+        // レイテンシ統計
         if(this.options.enableLatency') {'
             '';
             const latencyStats = document.getElementById('latency-stats');
@@ -611,7 +611,7 @@ export class RealtimeDashboard {
         '';
         const alertsContainer = document.getElementById('alerts-container');''
         if (!alertsContainer') return;'
-';
+';'
     }'
         const alertItem = document.createElement('div''); }
         alertItem.className = `alert-item ${alert.severity}`;'
@@ -674,7 +674,7 @@ export class RealtimeDashboard {
         // アラートもクリア""
         const alertsContainer = document.getElementById('alerts-container');''
         if(alertsContainer') {'
-            ';
+            ';'
         }'
             alertsContainer.innerHTML = ''; }
         }
@@ -699,18 +699,18 @@ export class RealtimeDashboard {
             statistics: { fps: {
                     average: this.calculateAverage(this.dataHistory.fps),
                     min: Math.min(...this.dataHistory.fps.filter(v => v > 0),
-                    max: Math.max(...this.dataHistory.fps); }
+                    max: Math.max(...this.dataHistory.fps) }
                 },
                 memory: { average: this.calculateAverage(this.dataHistory.memory),
                     min: Math.min(...this.dataHistory.memory),
-                    max: Math.max(...this.dataHistory.memory); }
+                    max: Math.max(...this.dataHistory.memory) }
                 },
                 errors: { total: this.dataHistory.errors[this.dataHistory.errors.length - 1] || 0,
-                    rate: this.calculateErrorRate(); }
+                    rate: this.calculateErrorRate() }
                 },
                 latency: { average: this.calculateAverage(this.dataHistory.latency),
                     min: Math.min(...this.dataHistory.latency.filter(v => v > 0),
-                    max: Math.max(...this.dataHistory.latency); }
+                    max: Math.max(...this.dataHistory.latency) }
                 }
             }
         };'
@@ -737,14 +737,14 @@ export class RealtimeDashboard {
         // チャートの破棄
     }
         this.charts.forEach(chart => { ); }
-            chart.destroy(); }'
+            chart.destroy(); }
         });''
-        this.charts.clear('')';
+        this.charts.clear()';
         window.removeEventListener('realtime-alert', this.displayAlert);
         ';
-        // DOM要素のクリア''
+        // DOM要素のクリア
         if(this.container') {'
-            ';
+            ';'
         }'
             this.container.innerHTML = ''; }
         }'

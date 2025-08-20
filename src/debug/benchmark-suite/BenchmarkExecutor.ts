@@ -8,7 +8,7 @@ import { getErrorHandler } from '../../core/ErrorHandler.js';
 interface ExecutionConfig { defaultTimeout: number,
     maxConcurrentBenchmarks: number,
     retryAttempts: number,
-    warmupIterations: number; }
+    warmupIterations: number }
 }
 
 interface Benchmark { name: string,
@@ -30,19 +30,19 @@ interface ExecutionSession { name: string,
     startTime: number,
     sessionId: number,
     attempts: number,
-    maxAttempts: number; }
+    maxAttempts: number }
 }
 
 interface PerformanceEntry { name: string,
     entryType: string,
     startTime: number,
-    duration: number; }
+    duration: number }
 }
 
 interface BenchmarkResult { success?: boolean;
     error?: {
         message: string,
-        stack?: string; }
+        stack?: string }
     };
     benchmark: Benchmark,
     timestamp: number,
@@ -57,7 +57,7 @@ interface BenchmarkResult { success?: boolean;
     opsPerSecond?: number;
     memoryUsage?: { before: number,
         after: number,
-        delta: number; }
+        delta: number }
     };
 }
 
@@ -65,7 +65,7 @@ interface ExecutionHistoryEntry { name: string,
     timestamp: number,
     success: boolean,
     executionTime: number,
-    attempts: number; }
+    attempts: number }
 }
 
 interface BenchmarkSuite { gameEngine?: {
@@ -74,7 +74,7 @@ interface BenchmarkSuite { gameEngine?: {
     };
 }
 
-interface ErrorHandler { handleError(error: Error, context: any): void; }
+interface ErrorHandler { handleError(error: Error, context: any): void }
 }
 
 export class BenchmarkExecutor {
@@ -86,7 +86,7 @@ export class BenchmarkExecutor {
     private executionQueue: any[] = [];
     private executionHistory: ExecutionHistoryEntry[] = [];
     constructor(benchmarkSuite: BenchmarkSuite) {
-';
+';'
         this.benchmarkSuite = benchmarkSuite;''
         this.errorHandler = getErrorHandler('';
     }
@@ -148,11 +148,11 @@ export class BenchmarkExecutor {
                 attempts: executionSession.attempts }
             }),
             
-            return finalResult;'
+            return finalResult;
             '';
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
                 context: 'BenchmarkExecutor.executeBenchmark',);
-                benchmarkName: name); }
+                benchmarkName: name) }
             });
             
             return { success: false,
@@ -185,17 +185,17 @@ export class BenchmarkExecutor {
             }
             if (performance.clearMeasures) { performance.clearMeasures(); }
             }
-            ';
-            // Setup performance markers''
+            ;
+            // Setup performance markers
             performance.mark(`benchmark-${ name)-setup-start`');
             ';
-            // Configure execution environment based on benchmark category''
+            // Configure execution environment based on benchmark category
             if(benchmark.category === 'memory') {
-                // Force garbage collection if available'
+                // Force garbage collection if available
                 if ((window as any).gc) {''
-                    (window as any).gc('')';
+                    (window as any).gc()';
             if (benchmark.category === 'rendering') {
-                // Ensure canvas context is available'
+                // Ensure canvas context is available
                 const canvas = this.benchmarkSuite.gameEngine? .canvas;''
                 if (canvas') {''
                     const ctx = canvas.getContext('2d');
@@ -208,7 +208,7 @@ export class BenchmarkExecutor {
             
             performance.mark(`benchmark-${name)-setup-end`});
             performance.measure(;
-                `benchmark-${name}-setup`,)
+                `benchmark-${name}-setup`)
                 `benchmark-${name}-setup-start`)
                 `benchmark-${ name)-setup-end` }
             });
@@ -239,7 +239,7 @@ export class BenchmarkExecutor {
             
             performance.mark(`benchmark-${name)-warmup-end`});
             performance.measure(;
-                `benchmark-${name}-warmup`,)
+                `benchmark-${name}-warmup`)
                 `benchmark-${name}-warmup-start`)
                 `benchmark-${ name)-warmup-end` }
             });
@@ -319,7 +319,7 @@ export class BenchmarkExecutor {
         
         performance.mark(`benchmark-${name)-execution-end`});
         performance.measure(;
-            `benchmark-${name}-execution`,)
+            `benchmark-${name}-execution`)
             `benchmark-${name}-execution-start`)
             `benchmark-${ name)-execution-end`
         );
@@ -369,12 +369,12 @@ export class BenchmarkExecutor {
     }
     
     /**
-     * Collect performance entries'
+     * Collect performance entries
      */''
     private collectPerformanceEntries(benchmarkName: string'): PerformanceEntry[] { try {
             const entries: PerformanceEntry[] = [],
             ';
-            // Get all performance entries related to this benchmark''
+            // Get all performance entries related to this benchmark
             const measures = performance.getEntriesByType('measure')'';
                 .filter(entry => entry.name.includes(benchmarkName)');'
             '';
@@ -382,20 +382,20 @@ export class BenchmarkExecutor {
                 .filter(entry => entry.name.includes(benchmarkName);
             
             entries.push(...measures.map(entry => ({
-                name: entry.name,);
+                name: entry.name);
                 entryType: entry.entryType);
                 startTime: entry.startTime,);
                 duration: entry.duration))),
             
             entries.push(...marks.map(entry => ({
-                name: entry.name,);
+                name: entry.name);
                 entryType: entry.entryType);
                 startTime: entry.startTime,);
                 duration: 0))),
             
             return entries;'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[BenchmarkExecutor] Failed to collect performance entries:', error);
             return []; }
         }
@@ -419,7 +419,7 @@ export class BenchmarkExecutor {
             
             performance.mark(`benchmark-${name)-cleanup-end`});
             performance.measure(;
-                `benchmark-${name}-cleanup`,)
+                `benchmark-${name}-cleanup`)
                 `benchmark-${name}-cleanup-start`)
                 `benchmark-${ name)-cleanup-end` }
             });
@@ -466,11 +466,11 @@ export class BenchmarkExecutor {
         successfulExecutions: number,
         failedExecutions: number,
         averageExecutionTime: number,
-        successRate: number; }
+        successRate: number }
     } { const total = this.executionHistory.length;
         const successful = this.executionHistory.filter(entry => entry.success).length;
         const failed = total - successful;
-        const totalTime = this.executionHistory.reduce((sum, entry) => sum + entry.executionTime, 0);'
+        const totalTime = this.executionHistory.reduce((sum, entry) => sum + entry.executionTime, 0);
         const averageTime = total > 0 ? totalTime / total: 0,'';
         const successRate = total > 0 ? (successful / total') * 100 : 0;
         

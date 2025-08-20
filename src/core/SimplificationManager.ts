@@ -21,7 +21,7 @@ export class SimplificationManager {
         
         // サブコンポーネントを初期化
         this.modeController = new SimplificationModeController();
-        this.complexityAnalyzer = new UIComplexityAnalyzer();'
+        this.complexityAnalyzer = new UIComplexityAnalyzer();
         this.interfaceSimplifier = new InterfaceSimplifier();''
         this.adaptiveEngine = new AdaptiveSimplificationEngine(''';
             defaultMode: 'standard',
@@ -45,13 +45,13 @@ export class SimplificationManager {
     }
 
     /**
-     * イベントリスナーを設定'
+     * イベントリスナーを設定
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         document.addEventListener('simplificationAdaptation', (e) => { this.handleAdaptiveRecommendation(e.detail);' }'
         }');
 ';
-        // 複雑度変化イベント''
+        // 複雑度変化イベント
         document.addEventListener('complexityChanged', (e) => { this.handleComplexityChange(e.detail); }
         });
     }
@@ -75,12 +75,12 @@ export class SimplificationManager {
             
             // 保存された設定を読み込み
             this.modeController.loadFromStorage();
-            ';
-            // 初期複雑度分析''
-            this.complexityAnalyzer.analyzeComplexity('')';
+            ;
+            // 初期複雑度分析
+            this.complexityAnalyzer.analyzeComplexity()';
             this.logEvent('initialized', { config: this.config ),'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('SimplificationManager initialization failed:', error');
             throw error; }
         }
@@ -97,18 +97,18 @@ export class SimplificationManager {
             this.applySimplification(modeConfig.level, {)
                 ...modeConfig.combined.settings,);
                 reason);
-            ';
-            // 設定を保存''
+            ;
+            // 設定を保存
             this.modeController.saveToStorage(''';
             this.logEvent('mode_changed', { )
                 newMode);
                 reason, );
                 complexity: modeConfig.combined.complexity ),
             
-            return modeConfig;
+            return modeConfig
     }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to change mode:', error');
             throw error; }
         }
@@ -130,7 +130,7 @@ export class SimplificationManager {
             return customMode;
     }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to change level:', error);
             throw error; }
         }
@@ -154,7 +154,7 @@ export class SimplificationManager {
             
                 this.state.currentSimplification = {
                     id: result.id,
-                    level,';
+                    level,;
                     options,'';
                     timestamp: Date.now(''';
                 this.logEvent('simplification_applied', {)
@@ -165,7 +165,7 @@ export class SimplificationManager {
             }
                 return result; }'
             } else { throw new Error(result.error);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to apply simplification:', error);
             throw error; }
         }
@@ -186,7 +186,7 @@ export class SimplificationManager {
             }
                 return result; }'
             } else { throw new Error(result.error);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to revert simplification:', error);
             throw error; }
         }
@@ -215,7 +215,7 @@ export class SimplificationManager {
     }
 
     /**
-     * 複雑度推奨を処理'
+     * 複雑度推奨を処理
      */''
     handleComplexityRecommendations(recommendations') {'
         '';
@@ -224,7 +224,7 @@ export class SimplificationManager {
         if (highPriorityRecommendations.length > 0) {
             // 自動的により高い簡素化レベルを推奨
             const currentLevel = this.modeController.currentLevel;
-            const nextLevel = this.getNextSimplificationLevel(currentLevel);'
+            const nextLevel = this.getNextSimplificationLevel(currentLevel);
             '';
             if (nextLevel') {'
     }'
@@ -267,7 +267,7 @@ export class SimplificationManager {
     }
 
     /**
-     * ユーザーに推奨を通知'
+     * ユーザーに推奨を通知
      */''
     notifyUserOfRecommendation(recommendation') {'
         '';
@@ -315,8 +315,8 @@ export class SimplificationManager {
         }
         
         // 適応エンジンに反映
-        if(preferences.adaptiveSettings) {'
-            ';
+        if(preferences.adaptiveSettings) {
+            ';'
         }'
             this.adaptiveEngine.updateAdaptationSettings(preferences.adaptiveSettings'); }
         }'
@@ -333,9 +333,9 @@ export class SimplificationManager {
         if (enabled) {
             // 複雑度分析の自動実行を開始
     }
-            this.startAutoAnalysis(criteria); }'
+            this.startAutoAnalysis(criteria); }
         } else {  ''
-            this.stopAutoAnalysis('') }'
+            this.stopAutoAnalysis() }'
         this.logEvent('auto_simplification_toggled', { enabled, criteria ); }
     }
 
@@ -406,7 +406,7 @@ export class SimplificationManager {
     /**
      * エラーを報告
      */
-    reportError(error, context = { ) {'
+    reportError(error, context = { ) {
         '';
         this.adaptiveEngine.recordError(error');'
     }'
@@ -437,7 +437,7 @@ export class SimplificationManager {
      */
     saveSettings() {'
         '';
-        this.modeController.saveToStorage('');
+        this.modeController.saveToStorage();
     }'
         localStorage.setItem('bubblePop_simplificationSettings', JSON.stringify(settingsData); }
     }
@@ -445,7 +445,7 @@ export class SimplificationManager {
     /**
      * 設定を読み込み'
      */''
-    loadSettings('')';
+    loadSettings()';
             const stored = localStorage.getItem('bubblePop_simplificationSettings');
             if(stored) {
                 const data = JSON.parse(stored);
@@ -459,10 +459,10 @@ export class SimplificationManager {
                         ...data.sessionMetrics,
             }
                         startTime: Date.now() // 新しいセッション }
-                    },'
+                    },
                 }''
-            } catch (error') { ''
-            console.error('Failed to load settings:', error); }
+            } catch (error) { ''
+            console.error('Failed to load settings:', error) }
         }
     }
 
@@ -482,7 +482,7 @@ export class SimplificationManager {
             activeAdaptations: [], })
             userPreferences: {})'
             sessionMetrics: { ''
-                startTime: Date.now('')';
+                startTime: Date.now()';
         localStorage.removeItem('bubblePop_simplificationSettings'');''
         this.logEvent('settings_reset'); }
     }
@@ -497,11 +497,11 @@ export class SimplificationManager {
             console.log(`[SimplificationManager] ${type):`, data});
         }
         ';
-        // アナリティクスに送信（実装されている場合）''
+        // アナリティクスに送信（実装されている場合）
         if(window.gameAnalytics && window.gameAnalytics.trackEvent') {'
             '';
             window.gameAnalytics.trackEvent('simplification', {)
-                event_type: type,);
+                event_type: type,)
         }
                 ...data); }
         }

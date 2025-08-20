@@ -48,7 +48,7 @@ export class AnalyticsPerformanceMonitor {
         const measureFPS = () => { 
             this.frameCount++;
             const currentTime = performance.now();
-            ';
+            ';'
             if (currentTime - this.lastFPSTime >= 1000) {''
                 this.performanceMetrics.fps = Math.round(this.frameCount * 1000 / (currentTime - this.lastFPSTime)');
                 this.frameCount = 0;
@@ -77,7 +77,7 @@ export class AnalyticsPerformanceMonitor {
                     limit: performance.memory.jsHeapSizeLimit }
                 },
                 ';
-                // メモリ使用量履歴に追加''
+                // メモリ使用量履歴に追加
                 this.addToHistory('memory', this.performanceMetrics.memoryUsage);
             }, 10000); // 10秒間隔
         }
@@ -110,11 +110,11 @@ export class AnalyticsPerformanceMonitor {
      */
     checkPerformanceWarnings(metrics) {
         const warnings = [];
-        ';
-        // FPS警告''
+        ;
+        // FPS警告
         if (metrics.fps < 30') {'
             warnings.push({''
-                type: 'low_fps',';
+                type: 'low_fps','
     }'
                 severity: 'high', })
                 message: `Low FPS detected: ${metrics.fps}`,)'
@@ -128,11 +128,11 @@ export class AnalyticsPerformanceMonitor {
         
         // メモリ使用量警告
         if(metrics.memoryUsage) {
-            const memoryUsageRatio = metrics.memoryUsage.used / metrics.memoryUsage.limit;'
+            const memoryUsageRatio = metrics.memoryUsage.used / metrics.memoryUsage.limit;
             '';
             if (memoryUsageRatio > 0.8') {'
                 warnings.push({')'
-                    type: 'high_memory_usage',');
+                    type: 'high_memory_usage',')
         }'
                     severity: 'high'), }
                     message: `High memory usage: ${(memoryUsageRatio * 100).toFixed(1})}%`,
@@ -147,10 +147,10 @@ export class AnalyticsPerformanceMonitor {
             }
         }
         ';
-        // エラー数警告''
+        // エラー数警告
         if(metrics.errorCount > 10') {'
             warnings.push({''
-                type: 'high_error_count',';
+                type: 'high_error_count','
         }'
                 severity: 'high', })
                 message: `High error count: ${metrics.errorCount}`,)
@@ -191,9 +191,9 @@ export class AnalyticsPerformanceMonitor {
     
     /**
      * FPS統計の取得
-     * @returns {Object}'
+     * @returns {Object}
      */''
-    getFPSStats('')';
+    getFPSStats()';
             .filter(entry => entry.type === 'fps');
             .map(entry => entry.value);
         
@@ -218,7 +218,7 @@ export class AnalyticsPerformanceMonitor {
      * メモリ統計の取得
      * @returns {Object}'
      */''
-    getMemoryStats('')';
+    getMemoryStats()';
             .filter(entry => entry.type === 'memory');
             .map(entry => entry.value);
         
@@ -240,10 +240,10 @@ export class AnalyticsPerformanceMonitor {
                 usagePercent: (this.performanceMetrics.memoryUsage.used / this.performanceMetrics.memoryUsage.limit * 100).toFixed(1); }
             },
             average: { used: Math.round(avgUsed),
-                usagePercent: ((avgUsed / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1); }
+                usagePercent: ((avgUsed / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1) }
             },
             peak: { used: Math.max(...usedMemoryHistory),
-                usagePercent: ((Math.max(...usedMemoryHistory) / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1); }
+                usagePercent: ((Math.max(...usedMemoryHistory) / this.performanceMetrics.memoryUsage.limit) * 100).toFixed(1) }
             }
         };
     }
@@ -254,7 +254,7 @@ export class AnalyticsPerformanceMonitor {
      */
     generatePerformanceReport() {'
         const fpsStats = this.getFPSStats();''
-        const memoryStats = this.getMemoryStats('')';
+        const memoryStats = this.getMemoryStats()';
             .filter(entry => entry.type === 'warning' && Date.now() - entry.timestamp < 5 * 60 * 1000);
             .map(entry => entry.value);
         
@@ -267,7 +267,7 @@ export class AnalyticsPerformanceMonitor {
                 rate: this.calculateErrorRate(); }
             },
             warnings: { recent: recentWarnings,
-                summary: this.summarizeWarnings(recentWarnings); }
+                summary: this.summarizeWarnings(recentWarnings) }
             },
             health: this.calculateHealthScore(fpsStats, memoryStats);
         };
@@ -316,7 +316,7 @@ export class AnalyticsPerformanceMonitor {
         let score = 100;
         let factors = [];
         ';
-        // FPSファクター''
+        // FPSファクター
         if (fpsStats.average < 30') {'
             score -= 30;'
     }'
@@ -332,7 +332,7 @@ export class AnalyticsPerformanceMonitor {
         }
         
         // メモリファクター
-        if(memoryStats.current) {'
+        if(memoryStats.current) {
             const currentUsage = parseFloat(memoryStats.current.usagePercent);''
             if (currentUsage > 80') {'
                 score -= 25;'
@@ -343,7 +343,7 @@ export class AnalyticsPerformanceMonitor {
             }
         }
         ';
-        // エラーファクター''
+        // エラーファクター
         if(this.performanceMetrics.errorCount > 10') {'
             score -= 15;'
         }'
@@ -397,7 +397,7 @@ export class AnalyticsPerformanceMonitor {
         }
         
         if(this.memoryIntervalId) {
-        ';
+        ';'
             '';
             clearInterval(this.memoryIntervalId');
         

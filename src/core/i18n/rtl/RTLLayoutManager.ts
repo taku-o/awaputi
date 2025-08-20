@@ -6,13 +6,13 @@ interface LayoutSettings { autoFlipEnabled: boolean,
     preserveImageOrientation: boolean,
     handleScrollbars: boolean,
     adaptAnimations: boolean,
-    responsiveBreakpoints: ResponsiveBreakpoints;
+    responsiveBreakpoints: ResponsiveBreakpoints
     }
 }
 
 interface ResponsiveBreakpoints { mobile: number,
     tablet: number,
-    desktop: number; }
+    desktop: number }
 }
 
 interface ComponentSettings { flipHorizontal: boolean,
@@ -20,12 +20,12 @@ interface ComponentSettings { flipHorizontal: boolean,
     adaptAnimations: boolean, }
     customRules: { [selector: string]: string }
 }
-';
+';'
 interface CurrentLayout { ''
     direction: 'ltr' | 'rtl',
     language: string | null,
     appliedElements: WeakSet<HTMLElement>,
-    styleSheet: HTMLStyleElement | null; }
+    styleSheet: HTMLStyleElement | null }
 }
 
 interface ApplyRTLOptions { componentType?: string;
@@ -45,21 +45,21 @@ interface AnimationKeyframes { [percentage: string]: {
         [property: string]: string | number, }
     };
 }
-';
+';'
 interface LayoutChangeEventDetail { ''
     newDirection: 'ltr' | 'rtl','';
     oldDirection: 'ltr' | 'rtl',
     language: string | null,
-    timestamp: string; }
+    timestamp: string }
 }
-';
+';'
 interface LayoutStats { ''
     currentDirection: 'ltr' | 'rtl',
     currentLanguage: string | null,
     appliedElementsCount: string | number,
     supportedComponents: number,
     flipProperties: number,
-    preserveProperties: number; }
+    preserveProperties: number }
 }
 
 /**
@@ -73,7 +73,7 @@ export class RTLLayoutManager {
     private componentSettings: Map<string, ComponentSettings>;
     private currentLayout: CurrentLayout;
     constructor() {
-';
+';'
         '';
         this.rtlDetector = getRTLLanguageDetector(''';
             ['left', 'right'],'';
@@ -102,7 +102,7 @@ export class RTLLayoutManager {
             ['clear: right', 'clear: left']')';
         ]');
         
-        // 反転しないプロパティ（例外）'
+        // 反転しないプロパティ（例外）
         this.preserveProperties = new Set(['';
             'width','';
             'height','';
@@ -116,14 +116,14 @@ export class RTLLayoutManager {
             'opacity''])';
         ]');
         
-        // RTL固有のコンポーネント設定'
+        // RTL固有のコンポーネント設定
         this.componentSettings = new Map(['';
             ['menu', {
                 flipHorizontal: true,
                 preserveIcons: true,
                 adaptAnimations: true,';
                 customRules: {''
-                    'dropdown': 'flip-origin',';
+                    'dropdown': 'flip-origin','
     }
     }'
                     'tooltip': 'flip-position' }]
@@ -146,7 +146,7 @@ export class RTLLayoutManager {
                 }]'
             }],''
             ['dialog', { flipHorizontal: true,
-                preserveIcons: true,);
+                preserveIcons: true);
                 adaptAnimations: true)';
                 customRules: {''
                     'close-button': 'flip-position','';
@@ -155,18 +155,18 @@ export class RTLLayoutManager {
             )]'';
         ]');
         
-        // 現在のレイアウト状態'
+        // 現在のレイアウト状態
         this.currentLayout = { ''
             direction: 'ltr',';
             language: null,'';
-            appliedElements: new WeakSet('')';
+            appliedElements: new WeakSet()';
         console.log('RTLLayoutManager initialized''), }
     }
     
     /**
      * レイアウト方向を設定'
      */''
-    setLayoutDirection(direction: 'ltr' | 'rtl', language: string | null = null'): boolean { try {''
+    setLayoutDirection(direction: 'ltr' | 'rtl', language: string | null = null'): boolean { try {'
             if (direction !== 'ltr' && direction !== 'rtl') { }
                 throw new Error(`Invalid layout direction: ${direction)`});
             }
@@ -180,17 +180,17 @@ export class RTLLayoutManager {
             
             // 動的スタイルシートを更新
             this.updateDynamicStyleSheet(direction, language);
-            ';
-            // レイアウト変更イベントを発火''
+            ;
+            // レイアウト変更イベントを発火
             this.dispatchLayoutChangeEvent(direction, previousDirection, language');'
             '';
             console.log(`Layout direction changed to: ${direction} (${language || 'default')`});
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RTL_LAYOUT_ERROR', {)
                 direction: direction,);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -203,13 +203,12 @@ export class RTLLayoutManager {
         if (!element || this.currentLayout.appliedElements.has(element)') {
             return false; }
         }
-        ';
+        ';'
         const { ''
             componentType = 'generic',
             preserveContent = true,
             adaptAnimations = this.layoutSettings.adaptAnimations }
-            customRules = {}
-        } = options;
+            customRules = {} = options;
         
         try { const extElement = element as ExtendedHTMLElement;
             
@@ -241,11 +240,11 @@ export class RTLLayoutManager {
             this.currentLayout.appliedElements.add(element);
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RTL_ELEMENT_APPLICATION_ERROR', {)
                 element: element.tagName,);
-                componentType: componentType); }
+                componentType: componentType) }
             });
             return false;
         }
@@ -265,17 +264,17 @@ export class RTLLayoutManager {
         }
         
         try { // 保存されたスタイルを復元
-            if(extElement._rtlOriginalStyles) {'
-                ';
+            if(extElement._rtlOriginalStyles) {
+                ';'
             }'
                 this.restoreElementStyles(element, extElement._rtlOriginalStyles'); }
             }
             ';
-            // RTL固有のクラスを削除''
+            // RTL固有のクラスを削除
             element.classList.remove('rtl-layout', 'rtl-component'');''
             element.removeAttribute('dir'');
             ';
-            // 子要素の処理''
+            // 子要素の処理
             const children = element.querySelectorAll('[dir="rtl"]');
             children.forEach(child => {  )
                 const childExt = child as ExtendedHTMLElement);
@@ -292,10 +291,10 @@ export class RTLLayoutManager {
             this.currentLayout.appliedElements.delete(element);
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RTL_LAYOUT_REMOVAL_ERROR', {)
-                element: element.tagName); }
+                element: element.tagName) }
             });
             return false;
         }
@@ -309,7 +308,7 @@ export class RTLLayoutManager {
         '';
         let deviceClass: 'mobile' | 'tablet' | 'desktop' = 'desktop','';
         if(currentWidth <= responsive.mobile') {'
-            ';
+            ';'
         }'
             deviceClass = 'mobile';' }'
         } else if (currentWidth <= responsive.tablet') { ''
@@ -318,8 +317,8 @@ export class RTLLayoutManager {
         
         // デバイス固有のRTL設定を適用
         element.classList.add(`rtl-${ deviceClass)`);
-        ';
-        // デバイス別の調整''
+        ;
+        // デバイス別の調整
         switch(deviceClass') {'
             '';
             case 'mobile':'';
@@ -343,8 +342,8 @@ export class RTLLayoutManager {
     convertCSSToRTL(cssText: string): string { let rtlCSS = cssText;
         
         // プロパティを反転
-        for(const [ltrProp, rtlProp] of this.flipProperties) {'
-            ';
+        for(const [ltrProp, rtlProp] of this.flipProperties) {
+            ';'
         }'
             const ltrRegex = new RegExp(ltrProp.replace(/[.*+? ^${)(')|[\]\\]/g, '\\$&''), 'g'); }
             rtlCSS = rtlCSS.replace(ltrRegex, rtlProp});
@@ -354,8 +353,8 @@ export class RTLLayoutManager {
         rtlCSS = rtlCSS.replace(/translateX\((-?\d+(?:\.\d+)? )([^)]*)\)/g, (match, value, unit) => {  }
             return `translateX(${-parseFloat(value})}${unit})`;
         });
-        ';
-        // transform-origin の調整 : undefined''
+        ;
+        // transform-origin の調整 : undefined
         rtlCSS = rtlCSS.replace(/transform-origin:\s*(\d+(?:\.\d+)?%?)\s+(\d+(?:\.\d+)? %?)/g, (match, x, y') => {  ''
             if(x.includes('%') { }
                 const percentage = 100 - parseFloat(x); : undefined }
@@ -378,7 +377,7 @@ export class RTLLayoutManager {
                     const flippedProperty = this.flipProperties.get(property')!; }'
                     rtlRules[flippedProperty] = value;' }'
                 } else if (property === 'transform' && typeof value === 'string') { // transform プロパティの調整
-                    rtlRules[property] = value.replace(/translateX\((-? \d+[^)]*)\)/g, (match, val) => { '
+                    rtlRules[property] = value.replace(/translateX\((-? \d+[^)]*)\)/g, (match, val) => { 
                         const numericValue = parseFloat(val); : undefined' }'
                         const unit = val.replace(/^-?\d+(?:\.\d+')? /, ''); }
                         return `translateX(${-numericValue}${unit})`;
@@ -386,7 +385,7 @@ export class RTLLayoutManager {
                 } else { rtlRules[property] = value; }
                 }
             });
-            ';
+            ';'
             rtlKeyframes[percentage] = rtlRules;''
         }');
         
@@ -402,15 +401,15 @@ export class RTLLayoutManager {
         document.body.style.direction = direction;''
         document.body.setAttribute('dir', direction');
         ';
-        // ルート要素にクラス追加''
+        // ルート要素にクラス追加
         document.documentElement.classList.toggle('rtl-document', direction === 'rtl'');''
         document.body.classList.toggle('rtl-body', direction === 'rtl''); }
     }'
     '';
     private updateDynamicStyleSheet(direction: 'ltr' | 'rtl', language: string | null): void { // 既存の動的スタイルシートを削除
-        if(this.currentLayout.styleSheet) {'
+        if(this.currentLayout.styleSheet) {
             '';
-            this.currentLayout.styleSheet.remove('')';
+            this.currentLayout.styleSheet.remove()';
         const style = document.createElement('style'');''
         style.id = 'rtl-dynamic-styles';'
         '';
@@ -435,7 +434,7 @@ export class RTLLayoutManager {
                 text-align: right, }
             }
             
-            .rtl-layout .rtl-component { direction: rtl; }
+            .rtl-layout .rtl-component { direction: rtl }
             }
             
             .rtl-layout input,
@@ -443,7 +442,7 @@ export class RTLLayoutManager {
             .rtl-layout select { text-align: right, }
             }
             
-            .rtl-layout .rtl-flip-horizontal { transform: scaleX(-1); }
+            .rtl-layout .rtl-flip-horizontal { transform: scaleX(-1) }
             }
             
             .rtl-layout .rtl-preserve-content { direction: ltr,
@@ -451,10 +450,10 @@ export class RTLLayoutManager {
             }
         `;
     }
-    ';
+    ';'
     private generateLanguageSpecificCSS(language: string): string { const settings = this.rtlDetector.getRTLSettings(language);''
         if (!settings') return '';
-        ';
+        ';'
         return `' }'
             .rtl-layout[lang="${language}"] {
                 font-family: ${settings.fontFamily}
@@ -476,14 +475,14 @@ export class RTLLayoutManager {
         const settings = this.componentSettings.get(componentType);
         if (!settings) return;
         ';
-        // 水平反転''
+        // 水平反転
         if(settings.flipHorizontal') {'
-            ';
+            ';'
         }'
             element.classList.add('rtl-flip-horizontal'); }
         }
         ';
-        // アイコン保持''
+        // アイコン保持
         if(settings.preserveIcons') {'
             '';
             const icons = element.querySelectorAll('.icon, .fa, [class*="icon-"]');'
@@ -512,12 +511,12 @@ export class RTLLayoutManager {
         for(let i = 0; i < children.length; i++) {
             const child = children[i] as HTMLElement;
             this.applyRTLLayout(child, {)
-                componentType: componentType,);
+                componentType: componentType,)
         }
                 preserveContent: false); }
         }
     }
-    ';
+    ';'
     private adaptElementAnimations(element: HTMLElement): void { ''
         const computedStyle = window.getComputedStyle(element');
         const animationName = computedStyle.animationName;'
@@ -528,7 +527,7 @@ export class RTLLayoutManager {
             // アニメーション名にRTLサフィックスを追加 }
             element.style.animationName = `${animationName}-rtl`;
         }
-    }'
+    }
     '';
     private applyMobileRTL(element: HTMLElement'): void { ''
         element.style.padding = '10px';''
@@ -544,11 +543,11 @@ export class RTLLayoutManager {
         element.style.padding = '20px';''
         element.style.fontSize = '18px'; }
     }
-    ';
+    ';'
     private saveElementStyles(element: HTMLElement): OriginalStyles { ''
         const computedStyle = window.getComputedStyle(element'); }
         const styles: OriginalStyles = {}
-        // 主要なスタイルプロパティを保存'
+        // 主要なスタイルプロパティを保存
         const properties = ['';
             'direction', 'textAlign', 'marginLeft', 'marginRight','';
             'paddingLeft', 'paddingRight', 'left', 'right',']';
@@ -573,7 +572,7 @@ export class RTLLayoutManager {
                 newDirection: newDirection,
                 oldDirection: oldDirection,
                 language: language);
-                timestamp: new Date().toISOString(); }
+                timestamp: new Date().toISOString() }
             }
         });
         
@@ -601,7 +600,7 @@ export class RTLLayoutManager {
      */'
     updateSettings(newSettings: Partial<LayoutSettings>): void { ''
         Object.assign(this.layoutSettings, newSettings');''
-        console.log('RTL layout settings updated:', newSettings); }
+        console.log('RTL layout settings updated:', newSettings) }
     }
     
     /**
@@ -627,6 +626,6 @@ export class RTLLayoutManager {
 let rtlLayoutManagerInstance: RTLLayoutManager | null = null);
 /**
  * RTLLayoutManagerのシングルトンインスタンスを取得
- */'
+ */
 export function getRTLLayoutManager(): RTLLayoutManager { if (!rtlLayoutManagerInstance) {''
         rtlLayoutManagerInstance = new RTLLayoutManager(' })

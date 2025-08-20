@@ -10,7 +10,7 @@ import { measurePerformance,'
     generateCacheKey ' }'
 } from './SEOUtils';
 
-// 画像最適化オプションインターフェース'
+// 画像最適化オプションインターフェース
 interface ImageOptimizationOptions { quality?: number;''
     format?: 'webp' | 'png' | 'jpg';
     width?: number;
@@ -24,7 +24,7 @@ interface PerformanceMetrics { loadTime: number,
     largestContentfulPaint: number,
     firstInputDelay: number,
     cumulativeLayoutShift: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 // 最適化結果インターフェース
@@ -36,7 +36,7 @@ interface OptimizationResult { success: boolean,
     error?: string; }
 }
 
-// 読み込みタスクインターフェース'
+// 読み込みタスクインターフェース
 interface LoadingTask { id: string,''
     status: 'pending' | 'loading' | 'completed' | 'failed',
     startTime: number,
@@ -73,10 +73,10 @@ export class SEOPerformanceOptimizer {
     /**
      * 初期化処理
      */'
-    private _initialize(): void { try {''
-            this._setupPerformanceMonitoring('')';
+    private _initialize(): void { try {'
+            this._setupPerformanceMonitoring()';
             seoLogger.info('SEOPerformanceOptimizer initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'seoPerformanceOptimizerInit'); }
         }
     }
@@ -84,7 +84,7 @@ export class SEOPerformanceOptimizer {
     /**
      * パフォーマンス監視の設定'
      */''
-    private _setupPerformanceMonitoring('')';
+    private _setupPerformanceMonitoring()';
         if(typeof window !== 'undefined' && 'PerformanceObserver' in window) {
             this.performanceObserver = new PerformanceObserver((list) => { 
         }
@@ -151,8 +151,8 @@ export class SEOPerformanceOptimizer {
             const response = await fetch(imageUrl);
             const originalBlob = await response.blob();
             const originalSize = originalBlob.size;
-            ';
-            // Canvas を使用した最適化（簡易版）''
+            ;
+            // Canvas を使用した最適化（簡易版）
             const optimizedBlob = await this._processImageWithCanvas(originalBlob, options');
             const optimizedSize = optimizedBlob.size;
             
@@ -166,7 +166,7 @@ export class SEOPerformanceOptimizer {
             
             this.compressionCache.set(cacheKey, result);'
             '';
-            const duration = performance.now('')';
+            const duration = performance.now()';
             seoLogger.performance('Image optimization', duration, result);
             
             return result;
@@ -186,7 +186,7 @@ export class SEOPerformanceOptimizer {
     private async _processImageWithCanvas(blob: Blob, options: ImageOptimizationOptions): Promise<Blob> { return new Promise((resolve, reject) => { '
             const img = new Image();''
             img.onload = (') => {'
-                try {''
+                try {'
                     const canvas = document.createElement('canvas'');''
                     const ctx = canvas.getContext('2d')!;
                     
@@ -196,7 +196,7 @@ export class SEOPerformanceOptimizer {
                     
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     
-                    canvas.toBlob((optimizedBlob) => {'
+                    canvas.toBlob((optimizedBlob) => {
                         if (optimizedBlob) {' }'
                             resolve(optimizedBlob'); }'
                         } else {  ' }'
@@ -219,15 +219,15 @@ export class SEOPerformanceOptimizer {
         const optimized = { ...metadata };
         
         // 長いテキストの短縮
-        if(optimized.title && optimized.title.length > 60) {'
-            ';
+        if(optimized.title && optimized.title.length > 60) {
+            ';'
         }'
             optimized.title = optimized.title.substring(0, 57') + '...'; }
         }
         
         if(optimized.description && optimized.description.length > 160) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             optimized.description = optimized.description.substring(0, 157') + '...'; }
         }
@@ -246,9 +246,9 @@ export class SEOPerformanceOptimizer {
             loadTime: performance.now(),
             firstContentfulPaint: 0,
             largestContentfulPaint: 0,
-            firstInputDelay: 0,';
+            firstInputDelay: 0,
             cumulativeLayoutShift: 0,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
         if(typeof window !== 'undefined' && window.performance') {'
             '';
             const paintEntries = performance.getEntriesByType('paint'');''
@@ -269,7 +269,7 @@ export class SEOPerformanceOptimizer {
     getPerformanceStats(): { averageLoadTime: number,
         averageFCP: number,
         metricsCount: number,
-        cacheHitRate: number; }
+        cacheHitRate: number }
     } { if (this.metrics.length === 0) {
             return { averageLoadTime: 0,
                 averageFCP: 0,
@@ -296,9 +296,9 @@ export class SEOPerformanceOptimizer {
         }
         
         this.imageCache.clear();
-        this.metadataCache.clear();'
+        this.metadataCache.clear();
         this.compressionCache.clear();''
-        this.loadingTasks.clear('')';
+        this.loadingTasks.clear()';
         seoLogger.info('SEOPerformanceOptimizer cleaned up'');'
     }''
 }

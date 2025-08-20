@@ -47,7 +47,7 @@ import { EnhancedDebugInterface } from '../debug/EnhancedDebugInterface.js';''
 import { SocialSharingManager } from './SocialSharingManager.js';''
 import { LeaderboardManager } from './LeaderboardManager.js';
 ';
-// サブコンポーネントのインポート''
+// サブコンポーネントのインポート
 import { GameEngineInitializer } from './game-engine/GameEngineInitializer.js';''
 import { GameEngineEventManager } from './game-engine/GameEngineEventManager.js';''
 import { GameEngineRenderer } from './game-engine/GameEngineRenderer.js';''
@@ -59,14 +59,14 @@ interface GameStats { fps: number,
     frameTime: number,
     entities: number,
     particles: number,
-    memoryUsage: number; }
+    memoryUsage: number }
 }
 
 interface GameState { isRunning: boolean,
     isPaused: boolean,
     currentScene?: string;
     elapsedTime: number,
-    frameCount: number; }
+    frameCount: number }
 }
 
 type EventListenerCallback = (...args: any[]) => void;
@@ -136,13 +136,13 @@ export class GameEngine {
     public timeStopRemaining: number = 0,
     public isTimeStopActive: boolean = false,
     public isScreenShakeActive: boolean = false,
-    public inputDisabled: boolean = false,';
+    public inputDisabled: boolean = false,
     '';
     constructor(canvas: HTMLCanvasElement') {'
         '';
         console.log('[DEBUG] GameEngine: コンストラクター開始''),
         
-        try {'
+        try {
             this.canvas = canvas;''
             const context = canvas.getContext('2d');''
             if (!context') {'
@@ -159,7 +159,7 @@ export class GameEngine {
             '';
             console.log('[DEBUG] GameEngine: 基本プロパティ設定完了'),
             ';
-            // シンプルなイベントエミッター機能''
+            // シンプルなイベントエミッター機能
             this.eventListeners = new Map<string, Set<EventListenerCallback>>(');
             
             // ゲーム状態初期化
@@ -168,19 +168,19 @@ export class GameEngine {
                 elapsedTime: 0,
                 frameCount: 0 }
             },
-            ';
-            // サブコンポーネントの初期化''
+            ;
+            // サブコンポーネントの初期化
             console.log('[DEBUG] GameEngine: サブコンポーネント初期化開始'),'';
-            this._initializeSubComponents('')';
+            this._initializeSubComponents()';
             console.log('[DEBUG] GameEngine: サブコンポーネント初期化完了'),
             
             // ブラウザ互換性チェック
             this.initializer.checkBrowserCompatibility();
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CANVAS_ERROR', { )'
                 canvasElement: canvas,')';
-                contextType: '2d'); }
+                contextType: '2d') }
             });
             throw error;
         }
@@ -207,9 +207,9 @@ export class GameEngine {
         
         // Audio and effects initialization
         this._initializeAudioAndEffects();
-        ';
-        // Performance and debug initialization''
-        this._initializePerformanceAndDebug('')';
+        ;
+        // Performance and debug initialization
+        this._initializePerformanceAndDebug()';
         console.log('[DEBUG] GameEngine: 初期化完了') }
     
     /**
@@ -224,13 +224,13 @@ export class GameEngine {
             
             // レンダリングコンポーネント
             this.renderer = new GameEngineRenderer(this as any);
-            ';
-            // ユーティリティコンポーネント''
+            ;
+            // ユーティリティコンポーネント
             this.utilities = new GameEngineUtilities(this as any');'
             '';
             console.log('[GameEngine] All sub-components initialized successfully');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[GameEngine] Failed to initialize sub-components:', error);
             throw error; }
         }
@@ -239,7 +239,7 @@ export class GameEngine {
     /**
      * コア管理システムを初期化'
      */''
-    private _initializeCoreManagers('')';
+    private _initializeCoreManagers()';
         console.log('[GameEngine] Core managers initialized');
     }
     
@@ -266,15 +266,15 @@ export class GameEngine {
             // Keyboard shortcuts
             this.keyboardShortcutManager = new CoreKeyboardShortcutManager();
             
-            // Social features'
+            // Social features
             this.socialSharingManager = new SocialSharingManager();''
-            this.leaderboardManager = new LeaderboardManager('')';
+            this.leaderboardManager = new LeaderboardManager()';
             console.log('[GameEngine] Game systems initialized');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'GAME_SYSTEM_ERROR', {')'
                 component: 'GameEngine',')';
-                operation: 'initializeGameSystems'); }
+                operation: 'initializeGameSystems') }
             });
             throw error;
         }
@@ -283,7 +283,7 @@ export class GameEngine {
     /**
      * オーディオとエフェクトシステムを初期化'
      */''
-    private _initializeAudioAndEffects('')';
+    private _initializeAudioAndEffects()';
                 quality: 'medium' as const);
                 getCompressorConfig: () => ({ threshold: -24, knee: 30, ratio: 12, attack: 0.003, release: 0.25 }),
                 getReverbConfig: () => ({ duration: 2, decay: 2, reverse: false }),
@@ -294,17 +294,17 @@ export class GameEngine {
             
             // Effect systems
             this.particleManager = new ParticleManager();
-            this.effectManager = new EffectManager(this.canvas);'
+            this.effectManager = new EffectManager(this.canvas);
             this.enhancedParticleManager = new EnhancedParticleManager();''
-            this.enhancedEffectManager = new EnhancedEffectManager('')';
+            this.enhancedEffectManager = new EnhancedEffectManager()';
             console.log('[GameEngine] Audio and effects initialized');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AUDIO_EFFECTS_ERROR', {')'
                 component: 'GameEngine',')';
                 operation: 'initializeAudioAndEffects'),' }'
             }');'
-            // Non-critical error - continue without audio/effects''
+            // Non-critical error - continue without audio/effects
             console.warn('[GameEngine] Audio/Effects initialization failed, continuing without them');
         }
     }
@@ -315,23 +315,23 @@ export class GameEngine {
     private _initializePerformanceAndDebug(): void { try {
             // Performance systems
             this.renderOptimizer = new RenderOptimizer(this.canvas);
-            this.performanceMonitor = new PerformanceMonitor();'
+            this.performanceMonitor = new PerformanceMonitor();
             '';
             // Debug interface (only in development');''
             if(process.env.NODE_ENV === 'development') {'
-                ';
+                ';'
             }'
                 this.debugInterface = new EnhancedDebugInterface(this'); }
             }'
             '';
             console.log('[GameEngine] Performance and debug systems initialized');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PERFORMANCE_DEBUG_ERROR', {')'
                 component: 'GameEngine',')';
                 operation: 'initializePerformanceAndDebug'),' }'
             }');'
-            // Non-critical error - continue without debug features''
+            // Non-critical error - continue without debug features
             console.warn('[GameEngine] Performance/Debug initialization failed, continuing without them');
         }
     }
@@ -353,16 +353,16 @@ export class GameEngine {
             
             // Start game systems
             this._startGameSystems();
-            ';
-            // Start game loop''
-            this._gameLoop('')';
+            ;
+            // Start game loop
+            this._gameLoop()';
             console.log('[GameEngine] Started successfully'');''
             this.emit('started');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'START_ERROR', {')'
                 component: 'GameEngine',')';
-                operation: 'start'); }
+                operation: 'start') }
             });
             this.stop();
             throw error;
@@ -383,15 +383,15 @@ export class GameEngine {
         try { this.isRunning = false;
             this.gameState.isRunning = false;
             ';
-            // Stop game systems''
-            this._stopGameSystems('')';
+            // Stop game systems
+            this._stopGameSystems()';
             console.log('[GameEngine] Stopped successfully'');''
             this.emit('stopped');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'STOP_ERROR', {')'
                 component: 'GameEngine',')';
-                operation: 'stop'); }
+                operation: 'stop') }
             });
         }
     }
@@ -406,7 +406,7 @@ export class GameEngine {
         }
             return; }
         }
-        ';
+        ';'
         this.gameState.isPaused = true;''
         console.log('[GameEngine] Paused'');''
         this.emit('paused');
@@ -422,9 +422,9 @@ export class GameEngine {
         }
             return; }
         }
-        ';
+        ';'
         this.gameState.isPaused = false;''
-        this.lastTime = performance.now('')';
+        this.lastTime = performance.now()';
         console.log('[GameEngine] Resumed'');''
         this.emit('resumed');
     }
@@ -461,15 +461,15 @@ export class GameEngine {
             }
             
             // Continue loop
-            requestAnimationFrame(() => this._gameLoop();'
+            requestAnimationFrame(() => this._gameLoop();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'GAME_LOOP_ERROR', {')'
                 component: 'GameEngine',')';
                 operation: 'gameLoop'),' }'
             }');'
             '';
-            // Try to continue the loop unless it's a critical error
+            // Try to continue the loop unless its a critical error
             if (this.isRunning) { requestAnimationFrame(() => this._gameLoop(); }
             }
         }
@@ -489,17 +489,17 @@ export class GameEngine {
             if (this.effectManager) this.effectManager.update(deltaTime);''
             if (this.sceneManager) this.sceneManager.update(deltaTime');
             ';
-            // Update performance systems''
+            // Update performance systems
             if(this.memoryManager && 'update' in this.memoryManager && typeof this.memoryManager.update === 'function') {'
-                ';
+                ';'
             }'
                 this.memoryManager.update(deltaTime'); }
             }
             ';
-            // Emit update event''
+            // Emit update event
             this.emit('update', deltaTime);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'UPDATE_ERROR', {''
                 component: 'GameEngine',')';
                 operation: 'update',);
@@ -518,18 +518,18 @@ export class GameEngine {
             // Delegate main rendering to renderer component
             this.renderer.render();
             
-            // Render debug info if available'
+            // Render debug info if available
             if (this.debugInterface && (this.debugInterface as any).render) {''
                 (this.debugInterface as any).render(this.context'); }
             }
             ';
-            // Emit render event''
+            // Emit render event
             this.emit('render');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'RENDER_ERROR', {')'
                 component: 'GameEngine',')';
-                operation: 'render'); }
+                operation: 'render') }
             });
         }
     }
@@ -537,10 +537,10 @@ export class GameEngine {
     /**
      * ゲームシステムを開始'
      */''
-    private _startGameSystems('')';
+    private _startGameSystems()';
         if(this.sceneManager && typeof this.sceneManager.start === 'function') {'
             '';
-            this.sceneManager.start('')';
+            this.sceneManager.start()';
         if (this.audioManager && typeof this.audioManager.start === 'function') {
         }
             this.audioManager.start(); }
@@ -550,10 +550,10 @@ export class GameEngine {
     /**
      * ゲームシステムを停止'
      */''
-    private _stopGameSystems('')';
+    private _stopGameSystems()';
         if(this.sceneManager && typeof this.sceneManager.stop === 'function') {'
             '';
-            this.sceneManager.stop('')';
+            this.sceneManager.stop()';
         if (this.audioManager && typeof this.audioManager.stop === 'function') {
         }
             this.audioManager.stop(); }
@@ -565,7 +565,7 @@ export class GameEngine {
      */
     getStats(): GameStats { const fps = this.elapsedTime > 0 ? (this.frameCount * 1000) / this.elapsedTime: 0,
         
-        return { fps: Math.round(fps,)
+        return { fps: Math.round(fps)
             frameTime: this.lastTime);
             entities: (this.bubbleManager? .bubbles?.length || 0, : undefined);
             particles: (this.particleManager? .getParticles?.()?.length || 0, : undefined };
@@ -617,10 +617,10 @@ export class GameEngine {
         listeners.forEach(callback => {  )
             try {); }'
                 callback(...args);' }'
-            } catch (error') { ''
+            } catch (error) { ''
                 this.errorHandler.handleError(error, 'EVENT_CALLBACK_ERROR', {)'
                     event,')';
-                    callback: callback.name || 'anonymous'); }
+                    callback: callback.name || 'anonymous') }
                 });
             }
         });
@@ -637,8 +637,8 @@ export class GameEngine {
             if (this.eventManager?.destroy) this.eventManager.destroy();
             if (this.renderer?.destroy) this.renderer.destroy();
             if (this.utilities?.destroy) this.utilities.destroy();
-            ';
-            // Cleanup systems''
+            ;
+            // Cleanup systems
             this.memoryManager?.destroy?.(');''
             if(this.performanceOptimizer && 'cleanup' in this.performanceOptimizer && typeof this.performanceOptimizer.cleanup === 'function') {
                 
@@ -649,14 +649,14 @@ export class GameEngine {
             if (this.particleManager?.destroy) this.particleManager.destroy();
             if (this.effectManager?.destroy) this.effectManager.destroy();
             ';
-            // Clear event listeners''
-            this.eventListeners.clear('')';
+            // Clear event listeners
+            this.eventListeners.clear()';
             console.log('[GameEngine] Destroyed successfully');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DESTROY_ERROR', { : undefined')'
                 component: 'GameEngine',')';
-                operation: 'destroy'); }
+                operation: 'destroy') }
             });
         }
     }

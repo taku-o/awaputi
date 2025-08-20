@@ -22,7 +22,7 @@ interface PlaybackOptions { volume?: number;
  * 音響カテゴリ設定インターフェース
  */
 interface SoundCategoryConfig { volume: number,
-    priority: number; };
+    priority: number };
 }
 /**
  * 再生統計インターフェース
@@ -30,7 +30,7 @@ interface SoundCategoryConfig { volume: number,
 interface PlaybackStats { totalPlayed: number,
     activeCount: number,
     peakConcurrency: number,
-    errors: number; };
+    errors: number };
 }
 /**
  * エフェクト設定インターフェース
@@ -39,7 +39,7 @@ interface EffectConfig { maxPitchShift: number,
     maxVolumeScale: number,
     maxPan: number,
     fadeInDuration: number,
-    fadeOutDuration: number; };
+    fadeOutDuration: number };
 }
 /**
  * 音響エフェクトインターフェース
@@ -89,7 +89,7 @@ export class AudioPlaybackController {
     // エフェクト設定
     private effectConfig: EffectConfig;
     // 音響カテゴリ設定 }
-    private soundCategories: { [key: string]: SoundCategoryConfig ;
+    private soundCategories: { [key: string]: SoundCategoryConfig 
     };
     constructor() {
         // AudioContext・ノード（外部から注入される）
@@ -108,7 +108,7 @@ export class AudioPlaybackController {
         this.playbackStats = {
             totalPlayed: 0,
             activeCount: 0,
-            peakConcurrency: 0;
+            peakConcurrency: 0
 };
 }
             errors: 0 ;
@@ -120,7 +120,7 @@ export class AudioPlaybackController {
             maxVolumeScale: 2.0,
             maxPan: 1.0,
             fadeInDuration: 0.01,
-            fadeOutDuration: 0.1 ;
+            fadeOutDuration: 0.1 
 }
         },
         
@@ -144,7 +144,7 @@ export class AudioPlaybackController {
      */
     setDependencies(;
         audioContext: AudioContext,
-        sfxGainNode: GainNode,
+        sfxGainNode: GainNode
     );
         masterGainNode: GainNode);
         soundBuffers: Map<string, AudioBuffer>;
@@ -166,7 +166,7 @@ export class AudioPlaybackController {
             }
                 return null; };
 }
-';
+';'
             const buffer = this.soundBuffers.get(soundName);''
             if (!buffer') { ' }'
                 console.warn(`Sound '${soundName')' not found`});
@@ -177,7 +177,7 @@ export class AudioPlaybackController {
             if (this.activeSources.size >= this.maxConcurrentSounds) { this.stopOldestSound(); };
 }
             return this._playSound(buffer, options);
-';
+';'
         } catch (error) { this.playbackStats.errors++;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioPlaybackController',')';
@@ -194,7 +194,7 @@ export class AudioPlaybackController {
      * @returns 音源ノード
      */
     private _playSound(buffer: AudioBuffer, options: PlaybackOptions = { ): AudioBufferSourceNode | null {'
-        try {''
+        try {'
             if(!this.audioContext || !this.sfxGainNode') {
                 
             }
@@ -239,12 +239,12 @@ export class AudioPlaybackController {
                 gainNode.connect(pannerNode);
             }
                 pannerNode.connect(this.sfxGainNode); }
-            } else { gainNode.connect(this.sfxGainNode); };
+            } else { gainNode.connect(this.sfxGainNode); }
 }
             // フェードイン処理
             if(fadeIn) {
                 gainNode.gain.exponentialRampToValueAtTime(;
-                    finalVolume, );
+                    finalVolume );
             }
                     this.audioContext.currentTime + this.effectConfig.fadeInDuration); };
 }
@@ -261,11 +261,11 @@ export class AudioPlaybackController {
 
             // アクティブソース管理
             this.activeSources.add(source);
-            this.playbackStats.totalPlayed++;'
+            this.playbackStats.totalPlayed++;
             this.playbackStats.activeCount = this.activeSources.size;''
             this.playbackStats.peakConcurrency = Math.max(this.playbackStats.peakConcurrency, this.activeSources.size');
 ';
-            // 終了時クリーンアップ''
+            // 終了時クリーンアップ
             source.addEventListener('ended', () => {  this.activeSources.delete(source);
                 this.playbackStats.activeCount = this.activeSources.size;
                 try {
@@ -277,11 +277,11 @@ export class AudioPlaybackController {
             });
 
             return source;
-';
+';'
         } catch (error) { this.playbackStats.errors++;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 component: 'AudioPlaybackController',')';
-                operation: '_playSound'); }
+                operation: '_playSound') }
             });
             return null;
         };
@@ -297,11 +297,11 @@ export class AudioPlaybackController {
         const soundName = comboLevel > 0 ? 'pop_combo' : 'pop';
         
         // コンボレベルに応じた音響調整
-        const comboOptions: PlaybackOptions = {'
+        const comboOptions: PlaybackOptions = {
             ...options,'';
             category: 'bubble',
             pitch: 1.0 + (comboLevel * 0.1);
-            volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2); }
+            volume: (options.volume || 1.0) * (1.0 + comboLevel * 0.2) }
         };
         
         return this.playSound(soundName, comboOptions);
@@ -327,9 +327,9 @@ export class AudioPlaybackController {
         };'
 '';
         const soundName = uiSoundMap[actionType] || 'click';
-        ';
+        ';'
         return this.playSound(soundName, { ...options,')'
-            category: 'ui'); };
+            category: 'ui') };
 }
     /**
      * コンボ音を再生
@@ -342,7 +342,7 @@ export class AudioPlaybackController {
             ...options,'';
             category: 'combo',';
             pitch: 1.0 + (comboLevel * 0.15,'';
-            volume: (options.volume || 1.0) * Math.min(2.0, 1.0 + comboLevel * 0.3'); }
+            volume: (options.volume || 1.0) * Math.min(2.0, 1.0 + comboLevel * 0.3') }
         };'
 '';
         return this.playSound('pop_combo', comboOptions);
@@ -363,11 +363,11 @@ export class AudioPlaybackController {
         };
 
         const config = rarityMap[rarity] || rarityMap.common;
-        ';
+        ';'
         return this.playSound(config.sound, { ...options,')'
             category: 'achievement'),
             pitch: (options.pitch || 1.0) * config.pitch,
-            volume: (options.volume || 1.0) * config.volume ;
+            volume: (options.volume || 1.0) * config.volume 
 }
         }),
     }
@@ -394,9 +394,9 @@ export class AudioPlaybackController {
         };'
 '';
         const soundName = stateMap[stateType] || 'success';
-        ';
+        ';'
         return this.playSound(soundName, { ...options,')'
-            category: 'gamestate'); };
+            category: 'gamestate') };
 }
     /**
      * 全音響停止
@@ -409,11 +409,11 @@ export class AudioPlaybackController {
 }
             });
             this.activeSources.clear();
-            this.playbackStats.activeCount = 0;'
+            this.playbackStats.activeCount = 0;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 component: 'AudioPlaybackController',')';
-                operation: 'stopAllSounds'); }
+                operation: 'stopAllSounds') }
             });
         };
 }
@@ -436,7 +436,7 @@ export class AudioPlaybackController {
      */
     stopSoundsByCategory(category: string): void { // Note: より高度な実装では、各ソースにカテゴリ情報を付与して管理
         // 現在は簡易実装として全停止
-        this.stopAllSounds(); };
+        this.stopAllSounds() };
 }
     /**
      * 音響エフェクト適用
@@ -452,11 +452,11 @@ export class AudioPlaybackController {
 
             // Note: 高度なエフェクト実装は将来の拡張で対応
             // 現在は基本的なゲイン・パン・ピッチのみサポート
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 component: 'AudioPlaybackController',')';
-                operation: 'applyAudioEffects'); }
+                operation: 'applyAudioEffects') }
             });
         };
 }
@@ -466,8 +466,8 @@ export class AudioPlaybackController {
     manageActiveSources(): void { // 無効なソースをクリーンアップ
         const invalidSources: AudioBufferSourceNode[] = [],
         this.activeSources.forEach(source => { )
-            try {)'
-                // プレイバック状態チェック);''
+            try {)
+                // プレイバック状態チェック);
                 if ((source as any').playbackState === 'finished') { }
                     invalidSources.push(source); }
                 } catch (error) { invalidSources.push(source); };
@@ -515,7 +515,7 @@ export class AudioPlaybackController {
             activeCount: this.activeSources.size,
             maxConcurrent: this.maxConcurrentSounds,
             categories: Object.keys(this.soundCategories).map(category => ({)
-                name: category)';
+                name: category);
                 volume: this.soundCategories[category].volume,') };'
                 priority: this.soundCategories[category].priority))'); }
         };
@@ -528,7 +528,7 @@ export class AudioPlaybackController {
      */''
     testSound(soundName: string = 'click'): boolean { try {
             const source = this.playSound(soundName, { volume: 0.5 ),
-            return source !== null; }
+            return source !== null }
         } catch (error) { return false; };
 }
     }
@@ -541,7 +541,7 @@ export class AudioPlaybackController {
             totalPlayed: 0,
             activeCount: 0,
             peakConcurrency: 0,
-            errors: 0 ;
+            errors: 0 
 }
         },
     }
@@ -575,6 +575,6 @@ export function getAudioPlaybackController(): AudioPlaybackController { if (!aud
  * @returns 新しいシングルトンインスタンス
  */
 export function reinitializeAudioPlaybackController(): AudioPlaybackController { if (audioPlaybackControllerInstance) {
-        audioPlaybackControllerInstance.dispose(); }'
+        audioPlaybackControllerInstance.dispose(); }
     }''
     audioPlaybackControllerInstance = new AudioPlaybackController(');

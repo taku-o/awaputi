@@ -21,13 +21,13 @@ export class ExportManager {
         this.validation = validationManager;''
         this.version = '1.0.0';
         ';
-        // エクスポート形式''
+        // エクスポート形式
         this.exportFormats = new Map(''';
             defaultFormat: 'json',
             includeMetadata: true,
             validateBeforeExport: true,
             compressLargeExports: true,
-            compressionThreshold: 10 * 1024, // 10KB;
+            compressionThreshold: 10 * 1024, // 10KB
     }
     }
             maxExportSize: 50 * 1024 * 1024 // 50MB }
@@ -48,15 +48,15 @@ export class ExportManager {
      * ExportManagerの初期化
      */
     initialize() {
-        try {'
-            // エクスポート形式の登録''
-            this.registerExportFormats('')';
+        try {
+            // エクスポート形式の登録
+            this.registerExportFormats()';
             console.log('ExportManager initialized');
     }
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EXPORT_MANAGER_INITIALIZATION_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -64,19 +64,19 @@ export class ExportManager {
     /**
      * エクスポート形式の登録'
      */''
-    registerExportFormats('')';
+    registerExportFormats()';
         this.exportFormats.set('json', new JSONExporter(this)');
         ';
-        // 圧縮JSON形式''
+        // 圧縮JSON形式
         this.exportFormats.set('compressed', new CompressedExporter(this)');
         ';
-        // 暗号化形式（SecurityManagerと統合時に有効化）''
+        // 暗号化形式（SecurityManagerと統合時に有効化）
         this.exportFormats.set('encrypted', new EncryptedExporter(this)');
         ';
-        // CSV形式（統計データ用）''
+        // CSV形式（統計データ用）
         this.exportFormats.set('csv', new CSVExporter(this)');
         ';
-        // テキスト形式（人間が読める形式）''
+        // テキスト形式（人間が読める形式）
         this.exportFormats.set('text', new TextExporter(this)');
     }
     
@@ -98,22 +98,22 @@ export class ExportManager {
             const data = await this.collectExportData(dataType);
             
             // データの検証
-            if(this.config.validateBeforeExport && this.validation) {'
+            if(this.config.validateBeforeExport && this.validation) {
                 const validationResult = await this.validation.validate(dataType, data);''
                 if (!validationResult.isValid') {''
                     console.warn('Export data validation warnings:', validationResult.warnings);'
-                    // 警告があっても続行（エラーの場合は例外を投げる）'
+                    // 警告があっても続行（エラーの場合は例外を投げる）
             }'
                     if (validationResult.errors.length > 0') {' }'
                         throw new Error(`Export data validation failed: ${validationResult.errors.join(', '})}`);
                     }
                 }
-            }
+            }'
             ';
-            // メタデータの作成''
+            // メタデータの作成
             const metadata = this.createExportMetadata(dataType, data, format, options');
             
-            // エクスポートデータの構築'
+            // エクスポートデータの構築
             const exportData = { header: {''
                     format: "BubblePopSave",";
                     version: this.version,"";
@@ -159,10 +159,10 @@ export class ExportManager {
                 data: result.data, };
                 metadata }
             };
-            ';
+            ';'
         } catch (error) { this.updateStatistics(false, 0, 0);''
             getErrorHandler(').handleError(error, 'EXPORT_ERROR', {''
-                operation: 'exportData',);
+                operation: 'exportData');
                 dataType);
                 format,);
                 options); }
@@ -183,7 +183,7 @@ export class ExportManager {
             const exportData = {};'
             '';
             if(dataType === 'all'') {'
-                // 全データのエクスポート''
+                // 全データのエクスポート
                 exportData.playerData = await this.storage.load('playerData'');''
                 exportData.settings = await this.storage.load('settings'');''
                 exportData.statistics = await this.storage.load('statistics'');''
@@ -216,7 +216,7 @@ export class ExportManager {
             }
             
             return exportData;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EXPORT_DATA_COLLECTION_ERROR', {')'
                 operation: 'collectExportData',);
@@ -232,7 +232,7 @@ export class ExportManager {
      */
     createExportMetadata(dataType, data, format, options) {
         const dataSize = JSON.stringify(data).length;
-        ';
+        ';'
         return { ''
             dataTypes: Array.isArray(dataType') ? dataType : '';
                        dataType === 'all' ? Object.keys(data') : [dataType],
@@ -254,17 +254,17 @@ export class ExportManager {
     /**
      * ファイルダウンロードの実行
      */'
-    async downloadExport(exportResult, filename = null) { try {''
+    async downloadExport(exportResult, filename = null) { try {'
             if(!exportResult.success') {'
-                ';
+                ';'
             }'
                 throw new Error('Cannot download failed export'); }
             }
-            ';
+            ';'
             const finalFilename = filename || exportResult.filename || '';
                                   this.generateFilename(exportResult.dataType, exportResult.format');
             
-            // Blobの作成'
+            // Blobの作成
             let blob;''
             if(typeof exportResult.data === 'string') {
                 blob = new Blob([exportResult.data], { 
@@ -277,7 +277,7 @@ export class ExportManager {
                 }),
             }
             ';
-            // ダウンロードの実行''
+            // ダウンロードの実行
             const url = URL.createObjectURL(blob');''
             const link = document.createElement('a');
             link.href = url;
@@ -295,7 +295,7 @@ export class ExportManager {
                 filename: finalFilename, };
                 size: blob.size }
             },
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'DOWNLOAD_ERROR', {')'
                 operation: 'downloadExport',);
@@ -328,7 +328,7 @@ export class ExportManager {
             json: 'json','';
             compressed: 'json.gz','';
             encrypted: 'enc','';
-            csv: 'csv',';
+            csv: 'csv','
     }'
             text: 'txt' }
         },'
@@ -344,7 +344,7 @@ export class ExportManager {
             json: 'application/json','';
             compressed: 'application/gzip','';
             encrypted: 'application/octet-stream','';
-            csv: 'text/csv',';
+            csv: 'text/csv','
     }'
             text: 'text/plain' }
         },'
@@ -385,10 +385,10 @@ export class ExportManager {
                 success,
                 duration,
                 size }
-            };'
+            };
             '';
-        } catch (error') { ''
-            console.error('Export statistics update error:', error); }
+        } catch (error) { ''
+            console.error('Export statistics update error:', error) }
         }
     }
     
@@ -404,7 +404,7 @@ export class ExportManager {
     /**
      * エクスポート可能なデータタイプの取得
      */
-    async getAvailableDataTypes() { try {'
+    async getAvailableDataTypes() { try {
             const keys = await this.storage.keys();''
             const dataTypes = keys.filter(key => ')'';
                 !key.startsWith('backup_'') && '';
@@ -415,7 +415,7 @@ export class ExportManager {
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AVAILABLE_DATA_TYPES_ERROR', {')'
-                operation: 'getAvailableDataTypes'); }
+                operation: 'getAvailableDataTypes') }
             });
             
             return [];
@@ -426,14 +426,14 @@ export class ExportManager {
      * リソースの解放
      */
     destroy() {'
-        try {''
-            this.exportFormats.clear('')';
+        try {'
+            this.exportFormats.clear()';
             console.log('ExportManager destroyed');
     }
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'EXPORT_MANAGER_DESTROY_ERROR', {')'
-                operation: 'destroy'); }
+                operation: 'destroy') }
             });
         }
     }
@@ -443,11 +443,11 @@ export class ExportManager {
  * JSONエクスポーター
  */
 class JSONExporter { constructor(exportManager: any) {
-        this.exportManager = exportManager; }
+        this.exportManager = exportManager }
     }
     
     async export(exportData, options = { ) {'
-        try {''
+        try {'
             const jsonString = JSON.stringify(exportData, null, options.pretty ? 2 : 0');
             const filename = this.exportManager.generateFilename(';
                 exportData.metadata.originalDataType, ')';
@@ -455,7 +455,7 @@ class JSONExporter { constructor(exportManager: any) {
             ');
             
             return { success: true,
-                data: jsonString,
+                data: jsonString,'
                 filename,';
                 size: jsonString.length,' };'
                 mimeType: 'application/json' }
@@ -472,13 +472,13 @@ class JSONExporter { constructor(exportManager: any) {
  * 圧縮エクスポーター
  */
 class CompressedExporter { constructor(exportManager: any) {
-        this.exportManager = exportManager; }
+        this.exportManager = exportManager }
     }
     
     async export(exportData, options = { ) {
         try {
-            // 実際の実装では適切な圧縮ライブラリを使用'
-            // ここでは簡易的にJSON文字列を返す''
+            // 実際の実装では適切な圧縮ライブラリを使用
+            // ここでは簡易的にJSON文字列を返す
             const jsonString = JSON.stringify(exportData');
             const filename = this.exportManager.generateFilename(';
                 exportData.metadata.originalDataType, ')';
@@ -506,17 +506,17 @@ class CompressedExporter { constructor(exportManager: any) {
  * 暗号化エクスポーター
  */
 class EncryptedExporter { constructor(exportManager: any) {
-        this.exportManager = exportManager; }
+        this.exportManager = exportManager }
     }
     
     async export(exportData, options = { ) {
         try {
             // SecurityManagerと統合時に実装
-            // 現在は基本的なエンコーディングのみ'
+            // 現在は基本的なエンコーディングのみ
             const jsonString = JSON.stringify(exportData);''
             const encoded = btoa(jsonString'); // Base64エンコーディング
             
-            const filename = this.exportManager.generateFilename(';
+            const filename = this.exportManager.generateFilename(;
                 exportData.metadata.originalDataType, ')';
                 'encrypted')'';
             ');
@@ -524,7 +524,7 @@ class EncryptedExporter { constructor(exportManager: any) {
             exportData.metadata.encrypted = true;
             
             return { success: true,
-                data: encoded,
+                data: encoded,'
                 filename,';
                 size: encoded.length,' };'
                 mimeType: 'application/octet-stream' }
@@ -541,11 +541,11 @@ class EncryptedExporter { constructor(exportManager: any) {
  * CSVエクスポーター
  */
 class CSVExporter { constructor(exportManager: any) {
-        this.exportManager = exportManager; }
+        this.exportManager = exportManager }
     }'
     '';
     async export(exportData, options = { )') {'
-        try {''
+        try {'
             let csvContent = '';
             
             // 統計データをCSV形式に変換
@@ -553,7 +553,7 @@ class CSVExporter { constructor(exportManager: any) {
                 
             }
                 csvContent = this.statisticsToCSV(exportData.userData.statistics); }
-            } else if (exportData.userData.playerData) { csvContent = this.playerDataToCSV(exportData.userData.playerData); }'
+            } else if (exportData.userData.playerData) { csvContent = this.playerDataToCSV(exportData.userData.playerData); }
             } else {  // 汎用的なオブジェクトをCSVに変換' }'
                 csvContent = this.objectToCSV(exportData.userData'); }
             }
@@ -564,7 +564,7 @@ class CSVExporter { constructor(exportManager: any) {
             ');
             
             return { success: true,
-                data: csvContent,
+                data: csvContent,'
                 filename,';
                 size: csvContent.length,' };'
                 mimeType: 'text/csv' }
@@ -610,7 +610,7 @@ class CSVExporter { constructor(exportManager: any) {
     }
     
     arrayToCSV(array) {
-    ';
+    ';'
         return array.map(row => ')';
             row.map(field => ');'
     
@@ -627,11 +627,11 @@ class CSVExporter { constructor(exportManager: any) {
  * テキストエクスポーター
  */
 class TextExporter { constructor(exportManager: any) {
-        this.exportManager = exportManager; }
+        this.exportManager = exportManager }
     }
     
     async export(exportData, options = { ) {'
-        try {''
+        try {'
             let textContent = this.formatAsText(exportData');
             
             const filename = this.exportManager.generateFilename(';
@@ -640,7 +640,7 @@ class TextExporter { constructor(exportManager: any) {
             ');
             
             return { success: true,
-                data: textContent,
+                data: textContent,'
                 filename,';
                 size: textContent.length,' };'
                 mimeType: 'text/plain' }
@@ -656,7 +656,7 @@ class TextExporter { constructor(exportManager: any) {
         '';
         let text = '';
         ';
-        // ヘッダー情報''
+        // ヘッダー情報
         text += '='.repeat(50') + '\n';''
         text += 'BubblePop Game Data Export\n';''
         text += '='.repeat(50') + '\n\n';
@@ -665,16 +665,16 @@ class TextExporter { constructor(exportManager: any) {
         text += `Export Date: ${exportData.header.exportedAt}\n`;'
         text += `Game Version: ${exportData.header.gameVersion}\n`;''
         text += `Data Types: ${exportData.metadata.dataTypes.join(', '})}\n`;
-        text += `Data Size: ${exportData.metadata.dataSize} bytes\n\n`;
+        text += `Data Size: ${exportData.metadata.dataSize} bytes\n\n`;'
         ';
-        // データ内容''
+        // データ内容
         for (const [dataType, data] of Object.entries(exportData.userData)') { ''
             text += '-'.repeat(30') + '\n';''
-            text += `${dataType.toUpperCase('')'
+            text += `${dataType.toUpperCase()'
             text += '-'.repeat(30') + '\n';'
             '';
             if(typeof data === 'object') {'
-                ';
+                ';'
             }'
                 text += this.objectToText(data, 0'); }
             } else {  }
@@ -696,7 +696,7 @@ class TextExporter { constructor(exportManager: any) {
             if (typeof value === 'object' && value !== null) {'
     }'
                 if (Array.isArray(value)') {' }'
-                    text += `${spaces}${key}: [${value.join(', '})}]\n`;
+                    text += `${spaces}${key}: [${value.join(', '})}]\n`;'
                 } else {  }'
                     text += `${spaces}${key}:\n`;''
                     text += this.objectToText(value, indent + 1');

@@ -7,21 +7,21 @@
 
 // 型定義
 interface Coordinates { x: number,
-    y: number; }
+    y: number }
 }
 
 interface Size { width: number,
-    height: number; }
+    height: number }
 }
 
 interface SafeArea { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface VerticalPosition { y: number,
-    height: number; }
+    height: number }
 }
 
 interface DebugInfo { canvasSize: Size,
@@ -29,7 +29,7 @@ interface DebugInfo { canvasSize: Size,
     scale: {
         x: number,
         y: number,
-        uniform: number; }
+        uniform: number }
     };
 }
 
@@ -118,7 +118,7 @@ export class CoordinateCalculator {
     
     /**
      * フォントサイズをスケーリング
-     */'
+     */
     scaleFontSize(baseFontSize: number): number { ''
         return Math.floor(baseFontSize * this.uniformScale'); }
     }
@@ -222,6 +222,6 @@ export class CoordinateCalculator {
     }
 
     getScaleY(): number { return this.scaleY; }
-    }'
+    }
 '';
     getUniformScale(');

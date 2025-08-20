@@ -9,19 +9,19 @@ interface GameState { isInitialized: boolean,
     isGameStarted: boolean,
     gameStartTime: number,
     lastUpdateTime: number,
-    lastScore?: number; }
+    lastScore?: number }
 }
 
 interface PlayerData { currentHP: number,
     maxHP: number,
     currentScore: number,
-    reset(): void; }
+    reset(): void }
 }
 
 interface ScoreManager { resetCombo(): void;
     addScore(points: number): void,
     addScoreMultiplier(multiplier: number): void,
-    getCombo(): number; }
+    getCombo(): number }
 }
 
 interface BubbleManager { clearAllBubbles(): void;
@@ -35,7 +35,7 @@ interface ItemManager { ownedItems: string[],
 interface Item { id: string,
     effect: {
         type: string,
-        value: number; }
+        value: number }
     };
 }
 
@@ -51,24 +51,24 @@ interface GameStats { isGameStarted: boolean,
     hp: number,
     maxHP: number,
     bubbleCount: number,
-    comboCount: number; }
+    comboCount: number }
 }
 
 interface TimeWarnings { timeWarning: boolean,
     urgentWarning: boolean,
-    message: string | null; }
+    message: string | null }
 }
 
 interface DebugInfo { gameState: GameState,
     isPaused: boolean,
     isGameOver: boolean,
-    gameStats: GameStats;
+    gameStats: GameStats
     }
 }
 
 interface Bubble { type: string,
     x: number,
-    y: number; }
+    y: number }
 }
 
 // Minimal GameEngine interface
@@ -140,16 +140,16 @@ export class GameStateManager {
         }
         
         // 状態管理の更新
-        this.gameState.isGameStarted = true;'
+        this.gameState.isGameStarted = true;
         this.gameState.gameStartTime = Date.now();''
-        this.gameState.lastUpdateTime = Date.now('')';
+        this.gameState.lastUpdateTime = Date.now()';
         console.log('Game started');
     }
     
     /**
      * ゲーム終了処理'
      */''
-    public endGame('')';
+    public endGame()';
         console.log('Game ended');
     }
     
@@ -163,7 +163,7 @@ export class GameStateManager {
     /**
      * ポーズ状態の切り替え'
      */''
-    public togglePause('')';
+    public togglePause()';
         console.log(`Game ${this.isPaused ? 'paused' : 'resumed')`});
     }
     
@@ -179,7 +179,7 @@ export class GameStateManager {
      */
     private applyItemEffects(): void { const itemManager = this.gameEngine.itemManager;
         
-        // スコア倍率アップアイテム'
+        // スコア倍率アップアイテム
         itemManager.ownedItems.forEach(itemId => { );''
             const item = itemManager.getItem(itemId');''
             if (item && item.effect.type === 'scoreMultiplier') { }
@@ -229,9 +229,9 @@ export class GameStateManager {
     
     /**
      * ゲームオーバーの発動
-     */'
+     */
     public triggerGameOver(): void { this.gameEngine.isGameOver = true;''
-        this.endGame('')';
+        this.endGame()';
         console.log('Game Over triggered'); }
     }
     
@@ -240,14 +240,14 @@ export class GameStateManager {
      * @param bubble - 破壊された泡
      * @param points - 獲得ポイント
      */'
-    public onBubbleDestroyed(bubble: Bubble, points: number): void { // スコア更新''
-        this.gameEngine.scoreManager.addScore(points');
+    public onBubbleDestroyed(bubble: Bubble, points: number): void { // スコア更新
+        this.gameEngine.scoreManager.addScore(points);
         ';
-        // 特殊効果の判定''
+        // 特殊効果の判定
         if(bubble.type === 'rainbow') {'
-            ';
+            ';'
         }'
-            this.gameEngine.startBonusTime('') }'
+            this.gameEngine.startBonusTime() }'
         } else if (bubble.type === 'clock') { this.gameEngine.startTimeStop(); }
         }
     }
@@ -261,7 +261,7 @@ export class GameStateManager {
          }
         console.log(`Player took ${damage} damage. HP: ${playerData.currentHP}/${ playerData.maxHP)`);
         ';
-        // 低HP警告''
+        // 低HP警告
         if (playerData.currentHP <= playerData.maxHP * 0.25 && playerData.currentHP > 0') {' }'
             console.log('Low HP warning!'});
         }
@@ -297,13 +297,13 @@ export class GameStateManager {
             case 'clock':'';
                 this.gameEngine.startTimeStop(''';
             case 'electric':;
-                // 電気効果の処理'
+                // 電気効果の処理
                 break;''
             case 'spiky':;
-                // 連鎖効果の処理'
+                // 連鎖効果の処理
                 break;''
             case 'poison':;
-                // 毒効果の処理'
+                // 毒効果の処理
                 break;''
             case 'pink':;
         })
@@ -336,15 +336,15 @@ export class GameStateManager {
             urgentWarning: false,
             message: null }
         },
-        ';
-        // 30秒以下で警告''
+        ;
+        // 30秒以下で警告
         if(timeRemaining <= 30000 && timeRemaining > 29000') {'
             warnings.timeWarning = true;'
         }'
             warnings.message = 'TIME WARNING!'; }
         }
         ';
-        // 10秒以下で緊急警告''
+        // 10秒以下で緊急警告
         if(timeRemaining <= 10000 && timeRemaining > 9000') {'
             warnings.urgentWarning = true;'
         }'
@@ -377,7 +377,7 @@ export class GameStateManager {
      */
     public validateGameState(): boolean { const playerData = this.gameEngine.playerData;
         ';
-        // 基本的な状態チェック''
+        // 基本的な状態チェック
         if(playerData.currentHP < 0') {'
             '';
             console.warn('Invalid HP detected, triggering game over');

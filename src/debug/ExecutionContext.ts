@@ -44,7 +44,7 @@ interface ContextInfo { startTime: number,
     hasCurrentScene: boolean,
     hasBubbleManager: boolean,
     hasScoreManager: boolean,
-    hasPlayerData: boolean; }
+    hasPlayerData: boolean }
 }
 
 interface SafeContext { game?: GameEngine;
@@ -59,7 +59,7 @@ interface SafeContext { game?: GameEngine;
     error: typeof console.error,
     Math: typeof Math,
     Date: typeof Date,
-    JSON: typeof JSON; }
+    JSON: typeof JSON }
 }'
 '';
 type PermissionLevel = 'user' | 'admin' | 'system';
@@ -114,7 +114,7 @@ export class ExecutionContext {
     }
 
     /**
-     * 変数を設定'
+     * 変数を設定
      */''
     public setVariable(name: string, value: any'): any { ''
         if (typeof name !== 'string' || name.trim(') === ''') {''
@@ -126,13 +126,13 @@ export class ExecutionContext {
         '';
         this.variables.set(normalizedName, value');
         
-        // 履歴に記録'
+        // 履歴に記録
         this.history.push({ ''
-            action: 'setVariable',);
+            action: 'setVariable');
             name: normalizedName);
             oldValue,);
             newValue: value),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         return oldValue;
@@ -193,10 +193,10 @@ export class ExecutionContext {
      * 変数をクリア
      */'
     public clearVariables(): number { const count = this.variables.size;''
-        this.variables.clear('')';
+        this.variables.clear()';
             action: 'clearVariables',);
             count);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         return count;
@@ -213,12 +213,12 @@ export class ExecutionContext {
         
         const oldPermissions = this.permissions;
         this.permissions = permissions;
-        ';
+        ';'
         this.history.push({ ')'
             action: 'setPermissions');
             oldPermissions,);
             newPermissions: permissions),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         return oldPermissions;
@@ -248,7 +248,7 @@ export class ExecutionContext {
         }'
         '';
         if(typeof code !== 'string'') {'
-            ';
+            ';'
         }'
             throw new Error('Code must be a string'); }
         }
@@ -279,8 +279,8 @@ export class ExecutionContext {
                 // 禁止された危険なオブジェクトは除外
                 // window, document, eval, Function 等はアクセス不可 }
             };
-            ';
-            // 関数として実行''
+            ;
+            // 関数として実行
             const func = new Function(...Object.keys(safeContext'), `"use strict"; return(${ code);`);""
             const result = func(...Object.values(safeContext)");
             ";
@@ -293,12 +293,12 @@ export class ExecutionContext {
             
             return result;'
             '';
-        } catch (error') { this.history.push({')'
+        } catch (error) { this.history.push({')'
                 action: 'executeJS'),'';
                 code: code.length > 100 ? code.substring(0, 100') + '...' : code,
                 success: false,
                 error: (error as Error).message,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
             
             throw error;
@@ -340,7 +340,7 @@ export class ExecutionContext {
      * コンテキストをリセット
      */'
     public reset(): void { this.clearVariables();''
-        this.clearHistory('')';
+        this.clearHistory()';
         this.permissions = 'user';)
         this.startTime = Date.now();
         this.updateContextReferences(); }

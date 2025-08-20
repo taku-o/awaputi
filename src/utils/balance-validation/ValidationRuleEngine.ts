@@ -18,7 +18,7 @@ interface Rule { name: string,
     severity?: 'low' | 'medium' | 'high' | 'critical' | 'warning';
     priority?: number;
     autoFix?: boolean;
-    autoFixFn?: (value: any, context: ValidationContext) => any; }
+    autoFixFn?: (value: any, context: ValidationContext) => any }
 }
 
 interface ValidationContext { bubbleType?: string;
@@ -37,7 +37,7 @@ interface RuleResult { valid: boolean,
 
 interface RuleExecutionResult extends RuleResult { executionTime: number,
     error: boolean,
-    originalError?: Error;
+    originalError?: Error
     }
 }
 
@@ -46,7 +46,7 @@ interface RuleExecutionRecord { ruleName: string,
     newValue: any,
     context: ValidationContext,
     result: RuleExecutionResult,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ExtendedRuleResult extends RuleExecutionResult { ruleName: string,
@@ -62,31 +62,31 @@ interface RulesSummary { totalRules: number,
     passed: number,
     failed: number,
     errors: number,
-    totalExecutionTime: number; }
+    totalExecutionTime: number }
 }
 
 interface RulesExecutionResult { results: ExtendedRuleResult[],
-    summary: RulesSummary;
+    summary: RulesSummary
     }
 }
 
 interface SlowRuleData { count: number,
     totalTime: number,
     averageTime: number,
-    maxTime: number; }
+    maxTime: number }
 }
 
 interface PerformanceMetrics { totalExecutions: number,
     totalExecutionTime: number,
     averageExecutionTime: number,
-    slowRules: Map<string, SlowRuleData>; }
+    slowRules: Map<string, SlowRuleData> }
 }
 
 interface HistoryFilters { ruleName?: string;
     success?: boolean;
     timeRange?: {
         start: number,
-        end: number; }
+        end: number }
     };
     limit?: number;
 }
@@ -124,9 +124,9 @@ export class ValidationRuleEngine {
         // Performance tracking
         this.performanceMetrics = {
             totalExecutions: 0,
-            totalExecutionTime: 0,';
+            totalExecutionTime: 0,
             averageExecutionTime: 0,'';
-            slowRules: new Map('';
+            slowRules: new Map(''
     }
     })'
         console.log('[ValidationRuleEngine] Rule engine component initialized'), }
@@ -137,9 +137,9 @@ export class ValidationRuleEngine {
      */
     executeRule(rule: Rule, oldValue: any, newValue: any, context: ValidationContext): RuleExecutionResult { const startTime = performance.now();
         let executionResult: RuleExecutionResult,
-        try {'
-            // Validate rule structure''
-            if (!this.validateRuleStructure(rule)') {
+        try {
+            // Validate rule structure
+            if (!this.validateRuleStructure(rule)) {
                 return {  };'
                     valid: false,' }'
                     message: `Invalid rule structure: ${rule.name || 'unknown'}`,
@@ -187,7 +187,7 @@ export class ValidationRuleEngine {
             newValue);
             context: this.sanitizeContext(context),
             result: executionResult,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         return executionResult;
@@ -200,13 +200,13 @@ export class ValidationRuleEngine {
         let totalExecutionTime = 0;
         
         for(const rule of rules) {
-        ';
+        ';'
             '';
             if (!rule.enabled') {
                 results.push({
                     ruleName: rule.name,';
                     skipped: true,'';
-                    reason: 'Rule disabled',);
+                    reason: 'Rule disabled');
                     valid: false);
                     executionTime: 0,);
                     error: false),
@@ -217,14 +217,14 @@ export class ValidationRuleEngine {
             
             const result = this.executeRule(rule, oldValue, newValue, context);
             
-            results.push({ ruleName: rule.name,)
+            results.push({ ruleName: rule.name)
                 category: rule.category)';
                 severity: rule.severity,')';
                 ...result)');
             
             totalExecutionTime += result.executionTime || 0;
             ';
-            // Early termination for critical failures''
+            // Early termination for critical failures
             if (result.error && rule.severity === 'critical') { }
                 console.warn(`[ValidationRuleEngine] Critical rule failure, terminating: ${rule.name)`});
                 break;
@@ -254,7 +254,7 @@ export class ValidationRuleEngine {
             return false; }
         }
         ';
-        // Required fields''
+        // Required fields
         const requiredFields: (keyof Rule')[] = ['name', 'check'];'
         for (const field of requiredFields) { if (!rule[field]) {' }'
                 console.error(`[ValidationRuleEngine] Missing required field: ${field)`'});
@@ -262,13 +262,13 @@ export class ValidationRuleEngine {
             }
         }
         ';
-        // Validate check function''
+        // Validate check function
         if (typeof rule.check !== 'function') { ' }'
             console.error(`[ValidationRuleEngine] Check must be a function: ${rule.name}`');
             return false;
         }
         ';
-        // Validate optional fields''
+        // Validate optional fields
         if(rule.severity && !['low', 'medium', 'high', 'critical', 'warning'].includes(rule.severity) { ' }'
             console.warn(`[ValidationRuleEngine] Invalid severity: ${rule.severity)`'});
         }'
@@ -286,12 +286,12 @@ export class ValidationRuleEngine {
     /**
      * Validate rule result structure'
      */''
-    private validateRuleResult(result: boolean | RuleResult'): RuleResult { // Handle simple boolean result''
+    private validateRuleResult(result: boolean | RuleResult'): RuleResult { // Handle simple boolean result
         if (typeof result === 'boolean'') { }
             return { valid: result }
         }
         ';
-        // Handle object result''
+        // Handle object result
         if(result && typeof result === 'object'') {
             const validatedResult: RuleResult = {'
                 valid: result.valid === true,'';
@@ -305,14 +305,14 @@ export class ValidationRuleEngine {
             // Remove undefined values
             Object.keys(validatedResult).forEach(key => {  );
                 if ((validatedResult as any)[key] === undefined) { }
-                    delete (validatedResult as any)[key]; }'
+                    delete (validatedResult as any)[key]; }
                 }''
             }');
             
             return validatedResult;
         }
         ';
-        // Fallback for invalid result''
+        // Fallback for invalid result
         console.warn('[ValidationRuleEngine] Invalid rule result format, treating as failure'');'
         return { valid: false,' };'
             message: 'Rule returned invalid result format' }
@@ -358,7 +358,7 @@ export class ValidationRuleEngine {
         }
             console.error(`[ValidationRuleEngine] Rule execution error: ${rule.name}`, { executionTime)
                 error: error.message,);
-                stack: error.stack); }
+                stack: error.stack) }
         }
     }
     
@@ -376,7 +376,7 @@ export class ValidationRuleEngine {
     }
     
     /**
-     * Sanitize context for history storage'
+     * Sanitize context for history storage
      */''
     private sanitizeContext(context: ValidationContext'): ValidationContext { ''
         if (!context || typeof context !== 'object') { }
@@ -385,15 +385,15 @@ export class ValidationRuleEngine {
         
         // Remove potentially large or sensitive data
         const sanitized = { ...context };
-        ';
-        // Remove functions''
+        ;
+        // Remove functions
         Object.keys(sanitized).forEach(key => {  ');''
             if (typeof sanitized[key] === 'function') { }
                 delete sanitized[key]; }'
             }''
         }');
         ';
-        // Limit relatedValues size''
+        // Limit relatedValues size
         if(sanitized.relatedValues && typeof sanitized.relatedValues === 'object') {
             const keys = Object.keys(sanitized.relatedValues);
             if (keys.length > 20) {
@@ -433,9 +433,9 @@ export class ValidationRuleEngine {
     }
     
     /**
-     * Check if rule is applicable to current context'
+     * Check if rule is applicable to current context
      */''
-    private isRuleApplicable(rule: Rule, context: ValidationContext'): boolean { // Bubble type specific rules''
+    private isRuleApplicable(rule: Rule, context: ValidationContext'): boolean { // Bubble type specific rules
         if (rule.name.includes('boss_'') && context.bubbleType !== 'boss'') {
             return false; }
         }'
@@ -449,7 +449,7 @@ export class ValidationRuleEngine {
         if (rule.name.includes('golden_'') && context.bubbleType !== 'golden'') { return false; }
         }
         ';
-        // Property type specific rules''
+        // Property type specific rules
         if (rule.name.includes('health_'') && context.propertyType !== 'health'') { return false; }
         }'
         '';
@@ -517,14 +517,14 @@ export class ValidationRuleEngine {
      */
     optimizeRuleOrder(rules: Rule[]): Rule[] { // Sort rules by execution characteristics for optimal performance
         return rules.sort((a, b) => { 
-            // Fast rules first'
+            // Fast rules first
             const aSlowData = this.performanceMetrics.slowRules.get(a.name);''
             const bSlowData = this.performanceMetrics.slowRules.get(b.name');
             
             const aAvgTime = aSlowData? .averageTime || 0;
             const bAvgTime = bSlowData?.averageTime || 0;
             ';
-            // Critical rules first''
+            // Critical rules first
             if (a.severity === 'critical' && b.severity !== 'critical'') return -1;''
             if (b.severity === 'critical' && a.severity !== 'critical') return 1;
             
@@ -539,9 +539,9 @@ export class ValidationRuleEngine {
     }
     
     /**
-     * Clear execution history'
+     * Clear execution history
      */ : undefined''
-    clearHistory('')';
+    clearHistory()';
         console.log('[ValidationRuleEngine] Execution history cleared');
     }
     
@@ -552,7 +552,7 @@ export class ValidationRuleEngine {
             totalExecutions: 0,
             totalExecutionTime: 0,';
             averageExecutionTime: 0,'';
-            slowRules: new Map('')';
+            slowRules: new Map()';
         console.log('[ValidationRuleEngine] Performance metrics reset'), }
     }
     
@@ -580,7 +580,7 @@ export class ValidationRuleEngine {
                 slowRulesCount: Object.keys(metrics.slowRules).length }
             },
             rules: { slowestRule: this.getSlowestRule(),
-                fastestRule: this.getFastestRule(); }
+                fastestRule: this.getFastestRule() }
             }
         };
     }
@@ -629,7 +629,7 @@ export class ValidationRuleEngine {
      * Cleanup engine resources
      */'
     destroy(): void { this.clearHistory();''
-        this.resetMetrics('')';
+        this.resetMetrics()';
         console.log('[ValidationRuleEngine] Engine destroyed''); }'
     }''
 }

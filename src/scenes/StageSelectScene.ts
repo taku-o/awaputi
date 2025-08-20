@@ -13,11 +13,11 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
     
         super(gameEngine);
         
-        // サブコンポーネントの初期化'
+        // サブコンポーネントの初期化
         this.eventStageDataManager = new EventStageDataManager(this);''
         this.stageSelectDataManager = new StageSelectDataManager(this');'
         ';
-    }
+    }'
     }'
         console.log('[StageSelectScene] Main Controller initialized'); }
     }
@@ -43,15 +43,15 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
     }
     
     /**
-     * 描画処理'
+     * 描画処理
      */''
     render(context: CanvasRenderingContext2D'): void { const canvas = this.gameEngine.canvas;
         ';
-        // 背景''
+        // 背景
         context.fillStyle = '#001122';
         context.fillRect(0, 0, canvas.width, canvas.height);
         ';
-        // タイトル''
+        // タイトル
         context.save(''';
         context.fillStyle = '#FFFFFF';''
         context.font = 'bold 32px Arial';''
@@ -78,7 +78,7 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
     }
     
     /**
-     * 入力処理'
+     * 入力処理
      */''
     handleInput(event: Event'): void { ''
         if(event.type === 'keydown') {
@@ -88,8 +88,8 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
         }
                 return; }
             }
-            ';
-            // その他のキー入力''
+            ;
+            // その他のキー入力
             switch(keyEvent.code') {'
                 '';
                 case 'KeyH':'';
@@ -175,8 +175,8 @@ export class StageSelectScene extends Scene { private eventStageDataManager!: Ev
      */
     resetState(): void { this.stageSelectDataManager.resetStageSelection();
         this.eventStageDataManager.setEventState({)
-            selectedEventIndex: -1)';
+            selectedEventIndex: -1);
             showingEvents: false,')';
-            eventScrollOffset: 0)'); }'
+            eventScrollOffset: 0)') }'
     }''
 }

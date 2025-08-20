@@ -22,7 +22,7 @@ export interface Notification { id: string,
     icon?: string;
     visible: boolean,
     startTime?: number;
-    options: NotificationOptions;
+    options: NotificationOptions
     }
 }
 
@@ -33,7 +33,7 @@ export interface Achievement { id?: string;
     icon?: string;
     category?: string;
     rarity?: RarityLevel;
-    reward: AchievementReward;
+    reward: AchievementReward
     }
 }
 
@@ -44,7 +44,7 @@ export interface AchievementReward { ap: number,
 
 export interface RewardItem { type: string,
     id: string,
-    quantity: number; }
+    quantity: number }
 }
 
 export interface NotificationOptions { duration?: number;
@@ -56,7 +56,7 @@ export interface NotificationOptions { duration?: number;
 export interface NotificationTypeConfig { icon: string,
     color: string,
     priority: number,
-    sound: string; }
+    sound: string }
 }
 
 export interface NotificationConfig { maxActiveNotifications: number,
@@ -68,7 +68,7 @@ export interface NotificationConfig { maxActiveNotifications: number,
     fadeIn: boolean,
     slideIn: boolean,
     sound: boolean,
-    vibration: boolean; }
+    vibration: boolean }
 }
 
 export interface NotificationData { title?: string;
@@ -83,7 +83,7 @@ export interface NotificationData { title?: string;
 export interface NotificationHistoryEntry { id: string,
     achievement: Achievement,
     timestamp: number,
-    type: NotificationType;
+    type: NotificationType
     }
 }
 
@@ -119,7 +119,7 @@ export type NotificationType = ;
     | 'success''';
     | 'info''';
     | 'ranking';
-';
+';'
 export type NotificationPosition = '';
     | 'top-right''';
     | 'top-left''';
@@ -153,11 +153,8 @@ export class AchievementNotificationSystem {
         if (gameEngineOrAudioManager && (;
             (gameEngineOrAudioManager as AudioManager).playedSounds !== undefined || ;
             (gameEngineOrAudioManager as AudioManager).playSound;
-        ) {
-
-    }
-    }
-            this._audioManager = gameEngineOrAudioManager as AudioManager; }'
+        ) {}
+            this._audioManager = gameEngineOrAudioManager as AudioManager; }
         } else {  // gameEngineオブジェクトの場合' }'
             this._audioManager = (gameEngineOrAudioManager as GameEngine')? .audioManager || null; }
         }
@@ -169,8 +166,8 @@ export class AchievementNotificationSystem {
             animationDuration: 500, // アニメーション時間（テスト互換性用）;
             queueProcessingInterval: 500, // キュー処理間隔;
             maxQueueSize: 10,
-            ';
-            // 表示設定''
+            ;
+            // 表示設定
             position: 'top-right', // 'top-right', 'top-left', 'bottom-right', 'bottom-left';
             fadeIn: true,
             slideIn: true,
@@ -178,7 +175,7 @@ export class AchievementNotificationSystem {
             vibration: true // モバイル端末での振動 }
         },
         
-        // 通知タイプ別設定'
+        // 通知タイプ別設定
         this.notificationTypes = { achievement: {''
                 icon: '🏆','';
                 color: '#FFD700',';
@@ -261,13 +258,13 @@ export class AchievementNotificationSystem {
     }
 
     /**
-     * 通知コンテナを作成'
+     * 通知コンテナを作成
      */''
-    private createNotificationContainer('')';
+    private createNotificationContainer()';
         const existing = document.getElementById('achievement-notifications');
         if(existing) {'
             '';
-            existing.remove('')';
+            existing.remove()';
         this.container = document.createElement('div'');'
         }'
         this.container.id = 'achievement-notifications'; }
@@ -281,10 +278,10 @@ export class AchievementNotificationSystem {
 
     /**
      * コンテナスタイルを適用
-     */'
+     */
     private applyContainerStyles(): void { ''
         if (!this.container') return;
-';
+';'
         const styles: Partial<CSSStyleDeclaration> = {''
             position: 'fixed','';
             zIndex: '10000','';
@@ -293,7 +290,7 @@ export class AchievementNotificationSystem {
             width: '100%' }
         },
 ';
-        // 位置に応じてスタイルを設定''
+        // 位置に応じてスタイルを設定
         switch(this.config.position') {'
             '';
             case 'top-right':'';
@@ -328,7 +325,7 @@ export class AchievementNotificationSystem {
     /**
      * イベントリスナーを設定'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseNotifications(); }
             } else { this.resumeNotifications(); }
@@ -371,22 +368,22 @@ export class AchievementNotificationSystem {
     private determineNotificationType(achievement: Achievement): NotificationType { // 安全にrewardプロパティにアクセス（Issue #106: テスト互換性対応） }
         const reward = achievement? .reward || {};
         const ap = reward.ap || 0;
-        ';
-        // 報酬が高い実績はレア扱い''
+        ;
+        // 報酬が高い実績はレア扱い
         if(ap >= 300') {'
-            ';
+            ';'
         }'
             return 'rare'; }
         }
 ';
-        // 特定のカテゴリはマイルストーン扱い''
+        // 特定のカテゴリはマイルストーン扱い
         if (['stage', 'collection'].includes(achievement.category || '')') { ''
             return 'milestone'; }
         }
 ';
-        // コレクション系''
+        // コレクション系
         if(achievement.category === 'collection'') {'
-            ';
+            ';'
         }'
             return 'collection'; }
         }'
@@ -410,7 +407,7 @@ export class AchievementNotificationSystem {
     queueNotification(notificationData: NotificationData): void { try {
             // 汎用通知オブジェクトを内部形式に変換
             const now = Date.now();
-            const notification: Notification = { }'
+            const notification: Notification = { }
                 id: `notification_${now}_${Math.random().toString(36).substr(2, 9})}`,''
                 type: (notificationData.type as NotificationType') || 'info',
                 timestamp: now,
@@ -434,10 +431,10 @@ export class AchievementNotificationSystem {
             },
             
             this.addNotificationToQueue(notification);
-            console.log(`[AchievementNotificationSystem] Queued notification: ${notification.title)`});'
+            console.log(`[AchievementNotificationSystem] Queued notification: ${notification.title)`});
             '';
-        } catch (error') { ''
-            console.error('[AchievementNotificationSystem] Error queueing notification:', error); }
+        } catch (error) { ''
+            console.error('[AchievementNotificationSystem] Error queueing notification:', error) }
         }
     }
 
@@ -555,7 +552,7 @@ export class AchievementNotificationSystem {
     /**
      * 通知要素を作成
      * @param notification 通知オブジェクト
-     * @returns 通知要素'
+     * @returns 通知要素
      */''
     private createNotificationElement(notification: Notification'): HTMLElement { ''
         const element = document.createElement('div'');''
@@ -564,7 +561,7 @@ export class AchievementNotificationSystem {
         
         const typeConfig = this.notificationTypes[notification.type];
         const achievement = notification.achievement;
-        ';
+        ';'
         element.innerHTML = `'';
             <div class="achievement-notification-content">" }"
                 <div class="achievement-notification-icon" style="color: ${typeConfig.color}">
@@ -585,7 +582,7 @@ export class AchievementNotificationSystem {
         // クローズボタンイベント""
         const closeBtn = element.querySelector('.achievement-notification-close') as HTMLElement;''
         if(closeBtn') {'
-            ';
+            ';'
         }'
             closeBtn.addEventListener('click', () => {  }
                 this.hideNotification(notification.id); }
@@ -616,26 +613,26 @@ export class AchievementNotificationSystem {
 '';
         Object.assign(element.style, styles');
         ';
-        // コンテンツスタイル''
+        // コンテンツスタイル
         const content = element.querySelector('.achievement-notification-content') as HTMLElement;''
         if(content') {'
             Object.assign(content.style, {''
                 display: 'flex',')';
-                alignItems: 'center',');
+                alignItems: 'center',')
         }'
                 gap: '12px')'); }
         }
         ';
-        // アイコンスタイル''
+        // アイコンスタイル
         const icon = element.querySelector('.achievement-notification-icon') as HTMLElement;''
         if(icon') {'
             Object.assign(icon.style, {')'
-                fontSize: '24px',');
+                fontSize: '24px',')
         }'
                 flexShrink: '0')'); }
         }
         ';
-        // テキストスタイル''
+        // テキストスタイル
         const text = element.querySelector('.achievement-notification-text') as HTMLElement;''
         if(text') {'
             Object.assign(text.style, {')
@@ -648,7 +645,7 @@ export class AchievementNotificationSystem {
             Object.assign(title.style, {''
                 fontWeight: 'bold','';
                 fontSize: '14px',')';
-                color: '#333',');
+                color: '#333',')
         }'
                 marginBottom: '2px')'); }
         }'
@@ -657,7 +654,7 @@ export class AchievementNotificationSystem {
         if(description') {'
             Object.assign(description.style, {''
                 fontSize: '12px',')';
-                color: '#666',');
+                color: '#666',')
         }'
                 lineHeight: '1.3')'); }
         }'
@@ -667,12 +664,12 @@ export class AchievementNotificationSystem {
             Object.assign(reward.style, {')'
                 fontSize: '11px')';
                 color: typeConfig.color,'';
-                fontWeight: 'bold',');
+                fontWeight: 'bold',')
         }'
                 marginTop: '2px')'); }
         }
         ';
-        // クローズボタンスタイル''
+        // クローズボタンスタイル
         const closeBtn = element.querySelector('.achievement-notification-close') as HTMLElement;''
         if(closeBtn') {'
             Object.assign(closeBtn.style, {''
@@ -680,7 +677,7 @@ export class AchievementNotificationSystem {
                 color: '#999','';
                 cursor: 'pointer','';
                 flexShrink: '0',')';
-                width: '20px',');
+                width: '20px',')
         }'
                 textAlign: 'center'); }
         }
@@ -692,8 +689,8 @@ export class AchievementNotificationSystem {
      */''
     private animateNotificationIn(element: HTMLElement'): void { // トリガーリフロー
         element.offsetHeight;
-        ';
-        // アニメーション実行''
+        ;
+        // アニメーション実行
         element.style.opacity = '1';''
         element.style.transform = 'translateX(0) scale(1')'; }
     }
@@ -729,10 +726,10 @@ export class AchievementNotificationSystem {
             if(typeConfig.sound) {
                 // ここで実際のサウンド再生を実装
             }
-                // 例: AudioContextやHTML5 Audioを使用 }'
+                // 例: AudioContextやHTML5 Audioを使用 }
                 console.log(`Playing sound: ${typeConfig.sound)`});''
-            } catch (error') { ''
-            console.warn('Failed to play notification sound:', error); }
+            } catch (error) { ''
+            console.warn('Failed to play notification sound:', error) }
         }
     }
 
@@ -754,7 +751,7 @@ export class AchievementNotificationSystem {
      * @param notification 通知オブジェクト
      */
     private addToHistory(notification: Notification): void { this.history.unshift({
-            id: notification.id,);
+            id: notification.id);
             achievement: notification.achievement);
             timestamp: notification.timestamp,);
             type: notification.type),
@@ -847,10 +844,10 @@ export class AchievementNotificationSystem {
                 return true;
             });
             
-            // 通知キューの処理'
+            // 通知キューの処理
             if (this.notificationQueue.length > 0 && !this.isProcessingQueue) { this.processNotificationQueue();' }'
-            } catch (error') { ''
-            console.error('[AchievementNotificationSystem] Error during update:', error); }
+            } catch (error) { ''
+            console.error('[AchievementNotificationSystem] Error during update:', error) }
         }
     }
 
@@ -872,7 +869,7 @@ export class AchievementNotificationSystem {
                     const x = canvas ? canvas.width - 320 : 300;
                     
                     // 通知背景の描画
-                    if (notification.achievement && notification.achievement.rarity) {'
+                    if (notification.achievement && notification.achievement.rarity) {
                         const gradient = context.createLinearGradient(x, y, x + 300, y + 60);''
                         gradient.addColorStop(0, this.getRarityColor(notification.achievement.rarity)');'
             
@@ -885,7 +882,7 @@ export class AchievementNotificationSystem {
                     '';
                     context.fillRect(x, y, 300, 60');
                     ';
-                    // テキストの描画''
+                    // テキストの描画
                     context.fillStyle = 'white';''
                     context.font = '16px Arial';''
                     context.fillText(notification.title || 'Achievement Unlocked!', x + 10, y + 25);'
@@ -897,10 +894,10 @@ export class AchievementNotificationSystem {
                         context.fillText(notification.achievement.description, x + 10, y + 45); }
                     }
                 });
-                ';
+                ';'
                 context.restore();''
-            } catch (error') { ''
-            console.error('[AchievementNotificationSystem] Error during render:', error); }
+            } catch (error) { ''
+            console.error('[AchievementNotificationSystem] Error during render:', error) }
         }
     }
 
@@ -998,20 +995,20 @@ export class AchievementNotificationSystem {
      * 実績解除通知を表示（テスト互換性用）
      * @param achievement 実績オブジェクト
      * @param options 表示オプション
-     */'
+     */
     showUnlockNotification(achievement: Achievement, options: Partial<NotificationOptions> = { ): Notification {''
         const notification = this.createAchievementNotification(achievement, options');'
-        notification.visible = true; // テスト互換性のため''
+        notification.visible = true; // テスト互換性のため
         notification.type = 'unlock'; // テスト互換性のため
         notification.achievement = achievement;
         notification.startTime = Date.now(); // テストで期待されるプロパティ
         
         this.addNotificationToQueue(notification);
-        ';
-        // 音響効果の再生''
+        ;
+        // 音響効果の再生
         if(this._audioManager && this._audioManager.playedSounds') {'
             this._audioManager.playedSounds.push({')'
-                soundId: 'achievement_unlock',);
+                soundId: 'achievement_unlock',)
         }
                 achievement: achievement); }
         }
@@ -1024,7 +1021,7 @@ export class AchievementNotificationSystem {
      * @param settings 新しい設定'
      */''
     updateSettings(settings: NotificationSettings = { )'): void {'
-        // 設定値の検証と更新''
+        // 設定値の検証と更新
         if(typeof settings.displayDuration === 'number' && settings.displayDuration > 0') {
             
         }
@@ -1086,7 +1083,7 @@ export class AchievementNotificationSystem {
     }
     
     /**
-     * 表示時間を設定（テスト互換性用）'
+     * 表示時間を設定（テスト互換性用）
      */''
     set displayDuration(duration: number') { ''
         if(typeof duration === 'number' && duration > 0) {

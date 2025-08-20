@@ -14,7 +14,7 @@ export interface ValidationResult { passed: boolean,
     message: string,
     details?: any;
     suggestion?: string;
-    severity: 'error' | 'warning'; }
+    severity: 'error' | 'warning' }
 }
 
 export interface ParameterDetails { expected: string[],
@@ -27,14 +27,14 @@ export interface LengthDetails { sourceLength: number,
     translationLength: number,
     minLength: number,
     maxLength: number,
-    language: string; }
+    language: string }
 }
 
 export interface LengthTolerance { min: number,
     max: number,
-    name: string; }
+    name: string }
 }
-';
+';'
 export interface FormatIssue { ''
     type: 'html_tags' | 'markdown' | 'special_characters',
     message: string,
@@ -45,27 +45,27 @@ export interface FormatIssue { ''
 }
 
 export interface MarkdownElement { type: string,
-    content: string; }
+    content: string }
 }
 
 export interface CulturalRule { term: string,
     reason: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 export interface CulturalRules { inappropriate: CulturalRule[],
-    sensitive: CulturalRule[];
+    sensitive: CulturalRule[]
     }
 }
-';
+';'
 export interface CulturalIssue { ''
     type: 'inappropriate' | 'sensitive',
     term: string,
     reason: string,';
     suggestion: string,'';
-    severity: 'error' | 'warning'; }
+    severity: 'error' | 'warning' }
 }
-';
+';'
 export interface CompletenessIssue { ''
     type: 'untranslated_markers' | 'potential_untranslated' | 'too_short',
     message: string,
@@ -87,7 +87,7 @@ export interface CapitalizationResult { passed: boolean,
 }
 
 export interface PunctuationResult { passed: boolean,
-    issues?: ConsistencyIssue[];
+    issues?: ConsistencyIssue[]
     }
 }
 
@@ -96,7 +96,7 @@ export interface PolitenessResult { passed: boolean,
     message?: string;
     suggestion?: string; }
 }
-';
+';'
 export interface ValidationRuleConstructor { ''
     new ('): IValidationRule;
     }
@@ -105,7 +105,7 @@ export interface ValidationRuleConstructor { ''
 export interface IValidationRule { name: string,'
     description: string,'';
     severity: 'error' | 'warning','';
-    validate(sourceText: string, translationText: string, context?: ValidationContext'): ValidationResult;
+    validate(sourceText: string, translationText: string, context?: ValidationContext'): ValidationResult
     }
 }
 
@@ -149,7 +149,7 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
     
     /**
      * 検証実行
-     */ : undefined'
+     */ : undefined
     validate(sourceText: string, translationText: string, context: ValidationContext = { ): ValidationResult {''
         if(!sourceText || !translationText') {'
             return { passed: false,'
@@ -162,7 +162,7 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
         const sourceParams = this.extractParameters(sourceText);
         const translationParams = this.extractParameters(translationText);
         ';
-        // パラメータ数の比較''
+        // パラメータ数の比較
         if (sourceParams.length !== translationParams.length') { return {  };
                 passed: false, }
                 message: `パラメータ数不一致（元: ${sourceParams.length}, 翻訳: ${translationParams.length}）`,
@@ -179,8 +179,8 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
         const extraParams = translationParams.filter(param => !sourceParams.includes(param);
         
         if(missingParams.length > 0 || extraParams.length > 0) {
-        ';
-            const issues: string[] = [],';
+        ';'
+            const issues: string[] = [],'
         }'
             if (missingParams.length > 0') {' }'
                 issues.push(`不足: ${missingParams.join(', '})}`);'
@@ -188,7 +188,7 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
             if (extraParams.length > 0') { ' }'
                 issues.push(`余分: ${extraParams.join(', '})}`');
             }
-            ';
+            ';'
             return { passed: false,' }'
                 message: `パラメータ不一致（${issues.join(', ''})}）`,
                 details: { missing: missingParams,
@@ -200,7 +200,7 @@ export class ParameterConsistencyRule implements IValidationRule { public name: 
                 severity: this.severity;
             },
         }
-        ';
+        ';'
         return { passed: true,''
             message: 'パラメータが正しく含まれています', };
             severity: this.severity }
@@ -221,7 +221,7 @@ export class LengthValidationRule implements IValidationRule { public name: stri
         this.description = '翻訳文の長さが適切な範囲内かチェック';''
         this.severity = 'warning';
         
-        // 言語別の長さ許容率'
+        // 言語別の長さ許容率
         this.lengthTolerances = {' }'
             'en': { min: 0.7, max: 1.5, name: '英語' },''
             'zh-CN': { min: 0.5, max: 1.2, name: '中国語簡体字' },''
@@ -234,10 +234,10 @@ export class LengthValidationRule implements IValidationRule { public name: stri
     /**
      * 実際の文字数を計算（絵文字や特殊文字を考慮）'
      */')'
-    calculateTextLength(text: string'): number { // Unicode正規化''
+    calculateTextLength(text: string'): number { // Unicode正規化
         const normalized = text.normalize('NFC'');
         ';
-        // 絵文字や結合文字を1文字として数える''
+        // 絵文字や結合文字を1文字として数える
         const segmenter = new Intl.Segmenter('ja', { granularity: 'grapheme' ),
         const segments = Array.from(segmenter.segment(normalized);
         
@@ -265,7 +265,7 @@ export class LengthValidationRule implements IValidationRule { public name: stri
         const minLength = Math.floor(sourceLength * tolerance.min);
         const maxLength = Math.ceil(sourceLength * tolerance.max);
         ';
-        // 短すぎる場合''
+        // 短すぎる場合
         if (translationLength < minLength') { return {  };
                 passed: false, }
                 message: `翻訳が短すぎます（${translationLength}文字, 最小推奨: ${minLength}文字）`,
@@ -280,7 +280,7 @@ export class LengthValidationRule implements IValidationRule { public name: stri
             },
         }
         ';
-        // 長すぎる場合''
+        // 長すぎる場合
         if (translationLength > maxLength') { return {  };
                 passed: false, }
                 message: `翻訳が長すぎます（${translationLength}文字, 最大推奨: ${maxLength}文字）`,
@@ -325,7 +325,7 @@ export class FormatValidationRule implements IValidationRule { public name: stri
     extractHtmlTags(text: string): string[] { const htmlTagPattern = /<\/? [a-zA-Z][^>]*>/g;
         const matches = text.match(htmlTagPattern) || [];
         
-        // タグを正規化（属性を除去して純粋なタグ名のみ）'
+        // タグを正規化（属性を除去して純粋なタグ名のみ）
         return matches.map(tag => { );''
             const normalized = tag.replace(/<\/?([a-zA-Z]+')[^>]*>/g, '<$1>'); }
             return normalized.toLowerCase(); }
@@ -381,7 +381,7 @@ export class FormatValidationRule implements IValidationRule { public name: stri
         
         // HTMLタグの検証
         const sourceHtmlTags = this.extractHtmlTags(sourceText);
-        const translationHtmlTags = this.extractHtmlTags(translationText);'
+        const translationHtmlTags = this.extractHtmlTags(translationText);
         '';
         if(sourceHtmlTags.length !== translationHtmlTags.length') {'
             issues.push({'
@@ -396,7 +396,7 @@ export class FormatValidationRule implements IValidationRule { public name: stri
             if(missingTags.length > 0 || extraTags.length > 0') {'
                 issues.push({''
                     type: 'html_tags',')';
-                    message: 'HTMLタグが一致しません');
+                    message: 'HTMLタグが一致しません')
             }
                     missing: missingTags,) }
                     extra: extraTags); }
@@ -408,24 +408,24 @@ export class FormatValidationRule implements IValidationRule { public name: stri
         const translationMarkdown = this.extractMarkdownElements(translationText);
         
         const sourceMarkdownTypes = sourceMarkdown.map(md => md.type).sort();
-        const translationMarkdownTypes = translationMarkdown.map(md => md.type).sort();'
+        const translationMarkdownTypes = translationMarkdown.map(md => md.type).sort();
         '';
         if (JSON.stringify(sourceMarkdownTypes) !== JSON.stringify(translationMarkdownTypes)') { issues.push({''
                 type: 'markdown',')';
                 message: 'マークダウン記法が一致しません');
                 expected: sourceMarkdownTypes,);
-                actual: translationMarkdownTypes); }
+                actual: translationMarkdownTypes) }
         }
         
         // 特殊記号の検証
         const sourceSpecialChars = this.extractSpecialCharacters(sourceText);
-        const translationSpecialChars = this.extractSpecialCharacters(translationText);'
+        const translationSpecialChars = this.extractSpecialCharacters(translationText);
         '';
         if (JSON.stringify(sourceSpecialChars) !== JSON.stringify(translationSpecialChars)') { issues.push({''
                 type: 'special_characters',')';
                 message: '括弧や特殊記号が一致しません');
                 expected: sourceSpecialChars,);
-                actual: translationSpecialChars); }
+                actual: translationSpecialChars) }
         }'
         '';
         if (issues.length > 0') { return {  };
@@ -436,7 +436,7 @@ export class FormatValidationRule implements IValidationRule { public name: stri
                 severity: this.severity;
             },
         }
-        ';
+        ';'
         return { passed: true,''
             message: 'フォーマットが正しく保持されています', };
             severity: this.severity }
@@ -527,12 +527,12 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
         const issues: CulturalIssue[] = [],
         const lowerTranslation = translationText.toLowerCase();
         
-        // 不適切な表現のチェック'
+        // 不適切な表現のチェック
         rules.inappropriate.forEach(rule => {  );''
             if(lowerTranslation.includes(rule.term.toLowerCase()') {'
                 issues.push({''
                     type: 'inappropriate',
-                    term: rule.term,);
+                    term: rule.term);
                     reason: rule.reason)';
                     suggestion: rule.suggestion,') }'
                     severity: 'error'); }
@@ -540,12 +540,12 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
             }
         });
         
-        // 配慮が必要な表現のチェック'
+        // 配慮が必要な表現のチェック
         rules.sensitive.forEach(rule => {  );''
             if(lowerTranslation.includes(rule.term.toLowerCase()') {'
                 issues.push({''
                     type: 'sensitive',
-                    term: rule.term,);
+                    term: rule.term);
                     reason: rule.reason)';
                     suggestion: rule.suggestion,') }'
                     severity: 'warning'); }
@@ -564,20 +564,20 @@ export class CulturalAppropriatenessRule implements IValidationRule { public nam
                 message += `不適切な表現: ${inappropriateCount}個`;
             }
             if(sensitiveCount > 0) {'
-                ';
+                ';'
             }'
                 if (message') message += ', '; }
                 message += `配慮が必要な表現: ${sensitiveCount}個`;
             }
             
-            return { passed: false, }
+            return { passed: false, }'
                 message: `文化的配慮で問題が見つかりました（${message}）`,'
                 details: issues,'';
                 suggestion: '文化的に適切で敬意を払った表現に修正してください','';
                 severity: inappropriateCount > 0 ? 'error' : 'warning';
             },
         }
-        ';
+        ';'
         return { passed: true,''
             message: '文化的に適切な表現です', };
             severity: this.severity }
@@ -610,7 +610,7 @@ export class CompletenessValidationRule implements IValidationRule { public name
         this.name = '翻訳完成度ルール';''
         this.description = '空文字や未翻訳の項目がないかチェック';''
         this.severity = 'error';
-        ';
+        ';'
         this.untranslatedMarkers = [']';
             'TODO', 'FIXME', 'TBD', 'XXX',']';
             '[未翻訳]', '[TODO]', '[FIXME]','';
@@ -625,7 +625,7 @@ export class CompletenessValidationRule implements IValidationRule { public name
     validate(sourceText: string, translationText: string, context: ValidationContext = { ): ValidationResult {
         const issues: CompletenessIssue[] = [],
         ';
-        // 空文字チェック''
+        // 空文字チェック
         if (!translationText || translationText.trim(') === ''') {'
             return { passed: false,''
                 message: '翻訳が空です','';
@@ -637,11 +637,11 @@ export class CompletenessValidationRule implements IValidationRule { public name
         // 未翻訳マーカーのチェック
         const foundMarkers = this.untranslatedMarkers.filter(marker => );
             translationText.toUpperCase().includes(marker.toUpperCase();
-        );'
+        );
         '';
         if(foundMarkers.length > 0') {'
             issues.push({')'
-                type: 'untranslated_markers',');
+                type: 'untranslated_markers',')
         }'
                 markers: foundMarkers'),' }'
                 message: `未翻訳マーカーが含まれています: ${foundMarkers.join(', '})}`
@@ -658,7 +658,7 @@ export class CompletenessValidationRule implements IValidationRule { public name
                     word.toLowerCase() === tWord.toLowerCase();
             );
             ';
-            // 共通単語が多すぎる場合（70%以上）''
+            // 共通単語が多すぎる場合（70%以上）
             if (sourceWords.length > 0 && (commonWords.length / sourceWords.length) > 0.7') {'
                 issues.push({')'
                     type: 'potential_untranslated',')';
@@ -668,11 +668,11 @@ export class CompletenessValidationRule implements IValidationRule { public name
                 });
             }
         }
-        ';
-        // 極端に短い翻訳のチェック''
+        ;
+        // 極端に短い翻訳のチェック
         if(sourceText && translationText.length < 3 && sourceText.length > 10') {'
             issues.push({')'
-                type: 'too_short',');
+                type: 'too_short',')
         }'
                 message: '翻訳が極端に短すぎます'); }
         }'
@@ -685,7 +685,7 @@ export class CompletenessValidationRule implements IValidationRule { public name
                 severity: this.severity;
             },
         }
-        ';
+        ';'
         return { passed: true,''
             message: '翻訳が適切に完成しています', };
             severity: this.severity }
@@ -728,7 +728,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
             return { : undefined'
                 passed: false,'';
                 type: 'capitalization','';
-                message: '文の始まりの大文字化が一貫していません',';
+                message: '文の始まりの大文字化が一貫していません','
         }'
                 examples: inconsistentSentences.slice(0, 3'),' };'
                 suggestion: '各文の始まりを大文字にしてください' }
@@ -747,19 +747,19 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
         
         // 文末句読点のチェック
         const sourceEndsWithPeriod = /[.。！？!? ]$/.test(sourceText.trim();
-        const translationEndsWithPeriod = /[.。！？!?]$/.test(translationText.trim();'
+        const translationEndsWithPeriod = /[.。！？!?]$/.test(translationText.trim();
         '';
         if(sourceEndsWithPeriod && !translationEndsWithPeriod') {'
             issues.push({ : undefined''
                 type: 'missing_end_punctuation',')';
-                message: '文末の句読点が不足しています',');
+                message: '文末の句読点が不足しています',')
         }'
                 suggestion: '原文に合わせて適切な句読点を追加してください'); }
         }
         
         // 疑問符・感嘆符のチェック
         const sourceQuestions = (sourceText.match(/[？? ]/g) || []).length;
-        const translationQuestions = (translationText.match(/[？?]/g) || []).length;'
+        const translationQuestions = (translationText.match(/[？?]/g) || []).length;
         '';
         if(sourceQuestions !== translationQuestions') {'
             issues.push({ : undefined'
@@ -794,7 +794,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
             '';
             if (politeEndings.length > 0 && casualEndings.length > 0') {'
                 return { passed: false,''
-                    type: 'politeness_inconsistency',';
+                    type: 'politeness_inconsistency','
         }'
                     message: '敬語レベルが一貫していません（丁寧語と普通語が混在）',' };'
                     suggestion: 'どちらか一方の敬語レベルに統一してください' }
@@ -833,7 +833,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
         // 敬語レベルの一貫性チェック
         const politenessResult = this.checkPolitenessConsistency(translationText, targetLanguage);
         if (!politenessResult.passed) { issues.push(politenessResult); }
-        }'
+        }
         '';
         if (issues.length > 0') { return {  };
                 passed: false, }
@@ -843,7 +843,7 @@ export class ConsistencyValidationRule implements IValidationRule { public name:
                 severity: this.severity;
             },
         }
-        ';
+        ';'
         return { passed: true,''
             message: '翻訳の一貫性に問題ありません', };
             severity: this.severity }
@@ -891,5 +891,5 @@ export class ValidationRuleFactory {
     }
 }
 ';
-// デフォルトファクトリーインスタンス''
+// デフォルトファクトリーインスタンス
 export const validationRuleFactory = new ValidationRuleFactory(');

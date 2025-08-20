@@ -27,9 +27,9 @@ interface EnhancedParticleManager { setMaxParticles?: (count: number) => void;
     setLowPriorityReduction?: (enabled: boolean) => void;
     clearUnusedParticles?: () => void; }
 }
-';
+';'
 interface AnimationManager { setDurationMultiplier?: (multiplier: number) => void;''
-    setFrameSkipping?: (frames: number') => void; }
+    setFrameSkipping?: (frames: number') => void }
 }
 
 interface DeviceInfo { isMobile: boolean,
@@ -47,7 +47,7 @@ interface DeviceInfo { isMobile: boolean,
 
 interface PerformanceMemory { totalJSHeapSize: number,
     usedJSHeapSize: number,
-    jsHeapSizeLimit: number; }
+    jsHeapSizeLimit: number }
 }'
 '';
 type DeviceProfile = 'high-end' | 'mid-range' | 'low-end' | 'ultra-low';
@@ -57,7 +57,7 @@ interface DeviceProfileConfig { particleMultiplier: number,
     maxParticles: number,
     animationDuration: number,
     enableAdvancedEffects: boolean,
-    enablePostProcessing: boolean; }
+    enablePostProcessing: boolean }
 }'
 '';
 type EffectQuality = 'minimal' | 'low' | 'medium' | 'high';
@@ -68,7 +68,7 @@ interface Optimizations { enableBatching: boolean,
     reduceLowPriorityEffects: boolean,
     adaptiveQuality: boolean,
     batteryAware: boolean,
-    thermalThrottling: boolean; }
+    thermalThrottling: boolean }
 }
 
 interface PerformanceMetrics { fps: number,
@@ -76,7 +76,7 @@ interface PerformanceMetrics { fps: number,
     frameDrops: number,
     memoryUsage: number,
     batteryLevel: number,
-    thermalState: ThermalState;
+    thermalState: ThermalState
     }
 }'
 '';
@@ -85,13 +85,13 @@ type ThermalState = 'normal' | 'warning' | 'critical';
 interface TouchOptimizations { enableTouchEffects: boolean,
     touchFeedbackIntensity: number,
     gestureSensitivity: number,
-    preventAccidentalTouches: boolean; }
+    preventAccidentalTouches: boolean }
 }
 
 interface OptimizerState { initialized: boolean,
     enabled: boolean,
     deviceProfile: DeviceProfile | null,
-    optimizationLevel: OptimizationLevel;
+    optimizationLevel: OptimizationLevel
     }
 }'
 '';
@@ -99,14 +99,14 @@ type OptimizationLevel = 'auto' | 'aggressive' | 'balanced' | 'minimal';
 
 interface BatteryOptimizationConfig { particleMultiplier: number,
     effectQuality: EffectQuality,
-    targetFPS: number; }
+    targetFPS: number }
 }
 
 interface OptimizationStatus { enabled: boolean,
     deviceProfile: DeviceProfile | null,
     optimizationLevel: OptimizationLevel,
     optimizations: Optimizations,
-    touchOptimizations: TouchOptimizations;
+    touchOptimizations: TouchOptimizations
     }
 }
 
@@ -115,15 +115,15 @@ interface OptimizerReport { component: string,
     deviceInfo: DeviceInfo,
     performanceMetrics: PerformanceMetrics,
     optimizationStatus: OptimizationStatus,
-    profiles: DeviceProfile[];
+    profiles: DeviceProfile[]
     }
 }
-';
+';'
 interface NetworkConnection { ''
     effectiveType: '4g' | '3g' | '2g' | 'slow-2g',
-    downlink: number; }
+    downlink: number }
 }
-';
+';'
 declare global { interface Navigator {''
         getBattery?: (') => Promise<Battery>;
         connection?: NetworkConnection;
@@ -132,13 +132,13 @@ declare global { interface Navigator {''
     
     interface Battery extends EventTarget { level: number,'
         charging: boolean,'';
-        addEventListener(type: 'levelchange' | 'chargingchange', listener: EventListener): void; }
+        addEventListener(type: 'levelchange' | 'chargingchange', listener: EventListener): void }
     }
     
     interface Performance { memory?: PerformanceMemory;
     }
     }
-    ';
+    ';'
     interface Window { ''
         gc?: (') => void; }
     }
@@ -167,27 +167,27 @@ export class MobileEffectOptimizer {
         performanceMemory: null,
         hardwareConcurrency: 0;
     },
-    ';
+    ';'
     private readonly deviceProfiles = new Map<DeviceProfile, DeviceProfileConfig>(['';
         ['high-end', { particleMultiplier: 1.0,''
             effectQuality: 'high',
             maxParticles: 1000,
             animationDuration: 1.0,
-            enableAdvancedEffects: true,];
+            enableAdvancedEffects: true];
             enablePostProcessing: true }]'
         }],''
         ['mid-range', { particleMultiplier: 0.7,''
             effectQuality: 'medium',
             maxParticles: 500,
             animationDuration: 0.8,
-            enableAdvancedEffects: true,];
+            enableAdvancedEffects: true];
             enablePostProcessing: false }]'
         }],''
         ['low-end', { particleMultiplier: 0.4,''
             effectQuality: 'low',
             maxParticles: 200,
             animationDuration: 0.6,
-            enableAdvancedEffects: false,];
+            enableAdvancedEffects: false];
             enablePostProcessing: false }]'
         }],''
         ['ultra-low', { particleMultiplier: 0.2,''
@@ -232,7 +232,7 @@ export class MobileEffectOptimizer {
     /**
      * 初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('Initializing mobile effect optimization...');
             
             // デバイス機能の検出
@@ -249,9 +249,9 @@ export class MobileEffectOptimizer {
             
             // タッチ最適化の設定
             this.setupTouchOptimizations();
-            ';
-            // イベントリスナーの設定''
-            this.setupEventListeners('')';
+            ;
+            // イベントリスナーの設定
+            this.setupEventListeners()';
             console.log('Mobile effect optimization initialized successfully'');''
             console.log('Device profile:', this.state.deviceProfile');''
             console.log('Optimization enabled:', this.state.enabled);
@@ -260,7 +260,7 @@ export class MobileEffectOptimizer {
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'MOBILE_OPTIMIZATION_ERROR', {')'
                 operation: 'initialize',')';
-                component: 'MobileEffectOptimizer'); }
+                component: 'MobileEffectOptimizer') }
             });
             return false;
         }
@@ -269,10 +269,10 @@ export class MobileEffectOptimizer {
     /**
      * デバイス機能の検出'
      */''
-    private async detectDeviceCapabilities('')';
+    private async detectDeviceCapabilities()';
         console.log('Detecting device capabilities...');
         
-        // 基本的なデバイス情報'
+        // 基本的なデバイス情報
         this.deviceInfo.isMobile = /Mobi|Android/i.test(navigator.userAgent);''
         this.deviceInfo.isTablet = /Tablet|iPad/i.test(navigator.userAgent');''
         this.deviceInfo.supportsTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -286,8 +286,8 @@ export class MobileEffectOptimizer {
         
         // パフォーマンス関連情報
         this.deviceInfo.hardwareConcurrency = navigator.hardwareConcurrency || 2;
-        ';
-        // Performance Memory API（Chrome）''
+        ;
+        // Performance Memory API（Chrome）
         if('memory' in performance && performance.memory) {
             this.deviceInfo.performanceMemory = {
                 totalJSHeapSize: performance.memory.totalJSHeapSize,
@@ -298,9 +298,9 @@ export class MobileEffectOptimizer {
         }
         
         // Battery API の検出
-        if(navigator.getBattery) {'
-            try {''
-                const battery = await navigator.getBattery('')';
+        if(navigator.getBattery) {
+            try {'
+                const battery = await navigator.getBattery()';
                 battery.addEventListener('levelchange', () => { ;
         }
                     this.performanceMetrics.batteryLevel = battery.level; }'
@@ -309,8 +309,8 @@ export class MobileEffectOptimizer {
                 '';
                 battery.addEventListener('chargingchange', () => { this.adaptToChargingState(battery.charging); }'
                 });''
-            } catch (error') { ''
-                console.warn('Battery API not supported:', error'); }
+            } catch (error) { ''
+                console.warn('Battery API not supported:', error') }
             }
         }'
         '';
@@ -320,7 +320,7 @@ export class MobileEffectOptimizer {
     /**
      * デバイスプロファイルの決定'
      */''
-    private determineDeviceProfile('')';
+    private determineDeviceProfile()';
         let profile: DeviceProfile = 'mid-range');
         // スコアベースの判定
         let performanceScore = 0;
@@ -356,8 +356,8 @@ export class MobileEffectOptimizer {
         }
             else if(/iPhone[8-9]|iPhone1[0-1]/.test(ua) performanceScore += 10; // iPhone 8-11 }
         }
-        ';
-        // プロファイル決定''
+        ;
+        // プロファイル決定
         if (performanceScore >= 70') profile = 'high-end';''
         else if (performanceScore >= 40') profile = 'mid-range';''
         else if (performanceScore >= 20') profile = 'low-end';''
@@ -371,7 +371,7 @@ export class MobileEffectOptimizer {
      * 最適化の適用
      */
     private async applyOptimizations(): Promise<void> { if (!this.state.enabled) return;
-        ';
+        ';'
         const profile = this.deviceProfiles.get(this.state.deviceProfile!);''
         if (!profile') return;'
         '';
@@ -385,8 +385,8 @@ export class MobileEffectOptimizer {
         
         // アニメーションシステムの最適化
         await this.optimizeAnimationSystem(profile);
-        ';
-        // レンダリングの最適化''
+        ;
+        // レンダリングの最適化
         await this.optimizeRendering(profile');'
         '';
         console.log('Mobile optimizations applied'); }
@@ -457,8 +457,8 @@ export class MobileEffectOptimizer {
         }
             animationManager.setDurationMultiplier(profile.animationDuration); }
         }
-        ';
-        // アニメーションの間引き''
+        ;
+        // アニメーションの間引き
         if(animationManager.setFrameSkipping') {'
             '';
             const skipFrames = profile.effectQuality === 'low' ? 2 : '';
@@ -483,11 +483,11 @@ export class MobileEffectOptimizer {
     
     /**
      * Canvas設定の最適化
-     */'
+     */
     private optimizeCanvasSettings(): void { const canvas = this.effectManager.canvas;''
         if (!canvas') return;
         ';
-        // 低解像度モードの設定（必要に応じて）''
+        // 低解像度モードの設定（必要に応じて）
         if(this.state.deviceProfile === 'ultra-low'') {'
             '';
             const ctx = canvas.getContext('2d');''
@@ -497,16 +497,16 @@ export class MobileEffectOptimizer {
                 ctx.imageSmoothingEnabled = false; }
             }
         }
-        ';
-        // Canvas の最適化属性設定''
+        ;
+        // Canvas の最適化属性設定
         const context = canvas.getContext('2d', { alpha: false, // 透明度が不要な場合)
-            desynchronized: true // 描画の最適化); }
+            desynchronized: true // 描画の最適化) }
     }
     
     /**
      * 描画頻度の最適化
      */
-    private optimizeRenderingFrequency(profile: DeviceProfileConfig): void { let targetFPS = 60;'
+    private optimizeRenderingFrequency(profile: DeviceProfileConfig): void { let targetFPS = 60;
         '';
         switch(profile.effectQuality') {'
             '';
@@ -534,7 +534,7 @@ export class MobileEffectOptimizer {
      * テクスチャの最適化
      */
     private optimizeTextures(profile: DeviceProfileConfig): void { // テクスチャ解像度の調整
-        let textureScale = 1.0;'
+        let textureScale = 1.0;
         '';
         switch(profile.effectQuality') {'
             '';
@@ -618,7 +618,7 @@ export class MobileEffectOptimizer {
     /**
      * メモリ監視の開始
      */
-    private startMemoryMonitoring(): void { if (!this.deviceInfo.performanceMemory) return;'
+    private startMemoryMonitoring(): void { if (!this.deviceInfo.performanceMemory) return;
         '';
         setInterval((') => { ''
             if('memory' in performance && performance.memory) {
@@ -641,10 +641,10 @@ export class MobileEffectOptimizer {
         setInterval(() => { 
             const avgFPS = this.performanceMetrics.averageFPS;
             const memoryUsage = this.performanceMetrics.memoryUsage;
-            ';
-            // 推定熱状態''
+            ;
+            // 推定熱状態
             if(avgFPS < 20 && memoryUsage > 0.9') {'
-                ';
+                ';'
             }'
                 this.performanceMetrics.thermalState = 'critical'; }'
                 this.handleThermalThrottling();' }'
@@ -677,8 +677,8 @@ export class MobileEffectOptimizer {
     private minimizeTouchLatency(): void { // passive イベントリスナーの使用を推奨
         const canvas = this.effectManager.canvas;
         if (!canvas) return;
-        ';
-        // 既存のタッチイベントをpassiveに変更（可能な場合）''
+        ;
+        // 既存のタッチイベントをpassiveに変更（可能な場合）
         if(canvas.addEventListener') {'
             '';
             const passiveEvents = ['touchstart', 'touchmove', 'touchend'];
@@ -691,9 +691,9 @@ export class MobileEffectOptimizer {
     }
     
     /**
-     * ジェスチャーの最適化'
+     * ジェスチャーの最適化
      */''
-    private optimizeGestures('')';
+    private optimizeGestures()';
         if (this.state.deviceProfile === 'low-end' || this.state.deviceProfile === 'ultra-low') { this.touchOptimizations.gestureSensitivity = Math.min(sensitivity * 1.2, 2.0); }
         }
     }
@@ -704,10 +704,10 @@ export class MobileEffectOptimizer {
     private preventAccidentalTouches(): void { ''
         if (!this.touchOptimizations.preventAccidentalTouches') return;
         ';
-        // エッジタッチの無効化（実装は個別システムに依存）''
+        // エッジタッチの無効化（実装は個別システムに依存）
         console.log('Edge touch prevention enabled'');
         ';
-        // マルチタッチの制限''
+        // マルチタッチの制限
         console.log('Multi-touch gesture limits applied'); }
     }
     
@@ -730,10 +730,10 @@ export class MobileEffectOptimizer {
         if (particleManager? .setMaxParticles) { }
             particleManager.setMaxParticles(newMaxParticles});
         }
-        ';
-        // エフェクト品質の一時的低下''
+        ;
+        // エフェクト品質の一時的低下
         if(fps < 15 && this.effectManager.setQualityLevel') {'
-            ';
+            ';'
         }'
             this.effectManager.setQualityLevel('minimal'); }
         }
@@ -742,7 +742,7 @@ export class MobileEffectOptimizer {
     /**
      * 高メモリ使用時の処理'
      */ : undefined''
-    private handleHighMemoryUsage('')';
+    private handleHighMemoryUsage()';
         console.warn('High memory usage detected');
         
         // 未使用リソースのクリーンアップ
@@ -751,9 +751,9 @@ export class MobileEffectOptimizer {
         
         // パーティクルプールのクリアー
         const particleManager = this.effectManager.enhancedParticleManager;
-        if(particleManager? .clearUnusedParticles) {'
+        if(particleManager? .clearUnusedParticles) {
             '';
-            particleManager.clearUnusedParticles('')';
+            particleManager.clearUnusedParticles()';
         if (window.gc && typeof window.gc === 'function') {
             try {
         }
@@ -764,14 +764,14 @@ export class MobileEffectOptimizer {
     }
     
     /**
-     * 熱制御処理'
+     * 熱制御処理
      */ : undefined''
-    private handleThermalThrottling('')';
+    private handleThermalThrottling()';
         console.warn('Thermal throttling detected');
         ';
-        // 最小品質への強制変更''
+        // 最小品質への強制変更
         if(this.effectManager.setQualityLevel') {'
-            ';
+            ';'
         }'
             this.effectManager.setQualityLevel('minimal'); }
         }
@@ -786,14 +786,14 @@ export class MobileEffectOptimizer {
     }
     
     /**
-     * 熱警告時の処理'
+     * 熱警告時の処理
      */''
-    private handleThermalWarning('')';
+    private handleThermalWarning()';
         console.warn('Thermal warning detected');
         ';
-        // 中程度の品質低下''
+        // 中程度の品質低下
         if(this.effectManager.setQualityLevel') {'
-            ';
+            ';'
         }'
             this.effectManager.setQualityLevel('low'); }
         }
@@ -807,11 +807,11 @@ export class MobileEffectOptimizer {
         const batteryLevel = this.performanceMetrics.batteryLevel;'
         '';
         if(batteryLevel < 0.2') {'
-            // 20%以下''
+            // 20%以下
             console.log('Low battery detected, reducing effects'');'
         }'
             this.applyBatteryOptimizations('low');' }'
-        } else if (batteryLevel < 0.5') { // 50%以下''
+        } else if (batteryLevel < 0.5') { // 50%以下
             console.log('Medium battery level, moderate optimization'');''
             this.applyBatteryOptimizations('medium''); }'
         } else {  ' }'
@@ -827,10 +827,10 @@ export class MobileEffectOptimizer {
             '';
             console.log('Device charging, allowing higher performance'');
         }
-            // 充電中は通常品質を維持 }'
+            // 充電中は通常品質を維持 }
         } else {  ''
             console.log('Device not charging, enabling battery conservation');''
-            this.adaptToBatteryLevel('')';
+            this.adaptToBatteryLevel()';
     private applyBatteryOptimizations(level: 'low' | 'medium' | 'high''): void {
         const optimizations: Record<string, BatteryOptimizationConfig> = {
             low: {'
@@ -864,23 +864,23 @@ export class MobileEffectOptimizer {
     }
     
     /**
-     * イベントリスナーの設定'
+     * イベントリスナーの設定
      */ : undefined''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         window.addEventListener('orientationchange', () => {  setTimeout(() => { }
                 this.handleOrientationChange(); }'
             }, 100);''
         }');
         ';
-        // 画面サイズ変更の監視''
+        // 画面サイズ変更の監視
         window.addEventListener('resize', () => { this.handleScreenResize();' }'
         }');
         ';
-        // アプリの表示/非表示切り替え''
+        // アプリの表示/非表示切り替え
         document.addEventListener('visibilitychange', () => { this.handleVisibilityChange();' }'
         }');
         ';
-        // メモリ警告（Safari）''
+        // メモリ警告（Safari）
         window.addEventListener('pagehide', () => { this.handleMemoryWarning(); }
         });
     }
@@ -888,7 +888,7 @@ export class MobileEffectOptimizer {
     /**
      * 画面方向変更の処理'
      */''
-    private handleOrientationChange('')';
+    private handleOrientationChange()';
         console.log('Orientation changed');
         
         // キャンバスサイズの再調整
@@ -900,9 +900,9 @@ export class MobileEffectOptimizer {
     }
     
     /**
-     * 画面サイズ変更の処理'
+     * 画面サイズ変更の処理
      */''
-    private handleScreenResize('')';
+    private handleScreenResize()';
         console.log('Screen resized');
         
         // デバイス情報の更新
@@ -917,12 +917,12 @@ export class MobileEffectOptimizer {
     
     /**
      * 表示状態変更の処理
-     */'
+     */
     private handleVisibilityChange(): void { ''
         if(document.hidden') {'
             '';
             console.log('App hidden, pausing effects');''
-            this.pauseEffects('')';
+            this.pauseEffects()';
             console.log('App visible, resuming effects');
         }
             this.resumeEffects(); }
@@ -932,7 +932,7 @@ export class MobileEffectOptimizer {
     /**
      * メモリ警告の処理'
      */''
-    private handleMemoryWarning('')';
+    private handleMemoryWarning()';
         console.warn('Memory warning received');
         this.handleHighMemoryUsage();
     }
@@ -943,9 +943,9 @@ export class MobileEffectOptimizer {
     private temporaryQualityReduction(duration: number): void { ''
         const originalQuality = this.effectManager.getQualityLevel? .(') || 'medium';
         ';
-        // 品質を一時的に下げる''
+        // 品質を一時的に下げる
         if(this.effectManager.setQualityLevel') {'
-            ';
+            ';'
         }'
             this.effectManager.setQualityLevel('low'); }
         }
@@ -976,7 +976,7 @@ export class MobileEffectOptimizer {
     /**
      * 最適化レベルの変更
      */
-    setOptimizationLevel(level: OptimizationLevel): void { this.state.optimizationLevel = level;'
+    setOptimizationLevel(level: OptimizationLevel): void { this.state.optimizationLevel = level;
         '';
         switch(level') {'
             '';
@@ -985,7 +985,7 @@ export class MobileEffectOptimizer {
                     enableBatching: true,
                     enableCulling: true,
                     enableObjectPooling: true,
-                    reduceLowPriorityEffects: true,);
+                    reduceLowPriorityEffects: true);
                     adaptiveQuality: true)';
                     batteryAware: true,')';
                     thermalThrottling: true)'),
@@ -996,7 +996,7 @@ export class MobileEffectOptimizer {
                     enableBatching: true,
                     enableCulling: true,
                     enableObjectPooling: true,
-                    reduceLowPriorityEffects: false,);
+                    reduceLowPriorityEffects: false);
                     adaptiveQuality: true)';
                     batteryAware: true,')';
                     thermalThrottling: false)'),
@@ -1007,7 +1007,7 @@ export class MobileEffectOptimizer {
                     enableBatching: false,
                     enableCulling: false,
                     enableObjectPooling: false,
-                    reduceLowPriorityEffects: false,);
+                    reduceLowPriorityEffects: false);
                     adaptiveQuality: false);
                     batteryAware: false,);
                     thermalThrottling: false),
@@ -1049,7 +1049,7 @@ export class MobileEffectOptimizer {
      * レポート生成'
      */''
     generateReport(''';
-            component: 'MobileEffectOptimizer',);
+            component: 'MobileEffectOptimizer');
             state: { ...this.state })
             deviceInfo: this.getDeviceInfo(),
             performanceMetrics: this.getPerformanceMetrics(),
@@ -1061,17 +1061,17 @@ export class MobileEffectOptimizer {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying MobileEffectOptimizer...'');
         ';
-        // イベントリスナーの削除''
+        // イベントリスナーの削除
         window.removeEventListener('orientationchange', this.handleOrientationChange');''
         window.removeEventListener('resize', this.handleScreenResize');''
         document.removeEventListener('visibilitychange', this.handleVisibilityChange');''
         window.removeEventListener('pagehide', this.handleMemoryWarning);
         ';
-        // 参照のクリア''
-        this.deviceProfiles.clear('')';
+        // 参照のクリア
+        this.deviceProfiles.clear()';
         console.log('MobileEffectOptimizer destroyed'');'
     }''
 }

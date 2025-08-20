@@ -48,7 +48,7 @@ export interface AchievementReward { ap: number,
 
 export interface RewardItem { type: ItemType,
     id: string,
-    quantity: number; }
+    quantity: number }
 }
 
 export interface Category { name: string,
@@ -64,7 +64,7 @@ export interface AchievementStatistics { total: number,
     byType: Record<AchievementType, number>,
     totalAP: number,
     averageAP: number,
-    difficultyDistribution?: Record<DifficultyLevel, number>; }
+    difficultyDistribution?: Record<DifficultyLevel, number> }
 }
 
 export interface AchievementFilter { category?: CategoryType;
@@ -78,7 +78,7 @@ export interface AchievementFilter { category?: CategoryType;
 
 export interface AchievementSearchResult { achievements: Achievement[],
     totalCount: number,
-    categories: string[]; }
+    categories: string[] }
 }
 
 // 列挙型
@@ -95,7 +95,7 @@ export type CategoryType = ;
     | 'challenge';'
 '';
 export type AchievementType = 'single' | 'cumulative' | 'progressive';
-';
+';'
 export type ConditionType = '';
     | 'bubblesPopped''';
     | 'singleGameScore''';
@@ -117,7 +117,7 @@ export type ConditionType = '';
     | 'allStagesMultiple''';
     | 'noItemScore''';
     | 'timeSpecificScore';
-';
+';'
 export type BubbleType = '';
     | 'normal''';
     | 'rainbow''';
@@ -187,7 +187,7 @@ export class AchievementDefinitions {
                 reward: { ap: 200 }
             },
             
-            // スコア実績'
+            // スコア実績
             firstThousand: { ''
                 id: 'firstThousand','';
                 name: '千点突破','';
@@ -259,7 +259,7 @@ export class AchievementDefinitions {
                 reward: { ap: 500 }
             },
             
-            // コンボ実績'
+            // コンボ実績
             comboStarter: { ''
                 id: 'comboStarter','';
                 name: 'コンボスターター','';
@@ -301,7 +301,7 @@ export class AchievementDefinitions {
                 reward: { ap: 500 }
             },
             
-            // 特殊泡実績'
+            // 特殊泡実績
             rainbowHunter: { ''
                 id: 'rainbowHunter','';
                 name: '虹色ハンター','';
@@ -393,7 +393,7 @@ export class AchievementDefinitions {
                 reward: { ap: 180 }
             },
             
-            // サバイバル実績'
+            // サバイバル実績
             survivor: { ''
                 id: 'survivor','';
                 name: 'サバイバー','';
@@ -425,7 +425,7 @@ export class AchievementDefinitions {
                 reward: { ap: 200 }
             },
             
-            // ステージ実績'
+            // ステージ実績
             stageExplorer: { ''
                 id: 'stageExplorer','';
                 name: 'ステージ探検家','';
@@ -457,7 +457,7 @@ export class AchievementDefinitions {
                 reward: { ap: 400 }
             },
             
-            // テクニック実績'
+            // テクニック実績
             perfectionist: { ''
                 id: 'perfectionist','';
                 name: '完璧主義者','';
@@ -499,7 +499,7 @@ export class AchievementDefinitions {
                 reward: { ap: 400 }
             },
             
-            // プレイ継続実績'
+            // プレイ継続実績
             consecutiveDays3: { ''
                 id: 'consecutiveDays3','';
                 name: '3日連続','';
@@ -571,7 +571,7 @@ export class AchievementDefinitions {
                 reward: { ap: 300 }
             },
             
-            // コレクション実績'
+            // コレクション実績
             bubbleCollector: { ''
                 id: 'bubbleCollector','';
                 name: '泡コレクター','';
@@ -583,7 +583,7 @@ export class AchievementDefinitions {
                 reward: { ap: 300 }
             },
             
-            // チャレンジ実績'
+            // チャレンジ実績
             noItemChallenge: { ''
                 id: 'noItemChallenge','';
                 name: 'ピュアプレイヤー','';
@@ -850,11 +850,11 @@ export class AchievementDefinitions {
      * 実績の難易度を取得（推定）
      * @param id 実績ID
      * @returns 難易度
-     */'
+     */
     getAchievementDifficulty(id: string): DifficultyLevel { const achievement = this.getAchievement(id);''
         if (!achievement') return 'medium';
 
-        // APによる難易度推定'
+        // APによる難易度推定
         const ap = achievement.reward.ap;''
         if (ap <= 50') return 'easy';''
         if (ap <= 150') return 'medium';''
@@ -872,8 +872,8 @@ export class AchievementDefinitions {
         if (!achievement) return [];
 
         // 同じカテゴリの実績を関連として返す
-        return this.getAchievementsByCategory(achievement.category)';
+        return this.getAchievementsByCategory(achievement.category);
             .filter(a => a.id !== id)'';
-            .slice(0, 5'); // 最大5個 }'
+            .slice(0, 5'); // 最大5個 }
     }''
 }

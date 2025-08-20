@@ -27,14 +27,14 @@ interface ErrorFilter { severity?: string;
 interface CollectionFilters { enabled: boolean,
     excludeCategories: Set<string>,
     excludeSeverities: Set<string>,
-    excludePatterns: RegExp[];
+    excludePatterns: RegExp[]
     }
 }
 
 interface CollectionMetrics { totalCollected: number,
     filtered: number,
     stored: number,
-    dropped: number; }
+    dropped: number }
 }
 
 interface ErrorStatistics { total: number, }
@@ -47,17 +47,17 @@ interface ErrorStatistics { total: number, }
 
 interface MemoryUsage { estimated: number,
     errorCount: number,
-    maxCapacity: number; }
+    maxCapacity: number }
 }
 
 interface ExportData { errors: ErrorInfo[],
     statistics: ErrorStatistics,
     filters: CollectionFilters,
-    exportedAt: number; }
+    exportedAt: number }
 }
 
 interface ErrorReporter { errorStorage?: {
-        store: (error: ErrorInfo) => void; }
+        store: (error: ErrorInfo) => void }
     };
 }
 
@@ -230,7 +230,7 @@ export class ErrorCollector {
      */''
     public searchErrors(query: string'): ErrorInfo[] { ''
         const regex = new RegExp(query, 'i');
-        ';
+        ';'
         return this.collectedErrors.filter(error => { );''
             return regex.test(error.message') ||'';
                    regex.test(error.context? .component || '') ||'';
@@ -300,15 +300,15 @@ export class ErrorCollector {
      * 全エラーのクリア
      */
     public clearAll(): number { const count = this.collectedErrors.length;
-        this.collectedErrors = [];'
+        this.collectedErrors = [];
         this.categoryStats.clear();''
-        this.severityStats.clear('')';
+        this.severityStats.clear()';
     public exportData(format: 'json' | 'csv' | 'object' = 'json'): string | ExportData {
         const data: ExportData = {
             errors: this.collectedErrors,
             statistics: this.getStatistics(),
             filters: this.filters,
-            exportedAt: Date.now(); }
+            exportedAt: Date.now() }
         };'
         '';
         switch(format') {'
@@ -330,11 +330,11 @@ export class ErrorCollector {
         const headers = ['id', 'timestamp', 'severity', 'category', 'message', 'fingerprint'];
         const rows = errors.map(error => [)';
             error.id);''
-            new Date(error.timestamp).toISOString('')';
-            error.message.replace(/"/g, '""'),]';
+            new Date(error.timestamp).toISOString()';
+            error.message.replace(/"/g, '""')]';
             error.fingerprint']';
         ]');
-        ';
+        ';'
         const csv = ['';
             headers.join(',''),']';
             ...rows.map(row => row.map(cell => `"${cell")"`").join(',')')]
@@ -346,8 +346,8 @@ export class ErrorCollector {
     /**
      * メモリ使用量の推定
      */'
-    public estimateMemoryUsage(): MemoryUsage { // 簡易的なメモリ使用量推定''
-        const avgErrorSize = 1024; // 1KB per error (estimated');
+    public estimateMemoryUsage(): MemoryUsage { // 簡易的なメモリ使用量推定
+        const avgErrorSize = 1024; // 1KB per error (estimated);
         return { estimated: this.collectedErrors.length * avgErrorSize,
             errorCount: this.collectedErrors.length, };
             maxCapacity: this.maxStorageSize }

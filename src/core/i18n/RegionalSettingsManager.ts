@@ -9,17 +9,17 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 export interface FormatSettings { dateTime: {
         dateFormat: string,
         timeFormat: string,
-        timestampFormat: string ;
+        timestampFormat: string 
 }
     },
     numbers: { decimalSeparator: string,
         thousandsSeparator: string,
-        currencyFormat: string ;
+        currencyFormat: string 
 }
-    },'
+    },
     currency: { symbol: string,''
         position: 'before' | 'after',
-        code: string; }
+        code: string }
     };
 }
 
@@ -27,13 +27,13 @@ export interface RegionSettings { timezone: string,
     locale: string,
     country: string,
     region: string,
-    rtl: boolean; };
+    rtl: boolean };
 }
 export interface LanguageSettings { code: string,
     name: string,';
     nativeName: string,'';
     direction: 'ltr' | 'rtl',
-    pluralRules: string; };
+    pluralRules: string };
 }
 /**
  * 地域設定管理クラス
@@ -64,26 +64,26 @@ export class RegionalSettingsManager {
             // 設定ファイルを並列読み込み
             const [formatSettings, regionSettings, languageSettings] = await Promise.all([);
                 this.loadFormatSettings(),
-                this.loadRegionSettings(),]';
+                this.loadRegionSettings()];
                 this.loadLanguageSettings()']';
             ]');
             
             this.formatSettings = formatSettings;
             this.regionSettings = regionSettings;
             this.languageSettings = languageSettings;
-            ';
+            ';'
             this.initialized = true;''
             console.log('RegionalSettingsManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'REGIONAL_SETTINGS_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         };
 }
     /**
      * フォーマット設定を読み込み'
      */''
-    async loadFormatSettings('')';
+    async loadFormatSettings()';
             const response = await fetch('/src/locales/config/formats.json');
             if(!response.ok) {
                 
@@ -91,7 +91,7 @@ export class RegionalSettingsManager {
                 throw new Error(`Failed to load formats.json: ${response.status)`});
             }'
             return await response.json();''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to load format settings, using defaults:', error);
             return this.getDefaultFormatSettings(); };
 }
@@ -100,7 +100,7 @@ export class RegionalSettingsManager {
     /**
      * 地域設定を読み込み'
      */''
-    async loadRegionSettings('')';
+    async loadRegionSettings()';
             const response = await fetch('/src/locales/config/regions.json');
             if(!response.ok) {
                 
@@ -108,7 +108,7 @@ export class RegionalSettingsManager {
                 throw new Error(`Failed to load regions.json: ${response.status)`});
             }'
             return await response.json();''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to load region settings, using defaults:', error);
             return this.getDefaultRegionSettings(); };
 }
@@ -117,7 +117,7 @@ export class RegionalSettingsManager {
     /**
      * 言語設定を読み込み'
      */''
-    async loadLanguageSettings('')';
+    async loadLanguageSettings()';
             const response = await fetch('/src/locales/config/languages.json');
             if(!response.ok) {
                 
@@ -125,7 +125,7 @@ export class RegionalSettingsManager {
                 throw new Error(`Failed to load languages.json: ${response.status)`});
             }'
             return await response.json();''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to load language settings, using defaults:', error);
             return this.getDefaultLanguageSettings(); };
 }
@@ -258,13 +258,13 @@ export class RegionalSettingsManager {
     /**
      * 言語から地域コードを推測
      */
-    getRegionCode(language, region = null) {'
+    getRegionCode(language, region = null) {
         '';
         if (region') {
     }
             return region; };
 }
-        ';
+        ';'
         const languageToRegionMap = { ''
             'ja': 'JP','';
             'en': 'US','';
@@ -330,7 +330,7 @@ export class RegionalSettingsManager {
                     thousands: ',','';
                     percent: '%','';
                     negative: '-','';
-                    infinity: '∞' ;
+                    infinity: '∞' 
 };
 }
             },'
@@ -347,7 +347,7 @@ export class RegionalSettingsManager {
                     symbol: '$','';
                     code: 'USD','';
                     position: 'before',
-                    space: false ;
+                    space: false 
 };
 }
             },'
@@ -356,7 +356,7 @@ export class RegionalSettingsManager {
                     short: 'h:mm A','';
                     medium: 'h:mm:ss A','';
                     long: 'h:mm:ss A z','';
-                    full: 'h:mm:ss A zzzz' ;
+                    full: 'h:mm:ss A zzzz' 
 };
 }
             }
@@ -374,7 +374,7 @@ export class RegionalSettingsManager {
                 numberFormat: {'
                     groupSize: 3,'';
                     groupSeparator: ',','';
-                    decimalSeparator: '.' ;
+                    decimalSeparator: '.' 
 };
 }
             }
@@ -389,7 +389,7 @@ export class RegionalSettingsManager {
                 name: 'English','';
                 nativeName: 'English','';
                 direction: 'ltr','';
-                pluralRules: 'english' ;
+                pluralRules: 'english' 
 };
 }
         },
@@ -449,7 +449,7 @@ export class RegionalSettingsManager {
             firstDayOfWeek: 0,';
             numberFormat: { groupSize: 3,''
                 groupSeparator: ',','';
-                decimalSeparator: '.' ;
+                decimalSeparator: '.' 
 };
 }
         },
@@ -469,7 +469,7 @@ export class RegionalSettingsManager {
     /**
      * 設定の再読み込み'
      */''
-    async reload('')';
+    async reload()';
         console.log('Reloading regional settings...');
         this.initialized = false;
         await this.initialize();
@@ -482,7 +482,7 @@ export class RegionalSettingsManager {
         this.ensureInitialized();
         
         return { initialized: this.initialized,
-            supportedLanguages: this.formatSettings ? Object.keys(this.formatSettings.number || {) : [];
+            supportedLanguages: this.formatSettings ? Object.keys(this.formatSettings.number || {) : []
 }
             supportedRegions: this.regionSettings ? Object.keys(this.regionSettings) : [], };
             formatCategories: this.formatSettings ? Object.keys(this.formatSettings) : [] ;
@@ -495,6 +495,6 @@ let regionalSettingsManagerInstance = null;
 
 /**
  * RegionalSettingsManagerのシングルトンインスタンスを取得
- */'
+ */
 export function getRegionalSettingsManager() { if (!regionalSettingsManagerInstance) {''
         regionalSettingsManagerInstance = new RegionalSettingsManager(' })

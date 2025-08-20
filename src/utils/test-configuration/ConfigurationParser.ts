@@ -22,12 +22,12 @@ interface GameBalanceExpectations { baseScores?: Record<string, number>;
 
 interface ConfigurationMetadata { extractedAt: number,
     sourceFiles: string[],
-    generatorVersion: string; }
+    generatorVersion: string }
 }
 
 interface AllConfigurations { bubbleTypes: Record<string, BubbleConfig>;
     gameBalance: GameBalanceExpectations,
-    metadata: ConfigurationMetadata;
+    metadata: ConfigurationMetadata
     }
 }
 
@@ -35,17 +35,17 @@ interface ValidationResult { valid: boolean,
     issues: string[],
     warnings: string[],
     format: string,
-    exists: boolean; }
+    exists: boolean }
 }
 
 interface ParsingStrategy { file?: string;
-    parser: (filePath?: string) => any; }
+    parser: (filePath?: string) => any }
 }
 
 interface MainController { configSourceDir: string,
     projectRoot: string,
     configurationManager?: {
-        get: (namespace: string, path: string) => any; }
+        get: (namespace: string, path: string) => any }
     };
     [key: string]: any,
 }
@@ -56,7 +56,7 @@ interface MainController { configSourceDir: string,
 export class ConfigurationParser extends BaseComponent { private configSourceDir: string
     private projectRoot: string;
     private parseCache: Map<string, any>;
-    private parsingStrategies: Record<string, ParsingStrategy>;'
+    private parsingStrategies: Record<string, ParsingStrategy>;
 '';
     constructor(mainController: MainController') {'
         '';
@@ -81,9 +81,9 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             },'
             bubble: { ''
                 file: 'Bubble.js',
-                parser: this.parseBubbleFile.bind(this); }
+                parser: this.parseBubbleFile.bind(this) }
             },
-            configurationManager: { parser: this.parseConfigurationManager.bind(this); }
+            configurationManager: { parser: this.parseConfigurationManager.bind(this) }
             }
         };
     }
@@ -91,7 +91,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     /**
      * GameBalance.jsファイルを解析
      */'
-    parseGameBalanceFile(filePath: string): GameBalanceExpectations | null { try {''
+    parseGameBalanceFile(filePath: string): GameBalanceExpectations | null { try {'
             if (!fs.existsSync(filePath)') {''
                 console.warn('[ConfigurationParser] GameBalance.js が見つかりません'');
                 return null; }
@@ -152,7 +152,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                         
                         for(const [effectProp, effectRegex] of Object.entries(effectProperties) {
                         
-                            const effectMatch = effectsContent.match(effectRegex);'
+                            const effectMatch = effectsContent.match(effectRegex);
                             if (effectMatch) {'
                         
                         }'
@@ -166,7 +166,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             console.log('[ConfigurationParser] GameBalance.jsから期待値を抽出しました');
             return expectations;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('GameBalance file parsing', error);
             return null; }
         }
@@ -175,7 +175,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
     /**
      * Bubble.jsファイルを解析
      */'
-    parseBubbleFile(filePath: string): Record<string, BubbleConfig> | null { try {''
+    parseBubbleFile(filePath: string): Record<string, BubbleConfig> | null { try {'
             if (!fs.existsSync(filePath)') {''
                 console.warn('[ConfigurationParser] Bubble.js が見つかりません'');
                 return null; }
@@ -184,7 +184,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             const content = fs.readFileSync(filePath, 'utf8');
             const expectations: Record<string, BubbleConfig> = {};
 
-            // _getHardcodedConfig メソッドから設定を抽出'
+            // _getHardcodedConfig メソッドから設定を抽出
             const hardcodedConfigMatch = content.match(/_getHardcodedConfig\(\)\s*\{([\s\S]*? )\n\s*\}/);''
             if(hardcodedConfigMatch') {
                 const configContent = hardcodedConfigMatch[1];
@@ -205,7 +205,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                     
                     for(const [propName, regex] of Object.entries(properties) {
                     
-                        const propMatch = configStr.match(regex);'
+                        const propMatch = configStr.match(regex);
                         if (propMatch) {'
                     
                     }'
@@ -218,7 +218,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             console.log('[ConfigurationParser] Bubble.jsから期待値を抽出しました');
             return expectations;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('Bubble file parsing', error);
             return null; }
         }
@@ -236,17 +236,17 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             for (const bubbleType of bubbleTypes') { try { }
                     expectations[bubbleType] = {};
                     ';
-                    // 基本プロパティを取得''
+                    // 基本プロパティを取得
                     const properties = ['health', 'score', 'size', 'maxAge'];'
-                    for (const property of properties) { try {' }'
+                    for (const property of properties) { try { }'
                             const value = (this.mainController as any').configurationManager? .get('game', `bubbles.${bubbleType}.${ property)`); }'
                             if (value !== undefined && value !== null}) { expectations[bubbleType][property] = value;' }'
-                            } catch (configError') { // 設定が見つからない場合は無視 }
+                            } catch (configError) { // 設定が見つからない場合は無視 }
                         }
-                        ';
-                        // スコアの場合はbaseScoresからも取得を試行''
+                        ;
+                        // スコアの場合はbaseScoresからも取得を試行
                         if(property === 'score') {'
-                            try {'
+                            try {
                         }'
                                 const scoreValue = (this.mainController as any').configurationManager?.get('game', `scoring.baseScores.${bubbleType)`); }
                                 if (scoreValue !== undefined && scoreValue !== null}) { expectations[bubbleType][property] = scoreValue; }
@@ -255,23 +255,23 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                         }
                     }
                     
-                    // 特殊効果を取得'
-                    try { ''
+                    // 特殊効果を取得
+                    try {'
                         const effects = (this.mainController as any').configurationManager?.get('game', `bubbles.${bubbleType).effects`');' }'
                         if (effects && typeof effects === 'object'}) { expectations[bubbleType].effects = effects; }
                         } catch (effectsError) { // 特殊効果がない場合は無視 }
                     }
                     
-                    // 空のオブジェクトは削除'
+                    // 空のオブジェクトは削除
                     if (Object.keys(expectations[bubbleType]).length === 0) { delete expectations[bubbleType];' }'
-                    } catch (bubbleError') { // 個別のバブルタイプでエラーが発生した場合は無視 }
+                    } catch (bubbleError) { // 個別のバブルタイプでエラーが発生した場合は無視 }
                 }
-            }'
+            }
             '';
             console.log('[ConfigurationParser] ConfigurationManagerから期待値を抽出しました');
             return expectations;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('ConfigurationManager parsing', error);
             return null; }
         }
@@ -299,20 +299,20 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
             issues: [],
             warnings: [],
             format: this.detectFileFormat(filePath),
-            exists: fs.existsSync(filePath); }
+            exists: fs.existsSync(filePath) }
         };
-';
+';'
         if (!validation.exists) { validation.valid = false;' }'
             validation.issues.push(`File not found: ${filePath)`'});
             return validation;
         }
-';
-        try { ''
+';'
+        try {'
             const content = fs.readFileSync(filePath, 'utf8'');
             ';
-            // 基本的な構文チェック''
+            // 基本的な構文チェック
             if(validation.format === 'javascript'') {'
-                // JavaScript構文の基本チェック''
+                // JavaScript構文の基本チェック
                 if (!content.includes('export')') {'
             }'
                     validation.warnings.push('No export statement found'); }
@@ -349,7 +349,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                 allConfigurations.metadata.sourceFiles.push('src/config/GameBalance.js''); }
             }
 ';
-            // Bubble.jsから解析''
+            // Bubble.jsから解析
             const bubblePath = path.join(this.projectRoot, 'src', 'bubbles', 'Bubble.js');'
             const bubbleConfig = this.parseBubbleFile(bubblePath);''
             if(bubbleConfig') {'
@@ -365,20 +365,20 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
                 for(const [bubbleType, config] of Object.entries(configManagerConfig) {
             }
                     if (!allConfigurations.bubbleTypes[bubbleType]) { }
-                        allConfigurations.bubbleTypes[bubbleType] = {};'
+                        allConfigurations.bubbleTypes[bubbleType] = {};
                     }''
                     Object.assign(allConfigurations.bubbleTypes[bubbleType], config');'
                 }''
                 allConfigurations.metadata.sourceFiles.push('ConfigurationManager'');
             }
 ';
-            // キャッシュに保存''
+            // キャッシュに保存
             this.parseCache.set('allConfigurations', allConfigurations);
 
             console.log(`[ConfigurationParser] ${Object.keys(allConfigurations.bubbleTypes}).length}個のバブルタイプの期待値を抽出しました`);
             return allConfigurations;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('configuration parsing', error);
             return null; }
         }
@@ -394,7 +394,7 @@ export class ConfigurationParser extends BaseComponent { private configSourceDir
      * キャッシュをクリア
      */'
     clearParseCache(): void { ''
-        this.parseCache.clear('')';
+        this.parseCache.clear()';
         console.log('[ConfigurationParser] 解析キャッシュをクリアしました'); }
     }
 

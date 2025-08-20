@@ -3,9 +3,9 @@
  */
 import { Scene } from '../types/game';
 ';
-// Extended Scene interface for SceneManager integration''
+// Extended Scene interface for SceneManager integration
 interface ExtendedScene extends Omit<Scene, 'enter'> { setSceneManager(sceneManager: SceneManager): void,
-    enter(contextData?: SceneContextData): void; }
+    enter(contextData?: SceneContextData): void }
 }
 
 interface SceneContextData { [key: string]: any, }
@@ -87,8 +87,8 @@ export class SceneManager {
     
     /**
      * 更新処理
-     */'
-    update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally''
+     */
+    update(deltaTime: number): void { // Debug logs throttled to prevent console flooding - only log occasionally
         if (!this.lastUpdateDebugTime || performance.now() - this.lastUpdateDebugTime > 5000') {''
             console.log(`[DEBUG] SceneManager.update working - scene: ${this.currentScene? .constructor?.name || 'null')`), }
             this.lastUpdateDebugTime = performance.now(});
@@ -138,9 +138,9 @@ export class SceneManager {
     }
     
     /**
-     * シーンマネージャーを開始（必要に応じてゲームエンジンから呼び出される）'
+     * シーンマネージャーを開始（必要に応じてゲームエンジンから呼び出される）
      */''
-    start('')';
+    start()';
         console.log('[SceneManager] Started');
     }
     
@@ -148,7 +148,7 @@ export class SceneManager {
      * シーンマネージャーを停止（必要に応じてゲームエンジンから呼び出される）
      */'
     stop(): void { if (this.currentScene) {''
-            this.currentScene.exit('')';
+            this.currentScene.exit()';
         console.log('[SceneManager] Stopped'); }
     }
     
@@ -156,7 +156,7 @@ export class SceneManager {
      * リソースをクリーンアップ
      */'
     destroy(): void { this.stop();''
-        this.scenes.clear('')';
+        this.scenes.clear()';
         console.log('[SceneManager] Destroyed''); }
     }
 }'

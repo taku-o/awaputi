@@ -28,11 +28,11 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
     }
     
     /**
-     * 個別泡の更新処理（物理計算を含む）'
+     * 個別泡の更新処理（物理計算を含む）
      */''
     updateBubble(bubble: Bubble, deltaTime: number'): void { const deltaSeconds = deltaTime / 1000;
         ';
-        // 逃げる泡の特殊処理''
+        // 逃げる泡の特殊処理
         if(bubble.type === 'escaping') {
             
         }
@@ -161,14 +161,14 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         
         bubble.velocity.x = direction.x * strength;
         bubble.velocity.y = direction.y * strength;
-        ';
-        // 泡のタイプによる調整''
+        ;
+        // 泡のタイプによる調整
         switch(bubble.type') {'
             '';
             case 'stone':;
                 // 石は重いので速度を減衰
                 bubble.velocity.x *= 0.7;
-                bubble.velocity.y *= 0.7;'
+                bubble.velocity.y *= 0.7;
                 break;''
             case 'iron':;
                 bubble.velocity.x *= 0.5;
@@ -181,7 +181,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
             case 'escaping':;
                 // 逃げる泡は軽いので速度を増幅
                 bubble.velocity.x *= 1.5;
-                bubble.velocity.y *= 1.5;'
+                bubble.velocity.y *= 1.5;
                 break;''
             case 'boss':;
                 // ボス泡は非常に重い
@@ -270,7 +270,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
     }
     
     /**
-     * 特定の泡タイプが画面外で即座に消滅するかどうか'
+     * 特定の泡タイプが画面外で即座に消滅するかどうか
      */''
     shouldDisappearOffscreen(bubbleType: string'): boolean { ''
         const disappearTypes = ['rainbow', 'pink', 'clock', 'score', 'electric', 'poison'];
@@ -365,7 +365,7 @@ export class BubblePhysicsEngine implements IBubblePhysicsEngine { public gameEn
         }
         
         const dx = point.x - xx;
-        const dy = point.y - yy;'
+        const dy = point.y - yy;
         '';
         return Math.sqrt(dx * dx + dy * dy');'
     }''

@@ -17,7 +17,7 @@ export interface ChartRendererOptions { enableResponsive?: boolean;
 export interface ThemeConfig { backgroundColor: string,
     borderColor: string,
     textColor: string,
-    gridColor: string; }
+    gridColor: string }
 }
 
 export interface ChartConfig { label?: string;
@@ -39,32 +39,32 @@ export interface ChartDataUpdate { labels?: string[];
 export interface ChartStatistics { totalCharts: number,
     activeRealtimeCharts: number,
     chartTypes: Record<string, number>,
-    memoryUsage: MemoryUsage;
+    memoryUsage: MemoryUsage
     }
 }
 
 export interface MemoryUsage { estimatedDataPoints: number,
-    estimatedMemoryKB: number; }
+    estimatedMemoryKB: number }
 }
 
 export type DataSourceCallback = () => ChartDataUpdate | null;
 
 // Declare Chart.js global interface
 declare global { interface Window {
-        Chart: any; }
+        Chart: any }
     }
     var Chart: any,
 }
 
 export class AnalyticsChartRenderer {
     private options: Required<ChartRendererOptions>;
-    private charts: Map<string, any>; }
+    private charts: Map<string, any> }
     private chartConfigs: Map<string, ChartConfig & { type: string }>;
     private updateTimers: Map<string, number>;
     private dataSourceCallbacks: Map<string, DataSourceCallback>;
     private Chart: any;
     private currentTheme: ThemeConfig;
-    private useCanvasFallback: boolean';
+    private useCanvasFallback: boolean;
 '';
     constructor(options: ChartRendererOptions = { )') {
         this.options = {
@@ -72,9 +72,9 @@ export class AnalyticsChartRenderer {
             defaultWidth: 400,
             defaultHeight: 300,
             animationDuration: 750,
-            updateInterval: 1000, // リアルタイム更新間隔（1秒）';
-            maxDataPoints: 50, // 表示する最大データポイント数'';
-            theme: 'default', // default, dark, light'';
+            updateInterval: 1000, // リアルタイム更新間隔（1秒）;
+            maxDataPoints: 50, // 表示する最大データポイント数;
+            theme: 'default', // default, dark, light;
             locale: 'ja-JP',
             ...options }
         };
@@ -82,7 +82,7 @@ export class AnalyticsChartRenderer {
         this.charts = new Map();
         this.chartConfigs = new Map();'
         this.updateTimers = new Map();''
-        this.dataSourceCallbacks = new Map('')';
+        this.dataSourceCallbacks = new Map()';
             backgroundColor: 'rgba(75, 192, 192, 0.2')','';
             borderColor: 'rgba(75, 192, 192, 1')','';
             textColor: '#333333','';
@@ -95,14 +95,14 @@ export class AnalyticsChartRenderer {
     /**
      * 初期化
      */
-    private initialize(): void { // Chart.jsの動的読み込み'
+    private initialize(): void { // Chart.jsの動的読み込み
         this.loadChartJS()'';
             .then((') => { ''
                 console.log('Chart.js loaded successfully'); }
                 this.setupChartDefaults(); }'
             })''
             .catch(error => {  ');''
-                console.error('Failed to load Chart.js:', error); }
+                console.error('Failed to load Chart.js:', error) }
                 this.fallbackToCanvasRenderer(); }
             });
     }
@@ -110,13 +110,13 @@ export class AnalyticsChartRenderer {
     /**
      * Chart.jsの動的読み込み
      */'
-    private async loadChartJS(): Promise<void> { // CDNからChart.jsを読み込み''
+    private async loadChartJS(): Promise<void> { // CDNからChart.jsを読み込み
         return new Promise((resolve, reject') => { ''
             if(typeof Chart !== 'undefined') {'
                 this.Chart = Chart;''
-                resolve('')';
+                resolve()';
             const script = document.createElement('script'');''
-            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/chart.ts/4.4.1/chart.umd.ts',
+            script.src = 'https: //cdnjs.cloudflare.com/ajax/libs/chart.ts/4.4.1/chart.umd.ts,
             script.onload = () => {
             }
                 this.Chart = window.Chart; }
@@ -133,7 +133,7 @@ export class AnalyticsChartRenderer {
     private setupChartDefaults(): void { ''
         if (!this.Chart') return;
 ';
-        // デフォルトフォント設定''
+        // デフォルトフォント設定
         this.Chart.defaults.font.family = '"Helvetica Neue", "Arial", sans-serif';
         this.Chart.defaults.font.size = 12;
         
@@ -143,8 +143,8 @@ export class AnalyticsChartRenderer {
         
         // アニメーション設定
         this.Chart.defaults.animation.duration = this.options.animationDuration;
-        ';
-        // テーマに基づく色設定''
+        ;
+        // テーマに基づく色設定
         this.applyTheme(this.options.theme'); }
     }
 
@@ -185,10 +185,10 @@ export class AnalyticsChartRenderer {
     /**
      * 線グラフの作成
      */
-    createLineChart(canvasId: string, config: ChartConfig = { ): any | null {'
+    createLineChart(canvasId: string, config: ChartConfig = { ): any | null {
         const canvas = this.getCanvas(canvasId);''
         if (!canvas || !this.Chart') return null;
-';
+';'
         const defaultConfig = {''
             type: 'line',
             data: {
@@ -237,7 +237,7 @@ export class AnalyticsChartRenderer {
         this.charts.set(canvasId, chart');''
         this.chartConfigs.set(canvasId, { ...config, type: 'line' ),
 
-        return chart; }
+        return chart }
     }
 
     /**
@@ -246,7 +246,7 @@ export class AnalyticsChartRenderer {
     createBarChart(canvasId: string, config: ChartConfig = { ): any | null {'
         const canvas = this.getCanvas(canvasId);''
         if (!canvas || !this.Chart') return null;
-';
+';'
         const defaultConfig = {''
             type: 'bar',
             data: {
@@ -294,7 +294,7 @@ export class AnalyticsChartRenderer {
         this.charts.set(canvasId, chart');''
         this.chartConfigs.set(canvasId, { ...config, type: 'bar' ),
 
-        return chart; }
+        return chart }
     }
 
     /**
@@ -303,7 +303,7 @@ export class AnalyticsChartRenderer {
     createPieChart(canvasId: string, config: ChartConfig = { ): any | null {'
         const canvas = this.getCanvas(canvasId);''
         if (!canvas || !this.Chart') return null;
-';
+';'
         const defaultConfig = {''
             type: 'pie',
             data: {
@@ -342,7 +342,7 @@ export class AnalyticsChartRenderer {
         this.charts.set(canvasId, chart');''
         this.chartConfigs.set(canvasId, { ...config, type: 'pie' ),
 
-        return chart; }
+        return chart }
     }
 
     /**
@@ -356,7 +356,7 @@ export class AnalyticsChartRenderer {
             '';
             chart.config.type = 'doughnut';'
         }'
-            this.chartConfigs.set(canvasId, { ...config, type: 'doughnut' ); }
+            this.chartConfigs.set(canvasId, { ...config, type: 'doughnut' ) }
         }
         
         return chart;
@@ -392,13 +392,13 @@ export class AnalyticsChartRenderer {
                     chart.data.datasets[0].data = newData.data; }
                 }
             }
-';
-            // データポイント数制限''
+;
+            // データポイント数制限
             this.limitDataPoints(chart');'
 '';
-            chart.update('none'); // アニメーションなしで更新'
+            chart.update('none'); // アニメーションなしで更新
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Chart update failed:', error);
             return false; }
         }
@@ -415,9 +415,9 @@ export class AnalyticsChartRenderer {
         const timer = window.setInterval(() => { 
             try {
                 const newData = dataSourceCallback();
-                if (newData) { }'
+                if (newData) { }
                     this.updateChartData(canvasId, newData);' }'
-                } catch (error') { ''
+                } catch (error) { ''
                 console.error('Realtime update failed:', error);
                 this.stopRealtimeUpdate(canvasId); }
             }
@@ -480,10 +480,10 @@ export class AnalyticsChartRenderer {
     /**
      * キャンバス要素の取得または作成
      */
-    private getCanvas(canvasId: string): HTMLCanvasElement | null { let canvas = document.getElementById(canvasId) as HTMLCanvasElement;'
+    private getCanvas(canvasId: string): HTMLCanvasElement | null { let canvas = document.getElementById(canvasId) as HTMLCanvasElement;
         '';
         if(!canvas') {'
-            // キャンバスが存在しない場合は作成''
+            // キャンバスが存在しない場合は作成
             canvas = document.createElement('canvas');
             canvas.id = canvasId;
             canvas.width = this.options.defaultWidth;
@@ -514,9 +514,9 @@ export class AnalyticsChartRenderer {
     }
 
     /**
-     * Canvas APIによるフォールバック描画'
+     * Canvas APIによるフォールバック描画
      */''
-    private fallbackToCanvasRenderer('')';
+    private fallbackToCanvasRenderer()';
         console.warn('Chart.js not available, using Canvas API fallback');
         this.useCanvasFallback = true;
     }
@@ -526,7 +526,7 @@ export class AnalyticsChartRenderer {
      */
     drawSimpleLineChart(canvasId: string, data: ChartDataUpdate, config: ChartConfig = { ): boolean {
         if (!this.useCanvasFallback) return false;
-';
+';'
         const canvas = this.getCanvas(canvasId);''
         if (!canvas') return false;'
         '';
@@ -649,9 +649,9 @@ export class AnalyticsChartRenderer {
         }
 
         this.charts.clear();
-        this.chartConfigs.clear();'
+        this.chartConfigs.clear();
         this.updateTimers.clear();''
-        this.dataSourceCallbacks.clear('')';
+        this.dataSourceCallbacks.clear()';
         console.log('ChartRenderer destroyed'');'
     }''
 }

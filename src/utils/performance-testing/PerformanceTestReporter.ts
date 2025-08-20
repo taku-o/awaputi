@@ -12,25 +12,25 @@ interface PerformanceTestSuite { baselines: Map<string, any>;
 }
 
 interface ReportTemplate { sections: string[],
-    format: ReportFormat;
+    format: ReportFormat
     }
 }
 
 interface TestSession { id: string,
     startTime: number,
     endTime: number,
-    results: Map<string, TestCategoryResults>; }
+    results: Map<string, TestCategoryResults> }
 }
 
 interface TestCategoryResults { passed: boolean,
     summary: any,
-    tests: Record<string, TestResult>; }
+    tests: Record<string, TestResult> }
 }
 
 interface TestResult { passed: boolean,
     result: number,
     expected: number,
-    details?: any; }
+    details?: any }
 }
 
 interface Analysis { session: TestSession,
@@ -39,7 +39,7 @@ interface Analysis { session: TestSession,
     improvements: ImprovementEntry[],
     comparison: Map<string, ComparisonResult>;
     statistics: TestStatistics,
-    recommendations: RecommendationEntry[];
+    recommendations: RecommendationEntry[]
     }
 }
 
@@ -47,18 +47,18 @@ interface RegressionEntry { category: string,
     test: string,
     result: number,
     expected: number,
-    severity: SeverityLevel;
+    severity: SeverityLevel
     }
 }
 
 interface ImprovementEntry { category: string,
     test: string,
-    improvement: number; }
+    improvement: number }
 }
 
 interface ComparisonResult { current: TestCategoryResults,
     baseline: any,
-    deviation: Record<string, number>; }
+    deviation: Record<string, number> }
 }
 
 interface TestStatistics { totalTests: number,
@@ -66,7 +66,7 @@ interface TestStatistics { totalTests: number,
     failedTests: number,
     categories: Map<string, CategoryStatistics>;
     performance: any,
-    passRate: number; }
+    passRate: number }
 }
 
 interface CategoryStatistics { total: number,
@@ -81,7 +81,7 @@ interface CategoryStatistics { total: number,
 interface RecommendationEntry { priority: Priority,
     type: RecommendationType,
     description: string,
-    action?: string; }
+    action?: string }
 }
 
 interface ReportMetadata { generated_at: string,
@@ -91,7 +91,7 @@ interface ReportMetadata { generated_at: string,
     total_tests: number,
     passed_tests: number,
     tool_version: string,
-    environment: EnvironmentInfo;
+    environment: EnvironmentInfo
     }
 }
 
@@ -99,11 +99,11 @@ interface EnvironmentInfo { user_agent: string,
     platform: string,
     language: string,
     hardware_concurrency: number | string,
-    connection: ConnectionInfo | string; }
+    connection: ConnectionInfo | string }
 }
 
 interface ConnectionInfo { effective_type: string,
-    downlink: number; }
+    downlink: number }
 }
 
 interface Report { metadata: ReportMetadata,
@@ -112,7 +112,7 @@ interface Report { metadata: ReportMetadata,
     export_formats?: {
         json: string,
         csv: string,
-        markdown: string; }
+        markdown: string }
     };
 }
 
@@ -130,33 +130,33 @@ interface OverviewSection { title: string,
 
 interface CategorySummary { status: string,
     test_count: number,
-    pass_rate: number; }
+    pass_rate: number }
 }
 
 interface DetailedTestResult { status: string,
     result: number,
     expected: number,
     details: any,
-    deviation: number; }
+    deviation: number }
 }
 
 interface KeyMetrics { frameRate: any,
     memory: any,
     rendering: any,
     network: any,
-    battery: any; }
+    battery: any }
 }
 
 interface OptimizationOpportunity { area: string,
     description: string,
-    potential_impact: string; }
+    potential_impact: string }
 }
 
 interface CriticalIssue { category: string,
     test: string,
     severity: SeverityLevel,
     impact: string,
-    recommended_action: string; }
+    recommended_action: string }
 }
 
 interface StatisticsData { count: number,
@@ -172,13 +172,13 @@ interface StatisticsData { count: number,
         p75: number,
         p90: number,
         p95: number,
-        p99: number; }
+        p99: number }
     };
 }
 
 interface TestHistoryEntry { timestamp: number,
     results: any,
-    metadata: any; }
+    metadata: any }
 }
 
 interface ExportOptions { template?: string; }
@@ -217,7 +217,7 @@ export class PerformanceTestReporter {
 '';
         this.reportTemplates.set('technical', {')'
             sections: ['raw_data', 'statistics', 'correlations', 'technical_analysis'],')';
-            format: 'technical')'); }
+            format: 'technical')') }
     }
 
     /**
@@ -241,7 +241,7 @@ export class PerformanceTestReporter {
      * レポートメタデータ生成
      */'
     generateMetadata(analysis: Analysis): ReportMetadata { return { ''
-            generated_at: new Date('')';
+            generated_at: new Date()';
             overall_result: analysis.overallPassed ? 'PASSED' : 'FAILED')';
             total_tests: this.calculateTotalTests(analysis.session.results),'';
             passed_tests: this.calculatePassedTests(analysis.session.results'),'';
@@ -289,7 +289,7 @@ export class PerformanceTestReporter {
      */'
     generateOverviewSection(analysis: Analysis): OverviewSection { ''
         const passRate = this.calculatePassRate(analysis.session.results'),
-        ';
+        ';'
         return { ''
             title: 'Performance Test Overview',';
             summary: {' };'
@@ -315,8 +315,7 @@ export class PerformanceTestReporter {
                 category_status: results.passed ? 'PASSED' : 'FAILED',
         }
                 summary: results.summary, }
-                tests: {}
-            },'
+                tests: {},'
 '';
             for (const [testName, testResult] of Object.entries(results.tests)') { detailedResults[category].tests[testName] = {''
                     status: testResult.passed ? 'PASSED' : 'FAILED',
@@ -327,7 +326,7 @@ export class PerformanceTestReporter {
                 };
             }
         }
-';
+';'
         return { ''
             title: 'Detailed Test Results', };
             results: detailedResults }
@@ -348,7 +347,7 @@ export class PerformanceTestReporter {
             improvements: { count: analysis.improvements.length,
                 details: analysis.improvements }
             },
-            baseline_comparison: this.formatBaselineComparison(analysis.comparison,);
+            baseline_comparison: this.formatBaselineComparison(analysis.comparison);
             trends: this.analyzeTrends(analysis),
         };
     }
@@ -358,9 +357,9 @@ export class PerformanceTestReporter {
      */''
     generateRecommendationsSection(analysis: Analysis'): any { return { ''
             title: 'Recommendations',
-            priority_recommendations: this.prioritizeRecommendations(analysis.recommendations,);
+            priority_recommendations: this.prioritizeRecommendations(analysis.recommendations);
             quick_fixes: this.identifyQuickFixes(analysis.recommendations);
-            long_term_improvements: this.identifyLongTermImprovements(analysis.recommendations,) };
+            long_term_improvements: this.identifyLongTermImprovements(analysis.recommendations) };
             optimization_opportunities: this.identifyOptimizationOpportunities(analysis); }
         };
     }
@@ -369,11 +368,11 @@ export class PerformanceTestReporter {
      * 履歴セクション生成
      */'
     generateHistorySection(analysis: Analysis): any { ''
-        const history = this.performanceTestSuite.getTestHistory('')';
+        const history = this.performanceTestSuite.getTestHistory()';
             title: 'Test History',);
             recent_runs: history.slice(0, 10),
-            trend_analysis: this.analyzeHistoricalTrends(history,);
-            performance_evolution: this.analyzePerformanceEvolution(history); }
+            trend_analysis: this.analyzeHistoricalTrends(history);
+            performance_evolution: this.analyzePerformanceEvolution(history) }
         };
     }
 
@@ -382,7 +381,7 @@ export class PerformanceTestReporter {
      */'
     generateKeyMetricsSection(analysis: Analysis): any { ''
         const keyMetrics = this.extractKeyMetrics(analysis.session.results');
-        ';
+        ';'
         return { ''
             title: 'Key Performance Metrics',
             frame_rate: keyMetrics.frameRate,
@@ -398,7 +397,7 @@ export class PerformanceTestReporter {
      */''
     generateCriticalIssuesSection(analysis: Analysis'): any { ''
         const criticalIssues = analysis.regressions.filter(r => r.severity === 'critical' || r.severity === 'high'');
-        ';
+        ';'
         return { ''
             title: 'Critical Issues',
             count: criticalIssues.length,
@@ -406,7 +405,7 @@ export class PerformanceTestReporter {
                 category: issue.category);
                 test: issue.test,);
                 severity: issue.severity),
-                impact: this.assessImpact(issue,) };
+                impact: this.assessImpact(issue) };
                 recommended_action: this.getRecommendedAction(issue); }
             });
         };
@@ -418,9 +417,8 @@ export class PerformanceTestReporter {
     generateRawDataSection(analysis: Analysis'): any { return { ''
             title: 'Raw Test Data',
             session_data: analysis.session, };
-            baseline_data: Object.fromEntries(this.performanceTestSuite.baselines,) }
-            collected_metrics: this.performanceTestSuite.metricsCollector? .getCollectedMetrics() || {}
-        },
+            baseline_data: Object.fromEntries(this.performanceTestSuite.baselines) }
+            collected_metrics: this.performanceTestSuite.metricsCollector? .getCollectedMetrics() || {},
     }
 
     /**
@@ -434,9 +432,9 @@ export class PerformanceTestReporter {
             const values = Object.values(results.tests).map(test => test.result);
             statistics[category] = {
                 count: values.length,
-                mean: this.calculateMean(values,);
+                mean: this.calculateMean(values);
                 median: this.calculateMedian(values);
-                variance: this.calculateVariance(values,);
+                variance: this.calculateVariance(values);
                 standard_deviation: Math.sqrt(this.calculateVariance(values),
                 min: Math.min(...values),
                 max: Math.max(...values),
@@ -445,13 +443,13 @@ export class PerformanceTestReporter {
                     p50: this.calculatePercentile(values, 50),
                     p75: this.calculatePercentile(values, 75),
                     p90: this.calculatePercentile(values, 90),';
-                    p95: this.calculatePercentile(values, 95),';
+                    p95: this.calculatePercentile(values, 95),'
         }'
                     p99: this.calculatePercentile(values, 99'); }
                 }
             };
         }
-';
+';'
         return { ''
             title: 'Statistical Analysis',
             category_statistics: statistics, };
@@ -464,7 +462,7 @@ export class PerformanceTestReporter {
      */''
     generateCorrelationsSection(analysis: Analysis'): any { return { ''
             title: 'Performance Correlations',
-            category_correlations: this.calculateCategoryCorrelations(analysis.session.results,) };
+            category_correlations: this.calculateCategoryCorrelations(analysis.session.results) };
             metric_correlations: this.calculateMetricCorrelations(analysis.session.results); }
         };
     }
@@ -474,9 +472,9 @@ export class PerformanceTestReporter {
      */''
     generateTechnicalAnalysisSection(analysis: Analysis'): any { return { ''
             title: 'Technical Analysis',
-            performance_bottlenecks: this.identifyBottlenecks(analysis,);
+            performance_bottlenecks: this.identifyBottlenecks(analysis);
             resource_utilization: this.analyzeResourceUtilization(analysis);
-            optimization_potential: this.assessOptimizationPotential(analysis,) };
+            optimization_potential: this.assessOptimizationPotential(analysis) };
             technical_recommendations: this.generateTechnicalRecommendations(analysis); }
         };
     }
@@ -505,7 +503,7 @@ export class PerformanceTestReporter {
             formatted_output: this.generateHTMLReport(report);
             export_formats: {)
                 json: JSON.stringify(report, null, 2),
-                csv: this.convertToCSV(report,) };
+                csv: this.convertToCSV(report) };
                 markdown: this.convertToMarkdown(report); }
             }
         };
@@ -666,7 +664,7 @@ export class PerformanceTestReporter {
         return sorted[Math.max(0, index)]; }
     }
 
-    generateCategorySummary(results: Map<string, TestCategoryResults>): Record<string, CategorySummary> {'
+    generateCategorySummary(results: Map<string, TestCategoryResults>): Record<string, CategorySummary> {
         const summary = {};''
         for(const [category, categoryResults] of results') {'
             summary[category] = {''
@@ -689,7 +687,7 @@ export class PerformanceTestReporter {
         if (analysis.regressions.length > 0) { }
             findings.push(`${analysis.regressions.length) performance regressions detected`});
         }
-        ';
+        ';'
         if (analysis.improvements.length > 0) { ' }'
             findings.push(`${analysis.improvements.length) performance improvements found`'});
         }'
@@ -712,14 +710,14 @@ export class PerformanceTestReporter {
             } : 'unknown')
         })
     }
-';
+';'
     prioritizeRecommendations(recommendations: RecommendationEntry[]): RecommendationEntry[] { return recommendations''
             .sort((a, b') => {' }'
                 const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
                 return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
             })
             .slice(0, 5); // トップ5の推奨事項
-    }'
+    }
 '';
     identifyQuickFixes(recommendations: RecommendationEntry[]'): RecommendationEntry[] { return recommendations.filter(rec => ')'
             rec.type === 'configuration' || rec.type === 'setting'); }
@@ -731,22 +729,22 @@ export class PerformanceTestReporter {
 '';
     identifyOptimizationOpportunities(analysis: Analysis'): OptimizationOpportunity[] { const opportunities = [];
         ';
-        // メモリ使用量が高い場合''
+        // メモリ使用量が高い場合
         const memoryResults = analysis.session.results.get('memory');''
         if(memoryResults && !memoryResults.passed') {'
             opportunities.push({''
                 area: 'memory',')';
-                description: 'Memory usage optimization needed',');
+                description: 'Memory usage optimization needed',')
         }'
                 potential_impact: 'high')'); }
         }
 ';
-        // フレームレートが低い場合''
+        // フレームレートが低い場合
         const frameRateResults = analysis.session.results.get('frameRate');''
         if(frameRateResults && !frameRateResults.passed') {'
             opportunities.push({''
                 area: 'rendering',')';
-                description: 'Frame rate optimization needed',');
+                description: 'Frame rate optimization needed',')
         }'
                 potential_impact: 'high'); }
         }
@@ -823,10 +821,10 @@ export class PerformanceTestReporter {
         if (history.length < 2') {' }'
             return { trend: 'insufficient_data' }
         }
-        ';
+        ';'
         const recent = history.slice(-5);''
         const older = history.slice(0, -5');
-        ';
+        ';'
         return { ''
             trend: recent.length > 0 && older.length > 0 ? 'stable' : 'insufficient_data', };
             data_points: history.length }
@@ -946,7 +944,7 @@ export class PerformanceTestReporter {
     }
 
     /**
-     * メトリクス相関計算'
+     * メトリクス相関計算
      */''
     calculateMetricCorrelations(results: Map<string, TestCategoryResults>'): Record<string, number> { return { ''
             'frameRate_memory': 0.3,'';
@@ -1001,12 +999,12 @@ export class PerformanceTestReporter {
     generateTechnicalRecommendations(analysis: Analysis): string[] { const recommendations: string[] = [],'
 '';
         if(analysis.regressions.length > 0') {'
-            ';
+            ';'
         }'
             recommendations.push('Investigate performance regressions'); }'
         }''
         if(analysis.improvements.length > 0') {'
-            ';
+            ';'
         }'
             recommendations.push('Maintain current optimization strategies''); }
         }
@@ -1050,7 +1048,7 @@ export class PerformanceTestReporter {
                 total: testCount,
                 passed: passedCount,';
                 failed: testCount - passedCount,'';
-                pass_rate: testCount > 0 ? (passedCount / testCount') * 100 : 0,';
+                pass_rate: testCount > 0 ? (passedCount / testCount') * 100 : 0,'
         }'
                 status: results.passed ? 'PASSED' : 'FAILED' }
             },

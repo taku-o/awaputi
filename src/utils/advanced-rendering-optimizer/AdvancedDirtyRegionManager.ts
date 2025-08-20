@@ -14,24 +14,24 @@ interface DirtyRegion { x: number,
     width: number,
     height: number,
     timestamp: number,
-    frame: number; }
+    frame: number }
 }
 
 interface RegionHistory { frame: number,
     regions: DirtyRegion[],
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface RegionStats { totalRegions: number,
     mergedRegions: number,
     skippedRedraws: number,
     pixelsSaved: number,
-    performanceGain: number; }
+    performanceGain: number }
 }
 
 interface Hotspot { x: number,
     y: number,
-    count: number; }
+    count: number }
 }
 
 /**
@@ -108,16 +108,16 @@ export class AdvancedDirtyRegionManager {
                 width: finalWidth,
                 height: finalHeight,
                 timestamp: Date.now(),
-                frame: this._getCurrentFrame(); }
+                frame: this._getCurrentFrame() }
             };
             
             this.regions.add(region);
             this.stats.totalRegions++;
             
             // Track hotspots
-            this._trackHotspot(expandedX, expandedY, finalWidth, finalHeight);'
+            this._trackHotspot(expandedX, expandedY, finalWidth, finalHeight);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to add dirty region', error); }
         }
     }
@@ -166,9 +166,9 @@ export class AdvancedDirtyRegionManager {
             }
             
             this.mergedRegions = merged;
-            return merged;'
+            return merged;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to merge regions', error);
             return Array.from(this.regions); }
         }
@@ -193,9 +193,9 @@ export class AdvancedDirtyRegionManager {
             }
             
             this.regions.clear();
-            this.mergedRegions = [];'
+            this.mergedRegions = [];
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to clear regions', error); }
         }
     }
@@ -308,8 +308,8 @@ export class AdvancedDirtyRegionManager {
     
     /**
      * Get current frame number
-     */'
-    private _getCurrentFrame(): number { // Simple frame counter''
-        return Math.floor(Date.now() / 16.67'); // Approximate frame at 60fps }'
+     */
+    private _getCurrentFrame(): number { // Simple frame counter
+        return Math.floor(Date.now() / 16.67'); // Approximate frame at 60fps }
     }''
 }

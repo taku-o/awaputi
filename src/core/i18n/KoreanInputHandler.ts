@@ -8,17 +8,17 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 export interface OptimizationSettings { debounceDelay: number,
     autoComplete: boolean,
     smartSpacing: boolean,
-    predictiveText: boolean; }
+    predictiveText: boolean }
 }
 
 export interface HangulComponent { char: string,
     chosung: string,
     jungsung: string,
-    jongsung: string; }
+    jongsung: string }
 }
 
 export interface JamoComponent { char: string,
-    type: JamoType;
+    type: JamoType
     }
 }
 
@@ -34,30 +34,30 @@ export interface KoreanTextAnalysis { length: number,
     syllables: number,
     jamo: number,
     words: string[],
-    particles: string[]; }
+    particles: string[] }
 }
 
 export interface InputEventHandlers { compositionstart: (event: CompositionEvent) => void,
     compositionupdate: (event: CompositionEvent) => void,
-    compositionend: (event: CompositionEvent) => void,';
+    compositionend: (event: CompositionEvent) => void,
     input: (event: InputEvent) => void,'';
-    keydown: (event: KeyboardEvent') => void; }
+    keydown: (event: KeyboardEvent') => void }
 }
 
 export interface SpacingPattern { pattern: RegExp,
-    replace: string; }
+    replace: string }
 }
 
 export interface HangulDecomposition { chosung: string,
     jungsung: string,
-    jongsung: string; }
+    jongsung: string }
 }
 
 export interface KoreanInputStats { isComposing: boolean,
     compositionText: string,
     attachedInputs: number,
     settings: OptimizationSettings,
-    hasKoreanIME: boolean; }
+    hasKoreanIME: boolean }
 }
 
 export interface AutoCompleteDatabase { [firstChar: string]: string[], }
@@ -83,7 +83,7 @@ export class KoreanInputHandler {
     // 입력 최적화 설정
     private optimizationSettings: OptimizationSettings;
     // 이벤트 리스너
-    private inputListeners: Map<HTMLElement, InputEventHandlers>;'
+    private inputListeners: Map<HTMLElement, InputEventHandlers>;
 '';
     constructor(''';
         this.chosung = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];''
@@ -94,7 +94,7 @@ export class KoreanInputHandler {
         this.HANGUL_START = 0xAC00; // 가
         this.HANGUL_END = 0xD7A3;   // 힣
         
-        // IME状態管理'
+        // IME状態管理
         this.isComposing = false;''
         this.compositionText = '';
         
@@ -112,12 +112,12 @@ export class KoreanInputHandler {
     }
     
     /**
-     * 초기화'
+     * 초기화
      */''
-    private initialize('')';
+    private initialize()';
         console.log('KoreanInputHandler initialized');
         ';
-        // 한글 입력 최적화 감지''
+        // 한글 입력 최적화 감지
         if (this.detectKoreanIME()') { ''
             console.log('Korean IME detected'); }
         }
@@ -126,19 +126,19 @@ export class KoreanInputHandler {
     /**
      * 한국어 IME 감지'
      */''
-    private detectKoreanIME('')';
+    private detectKoreanIME()';
         return languages.some(lang => lang.startsWith('ko');
     }
     
     /**
      * 입력 필드에 한국어 최적화 적용
      */'
-    attachToInput(inputElement: HTMLElement): boolean { try {''
+    attachToInput(inputElement: HTMLElement): boolean { try {'
             if (!inputElement || !(inputElement instanceof HTMLElement)') {''
                 throw new Error('Invalid input element'); }
             }
             ';
-            // 이미 등록된 경우 스킵''
+            // 이미 등록된 경우 스킵
             if (this.inputListeners.has(inputElement)') { ''
                 console.warn('Input element already has Korean handler attached');
                 return false; }
@@ -149,7 +149,7 @@ export class KoreanInputHandler {
                 compositionupdate: this.handleCompositionUpdate.bind(this),
                 compositionend: this.handleCompositionEnd.bind(this),
                 input: this.handleInput.bind(this),
-                keydown: this.handleKeyDown.bind(this); }
+                keydown: this.handleKeyDown.bind(this) }
             };
             
             // 이벤트 리스너 등록
@@ -158,15 +158,15 @@ export class KoreanInputHandler {
             
             // 리스너 저장
             this.inputListeners.set(inputElement, handlers);
-            ';
-            // 한국어 입력 속성 설정''
+            ;
+            // 한국어 입력 속성 설정
             this.applyKoreanInputAttributes(inputElement');'
             '';
             console.log('Korean input handler attached to element');
             return true;'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'KOREAN_INPUT_ERROR', {')'
-                operation: 'attachToInput'); }
+                operation: 'attachToInput') }
             };
             return false;
         }
@@ -186,15 +186,15 @@ export class KoreanInputHandler {
             // 이벤트 리스너 제거
             Object.entries(handlers).forEach(([event, handler]) => { inputElement.removeEventListener(event, handler as EventListener); }
             };
-            ';
-            // 리스너 삭제''
+            ;
+            // 리스너 삭제
             this.inputListeners.delete(inputElement');'
             '';
             console.log('Korean input handler detached from element');
             return true;'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'KOREAN_INPUT_ERROR', {')'
-                operation: 'detachFromInput'); }
+                operation: 'detachFromInput') }
             };
             return false;
         }
@@ -203,16 +203,16 @@ export class KoreanInputHandler {
     /**
      * 한국어 입력 속성 적용
      */'
-    private applyKoreanInputAttributes(inputElement: HTMLElement): void { // IME 모드 설정''
+    private applyKoreanInputAttributes(inputElement: HTMLElement): void { // IME 모드 설정
         (inputElement as any').style.imeMode = 'active';
         ';
-        // 한국어 입력 관련 속성''
+        // 한국어 입력 관련 속성
         inputElement.setAttribute('lang', 'ko'');''
         inputElement.setAttribute('inputmode', 'text');
         ';
-        // 자동 완성 설정''
+        // 자동 완성 설정
         if(this.optimizationSettings.autoComplete') {'
-            ';
+            ';'
         }'
             inputElement.setAttribute('autocomplete', 'on'); }
         }'
@@ -236,7 +236,7 @@ export class KoreanInputHandler {
         this.compositionText = event.data || '';
         
         // 실시간 한글 조합 분석
-        if(this.isHangul(this.compositionText) {'
+        if(this.isHangul(this.compositionText) {
             '';
             const analyzed = this.analyzeHangul(this.compositionText');'
         }'
@@ -250,8 +250,8 @@ export class KoreanInputHandler {
     private handleCompositionEnd(event: CompositionEvent): void { this.isComposing = false;
         
         // 최종 입력된 한글 처리
-        if(event.data && this.isHangul(event.data) {'
-            ';
+        if(event.data && this.isHangul(event.data) {
+            ';'
         }'
             this.processKoreanInput(event.data, event.target as HTMLElement'); }
         }'
@@ -274,10 +274,10 @@ export class KoreanInputHandler {
     
     /**
      * 키 다운 이벤트 처리
-     */'
-    private handleKeyDown(event: KeyboardEvent): void { // 한국어 입력 중 특수 키 처리''
+     */
+    private handleKeyDown(event: KeyboardEvent): void { // 한국어 입력 중 특수 키 처리
         if(this.isComposing') {'
-            // Space 키로 조합 완료''
+            // Space 키로 조합 완료
             if (event.key === ' ' && this.optimizationSettings.smartSpacing) {
                 // 스마트 띄어쓰기 처리
         }
@@ -295,7 +295,7 @@ export class KoreanInputHandler {
             
             // 최적화 적용
             if(this.optimizationSettings.autoComplete) {
-                // 자동 완성 제안'
+                // 자동 완성 제안
                 const suggestions = this.getAutoCompleteSuggestions(text);''
                 if (suggestions.length > 0') {'
             }'
@@ -304,10 +304,10 @@ export class KoreanInputHandler {
             }
             
             // 입력 통계 수집
-            this.collectInputStatistics(analysis);'
+            this.collectInputStatistics(analysis);
             '';
-        } catch (error') { ''
-            console.warn('Error processing Korean input:', error); }
+        } catch (error) { ''
+            console.warn('Error processing Korean input:', error) }
         }
     }
     
@@ -316,7 +316,7 @@ export class KoreanInputHandler {
      */
     private optimizeKoreanText(inputElement: InputElementType): void { const text = inputElement.value;
         
-        // 자모 분리 현상 수정'
+        // 자모 분리 현상 수정
         const fixed = this.fixSeparatedJamo(text);''
         if(fixed !== text') {'
             inputElement.value = fixed;'
@@ -354,21 +354,21 @@ export class KoreanInputHandler {
             
             if (code >= this.HANGUL_START && code <= this.HANGUL_END) {
                 // 완성형 한글 분해
-                const offset = code - this.HANGUL_START;'
+                const offset = code - this.HANGUL_START;
                 const chosungIndex = Math.floor(offset / (21 * 28);''
                 const jungsungIndex = Math.floor((offset % (21 * 28) / 28');
                 const jongsungIndex = offset % 28;
                 
                 results.push({
-                    char: char,);
+                    char: char);
                     chosung: this.chosung[chosungIndex])';
-                    jungsung: this.jungsung[jungsungIndex],');
+                    jungsung: this.jungsung[jungsungIndex],')
         }'
                     jongsung: this.jongsung[jongsungIndex] || ''); }
             } else if (this.chosung.includes(char) || this.jungsung.includes(char) || this.jongsung.includes(char) { // 자모음
                 results.push({)
                     char: char),
-                    type: this.getJamoType(char); }
+                    type: this.getJamoType(char) }
                 };
             }
         }
@@ -378,7 +378,7 @@ export class KoreanInputHandler {
     
     /**
      * 자모 타입 확인
-     */'
+     */
     private getJamoType(char: string): JamoType { ''
         if (this.chosung.includes(char)') return 'chosung';''
         if (this.jungsung.includes(char)') return 'jungsung';''
@@ -393,11 +393,11 @@ export class KoreanInputHandler {
         let fixed = text;
         
         // 간단한 패턴 매칭으로 자모 조합
-        // 예: ㄱ + ㅏ = 가'
+        // 예: ㄱ + ㅏ = 가
         const simplePatterns: SpacingPattern[] = [' }'
             { pattern: /ㄱㅏ/g, replace: '가' },''
             { pattern: /ㄴㅏ/g, replace: '나' },''
-            { pattern: /ㄷㅏ/g, replace: '다' },]
+            { pattern: /ㄷㅏ/g, replace: '다' }]
             // ... 더 많은 패턴 추가 가능]
         ];
         
@@ -409,16 +409,16 @@ export class KoreanInputHandler {
     }
     
     /**
-     * 스마트 띄어쓰기 처리'
+     * 스마트 띄어쓰기 처리
      */''
     private handleSmartSpacing(event: KeyboardEvent'): void { // 한국어 띄어쓰기 규칙 적용
         const input = event.target as InputElementType;
         const text = input.value;
         const cursorPos = input.selectionStart;
-        ';
-        // 조사 앞 띄어쓰기 제거''
+        ;
+        // 조사 앞 띄어쓰기 제거
         const particles = ['은', '는', '이', '가', '을', '를', '에', '에서', '으로', '로', '와', '과', '의', '도', '만', '까지'];
-        ';
+        ';'
         particles.forEach(particle => { );''
             const pattern = new RegExp(` ${particle')`, 'g'); }
             if (pattern.test(text) { }
@@ -432,15 +432,15 @@ export class KoreanInputHandler {
      */''
     private optimizeSpacing(text: string'): string { // 기본적인 띄어쓰기 규칙 적용
         let optimized = text;
-        ';
-        // 조사 앞 공백 제거''
+        ;
+        // 조사 앞 공백 제거
         const particles = ['은', '는', '이', '가', '을', '를', '에', '에서', '으로', '로'];'
         particles.forEach(particle => { );' }'
             const regex = new RegExp(`\\s+${particle')`, 'g');' }'
             optimized = optimized.replace(regex, particle'});
         };
         ';
-        // 중복 공백 제거''
+        // 중복 공백 제거
         optimized = optimized.replace(/\s+/g, ' ');
         
         return optimized.trim();
@@ -484,7 +484,7 @@ export class KoreanInputHandler {
     /**
      * 자동 완성 제안 생성'
      */''
-    private getAutoCompleteSuggestions(text: string'): string[] { // 실제 구현에서는 사전 데이터베이스나 API를 사용'
+    private getAutoCompleteSuggestions(text: string'): string[] { // 실제 구현에서는 사전 데이터베이스나 API를 사용
         const commonWords: AutoCompleteDatabase = {''
             '안': ['안녕하세요', '안녕', '안전'],'';
             '감': ['감사합니다', '감사', '감동'],'';
@@ -499,10 +499,10 @@ export class KoreanInputHandler {
     /**
      * 입력 통계 수집'
      */''
-    private collectInputStatistics(analysis: KoreanTextAnalysis'): void { // 향후 입력 패턴 분석을 위한 통계 수집''
-        console.log('Korean input statistics:', analysis); }
+    private collectInputStatistics(analysis: KoreanTextAnalysis'): void { // 향후 입력 패턴 분석을 위한 통계 수집
+        console.log('Korean input statistics:', analysis) }
     }
-    ';
+    ';'
     /**''
      * 한글 조합 (자모 -> 음절')'
      */''
@@ -555,7 +555,7 @@ export class KoreanInputHandler {
      */'
     updateSettings(settings: Partial<OptimizationSettings>): void { ''
         Object.assign(this.optimizationSettings, settings');''
-        console.log('Korean input settings updated:', this.optimizationSettings); }
+        console.log('Korean input settings updated:', this.optimizationSettings) }
     }
     
     /**
@@ -572,7 +572,7 @@ export class KoreanInputHandler {
     /**
      * 모든 리스너 정리
      */
-    cleanup(): void { // 모든 입력 필드에서 핸들러 제거'
+    cleanup(): void { // 모든 입력 필드에서 핸들러 제거
         this.inputListeners.forEach((handlers, element) => { ' }'
             this.detachFromInput(element'); }
         };'
@@ -586,6 +586,6 @@ let koreanInputHandlerInstance: KoreanInputHandler | null = null,
 
 /**
  * KoreanInputHandler의 싱글톤 인스턴스 가져오기
- */'
+ */
 export function getKoreanInputHandler(): KoreanInputHandler { if (!koreanInputHandlerInstance) {''
         koreanInputHandlerInstance = new KoreanInputHandler(' })

@@ -36,7 +36,7 @@ export interface AnalyticsReport { summary: {
         totalSessions: number,
         totalEvents: number,
         avgSessionDuration: number,
-        errorRate: number ;
+        errorRate: number 
 }
     },
     trends: any[],
@@ -68,7 +68,7 @@ export class EnhancedAnalyticsManager {
             enableSessionTracking: true,
             enablePrivacyProtection: true,
             storageQuota: 50 * 1024 * 1024, // 50MB;
-            retentionDays: 30;
+            retentionDays: 30
 };
 }
             ...options }
@@ -94,8 +94,8 @@ export class EnhancedAnalyticsManager {
     /**
      * 初期化
      */
-    private async initialize(): Promise<void> { try {'
-            // Privacy check''
+    private async initialize(): Promise<void> { try {
+            // Privacy check
             if (this.options.enablePrivacyProtection && !this.privacyManager.checkConsent()') {''
                 console.log('Analytics disabled due to privacy settings');
                 return; };
@@ -111,12 +111,12 @@ export class EnhancedAnalyticsManager {
 }
             if (this.options.enableSessionTracking) { await this.sessionManager.initialize(); };
 }
-';
-            // Start periodic analysis''
-            this.startPeriodicAnalysis('')';
+;
+            // Start periodic analysis
+            this.startPeriodicAnalysis()';
             console.log('EnhancedAnalyticsManager initialized successfully');''
-        } catch (error') { ''
-            console.error('Failed to initialize EnhancedAnalyticsManager:', error); };
+        } catch (error) { ''
+            console.error('Failed to initialize EnhancedAnalyticsManager:', error) };
 }
     }
 
@@ -132,7 +132,7 @@ export class EnhancedAnalyticsManager {
                 timestamp: Date.now(),
                 sessionId: this.sessionManager.getCurrentSessionId(),
                 performanceMetrics: this.performanceMonitor.getCurrentMetrics(),
-                contextData: this.captureEventContext(); }
+                contextData: this.captureEventContext() }
             };
 
             // Track with base analytics
@@ -141,10 +141,10 @@ export class EnhancedAnalyticsManager {
             // Specialized analysis
             if (this.options.enableBehaviorAnalysis) { this.playerBehaviorAnalyzer.analyzeEvent(eventType, enhancedData); };
 }
-';
+';'
             if (this.options.enableBalanceAnalysis) { this.gameBalanceAnalyzer.analyzeEvent(eventType, enhancedData);' }'
-            } catch (error') { ''
-            console.error('Failed to track game event:', error); };
+            } catch (error) { ''
+            console.error('Failed to track game event:', error) };
 }
     }
 
@@ -153,7 +153,7 @@ export class EnhancedAnalyticsManager {
      */'
     async analyzePlayerBehavior(timeRange?: { start: Date; end: Date }): Promise<any> { ''
         if(!this.options.enableBehaviorAnalysis') {'
-            ';
+            ';'
         }'
             throw new Error('Behavior analysis is disabled'); };
 }
@@ -165,7 +165,7 @@ export class EnhancedAnalyticsManager {
      */'
     async analyzeGameBalance(timeRange?: { start: Date; end: Date ): Promise<any> {''
         if(!this.options.enableBalanceAnalysis') {'
-            ';
+            '
         }'
             throw new Error('Balance analysis is disabled'); };
 }
@@ -177,7 +177,7 @@ export class EnhancedAnalyticsManager {
      */'
     getPerformanceMetrics(): any { ''
         if(!this.options.enablePerformanceMonitoring') {'
-            ';
+            ';'
         }'
             throw new Error('Performance monitoring is disabled'); };
 }
@@ -189,7 +189,7 @@ export class EnhancedAnalyticsManager {
      */'
     async getSessionStatistics(timeRange?: { start: Date; end: Date ): Promise<any> {''
         if(!this.options.enableSessionTracking') {'
-            ';
+            '
         }'
             throw new Error('Session tracking is disabled'); };
 }
@@ -205,7 +205,7 @@ export class EnhancedAnalyticsManager {
                 totalSessions: 0,
                 totalEvents: 0,
                 avgSessionDuration: 0,
-                errorRate: 0 ;
+                errorRate: 0 
 }
             },
             trends: [],
@@ -240,14 +240,14 @@ export class EnhancedAnalyticsManager {
                 report.summary.errorRate = perfMetrics.errorRate;
                 if (perfMetrics.issues) {
             }
-                    report.issues.push(...perfMetrics.issues); }'
+                    report.issues.push(...perfMetrics.issues); }
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to generate analytics report:', error');'
             report.issues.push({')'
                 type: 'error',')';
                 message: 'Failed to generate complete report'),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
         }
 
@@ -266,14 +266,14 @@ export class EnhancedAnalyticsManager {
             if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.syncData(); };
 }
             if(this.options.enableSessionTracking) {
-';
+';'
                 '';
-                await this.sessionManager.syncData('');'
+                await this.sessionManager.syncData();'
             console.log('Analytics data synchronized successfully');
 
             }'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to sync analytics data:', error);
             return false; };
 }
@@ -284,12 +284,12 @@ export class EnhancedAnalyticsManager {
      */
     async cleanupOldData(): Promise<void> { const cutoffDate = new Date();
         cutoffDate.setDate(cutoffDate.getDate() - this.options.retentionDays);
-';
-        try {''
+';'
+        try {'
             await this.storageManager.deleteOldData(cutoffDate');''
             console.log('Old analytics data cleaned up');' }'
-        } catch (error') { ''
-            console.error('Failed to cleanup old data:', error); };
+        } catch (error) { ''
+            console.error('Failed to cleanup old data:', error) };
 }
     }
 
@@ -306,10 +306,10 @@ export class EnhancedAnalyticsManager {
 }
                 if (this.options.enableBalanceAnalysis) { await this.gameBalanceAnalyzer.runBackgroundAnalysis(); };
 }
-                // Cleanup old data if needed'
+                // Cleanup old data if needed
                 await this.cleanupOldData();''
-            } catch (error') { ''
-                console.error('Periodic analysis failed:', error); };
+            } catch (error) { ''
+                console.error('Periodic analysis failed:', error) };
 }
         }, analysisInterval);
     }
@@ -326,7 +326,7 @@ export class EnhancedAnalyticsManager {
 }
             },
             viewportSize: { width: window.innerWidth,
-                height: window.innerHeight ;
+                height: window.innerHeight 
 };
 }
         },
@@ -343,7 +343,7 @@ export class EnhancedAnalyticsManager {
             if (newOptions.enableBehaviorAnalysis) {
         }
                 this.playerBehaviorAnalyzer.initialize(); }
-            } else { this.playerBehaviorAnalyzer.stop(); };
+            } else { this.playerBehaviorAnalyzer.stop(); }
 }
         }
 
@@ -353,7 +353,7 @@ export class EnhancedAnalyticsManager {
 
         }
                 this.gameBalanceAnalyzer.initialize(); }
-            } else { this.gameBalanceAnalyzer.stop(); };
+            } else { this.gameBalanceAnalyzer.stop(); }
 }
         }
 
@@ -363,7 +363,7 @@ export class EnhancedAnalyticsManager {
 
         }
                 this.performanceMonitor.start(); }
-            } else { this.performanceMonitor.stop(); };
+            } else { this.performanceMonitor.stop(); }
 }
         };
 }
@@ -401,9 +401,9 @@ export class EnhancedAnalyticsManager {
         if (this.storageManager) { this.storageManager.destroy(); };
 }
         if(this.privacyManager) {
-';
+';'
             '';
-            this.privacyManager.destroy('');
+            this.privacyManager.destroy();
         }'
         console.log('EnhancedAnalyticsManager destroyed''); }'
     }''

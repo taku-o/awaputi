@@ -9,7 +9,7 @@ import { SceneState } from './SceneState';
 
 export interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean,
-    reducedMotion: boolean; }
+    reducedMotion: boolean }
 }
 
 export abstract class TabComponent { protected gameEngine: GameEngine,
@@ -115,10 +115,10 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
         context: CanvasRenderingContext2D,
         x: number, ;
         y: number, ;
-        width: number, );
-        height: number)';
+        width: number );
+        height: number);
         error: Error'';
-    '): void { // エラーメッセージを表示''
+    '): void { // エラーメッセージを表示
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FF0000' : '#FF6B6B';''
         context.fillRect(x, y, width, height');'
         '';
@@ -130,7 +130,7 @@ export abstract class TabComponent { protected gameEngine: GameEngine,
         const errorText = 'コンポーネントの読み込みでエラーが発生しました';
         context.fillText(errorText, x + width / 2, y + height / 2);
         ';
-        // デバッグ情報（開発時のみ）''
+        // デバッグ情報（開発時のみ）
         if(this.gameEngine.debugMode') {'
             '';
             context.font = '12px monospace';

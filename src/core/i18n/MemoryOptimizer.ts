@@ -15,14 +15,14 @@ export interface MemoryUsage { translations: number,
     cache: number,
     metadata: number,
     other: number,
-    total: number; }
+    total: number }
 }
 
 export interface OptimizationStrategies { stringDeduplication: boolean,
     objectPooling: boolean,
     lazyLoading: boolean,
     compressionThreshold: number,
-    weakReferences: boolean; }
+    weakReferences: boolean }
 }
 
 export interface OptimizationStats { totalOptimizations: number,
@@ -32,7 +32,7 @@ export interface OptimizationStats { totalOptimizations: number,
     gcRuns: number,
     lastGcTime: number,
     averageGcTime: number,
-    memoryPressureEvents: number; }
+    memoryPressureEvents: number }
 }
 
 export type MemoryPressureHandler = () => void;
@@ -139,13 +139,13 @@ export class MemoryOptimizer {
             }
             
             // 弱参照の活用
-            if(this.optimizationStrategies.weakReferences) {'
-                ';
+            if(this.optimizationStrategies.weakReferences) {
+                ';'
             }'
                 this._registerWeakReferences(optimized, language'); }
             }
             ';
-            // メモリ使用量を更新''
+            // メモリ使用量を更新
             this._updateMemoryUsage('translations', this._calculateObjectSize(optimized);
             
             const optimizationTime = performance.now() - startTime;
@@ -155,7 +155,7 @@ export class MemoryOptimizer {
             
             return optimized;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Translation optimization failed:', error);
             return data; }
         }
@@ -183,8 +183,8 @@ export class MemoryOptimizer {
             }
             
             if(Array.isArray(value) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 return value.map(processValue'); }
             }'
@@ -236,7 +236,7 @@ export class MemoryOptimizer {
     _reuseObjectStructures(data, pool) {
         
     }
-        const reused = {};'
+        const reused = {};
         '';
         for (const [key, value] of Object.entries(data)') { ''
             if(typeof value === 'object' && value !== null && !Array.isArray(value) {
@@ -259,7 +259,7 @@ export class MemoryOptimizer {
      * 類似構造を検索
      */
     _findSimilarStructure(target, pool) {
-        const targetKeys = Object.keys(target).sort();'
+        const targetKeys = Object.keys(target).sort();
         '';
         for (const poolItem of pool') {''
             if (typeof poolItem !== 'object' || poolItem === null) continue;
@@ -283,7 +283,7 @@ export class MemoryOptimizer {
      * オブジェクトプールを作成
      */
     _createObjectPool(data) {
-        const pool = [];'
+        const pool = [];
         '';
         const collectObjects = (obj') => { ''
             if(typeof obj === 'object' && obj !== null && !Array.isArray(obj) {
@@ -345,9 +345,9 @@ export class MemoryOptimizer {
     }
     
     /**
-     * 緊急メモリ圧迫への対応'
+     * 緊急メモリ圧迫への対応
      */''
-    _handleCriticalMemoryPressure('')';
+    _handleCriticalMemoryPressure()';
         console.warn('Critical memory pressure detected, initiating emergency cleanup');
         
         this.isUnderMemoryPressure = true;
@@ -355,14 +355,14 @@ export class MemoryOptimizer {
         
         // 緊急クリーンアップ
         this._performEmergencyCleanup();
-        ';
-        // 圧迫ハンドラーを実行''
+        ;
+        // 圧迫ハンドラーを実行
         for(const handler of this.memoryPressureHandlers') {'
-            try {'
+            try {
         }'
                 handler('critical');' }'
-            } catch (error') { ''
-                console.error('Memory pressure handler failed:', error); }
+            } catch (error) { ''
+                console.error('Memory pressure handler failed:', error) }
             }
         }
     }
@@ -370,21 +370,21 @@ export class MemoryOptimizer {
     /**
      * メモリ警告への対応'
      */''
-    _handleMemoryWarning('')';
+    _handleMemoryWarning()';
         console.warn('Memory usage exceeds warning threshold');
         
         this.isUnderMemoryPressure = true;
         
         // プリエンプティブクリーンアップ
         this._performPreemptiveCleanup();
-        ';
-        // 警告ハンドラーを実行''
+        ;
+        // 警告ハンドラーを実行
         for(const handler of this.memoryPressureHandlers') {'
-            try {'
+            try {
         }'
                 handler('warning');' }'
-            } catch (error') { ''
-                console.error('Memory pressure handler failed:', error); }
+            } catch (error) { ''
+                console.error('Memory pressure handler failed:', error) }
             }
         }
     }
@@ -392,18 +392,18 @@ export class MemoryOptimizer {
     /**
      * メモリ回復への対応'
      */''
-    _handleMemoryRecovery('')';
+    _handleMemoryRecovery()';
         console.log('Memory pressure relieved');
         
         this.isUnderMemoryPressure = false;
         ';
-        // 回復ハンドラーを実行''
+        // 回復ハンドラーを実行
         for(const handler of this.memoryPressureHandlers') {'
-            try {'
+            try {
         }'
                 handler('recovered');' }'
-            } catch (error') { ''
-                console.error('Memory pressure handler failed:', error); }
+            } catch (error) { ''
+                console.error('Memory pressure handler failed:', error) }
             }
         }
     }
@@ -458,9 +458,9 @@ export class MemoryOptimizer {
     }
     
     /**
-     * 弱参照をクリーンアップ'
+     * 弱参照をクリーンアップ
      */''
-    _cleanupWeakReferences('')';
+    _cleanupWeakReferences()';
         if (typeof WeakRef === 'undefined') return;
         
         const toDelete = [];
@@ -498,8 +498,8 @@ export class MemoryOptimizer {
     }
             window.gc(); }
         } else {  // GCを促すための大きなオブジェクト作成と削除
-            for(let i = 0; i < 10; i++) {'
-                ';
+            for(let i = 0; i < 10; i++) {
+                ';'
             }'
                 const temp = new Array(100000').fill('temp'); }
                 temp.length = 0; }
@@ -521,9 +521,9 @@ export class MemoryOptimizer {
         try {
             // 簡易的なサイズ計算
             const jsonString = JSON.stringify(obj);
-    }'
+    }
             return new Blob([jsonString]).size;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to calculate object size:', error);
             return 0; }
         }
@@ -532,7 +532,7 @@ export class MemoryOptimizer {
     /**
      * パフォーマンスオブザーバーを設定'
      */''
-    setupPerformanceObserver('')';
+    setupPerformanceObserver()';
         if (typeof PerformanceObserver !== 'undefined') {
         try {
                 this.performanceObserver = new PerformanceObserver((list) => { 
@@ -545,11 +545,11 @@ export class MemoryOptimizer {
                         }'
                     }''
                 }');
-                ';
+                ';'
                 this.performanceObserver.observe({ ')'
                     entryTypes: ['measure', 'navigation'] );' }'
-            } catch (error') { ''
-                console.warn('Performance observer setup failed:', error); }
+            } catch (error) { ''
+                console.warn('Performance observer setup failed:', error) }
             }
         }
     }
@@ -596,7 +596,7 @@ export class MemoryOptimizer {
     }
     
     /**
-     * メモリ圧迫ハンドラーを追加'
+     * メモリ圧迫ハンドラーを追加
      */''
     addMemoryPressureHandler(handler') {'
         '';
@@ -646,7 +646,7 @@ export class MemoryOptimizer {
             },
             performance: { averageGcTime: Math.round(this.stats.averageGcTime * 100) / 100,
                 lastGcTime: Math.round(this.stats.lastGcTime * 100) / 100,
-                gcFrequency: this.stats.gcRuns / Math.max((Date.now() - this.stats.lastGcTime) / 1000, 1); }
+                gcFrequency: this.stats.gcRuns / Math.max((Date.now() - this.stats.lastGcTime) / 1000, 1) }
             }
         };
     }
@@ -696,15 +696,15 @@ export class MemoryOptimizer {
             recommendations: [];
         },
         ';
-        // 推奨事項を生成''
+        // 推奨事項を生成
         if(stats.memoryUsage.usagePercent > 80') {'
-            ';
+            ';'
         }'
             report.recommendations.push('Consider increasing memory limit or improving cleanup frequency'); }
         }'
         '';
         if(stats.performance.averageGcTime > 50') {'
-            ';
+            ';'
         }'
             report.recommendations.push('Garbage collection is taking too long, consider optimizing object lifecycle'); }
         }'
@@ -732,9 +732,9 @@ export class MemoryOptimizer {
         
         // 全データをクリア
         this.stringPool.clear();
-        this.translationPool.clear();'
+        this.translationPool.clear();
         this.objectReferences = new WeakMap();''
-        this.memoryPressureHandlers.clear('')';
+        this.memoryPressureHandlers.clear()';
         console.log('MemoryOptimizer cleaned up'');'
     }''
 }

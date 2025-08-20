@@ -15,21 +15,21 @@ export interface OptimizationConfig { batchUpdates: boolean,
     asyncFontLoading: boolean,
     layoutCaching: boolean,
     debounceDelay: number,
-    renderQueueSize: number; };
+    renderQueueSize: number };
 }
 export interface RenderMetrics { frameCount: number,
     dropCount: number,
     averageFrameTime: number,
     lastFrameTime: number,
-    renderingTime: number; };
+    renderingTime: number };
 }
 export interface DOMOptimization { reuseElements: boolean,
     poolElements: boolean,
     minimalUpdates: boolean,
-    batchDOMOperations: boolean; };
+    batchDOMOperations: boolean };
 }
 export interface FontLoadingManager { getInstance(config: any): FontLoadingManager,
-    initialize(): Promise<void>;
+    initialize(): Promise<void>
     }
     loadFont(fontFamily: string, language?: string): Promise<{success: boolean}>;
     preloadFonts(fonts: string[], context: string): Promise<{success: boolean}[]>,
@@ -38,17 +38,17 @@ export interface FontLoadingManager { getInstance(config: any): FontLoadingManag
 export interface LayoutInfo { textDirection: string,
     fontMetrics: FontMetrics,
     estimatedTextLengths: number,
-    layoutAdjustments: LayoutAdjustments;
+    layoutAdjustments: LayoutAdjustments
     };
 }
 export interface FontMetrics { [char: string]: {
         width: number,
-        height: number ;
+        height: number 
 }
     },
     words: { [word: string]: {
             width: number,
-            height: number; }
+            height: number }
         };
     };
 }
@@ -57,13 +57,13 @@ export interface LayoutAdjustments { padding: {
         top: number,
         right: number,
         bottom: number,
-        left: number ;
+        left: number 
 }
     },
     margin: { top: number,
         right: number,
         bottom: number,
-        left: number ;
+        left: number 
 }
     },
     lineHeight: number,
@@ -75,7 +75,7 @@ export interface LayoutAdjustments { padding: {
 export interface LanguageSwitchResult { success: boolean,
     renderTime: number,
     layoutInfo: LayoutInfo,
-    updateResult: VirtualUpdate[];
+    updateResult: VirtualUpdate[]
     };
 }
 export interface VirtualUpdate { element: Element,
@@ -83,13 +83,13 @@ export interface VirtualUpdate { element: Element,
     newText: string,
     currentAttrs: Record<string, string>,
     newAttrs: Record<string, string>,
-    layoutInfo: ElementLayoutInfo;
+    layoutInfo: ElementLayoutInfo
     };
 }
 export interface ElementLayoutInfo { adjustments: LayoutAdjustments,
     textMetrics: {
         estimatedWidth: number,
-        estimatedHeight: number; }
+        estimatedHeight: number }
     };
 }
 
@@ -142,7 +142,7 @@ export class I18nRenderOptimizer {
             virtualScrolling: false,      // 仮想スクロール（大量要素用）;
             asyncFontLoading: true,       // 非同期フォント読み込み;
             layoutCaching: true,          // レイアウトキャッシュ;
-            debounceDelay: 16,           // デバウンス遅延（60FPS）;
+            debounceDelay: 16,           // デバウンス遅延（60FPS）
     };
 }
             renderQueueSize: 50          // レンダリングキューサイズ ;
@@ -168,7 +168,7 @@ export class I18nRenderOptimizer {
             dropCount: 0,
             averageFrameTime: 0,
             lastFrameTime: 0,
-            renderingTime: 0 ;
+            renderingTime: 0 
 }
         },
         
@@ -176,7 +176,7 @@ export class I18nRenderOptimizer {
         this.domOptimization = { reuseElements: true,
             poolElements: true,
             minimalUpdates: true,
-            batchDOMOperations: true ;
+            batchDOMOperations: true 
 }
         },
         
@@ -198,38 +198,38 @@ export class I18nRenderOptimizer {
         
         // 初期化
         this.initialize();
-    }'
-    private async _loadFontLoadingManager(): Promise<void> { // 既に初期化済みの場合はスキップ''
+    }
+    private async _loadFontLoadingManager(): Promise<void> { // 既に初期化済みの場合はスキップ
         if(this.fontLoadingManager') {
             
         }
             return; };
 }
-        ';
-        try { ' }'
+        ';'
+        try { }'
             const { FontLoadingManager } = await import('./font-loading/FontLoadingManager.js'');
-            ';
+            ';'
             const config = { ''
                 enabledSources: ['system', 'google'], // Google Fontsを再有効化（CSP修正済み）;
                 timeouts: {
                     google: 3000,
                     local: 1000,
-                    system: 500 ;
+                    system: 500 
 }
                 },
                 fallbackBehavior: { useSystemFonts: true,
                     suppressErrors: true,
-                    maxRetries: 1 ;
+                    maxRetries: 1 
 }
-                },'
+                },
                 logging: { ''
                     level: 'warn',
                     suppressRepeated: true,
-                    maxErrorsPerSource: 3 ;
+                    maxErrorsPerSource: 3 
 }
                 },
                 development: { disableExternalFonts: false, // CSP修正によりGoogle Fontsを許可
-                    verboseLogging: false ;
+                    verboseLogging: false 
 };
 }
             },
@@ -237,13 +237,13 @@ export class I18nRenderOptimizer {
             this.fontLoadingManager = FontLoadingManager.getInstance(config);
             
             if(!this.fontLoadingManager.initialized) {
-            ';
+            ';'
                 '';
-                await this.fontLoadingManager.initialize('');
+                await this.fontLoadingManager.initialize();
             
             }'
             console.log('[I18nRenderOptimizer] FontLoadingManager initialized with Google Fonts support');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[I18nRenderOptimizer] Failed to load FontLoadingManager, using fallback:', error);
             this.fontLoadingManager = null; };
 }
@@ -260,20 +260,20 @@ export class I18nRenderOptimizer {
         
         // フォント事前読み込み
         this.preloadCommonFonts();
-        ';
-        // レスポンシブ対応''
-        this.setupResponsiveOptimization('')';
+        ;
+        // レスポンシブ対応
+        this.setupResponsiveOptimization()';
         console.log('I18nRenderOptimizer initialized'); };
 }
     /**
      * レンダリング最適化の設定
      */
     private setupRenderingOptimization(): void { // requestAnimationFrame による最適化
-        this.scheduleRender = this.debounce(() => {  }'
+        this.scheduleRender = this.debounce(() => {  }
             this.executeRenderQueue();' }'
         }, this.optimization.debounceDelay');
         
-        // リサイズイベントの最適化'
+        // リサイズイベントの最適化
         let resizeTimeout;''
         window.addEventListener('resize', () => {  clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
@@ -282,10 +282,10 @@ export class I18nRenderOptimizer {
             }, 150');
         };
         ';
-        // visibility change 対応''
+        // visibility change 対応
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseRendering(); }
-            } else { this.resumeRendering(); };
+            } else { this.resumeRendering(); }
 }
         };
     }
@@ -324,7 +324,7 @@ export class I18nRenderOptimizer {
                 layoutInfo, };
                 updateResult }
             };
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'I18N_RENDER_ERROR', {')'
                 operation: 'optimizeLanguageSwitch');
@@ -332,8 +332,7 @@ export class I18nRenderOptimizer {
                 toLanguage); }
             });
             
-            throw error;
-        };
+            throw error; }
 }
     /**
      * フォントの事前読み込み
@@ -385,9 +384,9 @@ export class I18nRenderOptimizer {
         if(this.fontLoadingManager) {
             try {
                 const result = await this.fontLoadingManager.loadFont(fontFamily);
-        }'
+        }
                 return result.success;' }'
-            } catch (error') { // FontLoadingManagerが失敗した場合のフォールバック''
+            } catch (error) { // FontLoadingManagerが失敗した場合のフォールバック
                 console.warn('[I18nRenderOptimizer] FontLoadingManager failed, using fallback:', error.message);
                 return this._loadFontFamilyFallback(fontFamily); };
 }
@@ -395,9 +394,9 @@ export class I18nRenderOptimizer {
 
         // FontLoadingManagerが利用できない場合のフォールバック
         return this._loadFontFamilyFallback(fontFamily);
-    }'
+    }
 '';
-    private async _loadFontFamilyFallback(fontFamily: string'): Promise<boolean> { // 従来のフォント読み込み処理（フォールバック用）''
+    private async _loadFontFamilyFallback(fontFamily: string'): Promise<boolean> { // 従来のフォント読み込み処理（フォールバック用）
         const fontFace = new FontFace(fontFamily, `url('/fonts/${fontFamily').woff2')`);
         
         try {
@@ -411,7 +410,7 @@ export class I18nRenderOptimizer {
     
     /**
      * CSS によるフォント読み込み
-     */'
+     */
     private _loadFontCSS(fontFamily: string): Promise<boolean> { ''
         return new Promise((resolve, reject') => {  }'
             // Check if font is already loaded' }'
@@ -437,17 +436,17 @@ export class I18nRenderOptimizer {
                 resolve(true);
             };
             
-            link.onerror = () => {  // FontLoadingManagerがある場合は詳細ログを抑制（エラーハンドリングに任せる） }'
+            link.onerror = () => {  // FontLoadingManagerがある場合は詳細ログを抑制（エラーハンドリングに任せる） }
                 if (!this.fontLoadingManager) {' }'
                     console.warn(`[I18nRenderOptimizer] Failed to load font: ${fontFamily}, using fallback`');'
                 }''
-                // Don't reject - just resolve with false and continue with fallback fonts
+                // Dont reject - just resolve with false and continue with fallback fonts
                 resolve(false);
             };'
             '';
             document.head.appendChild(link');'
             '';
-            // タイムアウト設定 - but don't reject, just resolve with false
+            // タイムアウト設定 - but dont reject, just resolve with false
             setTimeout(() => {  // FontLoadingManagerがある場合は詳細ログを抑制 }
                 if (!this.fontLoadingManager) { }
                     console.warn(`[I18nRenderOptimizer] Font load timeout for: ${fontFamily}, using fallback`);
@@ -485,13 +484,13 @@ export class I18nRenderOptimizer {
         const cacheKey = `metrics_${fontFamily}`;
         
         if(this.measurementCache.has(cacheKey) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             return this.measurementCache.get(cacheKey')!; };
 }
         ';
-        // 測定用の隠し要素を作成''
+        // 測定用の隠し要素を作成
         const testElement = document.createElement('div');
         testElement.style.cssText = `;
             position: absolute,
@@ -506,21 +505,21 @@ export class I18nRenderOptimizer {
         '';
         document.body.appendChild(testElement');
         
-        try { // 各文字の測定 }'
+        try { // 各文字の測定 }
             const metrics: FontMetrics = {} as FontMetrics;''
             const testChars = ['A', 'あ', '中', '한', 'Ä', 'ş'];'
             '';
             for(const char of testChars') {
                 testElement.textContent = char;
                 metrics[char] = {
-                    width: testElement.offsetWidth;
+                    width: testElement.offsetWidth
 }
                     height: testElement.offsetHeight ;
 }
                 },
             }
             ';
-            // 単語の測定''
+            // 単語の測定
             const testWords = ['Hello', 'こんにちは', '你好', '안녕하세요'];
             metrics.words = {};
             
@@ -528,7 +527,7 @@ export class I18nRenderOptimizer {
             
                 testElement.textContent = word;
                 metrics.words[word] = {
-                    width: testElement.offsetWidth;
+                    width: testElement.offsetWidth
 }
                     height: testElement.offsetHeight ;
 }
@@ -545,15 +544,15 @@ export class I18nRenderOptimizer {
     }
     
     /**
-     * テキスト長の推定'
+     * テキスト長の推定
      */''
-    private estimateTextLengths(language: string'): number { // 言語固有のテキスト長推定'
+    private estimateTextLengths(language: string'): number { // 言語固有のテキスト長推定
         const lengthFactors: Record<string, number> = {''
-            'ja': 0.8,   // 日本語は比較的短い'';
-            'en': 1.0,   // 英語を基準'';
-            'de': 1.3,   // ドイツ語は長い'';
-            'fr': 1.2,   // フランス語は少し長い'';
-            'zh-CN': 0.7, // 中国語は短い'';
+            'ja': 0.8,   // 日本語は比較的短い;
+            'en': 1.0,   // 英語を基準;
+            'de': 1.3,   // ドイツ語は長い;
+            'fr': 1.2,   // フランス語は少し長い;
+            'zh-CN': 0.7, // 中国語は短い;
             'ko': 0.9    // 韓国語は少し短い }
         };
         
@@ -561,7 +560,7 @@ export class I18nRenderOptimizer {
     }
     
     /**
-     * レイアウト調整の計算'
+     * レイアウト調整の計算
      */''
     private calculateLayoutAdjustments(language: string'): LayoutAdjustments { const adjustments = { }
             padding: { top: 0, right: 0, bottom: 0, left: 0 },
@@ -570,7 +569,7 @@ export class I18nRenderOptimizer {
             letterSpacing: 'normal';
         },
         ';
-        // 言語固有の調整''
+        // 言語固有の調整
         switch(language') {'
             '';
             case 'ja':';
@@ -587,7 +586,7 @@ export class I18nRenderOptimizer {
                 break;''
             case 'ar':'';
             case 'he':';
-                // RTL 言語の調整''
+                // RTL 言語の調整
                 adjustments.textAlign = 'right';''
                 adjustments.direction = 'rtl';
         }
@@ -605,9 +604,9 @@ export class I18nRenderOptimizer {
         
         // レイアウト測定の遅延
         this.deferLayoutMeasurements = true;
-        ';
-        // DOM 更新の最適化''
-        this.batchStartTime = performance.now('');
+        ;
+        // DOM 更新の最適化
+        this.batchStartTime = performance.now();'
     }'
         console.log('Batch update started'); };
 }
@@ -621,11 +620,11 @@ export class I18nRenderOptimizer {
             // DOM への適用
             await this.applyVirtualUpdates(virtualUpdates);
             
-            return virtualUpdates;'
+            return virtualUpdates;
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Batched update failed:', error);
-            throw error; };
+            throw error; }
 }
     }
     
@@ -634,7 +633,7 @@ export class I18nRenderOptimizer {
      */''
     async createVirtualUpdates(updateCallback, layoutInfo') { const updates = [];
         ';
-        // DOM 要素の収集''
+        // DOM 要素の収集
         const elements = document.querySelectorAll('[data-i18n], [data-i18n-attr]');
         
         for(const element of elements) {
@@ -673,9 +672,9 @@ export class I18nRenderOptimizer {
                 currentAttrs,
                 newAttrs, };
                 layoutInfo: this.calculateElementLayout(element, newText, layoutInfo); }
-            };'
+            };
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to create element update:', error);
             return null; };
 }
@@ -723,10 +722,10 @@ export class I18nRenderOptimizer {
 }
             }
             
-            // レイアウト調整の適用'
+            // レイアウト調整の適用
             if (layoutInfo.adjustments) { this.applyLayoutAdjustments(element, layoutInfo.adjustments);' }'
-            } catch (error') { ''
-            console.warn('Failed to apply element update:', error); };
+            } catch (error) { ''
+            console.warn('Failed to apply element update:', error) };
 }
     }
     
@@ -753,7 +752,7 @@ export class I18nRenderOptimizer {
     /**
      * アニメーションの無効化
      */
-    disableAnimations() {'
+    disableAnimations() {
         '';
         if (!this.animationDisabled') {''
             const style = document.createElement('style'');''
@@ -803,7 +802,7 @@ export class I18nRenderOptimizer {
                 // バッチ処理
                 if (this.optimization.batchUpdates) { }
                     this.processBatchedRenderUpdates(updates); }
-                } else { this.processIndividualRenderUpdates(updates); };
+                } else { this.processIndividualRenderUpdates(updates); }
 }
                 const endTime = performance.now();
                 const frameTime = endTime - startTime;
@@ -811,10 +810,10 @@ export class I18nRenderOptimizer {
                 // フレームメトリクス更新
                 this.updateFrameMetrics(frameTime);
                 
-                // まだキューに残りがあれば継続'
+                // まだキューに残りがあれば継続
                 if (this.renderQueue.length > 0) { this.scheduleRender();' }'
-                } catch (error') { ''
-                console.error('Render queue execution failed:', error); }
+                } catch (error) { ''
+                console.error('Render queue execution failed:', error) }
             } finally { this.isRendering = false; };
 }
         };
@@ -839,7 +838,7 @@ export class I18nRenderOptimizer {
     resumeRendering() {
         this.renderingPaused = false;'
         if (this.renderQueue.length > 0) {''
-            this.scheduleRender('');
+            this.scheduleRender();
     }'
         console.log('Rendering resumed'); };
 }
@@ -849,7 +848,7 @@ export class I18nRenderOptimizer {
     optimizeForViewport() {
         const viewport = {
             width: window.innerWidth,
-            height: window.innerHeight;
+            height: window.innerHeight
 }
             devicePixelRatio: window.devicePixelRatio || 1 ;
 }
@@ -857,12 +856,12 @@ export class I18nRenderOptimizer {
         
         // 小さな画面での最適化
         if (viewport.width < 768) { this.enableMobileOptimizations(); }
-        } else { this.disableMobileOptimizations(); };
+        } else { this.disableMobileOptimizations(); }
 }
         // 高DPI ディスプレイでの最適化
-        if(viewport.devicePixelRatio > 1) {'
+        if(viewport.devicePixelRatio > 1) {
             '';
-            this.enableHighDPIOptimizations('');
+            this.enableHighDPIOptimizations();
         }'
         console.log('Viewport optimization applied:', viewport); };
 }
@@ -894,35 +893,35 @@ export class I18nRenderOptimizer {
 }
     /**
      * 共通フォントの事前読み込み
-     */'
-    async preloadCommonFonts() { // FontLoadingManagerを使用する場合''
+     */
+    async preloadCommonFonts() { // FontLoadingManagerを使用する場合
         if(this.fontLoadingManager') {'
             const commonFonts = ['';
-                'Noto Sans JP',      // 日本語（Google Fonts）'';
-                'Noto Sans SC',      // 中国語簡体字（Google Fonts）'';
-                'Noto Sans TC',      // 中国語繁体字（Google Fonts）'';
-                'Noto Sans KR',      // 韓国語（Google Fonts）'';
+                'Noto Sans JP',      // 日本語（Google Fonts）;
+                'Noto Sans SC',      // 中国語簡体字（Google Fonts）;
+                'Noto Sans TC',      // 中国語繁体字（Google Fonts）;
+                'Noto Sans KR',      // 韓国語（Google Fonts）;
                 'Arial',             // 英語（システムフォント）']';
                 'Helvetica'          // 英語（システムフォント）];
             ];
-            ';
-            try {''
+            ';'
+            try {'
                 const results = await this.fontLoadingManager.preloadFonts(commonFonts, 'default');
         }
                 const successful = results.filter(r => r.success).length; }
                 console.log(`[I18nRenderOptimizer] Preloaded ${successful}/${commonFonts.length) fonts`});'
                 return;''
-            } catch (error') { ''
-                console.warn('[I18nRenderOptimizer] FontLoadingManager preload failed, using fallback:', error'); };
+            } catch (error) { ''
+                console.warn('[I18nRenderOptimizer] FontLoadingManager preload failed, using fallback:', error') };
 }
         }
 
-        // フォールバック：従来のプリロード処理'
+        // フォールバック：従来のプリロード処理
         const commonFonts = ['';
-            'Noto Sans JP',      // 日本語'';
-            'Noto Sans SC',      // 中国語（簡体字）'';
-            'Noto Sans TC',      // 中国語（繁体字）'';
-            'Noto Sans KR',      // 韓国語'';
+            'Noto Sans JP',      // 日本語;
+            'Noto Sans SC',      // 中国語（簡体字）;
+            'Noto Sans TC',      // 中国語（繁体字）;
+            'Noto Sans KR',      // 韓国語;
             'Arial',             // 英語（フォールバック）']';
             'Helvetica'          // 英語（フォールバック）];
         ];
@@ -930,19 +929,19 @@ export class I18nRenderOptimizer {
         const preloadPromises = commonFonts.map(font => );
             this.preloadLanguageFonts(this.getLanguageByFont(font);
         );
-        ';
-        try { ''
+        ';'
+        try {'
             await Promise.allSettled(preloadPromises');''
             console.log('Common fonts preloaded (fallback method')');' }'
-        } catch (error') { ''
-            console.warn('Font preloading partially failed:', error); };
+        } catch (error) { ''
+            console.warn('Font preloading partially failed:', error) };
 }
     }
     
     /**
      * レスポンシブ最適化の設定'
      */''
-    setupResponsiveOptimization('')';
+    setupResponsiveOptimization()';
             window.matchMedia('(max-width: 768px')''),'';
             window.matchMedia('(min-resolution: 192dpi')''),'';
             window.matchMedia('(orientation: portrait')');
@@ -990,7 +989,7 @@ export class I18nRenderOptimizer {
 }
     private debounce(func: Function, delay: number): (...args: any[]) => void { let timeoutId: number,
         return (...args) => { 
-            clearTimeout(timeoutId); }
+            clearTimeout(timeoutId) }
             timeoutId = setTimeout(() => func.apply(this, args), delay); }
         };
     }
@@ -1024,12 +1023,12 @@ export class I18nRenderOptimizer {
             cacheStats: { layoutCacheSize: this.layoutCache.size,
                 measurementCacheSize: this.measurementCache.size,
                 fontCacheSize: this.fontCache.size,
-                preloadedFonts: this.preloadedFonts.size ;
+                preloadedFonts: this.preloadedFonts.size 
 }
             },
             renderQueue: { queueSize: this.renderQueue.length,
                 isRendering: this.isRendering,
-                isPaused: this.renderingPaused ;
+                isPaused: this.renderingPaused 
 };
 }
         },
@@ -1038,9 +1037,9 @@ export class I18nRenderOptimizer {
     /**
      * レイアウトキャッシュを無効化
      */
-    invalidateLayoutCache() {'
+    invalidateLayoutCache() {
         this.layoutCache.clear();''
-        this.measurementCache.clear('');
+        this.measurementCache.clear();
     }'
         console.log('Layout cache invalidated'); };
 }
@@ -1063,7 +1062,7 @@ export class I18nRenderOptimizer {
         '';
         const attrs = this.getElementAttributes(element');
         ';
-        // レイアウト情報に基づいて属性を調整''
+        // レイアウト情報に基づいて属性を調整
         if (layoutInfo.textDirection === 'rtl'') {'
     }'
             attrs['dir'] = 'rtl'; }'
@@ -1092,7 +1091,7 @@ export class I18nRenderOptimizer {
      */
     calculateElementLayout(element, newText, layoutInfo) {
         return { adjustments: layoutInfo.layoutAdjustments,
-            textMetrics: {;
+            textMetrics: {
 }
                 estimatedWidth: newText.length * 8, // 簡易推定 };
                 estimatedHeight: 20 ;
@@ -1184,8 +1183,8 @@ export class I18nRenderOptimizer {
     /**
      * レンダー更新を処理
      */
-    processRenderUpdate(update) {'
-        try {''
+    processRenderUpdate(update) {
+        try {'
             switch (update.operation') {''
                 case 'setText':;
                     update.element.textContent = update.value;'
@@ -1196,11 +1195,11 @@ export class I18nRenderOptimizer {
                 case 'setStyle':;
                     update.element.style[update.property] = update.value;
                     break;'
-                default:';
+                default:'
     }'
                     console.warn('Unknown render operation:', update.operation);' }'
-            } catch (error') { ''
-            console.warn('Failed to process render update:', error); };
+            } catch (error) { ''
+            console.warn('Failed to process render update:', error) };
 }
     }
     
@@ -1210,7 +1209,7 @@ export class I18nRenderOptimizer {
     clearCaches() {
         this.layoutCache.clear();'
         this.measurementCache.clear();''
-        this.fontCache.clear('');
+        this.fontCache.clear();
     }'
         console.log('Render caches cleared'); };
 }
@@ -1226,9 +1225,9 @@ export class I18nRenderOptimizer {
         
         // フォント読み込みの停止
         this.fontLoadPromises.clear();
-        ';
-        // アニメーション再有効化''
-        this.enableAnimations('');
+        ;
+        // アニメーション再有効化
+        this.enableAnimations();'
     }'
         console.log('I18nRenderOptimizer cleaned up''); }'
     }''

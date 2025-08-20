@@ -5,24 +5,24 @@
 
 // 型定義
 export interface HelpEffectivenessAnalyzer { gameEngine: GameEngine,
-    loggingSystem: LoggingSystem;
+    loggingSystem: LoggingSystem
     }
 }
 
 export interface GameEngine { [key: string]: any, }
 }
 
-export interface LoggingSystem { error(component: string, message: string, error?: any): void; }
+export interface LoggingSystem { error(component: string, message: string, error?: any): void }
 }
 
 export interface AnalyzerConfig { effectivenessThreshold: number,
     trendAnalysisPeriod: number,
-    improvementThreshold: number; }
+    improvementThreshold: number }
 }
 
 export interface AnalysisData { usage: UsageAnalysis,
     engagement: EngagementAnalysis,
-    satisfaction: SatisfactionAnalysis;
+    satisfaction: SatisfactionAnalysis
     }
 }
 
@@ -33,7 +33,7 @@ export interface UsageAnalysis { summary?: UsageSummary;
 export interface UsageSummary { totalSessions: number,
     averageSessionDuration: number,
     pageViewsPerSession: number,
-    searchUsageRate: number; }
+    searchUsageRate: number }
 }
 
 export interface EngagementAnalysis { summary?: EngagementSummary;
@@ -42,7 +42,7 @@ export interface EngagementAnalysis { summary?: EngagementSummary;
 
 export interface EngagementSummary { averageTimePerTopic: number,
     interactionRate: number,
-    searchSuccessRate: number; }
+    searchSuccessRate: number }
 }
 
 export interface SatisfactionAnalysis { summary?: SatisfactionSummary;
@@ -51,65 +51,65 @@ export interface SatisfactionAnalysis { summary?: SatisfactionSummary;
 
 export interface SatisfactionSummary { averageRating: number,
     helpfulnessRate: number,
-    totalFeedbacks: number; }
+    totalFeedbacks: number }
 }
 
 export interface EffectivenessScore { overall: number,
     breakdown: ScoreBreakdown,
     classification: EffectivenessClassification,
-    benchmark: BenchmarkComparison;
+    benchmark: BenchmarkComparison
     }
 }
 
 export interface ScoreBreakdown { usage: ScoreComponent,
     engagement: ScoreComponent,
-    satisfaction: ScoreComponent;
+    satisfaction: ScoreComponent
     }
 }
 
 export interface ScoreComponent { score: number,
     weight: number,
-    contribution: number; }
+    contribution: number }
 }
 
 export type EffectivenessClassification = 'excellent' | 'good' | 'fair' | 'poor' | 'critical' | 'insufficient_data';
 
 export interface BenchmarkComparison { industry_average: number,
     good_practice: number,
-    excellent: number; }
+    excellent: number }
 }
 
 export interface TrendAnalysis { usage: UsageTrends,
     satisfaction: SatisfactionTrends,
     content: ContentTrends,
-    predictions: TrendPredictions;
+    predictions: TrendPredictions
     }
 }
 
 export interface UsageTrends { sessionGrowth: TrendData,
     durationTrend: TrendData,
-    searchTrend: TrendData;
+    searchTrend: TrendData
     }
 }
 
 export interface SatisfactionTrends { ratingTrend: TrendData,
     helpfulnessTrend: TrendData,
-    feedbackVolumeTrend: TrendData;
+    feedbackVolumeTrend: TrendData
     }
 }
 
 export interface ContentTrends { popularityTrend: TrendData,
     accessPatternTrend: TrendData,
-    completionTrend: TrendData;
+    completionTrend: TrendData
     }
 }
 
 export interface TrendPredictions { usagePrediction: PredictionData,
     satisfactionPrediction: PredictionData,
-    riskAssessment: RiskAssessment;
+    riskAssessment: RiskAssessment
     }
 }
-';
+';'
 export interface TrendData { ''
     trend: 'stable' | 'increasing' | 'decreasing',
     rate?: number;
@@ -117,15 +117,15 @@ export interface TrendData { ''
     changes?: Record<string, any>;
     patterns?: Record<string, any>; }
 }
-';
+';'
 export interface PredictionData { ''
     prediction: 'stable' | 'improving' | 'declining',
-    confidence: number; }
+    confidence: number }
 }
-';
+';'
 export interface RiskAssessment { ''
     level: 'low' | 'medium' | 'high',
-    factors: string[]; }
+    factors: string[] }
 }
 
 export interface Recommendation { type: string,'
@@ -134,7 +134,7 @@ export interface Recommendation { type: string,'
     title: string,
     description: string,';
     actions: string[],'';
-    expectedImpact: 'high' | 'medium' | 'low'; }
+    expectedImpact: 'high' | 'medium' | 'low' }
 }
 
 export interface SessionData { startTime?: number;
@@ -157,13 +157,13 @@ export interface RawData { sessions: SessionData[],
 export interface AnalysisResults { usage: UsageAnalysis,
     engagement: EngagementAnalysis,
     satisfaction: SatisfactionAnalysis,
-    effectivenessScore: EffectivenessScore;
+    effectivenessScore: EffectivenessScore
     }
 }
 
 export interface AnalysisStats { cacheSize: number,
     lastAnalysisTime: number,
-    config: AnalyzerConfig;
+    config: AnalyzerConfig
     }
 }
 
@@ -183,13 +183,13 @@ export class HelpDataAnalyzer {
         // 分析設定
         this.config = {
             effectivenessThreshold: 0.7,  // 効果性判定閾値（70%）;
-            trendAnalysisPeriod: 30,      // トレンド分析期間（日）;
+            trendAnalysisPeriod: 30,      // トレンド分析期間（日）
     }
     }
             improvementThreshold: 0.1     // 改善提案閾値（10%） }
         },
-        ';
-        // 分析結果キャッシュ''
+        ;
+        // 分析結果キャッシュ
         this.analysisCache = new Map<string, any>(');
         this.lastAnalysisTime = 0;'
         '';
@@ -238,9 +238,9 @@ export class HelpDataAnalyzer {
                 },
                 classification: this.classifyEffectiveness(overallScore),
                 benchmark: this.getBenchmarkComparison(overallScore),
-            };'
+            };
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpDataAnalyzer', 'Failed to calculate effectiveness score', error');' }'
             return { overall: 0, breakdown: {} as ScoreBreakdown, classification: 'insufficient_data', benchmark: {} as BenchmarkComparison }
         }
@@ -340,7 +340,7 @@ export class HelpDataAnalyzer {
      * 効果性の分類
      * @param score - 効果性スコア
      * @returns 分類結果
-     */'
+     */
     private classifyEffectiveness(score: number): EffectivenessClassification { ''
         if (score >= 0.8') return 'excellent';''
         if (score >= 0.6') return 'good';''
@@ -377,12 +377,12 @@ export class HelpDataAnalyzer {
                 usage: this.calculateUsageTrends(rawData.sessions),
                 satisfaction: this.calculateSatisfactionTrends(rawData.interactions),
                 content: this.calculateContentTrends(rawData.sessions),
-                predictions: this.generateTrendPredictions(rawData); }
+                predictions: this.generateTrendPredictions(rawData) }
             };
             
             return trends;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpDataAnalyzer', 'Failed to analyze trends', error);
             return null; }
         }
@@ -398,7 +398,7 @@ export class HelpDataAnalyzer {
         
         const trends: UsageTrends = { sessionGrowth: this.calculateSessionGrowthTrend(sessions),
             durationTrend: this.calculateDurationTrend(sessions),
-            searchTrend: this.calculateSearchTrend(sessions); }
+            searchTrend: this.calculateSearchTrend(sessions) }
         };
         
         return trends;
@@ -414,7 +414,7 @@ export class HelpDataAnalyzer {
         
         const trends: SatisfactionTrends = { ratingTrend: this.calculateRatingTrend(interactions),
             helpfulnessTrend: this.calculateHelpfulnessTrend(interactions),
-            feedbackVolumeTrend: this.calculateFeedbackVolumeTrend(interactions); }
+            feedbackVolumeTrend: this.calculateFeedbackVolumeTrend(interactions) }
         };
         
         return trends;
@@ -430,7 +430,7 @@ export class HelpDataAnalyzer {
         
         const trends: ContentTrends = { popularityTrend: this.calculateContentPopularityTrend(sessions),
             accessPatternTrend: this.calculateAccessPatternTrend(sessions),
-            completionTrend: this.calculateCompletionTrend(sessions); }
+            completionTrend: this.calculateCompletionTrend(sessions) }
         };
         
         return trends;
@@ -445,12 +445,12 @@ export class HelpDataAnalyzer {
             const predictions: TrendPredictions = {
                 usagePrediction: this.predictUsageTrend(rawData.sessions),
                 satisfactionPrediction: this.predictSatisfactionTrend(rawData.interactions),
-                riskAssessment: this.assessTrendRisks(rawData); }
+                riskAssessment: this.assessTrendRisks(rawData) }
             };
             
             return predictions;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpDataAnalyzer', 'Failed to generate trend predictions', error); }
             return {} as TrendPredictions;
         }
@@ -475,16 +475,16 @@ export class HelpDataAnalyzer {
             
             // 効果性スコアに基づく総合提案
             recommendations.push(...this.generateOverallRecommendations(analysisResults.effectivenessScore);
-            ';
-            // 優先度順にソート''
+            ;
+            // 優先度順にソート
             recommendations.sort((a, b') => {' }'
                 const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
                 return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
             };
             
-            return recommendations.slice(0, 10); // 上位10個の提案を返す'
+            return recommendations.slice(0, 10); // 上位10個の提案を返す
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpDataAnalyzer', 'Failed to generate recommendations', error);
             return []; }
         }
@@ -603,7 +603,7 @@ export class HelpDataAnalyzer {
             recommendations.push({''
                 type: 'overall_improvement','';
                 category: 'comprehensive',')';
-                priority: 'high',');
+                priority: 'high',')
         }'
                 title: '包括的ヘルプシステム改善'),' }'
                 description: `総合効果性スコア（${(effectivenessScore.overall * 100).toFixed(1'})}%）が目標値を下回っています`,'
@@ -619,7 +619,7 @@ export class HelpDataAnalyzer {
         return recommendations;
     }
     
-    // ========== トレンド計算ヘルパーメソッド =========='
+    // ========== トレンド計算ヘルパーメソッド ==========
     '';
     private calculateSessionGrowthTrend(sessions: SessionData[]'): TrendData { // セッション数の成長トレンドを計算' }'
         return { trend: 'stable', rate: 0 }
@@ -646,11 +646,11 @@ export class HelpDataAnalyzer {
     }'
     '';
     private calculateContentPopularityTrend(sessions: SessionData[]'): TrendData { // コンテンツ人気度トレンドを計算' }'
-        return { trend: 'stable', changes: {} }
+        return { trend: 'stable', changes: {}
     }'
     '';
     private calculateAccessPatternTrend(sessions: SessionData[]'): TrendData { // アクセスパターントレンドを計算' }'
-        return { trend: 'stable', patterns: {} }
+        return { trend: 'stable', patterns: {}
     }'
     '';
     private calculateCompletionTrend(sessions: SessionData[]'): TrendData { // 完了率トレンドを計算' }'
@@ -683,7 +683,7 @@ export class HelpDataAnalyzer {
      * コンポーネントクリーンアップ
      */'
     destroy(): void { ''
-        this.analysisCache.clear('')';
+        this.analysisCache.clear()';
         console.log('[HelpDataAnalyzer] Component destroyed''); }'
     }''
 }

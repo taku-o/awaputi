@@ -17,7 +17,7 @@ export interface Item { id: string,
     cooldown?: number;
     lastUsed?: number; }
 }
-';
+';'
 export enum ItemType { ''
     REVIVAL = 'revival','';
     POWER_UP = 'power_up','';
@@ -28,18 +28,18 @@ export enum ItemType { ''
 
 export interface ItemEffect { type: string,
     value: number,
-    duration?: number; }
+    duration?: number }
 }
 
 export interface ItemConfig { enableRevivalItems: boolean,
     maxRevivalsPerGame: number,
     revivalHPPercentage: number,
-    itemCooldowns: boolean; }
+    itemCooldowns: boolean }
 }
 
 export class ItemManager {
     private gameEngine: GameEngine | null;
-    private inventory: Map<string, Item>; }
+    private inventory: Map<string, Item> }
     private activeEffects: Map<string, ItemEffect & { endTime: number }>;
     private config: ItemConfig;
     private revialsUsedThisGame: number;
@@ -78,11 +78,11 @@ export class ItemManager {
             description: 'HPが0になった時に自動的に復活します',';
             effects: [{')'
                 type: 'revival')];
-                value: 50 // HP回復率 }]'
+                value: 50 // HP回復率 }]
             }],')'
             cooldown: 0)'),
 ';
-        // パワーアップアイテムの定義''
+        // パワーアップアイテムの定義
         this.itemDefinitions.set('power_boost', { ''
             id: 'power_boost','';
             name: 'パワーブースト',
@@ -90,13 +90,13 @@ export class ItemManager {
             maxQuantity: 5,'';
             description: 'スコア獲得量が一定時間2倍になります',';
             effects: [{''
-                type: 'score_multiplier',);
+                type: 'score_multiplier');
                 value: 2)];
-                duration: 30000 // 30秒 }]'
+                duration: 30000 // 30秒 }]
             }],')'
-            cooldown: 60000 // 1分)'),
+            cooldown: 60000 // 1分)),
 ';
-        // 時間延長アイテムの定義''
+        // 時間延長アイテムの定義
         this.itemDefinitions.set('time_extend', { ''
             id: 'time_extend','';
             name: '時間延長',
@@ -187,7 +187,7 @@ export class ItemManager {
      */
     useRevival(): boolean { if (!this.config.enableRevivalItems) {
             return false; }
-        }'
+        }
 '';
         if(this.revialsUsedThisGame >= this.config.maxRevivalsPerGame') {'
             '';
@@ -225,10 +225,10 @@ export class ItemManager {
         // 復活エフェクトを再生
         if (this.gameEngine && this.gameEngine.effectManager) { this.gameEngine.effectManager.createRevivalEffect(); }
         }
-';
-        // 復活サウンドを再生''
+;
+        // 復活サウンドを再生
         if(this.gameEngine && this.gameEngine.audioManager') {'
-            ';
+            ';'
         }'
             this.gameEngine.audioManager.playSound('revival'); }
         }
@@ -244,7 +244,7 @@ export class ItemManager {
         switch(effect.type') {'
             '';
             case 'revival':'';
-                // 復活効果は useRevival('''
+                // 復活効果は useRevival(
             case 'score_multiplier':)';
                 if (this.gameEngine && this.gameEngine.scoreManager) {'
         }'
@@ -254,8 +254,8 @@ export class ItemManager {
                 '';
             case 'time_extend':;
                 // TODO: TimeManagerが実装されたら有効化
-                // if (this.gameEngine && this.gameEngine.timeManager) { //     this.gameEngine.timeManager.addTime(effect.value); }'
-                // }''
+                // if (this.gameEngine && this.gameEngine.timeManager) { //     this.gameEngine.timeManager.addTime(effect.value); }
+                // }
                 console.log(`Time extend effect: +${ effect.value) seconds (not implemented)`'),
                 break;'
                 '';
@@ -291,13 +291,13 @@ export class ItemManager {
      * アイテム効果を削除
      */
     private removeItemEffect(effectType: string): void { this.activeEffects.delete(effectType);
-        ';
-        // 効果の終了処理''
+        ;
+        // 効果の終了処理
         switch(effectType') {'
             '';
             case 'score_multiplier':';
                 if (this.gameEngine && this.gameEngine.scoreManager) {''
-                    this.gameEngine.scoreManager.resetMultiplier('')';
+                    this.gameEngine.scoreManager.resetMultiplier()';
             case 'shield':')';
                 console.log('Shield effect ended');
         }
@@ -372,7 +372,7 @@ export class ItemManager {
             }
                 this.inventory.set(id, item); }
             }
-        }'
+        }
         '';
         if(data.config') {
             

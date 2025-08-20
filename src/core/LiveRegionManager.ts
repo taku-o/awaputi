@@ -11,14 +11,14 @@ export class LiveRegionManager {'
         this.accessibilityManager = screenReaderManager.accessibilityManager;
         this.gameEngine = this.accessibilityManager? .gameEngine;
         
-        // 通知設定'
+        // 通知設定
         this.config = { : undefined''
             enabledRegions: ['polite', 'assertive', 'status', 'log'],';
             priorityLevels: {''
                 critical: 'assertive','';
                 high: 'assertive','';
                 normal: 'polite','';
-                low: 'polite',';
+                low: 'polite','
     }
     }'
                 info: 'status' }
@@ -31,7 +31,7 @@ export class LiveRegionManager {'
             deduplication: { enabled: true,
                 similarity: 0.8, // 80%以上類似で重複判定;
                 messageHistory: 20 // 履歴保持数 }
-            },'
+            },
             languages: { ''
                 primary: 'ja','';
                 fallback: 'en' }
@@ -42,29 +42,29 @@ export class LiveRegionManager {'
             }
         },
         ';
-        // ライブリージョン要素管理''
+        // ライブリージョン要素管理
         this.liveRegions = new Map(''';
             ['polite', { ''
-                politeness: 'polite', ';
+                politeness: 'polite', ';'
                 atomic: false, '';
                 relevant: 'all',']';
                 live: 'polite' }]'
             }],''
             ['assertive', { ''
-                politeness: 'assertive', ';
+                politeness: 'assertive', ';'
                 atomic: true, '';
                 relevant: 'all',']';
                 live: 'assertive' }]'
             }],''
             ['status', { ''
-                politeness: 'polite', ';
+                politeness: 'polite', ';'
                 atomic: false, '';
                 relevant: 'text','';
                 live: 'polite',']';
                 role: 'status' }]'
             }],''
             ['log', { ''
-                politeness: 'polite', ';
+                politeness: 'polite', ';'
                 atomic: false, '';
                 relevant: 'additions','';
                 live: 'polite',']';
@@ -85,7 +85,7 @@ export class LiveRegionManager {'
         this.messageHistory = [];
         this.activeAnnouncements = new Set();
         
-        // スロットリング管理'
+        // スロットリング管理
         this.throttleTimers = new Map();''
         this.lastAnnouncementTime = new Map(''';
             ['ja', new Map([' }]'
@@ -125,7 +125,7 @@ export class LiveRegionManager {'
             announcementsByPriority: new Map(),
             duplicatesRemoved: 0,
             throttledMessages: 0,
-            queueOverflows: 0,';
+            queueOverflows: 0,
             averageProcessingTime: 0,'';
             sessionStart: Date.now(''';
             verbosity: 'normal', // 'minimal', 'normal', 'verbose';
@@ -154,14 +154,14 @@ export class LiveRegionManager {'
             
             // イベントリスナーの設定
             this.setupEventListeners();
-            ';
-            // キューの処理開始''
-            this.startQueueProcessing('');
+            ;
+            // キューの処理開始
+            this.startQueueProcessing();'
     }'
             console.log('LiveRegionManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'LIVE_REGION_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -180,21 +180,21 @@ export class LiveRegionManager {'
             element.id = `live-region-${regionName}`;''
             element.className = 'sr-only live-region';
             ';
-            // ARIA属性の設定''
+            // ARIA属性の設定
             element.setAttribute('aria-live', config.live || config.politeness');''
             element.setAttribute('aria-atomic', config.atomic.toString()');''
             element.setAttribute('aria-relevant', config.relevant);'
             '';
             if(config.role') {'
-                ';
+                ';'
             }'
                 element.setAttribute('role', config.role'); }
             }
             ';
-            // 言語設定''
+            // 言語設定
             element.setAttribute('lang', this.config.languages.primary');
             ';
-            // アクセシビリティ強化''
+            // アクセシビリティ強化
             element.setAttribute('aria-label', `${ regionName)通知領域`);
             
             // DOMに追加
@@ -209,11 +209,11 @@ export class LiveRegionManager {'
     }
     
     /**
-     * スクリーンリーダー専用スタイルの追加'
+     * スクリーンリーダー専用スタイルの追加
      */''
-    addScreenReaderOnlyStyles('')';
+    addScreenReaderOnlyStyles()';
         if (document.querySelector('#live-region-styles')') { return; // 既に追加済み }
-        }'
+        }
         '';
         const style = document.createElement('style'');''
         style.id = 'live-region-styles';
@@ -226,7 +226,7 @@ export class LiveRegionManager {'
                 overflow: hidden !important,
                 clip: rect(0, 0, 0, 0) !important,
                 white-space: nowrap !important,
-                border: 0 !important; }
+                border: 0 !important }
             }
             
             .live-region { z-index: -1,
@@ -243,7 +243,7 @@ export class LiveRegionManager {'
                 padding: 4px,
                 margin: 2px,
                 font-size: 12px,
-                color: #666; }
+                color: #666 }
             }
         `;
         document.head.appendChild(style);
@@ -252,39 +252,39 @@ export class LiveRegionManager {'
     /**
      * ユーザー設定の読み込み'
      */''
-    loadUserPreferences('')';
+    loadUserPreferences()';
             const saved = localStorage.getItem('liveRegionManager_preferences');
             if(saved) {
                 const preferences = JSON.parse(saved);
             }'
                 Object.assign(this.userPreferences, preferences);' }'
-            } catch (error') { ''
-            console.warn('Failed to load user preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load user preferences:', error) }
         }
     }
     
     /**
      * ユーザー設定の保存'
      */''
-    saveUserPreferences('')';
+    saveUserPreferences()';
             localStorage.setItem('liveRegionManager_preferences');'
                 JSON.stringify(this.userPreferences);''
-        } catch (error') { ''
-            console.warn('Failed to save user preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save user preferences:', error) }
         }
     }
     
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseAnnouncements(); }
             } else { this.resumeAnnouncements(); }'
             }''
         }');
         ';
-        // ウィンドウフォーカス変更''
+        // ウィンドウフォーカス変更
         window.addEventListener('blur', () => {  if (this.userPreferences.pauseOnNavigation) { }
                 this.pauseAnnouncements(); }'
             }''
@@ -293,9 +293,9 @@ export class LiveRegionManager {'
         window.addEventListener('focus', () => { this.resumeAnnouncements(); }
         });
         ';
-        // Speech Synthesis 状態変更''
+        // Speech Synthesis 状態変更
         if(window.speechSynthesis') {'
-            ';
+            ';'
         }'
             window.speechSynthesis.addEventListener('voiceschanged', (') => { ' }'
                 console.log('Available voices changed'); }
@@ -360,11 +360,11 @@ export class LiveRegionManager {'
             
             // 統計更新
             this.updateStats(message, performance.now() - startTime);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'LIVE_REGION_ERROR', {')'
                 operation: 'processMessage',);
-                message: message); }
+                message: message) }
             });
         }
     }
@@ -475,27 +475,27 @@ export class LiveRegionManager {'
     }
     
     /**
-     * ライブリージョンの選択'
+     * ライブリージョンの選択
      */''
     selectLiveRegion(message') {'
-        // 優先度による選択''
+        // 優先度による選択
         const priority = message.priority || 'normal';''
         const politeness = this.config.priorityLevels[priority] || 'polite';
         ';
-        // 特殊ケースの処理''
+        // 特殊ケースの処理
         if (message.type === 'error' || priority === 'critical'') {'
     }'
             return 'alert'; }
         }'
         '';
         if(message.type === 'status'') {'
-            ';
+            ';'
         }'
             return 'status'; }
         }'
         '';
         if(message.type === 'log'') {'
-            ';
+            ';'
         }'
             return 'log'; }
         }
@@ -537,8 +537,8 @@ export class LiveRegionManager {'
         }
         
         let template = templates.get(templateKey);
-        ';
-        // 変数の置換''
+        ;
+        // 変数の置換
         Object.entries(variables).forEach(([key, value]') => {  }'
             const placeholder = `{${key}}`;''
             template = template.replace(new RegExp(placeholder, 'g'), String(value);
@@ -555,11 +555,11 @@ export class LiveRegionManager {'
         '';
         switch (verbosity') {''
             case 'minimal':';
-                // 最小限の情報のみ''
+                // 最小限の情報のみ
                 return this.extractEssentialInfo(text');'
                 '';
             case 'verbose':';
-                // 詳細情報を追加''
+                // 詳細情報を追加
                 return this.addDetailedInfo(text, message');'
                 '';
             case 'normal':;
@@ -572,7 +572,7 @@ export class LiveRegionManager {'
      * 必須情報の抽出
      */
     extractEssentialInfo(text) {'
-        // 数値とキーワードのみを抽出''
+        // 数値とキーワードのみを抽出
         const essential = text.match(/\d+|[重要|エラー|完了|開始]/g');'
     }'
         return essential ? essential.join(' ') : text; }
@@ -582,14 +582,14 @@ export class LiveRegionManager {'
      * 詳細情報の追加
      */
     addDetailedInfo(text, message) {
-        let detailed = text;
-        ';
-        // タイムスタンプ追加'
+        let detailed = text;'
+        ';'
+        // タイムスタンプ追加
     }'
         const time = new Date(').toLocaleTimeString('ja-JP');' }'
         detailed += ` (${time}')`;
         ';
-        // 優先度情報追加''
+        // 優先度情報追加
         if(message.priority && message.priority !== 'normal') {
             
         }
@@ -603,9 +603,9 @@ export class LiveRegionManager {'
      * 言語固有の処理'
      */''
     processLanguageSpecific(text') {'
-        // 日本語特有の処理''
+        // 日本語特有の処理
         if (this.config.languages.primary === 'ja') {'
-            // 数字の読み上げ改善''
+            // 数字の読み上げ改善
             text = text.replace(/(\d+')点/g, '$1 点');''
             text = text.replace(/(\d+')秒/g, '$1 秒');'
     }'
@@ -618,7 +618,7 @@ export class LiveRegionManager {'
     /**
      * ライブリージョンへの出力'
      */''
-    async outputToLiveRegion(region, text, message') { // 既存のコンテンツをクリア（atomicの場合）''
+    async outputToLiveRegion(region, text, message') { // 既存のコンテンツをクリア（atomicの場合）
         const isAtomic = region.getAttribute('aria-atomic'') === 'true';'
         '';
         if(isAtomic') {'
@@ -629,8 +629,8 @@ export class LiveRegionManager {'
         }
         
         // 新しいコンテンツを設定
-        if (isAtomic) { region.textContent = text; }'
-        } else {  // 追記モード''
+        if (isAtomic) { region.textContent = text; }
+        } else {  // 追記モード
             const timestamp = new Date(').toLocaleTimeString('ja-JP', { ''
                 hour: '2-digit', ')';
                 minute: '2-digit', ')';
@@ -646,9 +646,9 @@ export class LiveRegionManager {'
         }
         
         // アクティブな通知として追跡
-        this.activeAnnouncements.add({ region: region,)
+        this.activeAnnouncements.add({ region: region)
             text: text),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -697,7 +697,7 @@ export class LiveRegionManager {'
     // パブリックAPI
     
     /**
-     * メッセージの通知'
+     * メッセージの通知
      */''
     announce(text, options = { )') {
         const message = {'
@@ -708,22 +708,22 @@ export class LiveRegionManager {'
             variables: options.variables,
             region: options.region,
             timestamp: Date.now(),
-            id: this.generateMessageId(); }
+            id: this.generateMessageId() }
         };
         
         // キューサイズチェック
         if(this.messageQueue.length >= this.config.throttling.maxQueue) {
             this.stats.queueOverflows++;
-            ';
-            // 低優先度メッセージを削除''
+            ;
+            // 低優先度メッセージを削除
             const lowPriorityIndex = this.messageQueue.findIndex(m => ');''
                 m.priority === 'low' || m.priority === 'info');
-            ';
+            ';'
             if (lowPriorityIndex !== -1) {'
         }'
                 this.messageQueue.splice(lowPriorityIndex, 1'); }'
             } else {  ''
-                console.warn('Message queue overflow, dropping message:', text); }
+                console.warn('Message queue overflow, dropping message:', text) }
                 return false; }
             }
         }
@@ -739,7 +739,7 @@ export class LiveRegionManager {'
         return this.announce('', {)
             ...options);
             template: templateKey,);
-            variables: variables); }
+            variables: variables) }
     }
     
     /**
@@ -749,7 +749,7 @@ export class LiveRegionManager {'
         return this.announce(text, {'
             ...options,')';
             priority: 'critical',')';
-            type: 'alert'); }
+            type: 'alert') }
     }
     
     /**
@@ -759,7 +759,7 @@ export class LiveRegionManager {'
         return this.announce(text, {'
             ...options,')';
             type: 'status',')';
-            priority: 'normal'); }
+            priority: 'normal') }
     }
     
     /**
@@ -770,7 +770,7 @@ export class LiveRegionManager {'
         const errorText = error instanceof Error ? error.message: String(error'),
         return this.announce(errorText, {'
             ...options,')';
-            type: 'error',');
+            type: 'error',')
     }'
             priority: 'high'); }
     }
@@ -778,7 +778,7 @@ export class LiveRegionManager {'
     /**
      * 通知の一時停止'
      */''
-    pauseAnnouncements('')';
+    pauseAnnouncements()';
         console.log('Live region announcements paused');
     }
     
@@ -787,7 +787,7 @@ export class LiveRegionManager {'
      */
     resumeAnnouncements() {'
         if (!this.processingQueue) {''
-            this.startQueueProcessing('');
+            this.startQueueProcessing();
     }'
             console.log('Live region announcements resumed'); }
         }
@@ -800,7 +800,7 @@ export class LiveRegionManager {'
         this.messageQueue.length = 0;
         this.activeAnnouncements.clear();
         ';
-        // すべてのライブリージョンをクリア''
+        // すべてのライブリージョンをクリア
         for (const region of this.liveRegions.values()') {'
     }'
             region.textContent = ''; }
@@ -837,7 +837,7 @@ export class LiveRegionManager {'
      */
     updateUserPreferences(preferences) {'
         Object.assign(this.userPreferences, preferences);''
-        this.saveUserPreferences('');
+        this.saveUserPreferences();
     }'
         console.log('User preferences updated:', preferences); }
     }
@@ -846,7 +846,7 @@ export class LiveRegionManager {'
      * デバッグモードの切り替え'
      */''
     toggleDebugMode(enabled') {'
-        ';
+        ';'
     }'
         document.body.classList.toggle('debug-live-regions', enabled');' }'
         console.log(`Live region debug mode ${enabled ? 'enabled' : 'disabled')`});
@@ -896,14 +896,14 @@ export class LiveRegionManager {'
     }
             this.startQueueProcessing(); }'
         } else {  ' }'
-            this.pauseAnnouncements('') }'
+            this.pauseAnnouncements() }'
         console.log(`LiveRegionManager ${enabled ? 'enabled' : 'disabled')`});
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying LiveRegionManager...');
         
         // キューの処理停止
@@ -914,14 +914,14 @@ export class LiveRegionManager {'
         }
         
         // ライブリージョンの削除
-        for(const region of this.liveRegions.values() {'
+        for(const region of this.liveRegions.values() {
             if (region.parentNode) {'
         }'
                 region.parentNode.removeChild(region'); }
             }
         }
         ';
-        // スタイルの削除''
+        // スタイルの削除
         const styleElement = document.querySelector('#live-region-styles');
         if (styleElement) { styleElement.remove(); }
         }
@@ -933,9 +933,9 @@ export class LiveRegionManager {'
         this.messageQueue.length = 0;
         this.messageHistory.length = 0;
         this.liveRegions.clear();
-        this.throttleTimers.clear();'
+        this.throttleTimers.clear();
         this.lastAnnouncementTime.clear();''
-        this.activeAnnouncements.clear('')';
+        this.activeAnnouncements.clear()';
         console.log('LiveRegionManager destroyed'');'
     }''
 }

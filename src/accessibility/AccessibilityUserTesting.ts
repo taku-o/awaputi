@@ -13,13 +13,13 @@ interface UserTestingConfig { enabled: boolean,
     minSessionDuration: number; // seconds
     maxFeedbackLength: number,
     enableScreenRecording: boolean,
-    enableUsageAnalytics: boolean; }
+    enableUsageAnalytics: boolean }
 }
 
 interface UserCategory { name: string,
     description: string,
     testScenarios: string[],
-    requiredFeatures: string[]; }
+    requiredFeatures: string[] }
 }
 
 interface UserCategories { visualImpairment: UserCategory,
@@ -27,7 +27,7 @@ interface UserCategories { visualImpairment: UserCategory,
     motorImpairment: UserCategory,
     cognitiveImpairment: UserCategory,
     elderlyUsers: UserCategory,
-    assistiveTechUsers: UserCategory;
+    assistiveTechUsers: UserCategory
     }
 }
 
@@ -42,10 +42,10 @@ interface TestSession { id: string,
     feedback: UserFeedback[],
     metrics: SessionMetrics,
     issues: TestIssue[],
-    recommendations: string[]; }
+    recommendations: string[] }
 }
 
-interface UserFeedback { id: string,'
+interface UserFeedback { id: string,
     timestamp: number,'';
     type: 'positive' | 'negative' | 'suggestion' | 'bug',
     category: string,';
@@ -67,9 +67,9 @@ interface SessionMetrics { taskCompletionRate: number,
     averageTaskTime: number,
     frustrationIndex: number,
     satisfactionScore: number,
-    accessibilityScore: number; }
+    accessibilityScore: number }
 }
-';
+';'
 interface TestIssue { id: string,''
     type: 'accessibility' | 'usability' | 'bug' | 'performance','';
     severity: 'low' | 'medium' | 'high' | 'critical',
@@ -78,7 +78,7 @@ interface TestIssue { id: string,''
     userCategories: string[],
     frequency: number,
     impact: number,
-    reproducible: boolean; }
+    reproducible: boolean }
 }
 
 interface TestScenario { id: string,
@@ -87,24 +87,24 @@ interface TestScenario { id: string,
     steps: ScenarioStep[],
     successCriteria: string[],
     timeLimit?: number;
-    requiredFeatures: string[]; }
+    requiredFeatures: string[] }
 }
 
 interface ScenarioStep { id: string,
     instruction: string,
     expectedResult: string,
     alternativeMethods: string[],
-    successIndicators: string[]; }
+    successIndicators: string[] }
 }
 
 interface AnalyticsData { totalSessions: number,
     userCategoryDistribution: Map<string, number>;
     featureUsage: Map<string, number>;
-    issueFrequency: Map<string, number>; }
+    issueFrequency: Map<string, number> }
     satisfactionTrends: Array<{ date: number; score: number }>,
     completionRates: Map<string, number>;
 }
-';
+';'
 interface ImprovementRecommendation { id: string,''
     priority: 'low' | 'medium' | 'high' | 'critical',
     category: string,
@@ -113,7 +113,7 @@ interface ImprovementRecommendation { id: string,''
     affectedUsers: string[],';
     estimatedImpact: number,'';
     implementationEffort: 'low' | 'medium' | 'high',
-    relatedIssues: string[]; }
+    relatedIssues: string[] }
 }
 
 interface TestReport { generatedAt: number, }
@@ -128,12 +128,12 @@ interface ReportSummary { totalParticipants: number,
     totalSessions: number,
     averageSatisfaction: number,
     topIssues: TestIssue[],
-    keyImprovements: string[]; }
+    keyImprovements: string[] }
 }
 
 interface DetailedFindings { byUserCategory: Map<string, CategoryFindings>;
     byFeature: Map<string, FeatureFindings>;
-    commonPatterns: Pattern[];
+    commonPatterns: Pattern[]
     }
 }
 
@@ -141,26 +141,26 @@ interface CategoryFindings { participantCount: number,
     averageSatisfaction: number,
     completionRate: number,
     topIssues: TestIssue[],
-    specificNeeds: string[]; }
+    specificNeeds: string[] }
 }
 
 interface FeatureFindings { usageCount: number,
     successRate: number,
     issues: TestIssue[],
-    userFeedback: UserFeedback[];
+    userFeedback: UserFeedback[]
     }
 }
-';
+';'
 interface Pattern { ''
     type: 'success' | 'failure' | 'workflow',
     description: string,
     frequency: number,
-    affectedUsers: string[]; }
+    affectedUsers: string[] }
 }
 
 interface DevelopmentRoadmap { shortTerm: RoadmapItem[],
     mediumTerm: RoadmapItem[],
-    longTerm: RoadmapItem[];
+    longTerm: RoadmapItem[]
     }
 }
 
@@ -170,7 +170,7 @@ interface RoadmapItem { id: string,
     priority: number,
     estimatedEffort: string,
     expectedImpact: string,
-    dependencies: string[]; }
+    dependencies: string[] }
 }
 
 // AccessibilityManager interface (minimal definition);
@@ -190,7 +190,7 @@ export class AccessibilityUserTesting {
     private analyticsData: AnalyticsData;
     private improvementRecommendations: ImprovementRecommendation[];
     private sessionRecorder: any; // Screen recording functionality
-    private dataCollector: any; // Usage analytics collector'
+    private dataCollector: any; // Usage analytics collector
 '';
     constructor(accessibilityManager: AccessibilityManager | null') {
         this.accessibilityManager = accessibilityManager;
@@ -210,7 +210,7 @@ export class AccessibilityUserTesting {
             enableUsageAnalytics: true }
         },
         
-        // テストユーザーカテゴリ'
+        // テストユーザーカテゴリ
         this.userCategories = { visualImpairment: {''
                 name: '視覚障害ユーザー','';
                 description: 'スクリーンリーダー、拡大鏡、点字ディスプレイ使用者',';
@@ -222,7 +222,7 @@ export class AccessibilityUserTesting {
                 ],'';
                 requiredFeatures: ['screenReader', 'keyboardNavigation', 'audioFeedback'] }
             },
-            ';
+            ';'
             hearingImpairment: { ''
                 name: '聴覚障害ユーザー','';
                 description: '聴覚障害、難聴の方',';
@@ -234,7 +234,7 @@ export class AccessibilityUserTesting {
                 ],'';
                 requiredFeatures: ['captions', 'visualFeedback', 'vibration'] }
             },
-            ';
+            ';'
             motorImpairment: { ''
                 name: '運動機能障害ユーザー','';
                 description: '手足の運動機能に制限のある方',';
@@ -246,7 +246,7 @@ export class AccessibilityUserTesting {
                 ],'';
                 requiredFeatures: ['alternativeInput', 'timing', 'gestures'] }
             },
-            ';
+            ';'
             cognitiveImpairment: { ''
                 name: '認知障害ユーザー','';
                 description: '認知機能のサポートが必要な方',';
@@ -258,7 +258,7 @@ export class AccessibilityUserTesting {
                 ],'';
                 requiredFeatures: ['simplification', 'help', 'errorRecovery'] }
             },
-            ';
+            ';'
             elderlyUsers: { ''
                 name: '高齢者ユーザー','';
                 description: '高齢者の方',';
@@ -270,7 +270,7 @@ export class AccessibilityUserTesting {
                 ],'';
                 requiredFeatures: ['textScaling', 'motionReduction', 'simplification'] }
             },
-            ';
+            ';'
             assistiveTechUsers: { ''
                 name: '支援技術ユーザー','';
                 description: '各種支援技術使用者',';
@@ -299,9 +299,9 @@ export class AccessibilityUserTesting {
         this.analyticsData = { totalSessions: 0,
             userCategoryDistribution: new Map(),
             featureUsage: new Map(),
-            issueFrequency: new Map(),';
+            issueFrequency: new Map(),
             satisfactionTrends: [],'';
-            completionRates: new Map('')';
+            completionRates: new Map()';
         console.log('AccessibilityUserTesting initialized'),
         this.initialize(); }
     }
@@ -324,13 +324,13 @@ export class AccessibilityUserTesting {
             }
             
             // 自動フィードバック収集の設定
-            if(this.config.autoCollectFeedback) {'
+            if(this.config.autoCollectFeedback) {
                 '';
-                this.setupFeedbackCollection('');
+                this.setupFeedbackCollection();
             }'
             console.log('UserTesting initialization completed');' }'
-        } catch (error') { ''
-            console.error('Failed to initialize UserTesting:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize UserTesting:', error) }
         }
     }
     
@@ -408,7 +408,7 @@ export class AccessibilityUserTesting {
         this.saveSessionData(session);
         
         // 分析の更新
-        this.updateAnalytics(session);'
+        this.updateAnalytics(session);
         '';
         console.log(`Test session ended: ${sessionId)`'});
     }
@@ -418,7 +418,7 @@ export class AccessibilityUserTesting {
      */
     collectFeedback(';
         sessionId: string, '';
-        type: UserFeedback['type'], );
+        type: UserFeedback['type'] );
         message: string);
         context?: FeedbackContext;
     ): void { const session = this.activeSessions.get(sessionId) || 
@@ -444,11 +444,11 @@ export class AccessibilityUserTesting {
         // 重要度の自動判定
         feedback.severity = this.determineFeedbackSeverity(feedback);
         
-        // フィードバックの保存'
+        // フィードバックの保存
         session.feedback.push(feedback);''
         this.feedbackDatabase.set(feedback.id, feedback');
         ';
-        // 問題の自動検出''
+        // 問題の自動検出
         if (type === 'bug' || type === 'negative') { this.detectAndRecordIssue(feedback, session); }
         }
         
@@ -482,13 +482,13 @@ export class AccessibilityUserTesting {
     
     /**
      * エラーの記録
-     */'
+     */
     recordError(sessionId: string, error: string, context?: any): void { const session = this.activeSessions.get(sessionId);''
         if (!session') return;
         
         session.metrics.errorCount++;
         ';
-        // エラーフィードバックとして記録''
+        // エラーフィードバックとして記録
         this.collectFeedback(sessionId, 'bug', error, {)
             error,);
             ...context); }
@@ -554,11 +554,11 @@ export class AccessibilityUserTesting {
     }
     
     /**
-     * セッションメトリクスの計算'
+     * セッションメトリクスの計算
      */''
     private calculateSessionMetrics(session: TestSession'): void { // タスク完了率は既に計算済み
-        ';
-        // フラストレーション指数の計算''
+        ;
+        // フラストレーション指数の計算
         const negativeCount = session.feedback.filter(f => f.type === 'negative').length;
         const totalFeedback = session.feedback.length || 1;
         session.metrics.frustrationIndex = (negativeCount / totalFeedback) * 100;
@@ -582,7 +582,7 @@ export class AccessibilityUserTesting {
     }
     
     /**
-     * フィードバック重要度の判定'
+     * フィードバック重要度の判定
      */''
     private determineFeedbackSeverity(feedback: UserFeedback'): UserFeedback['severity'] { const keywords = {''
             critical: ['crash', 'stuck', 'cannot', 'impossible', 'broken'],'';
@@ -594,7 +594,7 @@ export class AccessibilityUserTesting {
         const message = feedback.message.toLowerCase();
         
         for(const [severity, words] of Object.entries(keywords) {
-        ';
+        ';'
             '';
             if(words.some(word => message.includes(word)') {'
         
@@ -615,7 +615,7 @@ export class AccessibilityUserTesting {
         for(const issue of this.issueDatabase.values() {
         
             if(this.isSimilarIssue(feedback, issue) {
-                existingIssue = issue;
+                existingIssue = issue
         
         }
                 break; }
@@ -631,13 +631,13 @@ export class AccessibilityUserTesting {
         }
                 existingIssue.userCategories.push(session.userCategory); }
             }
-        } else {  // 新規問題の作成'
+        } else {  // 新規問題の作成
             const newIssue: TestIssue = {''
                 id: this.generateIssueId(''';
                 type: feedback.type === 'bug' ? 'bug' : 'usability','';
                 severity: feedback.severity || 'medium',
                 description: feedback.message,
-                affectedFeatures: feedback.context?.feature ? [feedback.context.feature] : [],);
+                affectedFeatures: feedback.context?.feature ? [feedback.context.feature] : []);
                 userCategories: [session.userCategory]);
                 frequency: 1,);
                 impact: this.calculateIssueImpact(feedback), }
@@ -670,7 +670,7 @@ export class AccessibilityUserTesting {
     }
     
     /**
-     * 問題影響度の計算'
+     * 問題影響度の計算
      */''
     private calculateIssueImpact(feedback: UserFeedback'): number { const severityScores = {
             critical: 1.0,
@@ -852,21 +852,21 @@ export class AccessibilityUserTesting {
      * 共通パターンの検出
      */
     private detectCommonPatterns(sessions: TestSession[]): Pattern[] { const patterns: Pattern[] = [],
-        ';
-        // 成功パターンの検出''
+        ;
+        // 成功パターンの検出
         const successfulWorkflows = this.findSuccessfulWorkflows(sessions');
         successfulWorkflows.forEach(workflow => { '
             patterns.push({''
-                type: 'success',);
+                type: 'success');
                 description: workflow.description);
                 frequency: workflow.frequency,) }
                 affectedUsers: workflow.userCategories); }
         });
         ';
-        // 失敗パターンの検出''
+        // 失敗パターンの検出
         const failurePatterns = this.findFailurePatterns(sessions');'
         failurePatterns.forEach(failure => {  patterns.push({''
-                type: 'failure',);
+                type: 'failure');
                 description: failure.description);
                 frequency: failure.frequency,) }
                 affectedUsers: failure.userCategories); }
@@ -880,7 +880,7 @@ export class AccessibilityUserTesting {
      */
     private generateRecommendations(sessions: TestSession[]): ImprovementRecommendation[] { const recommendations: ImprovementRecommendation[] = [],
         ';
-        // 問題ベースの推奨事項''
+        // 問題ベースの推奨事項
         this.issueDatabase.forEach(issue => { ');''
             if (issue.frequency > 2 || issue.severity === 'critical' || issue.severity === 'high') { }
                 recommendations.push(this.createRecommendationFromIssue(issue); }
@@ -922,15 +922,15 @@ export class AccessibilityUserTesting {
                 title: rec.title,);
                 description: rec.description),
                 priority: this.calculateRoadmapPriority(rec), }
-                estimatedEffort: rec.implementationEffort, }'
+                estimatedEffort: rec.implementationEffort, }
                 expectedImpact: `${rec.estimatedImpact}% improvement`,''
                 dependencies: this.identifyDependencies(rec'),
             };
             ';
-            // 実装努力と優先度に基づいて分類''
+            // 実装努力と優先度に基づいて分類
             if(rec.priority === 'critical' || ')';
                 (rec.priority === 'high' && rec.implementationEffort === 'low') {'
-                ';
+                ';'
             }'
                 roadmap.shortTerm.push(item');' }'
             } else if(rec.priority === 'high' || ')'
@@ -946,24 +946,24 @@ export class AccessibilityUserTesting {
     
     private loadTestScenarios(): void { // テストシナリオの初期化
         // 実際の実装では外部ファイルから読み込む }
-    }'
+    }
     '';
-    private async loadHistoricalData('')';
+    private async loadHistoricalData()';
             const saved = localStorage.getItem('accessibilityTestingData');
             if(saved) {
                 const data = JSON.parse(saved);
             }'
                 // データの復元' }'
-            } catch (error') { ''
-            console.error('Failed to load historical data:', error); }
+            } catch (error) { ''
+            console.error('Failed to load historical data:', error) }
         }
     }'
     '';
-    private startDataCollection('')';
+    private startDataCollection()';
         console.log('Data collection started');
     }'
     '';
-    private setupFeedbackCollection('')';
+    private setupFeedbackCollection()';
         console.log('Feedback collection setup completed');
     }
     
@@ -995,19 +995,19 @@ export class AccessibilityUserTesting {
     
     private async saveSessionData(session: TestSession): Promise<void> { // セッションデータの保存
         try { }
-            const key = `session_${session.id}`;'
+            const key = `session_${session.id}`;
             localStorage.setItem(key, JSON.stringify(session);''
-        } catch (error') { ''
-            console.error('Failed to save session data:', error); }
+        } catch (error) { ''
+            console.error('Failed to save session data:', error) }
         }
     }
     
     private async saveReport(report: TestReport): Promise<void> { // レポートの保存
         try { }
-            const key = `report_${report.generatedAt}`;'
+            const key = `report_${report.generatedAt}`;
             localStorage.setItem(key, JSON.stringify(report);''
-        } catch (error') { ''
-            console.error('Failed to save report:', error); }
+        } catch (error) { ''
+            console.error('Failed to save report:', error) }
         }
     }
     
@@ -1026,7 +1026,7 @@ export class AccessibilityUserTesting {
     private identifyCategoryNeeds(sessions: TestSession[], category: string): string[] { // カテゴリ固有のニーズを特定
         const needs: string[] = [],
         
-        const categoryFeedback = sessions';
+        const categoryFeedback = sessions;
             .filter(s => s.userCategory === category)'';
             .flatMap(s => s.feedback')'';
             .filter(f => f.type === 'suggestion');
@@ -1085,7 +1085,7 @@ export class AccessibilityUserTesting {
     
     private createRecommendationFromIssue(issue: TestIssue): ImprovementRecommendation { return { }
             id: `rec_${issue.id}`,
-            priority: issue.severity,';
+            priority: issue.severity,
             category: issue.type,'';
             title: `${issue.type}の修正: ${issue.description.substring(0, 50'})}...`,
             description: issue.description,
@@ -1151,7 +1151,7 @@ export class AccessibilityUserTesting {
         
             sessions = sessions.filter(s => ;
                 s.endTime && );
-                s.endTime >= filter.dateRange!.start && )';
+                s.endTime >= filter.dateRange!.start && );
                 s.endTime <= filter.dateRange!.end)';
         }'
             '); }
@@ -1160,7 +1160,7 @@ export class AccessibilityUserTesting {
         return sessions;
     }
     
-    /**
+    /**'
      * フィードバックの取得'
      */ : undefined''
     getFeedback(filter?: { type?: UserFeedback['type']; severity?: UserFeedback['severity'] ): UserFeedback[] {
@@ -1175,8 +1175,8 @@ export class AccessibilityUserTesting {
         }
         
         if(filter?.severity) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             feedback = feedback.filter(f => f.severity === filter.severity'); }
         }
@@ -1226,7 +1226,7 @@ export class AccessibilityUserTesting {
      */
     applyConfig(config: { userTesting?: Partial<UserTestingConfig> ): void {
         if(config.userTesting) {'
-            ';
+            ';'
         }'
             Object.assign(this.config, config.userTesting'); }
         }'
@@ -1244,15 +1244,15 @@ export class AccessibilityUserTesting {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying AccessibilityUserTesting...');
         
         // アクティブセッションの終了
         this.activeSessions.forEach((session, id) => { this.endSession(id); }
         });
-        ';
-        // データの最終保存''
-        this.saveAllData('')';
+        ;
+        // データの最終保存
+        this.saveAllData()';
         console.log('AccessibilityUserTesting destroyed');
     }
     
@@ -1267,13 +1267,13 @@ export class AccessibilityUserTesting {
                     featureUsage: Array.from(this.analyticsData.featureUsage.entries(),
                     issueFrequency: Array.from(this.analyticsData.issueFrequency.entries(),';
                     satisfactionTrends: this.analyticsData.satisfactionTrends,'';
-                    completionRates: Array.from(this.analyticsData.completionRates.entries()'); }
+                    completionRates: Array.from(this.analyticsData.completionRates.entries()') }
                 }
             };'
             '';
             localStorage.setItem('accessibilityTestingData', JSON.stringify(data);''
-        } catch (error') { ''
-            console.error('Failed to save testing data:', error'); }
+        } catch (error) { ''
+            console.error('Failed to save testing data:', error') }
         }'
     }''
 }

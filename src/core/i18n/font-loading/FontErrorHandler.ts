@@ -7,21 +7,21 @@ export interface FontErrorConfig { suppressRepeated?: boolean;
         verboseLogging?: boolean; }
     };
 }
-';
+';'
 export interface FontErrorContext { ''
     source: 'local' | 'google' | 'system',
     fontFamily?: string;
     url?: string;
     timeout?: number; };
 }
-';
+';'
 export interface ErrorInfo { type: string,''
-    severity: 'info' | 'warn' | 'error'; };
+    severity: 'info' | 'warn' | 'error' };
 }
 export interface SuppressionRules { repeatSuppression: {
         enabled: boolean,
         timeWindow: number,
-        maxOccurrences: number ;
+        maxOccurrences: number 
 }
     },'
     sourceBasedSuppression: { [source: string]: {''
@@ -58,7 +58,7 @@ export class FontErrorHandler {
                     'TimeoutError': 'warn_once' }'
                 },''
                 'system': { ''
-                    'FileNotFoundError': 'warn_once',  // システムフォント不在は一度だけ警告'';
+                    'FileNotFoundError': 'warn_once',  // システムフォント不在は一度だけ警告;
                     'ConfigurationError': 'error' };
 }
             }
@@ -69,13 +69,13 @@ export class FontErrorHandler {
         const errorInfo = this._categorizeError(error, context');' }'
         const errorKey = `${context.source}:${errorInfo.type}:${context.fontFamily || 'unknown'}`;
         ';
-        // warn_once チェック''
+        // warn_once チェック
         const shouldSuppress = this.shouldSuppressError(errorInfo.type, context.source');'
         '';
         if(shouldSuppress === 'warn_once') {
             if(this.suppressedErrors.has(errorKey) {
         }
-                return false; // 既に警告済みなので抑制 }'
+                return false; // 既に警告済みなので抑制 }
             }''
             this.suppressedErrors.add(errorKey');''
         } else if (shouldSuppress === 'suppress') { return false; };
@@ -86,9 +86,9 @@ export class FontErrorHandler {
         this._updateErrorHistory(errorInfo, context);
         return true;
     }
-';
+';'
     private _categorizeError(error: Error, context: FontErrorContext): ErrorInfo { ''
-        const errorMessage = error.message || error.toString().toLowerCase('')';
+        const errorMessage = error.message || error.toString().toLowerCase()';
         if (errorMessage.includes('network'') || '';
             errorMessage.includes('fetch'') || '';
             errorMessage.includes('cors'') ||'';
@@ -149,20 +149,20 @@ export class FontErrorHandler {
 '';
     private _getLogLevel(suppressionType: 'suppress' | 'warn_once' | 'error' | false, errorType: string, context: FontErrorContext = { ) as FontErrorContext'): 'debug' | 'info' | 'warn' | 'error' {''
         if(suppressionType === 'warn_once'') {'
-            ';
+            ';'
         }'
             return 'warn'; }
         }'
         '';
         if(errorType === 'ConfigurationError'') {'
-            ';
+            ';'
         }'
             return 'error'; };
 }
 ';
-        // システムフォントエラーは一般的により低いログレベルに''
+        // システムフォントエラーは一般的により低いログレベルに
         if(context.source === 'system' && errorType === 'FileNotFoundError'') {'
-            ';
+            ';'
         }'
             return 'info'; }
         }'
@@ -179,7 +179,7 @@ export class FontErrorHandler {
 
         }
             this._logDetailedError(error, context, level); }
-        } else { this._logSimpleError(message, level); };
+        } else { this._logSimpleError(message, level); }
 }
     }'
  : undefined'';
@@ -190,9 +190,9 @@ export class FontErrorHandler {
  }
         return `Font loading failed: ${fontFamily} from ${source}. ${suggestion}`;
     }
-';
+';'
     private _getSuggestion(error: Error, context: FontErrorContext): string { ''
-        const errorMessage = error.message || error.toString().toLowerCase('')';
+        const errorMessage = error.message || error.toString().toLowerCase()';
         if (context.source === 'google' && errorMessage.includes('network')') {''
             return 'Check network connectivity or consider using local fonts as fallback.'; }
         }'
@@ -205,9 +205,9 @@ export class FontErrorHandler {
             return 'Font loading is taking too long. Using system fonts as fallback.'; };
 }
 ';
-        // システムフォントが見つからない場合は、より一般的なメッセージ''
+        // システムフォントが見つからない場合は、より一般的なメッセージ
         if(context.source === 'system'') {'
-            ';
+            ';'
         }'
             return 'Using system fallback fonts.'; }
         }'
@@ -221,13 +221,13 @@ export class FontErrorHandler {
             error: error.message,
             stack: error.stack,
             timestamp: new Date().toISOString(),
-            suggestion: this._getSuggestion(error, context); }
+            suggestion: this._getSuggestion(error, context) }
         };'
 '';
         (console as any')[level]('[FontErrorHandler] Detailed font loading error:', details');
     }'
 '';
-    private _logSimpleError(message: string, level: 'debug' | 'info' | 'warn' | 'error''): void { // debugレベルは本番環境では表示しない''
+    private _logSimpleError(message: string, level: 'debug' | 'info' | 'warn' | 'error''): void { // debugレベルは本番環境では表示しない
         if(level === 'debug' && !this.config.development? .verboseLogging) {
             
         }
@@ -255,7 +255,7 @@ export class FontErrorHandler {
         this.errorCounts.clear(); };
 }
     getErrorStats(): Record<string, Record<string, number>> {
-        const stats: Record<string, Record<string, number>> = {};'
+        const stats: Record<string, Record<string, number>> = {};
         '';
         for (const [errorKey, history] of this.errorHistory.entries()') { ''
             const [source, type] = errorKey.split(':');''

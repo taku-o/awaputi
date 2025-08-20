@@ -45,15 +45,15 @@ function _showDeprecationWarning(message, caller) { if (!SHOW_DEPRECATION_WARNIN
  * 呼び出し元情報を取得
  * @returns {string} 呼び出し元情報
  * @private
- */'
-function _getCallerInfo() { try {''
-        const err = new Error('')';
+ */
+function _getCallerInfo() { try {'
+        const err = new Error()';
         const stack = err.stack.split('\n');
         
         // スタックトレースから呼び出し元を特定（3つ上のスタックフレーム）
         if(stack.length >= 4) {
             const callerLine = stack[3].trim();
-            const match = callerLine.match(/at\s+(.*)\s+\((.*):(\d+):(\d+)\)/);'
+            const match = callerLine.match(/at\s+(.*)\s+\((.*):(\d+):(\d+)\)/);
             '';
             if (match') {
         }'
@@ -65,7 +65,7 @@ function _getCallerInfo() { try {''
         }'
         '';
         return '不明';''
-    } catch (error') { ''
+    } catch (error) { ''
         return '不明'; }
     }
 }
@@ -83,7 +83,7 @@ const BALANCE_CONFIG_PROXY = new Proxy({}, { get(target, prop) {
         
         _showDeprecationWarning(`BALANCE_CONFIG.${prop)へのアクセスは非推奨です`, caller);
         ';
-        // カテゴリに基づいて適切な設定を返す''
+        // カテゴリに基づいて適切な設定を返す
         switch(prop') {'
             '';
             case 'scoring':'';
@@ -131,9 +131,9 @@ class BalanceHelperCompatibility { /**
      * @param {string} bubbleType - 泡タイプ
      * @param {number} ageRatio - 年齢比率
      * @returns {number} 計算されたスコア
-     */'
+     */
     static calculateScore(bubbleType, ageRatio = 0) { const gameConfig = getGameConfig();''
-        const caller = _getCallerInfo('')';
+        const caller = _getCallerInfo()';
         _showDeprecationWarning('BalanceHelper.calculateScoreは非推奨です', caller);
         
         return gameConfig.calculateScore(bubbleType, ageRatio); }
@@ -145,7 +145,7 @@ class BalanceHelperCompatibility { /**
      * @returns {number} コンボ倍率
      */'
     static calculateComboMultiplier(comboCount) { const gameConfig = getGameConfig();''
-        const caller = _getCallerInfo('')';
+        const caller = _getCallerInfo()';
         _showDeprecationWarning('BalanceHelper.calculateComboMultiplierは非推奨です', caller);
         
         return gameConfig.calculateComboMultiplier(comboCount); }
@@ -158,7 +158,7 @@ class BalanceHelperCompatibility { /**
      * @returns {number} 計算されたコスト
      */'
     static calculateItemCost(itemId, currentLevel) { const gameConfig = getGameConfig();''
-        const caller = _getCallerInfo('')';
+        const caller = _getCallerInfo()';
         _showDeprecationWarning('BalanceHelper.calculateItemCostは非推奨です', caller);
         
         return gameConfig.calculateItemCost(itemId, currentLevel); }
@@ -171,7 +171,7 @@ class BalanceHelperCompatibility { /**
      * @returns {boolean} 開放状態
      */'
     static isStageUnlocked(stageId, playerTAP) { const gameConfig = getGameConfig();''
-        const caller = _getCallerInfo('')';
+        const caller = _getCallerInfo()';
         _showDeprecationWarning('BalanceHelper.isStageUnlockedは非推奨です', caller);'
         '';
         return gameConfig.isStageUnlocked(stageId, playerTAP'); }
@@ -181,7 +181,7 @@ class BalanceHelperCompatibility { /**
 // 既存のBALANCE_CONFIGとBalanceHelperをエクスポート
 export const BALANCE_CONFIG = BALANCE_CONFIG_PROXY;
 export const BalanceHelper = BalanceHelperCompatibility;
-';
-// 新しいAPIも同時にエクスポート（移行を促進）''
+;
+// 新しいAPIも同時にエクスポート（移行を促進）
 export { getGameConfig } from '../config/GameConfig.js';''
 export { getConfigurationManager } from './ConfigurationManager.js';

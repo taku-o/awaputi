@@ -9,7 +9,7 @@ import { LoggingSystem } from '../../LoggingSystem.js';
 
 // 型定義
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface InteractionState { isListening: boolean,
@@ -20,7 +20,7 @@ export interface InteractionState { isListening: boolean,
     gestureRecognition: {
         enabled: boolean,
         threshold: number,
-        timeWindow: number; }
+        timeWindow: number }
     };
 }
 
@@ -32,7 +32,7 @@ export interface KeyboardNavigation { enabled: boolean,
         previous: string[],
         skip: string[],
         complete: string[],
-        help: string[]; }
+        help: string[] }
     };
 }
 
@@ -44,12 +44,12 @@ export interface AccessibilityConfig { enabled: boolean,
     keyboardNavigation: boolean,
     focusIndicators: boolean,
     announcements: boolean,
-    textSizeMultiplier: number; }
+    textSizeMultiplier: number }
 }
 
 export interface GestureConfig { callback: (() => void) | null,
     enabled: boolean,
-    duration?: number; }
+    duration?: number }
 }
 
 export interface Gestures { swipeLeft: GestureConfig,
@@ -58,7 +58,7 @@ export interface Gestures { swipeLeft: GestureConfig,
     swipeDown: GestureConfig,
     tap: GestureConfig,
     doubleTap: GestureConfig,
-    longPress: GestureConfig;
+    longPress: GestureConfig
     }
 }
 
@@ -67,7 +67,7 @@ export interface PointerState { isDown: boolean,
     currentPosition: Position,
     startTime: number,
     lastTapTime: number,
-    tapCount: number; }
+    tapCount: number }
 }
 
 export interface InteractionCallbacks { onNext: (() => void) | null,
@@ -77,10 +77,10 @@ export interface InteractionCallbacks { onNext: (() => void) | null,
     onClose: (() => void) | null,
     onHelp: (() => void) | null,
     onResize: (() => void) | null,
-    onInteraction: ((data: any) => void) | null; }
+    onInteraction: ((data: any) => void) | null }
 }
 
-export type BoundHandlers = { [K in keyof DocumentEventMap]?: (event: DocumentEventMap[K]) => void; }
+export type BoundHandlers = { [K in keyof DocumentEventMap]?: (event: DocumentEventMap[K]) => void }
 };
 
 export class TutorialInteractionHandler {
@@ -105,8 +105,8 @@ export class TutorialInteractionHandler {
             click: this.handleOverlayClick.bind(this),
             touchstart: this.handleTouchStart.bind(this),
             touchmove: this.handleTouchMove.bind(this),
-            touchend: this.handleTouchEnd.bind(this),';
-            wheel: this.handleWheel.bind(this),';
+            touchend: this.handleTouchEnd.bind(this),
+            wheel: this.handleWheel.bind(this),'
     }
     }'
             contextmenu: this.handleContextMenu.bind(this'); }
@@ -127,7 +127,7 @@ export class TutorialInteractionHandler {
         // キーボードナビゲーション
         this.keyboardNavigation = { enabled: true,
             currentFocusIndex: 0,
-            focusableElements: [],';
+            focusableElements: [],
             shortcuts: {''
                 next: ['ArrowRight', 'Space', 'Tab'],'';
                 previous: ['ArrowLeft', 'Shift+Tab'],'';
@@ -185,11 +185,11 @@ export class TutorialInteractionHandler {
     
     /**
      * インタラクションハンドラーを初期化
-     */'
-    initialize(): void { try {''
-            this.setupAccessibility('')';
+     */
+    initialize(): void { try {'
+            this.setupAccessibility()';
             this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.initialize'); }
         }
     }
@@ -197,7 +197,7 @@ export class TutorialInteractionHandler {
     /**
      * イベントリスナーを開始
      */'
-    startListening(): void { try {''
+    startListening(): void { try {'
             if (this.interactionState.isListening') return;'
             '';
             document.addEventListener('keydown', this.boundHandlers.keydown!');''
@@ -208,10 +208,10 @@ export class TutorialInteractionHandler {
             document.addEventListener('touchend', this.boundHandlers.touchend!');''
             document.addEventListener('wheel', this.boundHandlers.wheel!, { passive: false )'),''
             document.addEventListener('contextmenu', this.boundHandlers.contextmenu!');
-            ';
+            ';'
             this.interactionState.isListening = true;''
             this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners started');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.startListening'); }
         }
     }
@@ -219,7 +219,7 @@ export class TutorialInteractionHandler {
     /**
      * イベントリスナーを停止
      */'
-    stopListening(): void { try {''
+    stopListening(): void { try {'
             if (!this.interactionState.isListening') return;'
             '';
             document.removeEventListener('keydown', this.boundHandlers.keydown');''
@@ -230,10 +230,10 @@ export class TutorialInteractionHandler {
             document.removeEventListener('touchend', this.boundHandlers.touchend');''
             document.removeEventListener('wheel', this.boundHandlers.wheel');''
             document.removeEventListener('contextmenu', this.boundHandlers.contextmenu');
-            ';
+            ';'
             this.interactionState.isListening = false;''
             this.loggingSystem.debug('TutorialInteractionHandler', 'Event listeners stopped');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.stopListening'); }
         }
     }
@@ -259,19 +259,19 @@ export class TutorialInteractionHandler {
             } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.skip) { event.preventDefault();
                 this.triggerSkip(); }
             } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.complete) { event.preventDefault();
-                this.triggerComplete(); }'
+                this.triggerComplete(); }
             } else if(this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.help) { event.preventDefault();''
-                this.triggerHelp('')';
+                this.triggerHelp()';
             if(key === 'Tab' && !event.shiftKey) {'
-                ';
+                ';'
             }'
                 this.handleTabNavigation(event, 1');' }'
             } else if (key === 'Tab' && event.shiftKey) { this.handleTabNavigation(event, -1); }
             }
             
-            // アクセシビリティアナウンス'
+            // アクセシビリティアナウンス
             if (this.accessibility.announcements) { this.announceKeyAction(keyCombo);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleKeydown'); }
         }
     }
@@ -297,9 +297,9 @@ export class TutorialInteractionHandler {
             this.interactionState.lastTouchPosition = { x: touch.clientX, y: touch.clientY }
             this.interactionState.touchStartTime = Date.now();
             
-            // ロングプレス検出開始'
+            // ロングプレス検出開始
             if (this.gestures.longPress.enabled) { this.startLongPressDetection();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchStart'); }
         }
     }
@@ -323,9 +323,9 @@ export class TutorialInteractionHandler {
             
                 this.interactionState.isDragging = true;
             
-            }'
+            }
                 this.cancelLongPressDetection();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchMove'); }
         }
     }
@@ -354,9 +354,9 @@ export class TutorialInteractionHandler {
             
             // 状態リセット
             this.pointerState.isDown = false;
-            this.interactionState.isDragging = false;'
+            this.interactionState.isDragging = false;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTouchEnd'); }
         }
     }
@@ -370,7 +370,7 @@ export class TutorialInteractionHandler {
         const timeSinceLastTap = currentTime - this.pointerState.lastTapTime;
         
         if (timeSinceLastTap < 300) {
-            // ダブルタップ'
+            // ダブルタップ
             this.pointerState.tapCount++;''
             if (this.pointerState.tapCount === 2 && this.gestures.doubleTap.enabled') {''
                 this.triggerGesture('doubleTap');
@@ -378,7 +378,7 @@ export class TutorialInteractionHandler {
                 this.pointerState.tapCount = 0; }
             }
         } else {  // シングルタップ
-            this.pointerState.tapCount = 1;'
+            this.pointerState.tapCount = 1;
             setTimeout(() => { ' }'
                 if (this.pointerState.tapCount === 1 && this.gestures.tap.enabled') {' }'
                     this.triggerGesture('tap'); }
@@ -406,16 +406,16 @@ export class TutorialInteractionHandler {
         const absY = Math.abs(deltaY);
         
         if (absX > threshold && absX > absY) {'
-            // 水平スワイプ''
+            // 水平スワイプ
             if (deltaX > 0 && this.gestures.swipeRight.enabled') {'
     }'
                 this.triggerGesture('swipeRight');' }'
             } else if (deltaX < 0 && this.gestures.swipeLeft.enabled') { ''
                 this.triggerGesture('swipeLeft'); }
             }'
-        } else if (absY > threshold && absY > absX) { // 垂直スワイプ''
+        } else if (absY > threshold && absY > absX) { // 垂直スワイプ
             if(deltaY > 0 && this.gestures.swipeDown.enabled') {'
-                ';
+                ';'
             }'
                 this.triggerGesture('swipeDown');' }'
             } else if (deltaY < 0 && this.gestures.swipeUp.enabled') { ''
@@ -429,13 +429,13 @@ export class TutorialInteractionHandler {
      * @param {MouseEvent} event - マウスイベント'
      */''
     handleOverlayClick(event') {
-        try {'
-            // チュートリアル外をクリックした場合の処理''
+        try {
+            // チュートリアル外をクリックした場合の処理
             if(event.target.classList.contains('tutorial-overlay-background') {''
-                this.triggerNext('');
+                this.triggerNext();
     }'
             this.triggerCallback('onInteraction', { type: 'click', event );' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleOverlayClick'); }
         }
     }
@@ -445,11 +445,11 @@ export class TutorialInteractionHandler {
      * @param {Event} event - リサイズイベント'
      */''
     handleResize(event') {'
-        try {''
+        try {'
             this.triggerCallback('onResize', { event )');'
     }'
             this.loggingSystem.debug('TutorialInteractionHandler', 'Window resized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleResize'); }
         }
     }
@@ -467,9 +467,9 @@ export class TutorialInteractionHandler {
     }
             setTimeout(() => {  }
                 this.interactionState.isScrolling = false; }
-            }, 100);'
+            }, 100);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleWheel'); }
         }
     }
@@ -481,9 +481,9 @@ export class TutorialInteractionHandler {
     handleContextMenu(event) {
         try {
             // チュートリアル中はコンテキストメニューを無効化
-    }'
+    }
             event.preventDefault();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleContextMenu'); }
         }
     }
@@ -528,27 +528,27 @@ export class TutorialInteractionHandler {
     /**
      * アクション系メソッド'
      */''
-    triggerNext('')';
+    triggerNext()';
         this.triggerCallback('onNext');
     }'
     '';
-    triggerPrevious('')';
+    triggerPrevious()';
         this.triggerCallback('onPrevious');
     }'
     '';
-    triggerSkip('')';
+    triggerSkip()';
         this.triggerCallback('onSkip');
     }'
     '';
-    triggerComplete('')';
+    triggerComplete()';
         this.triggerCallback('onComplete');
     }'
     '';
-    triggerClose('')';
+    triggerClose()';
         this.triggerCallback('onClose');
     }'
     '';
-    triggerHelp('')';
+    triggerHelp()';
         this.triggerCallback('onHelp');
     }
     
@@ -558,12 +558,12 @@ export class TutorialInteractionHandler {
      * @param {*} data - 追加データ'
      */''
     triggerCallback(callbackName, data = null') {
-        try {'
+        try {
             const callback = this.callbacks[callbackName];''
             if (callback && typeof callback === 'function') {
     }'
                 callback(data);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.triggerCallback'); }
         }
     }
@@ -635,7 +635,7 @@ export class TutorialInteractionHandler {
             this.keyboardNavigation.currentFocusIndex = newIndex;
             focusableElements[newIndex].focus();'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.handleTabNavigation'); }
         }
     }
@@ -644,7 +644,7 @@ export class TutorialInteractionHandler {
      * フォーカス可能な要素を取得
      * @returns {Array} フォーカス可能な要素配列'
      */''
-    getFocusableElements('')';
+    getFocusableElements()';
             'button:not([disabled]')','';
             'input:not([disabled]')','';
             'select:not([disabled]')','';
@@ -653,7 +653,7 @@ export class TutorialInteractionHandler {
             '[tabindex]:not([tabindex="-1"]")';
         ];'
         '';
-        return Array.from(document.querySelectorAll(selectors.join(', '));
+        return Array.from(document.querySelectorAll(selectors.join(', '));'
             .filter(element => {  )'
                 return element.offsetParent !== null && );' }'
                        getComputedStyle(element').visibility !== 'hidden'; }
@@ -663,17 +663,17 @@ export class TutorialInteractionHandler {
     /**
      * アクセシビリティを設定'
      */''
-    setupAccessibility('')';
+    setupAccessibility()';
             this.accessibility.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce')'').matches,'';
             this.accessibility.highContrast = window.matchMedia('(prefers-contrast: high')'').matches,
             ';
-            // スクリーンリーダー検出（簡易版）''
+            // スクリーンリーダー検出（簡易版）
             this.accessibility.screenReaderMode = navigator.userAgent.includes('NVDA'') || '';
                                                   navigator.userAgent.includes('JAWS'') ||;
                                                   window.speechSynthesis !== undefined;'
             '';
             this.loggingSystem.debug('TutorialInteractionHandler', 'Accessibility settings configured', this.accessibility);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.setupAccessibility'); }
         }
     }
@@ -685,8 +685,8 @@ export class TutorialInteractionHandler {
     announceKeyAction(keyCombo) {'
         '';
         if (!this.accessibility.announcements || !this.accessibility.screenReaderMode') return;
-        ';
-        try {''
+        ';'
+        try {'
             let message = '';'
             '';
             if (this.isShortcutMatch(keyCombo, this.keyboardNavigation.shortcuts.next)') {'
@@ -708,7 +708,7 @@ export class TutorialInteractionHandler {
             
             }'
                 window.speechSynthesis.speak(utterance);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.announceKeyAction'); }
         }
     }
@@ -749,12 +749,12 @@ export class TutorialInteractionHandler {
             
             // ジェスチャーコールバックをクリア
     }
-            Object.keys(this.gestures).forEach(key => {) }'
+            Object.keys(this.gestures).forEach(key => {) }
                 this.gestures[key].callback = null);' }'
             }');'
             '';
             this.loggingSystem.debug('TutorialInteractionHandler', 'Interaction handler disposed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialInteractionHandler.dispose''); }
         }'
     }''

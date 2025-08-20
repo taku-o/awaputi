@@ -7,28 +7,28 @@
 interface ExecutionConfig { timeout: number,
     retries: number,
     concurrent: boolean,
-    parallelLimit: number; }
+    parallelLimit: number }
 }
 
 interface ExecutionState { isRunning: boolean,
     currentSuite: string | null,
     currentTest: string | null,
     startTime: number | null,
-    abortController: AbortController | null; }
+    abortController: AbortController | null }
 }
 
 interface ExecutionStats { totalTestsRun: number,
     averageTestTime: number,
     suitesExecuted: number,
     timeouts: number,
-    retries: number; }
+    retries: number }
 }
 
 interface TestFunction { name: string,
     run: (context?: TestContext) => Promise<TestResult>,
     setup?: (context: TestContext) => Promise<void>;
     cleanup?: (context: TestContext) => Promise<void>;
-    errorCleanup?: (context: TestContext, error: Error) => Promise<void>; }
+    errorCleanup?: (context: TestContext, error: Error) => Promise<void> }
 }
 
 interface TestResult { passed: boolean,
@@ -40,7 +40,7 @@ interface TestResult { passed: boolean,
 interface TestContext { testSuite: any,
     deviceSimulator: any,
     utils: any,
-    startTime: number; }
+    startTime: number }
 }
 
 interface TestSuiteInterface { getTests(): TestFunction[];
@@ -53,13 +53,13 @@ interface ExecutionStateWithStats { isRunning: boolean,
     startTime: number | null,
     abortController: AbortController | null,
     stats: ExecutionStats,
-    duration: number; }
+    duration: number }
 }
 
 interface DebugInfo { config: ExecutionConfig,
     state: ExecutionState,
     stats: ExecutionStats,
-    isRunning: boolean; }
+    isRunning: boolean }
 }
 
 export class MobileTestRunner {
@@ -105,7 +105,7 @@ export class MobileTestRunner {
     async runAllTests(): Promise<any> { console.log('[MobileTestRunner] 全テスト実行開始');'
         '';
         if(this.executionState.isRunning') {'
-            ';
+            ';'
         }'
             throw new Error('Tests are already running'); }
         }
@@ -121,9 +121,9 @@ export class MobileTestRunner {
             }
                 this.executionStats.suitesExecuted++; }
             }
-            ';
+            ';'
             const report = this.mobileTestSuite.generateTestReport();''
-            this.completeExecution('')';
+            this.completeExecution()';
             console.log('[MobileTestRunner] 全テスト実行完了', report);
             return report;
             
@@ -149,7 +149,7 @@ export class MobileTestRunner {
             
             console.log(`[MobileTestRunner] ${suiteName) テスト実行完了`});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.mobileTestSuite.recordTestError(suiteName, 'suite_execution', error); }
             console.error(`[MobileTestRunner] ${suiteName} テストスイートエラー:`, error);
             throw error;
@@ -175,7 +175,7 @@ export class MobileTestRunner {
     private async runTestsConcurrently(suiteName: string, tests: TestFunction[]): Promise<void> { const chunks = this.chunkArray(tests, this.executionConfig.parallelLimit);
         
         for(const chunk of chunks) {
-        ';
+        ';'
             '';
             if (this.isExecutionAborted()') {'
         
@@ -200,7 +200,7 @@ export class MobileTestRunner {
         
             try {
                 const result = await Promise.race([);
-                    this.executeTestWithContext(test),];
+                    this.executeTestWithContext(test)];
                     this.createTimeoutPromise()];
                 ]);
                 
@@ -226,7 +226,7 @@ export class MobileTestRunner {
                 return result;
                 
             } catch (error) { retries--;
-                this.executionStats.retries++;'
+                this.executionStats.retries++;
                 '';
                 if ((error as Error').message === 'Test timeout') {
                     this.executionStats.timeouts++; }
@@ -240,15 +240,15 @@ export class MobileTestRunner {
                 }
                     throw error; }
                 }
-                ';
+                ';'
                 console.warn(`[MobileTestRunner] ${test.name} リトライ (残り${ retries)回)`);' }'
                 await this.wait(1000'}); // 1秒待機してリトライ
             }
         }
         
         this.executionState.currentTest = null;
-        ';
-        // This should never be reached, but TypeScript requires a return''
+        ;
+        // This should never be reached, but TypeScript requires a return
         throw new Error('Unexpected execution path');
     }
     
@@ -259,7 +259,7 @@ export class MobileTestRunner {
             testSuite: this.mobileTestSuite,
             deviceSimulator: this.mobileTestSuite.deviceSimulator,
             utils: this.mobileTestSuite.utils,
-            startTime: Date.now(); }
+            startTime: Date.now() }
         };
         
         // テスト前処理
@@ -280,9 +280,9 @@ export class MobileTestRunner {
     }
     
     /**
-     * テスト前セットアップ'
+     * テスト前セットアップ
      */''
-    private async preTestSetup(test: TestFunction, context: TestContext'): Promise<void> { // テスト固有の環境セットアップ''
+    private async preTestSetup(test: TestFunction, context: TestContext'): Promise<void> { // テスト固有の環境セットアップ
         if(test.setup && typeof test.setup === 'function') {
             
         }
@@ -295,9 +295,9 @@ export class MobileTestRunner {
     }
     
     /**
-     * テスト後クリーンアップ'
+     * テスト後クリーンアップ
      */''
-    private async postTestCleanup(test: TestFunction, context: TestContext'): Promise<void> { // テスト固有のクリーンアップ''
+    private async postTestCleanup(test: TestFunction, context: TestContext'): Promise<void> { // テスト固有のクリーンアップ
         if(test.cleanup && typeof test.cleanup === 'function') {
             
         }
@@ -308,17 +308,17 @@ export class MobileTestRunner {
     /**
      * エラー時クリーンアップ'
      */''
-    private async errorTestCleanup(test: TestFunction, context: TestContext, error: Error'): Promise<void> { try {'
-            // エラー時の緊急クリーンアップ''
+    private async errorTestCleanup(test: TestFunction, context: TestContext, error: Error'): Promise<void> { try {
+            // エラー時の緊急クリーンアップ
             if(test.errorCleanup && typeof test.errorCleanup === 'function') {
                 
             }
                 await test.errorCleanup(context, error); }
             }
             
-            // デバイス状態の強制リセット'
+            // デバイス状態の強制リセット
             if (this.mobileTestSuite.deviceSimulator) { await this.mobileTestSuite.deviceSimulator.forceResetDevice();' }'
-            } catch (cleanupError') { ''
+            } catch (cleanupError) { ''
             console.warn('[MobileTestRunner] クリーンアップエラー:', cleanupError); }
         }
     }
@@ -499,6 +499,6 @@ export class MobileTestRunner {
     }
     
     /**
-     * デバッグ情報取得'
+     * デバッグ情報取得
      */''
     getDebugInfo(');

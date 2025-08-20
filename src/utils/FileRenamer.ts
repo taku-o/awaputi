@@ -10,7 +10,7 @@ import { promisify } from 'util';'
 '';
 const execAsync = promisify(exec');
 
-// 型定義インターフェース'
+// 型定義インターフェース
 interface RenameOperation { id: string,''
     type: 'file_rename',
     oldPath: string,
@@ -19,12 +19,12 @@ interface RenameOperation { id: string,''
     status: 'pending' | 'backup_created' | 'completed' | 'failed' | 'rolled_back' | 'rollback_failed',
     backupPath: string | null,
     error: string | null,
-    backupId?: string; }
+    backupId?: string }
 }
 
 interface RenameInfo { oldPath: string,
     newPath: string,
-    critical?: boolean; }
+    critical?: boolean }
 }
 
 interface RenameResult { oldPath: string,
@@ -34,10 +34,10 @@ interface RenameResult { oldPath: string,
     error?: string;
     critical?: boolean; }
 }
-';
+';'
 interface RollbackResult { operation: string,''
     status: 'success' | 'failed',
-    error?: string; }
+    error?: string }
 }
 
 interface OperationHistoryItem { id: string,
@@ -46,18 +46,18 @@ interface OperationHistoryItem { id: string,
     newPath: string,
     status: string,
     timestamp: Date,
-    error: string | null; }
+    error: string | null }
 }
 
 interface Stats { total: number,
     completed: number,
     failed: number,
     rolledBack: number,
-    successRate: string; }
+    successRate: string }
 }
 
 interface ExecResult { stdout: string,
-    stderr: string; }
+    stderr: string }
 }
 
 export class FileRenamer {
@@ -77,10 +77,10 @@ export class FileRenamer {
     /**
      * Gitが利用可能かチェック'
      */''
-    checkGitAvailability('')';
+    checkGitAvailability()';
             execSync('git --version', { stdio: 'ignore' ),'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Git is not available - file renames will not preserve history');
             return false; }
         }
@@ -101,8 +101,8 @@ export class FileRenamer {
         })
         try { // 1. 事前チェック)
             await this.validateRenameOperation(oldPath, newPath);
-';
-            // 2. バックアップ作成''
+;
+            // 2. バックアップ作成
             operation.backupPath = await this.createBackup(oldPath');''
             operation.status = 'backup_created';
 
@@ -112,9 +112,9 @@ export class FileRenamer {
 
             // 4. Git mv または通常の mv
             if(this.gitAvailable) {
-                ;
+                
             }
-                await this.gitMove(oldPath, newPath); }'
+                await this.gitMove(oldPath, newPath); }
             } else {  ' }'
                 await this.regularMove(oldPath, newPath'); }
             }'
@@ -124,7 +124,7 @@ export class FileRenamer {
 
             return operation;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             operation.status = 'failed';
             operation.error = (error as Error).message;
             this.operations.push(operation);
@@ -152,14 +152,14 @@ export class FileRenamer {
 
         // 新しいパスが既に存在しないかチェック
         try { await fs.access(newPath); }
-            throw new Error(`Destination file already exists: ${newPath}`);'
-        } catch (error) { // ファイルが存在しない = OK''
+            throw new Error(`Destination file already exists: ${newPath}`);
+        } catch (error) { // ファイルが存在しない = OK
             if ((error as NodeJS.ErrnoException').code !== 'ENOENT') {
                 throw error; }
             }
         }
 ';
-        // パスの正当性チェック''
+        // パスの正当性チェック
         if (path.resolve(oldPath) === path.resolve(newPath)') { ''
             throw new Error('Source and destination paths are identical'); }
         }
@@ -175,9 +175,9 @@ export class FileRenamer {
     }
 
     /**
-     * Git mvコマンドを使用したリネーム'
+     * Git mvコマンドを使用したリネーム
      */''
-    async gitMove(oldPath: string, newPath: string'): Promise<void> { try {' }'
+    async gitMove(oldPath: string, newPath: string'): Promise<void> { try { }'
             const command = `git mv "${oldPath}" "${newPath}"`;
             await execAsync(command);
         } catch (error) { // Gitコマンドが失敗した場合は通常のmvにフォールバック }
@@ -217,7 +217,7 @@ export class FileRenamer {
             return; }
         }
 ';
-        try { // すべてのリネーム操作をGitにステージング''
+        try { // すべてのリネーム操作をGitにステージング
             for(const rename of renames') {'
                 '';
                 if (rename.status === 'completed'') {
@@ -226,20 +226,20 @@ export class FileRenamer {
                     continue; }
                 }
             }
-';
-            // コミット前の状態確認''
+;
+            // コミット前の状態確認
             const { stdout }: ExecResult = await execAsync('git status --porcelain');''
             if (stdout.trim()') { ''
                 console.log('Staged changes for file renames:', stdout);' }'
-            } catch (error') { ''
-            console.error('Failed to update git history:', (error as Error).message); }
+            } catch (error) { ''
+            console.error('Failed to update git history:', (error as Error).message) }
         }
     }
 
     /**
      * 単一操作のロールバック'
      */''
-    async rollbackSingle(operation: RenameOperation'): Promise<void> { try {''
+    async rollbackSingle(operation: RenameOperation'): Promise<void> { try {'
             if(operation.status === 'completed' && operation.backupPath) {
                 // 新しいファイルを削除
                 try {
@@ -248,8 +248,8 @@ export class FileRenamer {
                 } catch (error) {
                     console.warn(`Could not remove new file during rollback: ${(error as Error}).message}`);
                 }
-';
-                // バックアップから復元''
+;
+                // バックアップから復元
                 await fs.copyFile(operation.backupPath, operation.oldPath');''
                 operation.status = 'rolled_back';'
             } catch (error) { ' }'
@@ -268,13 +268,13 @@ export class FileRenamer {
         const results: RollbackResult[] = [],
 
         for(const operation of operationsToRollback.reverse() {
-';
-            try {''
+';'
+            try {'
                 await this.rollbackSingle(operation');'
 
         }'
                 results.push({ operation: operation.id, status: 'success' ),' }'
-            } catch (error') { results.push({ )'
+            } catch (error) { results.push({ )'
                     operation: operation.id, ')';
                     status: 'failed' ),
                     error: (error as Error).message  }
@@ -294,17 +294,17 @@ export class FileRenamer {
         const sortedRenames = this.sortByDependencies(renameList);
 
         for(const renameInfo of sortedRenames) {
-';
-            try {''
+';'
+            try {'
                 const result = await this.renameFile(renameInfo.oldPath, renameInfo.newPath');''
                 results.push({ ...renameInfo, result, status: 'success' ),
                 
 
         }
                 // 進捗ログ }
-                console.log(`✓ Renamed: ${renameInfo.oldPath} → ${renameInfo.newPath)`});'
+                console.log(`✓ Renamed: ${renameInfo.oldPath} → ${renameInfo.newPath)`});
                 '';
-            } catch (error') { results.push({ )'
+            } catch (error) { results.push({ )'
                     ...renameInfo, ')';
                     status: 'failed' ),
                     error: (error as Error).message  }
@@ -313,7 +313,7 @@ export class FileRenamer {
                 console.error(`✗ Failed to rename: ${renameInfo.oldPath} → ${ renameInfo.newPath)`); }
                 console.error(`  Error: ${(error as Error}).message}`);
                 ';
-                // エラー時の処理継続判定''
+                // エラー時の処理継続判定
                 if(renameInfo.critical') {'
                     '';
                     console.error('Critical file rename failed, stopping batch operation');
@@ -329,10 +329,10 @@ export class FileRenamer {
     /**
      * 依存関係に基づくソート
      */
-    sortByDependencies(renameList: RenameInfo[]): RenameInfo[] { // 現在は単純な順序でソート'
-        // 将来的にはファイル間の依存関係を解析して適切な順序を決定''
+    sortByDependencies(renameList: RenameInfo[]): RenameInfo[] { // 現在は単純な順序でソート
+        // 将来的にはファイル間の依存関係を解析して適切な順序を決定
         return renameList.sort((a, b') => { '
-            // ディレクトリの浅い順にソート（依存関係の影響を最小化）''
+            // ディレクトリの浅い順にソート（依存関係の影響を最小化）
             const aDepth = a.oldPath.split('/'').length;''
             const bDepth = b.oldPath.split('/').length; }
             return aDepth - bDepth; }
@@ -346,10 +346,10 @@ export class FileRenamer {
             id: op.id,
             type: op.type,
             oldPath: op.oldPath,
-            newPath: op.newPath,);
+            newPath: op.newPath);
             status: op.status);
             timestamp: op.timestamp,);
-            error: op.error))); }
+            error: op.error))) }
     }
 
     /**
@@ -389,7 +389,7 @@ export class FileRenamer {
     /**
      * 統計情報の取得'
      */''
-    getStats('')';
+    getStats()';
         const completed = this.operations.filter(op => op.status === 'completed'').length;''
         const failed = this.operations.filter(op => op.status === 'failed'').length;''
         const rolledBack = this.operations.filter(op => op.status === 'rolled_back').length;

@@ -1,32 +1,32 @@
 // インターフェース定義
 interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean,
-    reducedMotion: boolean; }
+    reducedMotion: boolean }
 }
 
 interface StatisticsDisplaySettings { showDashboard: boolean,
     showCharts: boolean,
     showDetailedStats: boolean,
     enableAnimations: boolean,
-    compactMode: boolean; }
+    compactMode: boolean }
 }
 
 interface LayoutSettings { tabHeight: number,
     headerHeight: number,
     contentPadding: number,
-    scrollbarWidth: number; }
+    scrollbarWidth: number }
 }
 
 interface UserPreferences { currentTab: string,
     statisticsViewMode: string,
     currentPeriodFilter: string,
     statisticsDisplaySettings: StatisticsDisplaySettings,
-    currentAchievementCategory: string; }
+    currentAchievementCategory: string }
 }
 
 interface StateChange { key: string,
     value: any,
-    oldValue: any; }
+    oldValue: any }
 }
 
 interface SerializedState { currentTab: string,
@@ -38,7 +38,7 @@ interface SerializedState { currentTab: string,
     accessibilitySettings: AccessibilitySettings,
     scrollPosition: number,
     selectedItem: number,
-    focusedElement: number; }
+    focusedElement: number }
 }
 
 type DialogType = 'username' | 'export' | 'import' | null;''
@@ -90,12 +90,12 @@ export class SceneState {
     // レイアウト設定
     public layout: LayoutSettings,
     // 変更通知のためのイベントリスナー
-    private changeListeners: Map<string, ChangeListener[]>;'
+    private changeListeners: Map<string, ChangeListener[]>;
 '';
     constructor(gameEngine: any') {
         this.gameEngine = gameEngine;
         ';
-        // タブ状態管理''
+        // タブ状態管理
         this.currentTab = 'statistics';''
         this.tabs = ['statistics', 'achievements', 'leaderboard', 'challenges', 'management', 'help'];''
         this.tabLabels = ['統計', '実績', 'ランキング', 'チャレンジ', '管理', 'ヘルプ'];
@@ -110,13 +110,13 @@ export class SceneState {
         this.scrollPosition = 0;
         this.selectedItem = -1;
         this.focusedElement = 0;
-        ';
-        // 実績フィルター状態''
+        ;
+        // 実績フィルター状態
         this.achievementCategories = ['all', 'score', 'play', 'technique', 'collection', 'special'];''
         this.achievementCategoryLabels = ['全て', 'スコア系', 'プレイ系', 'テクニック系', 'コレクション系', '特殊'];''
         this.currentAchievementCategory = 'all';
         ';
-        // 統計表示設定''
+        // 統計表示設定
         this.statisticsViewMode = 'dashboard';''
         this.currentPeriodFilter = 'last7days';
         this.statisticsDisplaySettings = { showDashboard: true,
@@ -163,21 +163,21 @@ export class SceneState {
     }
     
     /**
-     * アクセシビリティ設定を読み込み'
+     * アクセシビリティ設定を読み込み
      */''
-    loadAccessibilitySettings('')';
+    loadAccessibilitySettings()';
             const saved = localStorage.getItem('awaputi_accessibility_settings');
             if (saved) { const settings = JSON.parse(saved); }'
                 this.accessibilitySettings = { ...this.accessibilitySettings, ...settings };''
-            } catch (error') { ''
-            console.warn('Failed to load accessibility settings:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load accessibility settings:', error) }
         }
     }
     
     /**
      * ユーザー設定を読み込み'
      */''
-    loadUserPreferences('')';
+    loadUserPreferences()';
             const saved = localStorage.getItem('awaputi_userinfo_preferences');
             if(saved) {
                 const preferences = JSON.parse(saved);
@@ -204,20 +204,20 @@ export class SceneState {
                 }
                 
                 if(preferences.currentAchievementCategory && );
-                    this.achievementCategories.includes(preferences.currentAchievementCategory) { this.currentAchievementCategory = preferences.currentAchievementCategory; }'
+                    this.achievementCategories.includes(preferences.currentAchievementCategory) { this.currentAchievementCategory = preferences.currentAchievementCategory; }
                 }''
-            } catch (error') { ''
-            console.warn('Failed to load user preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load user preferences:', error) }
         }
     }
     
     /**
      * ユーザー設定を保存'
      */''
-    saveUserPreferences('')';
+    saveUserPreferences()';
             localStorage.setItem('awaputi_userinfo_preferences', JSON.stringify(preferences);''
-        } catch (error') { ''
-            console.warn('Failed to save user preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save user preferences:', error) }
         }
     }
     
@@ -323,7 +323,7 @@ export class SceneState {
         
         }
             clearTimeout(this.errorTimeout); }
-        }'
+        }
         '';
         this.errorTimeout = setTimeout((') => {  this.errorMessage = null;' }'
             this.notifyChange('errorMessage', null, message);' }'
@@ -344,7 +344,7 @@ export class SceneState {
         this.errorMessage = null;'
         '';
         if(oldMessage') {'
-            ';
+            ';'
         }'
             this.notifyChange('errorMessage', null, oldMessage); }
         }
@@ -356,7 +356,7 @@ export class SceneState {
      * @returns 値'
      */''
     private getNestedValue(path: string'): any { ''
-        return path.split('.').reduce((obj: any, key) => obj && obj[key], this); }
+        return path.split('.').reduce((obj: any, key) => obj && obj[key], this) }
     }
     
     /**
@@ -389,8 +389,8 @@ export class SceneState {
                 try {
         }'
                     listener(value, oldValue, key);' }'
-                } catch (error') { ''
-                    console.error('Error in state change listener:', error); }
+                } catch (error) { ''
+                    console.error('Error in state change listener:', error) }
                 }
             }
         }
@@ -458,9 +458,9 @@ export class SceneState {
         this.scrollPosition = 0;
         this.selectedItem = -1;
         this.focusedElement = 0;
-        ';
+        ';'
         this.clearCache();''
-        this.clearError('')';
+        this.clearError()';
         this.notifyChange('state_reset', preservePreferences, null);
     }
     

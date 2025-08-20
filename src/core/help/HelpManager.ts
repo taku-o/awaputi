@@ -18,18 +18,18 @@ export interface HelpContent { category: string,
     version: string,
     lastUpdated?: string;
     isPlaceholder?: boolean;
-    topics: HelpTopic[];
+    topics: HelpTopic[]
     }
 }
 
 export interface HelpTopic { id: string,
     title: string,
-    description: string,';
+    description: string,
     content: TopicContent,'';
     difficulty: 'beginner' | 'intermediate' | 'advanced',
     estimatedReadTime: number,
     tags: string[],
-    searchKeywords?: string[]; }
+    searchKeywords?: string[] }
 }
 
 export interface TopicContent { message?: string;
@@ -42,18 +42,18 @@ export interface TopicContent { message?: string;
 
 export interface UserProgress { viewedSections: Set<string>,
     searchHistory: SearchHistoryEntry[],
-    lastAccessed: number | null; }
+    lastAccessed: number | null }
 }
 
 export interface SearchHistoryEntry { query: string,
     timestamp: number,
-    language: string; }
+    language: string }
 }
 
 export interface SearchResult { section: HelpTopic,
     score: number,
     category: string,
-    language: string; }
+    language: string }
 }
 
 export interface SearchFilters { language?: string;'
@@ -64,7 +64,7 @@ export interface SearchFilters { language?: string;'
 
 export interface ContextualHelpResult { section: HelpTopic,
     context: string,
-    suggestions: HelpTopic[];
+    suggestions: HelpTopic[]
     }
 }
 
@@ -73,26 +73,26 @@ export interface TopicDetails { id: string,
     description: string,
     category: string,
     language: string,
-    content: TopicContent;
+    content: TopicContent
     }
 }
 
 export interface UserHelpProgress { viewedSections: string[],
     searchCount: number,
     lastAccessed: number | null,
-    totalSections: number; }
+    totalSections: number }
 }
 
 export interface PlaceholderMessages { title: string,
     description: string,
     content: string,
-    fallbackNote: string; }
+    fallbackNote: string }
 }
 
 export interface LocalizationManager { getCurrentLanguage(): string; }
 }
 
-export interface GameEngine { localizationManager: LocalizationManager;
+export interface GameEngine { localizationManager: LocalizationManager
     }
 }
 
@@ -130,17 +130,17 @@ export class HelpManager {
     /**
      * ヘルプマネージャーの初期化'
      */''
-    async initialize('')';
+    async initialize()';
             this.loggingSystem.info('HelpManager', 'Initializing help system...');
             ';
-            // 基本ヘルプカテゴリを読み込み''
-            const currentLanguage = this.localizationManager.getCurrentLanguage('')';
+            // 基本ヘルプカテゴリを読み込み
+            const currentLanguage = this.localizationManager.getCurrentLanguage()';
             await this.loadHelpContent('gameplay', currentLanguage);
             ';
-            // ユーザー進捗の復元''
-            this.loadUserProgress('')';
+            // ユーザー進捗の復元
+            this.loadUserProgress()';
             this.loggingSystem.info('HelpManager', 'Help system initialized successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Failed to initialize help system', error');''
             ErrorHandler.handle(error, 'HelpManager.initialize''); }
         }
@@ -155,7 +155,7 @@ export class HelpManager {
     async loadHelpContent(category: string, language: string = 'ja'): Promise<HelpContent> { try { }
             const cacheKey = `help_content_${category}_${language}`;
             
-            // キャッシュから確認'
+            // キャッシュから確認
             let content = this.cacheSystem.get(cacheKey) as HelpContent;''
             if (content') { ' }'
                 this.loggingSystem.debug('HelpManager', `Loaded help content from cache: ${cacheKey)`});
@@ -172,21 +172,21 @@ export class HelpManager {
             }
                 content = await this.loadWithFallback(category, language); }
             }
-            ';
-            // バリデーション''
+            ;
+            // バリデーション
             if (!this.validateHelpContent(content)') { ''
                 this.loggingSystem.warn('HelpManager', `Invalid content format for ${category), generating placeholder`); }
                 content = await this.generatePlaceholderContent(category, language});
             }
 
-            // キャッシュに保存'
-            this.cacheSystem.set(cacheKey, content, 30 * 60 * 1000); // 30分''
+            // キャッシュに保存
+            this.cacheSystem.set(cacheKey, content, 30 * 60 * 1000); // 30分
             this.helpContent.set(`${category}_${ language)`, content');'
             ' }'
             this.loggingSystem.info('HelpManager', `Loaded help content: ${cacheKey)`});
             return content;'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to load help content: ${category}`, error);
             return await this.generatePlaceholderContent(category, language);
         }
@@ -201,10 +201,10 @@ export class HelpManager {
     async tryLoadContent(category: string, language: string'): Promise<HelpContent | null> { try { }
             const contentPath = `./src/core/help/content/help/${language}/${category}.json`;
             ';
-            // HEADリクエストでファイル存在確認（404エラーを避ける）''
+            // HEADリクエストでファイル存在確認（404エラーを避ける）
             const headResponse = await fetch(contentPath, { method: 'HEAD' ),
             if(!headResponse.ok) {
-                ;
+                
             }
                 return null; }
             }
@@ -212,9 +212,9 @@ export class HelpManager {
             // ファイルが存在する場合のみGETリクエストを実行
             const response = await fetch(contentPath);
             if (!response.ok) { return null; }
-            }'
+            }
             '';
-            const content = await response.json('');'
+            const content = await response.json();'
             this.loggingSystem.debug('HelpManager', `Successfully loaded content: ${contentPath)`});
             return content;
             
@@ -227,9 +227,9 @@ export class HelpManager {
      * フォールバック機能付きの安全なコンテンツ読み込み
      * @param category - カテゴリ
      * @param language - 言語コード
-     * @returns コンテンツ'
+     * @returns コンテンツ
      */''
-    async loadWithFallback(category: string, language: string'): Promise<HelpContent> { // フォールバックチェーン: 指定言語 → 日本語 → 英語 → プレースホルダー'
+    async loadWithFallback(category: string, language: string'): Promise<HelpContent> { // フォールバックチェーン: 指定言語 → 日本語 → 英語 → プレースホルダー
         const fallbackChain = [language,'';
             'ja',']';
             'en'];
@@ -237,7 +237,7 @@ export class HelpManager {
 
         for(const fallbackLang of fallbackChain) {
 
-            const content = await this.tryLoadContent(category, fallbackLang);'
+            const content = await this.tryLoadContent(category, fallbackLang);
             if (content) {''
                 if (fallbackLang !== language') {'
 
@@ -249,17 +249,17 @@ export class HelpManager {
             }
         }
 
-        // レガシーパスの確認'
+        // レガシーパスの確認
         const legacyContent = await this.tryLoadLegacyContent(category);''
         if(legacyContent') {'
-            ';
+            ';'
         }'
             this.loggingSystem.info('HelpManager')' }'
                 `Using legacy content for ${category)`'});
             return legacyContent;
         }
 ';
-        // 全てのフォールバックが失敗した場合はプレースホルダーを生成''
+        // 全てのフォールバックが失敗した場合はプレースホルダーを生成
         this.loggingSystem.warn('HelpManager');
             `All fallbacks failed for ${ category), generating placeholder content`); }
         return await this.generatePlaceholderContent(category, language});
@@ -274,7 +274,7 @@ export class HelpManager {
             const legacyPath = `./src/core/help/content/help/${category}.json`;''
             const headResponse = await fetch(legacyPath, { method: 'HEAD' ),
             if(!headResponse.ok) {
-                ;
+                
             }
                 return null; }
             }
@@ -327,7 +327,7 @@ export class HelpManager {
                         note: messages.fallbackNote,' };'
                         troubleshooting: '問題が続く場合は、ページを再読み込みするか、サポートにお問い合わせください。' }'
                     },''
-                    difficulty: 'beginner',]';
+                    difficulty: 'beginner']';
                     estimatedReadTime: 30,']';
                     tags: ['placeholder', 'info'];
                 }
@@ -341,7 +341,7 @@ export class HelpManager {
      * @param language - 言語コード
      * @returns ヘルプセクション'
      */''
-    getHelpSection(sectionId: string, language: string = 'ja''): HelpTopic | null { try {''
+    getHelpSection(sectionId: string, language: string = 'ja''): HelpTopic | null { try {'
             const parts = sectionId.split('.');
             const category = parts[0];
             const section = parts[1];
@@ -361,9 +361,9 @@ export class HelpManager {
             }
                 return sectionData; }
             }
-';
+';'
             return null;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to get help section: ${sectionId}`, error);
             return null;
         }
@@ -401,7 +401,7 @@ export class HelpManager {
                         if (score > 0) {
                             results.push({)
                                 section,);
-            }'
+            }
                                 score);' }'
                                 category: key.replace(`_${language')`, ''}),
                                 language;
@@ -418,8 +418,8 @@ export class HelpManager {
             let filteredResults = results;
             if (filters.category) { filteredResults = results.filter(r => r.category === filters.category); }
             }
-            if(filters.difficulty) {'
-                ';
+            if(filters.difficulty) {
+                ';'
             }'
                 filteredResults = filteredResults.filter(r => r.section.difficulty === filters.difficulty'); }
             }'
@@ -463,9 +463,9 @@ export class HelpManager {
                     };
                 }
             }
-';
+';'
             return null;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to get contextual help: ${currentScene}`, error);
             return null;
         }
@@ -490,7 +490,7 @@ export class HelpManager {
             
             }
                 content = await this.loadHelpContent(category, lang); }
-            }'
+            }
             '';
             if (!content || !content.topics') { ' }'
                 this.loggingSystem.warn('HelpManager', `No topics found for category: ${category} in ${lang)`'});
@@ -501,7 +501,7 @@ export class HelpManager {
             const topics = content.topics || [];
             
             // 各トピックに詳細情報を付加
-            return topics.map(topic => ({ id: topic.id,'
+            return topics.map(topic => ({ id: topic.id,
                 title: topic.title,'';
                 description: topic.description || '',
                 category,
@@ -512,7 +512,7 @@ export class HelpManager {
                     isEmpty: true) }
                 }))),'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to get category topics: ${category}`, error);
             return [];
         }
@@ -525,15 +525,15 @@ export class HelpManager {
      * @param options - 表示オプション'
      */''
     showTooltip(element: HTMLElement, content: string, options: Record<string, any> = { )'): void {
-        try {'
-            // TooltipSystemとの連携は後続のタスクで実装''
+        try {
+            // TooltipSystemとの連携は後続のタスクで実装
             this.loggingSystem.debug('HelpManager', `Tooltip requested for element: ${element.id || element.className)`'),
             ';
-            // 基本的なツールチップ表示''
+            // 基本的なツールチップ表示
             element.setAttribute('title', content');' }'
             element.setAttribute('aria-label', content});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Failed to show tooltip', error); }
         }
     }
@@ -541,9 +541,9 @@ export class HelpManager {
     /**
      * ツールチップの非表示'
      */''
-    hideTooltip('')';
+    hideTooltip()';
             this.loggingSystem.debug('HelpManager', 'Tooltip hide requested');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Failed to hide tooltip', error); }
         }
     }
@@ -557,10 +557,10 @@ export class HelpManager {
             this.userProgress.viewedSections.add(sectionId);
             this.userProgress.lastAccessed = Date.now();
             ';
-            // 使用統計をローカルストレージに保存''
-            this.saveUserProgress('') }'
+            // 使用統計をローカルストレージに保存
+            this.saveUserProgress() }'
             this.loggingSystem.debug('HelpManager', `Help usage tracked: ${sectionId)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Failed to track help usage', error); }
         }
     }
@@ -588,10 +588,10 @@ export class HelpManager {
     /**
      * ヘルプコンテンツのバリデーション
      * @param content - コンテンツ
-     * @returns バリデーション結果'
+     * @returns バリデーション結果
      */''
-    private validateHelpContent(content: any'): content is HelpContent { try {'
-            // 基本構造チェック''
+    private validateHelpContent(content: any'): content is HelpContent { try {
+            // 基本構造チェック
             if(!content || typeof content !== 'object'') {'
                 '';
                 this.loggingSystem.debug('HelpManager', 'Content validation failed: Invalid object structure''),
@@ -599,10 +599,10 @@ export class HelpManager {
                 return false; }
             }
 ';
-            // 必須フィールドチェック''
+            // 必須フィールドチェック
             const requiredFields = ['category', 'title', 'description', 'language', 'version', 'topics'];
             for(const field of requiredFields) {'
-                ';
+                ';'
             }'
                 if (!(field in content)') {' }'
                     this.loggingSystem.debug('HelpManager', `Content validation failed: Missing required field: ${field)`});
@@ -610,10 +610,10 @@ export class HelpManager {
                 }
             }
 ';
-            // topics配列チェック''
+            // topics配列チェック
             if (!Array.isArray(content.topics)') { ''
                 this.loggingSystem.debug('HelpManager', 'Content validation failed: Topics must be an array'),
-                return false; }
+                return false }
             }
 
             // 各トピックの詳細バリデーション
@@ -624,21 +624,21 @@ export class HelpManager {
                     return false; }
                 }
             }
-';
-            // 言語コードの検証''
+;
+            // 言語コードの検証
             if (!this.validateLanguageCode(content.language)') { ' }'
                 this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid language code: ${content.language)`});
                 return false;
             }
 ';
-            // バージョン形式の検証''
+            // バージョン形式の検証
             if (!this.validateVersion(content.version)') { ' }'
                 this.loggingSystem.debug('HelpManager', `Content validation failed: Invalid version format: ${content.version)`});
                 return false;
             }
-';
+';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Content validation error:', error);
             return false; }
         }
@@ -650,12 +650,12 @@ export class HelpManager {
      * @param index - インデックス
      * @returns バリデーション結果'
      */''
-    private validateTopic(topic: any, index: number'): topic is HelpTopic { // トピックの必須フィールド''
+    private validateTopic(topic: any, index: number'): topic is HelpTopic { // トピックの必須フィールド
         const requiredTopicFields = ['id', 'title', 'description', 'content', 'difficulty', 'estimatedReadTime', 'tags'];
         
         for(const field of requiredTopicFields) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             if (!(field in topic)') {' }'
                 this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Missing field: ${field)`'});
@@ -663,32 +663,32 @@ export class HelpManager {
             }
         }
 ';
-        // ID形式の検証''
+        // ID形式の検証
         if (typeof topic.id !== 'string' || topic.id.trim().length === 0') { ' }'
             this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index): Invalid ID format`'});
             return false;
         }
 ';
-        // 難易度レベルの検証''
+        // 難易度レベルの検証
         const validDifficulties = ['beginner', 'intermediate', 'advanced'];''
         if (!validDifficulties.includes(topic.difficulty)') { ' }'
             this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index}: Invalid difficulty: ${topic.difficulty)`'});
             return false;
         }
 ';
-        // 推定読み時間の検証''
+        // 推定読み時間の検証
         if (typeof topic.estimatedReadTime !== 'number' || topic.estimatedReadTime <= 0') { ' }'
             this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index): Invalid estimatedReadTime`});
             return false;
         }
 ';
-        // タグの検証''
+        // タグの検証
         if (!Array.isArray(topic.tags) || topic.tags.length === 0') { ' }'
             this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index): Invalid tags array`'});
             return false;
         }
 ';
-        // コンテンツ構造の検証''
+        // コンテンツ構造の検証
         if (typeof topic.content !== 'object' || topic.content === null') { ' }'
             this.loggingSystem.debug('HelpManager', `Topic validation failed at index ${index): Invalid content structure`});
             return false;
@@ -717,7 +717,7 @@ export class HelpManager {
         const placeholderPattern = /^\d+\.\d+\.\d+-placeholder$/;
         
         return semverPattern.test(version) || placeholderPattern.test(version); }
-    }'
+    }
  : undefined'';
     getDefaultHelpContent(category: string'): HelpContent { return { ''
             version: '1.0.0',';
@@ -730,7 +730,7 @@ export class HelpManager {
                 title: 'ヘルプが利用できません',' };'
                 description: 'このセクションのヘルプコンテンツを読み込めませんでした。',' }'
                 content: { content: 'このセクションのヘルプコンテンツを読み込めませんでした。' },''
-                difficulty: 'beginner',]';
+                difficulty: 'beginner']';
                 estimatedReadTime: 30,']';
                 tags: ['error'];
             }]
@@ -746,12 +746,12 @@ export class HelpManager {
     private calculateSearchScore(section: HelpTopic, query: string): number { let score = 0;
         const queryLower = query.toLowerCase();
         ';
-        // タイトルでの一致''
+        // タイトルでの一致
         if (section.title.toLowerCase().includes(queryLower)') {
             score += 10; }
         }
         ';
-        // コンテンツでの一致（文字列として検索）''
+        // コンテンツでの一致（文字列として検索）
         const contentString = typeof section.content === 'string' ? section.content: (section.content.content || section.content.message || ''),
         if (contentString.toLowerCase().includes(queryLower) { score += 5; }
         }
@@ -772,8 +772,8 @@ export class HelpManager {
      * @param sectionId - セクションID
      * @returns 関連セクション
      */
-    private getRelatedSuggestions(sectionId: string): HelpTopic[] { try {'
-            const suggestions: HelpTopic[] = [],'';
+    private getRelatedSuggestions(sectionId: string): HelpTopic[] { try {
+            const suggestions: HelpTopic[] = [],
             const language = this.localizationManager.getCurrentLanguage(''';
                 'gameplay.basics': ['gameplay.bubble_interaction', 'gameplay.combo_system'],'';
                 'gameplay.bubble_interaction': ['gameplay.special_bubbles', 'gameplay.scoring'],'';
@@ -788,9 +788,9 @@ export class HelpManager {
                     suggestions.push(section); }
                 }
             }
-            ';
+            ';'
             return suggestions;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to get related suggestions: ${sectionId}`, error);
             return [];
         }
@@ -813,7 +813,7 @@ export class HelpManager {
     /**
      * ユーザー進捗の読み込み'
      */''
-    private loadUserProgress('')';
+    private loadUserProgress()';
             const saved = localStorage.getItem('awaputi_help_progress');
             if(saved) {
                 const progress = JSON.parse(saved);
@@ -821,7 +821,7 @@ export class HelpManager {
                 this.userProgress.searchHistory = progress.searchHistory || [];
             }'
                 this.userProgress.lastAccessed = progress.lastAccessed;' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Failed to load user progress', error); }
         }
     }
@@ -833,10 +833,10 @@ export class HelpManager {
             const progress = {'
                 viewedSections: Array.from(this.userProgress.viewedSections),'';
                 searchHistory: this.userProgress.searchHistory.slice(-50'), // 最新50件のみ保持;
-                lastAccessed: this.userProgress.lastAccessed }'
+                lastAccessed: this.userProgress.lastAccessed }
             };''
             localStorage.setItem('awaputi_help_progress', JSON.stringify(progress);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Failed to save user progress', error); }
         }
     }
@@ -859,15 +859,15 @@ export class HelpManager {
                 return content.topics.map(topic => ({
                     id: topic.id,
                     title: topic.title,
-                    description: topic.description,);
+                    description: topic.description);
                     category: categoryId);
-                    language: currentLanguage,);
+                    language: currentLanguage,)
             }
                     content: topic.content))); }
             }
-            ';
+            ';'
             return [];''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to get help topics for ${categoryId}`, error);
             return [];
         }
@@ -883,8 +883,8 @@ export class HelpManager {
     async getHelpContent(topicId: string, categoryId: string | null = null, language: string | null = null): Promise<TopicDetails | null>,
         try { // 現在の言語を取得
             const currentLanguage = language || this.gameEngine.localizationManager.getCurrentLanguage();
-            ';
-            // カテゴリが指定されていない場合、全カテゴリを検索''
+            ;
+            // カテゴリが指定されていない場合、全カテゴリを検索
             if(!categoryId') {'
                 '';
                 const categories = ['gameplay', 'bubbles', 'controls', 'scoring', 'settings', 'troubleshooting'];
@@ -895,9 +895,9 @@ export class HelpManager {
                 }
                 return null;
             }
-            ';
+            ';'
             return await this.findContentInCategory(topicId, categoryId, currentLanguage);''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to get help content for ${topicId}`, error);
             return null;
         }
@@ -922,7 +922,7 @@ export class HelpManager {
                 return content;
             }
             ';
-            // フォールバック: デフォルトコンテンツを返す''
+            // フォールバック: デフォルトコンテンツを返す
             this.loggingSystem.warn('HelpManager', `Topic content not found: ${topicId), returning fallback`'});'
             return { id: topicId,''
                 title: 'コンテンツが見つかりません','';
@@ -935,10 +935,10 @@ export class HelpManager {
                 }
             },'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to get topic content for ${topicId}`, error');
             
-            // エラー時のフォールバックコンテンツ'
+            // エラー時のフォールバックコンテンツ
             return { id: topicId,''
                 title: 'エラーが発生しました','';
                 description: 'コンテンツの読み込み中にエラーが発生しました。','';
@@ -973,7 +973,7 @@ export class HelpManager {
                 language: language, };
                 content: topic.content }'
             };''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Error finding content in category ${categoryId}`, error);
             return null;
         }
@@ -988,23 +988,23 @@ export class HelpManager {
             this.helpContent.clear();
             
             // 検索エンジンのインデックスを再構築
-            if(this.searchEngine) {'
-                ';
+            if(this.searchEngine) {
+                ';'
             }'
                 await this.searchEngine.buildIndex(newLanguage'); }
             }'
             '';
             this.loggingSystem.info('HelpManager', `Language changed to ${newLanguage), content refreshed`});''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('HelpManager', `Failed to handle language change to ${newLanguage}`, error);
         }
     }
 
-    destroy(): void { try {'
+    destroy(): void { try {
             this.saveUserProgress();''
-            this.helpContent.clear('')';
+            this.helpContent.clear()';
             this.loggingSystem.info('HelpManager', 'Help manager destroyed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('HelpManager', 'Failed to destroy help manager', error); }
         }
     }
@@ -1030,7 +1030,7 @@ export function getHelpManager(gameEngine: GameEngine): HelpManager { if (!helpM
  * @returns 新しいHelpManagerインスタンス
  */
 export function reinitializeHelpManager(gameEngine: GameEngine): HelpManager { if (helpManagerInstance) {
-        helpManagerInstance.destroy(); }'
+        helpManagerInstance.destroy(); }
     }''
     helpManagerInstance = new HelpManager(gameEngine');'
     return helpManagerInstance;''

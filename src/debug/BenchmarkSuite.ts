@@ -18,9 +18,8 @@ class BenchmarkExecutor {
     getExecutionStats(): any { return {}; }
     configure(config: any): void {}
     destroy(): void {}
-}
 
-class BenchmarkResultAnalyzer {'
+class BenchmarkResultAnalyzer {
     constructor(suite: any) {}''
     compareWithBaseline(name: string, result: any, baseline: any'): any { ' }'
         return { status: 'pass', overallScore: 100 }
@@ -29,7 +28,6 @@ class BenchmarkResultAnalyzer {'
     getAnalysisHistory(limit: number): any { return [], }
     configure(config: any): void {}
     destroy(): void {}
-}
 
 class BenchmarkReporter {
     constructor(suite: any) {}
@@ -39,7 +37,6 @@ class BenchmarkReporter {
     getReportHistory(limit: number): any { return [], }
     configure(config: any): void {}
     destroy(): void {}
-}
 
 // Type definitions
 interface GameEngine { canvas?: HTMLCanvasElement;
@@ -63,10 +60,10 @@ interface GameEngine { canvas?: HTMLCanvasElement;
 }
 
 interface BenchmarkTest { name: string,
-    category: string,';
+    category: string,
     description: string,'';
     test: (options?: BenchmarkOptions') => Promise<BenchmarkResult>,
-    baseline: Record<string, number>; }
+    baseline: Record<string, number> }
 }
 
 interface BenchmarkOptions { iterations?: number;
@@ -108,17 +105,17 @@ interface BenchmarkResult { success: boolean,
     benchmark?: BenchmarkTest;
     }
 }
-';
+';'
 interface ComparisonResult { ''
     status: 'pass' | 'warning' | 'fail',
-    overallScore: number; }
+    overallScore: number }
 }
 
 interface SuiteResult { results: Record<string, BenchmarkResult>;
     summary: BenchmarkSummary,
     totalExecutionTime: number,
     timestamp: number,
-    environment: EnvironmentInfo;
+    environment: EnvironmentInfo
     }
 }
 
@@ -127,19 +124,19 @@ interface BenchmarkSummary { total: number,
     failed: number,
     warnings: number,
     categories: Record<string, CategoryStats>;
-    performance: PerformanceStats;
+    performance: PerformanceStats
     }
 }
 
 interface CategoryStats { passed: number,
     failed: number,
-    warnings: number; }
+    warnings: number }
 }
 
 interface PerformanceStats { avgExecutionTime: number,
     totalExecutionTime: number,
     regressions: string[],
-    improvements: string[]; }
+    improvements: string[] }
 }
 
 interface EnvironmentInfo { userAgent: string,
@@ -148,17 +145,17 @@ interface EnvironmentInfo { userAgent: string,
     hardwareConcurrency: number,
     memory: MemoryInfo | null,
     screen: ScreenInfo,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface MemoryInfo { usedJSHeapSize: number,
     totalJSHeapSize: number,
-    jsHeapSizeLimit: number; }
+    jsHeapSizeLimit: number }
 }
 
 interface ScreenInfo { width: number,
     height: number,
-    pixelRatio: number; }
+    pixelRatio: number }
 }
 
 interface ExecutorConfig { [key: string]: any, }
@@ -202,9 +199,9 @@ export class BenchmarkSuite {
         this.baselines = new Map();
         this.results = new Map();
         this.isRunning = false;
-        this.currentBenchmark = null;'
+        this.currentBenchmark = null;
         '';
-        this.initialize('');
+        this.initialize();
     }
     }'
         console.log('[BenchmarkSuite] Initialized with Main Controller Pattern'); }
@@ -280,7 +277,7 @@ export class BenchmarkSuite {
             baseline: { processingRate: 10000, serializationTime: 100 }''
         }');
 ';
-        // ストレステスト''
+        // ストレステスト
         this.benchmarks.set('stressTest', { ''
             name: 'Stress Test',')';
             category: 'stress',')';
@@ -298,7 +295,7 @@ export class BenchmarkSuite {
         });
     }'
 '';
-    private loadBaselines('')';
+    private loadBaselines()';
             const stored = localStorage.getItem('benchmarkBaselines');
             if(stored) {
                 const baselines = JSON.parse(stored);
@@ -306,20 +303,20 @@ export class BenchmarkSuite {
                 Object.entries(baselines).forEach(([name, baseline]) => {  }
                     this.baselines.set(name, baseline); }'
                 });''
-            } catch (error') { ''
-            console.warn('Failed to load benchmark baselines:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load benchmark baselines:', error) }
         }
     }
-';
-    private saveBaselines(): void { try {''
+';'
+    private saveBaselines(): void { try {'
             const baselines = Object.fromEntries(this.baselines');''
             localStorage.setItem('benchmarkBaselines', JSON.stringify(baselines);' }'
-        } catch (error') { ''
-            console.warn('Failed to save benchmark baselines:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save benchmark baselines:', error) }
         }
     }'
 '';
-    private setupPerformanceObserver('')';
+    private setupPerformanceObserver()';
         if('PerformanceObserver' in window) {
             this.performanceObserver = new PerformanceObserver((list) => { '
                 const entries = list.getEntries();''
@@ -330,9 +327,9 @@ export class BenchmarkSuite {
                     }'
                 });''
             }');
-';
+';'
             this.performanceObserver.observe({ ')'
-                entryTypes: ['measure', 'navigation', 'resource'] ); }
+                entryTypes: ['measure', 'navigation', 'resource'] ) }
             });
         }
     }
@@ -346,15 +343,15 @@ export class BenchmarkSuite {
             this.currentBenchmark.performanceEntries.push({ name: entry.name)
                 duration: entry.duration,);
                 startTime: entry.startTime),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
         }
     }
 
-    // メインベンチマーク実行メソッド (delegate to executor);'
+    // メインベンチマーク実行メソッド (delegate to executor);
     async runBenchmarks(benchmarkNames: string[] | null = null, options: BenchmarkOptions = { ): Promise<SuiteResult> {''
         if(this.isRunning') {'
-            ';
+            ';'
         }'
             throw new Error('Benchmarks are already running'); }
         }
@@ -390,7 +387,7 @@ export class BenchmarkSuite {
                 summary: this.generateSummary(results),
                 totalExecutionTime: totalTime,
                 timestamp: Date.now(),
-                environment: this.captureEnvironment(); }
+                environment: this.captureEnvironment() }
             };
 
             this.results.set(Date.now(), suiteResult);
@@ -400,7 +397,7 @@ export class BenchmarkSuite {
         }
     }
 
-    // Delegate baseline comparison to ResultAnalyzer'
+    // Delegate baseline comparison to ResultAnalyzer
     compareWithBaseline(name: string, result: BenchmarkResult): ComparisonResult { ' }'
         return this.resultAnalyzer.compareWithBaseline(name, result, this.getBaseline(name)') || { status: 'pass', overallScore: 100 }
     }
@@ -476,14 +473,14 @@ export class BenchmarkSuite {
         };
     }
 ';
-    // 個別ベンチマークメソッド（簡略化版）''
+    // 個別ベンチマークメソッド（簡略化版）
     private async benchmarkRendering(options: BenchmarkOptions = { )'): Promise<BenchmarkResult> {
         const iterations = options.iterations || 60;'
         const canvas = this.gameEngine? .canvas;''
         const ctx = canvas?.getContext('2d');'
         '';
         if(!canvas || !ctx') {'
-            ';
+            ';'
         }'
             throw new Error('Canvas not available for rendering benchmark'); }
         }
@@ -547,7 +544,7 @@ export class BenchmarkSuite {
     private async benchmarkParticleEffects(options: BenchmarkOptions = { ): Promise<BenchmarkResult> { }
         return { avgUpdateTime: 2.0, maxParticles: 300, success: true }
     }
-';
+';'
     private async benchmarkMemoryAllocation(options: BenchmarkOptions = { ): Promise<BenchmarkResult> {' }'
         if (!(performance as any).memory') return { success: false, error: 'Memory API not available' }
         const initial = (performance as any).memory.usedJSHeapSize;
@@ -591,7 +588,7 @@ export class BenchmarkSuite {
          }
         return { duration, stabilityScore: 95, avgFPS: 58, success: true }
     }
-';
+';'
     private async benchmarkMemoryStress(options: BenchmarkOptions = { ): Promise<BenchmarkResult> {' }'
         if (!(performance as any).memory') return { success: false, error: 'Memory API not available' }
         const initial = (performance as any).memory.usedJSHeapSize;
@@ -603,7 +600,7 @@ export class BenchmarkSuite {
             this.baselines.set(benchmarkName, {)
                 ...results);
                 timestamp: Date.now(),
-                environment: this.captureEnvironment(); }
+                environment: this.captureEnvironment() }
             });
             this.saveBaselines();
         }
@@ -621,7 +618,7 @@ export class BenchmarkSuite {
     // 結果可視化 (delegate to reporter);
     visualizeResults(results: any, options: any = { ): any {
         return this.benchmarkReporter.visualizeResults(results, options); }
-    }'
+    }
 '';
     // 結果エクスポート (delegate to reporter');''
     exportBenchmarks(results: any, format: string = 'json', options: any = { ): any {
@@ -665,8 +662,8 @@ export class BenchmarkSuite {
         }
         
         if(config.reporter) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.benchmarkReporter.configure(config.reporter'); }
         }'
@@ -694,13 +691,13 @@ export class BenchmarkSuite {
         }
         
         if(this.performanceObserver) {
-        ';
+        ';'
             '';
-            this.performanceObserver.disconnect('');
+            this.performanceObserver.disconnect();
         }'
         console.log('[BenchmarkSuite] Benchmark suite destroyed'); }
     }
 }
 ';
-// グローバルアクセス用（デバッグ目的）''
+// グローバルアクセス用（デバッグ目的）
 (window as any').BenchmarkSuite = BenchmarkSuite;

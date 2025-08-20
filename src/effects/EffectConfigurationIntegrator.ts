@@ -8,10 +8,10 @@ interface ConfigurationManager { has(key: string): boolean,
     get<T = any>(key: string, defaultValue?: T): T;
     set<T = any>(key: string, value: T): void,
     watch<T = any>(key: string, callback: (newValue: T, oldValue?: T) => void): ConfigWatchListener;
-    unwatch(key: string, listener: ConfigWatchListener): void; }
+    unwatch(key: string, listener: ConfigWatchListener): void }
 }
 
-interface ErrorHandler { handleError(error: Error, context: string): void; }
+interface ErrorHandler { handleError(error: Error, context: string): void }
 }
 
 interface QualityController { setQualityLevel(level: string): void,
@@ -21,12 +21,12 @@ interface QualityController { setQualityLevel(level: string): void,
 interface SeasonalManager { setSeasonalEffectsEnabled(enabled: boolean): void,
     setAutoSeasonDetection(enabled: boolean): void,
     setSeason(season: string): void,
-    autoSeasonDetection?: boolean; }
+    autoSeasonDetection?: boolean }
 }
 
 interface AudioManager { setEffectsEnabled?(enabled: boolean): void,
     setVolumeSync?(enabled: boolean): void, }
-}'
+}
 '';
 type ConfigWatchListener = (newValue: any, oldValue?: any') => void;
 
@@ -35,7 +35,7 @@ interface EffectSystems { qualityController?: QualityController;
     audioManager?: AudioManager;
     }
 }
-';
+';'
 interface DefaultQualitySettings { ''
     'effects.quality.level': string;''
     'effects.quality.autoAdjust': boolean;''
@@ -44,7 +44,7 @@ interface DefaultQualitySettings { ''
     'effects.quality.maxParticles': number;''
     'effects.quality.maxEffects': number; }
 }
-';
+';'
 interface DefaultSeasonalSettings { ''
     'effects.seasonal.enabled': boolean;''
     'effects.seasonal.autoDetection': boolean;''
@@ -54,7 +54,7 @@ interface DefaultSeasonalSettings { ''
     'effects.seasonal.currentSeason': string;''
     'effects.seasonal.currentTheme': string | null; }
 }
-';
+';'
 interface DefaultAudioSettings { ''
     'effects.audio.enabled': boolean;''
     'effects.audio.volumeSync': boolean;''
@@ -63,7 +63,7 @@ interface DefaultAudioSettings { ''
     'effects.audio.qualityScaling': boolean;''
     'effects.audio.reverbEffects': boolean; }
 }
-';
+';'
 interface DefaultPerformanceSettings { ''
     'effects.performance.monitoring': boolean;''
     'effects.performance.autoOptimization': boolean;''
@@ -95,7 +95,7 @@ interface ExportedEffectSettings { quality: {
         resourceCleanup: boolean }
     },
     metadata: { version: string,
-        exportTime: number; }
+        exportTime: number }
     };
 }
 
@@ -128,7 +128,7 @@ interface ConfigurationStats { totalSettings: number,
     registeredSystems: {
         qualityController: boolean,
         seasonalManager: boolean,
-        audioManager: boolean; }
+        audioManager: boolean }
     };
 }
 
@@ -178,12 +178,12 @@ export class EffectConfigurationIntegrator {
             
             // オーディオ統合設定の初期化
             this._initializeAudioIntegrationSettings();
-            ';
-            // パフォーマンス設定の初期化''
-            this._initializePerformanceSettings('')';
+            ;
+            // パフォーマンス設定の初期化
+            this._initializePerformanceSettings()';
             console.log('[EffectConfigurationIntegrator] 設定初期化完了');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator._initializeConfiguration'); }
         }
     }
@@ -196,7 +196,7 @@ export class EffectConfigurationIntegrator {
             'effects.quality.level': 'high','';
             'effects.quality.autoAdjust': true,'';
             'effects.quality.targetFPS': 60,'';
-            'effects.quality.memoryThreshold': 100 * 1024 * 1024, // 100MB'';
+            'effects.quality.memoryThreshold': 100 * 1024 * 1024, // 100MB;
             'effects.quality.maxParticles': 500,'';
             'effects.quality.maxEffects': 20;
         };
@@ -283,30 +283,30 @@ export class EffectConfigurationIntegrator {
     
     /**
      * 設定監視の設定
-     * @private'
+     * @private
      */''
-    private _setupConfigurationWatchers('')';
+    private _setupConfigurationWatchers()';
         this._watchConfig('effects.quality.level', (newValue: string, oldValue?: string) => { this._onQualityLevelChanged(newValue, oldValue);' }'
         }');'
         '';
         this._watchConfig('effects.quality.autoAdjust', (newValue: boolean) => { this._onAutoAdjustChanged(newValue);' }'
         }');
         ';
-        // 季節エフェクト設定の監視''
+        // 季節エフェクト設定の監視
         this._watchConfig('effects.seasonal.enabled', (newValue: boolean) => { this._onSeasonalEffectsEnabledChanged(newValue);' }'
         }');'
         '';
         this._watchConfig('effects.seasonal.currentSeason', (newValue: string) => { this._onSeasonChanged(newValue);' }'
         }');
         ';
-        // オーディオ統合設定の監視''
+        // オーディオ統合設定の監視
         this._watchConfig('effects.audio.enabled', (newValue: boolean) => { this._onAudioEffectsEnabledChanged(newValue);' }'
         }');'
         '';
         this._watchConfig('effects.audio.volumeSync', (newValue: boolean) => { this._onAudioVolumeSyncChanged(newValue);' }'
         }');
         ';
-        // パフォーマンス設定の監視''
+        // パフォーマンス設定の監視
         this._watchConfig('effects.performance.monitoring', (newValue: boolean) => { this._onPerformanceMonitoringChanged(newValue); }
         });
     }
@@ -335,8 +335,8 @@ export class EffectConfigurationIntegrator {
         if (systems.audioManager) { this.audioManager = systems.audioManager; }
         }
         ';
-        // 現在の設定をシステムに適用''
-        this._syncConfigurationToSystems('')';
+        // 現在の設定をシステムに適用
+        this._syncConfigurationToSystems()';
         console.log('[EffectConfigurationIntegrator] エフェクトシステム登録完了');
     }
     
@@ -348,8 +348,8 @@ export class EffectConfigurationIntegrator {
         
         this.syncInProgress = true;
         
-        try {'
-            // 品質コントローラーとの同期''
+        try {
+            // 品質コントローラーとの同期
             if(this.qualityController') {'
                 '';
                 const qualityLevel = this.configManager.get<string>('effects.quality.level'');''
@@ -360,7 +360,7 @@ export class EffectConfigurationIntegrator {
                 this.qualityController.setAutoAdjustment(autoAdjust); }
             }
             ';
-            // 季節エフェクトマネージャーとの同期''
+            // 季節エフェクトマネージャーとの同期
             if(this.seasonalManager') {'
                 '';
                 const seasonalEnabled = this.configManager.get<boolean>('effects.seasonal.enabled'');''
@@ -376,7 +376,7 @@ export class EffectConfigurationIntegrator {
                 }
             }
             ';
-            // オーディオマネージャーとの同期''
+            // オーディオマネージャーとの同期
             if(this.audioManager') {'
                 '';
                 const audioEnabled = this.configManager.get<boolean>('effects.audio.enabled'');''
@@ -389,7 +389,7 @@ export class EffectConfigurationIntegrator {
             
             this.lastSyncTime = performance.now();'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator._syncConfigurationToSystems'); }
         } finally { this.syncInProgress = false; }
         }
@@ -483,9 +483,9 @@ export class EffectConfigurationIntegrator {
      * @param value - 新しい値
      */
     public updateConfiguration(key: string, value: any): void { try {
-            this.configManager.set(key, value); }'
+            this.configManager.set(key, value); }
             console.log(`[EffectConfigurationIntegrator] 設定更新: ${key} = ${value)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator.updateConfiguration'); }
         }
     }
@@ -503,9 +503,9 @@ export class EffectConfigurationIntegrator {
             
             // 一括更新後にシステム同期
             this._syncConfigurationToSystems();
-            ';
+            ';'
             console.log(`[EffectConfigurationIntegrator] 設定一括更新: ${Object.keys(settings}).length}件`);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator.updateMultipleConfigurations'); }
         }
     }
@@ -514,7 +514,7 @@ export class EffectConfigurationIntegrator {
      * エフェクト設定のエクスポート
      * @returns エクスポート用設定データ'
      */''
-    public exportEffectSettings('')';
+    public exportEffectSettings()';
                     level: this.configManager.get('effects.quality.level''),'';
                     autoAdjust: this.configManager.get('effects.quality.autoAdjust''),'';
                     targetFPS: this.configManager.get('effects.quality.targetFPS''),'';
@@ -524,28 +524,28 @@ export class EffectConfigurationIntegrator {
                     enabled: this.configManager.get('effects.seasonal.enabled''),'';
                     autoDetection: this.configManager.get('effects.seasonal.autoDetection''),'';
                     events: this.configManager.get('effects.seasonal.events''),'';
-                    customThemes: this.configManager.get('effects.seasonal.customThemes.enabled''); }
+                    customThemes: this.configManager.get('effects.seasonal.customThemes.enabled'') }
                 },'
                 audio: { ''
                     enabled: this.configManager.get('effects.audio.enabled''),'';
                     volumeSync: this.configManager.get('effects.audio.volumeSync''),'';
                     visualFeedback: this.configManager.get('effects.audio.visualFeedback''),'';
-                    seasonalSounds: this.configManager.get('effects.audio.seasonalSounds''); }
+                    seasonalSounds: this.configManager.get('effects.audio.seasonalSounds'') }
                 },'
                 performance: { ''
                     monitoring: this.configManager.get('effects.performance.monitoring''),'';
                     autoOptimization: this.configManager.get('effects.performance.autoOptimization''),'';
                     culling: this.configManager.get('effects.performance.culling''),'';
-                    resourceCleanup: this.configManager.get('effects.performance.resourceCleanup''); }
+                    resourceCleanup: this.configManager.get('effects.performance.resourceCleanup'') }
                 },'
                 metadata: { ''
                     version: '1.0',
-                    exportTime: Date.now(); }
+                    exportTime: Date.now() }
                 }
             };
-            ';
+            ';'
             return settings;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator.exportEffectSettings');
             return null; }
         }
@@ -556,9 +556,9 @@ export class EffectConfigurationIntegrator {
      * @param settings - インポート用設定データ
      * @returns インポート成功か'
      */''
-    public importEffectSettings(settings: ImportedSettings'): boolean { try {''
+    public importEffectSettings(settings: ImportedSettings'): boolean { try {'
             if(!settings || typeof settings !== 'object'') {'
-                ';
+                ';'
             }'
                 throw new Error('Invalid settings data'); }
             }
@@ -566,7 +566,7 @@ export class EffectConfigurationIntegrator {
             const configUpdates: Record<string, any> = {};
             
             // 品質設定
-            if(settings.quality) {'
+            if(settings.quality) {
                 '';
                 if (settings.quality.level') configUpdates['effects.quality.level'] = settings.quality.level;''
                 if (typeof settings.quality.autoAdjust === 'boolean'') configUpdates['effects.quality.autoAdjust'] = settings.quality.autoAdjust;''
@@ -575,7 +575,7 @@ export class EffectConfigurationIntegrator {
                 if (settings.quality.maxParticles') configUpdates['effects.quality.maxParticles'] = settings.quality.maxParticles; }
             }
             ';
-            // 季節設定''
+            // 季節設定
             if(settings.seasonal') {'
                 '';
                 if (typeof settings.seasonal.enabled === 'boolean'') configUpdates['effects.seasonal.enabled'] = settings.seasonal.enabled;''
@@ -585,7 +585,7 @@ export class EffectConfigurationIntegrator {
                 if (typeof settings.seasonal.customThemes === 'boolean'') configUpdates['effects.seasonal.customThemes.enabled'] = settings.seasonal.customThemes; }
             }
             ';
-            // オーディオ設定''
+            // オーディオ設定
             if(settings.audio') {'
                 '';
                 if (typeof settings.audio.enabled === 'boolean'') configUpdates['effects.audio.enabled'] = settings.audio.enabled;''
@@ -595,7 +595,7 @@ export class EffectConfigurationIntegrator {
                 if (typeof settings.audio.seasonalSounds === 'boolean'') configUpdates['effects.audio.seasonalSounds'] = settings.audio.seasonalSounds; }
             }
             ';
-            // パフォーマンス設定''
+            // パフォーマンス設定
             if(settings.performance') {'
                 '';
                 if (typeof settings.performance.monitoring === 'boolean'') configUpdates['effects.performance.monitoring'] = settings.performance.monitoring;''
@@ -609,9 +609,9 @@ export class EffectConfigurationIntegrator {
             this.updateMultipleConfigurations(configUpdates);
             
             console.log(`[EffectConfigurationIntegrator] 設定インポート完了: ${Object.keys(configUpdates}).length}件`);
-            return true;'
+            return true;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'EffectConfigurationIntegrator.importEffectSettings');
             return false; }
         }
@@ -640,9 +640,9 @@ export class EffectConfigurationIntegrator {
             
         }
             this.configManager.unwatch(key, listener); }
-        }'
+        }
         '';
-        this.configListeners.clear('')';
+        this.configListeners.clear()';
         console.log('[EffectConfigurationIntegrator] クリーンアップ完了');
     }
 }
@@ -653,6 +653,6 @@ let configurationIntegratorInstance: EffectConfigurationIntegrator | null = null
 /**
  * EffectConfigurationIntegratorのシングルトンインスタンスを取得
  * @returns シングルトンインスタンス
- */'
+ */
 export function getEffectConfigurationIntegrator(): EffectConfigurationIntegrator { if (!configurationIntegratorInstance) {''
         configurationIntegratorInstance = new EffectConfigurationIntegrator(' })

@@ -11,8 +11,8 @@ export class ShareDialog {'
         this.socialSharingManager = socialSharingManager;
         
         // 設定
-        this.config = {'
-            // 表示設定''
+        this.config = {
+            // 表示設定
             title: options.title || '共有',';
             width: options.width || 480,'';
             height: options.height || 'auto','';
@@ -22,16 +22,16 @@ export class ShareDialog {'
             animation: options.animation !== false,
             closeOnBackdrop: options.closeOnBackdrop !== false,
             closeOnEscape: options.closeOnEscape !== false,
-            ';
-            // 機能設定''
+            ;
+            // 機能設定
             platforms: options.platforms || ['web-share', 'twitter', 'facebook', 'copy'],
             showPlatformLabels: options.showPlatformLabels !== false,
             showPlatformIcons: options.showPlatformIcons !== false,
             showScreenshotPreview: options.showScreenshotPreview === true,
             allowMessageEdit: options.allowMessageEdit === true,
             ';
-            // スタイル設定''
-            theme: options.theme || 'default', // default, minimal, elegant, gaming';
+            // スタイル設定
+            theme: options.theme || 'default', // default, minimal, elegant, gaming;
             styles: {''
                 backgroundColor: options.backgroundColor || '#FFFFFF','';
                 textColor: options.textColor || '#333333','';
@@ -87,7 +87,7 @@ export class ShareDialog {'
             close: this.handleClose.bind(this),
             platformClick: this.handlePlatformClick.bind(this),
             messageChange: this.handleMessageChange.bind(this),
-            resize: this.handleResize.bind(this); }
+            resize: this.handleResize.bind(this) }
         };
         
         // フォーカス管理
@@ -99,10 +99,9 @@ export class ShareDialog {'
             shares: 0,
             cancellations: 0,
             messageEdits: 0, }
-            platforms: {}
-        },'
+            platforms: {},
         '';
-        this.initialize('')';
+        this.initialize()';
         this.log('ShareDialog初期化完了');
     }
     
@@ -122,9 +121,9 @@ export class ShareDialog {'
             
             // アクセシビリティの設定
             if (this.config.accessibility.enabled) {
-    }'
+    }
                 this.setupAccessibility();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.handleError('SHARE_DIALOG_INITIALIZATION_FAILED', error); }
         }
     }
@@ -132,12 +131,12 @@ export class ShareDialog {'
     /**
      * DOM要素の作成'
      */''
-    createElements('')';
+    createElements()';
         this.elements.backdrop = document.createElement('div'');''
         this.elements.backdrop.className = 'share-dialog-backdrop';''
         this.elements.backdrop.style.display = 'none';
         ';
-        // ダイアログコンテナ''
+        // ダイアログコンテナ
         this.elements.dialog = document.createElement('div'');''
         this.elements.dialog.className = 'share-dialog';''
         this.elements.dialog.setAttribute('role', 'dialog'');''
@@ -145,7 +144,7 @@ export class ShareDialog {'
         this.elements.dialog.setAttribute('aria-labelledby', 'share-dialog-title'');''
         this.elements.dialog.setAttribute('aria-describedby', 'share-dialog-content'');
         ';
-        // メインコンテナ''
+        // メインコンテナ
         this.elements.container = document.createElement('div'');''
         this.elements.container.className = 'share-dialog-container';
         
@@ -157,8 +156,8 @@ export class ShareDialog {'
         
         // フッター
         this.elements.footer = this.createFooter();
-        ';
-        // スクリーンリーダー用アナウンサー''
+        ;
+        // スクリーンリーダー用アナウンサー
         if(this.config.accessibility.enabled') {'
             '';
             this.elements.announcer = document.createElement('div'');''
@@ -190,19 +189,19 @@ export class ShareDialog {'
     }
     
     /**
-     * ヘッダーの作成'
+     * ヘッダーの作成
      */''
-    createHeader('')';
+    createHeader()';
         const header = document.createElement('div'');''
         header.className = 'share-dialog-header';
         ';
-        // タイトル''
+        // タイトル
         const title = document.createElement('h2'');''
         title.id = 'share-dialog-title';''
         title.className = 'share-dialog-title';
         title.textContent = this.config.title;
         ';
-        // 閉じるボタン''
+        // 閉じるボタン
         this.elements.closeButton = document.createElement('button'');''
         this.elements.closeButton.className = 'share-dialog-close';''
         this.elements.closeButton.innerHTML = '✕';''
@@ -218,12 +217,12 @@ export class ShareDialog {'
     /**
      * ボディの作成'
      */''
-    createBody('')';
+    createBody()';
         const body = document.createElement('div'');''
         body.id = 'share-dialog-content';''
         body.className = 'share-dialog-body';
         ';
-        // スクリーンショットプレビュー''
+        // スクリーンショットプレビュー
         if(this.config.showScreenshotPreview') {'
             '';
             this.elements.screenshotPreview = document.createElement('div'');''
@@ -233,7 +232,7 @@ export class ShareDialog {'
             body.appendChild(this.elements.screenshotPreview); }
         }
         ';
-        // メッセージエディター''
+        // メッセージエディター
         if(this.config.allowMessageEdit') {'
             '';
             const messageContainer = document.createElement('div'');''
@@ -257,7 +256,7 @@ export class ShareDialog {'
             body.appendChild(messageContainer'); }
         }
         ';
-        // プラットフォーム選択''
+        // プラットフォーム選択
         const platformsContainer = document.createElement('div'');''
         platformsContainer.className = 'share-dialog-platforms';''
         platformsContainer.setAttribute('role', 'group'');''
@@ -275,13 +274,13 @@ export class ShareDialog {'
     }
     
     /**
-     * フッターの作成'
+     * フッターの作成
      */''
-    createFooter('')';
+    createFooter()';
         const footer = document.createElement('div'');''
         footer.className = 'share-dialog-footer';
         ';
-        // キャンセルボタン''
+        // キャンセルボタン
         const cancelButton = document.createElement('button'');''
         cancelButton.className = 'share-dialog-cancel';''
         cancelButton.textContent = 'キャンセル';''
@@ -296,7 +295,7 @@ export class ShareDialog {'
      * プラットフォームボタンの作成'
      */''
     createPlatformButton(platform, index') {'
-        ';
+        ';'
     }'
         const button = document.createElement('button''); }'
         button.className = `share-dialog-platform share-dialog-platform-${platform}`;''
@@ -309,8 +308,8 @@ export class ShareDialog {'
         let content = '';
         
         if(this.config.showPlatformIcons) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             const icon = this.getIcon(platform');' }'
             content += `<span class="share-dialog-platform-icon">${icon}</span>`;
@@ -370,7 +369,7 @@ export class ShareDialog {'
             top: '0','';
             left: '0','';
             width: '100%','';
-            height: '100%',);
+            height: '100%');
             backgroundColor: styles.backdropColor)';
             zIndex: styles.zIndex,'';
             display: 'flex'),'';
@@ -383,8 +382,8 @@ export class ShareDialog {'
         // ダイアログスタイル
         Object.assign(dialog.style, { backgroundColor: styles.backgroundColor,
             color: styles.textColor,
-            borderRadius: styles.borderRadius,);
-            fontSize: styles.fontSize)';
+            borderRadius: styles.borderRadius);
+            fontSize: styles.fontSize);
             fontFamily: styles.fontFamily,') }'
             width: this.config.width === 'auto' ? 'auto' : `${this.config.width}px`');''
             height: this.config.height === 'auto' ? 'auto' : `${ this.config.height')px`,'
@@ -413,7 +412,7 @@ export class ShareDialog {'
     /**
      * 垂直配置の取得
      */
-    getVerticalAlignment() {'
+    getVerticalAlignment() {
         '';
         switch (this.config.position') {''
             case 'top':'';
@@ -437,7 +436,7 @@ export class ShareDialog {'
                 Object.assign(dialog.style, {''
                     backgroundColor: '#FAFAFA',')';
                     color: '#333333',')';
-                    border: '1px solid #E0E0E0''),';
+                    border: '1px solid #E0E0E0''),'
     }'
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12')' }
                 };
@@ -466,7 +465,7 @@ export class ShareDialog {'
     /**
      * レスポンシブスタイルの適用'
      */''
-    applyResponsiveStyles('')';
+    applyResponsiveStyles()';
         const mediaQuery = window.matchMedia('(max-width: 768px')'),';
         '';
         if(mediaQuery.matches') {
@@ -476,7 +475,7 @@ export class ShareDialog {'
                 maxWidth: '100vw','';
                 height: 'auto','';
                 maxHeight: '100vh',')';
-                borderRadius: '0',');
+                borderRadius: '0',')
         }'
                 margin: '0'); }
         }
@@ -486,24 +485,24 @@ export class ShareDialog {'
      * アクセシビリティスタイルの適用
      */
     applyAccessibilityStyles() {'
-        // 高コントラストモード''
-        if (this.config.accessibility.highContrast') {
+        // 高コントラストモード
+        if (this.config.accessibility.highContrast) {
             const dialog = this.elements.dialog;'
             Object.assign(dialog.style, {''
                 backgroundColor: '#000000',')';
-                color: '#FFFFFF',');
+                color: '#FFFFFF',')
     }'
                 border: '3px solid #FFFFFF'); }
         }
         ';
-        // 動きの軽減''
+        // 動きの軽減
         if(this.config.accessibility.reducedMotion') {'
             const dialog = this.elements.dialog;'
         }'
             dialog.style.transition = 'none'; }
         }
         ';
-        // フォーカス表示の強化''
+        // フォーカス表示の強化
         const style = document.createElement('style');
         style.textContent = `;
             .share-dialog-platform:focus,
@@ -520,39 +519,39 @@ export class ShareDialog {'
      * イベントリスナーの設定
      */
     setupEventListeners() {'
-        // バックドロップクリック''
+        // バックドロップクリック
         if (this.config.closeOnBackdrop') {'
     }'
             this.elements.backdrop.addEventListener('click', this.handlers.backdropClick); }
         }
         ';
-        // ESCキー''
+        // ESCキー
         if(this.config.closeOnEscape') {'
-            ';
+            ';'
         }'
             document.addEventListener('keydown', this.handlers.keydown'); }
         }
         ';
-        // 閉じるボタン''
+        // 閉じるボタン
         this.elements.closeButton.addEventListener('click', this.handlers.close');
         ';
-        // キャンセルボタン''
+        // キャンセルボタン
         const cancelButton = this.elements.footer.querySelector('.share-dialog-cancel'');''
         cancelButton.addEventListener('click', this.handlers.close);
         ';
-        // プラットフォームボタン''
+        // プラットフォームボタン
         this.elements.platforms.forEach(button => {  ');' }'
             button.addEventListener('click', this.handlers.platformClick); }
         };
         ';
-        // メッセージエディター''
+        // メッセージエディター
         if(this.elements.messageEditor') {'
-            ';
+            ';'
         }'
             this.elements.messageEditor.addEventListener('input', this.handlers.messageChange'); }
         }
         ';
-        // ウィンドウリサイズ''
+        // ウィンドウリサイズ
         window.addEventListener('resize', this.handlers.resize);
     }
     
@@ -576,7 +575,7 @@ export class ShareDialog {'
     updateFocusableElements() {
         const selector = `;
             button:not([disabled]),
-            input:not([disabled]),';
+            input:not([disabled]),
             textarea:not([disabled]),'';
             select:not([disabled]'),'';
             [tabindex]:not([tabindex="-1"]);
@@ -621,21 +620,21 @@ export class ShareDialog {'
             }
                 this.showScreenshotPreview(screenshot); }
             }
-            ';
-            // メッセージの初期化''
+            ;
+            // メッセージの初期化
             if(this.elements.messageEditor && shareData.text') {
                 this.elements.messageEditor.value = shareData.text;
             }
                 this.state.editedMessage = shareData.text; }
             }
             ';
-            // バックドロップ表示''
+            // バックドロップ表示
             this.elements.backdrop.style.display = 'flex';
             
             // アニメーション
-            if(this.config.animation) {'
+            if(this.config.animation) {
                 '';
-                await this.playShowAnimation('');'
+                await this.playShowAnimation();'
                 this.elements.dialog.style.transform = 'scale(1')';'
             }'
                 this.elements.dialog.style.opacity = '1'; }
@@ -646,8 +645,8 @@ export class ShareDialog {'
             
             // フォーカス設定
             this.setInitialFocus();
-            ';
-            // アクセシビリティアナウンス''
+            ;
+            // アクセシビリティアナウンス
             if(this.config.accessibility.announcements && this.elements.announcer') {
                 
             }
@@ -656,7 +655,7 @@ export class ShareDialog {'
             '';
             this.log('ShareDialog表示');'
             '';
-        } catch (error') { this.state.opening = false;' }'
+        } catch (error) { this.state.opening = false;' }'
             this.handleError('SHARE_DIALOG_SHOW_FAILED', error, { shareData, screenshot };
             throw error;
         }
@@ -672,7 +671,7 @@ export class ShareDialog {'
         try { this.state.closing = true;
             
             // アニメーション
-            if(this.config.animation) {'
+            if(this.config.animation) {
                 '';
                 await this.playHideAnimation('';'
             this.elements.backdrop.style.display = 'none';
@@ -682,13 +681,13 @@ export class ShareDialog {'
             );
             // フォーカスを戻す)
             this.restorePreviousFocus();
-            ';
-            // 状態のリセット''
-            this.resetState('')';
+            ;
+            // 状態のリセット
+            this.resetState()';
             this.log('ShareDialog非表示');
             }'
             ' }'
-        } catch (error') { this.state.closing = false;''
+        } catch (error) { this.state.closing = false;''
             this.handleError('SHARE_DIALOG_HIDE_FAILED', error); }
         }
     }
@@ -750,13 +749,13 @@ export class ShareDialog {'
         
         let focusElement = null;
         ';
-        // カスタム初期フォーカス要素''
+        // カスタム初期フォーカス要素
         if (this.config.accessibility.focus.initialElement') {
     }
             focusElement = this.config.accessibility.focus.initialElement; }
         } else {  // デフォルト: 最初のプラットフォームボタン }
             focusElement = this.elements.platforms[0]; }
-        }'
+        }
         '';
         if (focusElement && typeof focusElement.focus === 'function') { setTimeout(() => {  }
                 focusElement.focus(); }
@@ -792,16 +791,16 @@ export class ShareDialog {'
         this.state.focusedElement = null;
         this.state.previousFocus = null;
         ';
-        // スクリーンショットプレビューのクリア''
+        // スクリーンショットプレビューのクリア
         if (this.elements.screenshotPreview') {''
             this.elements.screenshotPreview.innerHTML = '';'
     }'
             this.elements.screenshotPreview.style.display = 'none'; }
         }
         ';
-        // メッセージエディターのクリア''
+        // メッセージエディターのクリア
         if(this.elements.messageEditor') {'
-            ';
+            ';'
         }'
             this.elements.messageEditor.value = ''; }
         }
@@ -872,7 +871,7 @@ export class ShareDialog {'
     }
     
     /**
-     * プラットフォームクリックハンドラー'
+     * プラットフォームクリックハンドラー
      */''
     async handlePlatformClick(event') { const button = event.currentTarget;''
         const platform = button.getAttribute('data-platform');
@@ -892,7 +891,7 @@ export class ShareDialog {'
                 text: this.state.editedMessage || this.state.shareData? .text }
             },
             
-            // プラットフォーム別の共有処理'
+            // プラットフォーム別の共有処理
             let result;''
             switch(platform') {'
                 : undefined'';
@@ -914,9 +913,9 @@ export class ShareDialog {'
             }
             
             // 成功時の処理
-            if(result && result.success) {'
+            if(result && result.success) {
                 this.handleShareSuccess(platform, result);''
-                await this.hide('');
+                await this.hide();
             }'
                 this.handleShareError(platform, result? .error || 'Unknown error'); }
             } catch (error) { this.handleShareError(platform, error); }
@@ -945,15 +944,15 @@ export class ShareDialog {'
             const text = `${shareData.title || shareData.text} ${shareData.url || window.location.href}`;
             
             if(navigator.clipboard) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 await navigator.clipboard.writeText(text'); }'
-            } else {  // フォールバック''
+            } else {  // フォールバック
                 const textArea = document.createElement('textarea');
                 textArea.value = text;'
                 document.body.appendChild(textArea);''
-                textArea.select('')';
+                textArea.select()';
                 document.execCommand('copy');' }'
                 document.body.removeChild(textArea'); }
             }'
@@ -979,13 +978,13 @@ export class ShareDialog {'
     }
     
     /**
-     * 共有エラーの処理'
+     * 共有エラーの処理
      */''
     handleShareError(platform, error') {'
         '';
         this.handleError('PLATFORM_SHARE_FAILED', error, { platform );
         ';
-        // アクセシビリティアナウンス''
+        // アクセシビリティアナウンス
         if (this.config.accessibility.announcements && this.elements.announcer') {'
     }'
             this.elements.announcer.textContent = '共有に失敗しました'; }
@@ -1000,8 +999,8 @@ export class ShareDialog {'
     }
         this.config = { ...this.config, ...newConfig };
         ';
-        // スタイルの再適用''
-        this.applyStyles('')';
+        // スタイルの再適用
+        this.applyStyles()';
         this.log('ShareDialog設定更新', newConfig);
     }
     
@@ -1018,13 +1017,13 @@ export class ShareDialog {'
      * クリーンアップ
      */
     destroy() {
-        // 非表示'
+        // 非表示
         if (this.state.visible) {''
-            this.hide('')';
+            this.hide()';
         document.removeEventListener('keydown', this.handlers.keydown');''
         window.removeEventListener('resize', this.handlers.resize);
         
-        // DOM要素の削除'
+        // DOM要素の削除
         if (this.elements.backdrop && this.elements.backdrop.parentNode) {'
     }'
             this.elements.backdrop.parentNode.removeChild(this.elements.backdrop'); }
@@ -1046,7 +1045,7 @@ export class ShareDialog {'
         };'
         '';
         if(ErrorHandler') {'
-            ';
+            ';'
         }'
             ErrorHandler.handleError(error, 'ShareDialog', context'); }
         }'
@@ -1060,7 +1059,7 @@ export class ShareDialog {'
     log(message, data = null, level = 'info') {'
         const logEntry = {''
             timestamp: Date.now(''';
-        const consoleMethod = level === 'error' ? 'error' : ';
+        const consoleMethod = level === 'error' ? 'error' : ';'
     })'
                             level === 'warn' ? 'warn' : 'log';') }'
         console[consoleMethod](`[ShareDialog] ${message}`, data || ''');'

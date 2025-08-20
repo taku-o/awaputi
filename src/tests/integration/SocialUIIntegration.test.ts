@@ -4,7 +4,7 @@
  */
 import { jest, describe, test, beforeAll, beforeEach, afterEach, expect } from '@jest/globals';
 // Type definitions
-interface MockDialogElement extends HTMLElement { style: CSSStyleDeclaration;
+interface MockDialogElement extends HTMLElement { style: CSSStyleDeclaration
     }
 }
 interface BaseDialogInterface { isOpen: boolean,
@@ -15,11 +15,11 @@ interface BaseDialogInterface { isOpen: boolean,
 interface DOMElements { canvas: HTMLCanvasElement,
     gameEndContainer: HTMLDivElement,
     settingsContainer: HTMLDivElement,
-    userInfoContainer: HTMLDivElement;
+    userInfoContainer: HTMLDivElement
     }
 }
 interface MockGameEngine { canvas: HTMLCanvasElement,
-    getCanvas(): HTMLCanvasElement;
+    getCanvas(): HTMLCanvasElement
     }
     getCurrentScene(): { name: string }
 }
@@ -36,12 +36,12 @@ interface MockAchievementManager { getAchievements: jest.Mock<() => Array<{
         id: string,
         name: string,
         unlocked: boolean,
-        rare: boolean; }
+        rare: boolean }
     }>>;
     getUnlockedAchievements: jest.Mock<() => Array<{ id: string,
         name: string,
         unlocked: boolean,
-        rare: boolean; }
+        rare: boolean }
     }>>;
     getSettings?: jest.Mock<() => {  shareSettings: {
             autoShare: boolean, }
@@ -56,7 +56,7 @@ interface ShareData { type: string,
     screenshot?: string;
     achievement?: {
         name: string,
-        description: string; }
+        description: string }
     };
 }
 interface GameEndData { score: number,
@@ -68,7 +68,7 @@ interface GameEndData { score: number,
 interface LeaderboardData { rank: number,
     playerName: string,
     score: number,
-    stage: string; }
+    stage: string }
 }
 interface Challenge { id: string,
     name: string,
@@ -90,17 +90,17 @@ interface SocialSharingManager { initialize(): Promise<void>;
 }
 interface MockNavigator { share: jest.Mock<() => Promise<void>>,
     canShare: jest.Mock<() => boolean>,
-    userAgent: string; }
+    userAgent: string }
 }
 interface MockLocalStorage { getItem: jest.Mock<(key: string) => string | null>,
     setItem: jest.Mock<(key: string, value: string) => void>;
     removeItem: jest.Mock<(key: string) => void>,
-    clear: jest.Mock<() => void>; }
+    clear: jest.Mock<() => void> }
 }
 // UIコンポーネントのモック
-class MockBaseDialog implements BaseDialogInterface { isOpen: boolean,'
+class MockBaseDialog implements BaseDialogInterface { isOpen: boolean,
     element: MockDialogElement,'';
-    constructor('')';
+    constructor()';
         this.element = document.createElement('div'') as MockDialogElement;''
         this.element.className = 'dialog-container'; }'
     }''
@@ -114,14 +114,14 @@ class MockBaseDialog implements BaseDialogInterface { isOpen: boolean,'
         }
     }
 }'
-// DOM環境のセットアップ''
-function setupDOMEnvironment('')';
+// DOM環境のセットアップ
+function setupDOMEnvironment()';
     const canvas = document.createElement('canvas'');
     canvas.width = 800;'
     canvas.height = 600;''
     canvas.id = 'gameCanvas';
     ';
-    // ゲーム終了画面のコンテナ''
+    // ゲーム終了画面のコンテナ
     const gameEndContainer = document.createElement('div'');''
     gameEndContainer.id = 'gameEndContainer';'
     gameEndContainer.innerHTML = `'';
@@ -181,13 +181,13 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
         // DOM環境をセットアップ
         (global as any).document = document;
         (global as any).window = window;
-        (global as any).navigator = {'
+        (global as any).navigator = {
             share: jest.fn().mockResolvedValue(undefined),'';
             canShare: jest.fn().mockReturnValue(true'),' }'
             userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X')' }
         } as MockNavigator;'
-        // CSS Transitionsのモック''
-        (global as any).getComputedStyle = jest.fn('')';
+        // CSS Transitionsのモック
+        (global as any).getComputedStyle = jest.fn()';
             transitionDuration: '0s',')';
             animationDuration: '0s'),
     }
@@ -195,7 +195,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
         domElements = setupDOMEnvironment();
         // モックオブジェクトを初期化
         mockGameEngine = { }
-            canvas: domElements.canvas, }'
+            canvas: domElements.canvas, }
             getCanvas: function() { return this.canvas; },''
             getCurrentScene: (') => ({ name: 'GameScene' }),
         mockStatisticsManager = { getHighScore: jest.fn().mockReturnValue(50000),
@@ -204,10 +204,10 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             getDetailedStatistics: jest.fn().mockReturnValue({)
                 totalPlayTime: 180000);
                 averageScore: 5000,);
-                bestCombo: 25); }
+                bestCombo: 25) }
         };'
         mockAchievementManager = { ''
-            getAchievements: jest.fn('') }'
+            getAchievements: jest.fn() }'
                 { id: 'first_win', name: '初勝利', unlocked: true, rare: false }')''
                 { id: 'high_scorer', name: 'ハイスコアラー', unlocked: true, rare: true )'
             ]),'';
@@ -217,21 +217,21 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             ]),
         // LocalStorageモック
         (global as any).localStorage = { getItem: jest.fn(),
-            setItem: jest.fn(),';
+            setItem: jest.fn(),
             removeItem: jest.fn(),'';
-        clear: jest.fn()'); }
+        clear: jest.fn()') }
         } as MockLocalStorage;'
-        // SocialSharingManagerを初期化''
+        // SocialSharingManagerを初期化
         const module = await import('../../core/SocialSharingManager.js');
         const SocialSharingManagerClass = module.SocialSharingManager;
         socialManager = new SocialSharingManagerClass(;
-            mockGameEngine,);
+            mockGameEngine);
             mockStatisticsManager);
             mockAchievementManager;
         ) as SocialSharingManager;
         await socialManager.initialize();'
     });''
-    afterEach((') => {  // DOM をクリーンアップ''
+    afterEach((') => {  // DOM をクリーンアップ
         document.body.innerHTML = ''; }'
         jest.clearAllMocks();' }'
     }');''
@@ -251,12 +251,12 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 socialManager: socialManager';
             );''
             shareButton.render(domElements.actionButtons');'
-            // ボタンクリックをシミュレート''
+            // ボタンクリックをシミュレート
             const buttonElement = domElements.actionButtons.querySelector('.share-button');''
-            expect(buttonElement).toBeTruthy('')';
+            expect(buttonElement).toBeTruthy()';
             const clickEvent = new Event('click');
             (buttonElement as HTMLElement).dispatchEvent(clickEvent);'
-            // 少し待ってからダイアログの存在を確認''
+            // 少し待ってからダイアログの存在を確認
             await new Promise(resolve => setTimeout(resolve, 100)');''
             const dialog = document.querySelector('.share-dialog');'
             expect(dialog).toBeTruthy();''
@@ -271,16 +271,16 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 screenshot: 'data:image/png;base64,iVBORw0KGgoAAAANS...' }
             };'
             const shareDialog = new ShareDialog(shareData, socialManager);''
-            shareDialog.open('')';
+            shareDialog.open()';
             const twitterButton = document.querySelector('[data-platform="twitter"]'') as HTMLElement;''
             const facebookButton = document.querySelector('[data-platform="facebook"]'') as HTMLElement;''
             const genericButton = document.querySelector('[data-platform="generic"]') as HTMLElement;
             expect(twitterButton).toBeTruthy();'
             expect(facebookButton).toBeTruthy();''
-            expect(genericButton).toBeTruthy('')';
+            expect(genericButton).toBeTruthy()';
             const clickEvent = new Event('click');''
             twitterButton.dispatchEvent(clickEvent');'
-            // Twitter用のメッセージが表示されることを確認''
+            // Twitter用のメッセージが表示されることを確認
             const messagePreview = document.querySelector('.message-preview') as HTMLElement;''
             expect(messagePreview.textContent').toContain('65000'');''
             expect((messagePreview.textContent || '').length).toBeLessThanOrEqual(280);''
@@ -295,13 +295,13 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 }
             },'
             const shareDialog = new ShareDialog(shareData, socialManager);''
-            shareDialog.open('')';
+            shareDialog.open()';
             const messageEditor = document.querySelector('.message-editor') as HTMLTextAreaElement;''
-            expect(messageEditor).toBeTruthy('')';
+            expect(messageEditor).toBeTruthy()';
             messageEditor.value = 'カスタマイズされたメッセージ #BubblePop';')'
             const inputEvent = new Event('input');''
             messageEditor.dispatchEvent(inputEvent');'
-            // プレビューが更新されることを確認''
+            // プレビューが更新されることを確認
             const messagePreview = document.querySelector('.message-preview') as HTMLElement;''
             expect(messagePreview.textContent').toContain('カスタマイズされたメッセージ');''
         }');'
@@ -315,20 +315,20 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 playTime: 420000, }
                 combo: 28 }
             },'
-            // ゲーム終了時の共有提案をシミュレート''
+            // ゲーム終了時の共有提案をシミュレート
             await socialManager.handleGameEnd(gameEndData');'
-            // 共有ボタンが挿入されることを確認''
+            // 共有ボタンが挿入されることを確認
             const shareButton = domElements.actionButtons.querySelector('.share-button') as HTMLElement;'
             expect(shareButton).toBeTruthy();''
             expect(shareButton.textContent').toContain('共有'');'
-            // ハイスコア時の特別表示を確認''
+            // ハイスコア時の特別表示を確認
             expect(shareButton.classList.contains('highlight').toBe(true);''
         }');''
         test('設定による共有プロンプトの制御', async () => {  // 自動共有を無効に設定
             mockAchievementManager.getSettings = jest.fn().mockReturnValue({
                 shareSettings: {)
                     autoShare: false) }
-                    shareHighScores: false) }'
+                    shareHighScores: false) }
                 });''
             }');
             const gameEndData: GameEndData = { score: 85000,'
@@ -336,7 +336,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 stage: 'normal' }'
             };''
             await socialManager.handleGameEnd(gameEndData');'
-            // 共有ボタンが表示されないことを確認''
+            // 共有ボタンが表示されないことを確認
             const shareButton = domElements.actionButtons.querySelector('.share-button');'
             expect(shareButton).toBeFalsy();''
         }');'
@@ -350,13 +350,13 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 rare: true, }
         unlockedAt: Date.now(); }
             };'
-            // 実績解除イベントをシミュレート''
+            // 実績解除イベントをシミュレート
             await socialManager.handleAchievementUnlocked(newAchievement');'
-            // 実績通知が表示されることを確認''
+            // 実績通知が表示されることを確認
             const achievementNotification = document.querySelector('.achievement-notification') as HTMLElement;'
             expect(achievementNotification).toBeTruthy();''
             expect(achievementNotification.textContent').toContain('コンボマスター'');'
-            // 共有ボタンが通知内に含まれることを確認''
+            // 共有ボタンが通知内に含まれることを確認
             const shareButton = achievementNotification.querySelector('.share-button') as HTMLElement;'
             expect(shareButton).toBeTruthy();''
             expect((shareButton as any).dataset.type').toBe('achievement');''
@@ -372,7 +372,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             const notification = document.querySelector('.achievement-notification'') as HTMLElement;''
             expect(notification.classList.contains('rare').toBe(true');''
             expect(notification.classList.contains('legendary').toBe(true');'
-            // 特別なアニメーション効果が適用されることを確認''
+            // 特別なアニメーション効果が適用されることを確認
             const animationClass = notification.classList.contains('sparkle-animation');'
             expect(animationClass).toBe(true);''
         }');'
@@ -389,16 +389,16 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 socialManager: socialManager';
             );''
             leaderboardUI.render(domElements.userInfoContent');'
-            // リーダーボード内の共有ボタンを確認''
+            // リーダーボード内の共有ボタンを確認
             const shareButtons = domElements.userInfoContent.querySelectorAll('.share-rank-button');
             expect(shareButtons.length).toBeGreaterThan(0);
             // 1位のスコア共有をシミュレート
             const firstPlaceShare = shareButtons[0] as HTMLElement;
-            firstPlaceShare.click();'
-            // 共有ダイアログが適切なデータで開くことを確認''
+            firstPlaceShare.click();
+            // 共有ダイアログが適切なデータで開くことを確認
             await new Promise(resolve => setTimeout(resolve, 100)');''
             const dialog = document.querySelector('.share-dialog');''
-            expect(dialog).toBeTruthy('')';
+            expect(dialog).toBeTruthy()';
             const messagePreview = document.querySelector('.message-preview') as HTMLElement;''
             expect(messagePreview.textContent').toContain('95000');''
             expect(messagePreview.textContent').toContain('1位');' }'
@@ -409,11 +409,11 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 allowPeriodSwitch: true }'
             });''
             leaderboardUI.render(domElements.userInfoContent');'
-            // 期間切り替えボタンを確認''
+            // 期間切り替えボタンを確認
             const weeklyButton = domElements.userInfoContent.querySelector('[data-period="weekly"]') as HTMLElement;
             expect(weeklyButton).toBeTruthy();'
-            // 週間ランキングに切り替え''
-            weeklyButton.click('')';
+            // 週間ランキングに切り替え
+            weeklyButton.click()';
             const shareButton = domElements.userInfoContent.querySelector('.share-rank-button') as HTMLElement;'
             shareButton.click();''
             await new Promise(resolve => setTimeout(resolve, 100)');''
@@ -433,11 +433,11 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 reward: { ap: 500 }'
             };''
             await socialManager.handleChallengeCompleted(completedChallenge');'
-            // チャレンジ完了通知を確認''
+            // チャレンジ完了通知を確認
             const notification = document.querySelector('.challenge-notification') as HTMLElement;'
             expect(notification).toBeTruthy();''
             expect(notification.textContent').toContain('今日のハイスコア'');'
-            // 完了実績の共有ボタンを確認''
+            // 完了実績の共有ボタンを確認
             const shareButton = notification.querySelector('.share-button') as HTMLElement;'
             expect(shareButton).toBeTruthy();''
             expect((shareButton as any).dataset.type').toBe('challenge');''
@@ -456,18 +456,18 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 socialManager: socialManager';
             );''
             challengesTab.render(domElements.userInfoContent');'
-            // 進捗バーが表示されることを確認''
+            // 進捗バーが表示されることを確認
             const progressBar = domElements.userInfoContent.querySelector('.progress-bar') as HTMLElement;'
             expect(progressBar).toBeTruthy();''
             expect(progressBar.style.width').toBe('80%'');'
-            // 進捗共有ボタンを確認''
+            // 進捗共有ボタンを確認
             const shareProgressButton = domElements.userInfoContent.querySelector('.share-progress-button');'
             expect(shareProgressButton).toBeTruthy();' }'
         }');'
     }''
     describe('レスポンシブ対応とモバイル統合', (') => {  ''
         test('モバイルレイアウトでの共有UI調整', async (') => {'
-            // モバイル環境をシミュレート''
+            // モバイル環境をシミュレート
             Object.defineProperty(window, 'innerWidth', {)
                 writable: true);
                 configurable: true,) }'
@@ -482,37 +482,37 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 stage: 'normal' }
             },'
             const shareDialog = await socialManager.createShareDialog(shareData);''
-            shareDialog.open('')';
+            shareDialog.open()';
             const dialog = document.querySelector('.share-dialog'') as HTMLElement;''
             expect(dialog.classList.contains('mobile-layout').toBe(true');'
-            // タッチ用の大きなボタンサイズを確認''
+            // タッチ用の大きなボタンサイズを確認
             const buttons = dialog.querySelectorAll('.platform-button');
             buttons.forEach(button => {  );
                 const styles = getComputedStyle(button as Element); }'
                 expect(parseInt(styles.minHeight).toBeGreaterThanOrEqual(44); // iOS推奨サイズ' }'
             }');'
         }''
-        test('タッチジェスチャーによる共有操作', async (') => {  // タッチイベントのシミュレート''
+        test('タッチジェスチャーによる共有操作', async (') => {  // タッチイベントのシミュレート
             const shareButton = document.createElement('button'');''
             shareButton.className = 'share-button';''
             domElements.actionButtons.appendChild(shareButton');'
-            // タッチスタート・エンドをシミュレート''
+            // タッチスタート・エンドをシミュレート
             const touchStart = new TouchEvent('touchstart', {
                 touches: [{
-                    clientX: 100,);
+                    clientX: 100);
                     clientY: 100) }]
                     target: shareButton }]'
                 } as Touch]''
             )');''
             const touchEnd = new TouchEvent('touchend', { changedTouches: [{
-                    clientX: 100,);
+                    clientX: 100);
                     clientY: 100)];
                     target: shareButton }]
                 } as Touch]
             ),';
             shareButton.dispatchEvent(touchStart);''
             shareButton.dispatchEvent(touchEnd');'
-            // タッチイベントが適切に処理されることを確認''
+            // タッチイベントが適切に処理されることを確認
             expect(shareButton.classList.contains('touched').toBe(true);''
         }');'
     }''
@@ -528,7 +528,7 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
             const shareButton = await socialManager.createShareButton(shareData);''
             shareButton.render(domElements.actionButtons');''
             const buttonElement = domElements.actionButtons.querySelector('.share-button'') as HTMLElement;'
-            // ARIA属性が適切に設定されることを確認''
+            // ARIA属性が適切に設定されることを確認
             expect(buttonElement.getAttribute('aria-label')').toContain('スピードマスター'');''
             expect(buttonElement.getAttribute('role')').toBe('button'');''
             expect(buttonElement.getAttribute('tabindex')').toBe('0');''
@@ -538,17 +538,17 @@ describe('SocialUIIntegration', () => {  let domElements: DOMElements,
                 score: 35000), };
             });
             shareDialog.open();'
-            // フォーカストラップが機能することを確認''
-            const focusableElements = document.querySelectorAll('')';
+            // フォーカストラップが機能することを確認
+            const focusableElements = document.querySelectorAll()';
                 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]")''';
             ');'
-            // TABキーでの移動をシミュレート''
+            // TABキーでの移動をシミュレート
             const tabEvent = new KeyboardEvent('keydown', { key: 'Tab' ),''
             document.dispatchEvent(tabEvent');'
-            // ESCキーでのクローズをシミュレート''
+            // ESCキーでのクローズをシミュレート
             const escEvent = new KeyboardEvent('keydown', { key: 'Escape' ),''
             document.dispatchEvent(escEvent');'
-            // ダイアログが閉じることを確認''
+            // ダイアログが閉じることを確認
             expect(document.querySelector('.share-dialog').toBeFalsy(); }
         });'
     }''

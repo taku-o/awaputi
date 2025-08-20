@@ -53,7 +53,7 @@ export interface TutorialLayout { overlayZIndex: number,
     navigationHeight: number,
     progressBarHeight: number,
     highlightPadding: number,
-    spotlightRadius: number; }
+    spotlightRadius: number }
 }
 
 export interface TutorialStyles { overlayBackground: string,
@@ -68,13 +68,13 @@ export interface TutorialStyles { overlayBackground: string,
     glowColor: string,
     rippleColor: string,
     sparkleColor: string,
-    pulseColor: string; }
+    pulseColor: string }
 }
 
 export interface TutorialState { isActive: boolean,
     isPaused: boolean,
     currentTutorial: TutorialData | null,
-    highlightedElement: HTMLElement | null; }
+    highlightedElement: HTMLElement | null }
 }
 
 /**
@@ -103,9 +103,9 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     constructor(gameEngine: GameEngine, eventBus?: any, state?: any) {
 
         super(gameEngine, eventBus, state);
-        ';
+        ';'
         this.loggingSystem = LoggingSystem.getInstance ? LoggingSystem.getInstance() : new LoggingSystem();''
-        this.errorHandler = getErrorHandler('')';
+        this.errorHandler = getErrorHandler()';
             overlayBackground: 'rgba(0, 0, 0, 0.6')','';
             panelBackground: '#ffffff','';
             panelBorder: '1px solid #e0e0e0','';
@@ -117,7 +117,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             progressBarBackground: '#e9ecef','';
             glowColor: '#007bff','';
             rippleColor: 'rgba(0, 123, 255, 0.3')','';
-            sparkleColor: '#ffd700',';
+            sparkleColor: '#ffd700','
     }
     }'
             pulseColor: 'rgba(0, 123, 255, 0.4')' }
@@ -145,11 +145,11 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             
             // コンポーネント間の統合を設定
             this.setupComponentIntegration();
-            ';
-            // CSSスタイルの追加''
-            this.injectStyles('')';
+            ;
+            // CSSスタイルの追加
+            this.injectStyles()';
             this.loggingSystem.info('TutorialOverlay', 'Tutorial overlay initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialOverlay', 'Failed to initialize tutorial overlay', error');''
             this.errorHandler.handleError(error, 'TutorialOverlay.initialize'); }
         }
@@ -158,7 +158,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * 専用コンポーネントを初期化'
      */''
-    async initializeComponents('')';
+    async initializeComponents()';
             this.loggingSystem.debug('TutorialOverlay', 'Initializing tutorial components...');
             
             // ステップマネージャーを初期化
@@ -169,11 +169,11 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             
             // インタラクションハンドラーを初期化
             this.interactionHandler = new TutorialInteractionHandler();
-            ';
-            // 進捗追跡システムを初期化''
-            this.progressTracker = new TutorialProgressTracker('')';
+            ;
+            // 進捗追跡システムを初期化
+            this.progressTracker = new TutorialProgressTracker()';
             this.loggingSystem.debug('TutorialOverlay', 'All tutorial components initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.initializeComponents'); }
         }
     }
@@ -181,7 +181,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * コンポーネント間の統合を設定'
      */''
-    setupComponentIntegration('')';
+    setupComponentIntegration()';
             this.interactionHandler.setCallback('onNext', () => this.nextStep()');''
             this.interactionHandler.setCallback('onPrevious', () => this.previousStep()');''
             this.interactionHandler.setCallback('onSkip', () => this.skipStep()');''
@@ -192,14 +192,14 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             this.interactionHandler.setCallback('onInteraction', (data) => { this.progressTracker.recordUserAction(data.type, data);' }'
             }');
             ';
-            // ジェスチャーコールバック設定''
+            // ジェスチャーコールバック設定
             this.interactionHandler.setGestureCallback('swipeLeft', () => this.nextStep()');''
             this.interactionHandler.setGestureCallback('swipeRight', () => this.previousStep()');''
             this.interactionHandler.setGestureCallback('tap', () => this.nextStep()');''
             this.interactionHandler.setGestureCallback('doubleTap', () => this.skipStep()');'
             '';
             this.loggingSystem.debug('TutorialOverlay', 'Component integration setup completed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.setupComponentIntegration'); }
         }
     }
@@ -210,7 +210,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
      * @param options - オプション設定
      */
     async startTutorial(tutorial: TutorialData, options: TutorialOptions = { ): Promise<boolean> {'
-        try {''
+        try {'
             if(this.tutorialState.isActive') {'
                 '';
                 this.loggingSystem.warn('TutorialOverlay', 'Tutorial is already active');
@@ -223,8 +223,8 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             
             // 進捗追跡を開始
             this.progressTracker? .startTracking(tutorial, options.userId);
-            ';
-            // ステップマネージャーでチュートリアルを開始''
+            ;
+            // ステップマネージャーでチュートリアルを開始
             if (!this.stepManager?.startTutorial(tutorial)') { ''
                 throw new Error('Failed to start tutorial in step manager'); }
             }
@@ -235,13 +235,13 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             // オーバーレイUIを表示
             this.createOverlayElements();
             this.showOverlay();
-            ';
-            // 最初のステップを表示''
-            this.displayCurrentStep('')';
+            ;
+            // 最初のステップを表示
+            this.displayCurrentStep()';
             this.loggingSystem.info('TutorialOverlay', `Tutorial started: ${tutorial.id)`});
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.startTutorial');
             this.tutorialState.isActive = false;
             return false; }
@@ -259,7 +259,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
                 this.progressTracker?.recordStepComplete((this.stepManager as any).stepIndex - 1);
             }'
                 this.displayCurrentStep();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.progressTracker?.recordError(error, 'nextStep'');''
             this.errorHandler.handleError(error, 'TutorialOverlay.nextStep'); }
         }
@@ -276,7 +276,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
                 
             }'
                 this.displayCurrentStep();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.progressTracker?.recordError(error, 'previousStep'');''
             this.errorHandler.handleError(error, 'TutorialOverlay.previousStep'); }
         }
@@ -286,7 +286,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
      * 現在のステップをスキップ
      */
     skipStep() {'
-        try {''
+        try {'
             if (!this.tutorialState.isActive') return;'
             '';
             this.progressTracker.recordStepSkip(this.stepManager.stepIndex, 'user_choice');
@@ -295,7 +295,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             if (success) {
     }'
                 this.displayCurrentStep();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.progressTracker.recordError(error, 'skipStep'');''
             this.errorHandler.handleError(error, 'TutorialOverlay.skipStep'); }
         }
@@ -325,13 +325,13 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     }
                 this.highlightElement(currentStep.target, currentStep.highlightOptions); }
             }
-            ';
-            // アニメーションを開始''
+            ;
+            // アニメーションを開始
             this.startStepAnimation(currentStep');'
              : undefined'';
             this.loggingSystem.debug('TutorialOverlay', `Step displayed: ${this.stepManager.stepIndex + 1)`});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.progressTracker.recordError(error, 'displayCurrentStep'');''
             this.errorHandler.handleError(error, 'TutorialOverlay.displayCurrentStep'); }
         }
@@ -360,17 +360,17 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             
             this.tutorialState.highlightedElement = element;
             ';
-            // ハイライト要素を作成''
+            // ハイライト要素を作成
             this.createHighlightElement(element, options');
             ';
-            // アニメーションを開始''
+            // アニメーションを開始
             const animationType = options.animation || 'pulse';
             const intensity = options.intensity || 1.0;
             this.animationController.startHighlightAnimation(this.highlightElement, animationType, intensity);
             
-            // スポットライトエフェクト'
+            // スポットライトエフェクト
             if (options.spotlight !== false) { this.createSpotlightEffect(element, options.spotlightRadius);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.progressTracker.recordError(error, 'highlightElement'');''
             this.errorHandler.handleError(error, 'TutorialOverlay.highlightElement'); }
         }
@@ -383,10 +383,10 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
      */
     createHighlightElement(targetElement, options = { ) {'
         '';
-        const rect = targetElement.getBoundingClientRect('')';
+        const rect = targetElement.getBoundingClientRect()';
         this.highlightElement = document.createElement('div'');''
         this.highlightElement.className = 'tutorial-highlight';
-        ';
+        ';'
         Object.assign(this.highlightElement.style, {'
     }'
             position: 'fixed', }
@@ -415,10 +415,10 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             this.spotlight.remove(); }
         }'
         '';
-        const rect = targetElement.getBoundingClientRect('')';
+        const rect = targetElement.getBoundingClientRect()';
         this.spotlight = document.createElement('div'');''
         this.spotlight.className = 'tutorial-spotlight';
-        ';
+        ';'
         Object.assign(this.spotlight.style, { ''
             position: 'fixed','';
             left: '0','';
@@ -449,9 +449,9 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
         }
         
         if(this.spotlight) {
-        ';
+        ';'
             '';
-            this.spotlight.remove('')';
+            this.spotlight.remove()';
         this.animationController.stopAnimation('highlight'');'
         
         }'
@@ -461,16 +461,16 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * オーバーレイ要素を作成'
      */''
-    createOverlayElements('')';
+    createOverlayElements()';
         this.overlay = document.createElement('div'');''
         this.overlay.className = 'tutorial-overlay';
-        ';
+        ';'
         Object.assign(this.overlay.style, { ''
             position: 'fixed','';
             left: '0','';
             top: '0','';
             width: '100vw','';
-            height: '100vh',);
+            height: '100vh');
             backgroundColor: this.styles.overlayBackground)';
             zIndex: this.layout.overlayZIndex,'';
             display: 'flex','';
@@ -490,9 +490,9 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     }
     
     /**
-     * インストラクションパネルを作成'
+     * インストラクションパネルを作成
      */''
-    createInstructionPanel('')';
+    createInstructionPanel()';
         this.instructionPanel = document.createElement('div'');''
         this.instructionPanel.className = 'tutorial-instruction-panel';
         
@@ -500,7 +500,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             maxWidth: `${this.layout.instructionPanelWidth}px`,
             maxHeight: `${this.layout.instructionPanelMaxHeight}px`,
             backgroundColor: this.styles.panelBackground,
-            border: this.styles.panelBorder,);
+            border: this.styles.panelBorder);
             borderRadius: this.styles.panelBorderRadius)';
             boxShadow: this.styles.panelBoxShadow,'';
             padding: '24px',')';
@@ -528,10 +528,10 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * プログレスバーを作成'
      */''
-    createProgressBar('')';
+    createProgressBar()';
         this.progressBar = document.createElement('div'');''
         this.progressBar.className = 'tutorial-progress-bar';
-        ';
+        ';'
         Object.assign(this.progressBar.style, { ''
             position: 'fixed','';
             top: '0','';
@@ -543,7 +543,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
         '';
         const progressFill = document.createElement('div'');''
         progressFill.className = 'tutorial-progress-fill';
-        ';
+        ';'
         Object.assign(progressFill.style, { ')'
             height: '100%')';
             backgroundColor: this.styles.progressBarColor,'';
@@ -560,7 +560,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     updateProgressBar() {
         if (!this.progressBar) return;'
         '';
-        const progress = this.stepManager.getProgress('')';
+        const progress = this.stepManager.getProgress()';
         const progressFill = this.progressBar.querySelector('.tutorial-progress-fill');
         
     }
@@ -572,10 +572,10 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * ナビゲーションパネルを作成'
      */''
-    createNavigationPanel('')';
+    createNavigationPanel()';
         this.navigationPanel = document.createElement('div'');''
         this.navigationPanel.className = 'tutorial-navigation-panel';
-        ';
+        ';'
         Object.assign(this.navigationPanel.style, { ''
             position: 'fixed',')';
             bottom: '24px',')';
@@ -601,7 +601,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
         if (!this.navigationPanel) return;'
         '';
         const progress = this.stepManager.getProgress(');
-        ';
+        ';'
         this.navigationPanel.innerHTML = `';
     }'
             <button class="tutorial-nav-btn tutorial-prev-btn" " }"
@@ -651,11 +651,11 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * チュートリアルを完了'
      */''
-    completeTutorial('')';
+    completeTutorial()';
             this.progressTracker.recordTutorialEnd('completed');''
-            this.closeTutorial('')';
+            this.closeTutorial()';
             this.loggingSystem.info('TutorialOverlay', 'Tutorial completed successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.completeTutorial'); }
         }
     }
@@ -667,7 +667,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
         try {
             if (!this.tutorialState.isActive) return;
             ';
-            // 進捗追跡を終了''
+            // 進捗追跡を終了
             if (this.progressTracker') {'
     }'
                 this.progressTracker.recordTutorialEnd('abandoned'); }
@@ -681,11 +681,11 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             if (this.animationController) { this.animationController.stopAllAnimations(); }
             }
             
-            // UI要素を削除'
+            // UI要素を削除
             this.hideOverlay();''
-            this.clearHighlight('')';
+            this.clearHighlight()';
             this.loggingSystem.info('TutorialOverlay', 'Tutorial closed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.closeTutorial'); }
         }
     }
@@ -693,12 +693,12 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * ヘルプを表示'
      */''
-    showHelp('')';
+    showHelp()';
             this.progressTracker.recordHelpRequest('general_help'');
             ';
-            // ヘルプモーダルやツールチップを表示''
+            // ヘルプモーダルやツールチップを表示
             this.loggingSystem.debug('TutorialOverlay', 'Help requested');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.showHelp'); }
         }
     }
@@ -712,9 +712,9 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             if (this.tutorialState.highlightedElement) {
                 const currentStep = this.stepManager.currentStep;
                 this.clearHighlight();
-    }'
+    }
                 this.highlightElement(this.tutorialState.highlightedElement, currentStep.highlightOptions);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.handleResize'); }
         }
     }
@@ -761,7 +761,7 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
     /**
      * CSSスタイルを挿入'
      */''
-    injectStyles('')';
+    injectStyles()';
         if (document.getElementById('tutorial-overlay-styles')') return;'
         '';
         const style = document.createElement('style'');''
@@ -774,29 +774,29 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
                 color: white,
                 cursor: pointer,
                 font-size: 14px,
-                transition: background 0.2s ease; }
+                transition: background 0.2s ease }
             }
             
-            .tutorial-nav-btn:hover:not(:disabled) { background: #0056b3; }
+            .tutorial-nav-btn:hover:not(:disabled) { background: #0056b3 }
             }
             
             .tutorial-nav-btn:disabled { background: #ccc,
-                cursor: not-allowed; }
+                cursor: not-allowed }
             }
             
             .tutorial-step-counter { display: flex,
                 align-items: center,
                 font-size: 14px,
                 color: #666,
-                margin: 0 8px; }
+                margin: 0 8px }
             }
             
-            .tutorial-highlight { animation: tutorialPulse 2s infinite; }
+            .tutorial-highlight { animation: tutorialPulse 2s infinite }
             }
             
             @keyframes tutorialPulse {
                 0%, 100% { opacity: 0.8, }
-                50% { opacity: 1; }
+                50% { opacity: 1 }
             }
         `;
         
@@ -818,18 +818,18 @@ export class TutorialOverlay extends ScenesBaseDialog { private loggingSystem: L
             
             // 専用コンポーネントを破棄
             this.animationController? .dispose();
-            this.interactionHandler?.dispose();'
+            this.interactionHandler?.dispose();
             this.progressTracker?.dispose();''
-            this.stepManager?.reset('')';
+            this.stepManager?.reset()';
             const style = document.getElementById('tutorial-overlay-styles');
             if (style) {
     }
                 style.remove(); }
             }'
             '';
-            super.dispose('')';
+            super.dispose()';
             this.loggingSystem.info('TutorialOverlay', 'Tutorial overlay disposed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialOverlay.dispose'); }
         }
     }
@@ -859,7 +859,7 @@ export function getTutorialOverlay(gameEngine: GameEngine, eventBus?: any, state
  * @returns 新しいTutorialOverlayインスタンス
  */
 export function reinitializeTutorialOverlay(gameEngine: GameEngine, eventBus?: any, state?: any): TutorialOverlay { if (tutorialOverlayInstance) {
-        tutorialOverlayInstance.dispose(); }'
+        tutorialOverlayInstance.dispose(); }
     }''
     tutorialOverlayInstance = new TutorialOverlay(gameEngine, eventBus, state');'
     return tutorialOverlayInstance;''

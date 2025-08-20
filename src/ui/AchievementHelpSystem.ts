@@ -7,12 +7,12 @@ export interface HelpColors { background: string,
     highlight: string,
     border: string,
     button: string,
-    buttonHover: string; }
+    buttonHover: string }
 }
 
 export interface HelpContent { title: string,
     icon: string,
-    content: string[]; }
+    content: string[] }
 }
 
 export interface HelpContentMap { [key: string]: HelpContent,
@@ -22,19 +22,19 @@ export interface HelpContentMap { [key: string]: HelpContent,
 export interface TutorialHighlight { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface TutorialStep { title: string,
     content: string,
     target: string,
-    highlight: TutorialHighlight;
+    highlight: TutorialHighlight
     }
 }
 
 export interface HelpState { isVisible: boolean,
     currentSection: string,
-    tutorialProgress: number; }
+    tutorialProgress: number }
 }
 
 /**
@@ -71,7 +71,7 @@ export class AchievementHelpSystem {
         this.lineHeight = 25;
         this.__sectionSpacing = 40;
         
-        // 色設定'
+        // 色設定
         this.colors = {''
             background: '#1a1a2e','';
             panel: '#16213e','';
@@ -80,7 +80,7 @@ export class AchievementHelpSystem {
             accent: '#4CAF50','';
             highlight: '#FFD700','';
             border: '#333','';
-            button: '#2196F3',';
+            button: '#2196F3','
     }
     }'
             buttonHover: '#1976D2' }
@@ -96,9 +96,9 @@ export class AchievementHelpSystem {
     }
     
     /**
-     * ヘルプシステムを初期化'
+     * ヘルプシステムを初期化
      */''
-    private initialize('')';
+    private initialize()';
         console.log('Achievement Help System initialized');
     }
     
@@ -333,7 +333,7 @@ export class AchievementHelpSystem {
     /**
      * チュートリアルを開始'
      */''
-    public startTutorial('')';
+    public startTutorial()';
         this.showHelp('tutorial');
     }
     
@@ -354,9 +354,9 @@ export class AchievementHelpSystem {
     public completeTutorial(): void { this.hideHelp();
         this.tutorialProgress = 0;
         ';
-        // チュートリアル完了実績をトリガー''
+        // チュートリアル完了実績をトリガー
         if(this.achievementManager') {'
-            ';
+            ';'
         }'
             this.achievementManager.updateProgress('tutorial_completed', 1); }
         }
@@ -375,7 +375,7 @@ export class AchievementHelpSystem {
      */
     public render(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { if (!this.isHelpVisible) return;'
         '';
-        context.save('')';
+        context.save()';
         context.fillStyle = 'rgba(0, 0, 0, 0.8')';''
         context.fillRect(0, 0, canvas.width, canvas.height');'
         '';
@@ -431,12 +431,12 @@ export class AchievementHelpSystem {
             context.fillRect(buttonX, y, buttonWidth, navHeight);
             
             // ボタン枠線
-            context.strokeStyle = this.colors.border;'
+            context.strokeStyle = this.colors.border;
             context.lineWidth = 1;''
             context.strokeRect(buttonX, y, buttonWidth, navHeight');
             
             // ボタンテキスト
-            const content = this.helpContent[section];'
+            const content = this.helpContent[section];
             context.fillStyle = this.colors.text;''
             context.font = '14px Arial';''
             context.textAlign = 'center';''
@@ -458,12 +458,12 @@ export class AchievementHelpSystem {
         const padding = this.padding;
         const textX = x + padding;
         let currentY = y + padding;
-        ';
+        ';'
         context.fillStyle = this.colors.text;''
         context.font = '14px Arial';''
         context.textAlign = 'left';''
         context.textBaseline = 'top';
-        ';
+        ';'
         content.content.forEach(line => { );''
             if (currentY + this.lineHeight > y + height - padding') return;'
             '';
@@ -474,7 +474,7 @@ export class AchievementHelpSystem {
                 return; }
             }
             ';
-            // 特殊な書式設定''
+            // 特殊な書式設定
             if (line.startsWith('🎯 '') || line.startsWith('⏰ '') || '';
                 line.startsWith('🎮 '') || line.startsWith('🎨 '') || '';
                 line.startsWith('⭐ '') || line.startsWith('💰 '') || '';
@@ -534,22 +534,22 @@ export class AchievementHelpSystem {
         context.fillRect(panelX, panelY, panelWidth, panelHeight);
         
         // パネル枠線
-        context.strokeStyle = this.colors.accent;'
+        context.strokeStyle = this.colors.accent;
         context.lineWidth = 2;''
         context.strokeRect(panelX, panelY, panelWidth, panelHeight');
         
-        // タイトル'
+        // タイトル
         context.fillStyle = this.colors.highlight;''
         context.font = 'bold 16px Arial';''
         context.textAlign = 'left';''
         context.fillText(step.title, panelX + 15, panelY + 25');
         
-        // 内容'
+        // 内容
         context.fillStyle = this.colors.text;''
         context.font = '14px Arial';''
         this.renderWrappedText(context, step.content, panelX + 15, panelY + 50, panelWidth - 30');
         
-        // プログレス表示'
+        // プログレス表示
         context.fillStyle = this.colors.subtext;''
         context.font = '12px Arial';''
         context.textAlign = 'right';
@@ -558,11 +558,11 @@ export class AchievementHelpSystem {
             panelX + panelWidth - 15,';
             panelY + panelHeight - 15'';
         ');
-        
-        // 次へボタン'
+        '
+        // 次へボタン
         const buttonY = panelY + panelHeight - 40;''
         this.renderTutorialButton(context, panelX + panelWidth - 80, buttonY, '次へ'');
-        ';
+        ';'
         // スキップボタン' }'
         this.renderTutorialButton(context, panelX + panelWidth - 150, buttonY, 'スキップ'});
     }
@@ -578,11 +578,11 @@ export class AchievementHelpSystem {
         context.fillRect(x, y, buttonWidth, buttonHeight);
         
         // ボタン枠線
-        context.strokeStyle = this.colors.border;'
+        context.strokeStyle = this.colors.border;
         context.lineWidth = 1;''
         context.strokeRect(x, y, buttonWidth, buttonHeight');
         
-        // ボタンテキスト'
+        // ボタンテキスト
         context.fillStyle = this.colors.text;''
         context.font = '12px Arial';''
         context.textAlign = 'center';''
@@ -611,7 +611,7 @@ export class AchievementHelpSystem {
     }
     
     /**
-     * 文字列の折り返し描画'
+     * 文字列の折り返し描画
      */''
     private renderWrappedText(context: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number'): void { ''
         const words = text.split(' '');''
@@ -622,8 +622,8 @@ export class AchievementHelpSystem {
             '';
             const testLine = line + words[n] + ' ';
             const metrics = context.measureText(testLine);
-            const testWidth = metrics.width;
-            ';
+            const testWidth = metrics.width;'
+            ';'
             if (testWidth > maxWidth && n > 0) {''
                 context.fillText(line, x, currentY');''
                 line = words[n] + ' ';
@@ -636,7 +636,7 @@ export class AchievementHelpSystem {
     }
     
     /**
-     * マウスクリック処理
+     * マウスクリック処理'
      */'
     public handleClick(x: number, y: number, canvas: HTMLCanvasElement): boolean { ''
         if (!this.isHelpVisible') return false;'
@@ -728,8 +728,8 @@ export class AchievementHelpSystem {
      */
     public showContextHelp(achievementId: string): void { const achievement = this.achievementManager? .getAchievement(achievementId);
         if (!achievement) return;
-        ';
-        // 該当実績のカテゴリに応じたヘルプセクションを表示''
+        ;
+        // 該当実績のカテゴリに応じたヘルプセクションを表示
         const category = this.achievementManager.getAchievementCategory(achievementId'); : undefined }'
         const sectionMap: { [key: string]: string } = { ''
             'score': 'categories','';

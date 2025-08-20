@@ -59,7 +59,7 @@ export interface TTestResult extends Omit<SignificanceTestResult, 'test'> { ''
     degreesOfFreedom: number,
     meanDifference: number,
     standardError: number,
-    pooledVariance?: number; }
+    pooledVariance?: number }
 }'
 '';
 export interface MannWhitneyResult extends Omit<SignificanceTestResult, 'test'> { ''
@@ -70,7 +70,7 @@ export interface MannWhitneyResult extends Omit<SignificanceTestResult, 'test'> 
     zScore: number,
     rankSum1: number,
     rankSum2: number,
-    continuityCorrection?: boolean; }
+    continuityCorrection?: boolean }
 }
 
 export interface EffectSize { cohensD: number,
@@ -84,7 +84,7 @@ export interface EffectSize { cohensD: number,
 export interface ConfidenceInterval { lower: number,
     upper: number,
     level: number,
-    margin: number; }
+    margin: number }
 }
 
 export interface NormalityTestResult { isNormal: boolean,
@@ -110,7 +110,7 @@ export interface DataValidationResult { valid: boolean,
 export interface RankData { value: number,
     group: number,
     rank: number,
-    tiesCount?: number; }
+    tiesCount?: number }
 }
 
 export interface DistributionParameters { mean: number,
@@ -121,22 +121,22 @@ export interface DistributionParameters { mean: number,
     location?: number; }
 }
 
-// 列挙型'
+// 列挙型
 export type StatisticalTestType = '';
     | 't-test' | 'welch-t-test' | 'paired-t-test''';
     | 'mann-whitney-u' | 'wilcoxon' | 'chi-square''';
     | 'anova' | 'kruskal-wallis' | 'insufficient_data';
-';
+';'
 export type NormalityTestType = '';
     | 'shapiro-wilk' | 'kolmogorov-smirnov' | 'anderson-darling''';
     | 'skewness_kurtosis' | 'simple_normality' | 'insufficient_data';
-';
+';'
 export type EffectSizeInterpretation = '';
     | 'negligible' | 'small' | 'medium' | 'large' | 'very_large';
-';
+';'
 export type AlternativeHypothesis = '';
     | 'two-sided' | 'greater' | 'less';
-';
+';'
 export type DistributionType = '';
     | 'normal' | 'uniform' | 't-distribution' | 'chi-square' | 'f-distribution';
 
@@ -166,8 +166,8 @@ export const MATHEMATICAL_CONSTANTS = { SQRT_2: Math.sqrt(2),
     EULER: Math.E,
     GOLDEN_RATIO: (1 + Math.sqrt(5) / 2 }
 } as const,
-';
-// ユーティリティ関数''
+;
+// ユーティリティ関数
 export function isValidNumber(value: any'): value is number { ''
     return typeof value === 'number' && !isNaN(value) && isFinite(value); }
 }
@@ -185,7 +185,7 @@ export function calculatePooledVariance(stats1: BasicStatistics, stats2: BasicSt
     
     return ((n1 - 1) * stats1.variance + (n2 - 1) * stats2.variance) / (n1 + n2 - 2); }
 }
-';
+';'
 export function interpretEffectSize(cohensD: number): EffectSizeInterpretation { const absD = Math.abs(cohensD);''
     if (absD < EFFECT_SIZE_THRESHOLDS.small') return 'negligible';''
     if (absD < EFFECT_SIZE_THRESHOLDS.medium') return 'small';''
@@ -320,7 +320,7 @@ export class StatisticalAnalyzer {
      * 統計的有意性検定を実行
      */
     performSignificanceTest(;
-        data1: any[], );
+        data1: any[] );
         data2: any[]);
         options: SignificanceTestOptions = { ): SignificanceTestResult {
         const validData1 = validateStatisticalInput(data1),
@@ -342,12 +342,12 @@ export class StatisticalAnalyzer {
             },
         }
 
-        // 正規性検定'
+        // 正規性検定
         const normality1 = this.testNormality(validData1);''
         const normality2 = this.testNormality(validData2');
         
         let testResult: SignificanceTestResult,';
-        // テストタイプの決定''
+        // テストタイプの決定
         const testType = options.testType || (normality1.isNormal && normality2.isNormal ? 't-test' : 'mann-whitney-u'');'
         '';
         if (testType === 't-test' || testType === 'welch-t-test') { const tResult = this.performTTest(validData1, validData2, options); }
@@ -406,8 +406,8 @@ export class StatisticalAnalyzer {
         }
         
         const pValue = this.approximateTTestPValue(Math.abs(tStatistic), degreesOfFreedom);
-        ';
-        // 信頼区間の計算''
+        ;
+        // 信頼区間の計算
         const criticalValue = this.getTCriticalValue(degreesOfFreedom, this.config.confidenceLevel!');
         const marginOfError = criticalValue * standardError;
         const meanDiff = stats1.mean - stats2.mean;
@@ -417,7 +417,7 @@ export class StatisticalAnalyzer {
             level: this.config.confidenceLevel!,
             margin: marginOfError }
         },
-';
+';'
         return { ''
             test: 't-test',
             testStatistic: tStatistic,
@@ -427,8 +427,8 @@ export class StatisticalAnalyzer {
             standardError,
             pooledVariance,
             significant: false, // 後で設定される;
-            confidenceInterval,';
-            effectSize: null, // 後で設定される'';
+            confidenceInterval,;
+            effectSize: null, // 後で設定される;
             interpretation: '', // 後で設定される };
             criticalValue }
         };
@@ -439,7 +439,7 @@ export class StatisticalAnalyzer {
      */
     performMannWhitneyU(data1: number[], data2: number[]): MannWhitneyResult { const n1 = data1.length;
         const n2 = data2.length;
-        const combined: RankData[] = [...data1.map(value => ({ value, group: 1, rank: 0 )), ]
+        const combined: RankData[] = [...data1.map(value => ({ value, group: 1, rank: 0 )) ]
             ...data2.map(value => ({ value, group: 2, rank: 0 ))]
         ];
         
@@ -486,10 +486,10 @@ export class StatisticalAnalyzer {
         
         // 正規近似によるp値計算
         const mean = (n1 * n2) / 2;
-        const variance = (n1 * n2 * (n1 + n2 + 1)) / 12;'
+        const variance = (n1 * n2 * (n1 + n2 + 1)) / 12;
         const z = (U - mean) / Math.sqrt(variance);''
         const pValue = 2 * (1 - this.standardNormalCDF(Math.abs(z)');
-        ';
+        ';'
         return { ''
             test: 'mann-whitney-u',
             testStatistic: U,
@@ -500,14 +500,14 @@ export class StatisticalAnalyzer {
             rankSum1: R1,
             rankSum2: R2,
             significant: false, // 後で設定される;
-            confidenceInterval: null, // Mann-Whitney Uでは通常計算しない';
+            confidenceInterval: null, // Mann-Whitney Uでは通常計算しない;
             effectSize: null, // 後で設定される' };'
             interpretation: '' // 後で設定される }
         },
     }
 
     /**
-     * 効果量を計算'
+     * 効果量を計算
      */''
     calculateEffectSize(stats1: BasicStatistics, stats2: BasicStatistics'): EffectSize { ''
         // Cohen's d'
@@ -517,7 +517,7 @@ export class StatisticalAnalyzer {
         // Hedge's g (バイアス補正版);''
         const hedgesG = this.calculateHedgesG(cohensD, stats1.count, stats2.count');'
         '';
-        // Glass's Δ (対照群の標準偏差を使用);
+        // Glasss Δ (対照群の標準偏差を使用);
         const glassD = stats2.standardDeviation !== 0 ;
             ? (stats1.mean - stats2.mean) / stats2.standardDeviation: 0,
         
@@ -530,7 +530,7 @@ export class StatisticalAnalyzer {
             glassD }
         };
     }
-';
+';'
     /**''
      * Hedge's gを計算
      */
@@ -554,7 +554,7 @@ export class StatisticalAnalyzer {
         if(data.length > 50) {
         
             // 大サンプルの場合は歪度・尖度で判定
-            const stats = this.calculateBasicStatistics(data);'
+            const stats = this.calculateBasicStatistics(data);
             const skewnessTest = Math.abs(stats.skewness) < NORMALITY_THRESHOLDS.skewness;''
             const kurtosisTest = Math.abs(stats.kurtosis') < NORMALITY_THRESHOLDS.kurtosis;
             
@@ -568,7 +568,7 @@ export class StatisticalAnalyzer {
             },
         }
         
-        // 小サンプルの場合は簡易正規性チェック'
+        // 小サンプルの場合は簡易正規性チェック
         const stats = this.calculateBasicStatistics(data);''
         const normalityScore = 1 - (Math.abs(stats.skewness) / 3 + Math.abs(stats.kurtosis) / 10');
         
@@ -655,19 +655,19 @@ export class StatisticalAnalyzer {
 
     /**
      * 有意性検定結果を解釈
-     */'
+     */
     interpretSignificanceTest(testResult: SignificanceTestResult): string { ''
         if(testResult.pValue === null') {'
-            ';
+            ';'
         }'
             return 'データが不十分で検定を実行できませんでした。'; }
         }
-        ';
+        ';'
         const significant = testResult.significant;''
         const effectSize = testResult.effectSize? .interpretation || 'unknown';
         
         if(significant) {
-        ';
+        ';'
             '';
             switch (effectSize') { : undefined''
                 case 'large':'';
@@ -711,7 +711,7 @@ export class StatisticalAnalyzer {
             return { valid: false, 
                 errors, ;
                 warnings, ;
-                validCount: 0, ;
+                validCount: 0, 
         }
                 totalCount: data.length,  };
                 validRatio: 0  }
@@ -723,7 +723,7 @@ export class StatisticalAnalyzer {
         const missingCount = data.length - validNumbers.length;'
         '';
         if(validRatio < 0.5') {'
-            ';
+            ';'
         }'
             errors.push('有効な数値データが50%未満です');' }'
         } else if (validRatio < 0.8') { ''
@@ -778,7 +778,7 @@ export class StatisticalAnalyzer {
         testResult: SignificanceTestResult,
         validation1: DataValidationResult,
         validation2: DataValidationResult,
-        recommendations: string[]; }
+        recommendations: string[] }
     } { const validation1 = this.validateData(data1);
         const validation2 = this.validateData(data2);
         const data1Stats = this.calculateBasicStatistics(data1);
@@ -788,19 +788,19 @@ export class StatisticalAnalyzer {
         const recommendations: string[] = [],';
         '';
         if(!validation1.valid || !validation2.valid') {'
-            ';
+            ';'
         }'
             recommendations.push('データの品質を改善してください'); }
         }'
         '';
         if(data1Stats.count < 30 || data2Stats.count < 30') {'
-            ';
+            ';'
         }'
             recommendations.push('より大きなサンプルサイズを検討してください''); }
         }'
         '';
         if(testResult.effectSize && testResult.effectSize.interpretation === 'negligible'') {'
-            ';
+            ';'
         }'
             recommendations.push('実用的な違いがほとんどないため、実際の意味を検討してください''); }
         }

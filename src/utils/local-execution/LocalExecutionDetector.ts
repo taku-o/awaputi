@@ -14,19 +14,19 @@
 interface SupportedFeatures { canvas: boolean,
     indexedDB: boolean,
     localStorage: boolean,
-    serviceWorker: boolean; }
+    serviceWorker: boolean }
 }
 
 interface BrowserInfo { name: string,
     version: string,
-    engine: string; }
+    engine: string }
 }
 
 interface ExecutionContext { protocol: 'file:' | 'http:' | 'https:' | string,
     isLocal: boolean,
     canUseModules: boolean,
     supportedFeatures: SupportedFeatures,
-    browserInfo: BrowserInfo;
+    browserInfo: BrowserInfo
     }
 }
 
@@ -48,7 +48,7 @@ class LocalExecutionDetector { /**
      */''
     static isLocalExecution(''';
             return window.location.protocol === 'file: ',' })'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('LocalExecutionDetector: Protocol detection failed', error);
             return false; }
         }
@@ -62,23 +62,23 @@ class LocalExecutionDetector { /**
         const isLocal = protocol === 'file: ',
         
         return { protocol,
-            isLocal,);
+            isLocal);
             canUseModules: this._canUseESModules();
-            supportedFeatures: this._detectSupportedFeatures(,) };
+            supportedFeatures: this._detectSupportedFeatures() };
             browserInfo: this._getBrowserInfo(); }
         };
     }
 
     /**
-     * 警告を表示すべきかどうかを判定
+     * 警告を表示すべきかどうかを判定'
      */'
     static shouldShowWarning(): boolean { ''
         if (!this.isLocalExecution()') {
             return false; }
         }
 
-        // localStorage で警告非表示設定をチェック'
-        try { ''
+        // localStorage で警告非表示設定をチェック
+        try {'
             const dismissed = localStorage.getItem('local-execution-warning-dismissed'');''
             return dismissed !== 'true'; }
         } catch (error) { // localStorage が使用できない場合は常に警告を表示
@@ -87,48 +87,48 @@ class LocalExecutionDetector { /**
     }
 
     /**
-     * 警告を非表示にする設定を保存'
+     * 警告を非表示にする設定を保存
      */''
-    static dismissWarning('')';
+    static dismissWarning()';
             localStorage.setItem('local-execution-warning-dismissed', 'true'');''
             localStorage.setItem('local-execution-warning-dismissed-at', new Date().toISOString();''
-        } catch (error') { ''
-            console.warn('LocalExecutionDetector: Could not save warning dismissal', error); }
+        } catch (error) { ''
+            console.warn('LocalExecutionDetector: Could not save warning dismissal', error) }
         }
     }
 
     /**
      * 警告非表示設定をリセット'
      */''
-    static resetWarningDismissal('')';
+    static resetWarningDismissal()';
             localStorage.removeItem('local-execution-warning-dismissed'');''
             localStorage.removeItem('local-execution-warning-dismissed-at');''
-        } catch (error') { ''
-            console.warn('LocalExecutionDetector: Could not reset warning dismissal', error); }
+        } catch (error) { ''
+            console.warn('LocalExecutionDetector: Could not reset warning dismissal', error) }
         }
     }
 
     /**
      * プロトコルを安全に取得
      */
-    private static _getProtocol(): string { try {'
+    private static _getProtocol(): string { try {
             return window.location.protocol;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('LocalExecutionDetector: Could not get protocol', error');''
             return 'unknown: ', }
         }
     }
 
     /**
-     * ES6モジュールが使用可能かどうかを判定
+     * ES6モジュールが使用可能かどうかを判定'
      */'
-    private static _canUseESModules(): boolean { // file: プロトコルではES6モジュールは通常使用できない''
-        if (this.isLocalExecution()') {
-            return false; }
+    private static _canUseESModules(): boolean { // file: プロトコルではES6モジュールは通常使用できない
+        if (this.isLocalExecution()) {
+            return false }
         }
 
-        // ブラウザのES6モジュールサポートをチェック'
-        try { ''
+        // ブラウザのES6モジュールサポートをチェック
+        try {'
             return typeof Symbol !== 'undefined' && '';
                    'noModule' in HTMLScriptElement.prototype; }
         } catch (error) { return false; }
@@ -138,9 +138,9 @@ class LocalExecutionDetector { /**
     /**
      * サポートされている機能を検出
      */
-    private static _detectSupportedFeatures(): SupportedFeatures { return { canvas: this._supportsCanvas(,)
+    private static _detectSupportedFeatures(): SupportedFeatures { return { canvas: this._supportsCanvas()
             indexedDB: this._supportsIndexedDB();
-            localStorage: this._supportsLocalStorage(,) };
+            localStorage: this._supportsLocalStorage() };
             serviceWorker: this._supportsServiceWorker(); }
         };
     }
@@ -148,7 +148,7 @@ class LocalExecutionDetector { /**
     /**
      * Canvas API のサポートを確認'
      */''
-    private static _supportsCanvas('')';
+    private static _supportsCanvas()';
             const canvas = document.createElement('canvas'');''
             return !!(canvas.getContext && canvas.getContext('2d');
         } catch (error) { return false; }
@@ -179,7 +179,7 @@ class LocalExecutionDetector { /**
     /**
      * ServiceWorker のサポートを確認'
      */''
-    private static _supportsServiceWorker('')';
+    private static _supportsServiceWorker()';
             return 'serviceWorker' in navigator && !this.isLocalExecution();
         } catch (error) { return false; }
         }
@@ -192,7 +192,7 @@ class LocalExecutionDetector { /**
             const userAgent = navigator.userAgent;
             const browserInfo = this._parseBrowserInfo(userAgent);'
             return browserInfo;' }'
-        } catch (error') { return { ''
+        } catch (error) { return { ''
                 name: 'unknown','';
                 version: 'unknown',' };'
                 engine: 'unknown' }
@@ -208,28 +208,28 @@ class LocalExecutionDetector { /**
         let version = 'unknown';''
         let engine = 'unknown';
 ';
-        // Chrome''
+        // Chrome
         if (userAgent.indexOf('Chrome') > -1') {''
             name = 'Chrome';''
             const match = userAgent.match(/Chrome\/(\d+\.\d+)/');''
             version = match ? match[1] : 'unknown';''
             engine = 'Blink'; }
         }'
-        // Firefox''
+        // Firefox
         else if (userAgent.indexOf('Firefox') > -1') { ''
             name = 'Firefox';''
             const match = userAgent.match(/Firefox\/(\d+\.\d+)/');''
             version = match ? match[1] : 'unknown';''
             engine = 'Gecko'; }
         }'
-        // Safari''
+        // Safari
         else if (userAgent.indexOf('Safari'') > -1 && userAgent.indexOf('Chrome') === -1') { ''
             name = 'Safari';''
             const match = userAgent.match(/Version\/(\d+\.\d+)/');''
             version = match ? match[1] : 'unknown';''
             engine = 'WebKit'; }
         }'
-        // Edge''
+        // Edge
         else if (userAgent.indexOf('Edg') > -1') { ''
             name = 'Edge';''
             const match = userAgent.match(/Edg\/(\d+\.\d+)/');''
@@ -249,7 +249,7 @@ class LocalExecutionDetector { /**
             shouldShowWarning: this.shouldShowWarning(,
             userAgent: navigator.userAgent,
             location: {
-                href: window.location.href,);
+                href: window.location.href);
                 protocol: window.location.protocol);
                 host: window.location.host, };
                 pathname: window.location.pathname }'

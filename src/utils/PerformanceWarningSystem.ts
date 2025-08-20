@@ -19,25 +19,25 @@ interface SuggestionEngine { enabled: boolean,
     suggestions: Map<string, Suggestion>;
     customSuggestions: Map<string, Suggestion>;
     lastSuggestionTime: number,
-    suggestionCooldown: number; }
+    suggestionCooldown: number }
 }
 
 interface Suggestion { title: string,
     description: string,
     actionLabel: string,
-    action: () => void; }
+    action: () => void }
 }
 
 interface ViolationData { metric: string,
     value: number | string,
     threshold: number | string,
     severity: string,
-    details?: any; }
+    details?: any }
 }
 
 interface Violation { id: string,
     severity: string,
-    data: ViolationData;
+    data: ViolationData
     }
 }
 
@@ -47,7 +47,7 @@ interface Alert { id: string,
     details: string,
     suggestions: string[],
     metrics: ViolationData,
-    priority: string; }
+    priority: string }
 }
 
 interface WarningConfig { title: string,
@@ -66,7 +66,7 @@ interface SystemStats { thresholdMonitor: any,
         lastSuggestionTime: number }
     },
     systemStatus: { initialized: boolean,
-        destroyed: boolean; }
+        destroyed: boolean }
     };
 }
 
@@ -116,9 +116,9 @@ export class PerformanceWarningSystem {
     }
     }
             suggestionCooldown: 30000 // 30 seconds }
-        },'
+        },
         '';
-        this.initializeWarningSystem('')';
+        this.initializeWarningSystem()';
         console.log('[PerformanceWarningSystem] Real-time performance warning system initialized with Main Controller Pattern');
     }
     
@@ -128,12 +128,12 @@ export class PerformanceWarningSystem {
     private initializeWarningSystem(): void { try {
             // Load default suggestions
             this.loadDefaultSuggestions();
-            ';
-            // Start monitoring''
-            this.thresholdMonitor.startMonitoring('')';
+            ;
+            // Start monitoring
+            this.thresholdMonitor.startMonitoring()';
             console.log('[PerformanceWarningSystem] Warning system initialized');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.initializeWarningSystem'); }
         }
     }
@@ -152,13 +152,13 @@ export class PerformanceWarningSystem {
                 alert.priority,
                 {
                     title: alert.title,
-                    message: alert.message,);
+                    message: alert.message);
                     details: alert.details);
                     suggestions: alert.suggestions,);
                     metrics: alert.metrics);
-            ),';
+            ),;
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.onViolationDetected'); }
         }
     }
@@ -166,13 +166,13 @@ export class PerformanceWarningSystem {
     /**
      * Handle violation resolved by threshold monitor'
      */''
-    public onViolationResolved(violation: Violation'): void { try {'
-            // Dismiss related notifications''
+    public onViolationResolved(violation: Violation'): void { try {
+            // Dismiss related notifications
             this.notificationManager.dismissNotification(violation.id, 'resolved');
              }
             console.log(`[PerformanceWarningSystem] Violation resolved: ${violation.id)`});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.onViolationResolved'); }
         }
     }
@@ -182,14 +182,14 @@ export class PerformanceWarningSystem {
      */''
     public onViolationEscalated(violation: Violation'): void { try {
             // Generate escalated alert
-            const alert = this.alertGenerator.generateAlert({)'
+            const alert = this.alertGenerator.generateAlert({)
                 ...violation,')';
                 severity: 'critical_escalated'),';
             '';
             if(alert') {
                 // Send high-priority notification
             }
-                this.notificationManager.sendNotification( }'
+                this.notificationManager.sendNotification( }
                     `escalated_${alert.id}`,')'
                     'critical');
                     {
@@ -199,7 +199,7 @@ export class PerformanceWarningSystem {
                         suggestions: ['emergency_mode', ...alert.suggestions.slice(0, 2})]
                     }'
                 );''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.onViolationEscalated'); }
         }
     }
@@ -210,7 +210,7 @@ export class PerformanceWarningSystem {
     public createWarning(id: string, priority: string, config: WarningConfig): void { // Delegate to notification manager
         this.notificationManager.sendNotification(id, priority, config); }
     }
-    ';
+    ';'
     /**''
      * Dismiss a warning (legacy method for backward compatibility')'
      */''
@@ -219,14 +219,14 @@ export class PerformanceWarningSystem {
     }
     
     /**
-     * Load default suggestions'
+     * Load default suggestions
      */''
     private loadDefaultSuggestions(''';
             'reduce_quality': { ''
                 title: 'Reduce Graphics Quality','';
                 description: 'Lower graphics settings to improve performance','';
                 actionLabel: 'Reduce Quality',')';
-                action: (') => this.applySuggestion('reduce_quality''); }'
+                action: (') => this.applySuggestion('reduce_quality'') }'
             },''
             'close_apps': { ''
                 title: 'Close Background Apps','';
@@ -257,7 +257,7 @@ export class PerformanceWarningSystem {
                 title: 'Emergency Mode','';
                 description: 'Activate emergency performance mode',')';
                 actionLabel: 'Emergency',);
-                action: () => this.activateEmergencyMode(); }
+                action: () => this.activateEmergencyMode() }
             }
         };
         
@@ -286,7 +286,7 @@ export class PerformanceWarningSystem {
     /**
      * Show background apps guide'
      */''
-    private showBackgroundAppsGuide('')';
+    private showBackgroundAppsGuide()';
         console.log('[PerformanceWarningSystem] Showing background apps guide'');''
         alert('To improve performance: \\n\\n1. Close unnecessary browser tabs\\n2. Exit other applications\\n3. Disable background processes\\n4. Check system resource usage'),
     }
@@ -294,7 +294,7 @@ export class PerformanceWarningSystem {
     /**
      * Show restart confirmation'
      */''
-    private showRestartConfirmation('')';
+    private showRestartConfirmation()';
         if(confirm('Restart the game to resolve memory issues? Your current progress may be lost.') { window.location.reload(); }
         }
     }
@@ -305,9 +305,9 @@ export class PerformanceWarningSystem {
     private forceMemoryCleanup(): void { try {
             // Try to access memory manager
             if(window.getMemoryManager) {
-                const memoryManager = window.getMemoryManager();'
+                const memoryManager = window.getMemoryManager();
                 if (memoryManager.forceCleanup) {''
-                    memoryManager.forceCleanup('')';
+                    memoryManager.forceCleanup()';
                     console.log('[PerformanceWarningSystem] Forced memory cleanup');
             }
                     return; }
@@ -315,20 +315,20 @@ export class PerformanceWarningSystem {
             }
             
             // Fallback: Force GC if available
-            if(window.gc) {'
+            if(window.gc) {
                 '';
-                window.gc('');
+                window.gc();
             }'
                 console.log('[PerformanceWarningSystem] Forced garbage collection');' }'
-            } catch (error') { ''
-            console.warn('[PerformanceWarningSystem] Memory cleanup failed:', error); }
+            } catch (error) { ''
+            console.warn('[PerformanceWarningSystem] Memory cleanup failed:', error) }
         }
     }
     
     /**
      * Show quality settings'
      */''
-    private showQualitySettings('')';
+    private showQualitySettings()';
         console.log('[PerformanceWarningSystem] Opening quality settings'');''
         alert('Quality Settings: \\n\\n• Reduce particle effects\\n• Lower rendering quality\\n• Disable shadows\\n• Reduce audio quality'),
     }
@@ -349,8 +349,8 @@ export class PerformanceWarningSystem {
             '';
             console.warn('[PerformanceWarningSystem] Auto quality not available');'
             '';
-        } catch (error') { ''
-            console.warn('[PerformanceWarningSystem] Failed to enable auto quality:', error); }
+        } catch (error) { ''
+            console.warn('[PerformanceWarningSystem] Failed to enable auto quality:', error) }
         }
     }
     
@@ -359,7 +359,7 @@ export class PerformanceWarningSystem {
      */
     private activateEmergencyMode(): void { try {
             // Force lowest quality settings
-            if(window.getPerformanceOptimizer) {'
+            if(window.getPerformanceOptimizer) {
                 const optimizer = window.getPerformanceOptimizer();''
                 if (optimizer.setQualityLevel') {''
                     optimizer.setQualityLevel('emergency'');''
@@ -371,8 +371,8 @@ export class PerformanceWarningSystem {
             '';
             console.warn('[PerformanceWarningSystem] Emergency mode not available');'
             '';
-        } catch (error') { ''
-            console.warn('[PerformanceWarningSystem] Failed to activate emergency mode:', error); }
+        } catch (error) { ''
+            console.warn('[PerformanceWarningSystem] Failed to activate emergency mode:', error) }
         }
     }
     
@@ -391,7 +391,7 @@ export class PerformanceWarningSystem {
                     destroyed: this.isDestroyed }
                 }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.getStats');
             return { }
                 thresholdMonitor: {},
@@ -423,15 +423,15 @@ export class PerformanceWarningSystem {
             }
             
             // Update alert generator configuration
-            if(config.alerts || config.alertConfig) {'
-                ';
+            if(config.alerts || config.alertConfig) {
+                ';'
             }'
                 this.alertGenerator.configure(config.alerts || config.alertConfig'); }
             }'
             '';
             console.log('[PerformanceWarningSystem] Configuration updated');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.configure'); }
         }
     }
@@ -439,11 +439,11 @@ export class PerformanceWarningSystem {
     /**
      * Pause warning system
      */
-    public pause(): void { try {'
+    public pause(): void { try {
             this.thresholdMonitor.pause();''
-            this.notificationManager.pauseNotifications('')';
+            this.notificationManager.pauseNotifications()';
             console.log('[PerformanceWarningSystem] Warning system paused');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.pause'); }
         }
     }
@@ -451,11 +451,11 @@ export class PerformanceWarningSystem {
     /**
      * Resume warning system
      */
-    public resume(): void { try {'
+    public resume(): void { try {
             this.thresholdMonitor.resume();''
-            this.notificationManager.resumeNotifications('')';
+            this.notificationManager.resumeNotifications()';
             console.log('[PerformanceWarningSystem] Warning system resumed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.resume'); }
         }
     }
@@ -477,12 +477,12 @@ export class PerformanceWarningSystem {
             if (this.alertGenerator) { this.alertGenerator.destroy(); }
             }
             
-            // Clear suggestion engine'
+            // Clear suggestion engine
             this.suggestionEngine.suggestions.clear();''
-            this.suggestionEngine.customSuggestions.clear('')';
+            this.suggestionEngine.customSuggestions.clear()';
             console.log('[PerformanceWarningSystem] Warning system destroyed');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'PerformanceWarningSystem.destroy'); }
         }
     }
@@ -491,11 +491,11 @@ export class PerformanceWarningSystem {
 // グローバルインスタンス（遅延初期化）
 let _performanceWarningSystem: PerformanceWarningSystem | null = null,
 
-export function getPerformanceWarningSystem(): PerformanceWarningSystem { if (!_performanceWarningSystem) {'
-        try {''
-            _performanceWarningSystem = new PerformanceWarningSystem('')';
+export function getPerformanceWarningSystem(): PerformanceWarningSystem { if (!_performanceWarningSystem) {
+        try {'
+            _performanceWarningSystem = new PerformanceWarningSystem()';
             console.log('[PerformanceWarningSystem] グローバルインスタンスを作成しました');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PerformanceWarningSystem] インスタンス作成エラー:', error);
             // フォールバック: 基本的なインスタンスを作成
             _performanceWarningSystem = new PerformanceWarningSystem(); }
@@ -511,14 +511,14 @@ export function reinitializePerformanceWarningSystem(): void { try {
         if(_performanceWarningSystem) {
             
         }
-            _performanceWarningSystem.destroy(); }'
+            _performanceWarningSystem.destroy(); }
         }''
-        _performanceWarningSystem = new PerformanceWarningSystem('')';
+        _performanceWarningSystem = new PerformanceWarningSystem()';
         console.log('[PerformanceWarningSystem] 再初期化完了');''
-    } catch (error') { ''
+    } catch (error) { ''
         console.error('[PerformanceWarningSystem] 再初期化エラー:', error'); }
     }
 }
 ';
-// 後方互換性のため''
+// 後方互換性のため
 export const performanceWarningSystem = getPerformanceWarningSystem;

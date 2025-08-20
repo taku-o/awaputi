@@ -17,7 +17,7 @@ export interface LoadOptions { priority?: LoadPriority;
 export interface CacheEntry { data: any,
     timestamp: number,
     accessCount: number,
-    size: number; }
+    size: number }
 }
 
 export interface PreloadResult { language: string,
@@ -27,23 +27,23 @@ export interface PreloadResult { language: string,
     }
 }
 
-export interface NetworkConnection { effectiveType: NetworkType;
+export interface NetworkConnection { effectiveType: NetworkType
     }
 }
 
 export interface MemoryInfo { usedJSHeapSize: number,
     totalJSHeapSize: number,
-    jsHeapSizeLimit?: number; }
+    jsHeapSizeLimit?: number }
 }
 
 export interface FileLoadResult { file: string,
-    data: any | null; }
+    data: any | null }
 }
 
 export interface PerformanceStats { cache: CacheStats,
     network: NetworkStats,
     loadTimes: Record<string, string>,
-    memory: MemoryStats;
+    memory: MemoryStats
     }
 }
 
@@ -51,16 +51,16 @@ export interface CacheStats { hitRate: string,
     totalRequests: number,
     cacheHits: number,
     cacheSize: number,
-    maxCacheSize: number; }
+    maxCacheSize: number }
 }
 
 export interface NetworkStats { requests: number,
     totalBytesLoaded: number,
-    averageBytesPerRequest: number; }
+    averageBytesPerRequest: number }
 }
 
 export interface MemoryStats { pressure: boolean,
-    cacheMemoryUsage: number; }
+    cacheMemoryUsage: number }
 }
 
 export interface TranslationData { [key: string]: any,
@@ -70,13 +70,13 @@ export interface TranslationData { [key: string]: any,
 
 export interface LoadPromiseData { language: string,
     startTime: number,
-    promise: Promise<any>;
+    promise: Promise<any>
     }
 }
 
 export interface CompressionSupport { compressionSupported: boolean,
     compressionEnabled: boolean,
-    compressionThreshold: number; }
+    compressionThreshold: number }
 }
 
 // Navigator型拡張
@@ -88,7 +88,7 @@ declare global { interface Navigator {
     interface Performance { memory?: MemoryInfo;
     }
     }
-}'
+}
 '';
 export type LoadPriority = 'critical' | 'high' | 'medium' | 'low' | 'preload' | 'lazy';''
 export type LoadStrategy = 'parallel' | 'sequential' | 'chunked';''
@@ -142,8 +142,8 @@ export class OptimizedTranslationLoader {
         this.loadTimes = new Map<string, number[]>();
         this.networkRequests = 0;
         this.totalBytesLoaded = 0;
-        ';
-        // 優先度管理''
+        ;
+        // 優先度管理
         this.priorityQueue = new Map<string, LoadPriority>(');
         this.preloadQueue = [];
         
@@ -154,7 +154,7 @@ export class OptimizedTranslationLoader {
         this.serviceWorkerSupported = false;
 
     }
-    }'
+    }
         this.compressionSupported = false;' }'
         this.networkConnection = { effectiveType: '4g' }
         this.memoryInfo = { usedJSHeapSize: 0, totalJSHeapSize: 0 }
@@ -163,21 +163,21 @@ export class OptimizedTranslationLoader {
     }
     
     /**
-     * 最適化の初期化'
+     * 最適化の初期化
      */''
     private initializeOptimizations(''';
         this.serviceWorkerSupported = 'serviceWorker' in navigator;
         ';
-        // 圧縮サポートの確認''
+        // 圧縮サポートの確認
         this.compressionSupported = 'CompressionStream' in window;
         ';
-        // ネットワーク状態の監視''
+        // ネットワーク状態の監視
         this.networkConnection = navigator.connection || { effectiveType: '4g' }
-        // メモリ状態の監視'
+        // メモリ状態の監視
         this.memoryInfo = performance.memory || { usedJSHeapSize: 0, totalJSHeapSize: 0 }')'
         console.log('OptimizedTranslationLoader initialized', { serviceWorker: this.serviceWorkerSupported)
             compression: this.compressionSupported,);
-            networkType: this.networkConnection.effectiveType); }
+            networkType: this.networkConnection.effectiveType) }
     }
     
     /**
@@ -227,12 +227,12 @@ export class OptimizedTranslationLoader {
             this.loadingPromises.delete(language);
             
             return result;
-            ';
+            ';'
         } catch (error) { this.loadingPromises.delete(language);''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOAD_ERROR', {')'
                 operation: 'loadLanguage');
                 language: language,);
-                options: options); }
+                options: options) }
             });
             throw error;
         }
@@ -352,7 +352,7 @@ export class OptimizedTranslationLoader {
         const startTime = performance.now();
         
         try { // ネットワーク状態に応じたタイムアウト設定
-            const timeout = this.getNetworkTimeout();'
+            const timeout = this.getNetworkTimeout();
             const controller = new AbortController();''
             const timeoutId = setTimeout(() => controller.abort(), timeout');
             
@@ -366,20 +366,20 @@ export class OptimizedTranslationLoader {
             );
             
             clearTimeout(timeoutId);
-            ';
+            ';'
             if (!response.ok) { ' }'
                 throw new Error(`HTTP ${response.status}: ${response.statusText)`'});
             }
             ';
-            // レスポンスサイズの記録''
+            // レスポンスサイズの記録
             const contentLength = response.headers.get('content-length');
             if(contentLength) {'
-                ';
+                ';'
             }'
                 this.totalBytesLoaded += parseInt(contentLength, 10'); }
             }
             
-            // データの読み込みと解析'
+            // データの読み込みと解析
             let data: TranslationData,'';
             const contentType = response.headers.get('content-type'');'
             '';
@@ -407,7 +407,7 @@ export class OptimizedTranslationLoader {
     }
     
     /**
-     * 事前読み込み（複数言語）'
+     * 事前読み込み（複数言語）
      */''
     async preloadLanguages(languages: string[], options: LoadOptions = { )'): Promise<Map<string, any>> {' }'
         console.log(`Preloading languages: ${languages.join(', '})}`);
@@ -435,7 +435,7 @@ export class OptimizedTranslationLoader {
             // 負荷分散のため段階的に開始
             if (preloadPromises.length >= 2) { await Promise.race(preloadPromises); }
             }
-        }'
+        }
         '';
         const preloadResults = await Promise.allSettled(preloadPromises');'
         '';
@@ -458,14 +458,14 @@ export class OptimizedTranslationLoader {
         const cacheKey = `${language}:${namespace}`;
         
         if(this.memoryCache.has(cacheKey) {
-        ';
+        ';'
             this.recordCacheHit();'
         
         }'
             return this.memoryCache.get(cacheKey')!.data; }
         }
-        ';
-        try { ''
+        ';'
+        try {'
             const data = await this._loadSingleFile(language, namespace, { priority: 'lazy' ),
             
             if(data) {
@@ -503,7 +503,7 @@ export class OptimizedTranslationLoader {
             data: data),
             timestamp: Date.now(),
             accessCount: 0,
-            size: this.estimateDataSize(data); }
+            size: this.estimateDataSize(data) }
         });
     }
     
@@ -551,7 +551,7 @@ export class OptimizedTranslationLoader {
     /**
      * ネットワークタイムアウトの取得
      */
-    private getNetworkTimeout(): number { const baseTimeout = 5000; // 5秒'
+    private getNetworkTimeout(): number { const baseTimeout = 5000; // 5秒
         '';
         switch(this.networkConnection.effectiveType') {'
             '';
@@ -577,22 +577,22 @@ export class OptimizedTranslationLoader {
             return options.strategy; }
         }
         ';
-        // ネットワーク状態に基づく判定''
+        // ネットワーク状態に基づく判定
         if(this.networkConnection.effectiveType === 'slow-2g' || ')';
             this.networkConnection.effectiveType === '2g'') {'
-            ';
+            ';'
         }'
             return 'sequential'; }
         }
         ';
-        // メモリ状態に基づく判定''
+        // メモリ状態に基づく判定
         if (this.isMemoryPressure()') { ''
             return 'chunked'; }
         }
         ';
-        // 優先度に基づく判定''
+        // 優先度に基づく判定
         if(priority === 'high' || priority === 'critical'') {'
-            ';
+            ';'
         }'
             return 'parallel'; }
         }'
@@ -617,17 +617,17 @@ export class OptimizedTranslationLoader {
     /**
      * 優先度の取得
      */'
-    private getPriority(language: string): LoadPriority { // 現在の言語は高優先度''
+    private getPriority(language: string): LoadPriority { // 現在の言語は高優先度
         const currentLanguage = this.getCurrentLanguage? .(') || 'ja';''
         if(language === currentLanguage') {'
-            ';
+            ';'
         }'
             return 'high'; }
         }
         ';
-        // フォールバック言語は中優先度''
+        // フォールバック言語は中優先度
         if(language === 'en' || language === 'ja'') {'
-            ';
+            ';'
         }'
             return 'medium'; }
         }'
@@ -712,7 +712,7 @@ export class OptimizedTranslationLoader {
     /**
      * パフォーマンス統計の取得
      */
-    getPerformanceStats(): PerformanceStats { const stats: PerformanceStats = {'
+    getPerformanceStats(): PerformanceStats { const stats: PerformanceStats = {
             cache: {''
                 hitRate: this.cacheHitRate.toFixed(2') + '%',
                 totalRequests: this.totalRequests,
@@ -748,9 +748,9 @@ export class OptimizedTranslationLoader {
     
     /**
      * キャッシュのクリア
-     */'
+     */
     clearCache(): void { this.memoryCache.clear();''
-        this.loadTimes.clear('')';
+        this.loadTimes.clear()';
         console.log('Translation cache cleared'); }
     }
     

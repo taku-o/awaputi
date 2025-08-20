@@ -13,7 +13,7 @@ import { HelpRenderer } from './HelpRenderer';
 interface HelpEventCallbacks { onGoBack: (() => void) | null,
     onFeedbackRequest: ((data: FeedbackRequestData) => void) | null,
     onEffectivenessReport: ((report: any) => void) | null,
-    onSearchFocus: (() => void) | null; }
+    onSearchFocus: (() => void) | null }
 }
 
 // フィードバックリクエストデータ
@@ -27,7 +27,7 @@ interface FeedbackRequestData { topic: any,
 // イベント状態インターフェース
 interface EventState { searchFocused: boolean,
     lastInputTime: number,
-    hasActiveListeners: boolean; }
+    hasActiveListeners: boolean }
 }
 
 // レイアウト情報インターフェース
@@ -59,14 +59,14 @@ export class HelpEventManager {
     private boundMouseMoveHandler: ((event: MouseEvent) => void) | null = null;
     private boundMouseUpHandler: ((event: MouseEvent) => void) | null = null;
     
-    // IME対応のための隠し入力フィールド'
+    // IME対応のための隠し入力フィールド
     private hiddenInput: HTMLInputElement | null = null'';
     private boundInputHandler: ((event: Event) => void') | null = null;
     
     // キーボードショートカット
     private keyboardHandlers: Record<string, KeyboardHandler>;
     
-    // 状態管理'
+    // 状態管理
     private searchFocused: boolean = false'';
     private currentSearchQuery: string = '';
     private lastInputTime: number = 0;
@@ -79,27 +79,27 @@ export class HelpEventManager {
     private isComposing: boolean = false;
     constructor(;
         gameEngine: GameEngine,
-        contentManager: HelpContentManager,
+        contentManager: HelpContentManager
     );
-        accessibilityManager: HelpAccessibilityManager)';
+        accessibilityManager: HelpAccessibilityManager);
         animationManager: HelpAnimationManager'';
     ') {
         this.gameEngine = gameEngine,
         this.contentManager = contentManager;
         this.accessibilityManager = accessibilityManager;
         this.animationManager = animationManager;
-        
-        // キーボードショートカット'
+        '
+        // キーボードショートカット
         this.keyboardHandlers = {''
-            'ArrowUp': () => this.navigateUp('')';
-            'ArrowDown': () => this.navigateDown('')';
-            'ArrowLeft': () => this.navigateLeft('')';
-            'ArrowRight': () => this.navigateRight('')';
-            'Enter': () => this.selectCurrentItem('')';
-            'Escape': () => this.goBack('')';
+            'ArrowUp': () => this.navigateUp()';
+            'ArrowDown': () => this.navigateDown()';
+            'ArrowLeft': () => this.navigateLeft()';
+            'ArrowRight': () => this.navigateRight()';
+            'Enter': () => this.selectCurrentItem()';
+            'Escape': () => this.goBack()';
             'Tab': (event: KeyboardEvent) => this.handleTabNavigation(event'),'';
-            '/': (event: KeyboardEvent) => {  event.preventDefault(); this.focusSearchBar('') }'
-            'F': (event: KeyboardEvent) => { if (event.ctrlKey) { event.preventDefault(); this.showFeedbackDialog('') }'
+            '/': (event: KeyboardEvent) => {  event.preventDefault(); this.focusSearchBar() }'
+            'F': (event: KeyboardEvent) => { if (event.ctrlKey) { event.preventDefault(); this.showFeedbackDialog() }'
             'E': (event: KeyboardEvent) => { if (event.ctrlKey && event.shiftKey) { event.preventDefault(); this.showEffectivenessReport(); } }
         };
         
@@ -112,9 +112,9 @@ export class HelpEventManager {
     }
 
     /**
-     * イベントリスナーの設定'
+     * イベントリスナーの設定
      */''
-    public setupEventListeners('')';
+    public setupEventListeners()';
         console.log('HelpEventManager: setupEventListeners(') called'),
         this.boundKeyHandler = (event: KeyboardEvent) => this.handleKeyPress(event);
         this.boundClickHandler = (event: MouseEvent) => this.handleClick(event);
@@ -124,9 +124,9 @@ export class HelpEventManager {
         this.boundMouseMoveHandler = (event: MouseEvent) => this.handleMouseMove(event);''
         this.boundMouseUpHandler = (event: MouseEvent) => this.handleMouseUp(event');
         ';
-        // IME対応の隠し入力フィールドを作成''
+        // IME対応の隠し入力フィールドを作成
         console.log('HelpEventManager: calling createHiddenInput(')'),'';
-        this.createHiddenInput('')';
+        this.createHiddenInput()';
         document.addEventListener('keydown', this.boundKeyHandler');''
         document.addEventListener('click', this.boundClickHandler');''
         document.addEventListener('contextmenu', this.boundContextMenuHandler');''
@@ -140,22 +140,22 @@ export class HelpEventManager {
     /**
      * IME対応の隠し入力フィールドを作成'
      */''
-    private createHiddenInput('')';
+    private createHiddenInput()';
         console.log('HelpEventManager: createHiddenInput(') called, hiddenInput exists:', !!this.hiddenInput);'
         '';
         if(this.hiddenInput') {'
             '';
-            console.log('HelpEventManager: hidden input already exists, skipping creation'');
+            console.log('HelpEventManager: hidden input already exists, skipping creation'')
         }
             return; // 既に作成済み }
-        }'
+        }
         '';
         console.log('HelpEventManager: creating new hidden input element''),'';
         this.hiddenInput = document.createElement('input'');''
         this.hiddenInput.type = 'text';''
         this.hiddenInput.style.position = 'absolute';
         ';
-        // Canvas要素の位置を基準に計算''
+        // Canvas要素の位置を基準に計算
         this.updateInputPosition(''';
         this.hiddenInput.style.width = '720px';''
         this.hiddenInput.style.height = '40px';''
@@ -175,24 +175,24 @@ export class HelpEventManager {
         this.hiddenInput.autocapitalize = 'off';
         this.hiddenInput.spellcheck = false;
         ';
-        // IME対応設定''
+        // IME対応設定
         this.hiddenInput.style.imeMode = 'active';''
         this.hiddenInput.setAttribute('lang', 'ja'');''
         this.hiddenInput.setAttribute('inputmode', 'text'');
         ';
-        // Placeholderスタイル（CSS）''
+        // Placeholderスタイル（CSS）
         const style = document.createElement('style');
         style.textContent = `;
             .help-search-input::placeholder { color: #999,
                 font-style: italic,
-                opacity: 0.8; }
+                opacity: 0.8 }
             }'
         `;''
         document.head.appendChild(style');''
         this.hiddenInput.className = 'help-search-input';'
         '';
         console.log('HelpEventManager: setting up input event listeners'),';
-        // 入力イベントハンドラーを設定''
+        // 入力イベントハンドラーを設定
         this.boundInputHandler = (event: Event) => this.handleIMEInput(event');''
         this.hiddenInput.addEventListener('input', this.boundInputHandler');''
         this.hiddenInput.addEventListener('compositionstart', (') => {  ''
@@ -201,18 +201,18 @@ export class HelpEventManager {
         };''
         this.hiddenInput.addEventListener('compositionend', (') => {  ''
             console.log('HelpEventManager: composition ended'),
-            this.isComposing = false; }'
+            this.isComposing = false }'
             // コンポジション終了時に検索を実行' }'
             this.handleIMEInput({ target: this.hiddenInput } as Event');
         };
         ';
-        // フォーカス・ブラーイベント''
+        // フォーカス・ブラーイベント
         this.hiddenInput.addEventListener('focus', (') => {  ''
             console.log('HelpEventManager: input focused'),
             this.searchFocused = true;'
-            // フォーカス時のスタイル''
+            // フォーカス時のスタイル
             if(this.hiddenInput') {'
-                ';
+                ';'
             }'
                 this.hiddenInput.style.borderColor = '#4A90E2';' }'
                 this.hiddenInput.style.boxShadow = '0 0 0 3px rgba(74, 144, 226, 0.3')'; }
@@ -221,16 +221,16 @@ export class HelpEventManager {
         this.hiddenInput.addEventListener('blur', (') => {  ''
             console.log('HelpEventManager: input blurred'),
             this.searchFocused = false;'
-            // ブラー時のスタイル''
+            // ブラー時のスタイル
             if(this.hiddenInput') {'
-                ';
+                ';'
             }'
                 this.hiddenInput.style.borderColor = '#ccc';' }'
                 this.hiddenInput.style.boxShadow = 'none'; }
             }
         };
         ';
-        // 常時表示（非検索時も表示してレイアウトを保持）''
+        // 常時表示（非検索時も表示してレイアウトを保持）
         this.hiddenInput.style.display = 'block';'
         '';
         console.log('HelpEventManager: appending hidden input to document.body'),'';
@@ -250,11 +250,11 @@ export class HelpEventManager {
         
         // HelpRendererから動的なレイアウト情報を取得
         let searchBarLayout;
-        if(this.gameEngine.helpRenderer) {'
+        if(this.gameEngine.helpRenderer) {
             '';
-            const layout = this.gameEngine.helpRenderer.getLayout('');
+            const layout = this.gameEngine.helpRenderer.getLayout();
         }'
-        // console.log('HelpEventManager: Input position updated', { left, top, width: searchBarLayout.width, height: searchBarLayout.height ); }
+        // console.log('HelpEventManager: Input position updated', { left, top, width: searchBarLayout.width, height: searchBarLayout.height ) }
     }
     
     /**
@@ -275,17 +275,17 @@ export class HelpEventManager {
                 this.debounceSearch(newQuery); }
             }
             
-            // 状態更新通知'
+            // 状態更新通知
             if (this.contentManager) { this.contentManager.setSearchQuery(newQuery);' }'
-            } catch (error') { ''
-            console.error('Error handling IME input:', error); }
+            } catch (error) { ''
+            console.error('Error handling IME input:', error) }
         }
     }
 
     /**
      * イベントリスナーの削除'
      */''
-    public removeEventListeners('')';
+    public removeEventListeners()';
         console.log('HelpEventManager: removeEventListeners(') called'),';
         '';
         if(this.boundKeyHandler') {'
@@ -337,7 +337,7 @@ export class HelpEventManager {
             this.boundMouseUpHandler = null; }
         }
         ';
-        // 隠し入力フィールドのクリーンアップ''
+        // 隠し入力フィールドのクリーンアップ
         if(this.hiddenInput') {'
             '';
             console.log('HelpEventManager: cleaning up hidden input'),';
@@ -365,19 +365,19 @@ export class HelpEventManager {
             return; }
         }
         this.lastInputTime = now;
-';
-        // 検索バーがフォーカスされている場合の特別処理''
+;
+        // 検索バーがフォーカスされている場合の特別処理
         if(this.searchFocused') {'
-            // 矢印キーは検索バー内のカーソル移動に使用（デフォルト動作を許可）''
+            // 矢印キーは検索バー内のカーソル移動に使用（デフォルト動作を許可）
             if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)') {
         }
                 return; }
             }
             ';
-            // Enterキーで検索実行''
+            // Enterキーで検索実行
             if(event.key === 'Enter') {'
                 event.preventDefault();''
-                this.executeSearch('')';
+                this.executeSearch()';
             if (event.key === 'Escape') {
                 event.preventDefault();
                 this.goBack();
@@ -389,12 +389,12 @@ export class HelpEventManager {
             // （Backspace、Delete、文字入力など）
             return;
         }
-';
-        // アクセシビリティキーの優先処理''
+;
+        // アクセシビリティキーの優先処理
         if (this.accessibilityManager.handleAccessibilityKeys(event)') { return; }
         }
 ';
-        // `/` キーで検索フォーカス（特別処理）''
+        // `/` キーで検索フォーカス（特別処理）
         if(event.key === '/' && !this.searchFocused) {
             event.preventDefault();
             this.focusSearchBar();
@@ -404,16 +404,16 @@ export class HelpEventManager {
 
         // 通常のキー処理
         const handler = this.keyboardHandlers[event.key];
-        if(handler) {'
-            try {''
+        if(handler) {
+            try {'
                 handler(event');
                 ';
-                // ナビゲーション変更のアナウンス''
+                // ナビゲーション変更のアナウンス
                 if(['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(event.key) {
         }'
                     this.announceNavigationChange(event.key);' }'
-                } catch (error') { ''
-                console.error('Error handling key press:', error); }
+                } catch (error) { ''
+                console.error('Error handling key press:', error) }
             }
         }
     }
@@ -431,7 +431,7 @@ export class HelpEventManager {
 
     /**
      * 検索実行
-     */'
+     */
     private executeSearch(): void { ''
         if (this.hiddenInput && this.hiddenInput.value.trim()') {''
             console.log('HelpEventManager: executing search for:', this.hiddenInput.value);
@@ -448,7 +448,7 @@ export class HelpEventManager {
         this.accessibilityManager.announceNavigationChange(;
             key, ;
             state.categories, ;
-            state.selectedCategory, );
+            state.selectedCategory );
             state.selectedTopicIndex);
             state.isSearching, );
             state.searchResults); }
@@ -535,13 +535,13 @@ export class HelpEventManager {
 
     /**
      * 選択処理
-     */'
+     */
     private async selectCurrentItem(): Promise<void> { ''
-        const state = this.contentManager.getState('')';
+        const state = this.contentManager.getState()';
         console.log('HelpEventManager: selectCurrentItem - isSearching:', state.isSearching, 'searchResults:', state.searchResults.length);'
         '';
         if(state.isSearching && state.searchResults.length > 0') {'
-            // 検索結果から選択''
+            // 検索結果から選択
             console.log('HelpEventManager: selecting search result at index:', state.selectedTopicIndex);'
             const result = await this.contentManager.selectSearchResult(state.selectedTopicIndex);''
             if (result') {''
@@ -550,16 +550,16 @@ export class HelpEventManager {
         }'
                     this.animationManager.startContentTransition(result.newContent, 'fade''); }
                 }
-                // 検索終了'
+                // 検索終了
                 this.searchFocused = false;''
                 this.currentSearchQuery = '';''
                 if(this.hiddenInput') {'
-                    ';
+                    ';'
                 }'
                     this.hiddenInput.value = ''; }
                 }
             }
-        } else {  // 通常のトピック選択'
+        } else {  // 通常のトピック選択
             const result = await this.contentManager.selectTopic(state.selectedTopicIndex);''
             if (result && this.animationManager') {' }'
                 this.animationManager.startContentTransition(result.newContent, 'slide'); }
@@ -573,15 +573,15 @@ export class HelpEventManager {
     private goBack(): void { const state = this.contentManager.getState();'
         '';
         if(state.isSearching || this.searchFocused') {
-            // 検索モードを終了'
+            // 検索モードを終了
             this.searchFocused = false;''
             this.currentSearchQuery = '';
             ';
-            // 隠し入力フィールドをクリア''
+            // 隠し入力フィールドをクリア
             if (this.hiddenInput') {''
                 this.hiddenInput.value = '';''
-                this.hiddenInput.blur('')';
-            this.contentManager.performSearch('');
+                this.hiddenInput.blur()';
+            this.contentManager.performSearch();
             if (this.animationManager) {
         }
                 this.animationManager.startSearchTransition(false); }
@@ -594,22 +594,22 @@ export class HelpEventManager {
     }
 
     /**
-     * 検索バーフォーカス'
+     * 検索バーフォーカス
      */''
-    private focusSearchBar('')';
+    private focusSearchBar()';
         console.log('HelpEventManager: focusSearchBar(') called'),
         this.searchFocused = true;
         this.accessibilityManager.setFocusIndex(0); // 検索バーのインデックス
-        ';
-        // 隠し入力フィールドにフォーカスを当ててIMEを有効化''
+        ;
+        // 隠し入力フィールドにフォーカスを当ててIMEを有効化
         if(this.hiddenInput') {'
             '';
             console.log('HelpEventManager: focusing hidden input'),';
-            // 位置を更新''
-            this.updateInputPosition('')';
+            // 位置を更新
+            this.updateInputPosition()';
             this.hiddenInput.value = this.currentSearchQuery || '';)
             this.hiddenInput.focus();'
-            // カーソルを最後に移動'
+            // カーソルを最後に移動
         }'
             this.hiddenInput.setSelectionRange(this.hiddenInput.value.length, this.hiddenInput.value.length'); }'
         } else {  ' }'
@@ -648,7 +648,7 @@ export class HelpEventManager {
             this.callbacks.onFeedbackRequest({)
                 topic: currentTopic);
                 content: state.currentContent,);
-                category: state.selectedCategory); }
+                category: state.selectedCategory) }
         }
     }
 
@@ -657,10 +657,10 @@ export class HelpEventManager {
      */
     private async showEffectivenessReport(): Promise<void> { if (this.callbacks.onEffectivenessReport) {
             try {
-                const report = await this.contentManager.getEffectivenessReport();'
+                const report = await this.contentManager.getEffectivenessReport();
                 this.callbacks.onEffectivenessReport(report);' }'
-            } catch (error') { ''
-                console.error('Failed to generate effectiveness report:', error); }
+            } catch (error) { ''
+                console.error('Failed to generate effectiveness report:', error) }
             }
         }
     }
@@ -689,8 +689,8 @@ export class HelpEventManager {
             // スクロールバーハンドルのドラッグ開始
             if(renderer.isPointInScrollbarHandle(x, y) {
                 event.preventDefault();
-                renderer.startScrollbarDrag(y);'
-                // ドラッグ中のカーソル変更''
+                renderer.startScrollbarDrag(y);
+                // ドラッグ中のカーソル変更
                 if (this.gameEngine.canvas') {'
         }'
                     this.gameEngine.canvas.style.cursor = 'grabbing'; }
@@ -770,25 +770,25 @@ export class HelpEventManager {
         const y = event.clientY - rect.top;
 
         // スクロールバードラッグ中の処理
-        if(this.gameEngine.helpRenderer.isScrollbarDragging() {'
+        if(this.gameEngine.helpRenderer.isScrollbarDragging() {
             event.preventDefault();''
             this.gameEngine.helpRenderer.updateScrollbarDrag(y');
         }
             return; }
         }
 
-        // カーソルの変更'
+        // カーソルの変更
         const renderer = this.gameEngine.helpRenderer;''
         let cursor = 'default';
 ';
-        // スクロールバー上でのカーソル変更''
+        // スクロールバー上でのカーソル変更
         if (renderer.isPointInScrollbarHandle(x, y)') { ''
             cursor = 'grab';' }'
         } else if (renderer.isPointInScrollbarTrack(x, y)') { ''
             cursor = 'pointer';' }'
-        } else if (this.isPointInSidebar(x, y)') { // サイドバー内のクリック可能エリア''
+        } else if (this.isPointInSidebar(x, y)') { // サイドバー内のクリック可能エリア
             cursor = 'pointer';' }'
-        } else if (this.isPointInBackButton(x, y)') { // 戻るボタン''
+        } else if (this.isPointInBackButton(x, y)') { // 戻るボタン
             cursor = 'pointer'; }
         }
 
@@ -802,10 +802,10 @@ export class HelpEventManager {
     private handleMouseUp(event: MouseEvent): void { if(this.gameEngine.helpRenderer && this.gameEngine.helpRenderer.isScrollbarDragging() {
             event.preventDefault();
             this.gameEngine.helpRenderer.endScrollbarDrag();
-            ';
-            // カーソルをリセット''
+            ;
+            // カーソルをリセット
             if(this.gameEngine.canvas') {'
-                ';
+                ';'
             }'
                 this.gameEngine.canvas.style.cursor = 'default'; }
             }
@@ -860,7 +860,7 @@ export class HelpEventManager {
                     const topicHeight = 30;
                     
                     if (adjustedY >= currentY && adjustedY < currentY + topicHeight - 5) {
-                        const result = await this.contentManager.selectTopic(j);'
+                        const result = await this.contentManager.selectTopic(j);
                         '';
                         if (result && this.animationManager') {'
             }'
@@ -898,7 +898,7 @@ export class HelpEventManager {
             // どの検索結果がクリックされたかを判定
             for (let i = 0; i < state.searchResults.length; i++) {
                 if (relativeY >= currentY && relativeY < currentY + itemHeight) {
-                    // 検索結果を選択'
+                    // 検索結果を選択
                     const result = await this.contentManager.selectSearchResult(i);''
                     if (result && this.animationManager') {'
         }'
@@ -941,8 +941,8 @@ export class HelpEventManager {
         const currentTopic = this.contentManager.getCurrentTopic();
         if(currentTopic && this.callbacks.onFeedbackRequest) {
             this.callbacks.onFeedbackRequest({
-                topic: currentTopic,);
-                content: state.currentContent);
+                topic: currentTopic);
+                content: state.currentContent)
         }
                 category: state.selectedCategory, }
                 position: { x, y },)
@@ -1022,15 +1022,15 @@ export class HelpEventManager {
      * クリーンアップ
      */
     public destroy(): void { this.removeEventListeners();
-        ';
-        // カーソルをリセット''
+        ;
+        // カーソルをリセット
         if(this.gameEngine.canvas') {'
-            ';
+            ';'
         }'
             this.gameEngine.canvas.style.cursor = 'default'; }
         }
         
-        // コールバッククリア'
+        // コールバッククリア
         (Object.keys(this.callbacks) as Array<keyof HelpEventCallbacks>).forEach(key => {  ')'
             this.callbacks[key] = null)');'
         ' }'
@@ -1058,7 +1058,7 @@ export class HelpInputValidator { private maxSearchLength: number = 100' }'
                 sanitized: query.substring(0, this.maxSearchLength});
             };
         }
-';
+';'
         if(!this.allowedSearchChars.test(query) { ' }'
             const sanitized = query.replace(/[^\w\s\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF\-_.,!? (')[\]{}'"「」『』【】〔〕〈〉《》：；、。・]/g, ''');
             return { : undefined'

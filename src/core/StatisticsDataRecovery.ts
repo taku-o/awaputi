@@ -48,9 +48,9 @@ export class StatisticsDataRecovery {
         this.strategies = new RecoveryStrategies(this);
         this.validation = new RecoveryValidation(this);
         this.userGuidance = new RecoveryUserGuidance(this);
-        ';
-        // 初期化''
-        this.initialize('')';
+        ;
+        // 初期化
+        this.initialize()';
         console.log('[StatisticsDataRecovery] Main Controller initialized with sub-components');
     }
     
@@ -86,22 +86,22 @@ export class StatisticsDataRecovery {
      * @param {string} severity 重要度
      * @returns {boolean} 自動復旧を実行するか
      */
-    shouldTriggerAutoRecovery(errorDetails, severity) {'
-        // 既に復旧中の場合はスキップ''
+    shouldTriggerAutoRecovery(errorDetails, severity) {
+        // 既に復旧中の場合はスキップ
         if (this.recoveryState.isRecovering') {
     }
             return false; }
         }
         ';
-        // 重要度が低い場合はスキップ''
+        // 重要度が低い場合はスキップ
         if (severity === 'low') { return false; }
         }
         ';
-        // 最大試行回数を超えている場合はスキップ''
+        // 最大試行回数を超えている場合はスキップ
         if (this.recoveryState.failedAttempts >= this.config.recovery.maxRetryAttempts') { return false; }
         }
         ';
-        // データ関連のエラーのみ対象''
+        // データ関連のエラーのみ対象
         const dataErrorTypes = ['corruption', 'checksum_failure', 'structure_damage', 'partial_loss'];
         return dataErrorTypes.some(type => errorDetails.type === type || errorDetails.message? .includes(type);
     }
@@ -113,7 +113,7 @@ export class StatisticsDataRecovery {
      */''
     async performAutoRecovery(errorDetails') { try { : undefined''
             console.log('[StatisticsDataRecovery] Starting automatic recovery for:', errorDetails');
-            ';
+            ';'
             this.recoveryState.isRecovering = true;''
             this.recoveryState.currentStep = 'analyzing';
             this.recoveryState.progress = 0;
@@ -169,20 +169,20 @@ export class StatisticsDataRecovery {
             
             // ユーザーガイダンスに復旧開始を通知
             this.userGuidance.notifyRecoveryStart({)
-                strategy)';
+                strategy);
                 totalSteps: 5,')';
                 options)');
             ';
-            // データ取得・分析''
+            // データ取得・分析
             this.updateProgress('analyzing', 20);'
             const currentData = await this.statisticsManager.getAllStatistics();''
             const analysis = await this.analyzeData(currentData');
             ';
-            // 復旧戦略を実行''
+            // 復旧戦略を実行
             this.updateProgress('recovering', 40);''
             const result = await this.strategies.executeStrategy(strategy, analysis, options');
             ';
-            // 結果を検証''
+            // 結果を検証
             this.updateProgress('validating', 80);
             if(result.success && result.data) {
                 const validationResult = await this.validation.analyzeDataIntegrity(result.data);
@@ -200,9 +200,9 @@ export class StatisticsDataRecovery {
             // ユーザーガイダンスに完了を通知
             this.userGuidance.notifyRecoveryComplete(result);
             
-            return result;'
+            return result;
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'RECOVERY_INITIATION_ERROR', { strategy, options });
             
             const errorResult = { success: false,
@@ -257,29 +257,29 @@ export class StatisticsDataRecovery {
      * @param {Object} analysis 分析結果
      * @returns {string} 推奨される復旧戦略
      */
-    determineRecoveryStrategy(analysis) {'
-        // 完全なデータ損失''
+    determineRecoveryStrategy(analysis) {
+        // 完全なデータ損失
         if (!analysis.integrity || analysis.integrity.validFieldsRatio === 0') {'
     }'
             return 'complete_loss'; }
         }
         ';
-        // チェックサム失敗''
+        // チェックサム失敗
         if(analysis.checksum && !analysis.checksum.matches') {'
-            ';
+            ';'
         }'
             return 'checksum_failure'; }
         }
         ';
-        // 構造破損''
+        // 構造破損
         if(analysis.structure && !analysis.structure.isValid') {'
-            ';
+            ';'
         }'
             return 'structure_damage'; }
         }
         
         // データ破損
-        if(analysis.corruption && analysis.corruption.isCorrupted) {'
+        if(analysis.corruption && analysis.corruption.isCorrupted) {
             '';
             if (analysis.corruption.corruptionLevel > 0.7') {'
         }'
@@ -290,15 +290,15 @@ export class StatisticsDataRecovery {
         }
         
         // バージョン不一致の可能性をチェック
-        const currentVersion = this.statisticsManager.getDataVersion();'
+        const currentVersion = this.statisticsManager.getDataVersion();
         const dataVersion = this.statisticsManager.getStoredDataVersion();''
         if(currentVersion !== dataVersion') {'
-            ';
+            ';'
         }'
             return 'version_mismatch'; }
         }
         ';
-        // デフォルトは部分損失として処理''
+        // デフォルトは部分損失として処理
         return 'partial_loss';
     }
     
@@ -356,7 +356,7 @@ export class StatisticsDataRecovery {
         const repaired = {};
         
         // テンプレートに基づいてオブジェクトを修復
-        for(const [key, value] of Object.entries(template) {'
+        for(const [key, value] of Object.entries(template) {
             '';
             if (obj && obj.hasOwnProperty(key)') {''
                 if(typeof value === 'object' && value !== null && !Array.isArray(value) {
@@ -399,13 +399,13 @@ export class StatisticsDataRecovery {
             strategy,
             success: true,
             result,
-            duration: this.recoveryState.lastRecoveryTime ?   : undefined;
+            duration: this.recoveryState.lastRecoveryTime ?   : undefined
     }
                      Date.now() - this.recoveryState.lastRecoveryTime : null }
         },
-        ';
+        ';'
         this.recoveryState.recoveryHistory.push(record);''
-        this._trimRecoveryHistory('')';
+        this._trimRecoveryHistory()';
         console.log('[StatisticsDataRecovery] Recovery success recorded');
     }
     
@@ -418,13 +418,13 @@ export class StatisticsDataRecovery {
             timestamp: new Date().toISOString(),
             success: false,
             error: error.message,
-            duration: this.recoveryState.lastRecoveryTime ?   : undefined;
+            duration: this.recoveryState.lastRecoveryTime ?   : undefined
     }
                      Date.now() - this.recoveryState.lastRecoveryTime : null }
         },
-        ';
+        ';'
         this.recoveryState.recoveryHistory.push(record);''
-        this._trimRecoveryHistory('')';
+        this._trimRecoveryHistory()';
         console.log('[StatisticsDataRecovery] Recovery failure recorded');
     }
     
@@ -481,8 +481,8 @@ export class StatisticsDataRecovery {
         }
         
         if(newConfig.notification) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.userGuidance.updateNotificationConfig(newConfig.notification'); }
         }'
@@ -513,9 +513,9 @@ export class StatisticsDataRecovery {
         }
         
         if(this.validation) {
-        ';
+        ';'
             '';
-            this.validation.resetValidationStats('');
+            this.validation.resetValidationStats();
         }'
         console.log('[StatisticsDataRecovery] Main Controller cleanup completed''); }'
     }''

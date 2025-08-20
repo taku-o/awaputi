@@ -6,24 +6,24 @@ import { QualityValidationManager } from './adaptive-quality-controller/QualityV
 
 // Type definitions
 interface QualityConfig { enabled: boolean,
-    autoAdjustment: boolean,';
+    autoAdjustment: boolean,
     userOverride: boolean,'';
     adjustmentSensitivity: 'aggressive' | 'balanced' | 'conservative',
     transitionDuration: number,
-    stabilizationTime: number; }
+    stabilizationTime: number }
 }
 
 interface QualityLevel { index: number,
     label: string,
     targetFPS: number,
-    minFPS: number; }
+    minFPS: number }
 }
 
 interface QualityLevels { ultra: QualityLevel,
     high: QualityLevel,
     medium: QualityLevel,
     low: QualityLevel,
-    minimal: QualityLevel;
+    minimal: QualityLevel
     }
 }
 
@@ -33,7 +33,7 @@ interface PerformanceMetric { timestamp: number,
     fps: number,
     frameTime: number,
     memoryUsage: number,
-    droppedFrames: number; }
+    droppedFrames: number }
 }
 
 interface QualityState { currentLevel: QualityLevelKey,
@@ -41,26 +41,26 @@ interface QualityState { currentLevel: QualityLevelKey,
     isTransitioning: boolean,
     performanceHistory: PerformanceMetric[],
     lastAdjustmentTime: number,
-    userOverrideActive: boolean; }
+    userOverrideActive: boolean }
 }
 
 interface PerformanceMonitoring { enabled: boolean,
     sampleInterval: number,
-    historySize: number; }
+    historySize: number }
 }
-';
+';'
 interface AdjustmentAlgorithms { ''
     sensitivity: 'aggressive' | 'balanced' | 'conservative',
-    smoothTransitions: boolean; }
+    smoothTransitions: boolean }
 }
 
 interface VisualConsistency { enabled: boolean,
-    gradualTransitions: boolean; }
+    gradualTransitions: boolean }
 }
 
 interface AdaptiveQualityStats { totalAdjustments: number,
     rollbacks: number,
-    userOverrides: number; }
+    userOverrides: number }
 }
 
 interface QualityEvaluationResult { needsAdjustment: boolean,
@@ -88,38 +88,38 @@ interface QualityTransitionOptions { duration?: number;
 }
 
 interface CurrentQuality { level: QualityLevelKey,
-    index: number; }
+    index: number }
 }
 
 interface UserPreferences { lastQualityLevel: QualityLevelKey,
-    lastSaved: number; }
+    lastSaved: number }
 }
 
 interface PerformanceStats { averageFPS: number,
     frameTimeVariance: number,
     memoryTrend: number,
-    stabilityScore: number; }
+    stabilityScore: number }
 }
 
 interface TransitionStats { totalTransitions: number,
     successRate: number,
-    averageDuration: number; }
+    averageDuration: number }
 }
 
 interface ValidationStats { totalValidations: number,
     successRate: number,
-    averageValidationTime: number; }
+    averageValidationTime: number }
 }
 
 interface QualityStats extends AdaptiveQualityStats { transitionStats: TransitionStats,
-    validationStats: ValidationStats;
+    validationStats: ValidationStats
     }
 }
 
 interface SystemConfiguration { qualityConfig: QualityConfig,
     performanceMonitoring: PerformanceMonitoring,
     adjustmentAlgorithms: AdjustmentAlgorithms,
-    visualConsistency: VisualConsistency;
+    visualConsistency: VisualConsistency
     }
 }
 
@@ -127,7 +127,7 @@ interface CurrentState { qualityState: QualityState,
     isTransitioning: boolean,
     isValidating: boolean,
     currentTransition: any,
-    currentValidation: any; }
+    currentValidation: any }
 }
 
 /**
@@ -164,7 +164,7 @@ export class AdaptiveQualityController {
         this.configManager = getConfigurationManager();
         
         // サブコンポーネントを初期化
-        this.decisionAnalyzer = new QualityDecisionAnalyzer();'
+        this.decisionAnalyzer = new QualityDecisionAnalyzer();
         this.transitionController = new QualityTransitionController();''
         this.validationManager = new QualityValidationManager(''';
             adjustmentSensitivity: 'balanced',
@@ -175,7 +175,7 @@ export class AdaptiveQualityController {
             stabilizationTime: 5000 }
         },
         
-        // 品質レベル定義（簡素化）'
+        // 品質レベル定義（簡素化）
         this.qualityLevels = { ' }'
             'ultra': { index: 4, label: 'Ultra High', targetFPS: 60, minFPS: 55 },''
             'high': { index: 3, label: 'High', targetFPS: 60, minFPS: 50 },''
@@ -184,7 +184,7 @@ export class AdaptiveQualityController {
             'minimal': { index: 0, label: 'Minimal', targetFPS: 30, minFPS: 25 }
         };
         
-        // 現在の品質状態（簡素化）'
+        // 現在の品質状態（簡素化）
         this.qualityState = { ''
             currentLevel: 'high','';
             targetLevel: 'high',
@@ -214,9 +214,9 @@ export class AdaptiveQualityController {
         this.stats = { totalAdjustments: 0,
             rollbacks: 0,
             userOverrides: 0 })
-        })'
+        })
         '';
-        this.initializeQualityController('')';
+        this.initializeQualityController()';
         console.log('[AdaptiveQualityController] Main Controller initialized with sub-components');
     }
     
@@ -225,23 +225,23 @@ export class AdaptiveQualityController {
      */
     private initializeQualityController(): void { this.loadUserPreferences();'
         this.startPerformanceMonitoring();''
-        this.initializeQualityState('')';
+        this.initializeQualityState()';
         console.log('[AdaptiveQualityController] Controller 初期化完了'); }
     }
     
     /**
      * ユーザー設定読み込み（簡素化）'
      */''
-    private loadUserPreferences('')';
+    private loadUserPreferences()';
             const saved = localStorage.getItem('adaptiveQuality_userPreferences');
             if(saved) {
                 const preferences: UserPreferences = JSON.parse(saved),
                 if (preferences.lastQualityLevel && this.qualityLevels[preferences.lastQualityLevel]) {
-                    this.qualityState.currentLevel = preferences.lastQualityLevel;
+                    this.qualityState.currentLevel = preferences.lastQualityLevel
             }
                     this.qualityState.targetLevel = preferences.lastQualityLevel; }'
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('[AdaptiveQualityController] 設定読み込みエラー:', error); }
         }
     }
@@ -252,9 +252,9 @@ export class AdaptiveQualityController {
     private saveUserPreferences(): void { try {
             const preferences: UserPreferences = {'
                 lastQualityLevel: this.qualityState.currentLevel,'';
-                lastSaved: Date.now('')';
+                lastSaved: Date.now()';
             localStorage.setItem('adaptiveQuality_userPreferences', JSON.stringify(preferences);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[AdaptiveQualityController] 設定保存エラー:', error); }
         }
     }
@@ -280,9 +280,9 @@ export class AdaptiveQualityController {
                 timestamp: Date.now(),
                 ...currentMetrics }
             });
-            ';
+            ';'
             if (this.qualityState.performanceHistory.length > this.performanceMonitoring.historySize) { this.qualityState.performanceHistory.shift();' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             this.errorHandler.handleError(error, { context: 'updatePerformanceMetrics' });
         }
     }
@@ -312,7 +312,7 @@ export class AdaptiveQualityController {
     
     /**
      * 品質調整の評価と実行（委譲）
-     */'
+     */
     public evaluateQualityAdjustment(performanceMetrics: any): QualityEvaluationResult { ''
         if (!this.qualityConfig.autoAdjustment || this.qualityState.userOverrideActive') {' }'
             return { needsAdjustment: false, reason: 'disabled_or_override' }
@@ -330,7 +330,7 @@ export class AdaptiveQualityController {
      * 品質レベル変更の実行（委譲）
      */
     public async changeQualityLevel( : undefined);
-        targetLevel: QualityLevelKey)';
+        targetLevel: QualityLevelKey);
         options: QualityTransitionOptions = { ): Promise<QualityTransitionResult>;''
         if (!this.qualityLevels[targetLevel]') {' }'
             return { success: false, reason: 'invalid_level' }
@@ -391,7 +391,7 @@ export class AdaptiveQualityController {
     }
     
     /**
-     * 自動調整を有効/無効化'
+     * 自動調整を有効/無効化
      */''
     public setAutoAdjustment(enabled: boolean'): void { this.qualityConfig.autoAdjustment = enabled;' }'
         console.log(`[AdaptiveQualityController] Auto adjustment: ${enabled ? 'enabled' : 'disabled')`});
@@ -463,9 +463,9 @@ export class AdaptiveQualityController {
             clearInterval(this.monitoringInterval);
             this.monitoringInterval = null; }
         }
-        ';
+        ';'
         this.transitionController.clearAllTimers();''
-        this.validationManager.clearValidationTimers('')';
+        this.validationManager.clearValidationTimers()';
         console.log('[AdaptiveQualityController] System stopped');
     }
     
@@ -490,7 +490,7 @@ export class AdaptiveQualityController {
         this.decisionAnalyzer.resetStats();
         this.transitionController.resetTransitionHistory();'
         '';
-        this.startPerformanceMonitoring('')';
+        this.startPerformanceMonitoring()';
         console.log('[AdaptiveQualityController] System reset');
     }
     
@@ -498,7 +498,7 @@ export class AdaptiveQualityController {
      * システムを破棄
      */'
     public dispose(): void { ''
-        this.stop('')';
+        this.stop()';
         console.log('[AdaptiveQualityController] System disposed'); }
     }
 }

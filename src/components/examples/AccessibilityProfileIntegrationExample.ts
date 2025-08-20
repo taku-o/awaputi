@@ -17,15 +17,15 @@ interface SettingItem { key: string,
     type: string,
     component: string,
     description: string,
-    category: string; }
+    category: string }
 }
 
 interface ProfileInfo { name: string,
-    description: string; }
+    description: string }
 }
 
 interface ProfileChangeDetail { profileId: string,
-    timestamp: number; }
+    timestamp: number }
 }
 
 /**
@@ -36,7 +36,7 @@ export class AccessibilityProfileIntegrationExample {
     private accessibilityProfileComponent: AccessibilityProfileComponent | null;
     constructor(gameEngine: GameEngine) {
 
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine
 
     }
     }
@@ -44,12 +44,12 @@ export class AccessibilityProfileIntegrationExample {
     }
     
     /**
-     * SettingsSceneのinitializeSettingItems()メソッドに追加する設定項目の例'
+     * SettingsSceneのinitializeSettingItems()メソッドに追加する設定項目の例
      */''
     getAccessibilityProfileSettingItem(''';
             key: 'accessibility.profile','';
             label: 'アクセシビリティプロファイル','';
-            type: 'custom', // カスタムコンポーネントとして実装'';
+            type: 'custom', // カスタムコンポーネントとして実装;
             component: 'AccessibilityProfileComponent','';
             description: 'プリセットされたアクセシビリティ設定を選択できます','';
             category: 'accessibility');
@@ -64,7 +64,7 @@ export class AccessibilityProfileIntegrationExample {
             // DOM要素として別途表示される
             
             // プロファイル情報の表示（Canvas上）
-            const profile = this.getCurrentProfileInfo();'
+            const profile = this.getCurrentProfileInfo();
             '';
             ctx.save(''';
             ctx.fillStyle = '#333';''
@@ -75,10 +75,10 @@ export class AccessibilityProfileIntegrationExample {
             ctx.restore();
             
             // DOM要素のポジション調整 }
-            this.positionAccessibilityProfileComponent(x, y + 50, width, height - 50});'
+            this.positionAccessibilityProfileComponent(x, y + 50, width, height - 50});
             '';
-        } catch (error') { ''
-            console.error('[AccessibilityProfileIntegration] Render error:', error); }
+        } catch (error) { ''
+            console.error('[AccessibilityProfileIntegration] Render error:', error) }
         }
     }
     
@@ -94,10 +94,10 @@ export class AccessibilityProfileIntegrationExample {
             }
             
             // コンポーネントを親要素に追加
-            const componentElement = this.accessibilityProfileComponent.initialize(parentElement);'
+            const componentElement = this.accessibilityProfileComponent.initialize(parentElement);
             '';
             if(componentElement') {'
-                // プロファイル変更イベントのリスナーを設定''
+                // プロファイル変更イベントのリスナーを設定
                 componentElement.addEventListener('accessibilityProfileChanged', (event) => { 
             }
                     const customEvent = event as CustomEvent<ProfileChangeDetail>; }
@@ -107,7 +107,7 @@ export class AccessibilityProfileIntegrationExample {
             
             return componentElement;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[AccessibilityProfileIntegration] Component creation error:', error);
             return null; }
         }
@@ -116,17 +116,17 @@ export class AccessibilityProfileIntegrationExample {
     /**
      * プロファイル変更時の処理'
      */''
-    private handleProfileChanged(detail: ProfileChangeDetail'): void { try {''
+    private handleProfileChanged(detail: ProfileChangeDetail'): void { try {'
             console.log('[AccessibilityProfileIntegration] Profile changed:', detail);
             
             // SettingsSceneの他の設定項目を更新
             this.updateRelatedAccessibilitySettings(detail.profileId);
             
             // UI全体に変更を反映
-            this.notifyAccessibilityChanged();'
+            this.notifyAccessibilityChanged();
             ' }'
-        } catch (error') { ''
-            console.error('[AccessibilityProfileIntegration] Profile change handler error:', error); }
+        } catch (error) { ''
+            console.error('[AccessibilityProfileIntegration] Profile change handler error:', error) }
         }
     }
     
@@ -146,7 +146,7 @@ export class AccessibilityProfileIntegrationExample {
                 },
             }
         }
-        ';
+        ';'
         return { ''
             name: 'デフォルト',' };'
             description: '標準設定' }
@@ -170,9 +170,9 @@ export class AccessibilityProfileIntegrationExample {
     }
     
     /**
-     * アクセシビリティ変更をシステム全体に通知'
+     * アクセシビリティ変更をシステム全体に通知
      */''
-    private notifyAccessibilityChanged('')';
+    private notifyAccessibilityChanged()';
         console.log('[AccessibilityProfileIntegration] Notifying accessibility changes');
     }
     

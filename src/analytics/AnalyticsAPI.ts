@@ -20,7 +20,7 @@ export interface StorageManager { getData(storeName: string, options?: any): Pro
 }
 
 export interface PrivacyManager { checkConsent(): boolean;
-    isOptedOut(feature: string): boolean,';
+    isOptedOut(feature: string): boolean,
     anonymizeData(data: any): any,'';
     hasAnalyticsConsent(''';
     format?: 'json' | 'csv' | 'xlsx';
@@ -54,12 +54,12 @@ export class AnalyticsAPI {
     
     /**
      * APIの初期化
-     */'
-    private async initialize(): Promise<void> { try {''
-            await this.storageManager.healthCheck('');'
+     */
+    private async initialize(): Promise<void> { try {'
+            await this.storageManager.healthCheck();'
             console.log('AnalyticsAPI initialized successfully');' }'
-        } catch (error') { ''
-            console.error('Failed to initialize AnalyticsAPI:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize AnalyticsAPI:', error) }
         }
     }
     
@@ -155,13 +155,13 @@ export class AnalyticsAPI {
             return this.createErrorResponse('Unauthorized or not initialized'); }
         }
         ';
-        try { // セキュリティ上の理由で、全削除は管理者権限が必要''
+        try { // セキュリティ上の理由で、全削除は管理者権限が必要
             if (Object.keys(filters).length === 0') {''
                 return this.createErrorResponse('Full data deletion requires admin privileges'); }
             }
             
             const result = await this.endpointManager.deleteData(storeName, filters);
-            return this.createSuccessResponse({ deleted: result ); }
+            return this.createSuccessResponse({ deleted: result ) }
         } catch (error) { return this.createErrorResponse((error as Error).message); }
         }
     }
@@ -178,7 +178,7 @@ export class AnalyticsAPI {
                 initialized: this.isInitialized,
                 stats: stats,
                 components: {
-                    endpointManager: !!this.endpointManager,);
+                    endpointManager: !!this.endpointManager);
                     aggregationProcessor: !!this.aggregationProcessor);
                     exportHandler: !!this.exportHandler) }
                 }),
@@ -205,7 +205,7 @@ export class AnalyticsAPI {
      */'
     async anonymizeData(data: any): Promise<APIResponse> { ''
         if(!this.privacyManager') {'
-            ';
+            ';'
         }'
             return this.createErrorResponse('Privacy manager not available'); }
         }
@@ -273,9 +273,9 @@ export class AnalyticsAPI {
         }
         if (this.aggregationProcessor) { this.aggregationProcessor.destroy(); }
         }
-        if(this.exportHandler) {'
+        if(this.exportHandler) {
             '';
-            this.exportHandler.destroy('');
+            this.exportHandler.destroy();
         }'
         console.log('AnalyticsAPI destroyed''); }'
     }''

@@ -11,7 +11,7 @@ export class InputManager {
     private state: any;
     constructor(canvas: any) {
 
-        this.canvas = canvas;
+        this.canvas = canvas
 
     }
     }
@@ -47,8 +47,8 @@ export class InputManager {
     setupDeviceSpecificSettings() {
         const deviceInfo = getBrowserCompatibility().deviceInfo;
         const browserInfo = getBrowserCompatibility().browserInfo;
-        ';
-        // タッチデバイスの設定''
+        ;
+        // タッチデバイスの設定
         if (deviceInfo.isTouchDevice') {
             this.dragThreshold = deviceInfo.isMobile ? 15 : 10; // モバイルは少し大きく
             this.clickThreshold = 300; // タッチデバイスは長めに
@@ -58,8 +58,8 @@ export class InputManager {
             this.clickThreshold = 200; }
             this.tapTimeout = 300; }
         }
-        ';
-        // ブラウザ固有の調整''
+        ;
+        // ブラウザ固有の調整
         if(browserInfo.name === 'safari' && deviceInfo.isMobile) {
             // iOS Safari は特別な処理が必要
             this.clickThreshold = 400;
@@ -94,9 +94,9 @@ export class InputManager {
         }
         
         // ジェスチャーイベント（タッチデバイス用）
-        if(deviceInfo.isTouchDevice) {'
+        if(deviceInfo.isTouchDevice) {
             '';
-            this.setupGestureEvents('');
+            this.setupGestureEvents();
         }'
         this.canvas.addEventListener('contextmenu', (event) => {  }
             event.preventDefault(); }
@@ -106,7 +106,7 @@ export class InputManager {
     /**
      * ポインターイベントを設定'
      */''
-    setupPointerEvents('')';
+    setupPointerEvents()';
         this.canvas.addEventListener('pointerdown', (event) => {  ' }'
             this.handleEnhancedPointerDown(event'); }'
         };''
@@ -123,12 +123,12 @@ export class InputManager {
     /**
      * マウス・タッチイベントを設定（フォールバック）'
      */''
-    setupMouseAndTouchEvents('')';
+    setupMouseAndTouchEvents()';
         this.canvas.addEventListener('mousedown', (event) => this.handlePointerDown(event)');''
         this.canvas.addEventListener('mousemove', (event) => this.handlePointerMove(event)');''
         this.canvas.addEventListener('mouseup', (event) => this.handlePointerUp(event)');
         
-        // タッチイベント'
+        // タッチイベント
         const touchOptions = { passive: false }''
         this.canvas.addEventListener('touchstart', (event) => {  event.preventDefault(); }'
             this.handleTouchStart(event);' }'
@@ -147,7 +147,7 @@ export class InputManager {
     /**
      * キーボードイベントを設定'
      */''
-    setupKeyboardEvents('')';
+    setupKeyboardEvents()';
         document.addEventListener('keydown', (event) => {  ' }'
             this.handleKeyDown(event'); }'
         };''
@@ -159,7 +159,7 @@ export class InputManager {
      * ジェスチャーイベントを設定
      */
     setupGestureEvents() {'
-        // iOS Safari のジェスチャーイベント''
+        // iOS Safari のジェスチャーイベント
         if (getBrowserCompatibility(').browserInfo.name === 'safari'') {''
             this.canvas.addEventListener('gesturestart', (event) => { 
     }'
@@ -259,9 +259,9 @@ export class InputManager {
     /**
      * ポインター位置を取得
      */
-    getPointerPosition(event) {'
+    getPointerPosition(event) {
         '';
-        const rect = this.canvas.getBoundingClientRect('')';
+        const rect = this.canvas.getBoundingClientRect()';
         if (event.type.startsWith('mouse'') || event.type.startsWith('pointer')') {
             x = event.clientX - rect.left;
     }'
@@ -420,20 +420,20 @@ export class InputManager {
             const position = this.getTouchPosition(touch);
             
             this.activeTouches.set(touch.identifier, {)
-                id: touch.identifier,)';
+                id: touch.identifier,);
                 position: position),'';
-                startTime: Date.now('';
+                startTime: Date.now(''
     }'
                 type: 'touch' })
             })
         }
         );
         if(this.activeTouches.size === 1) {'
-            // シングルタッチ''
-            const firstTouch = Array.from(this.activeTouches.values()')[0];
+            // シングルタッチ
+            const firstTouch = Array.from(this.activeTouches.values())[0];
             this.handlePointerDown({ )
                 clientX: firstTouch.position.x)';
-                clientY: firstTouch.position.y,');
+                clientY: firstTouch.position.y,')
         }'
                 type: 'touchstart'); }
         } else if (this.activeTouches.size === 2) { // マルチタッチジェスチャー開始
@@ -456,12 +456,12 @@ export class InputManager {
         }
         
         if(this.activeTouches.size === 1) {
-        ';
+        ';'
             '';
             const firstTouch = Array.from(this.activeTouches.values()')[0];
             this.handlePointerMove({)
                 clientX: firstTouch.position.x)';
-                clientY: firstTouch.position.y,');
+                clientY: firstTouch.position.y,')
         }'
                 type: 'touchmove'); }
         } else if (this.activeTouches.size === 2) { this.handleMultiTouchMove(); }
@@ -488,12 +488,12 @@ export class InputManager {
                     }
                 }
             }
-        }'
+        }
         '';
         if(this.activeTouches.size === 0') {
             this.handlePointerUp({)
                 clientX: 0)';
-                clientY: 0,');
+                clientY: 0,')
         }'
                 type: 'touchend'); }
         } else if (this.activeTouches.size === 1) { this.endMultiTouchGesture(); }
@@ -513,10 +513,10 @@ export class InputManager {
      * キーボード押下処理
      */
     handleKeyDown(event) {'
-        // ゲーム固有のキーボードショートカット''
+        // ゲーム固有のキーボードショートカット
         switch (event.code') {''
             case 'Space':'';
-                event.preventDefault('')';
+                event.preventDefault()';
                 this.notifyKeyAction('pause'');'
                 break;''
             case 'Escape':'';
@@ -717,7 +717,7 @@ export class InputManager {
     /**
      * クリーンアップ
      */
-    cleanup() {'
-        ';
+    cleanup() {
+        ';'
     }'
         this.resetInputState(') }')

@@ -30,14 +30,14 @@ export class HelpContentManager {
     // アナリティクス
     private helpAnalytics: any;
     private helpFeedbackSystem: any;
-    private helpEffectivenessAnalyzer: any';
+    private helpEffectivenessAnalyzer: any;
 '';
     constructor(gameEngine: any') {
         this.gameEngine = gameEngine;
         this.helpManager = null;
         this.searchEngine = null;
         ';
-        // コンテンツ状態''
+        // コンテンツ状態
         this.selectedCategory = 'gameplay';
         this.selectedTopicIndex = 0;'
         this.currentContent = null;''
@@ -48,7 +48,7 @@ export class HelpContentManager {
         
         // ヘルプカテゴリ
     }
-    }'
+    }
         this.categories = [' }]'
             { id: 'gameplay', key: 'help.categories.gameplay', topics: [] },''
             { id: 'bubbles', key: 'help.categories.bubbles', topics: [] },''
@@ -88,37 +88,37 @@ export class HelpContentManager {
             // 検索インデックスの構築
             if(this.searchEngine) {
                 await this.searchEngine.buildIndex();
-                ';
-                // ヘルプコンテンツをインデックスに追加''
-                await this.indexHelpContentForSearch('');'
+                ;
+                // ヘルプコンテンツをインデックスに追加
+                await this.indexHelpContentForSearch();'
             console.log('HelpContentManager initialized successfully');
             }'
             ' }'
-        } catch (error') { ''
-            console.error('Failed to initialize HelpContentManager:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize HelpContentManager:', error) }
         }
     }'
 '';
-    async initializeAnalytics('')';
+    async initializeAnalytics()';
             const { getHelpAnalytics } = await import('../../core/help/HelpAnalytics.js');
             this.helpAnalytics = getHelpAnalytics(this.gameEngine);
             ';
-            // HelpManagerにanalyticsオブジェクトを設定''
+            // HelpManagerにanalyticsオブジェクトを設定
             if (this.helpManager') { this.helpManager.analytics = this.helpAnalytics; }
             }
             ';
-            // ヘルプフィードバックシステムの初期化''
+            // ヘルプフィードバックシステムの初期化
             const { getHelpFeedbackSystem } = await import('../../core/help/HelpFeedbackSystem.js');''
             this.helpFeedbackSystem = getHelpFeedbackSystem(this.gameEngine');
             ';
-            // ヘルプ効果測定ツールの初期化''
+            // ヘルプ効果測定ツールの初期化
             const { getHelpEffectivenessAnalyzer } = await import('../../core/help/HelpEffectivenessAnalyzer.js');''
             this.helpEffectivenessAnalyzer = getHelpEffectivenessAnalyzer(this.gameEngine');'
             '';
             console.log('HelpContentManager: Analytics systems initialized successfully'),';
             '';
-        } catch (error') { ''
-            console.warn('Some analytics systems failed to initialize:', error); }
+        } catch (error) { ''
+            console.warn('Some analytics systems failed to initialize:', error) }
         }
     }
 
@@ -131,8 +131,8 @@ export class HelpContentManager {
         }
             return; }
         }
-';
-        try { ''
+';'
+        try {'
             console.log('Indexing help content for search...');
             
             // 全カテゴリのトピックを収集してインデックス化
@@ -143,25 +143,25 @@ export class HelpContentManager {
                 for (const topic of category.topics) {
                     try {
                         // トピックの詳細コンテンツを取得
-                        let content = null;'
+                        let content = null;
                         if (this.helpManager) {'
             
             }'
                             content = await this.helpManager.getTopicContent(topic.id'); }
                         }
                         ';
-                        // コンテンツテキストの抽出（オブジェクト構造に対応）''
+                        // コンテンツテキストの抽出（オブジェクト構造に対応）
                         let contentText = '';''
                         if(content') {'
                             '';
                             if (typeof content.content === 'string'') {
                                 // content.contentが文字列の場合
-                        }'
+                        }
                                 contentText = content.content;' }'
-                            } else if (content.content && typeof content.content === 'object') { // content.contentがオブジェクトの場合（overview, objective, basic_rules, tipsなど）''
+                            } else if (content.content && typeof content.content === 'object') { // content.contentがオブジェクトの場合（overview, objective, basic_rules, tipsなど）
                                 const contentValues = Object.values(content.content').filter(val => typeof val === 'string'');''
                                 contentText = contentValues.join(' '');' }'
-                            } else if (content.answer && typeof content.answer === 'string'') { // フォールバック: answer'
+                            } else if (content.answer && typeof content.answer === 'string'') { // フォールバック: answer
                                 contentText = content.answer;' }'
                             } else if (content.description && typeof content.description === 'string'') { // フォールバック: description
                                 contentText = content.description; }
@@ -171,7 +171,7 @@ export class HelpContentManager {
                         // 検索用データ構造を作成
                         const searchItem = {
                             id: `${category.id}:${topic.id}`,
-                            categoryId: category.id,';
+                            categoryId: category.id,
                             topicId: topic.id,'';
                             title: topic.title || topic.question || '',
                             content: contentText,';
@@ -193,23 +193,23 @@ export class HelpContentManager {
                 }
             }
             ';
-            // SearchEngineにコンテンツをインデックス''
+            // SearchEngineにコンテンツをインデックス
             if(allContent.length > 0') {'
-                ';
+                ';'
             }'
                 this.searchEngine.indexContent(allContent, 'help');' }'
                 console.log(`Successfully indexed ${allContent.length) help topics for search`'});'
             } else {  ' }'
                 console.warn('No help content found to index');' }'
-            } catch (error') { ''
-            console.error('Failed to index help content for search:', error); }
+            } catch (error) { ''
+            console.error('Failed to index help content for search:', error) }
         }
     }
 
     /**
      * ヘルプコンテンツの読み込み
      */'
-    async loadHelpContent() { try {''
+    async loadHelpContent() { try {'
             if(!this.helpManager') {'
                 '';
                 console.warn('HelpManager not available, using default content');
@@ -230,10 +230,10 @@ export class HelpContentManager {
             }
 
             // 初期コンテンツの読み込み
-            await this.loadCategoryContent(this.selectedCategory);'
+            await this.loadCategoryContent(this.selectedCategory);
             '';
-        } catch (error') { ''
-            console.error('Failed to load help content:', error); }
+        } catch (error) { ''
+            console.error('Failed to load help content:', error) }
         }
     }
 
@@ -258,9 +258,9 @@ export class HelpContentManager {
                 
                 if(this.contentCache.has(cacheKey) { this.currentContent = this.contentCache.get(cacheKey); }
                 } else {  this.currentContent = await this.helpManager.getTopicContent(topic.id); }
-                    this.setContentCache(cacheKey, this.currentContent); }'
+                    this.setContentCache(cacheKey, this.currentContent); }
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Failed to load category content:', error);
             this.currentContent = null; }
         }
@@ -269,18 +269,18 @@ export class HelpContentManager {
     /**
      * 検索実行
      */'
-    async performSearch(query: string) { try {''
+    async performSearch(query: string) { try {'
             if(!this.searchEngine') {'
                 '';
                 console.warn('Search engine not available');
             }
                 return; }
             }
-';
+';'
             const trimmedQuery = query.trim();''
             if(trimmedQuery.length === 0') {
                 // 空のクエリ - 検索モードを終了
-                const wasSearching = this.isSearching;'
+                const wasSearching = this.isSearching;
                 this.isSearching = false;''
                 this.searchQuery = '';
                 this.searchResults = [];
@@ -296,7 +296,7 @@ export class HelpContentManager {
             // 検索キャッシュをチェック
             if(this.searchCache.has(trimmedQuery) { this.searchResults = this.searchCache.get(trimmedQuery); }
             } else {  // 新しい検索実行
-                const searchResult = await this.searchEngine.search(trimmedQuery);'
+                const searchResult = await this.searchEngine.search(trimmedQuery);
                 this.searchResults = searchResult.results || [];' }'
                 this.setSearchCache(trimmedQuery, this.searchResults'); }
             }
@@ -304,16 +304,16 @@ export class HelpContentManager {
             this.isSearching = true;
             this.searchQuery = trimmedQuery;
             // selectedTopicIndexはそのまま維持（検索結果の自動選択は行わない）
-';
-            // アナリティクス記録''
+;
+            // アナリティクス記録
             if(this.helpAnalytics && typeof this.helpAnalytics.recordSearchQuery === 'function') {
                 try {
             }'
                     this.helpAnalytics.recordSearchQuery(trimmedQuery, this.searchResults.length);' }'
-                } catch (error') { ''
-                    console.warn('Failed to record search query analytics:', error); }'
+                } catch (error) { ''
+                    console.warn('Failed to record search query analytics:', error) }'
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Search failed:', error);
             this.searchResults = [];
             this.isSearching = false; }
@@ -326,7 +326,7 @@ export class HelpContentManager {
     async selectCategory(categoryId: string) { if (this.selectedCategory === categoryId) {
             return; // 既に選択済み }
         }
-';
+';'
         const fromIndex = this.categories.findIndex(c => c.id === this.selectedCategory);''
         const toIndex = this.categories.findIndex(c => c.id === categoryId');
         
@@ -336,16 +336,16 @@ export class HelpContentManager {
         this.searchQuery = '';
         this.searchResults = [];
 ';
-        // コンテンツ読み込み''
+        // コンテンツ読み込み
         await this.loadCategoryContent(categoryId');
 ';
-        // アナリティクス記録''
+        // アナリティクス記録
         if(this.helpAnalytics && typeof this.helpAnalytics.recordCategorySelection === 'function') {
             try {
         }'
                 this.helpAnalytics.recordCategorySelection(categoryId);' }'
-            } catch (error') { ''
-                console.warn('Failed to record category selection:', error); }'
+            } catch (error) { ''
+                console.warn('Failed to record category selection:', error) }'
             }''
         } else if (this.helpAnalytics') { ''
             console.warn('HelpAnalytics object exists but recordCategorySelection method is missing'); }
@@ -359,26 +359,26 @@ export class HelpContentManager {
      * @param {number} index - トピックインデックス
      * @param {boolean} fromSearchResult - 検索結果からの選択かどうか
      */'
-    async selectTopic(index: number, fromSearchResult: boolean = false) { // 検索状態をクリア（メニューからの直接選択時のみ）''
+    async selectTopic(index: number, fromSearchResult: boolean = false) { // 検索状態をクリア（メニューからの直接選択時のみ）
         if(!fromSearchResult') {'
             this.isSearching = false;''
             this.searchQuery = '';
         }
             this.searchResults = []; }
         }
-        ';
+        ';'
         const category = this.categories.find(c => c.id === this.selectedCategory);''
         if (!category || index < 0 || index >= category.topics.length') { return null; }
         }
 ';
-        // 前のコンテンツのフィードバック記録''
+        // 前のコンテンツのフィードバック記録
         if(this.helpFeedbackSystem && typeof this.helpFeedbackSystem.recordTopicExit === 'function' && this.currentContent && category.topics[this.selectedTopicIndex]) {
             try {
                 const currentTopic = category.topics[this.selectedTopicIndex];
         }'
                 this.helpFeedbackSystem.recordTopicExit(currentTopic.id, this.currentContent);' }'
-            } catch (error') { ''
-                console.warn('Failed to record topic exit:', error); }'
+            } catch (error) { ''
+                console.warn('Failed to record topic exit:', error) }'
             }''
         } else if (this.helpFeedbackSystem && this.currentContent && category.topics[this.selectedTopicIndex]') { ''
             console.warn('HelpFeedbackSystem object exists but recordTopicExit method is missing'); }
@@ -405,9 +405,9 @@ export class HelpContentManager {
                 if (this.helpFeedbackSystem) { this.helpFeedbackSystem.recordTopicView(topic.id, newContent); }
                 }
             }
-            ';
+            ';'
             return { newContent, currentContent: this.currentContent }''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to select topic:', error);
             return null; }
         }
@@ -419,7 +419,7 @@ export class HelpContentManager {
     async selectSearchResult(index: number) { if (!this.isSearching || index < 0 || index >= this.searchResults.length) {
             return null; }
         }
-';
+';'
         const result = this.searchResults[index];''
         if(result') {
             // SearchEngineの結果構造に対応
@@ -427,7 +427,7 @@ export class HelpContentManager {
             
             // categoryIdとtopicIdの取得を改善
             let categoryId = resultData.categoryId || result.categoryId || resultData.category;
-            let topicId = resultData.topicId || result.topicId;'
+            let topicId = resultData.topicId || result.topicId;
             '';
             // IDが 'category:topic' 形式の場合は分割''
             if (!categoryId || !topicId') {'
@@ -437,7 +437,7 @@ export class HelpContentManager {
                     categoryId = categoryId || parts[0];
         }
                     topicId = topicId || parts[1]; }'
-                } else {  // カテゴリ情報のフォールバック''
+                } else {  // カテゴリ情報のフォールバック
                     categoryId = categoryId || resultData.category || 'gameplay'; }
                     topicId = topicId || fullId; }
                 }
@@ -446,12 +446,12 @@ export class HelpContentManager {
             if(!categoryId || !topicId') {'
                 '';
                 console.error('Invalid search result structure - missing categoryId or topicId:', result');''
-                console.log('Extracted categoryId:', categoryId, 'topicId:', topicId');
+                console.log('Extracted categoryId:', categoryId, 'topicId:', topicId')
             }
                 return null; }
             }
             
-            // 検索モードを終了'
+            // 検索モードを終了
             this.isSearching = false;''
             this.searchQuery = '';
             this.searchResults = [];
@@ -485,9 +485,9 @@ export class HelpContentManager {
     async getEffectivenessReport() { if (!this.helpEffectivenessAnalyzer) {
             return null; }
         }
-';
+';'
         try { return await this.helpEffectivenessAnalyzer.generateReport();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to generate effectiveness report:', error);
             return null; }
         }
@@ -640,9 +640,9 @@ export class HelpContentManager {
         }
         if (this.helpFeedbackSystem && this.helpFeedbackSystem.destroy) { this.helpFeedbackSystem.destroy(); }
         }
-        if(this.helpEffectivenessAnalyzer && this.helpEffectivenessAnalyzer.destroy) {'
+        if(this.helpEffectivenessAnalyzer && this.helpEffectivenessAnalyzer.destroy) {
             '';
-            this.helpEffectivenessAnalyzer.destroy('');
+            this.helpEffectivenessAnalyzer.destroy();
         }'
         console.log('HelpContentManager destroyed'); }
     }
@@ -713,6 +713,6 @@ export class HelpSearchManager {
     }
 
     getSearchSuggestions(): Array<{text: string, category: string, topicId: string}> { return [...this.searchSuggestions]; }
-    }'
+    }
 '';
     clearSearchHistory(');

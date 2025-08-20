@@ -12,15 +12,15 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     public scoreMultipliers: number[] = []; // アイテムによるスコア倍率
 
     constructor(gameEngine: any) {
-        this.gameEngine = gameEngine; }
+        this.gameEngine = gameEngine }
     }
     
     /**
      * コンボタイムアウト時間を取得（アイテム効果を考慮）
      */
     getComboTimeout(): number { let timeout = this.comboTimeout;
-        ';
-        // アイテム効果でコンボ継続時間を延長''
+        ;
+        // アイテム効果でコンボ継続時間を延長
         if(this.gameEngine.itemManager') {'
             '';
             const comboBoost = this.gameEngine.itemManager.getEffectValue('comboBoost');
@@ -89,7 +89,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     }
     
     /**
-     * 基本スコアを計算'
+     * 基本スコアを計算
      */''
     calculateBaseScore(bubble: Bubble'): number { const baseScores: Record<string, number> = {''
             'normal': 15,    // 10 -> 15 (基本スコア向上')'';
@@ -148,9 +148,9 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     
     /**
      * スコア獲得をGameSceneに通知
-     */'
-    notifyScoreGained(score: number, x: number, y: number, multiplier: number): void { // GameSceneのonScoreGainedメソッドを呼び出し''
-        const gameScene = this.gameEngine.sceneManager.getCurrentScene('')';
+     */
+    notifyScoreGained(score: number, x: number, y: number, multiplier: number): void { // GameSceneのonScoreGainedメソッドを呼び出し
+        const gameScene = this.gameEngine.sceneManager.getCurrentScene()';
         if(gameScene && typeof gameScene.onScoreGained === 'function') {
             
         }
@@ -175,9 +175,9 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
                 this.notifyComboBonus(bonusScore, x, y, this.combo); }
             }
         }
-        ';
-        // GameSceneに通知''
-        const gameScene = this.gameEngine.sceneManager.getCurrentScene('')';
+        ;
+        // GameSceneに通知
+        const gameScene = this.gameEngine.sceneManager.getCurrentScene()';
         if (gameScene && typeof gameScene.onComboAchieved === 'function') { gameScene.onComboAchieved(this.combo, x || 0, y || 0); }
         }
     }
@@ -253,9 +253,9 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     
     /**
      * スコア倍率を設定（アイテム効果など）
-     */'
+     */
     setMultiplier(multiplier: number, duration: number): void { ''
-        const endTime = Date.now('')';
+        const endTime = Date.now()';
             source: 'item') }
         console.log(`Score multiplier x${multiplier} active for ${duration)ms`});
     }
@@ -263,7 +263,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
     /**
      * スコア倍率をリセット（特定のもののみ）'
      */''
-    resetMultiplier('')';
+    resetMultiplier()';
         this.scoreMultipliers = this.scoreMultipliers.filter(m => m.source !== 'item');
     }
     
@@ -292,7 +292,7 @@ export class ScoreManager implements IScoreManager { public gameEngine: any,
 
     /**
      * グローバルスコア倍率を設定
-     */'
+     */
     setGlobalScoreMultiplier(multiplier: number): void { if (this.gameEngine && this.gameEngine.setScoreMultiplier) {''
             this.gameEngine.setScoreMultiplier(multiplier'); }'
         } else {  ' }'

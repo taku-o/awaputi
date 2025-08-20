@@ -45,9 +45,9 @@ import { PerformanceThresholdManager } from './PerformanceThresholdManager.js';
 interface PerformanceMonitoringSystem { errorHandler?: ErrorHandler;
     [key: string]: any, }
 }
-';
+';'
 interface ErrorHandler { ''
-    handleError?: (error: Error, context?: any') => void; }
+    handleError?: (error: Error, context?: any') => void }
 }
 
 interface AnalysisConfig { trendAnalysisWindow: number,
@@ -55,16 +55,16 @@ interface AnalysisConfig { trendAnalysisWindow: number,
     statisticalWindow: number,
     insightGenerationInterval: number,
     performanceBaseline: Map<string, number>;
-    adaptiveThresholds: boolean; }
+    adaptiveThresholds: boolean }
 }
-';
+';'
 interface TrendAnalyzer { ''
     type: 'moving_average' | 'linear_regression' | 'exponential_smoothing',
     window: number,
     sensitivity?: number;
     alpha?: number;'
     history: number[],'';
-    trend: 'stable' | 'improving' | 'degrading'; }
+    trend: 'stable' | 'improving' | 'degrading' }
 }
 
 interface Anomaly { timestamp: number,
@@ -73,14 +73,14 @@ interface Anomaly { timestamp: number,
     baseline?: number;'
     score: number,'';
     severity: 'low' | 'medium' | 'high' | 'critical','';
-    type: 'baseline_deviation' | 'threshold_violation'; }
+    type: 'baseline_deviation' | 'threshold_violation' }
 }
 
 interface ThresholdViolation { timestamp: number,
     metricId: string,';
     value: number,'';
     severity: 'low' | 'medium' | 'high' | 'critical',
-    deviation: number; }
+    deviation: number }
 }
 
 interface AnalysisResults { trends: Record<string, any>;
@@ -89,7 +89,7 @@ interface AnalysisResults { trends: Record<string, any>;
     statistics: Record<string, any>;
     baseline: Record<string, number>;
     calibrated: boolean,
-    thresholds: any; }
+    thresholds: any }
 }
 
 interface ExportedData { timestamp: number,
@@ -99,7 +99,7 @@ interface ExportedData { timestamp: number,
     metrics: any,
     statistics: Record<string, any>;
     insights: any[],
-    thresholds: any; }
+    thresholds: any }
 }
 
 interface ImportData { config?: Partial<AnalysisConfig>;
@@ -158,7 +158,7 @@ export class PerformanceDataAnalyzer {
         
         // Initialize sub-components
         this.metricsCollector = new PerformanceMetricsCollector(this);
-        this.dataProcessor = new PerformanceDataProcessor(this);'
+        this.dataProcessor = new PerformanceDataProcessor(this);
         this.reportGenerator = new PerformanceReportGenerator(this);''
         this.thresholdManager = new PerformanceThresholdManager(this');'
         '';
@@ -171,34 +171,34 @@ export class PerformanceDataAnalyzer {
     initializeTrendAnalyzers(''';
         this.trendAnalyzers.set('fps', { ''
             type: 'moving_average',
-            window: 30,);
+            window: 30);
             sensitivity: 0.1)';
             history: [],')';
             trend: 'stable')'),
         ';
-        // Memory usage trend analyzer''
+        // Memory usage trend analyzer
         this.trendAnalyzers.set('memory_used', {''
             type: 'linear_regression',
-            window: 50,);
+            window: 50);
             sensitivity: 0.05)';
             history: [],')';
             trend: 'stable')'),
         ';
-        // Frame time variance analyzer''
+        // Frame time variance analyzer
         this.trendAnalyzers.set('frame_variance', {''
             type: 'exponential_smoothing',
-            alpha: 0.3,);
+            alpha: 0.3);
             window: 20)';
             history: [],')';
             trend: 'stable')'),
         ';
-        // Network latency analyzer''
+        // Network latency analyzer
         this.trendAnalyzers.set('network_latency', {''
             type: 'moving_average',
-            window: 15,);
+            window: 15);
             sensitivity: 0.2)';
             history: [],')';
-            trend: 'stable'); }
+            trend: 'stable') }
     }
     
     /**
@@ -215,16 +215,16 @@ export class PerformanceDataAnalyzer {
             
             // Update threshold manager
             for(const [metricId, value] of metrics) {
-                this.thresholdManager.updateBaseline(metricId, value);'
+                this.thresholdManager.updateBaseline(metricId, value);
                 const violation = this.thresholdManager.checkThresholdViolation(metricId, value);''
                 if (violation') {
                     // Convert threshold violations to anomalies for compatibility
                     this.anomalies.push({
                         timestamp: violation.timestamp,
                         metricId: violation.metricId,
-                        value: violation.value,);
-                        severity: violation.severity)';
-                        score: violation.deviation,');
+                        value: violation.value);
+                        severity: violation.severity);
+                        score: violation.deviation,')
             }'
                         type: 'threshold_violation'); }
                 }
@@ -234,9 +234,9 @@ export class PerformanceDataAnalyzer {
             this.detectAnomalies(timestamp, metrics);
             
             // Delegate to report generator
-            await this.reportGenerator.generateInsights(timestamp, metrics);'
+            await this.reportGenerator.generateInsights(timestamp, metrics);
             '';
-        } catch (error') { this.errorHandler.handleError? .(error as Error, { : undefined''
+        } catch (error) { this.errorHandler.handleError? .(error as Error, { : undefined''
                 context: 'PerformanceDataAnalyzer.analyzePerformanceData'' }'
             }') || console.error('Analysis error:', error);
         }
@@ -264,7 +264,7 @@ export class PerformanceDataAnalyzer {
                         value,
                         baseline,';
                         score: anomalyScore,'';
-                        severity: this.calculateAnomalySeverity(anomalyScore'),';
+                        severity: this.calculateAnomalySeverity(anomalyScore'),'
         }'
                         type: 'baseline_deviation' }
                     },
@@ -282,10 +282,10 @@ export class PerformanceDataAnalyzer {
     
     /**
      * Calculate anomaly score
-     */'
+     */
     calculateAnomalyScore(metricId: string, value: number, baseline: number): number { ''
         const deviation = Math.abs(value - baseline') / baseline;
-        ';
+        ';'
         const metricWeights: Record<string, number> = {''
             'fps': 2.0,'';
             'memory_used': 1.5,'';
@@ -359,8 +359,8 @@ export class PerformanceDataAnalyzer {
     configure(config: ConfigurationInput): void { Object.assign(this.analysisConfig, config);
         
         // Propagate configuration to sub-components
-        if(config.thresholds) {'
-            ';
+        if(config.thresholds) {
+            ';'
         }'
             this.thresholdManager.configure(config.thresholds'); }
         }'
@@ -408,8 +408,8 @@ export class PerformanceDataAnalyzer {
             }
             
             if(data.thresholds) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 this.thresholdManager.importData(data.thresholds'); }
             }'
@@ -417,7 +417,7 @@ export class PerformanceDataAnalyzer {
             console.log('[PerformanceDataAnalyzer] Data imported successfully');
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PerformanceDataAnalyzer] Import failed:', error);
             return false; }
         }
@@ -433,9 +433,9 @@ export class PerformanceDataAnalyzer {
         this.thresholdManager?.destroy();
         
         // Clear local data
-        this.anomalies = [];'
+        this.anomalies = [];
         this.performanceBaseline.clear();''
-        this.trendAnalyzers.clear('')';
+        this.trendAnalyzers.clear()';
         console.log('[PerformanceDataAnalyzer] Main analyzer and sub-components destroyed'); }
     }
 
@@ -450,6 +450,6 @@ export class PerformanceDataAnalyzer {
     }
 
     get trendAnalyzersData(): Map<string, TrendAnalyzer> { return this.trendAnalyzers; }
-    }'
+    }
 '';
     get configData(');

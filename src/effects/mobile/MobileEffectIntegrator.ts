@@ -19,7 +19,7 @@ interface EffectManager { enhancedEffectManager?: EnhancedEffectManager;
 }
 
 interface EnhancedEffectManager { addTransitionEffect?: (type: string, duration: number, options?: TransitionEffectOptions) => any;
-    addLightingEffect?: (x: number, y: number, intensity: number, color: string, radius: number) => any; }
+    addLightingEffect?: (x: number, y: number, intensity: number, color: string, radius: number) => any }
 }
 
 interface EnhancedParticleManager { createAdvancedBubbleEffect?: (x: number, y: number, bubbleType: string, bubbleSize: number, options?: BubbleEffectOptions) => any;
@@ -30,9 +30,9 @@ interface EnhancedParticleManager { createAdvancedBubbleEffect?: (x: number, y: 
     clearUnusedParticles?: () => void; }
 }
 
-interface AnimationManager { animateUIElement?: (element: HTMLElement, animationType: string, duration: number, options?: UIAnimationOptions) => any;'
+interface AnimationManager { animateUIElement?: (element: HTMLElement, animationType: string, duration: number, options?: UIAnimationOptions) => any;
     setDurationMultiplier?: (multiplier: number) => void;''
-    setFrameSkipping?: (frames: number') => void; }
+    setFrameSkipping?: (frames: number') => void }
 }
 
 interface TransitionEffectOptions { duration?: number;
@@ -57,7 +57,7 @@ interface LightingEffectConfig { x: number,
     y: number,
     intensity: number,
     color: string,
-    radius: number; }
+    radius: number }
 }
 
 interface PerformanceThresholds { fps: {
@@ -72,16 +72,16 @@ interface PerformanceThresholds { fps: {
     },
     battery: { critical: number,
         low: number,
-        medium: number; }
+        medium: number }
     };
 }
-';
+';'
 interface AdaptationStrategy { ''
     priority: 'performance' | 'balanced' | 'quality',';
     particleReduction: number,'';
     effectQuality: 'minimal' | 'low' | 'medium' | 'high',
     disableAdvanced: boolean,
-    targetFPS: number; }
+    targetFPS: number }
 }
 
 interface IntegrationConfig { enableAutoDetection: boolean,
@@ -89,28 +89,28 @@ interface IntegrationConfig { enableAutoDetection: boolean,
     enableResourceOptimization: boolean,
     enableTouchOptimization: boolean,
     enableBatteryOptimization: boolean,
-    enableNetworkOptimization: boolean; }
+    enableNetworkOptimization: boolean }
 }
 
 interface MobileIntegratorState { initialized: boolean,
     mobileMode: boolean,';
     adaptiveMode: boolean,'';
-    performanceMode: 'auto' | 'performance-critical' | 'balanced' | 'quality-focused'; }
+    performanceMode: 'auto' | 'performance-critical' | 'balanced' | 'quality-focused' }
 }
 
 interface DeviceInfo { isMobile?: boolean;'
     isTablet?: boolean;''
     profile?: 'ultra-low' | 'low-end' | 'mid-range' | 'high-end';
     performanceMemory?: {
-        jsHeapSizeLimit: number; }
+        jsHeapSizeLimit: number }
     };
 }
 
 interface MobileMetrics { averageFPS: number,
-    batteryLevel: number; }
+    batteryLevel: number }
 }
 
-interface ResourceStats { memoryUsage: number; }
+interface ResourceStats { memoryUsage: number }
 }
 
 interface IntegrationStatus { initialized: boolean,
@@ -119,7 +119,7 @@ interface IntegrationStatus { initialized: boolean,
     performanceMode: string,
     optimizerStatus?: any;
     resourceStatus?: any;
-    configuration: IntegrationConfig;
+    configuration: IntegrationConfig
     }
 }
 
@@ -131,23 +131,23 @@ interface PerformanceReport { component: string,
         thresholds: PerformanceThresholds,
         strategies: Record<string, AdaptationStrategy>;
         optimizer: any,
-        resources: any; }
+        resources: any }
     };
 }
 
 interface ResourceSettings { memory?: {
         maxHeapUsage: number,
         gcThreshold: number,
-        cleanupInterval: number; }
+        cleanupInterval: number }
     };
     network?: { dataUsageLimit: number,
-        compressionLevel: number; }
+        compressionLevel: number }
     };
 }
 
 interface OptimizedAnimation { type: string,
     duration: number,
-    options: UIAnimationOptions;
+    options: UIAnimationOptions
     }
 }
 
@@ -190,20 +190,20 @@ export class MobileEffectIntegrator {
             medium: 0.6 }
         }
     },
-    ';
+    ';'
     private readonly adaptationStrategies = new Map<string, AdaptationStrategy>(['';
         ['performance-critical', { ''
             priority: 'performance',';
             particleReduction: 0.3,'';
             effectQuality: 'minimal',
-            disableAdvanced: true,];
+            disableAdvanced: true];
             targetFPS: 30 }]'
         }],''
         ['balanced', { ''
             priority: 'balanced',';
             particleReduction: 0.7,'';
             effectQuality: 'medium',
-            disableAdvanced: false,];
+            disableAdvanced: false];
             targetFPS: 45 }]'
         }],''
         ['quality-focused', { ''
@@ -225,13 +225,13 @@ export class MobileEffectIntegrator {
     /**
      * 初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('Initializing mobile effect integration...');
             
-            // 必要なシステムの取得'
+            // 必要なシステムの取得
             this.effectManager = this.gameEngine.effectManager || null;''
             if(!this.effectManager') {'
-                ';
+                ';'
             }'
                 throw new Error('EffectManager not found in GameEngine'); }
             }
@@ -252,9 +252,9 @@ export class MobileEffectIntegrator {
             
             // イベントリスナーの設定
             this.setupEventListeners();
-            ';
-            // 適応的品質制御の開始''
-            this.startAdaptiveQualityControl('')';
+            ;
+            // 適応的品質制御の開始
+            this.startAdaptiveQualityControl()';
             console.log('Mobile effect integration initialized successfully'');''
             console.log('Mobile mode:', this.state.mobileMode);
             
@@ -262,7 +262,7 @@ export class MobileEffectIntegrator {
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'MOBILE_INTEGRATION_ERROR', {')'
                 operation: 'initialize',')';
-                component: 'MobileEffectIntegrator'); }
+                component: 'MobileEffectIntegrator') }
             });
             return false;
         }
@@ -272,12 +272,12 @@ export class MobileEffectIntegrator {
      * モバイルモードの検出
      */
     private detectMobileMode(): void { if (!this.integrationConfig.enableAutoDetection) return;
-        ';
+        ';'
         const deviceInfo = this.mobileOptimizer? .getDeviceInfo();''
         if(deviceInfo') {
             this.state.mobileMode = deviceInfo.isMobile || deviceInfo.isTablet || false;
             ';
-            // パフォーマンスモードの自動設定''
+            // パフォーマンスモードの自動設定
             if (deviceInfo.profile === 'ultra-low' || deviceInfo.profile === 'low-end'') {'
         }'
                 this.state.performanceMode = 'performance-critical';' }'
@@ -286,7 +286,7 @@ export class MobileEffectIntegrator {
             } else {  ' }'
                 this.state.performanceMode = 'quality-focused'; }
             }'
-        } else {  // フォールバック検出''
+        } else {  // フォールバック検出
             this.state.mobileMode = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent'); : undefined' }'
             this.state.performanceMode = this.state.mobileMode ? 'balanced' : 'quality-focused'; }
         }
@@ -302,9 +302,9 @@ export class MobileEffectIntegrator {
         '';
         console.log('Applying mobile integration settings...');
         ';
-        // モバイル最適化の有効化''
+        // モバイル最適化の有効化
         if(this.integrationConfig.enableResourceOptimization && this.mobileOptimizer') {'
-            ';
+            ';'
         }'
             this.mobileOptimizer.setOptimizationLevel('balanced'); }
         }
@@ -315,9 +315,9 @@ export class MobileEffectIntegrator {
         }
             this.adjustResourceSettings(deviceInfo); }
         }
-        ';
-        // エフェクトマネージャーとの統合''
-        await this.integrateWithEffectManager('');'
+        ;
+        // エフェクトマネージャーとの統合
+        await this.integrateWithEffectManager();'
         console.log('Mobile integration settings applied');
     }
     
@@ -349,11 +349,11 @@ export class MobileEffectIntegrator {
      * データ使用制限の取得'
      */''
     private getDataUsageLimit(deviceInfo: DeviceInfo'): number { const baseLimits: Record<string, number> = {''
-            'ultra-low': 2 * 1024 * 1024,  // 2MB'';
-            'low-end': 5 * 1024 * 1024,    // 5MB'';
-            'mid-range': 10 * 1024 * 1024, // 10MB'';
+            'ultra-low': 2 * 1024 * 1024,  // 2MB;
+            'low-end': 5 * 1024 * 1024,    // 5MB;
+            'mid-range': 10 * 1024 * 1024, // 10MB;
             'high-end': 20 * 1024 * 1024   // 20MB }
-        };'
+        };
         '';
         return baseLimits[deviceInfo.profile || 'mid-range'] || baseLimits['mid-range'];
     }
@@ -515,11 +515,11 @@ export class MobileEffectIntegrator {
      */
     private optimizeUIAnimation(animationType: string, duration: number, options: UIAnimationOptions): OptimizedAnimation {
         if (!this.state.mobileMode) return { type: animationType, duration, options };
-        ';
+        ';'
         const strategy = this.adaptationStrategies.get(this.state.performanceMode);''
         if (!strategy') return { type: animationType, duration, options };
         
-        // 複雑なアニメーションを簡単なものに変更'
+        // 複雑なアニメーションを簡単なものに変更
         const simplifiedAnimations: Record<string, string> = { ''
             'bounce': 'ease-out','';
             'spring': 'ease-in-out','';
@@ -560,7 +560,7 @@ export class MobileEffectIntegrator {
      * プールされたパーティクルの取得
      */
     private acquirePooledParticles(count: number): any[] | null { if (!this.resourceManager) return null;
-        ';
+        ';'
         const particles: any[] = [],'';
         for(let i = 0; i < count; i++') {'
             '';
@@ -617,24 +617,24 @@ export class MobileEffectIntegrator {
         const batteryLevel = mobileMetrics.batteryLevel;
         
         // クリティカル条件
-        if(fps < this.performanceThresholds.fps.poor || ';
+        if(fps < this.performanceThresholds.fps.poor || ';'
             memoryUsage > this.performanceThresholds.memory.high ||')';
             batteryLevel < this.performanceThresholds.battery.critical') {'
-            ';
+            ';'
         }'
             return 'performance-critical'; }
         }
         
         // バランス条件
-        if(fps < this.performanceThresholds.fps.good || ';
+        if(fps < this.performanceThresholds.fps.good || ';'
             memoryUsage > this.performanceThresholds.memory.medium ||')';
             batteryLevel < this.performanceThresholds.battery.low') {'
-            ';
+            ';'
         }'
             return 'balanced'; }
         }
         ';
-        // 品質重視条件''
+        // 品質重視条件
         return 'quality-focused';
     }
     
@@ -648,7 +648,7 @@ export class MobileEffectIntegrator {
         const strategy = this.adaptationStrategies.get(newCondition);
         
         if (!strategy) return;
-        ';
+        ';'
         // モバイル最適化レベルの調整' }'
         if(this.mobileOptimizer'}) {'
             const optimizationLevel: Record<string, string> = {''
@@ -671,23 +671,23 @@ export class MobileEffectIntegrator {
     
     /**
      * リソース管理の調整
-     */ : undefined'
+     */ : undefined
     private adjustResourceManagement(strategy: AdaptationStrategy): void { ''
         if (!this.resourceManager') return;
-        ';
+        ';'
         const memorySettings = {''
             maxHeapUsage: strategy.priority === 'performance' ? 0.7 : 0.8,'';
             gcThreshold: strategy.priority === 'performance' ? 0.6 : 0.7,'';
             cleanupInterval: strategy.priority === 'performance' ? 3000 : 5000 }
         },
         
-        this.resourceManager.updateSettings({ memory: memorySettings ); }
+        this.resourceManager.updateSettings({ memory: memorySettings ) }
     }
     
     /**
      * イベントリスナーの設定'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         if('getBattery' in navigator) {'
             '';
             (navigator as any).getBattery().then((battery: any') => { '
@@ -701,23 +701,23 @@ export class MobileEffectIntegrator {
             }');
         }
         ';
-        // ネットワーク状態変更''
+        // ネットワーク状態変更
         if('connection' in navigator) {'
-            ';
+            ';'
         }'
             (navigator as any').connection.addEventListener('change', () => {  }'
                 this.handleNetworkChange();' }'
             }');
         }
         ';
-        // 画面方向・サイズ変更''
+        // 画面方向・サイズ変更
         window.addEventListener('orientationchange', () => { this.handleOrientationChange();' }'
         }');'
         '';
         window.addEventListener('resize', () => { this.handleScreenResize();' }'
         }');
         ';
-        // アプリケーション状態変更''
+        // アプリケーション状態変更
         document.addEventListener('visibilitychange', () => { this.handleVisibilityChange(); }
         });
     }
@@ -742,7 +742,7 @@ export class MobileEffectIntegrator {
     private handleChargingChange(isCharging: boolean): void { console.log(`Charging state changed: ${isCharging)`),'
         '';
         if(isCharging') {'
-            // 充電中は品質を向上'
+            // 充電中は品質を向上
         }'
             if (this.state.performanceMode === 'performance-critical'') {' }'
                 this.adaptToCondition('balanced'});
@@ -753,15 +753,15 @@ export class MobileEffectIntegrator {
     }
     
     /**
-     * ネットワーク変更の処理'
+     * ネットワーク変更の処理
      */''
-    private handleNetworkChange('')';
+    private handleNetworkChange()';
         console.log('Network conditions changed');
         
         if (!this.integrationConfig.enableNetworkOptimization) return;
         
         // ネットワーク状態に応じたリソース読み込み調整
-        if(this.resourceManager) {'
+        if(this.resourceManager) {
             '';
             const connection = (navigator as any').connection;''
             const isSlowConnection = connection? .effectiveType === 'slow-2g' || connection?.effectiveType === '2g';
@@ -770,7 +770,7 @@ export class MobileEffectIntegrator {
                 // 低速接続時はリソース読み込みを制限
                 this.resourceManager.updateSettings({ : undefined
                     network: {
-                        dataUsageLimit: 1 * 1024 * 1024, // 1MB;
+                        dataUsageLimit: 1 * 1024 * 1024, // 1MB
         })
                         compressionLevel: 0.6) }
                     }),
@@ -779,9 +779,9 @@ export class MobileEffectIntegrator {
     }
     
     /**
-     * 画面方向変更の処理'
+     * 画面方向変更の処理
      */''
-    private handleOrientationChange('')';
+    private handleOrientationChange()';
         console.log('Orientation changed');
         
         // 方向変更時の一時的品質低下
@@ -789,9 +789,9 @@ export class MobileEffectIntegrator {
     }
     
     /**
-     * 画面サイズ変更の処理'
+     * 画面サイズ変更の処理
      */''
-    private handleScreenResize('')';
+    private handleScreenResize()';
         console.log('Screen resized');
         
         // サイズ変更時の一時的品質低下
@@ -808,16 +808,16 @@ export class MobileEffectIntegrator {
     }
     
     /**
-     * 低電力モードの強制有効化'
+     * 低電力モードの強制有効化
      */''
-    private forceLowPowerMode('')';
+    private forceLowPowerMode()';
         console.log('Forcing low power mode'');'
         '';
         this.adaptToCondition('performance-critical');
         ';
-        // 追加の低電力設定''
+        // 追加の低電力設定
         if(this.mobileOptimizer') {'
-            ';
+            ';'
         }'
             this.mobileOptimizer.setOptimizationLevel('aggressive'); }
         }
@@ -829,11 +829,11 @@ export class MobileEffectIntegrator {
     /**
      * バッテリー最適化の有効化'
      */ : undefined''
-    private enableBatteryOptimization('')';
+    private enableBatteryOptimization()';
         console.log('Enabling battery optimization'');'
         '';
         if(this.state.performanceMode === 'quality-focused'') {'
-            ';
+            ';'
         }'
             this.adaptToCondition('balanced'); }
         }
@@ -842,10 +842,10 @@ export class MobileEffectIntegrator {
     /**
      * バッテリー最適化の無効化'
      */''
-    private disableBatteryOptimization('')';
+    private disableBatteryOptimization()';
         console.log('Disabling battery optimization'');
         ';
-        // 通常の品質に戻す（条件が許せば）''
+        // 通常の品質に戻す（条件が許せば）
         if(this.state.performanceMode === 'performance-critical') {'
             const mobileMetrics = this.mobileOptimizer? .getPerformanceMetrics();''
             if (mobileMetrics && mobileMetrics.averageFPS > this.performanceThresholds.fps.good') {'
@@ -860,7 +860,7 @@ export class MobileEffectIntegrator {
      */ : undefined''
     private temporaryQualityReduction(duration: number'): void { const originalMode = this.state.performanceMode;
         ';
-        // 一時的に品質を下げる''
+        // 一時的に品質を下げる
         this.adaptToCondition('performance-critical');
         
         // 指定時間後に元に戻す
@@ -870,9 +870,9 @@ export class MobileEffectIntegrator {
     }
     
     /**
-     * アプリ非表示時の処理'
+     * アプリ非表示時の処理
      */''
-    private handleAppHidden('')';
+    private handleAppHidden()';
         console.log('App hidden, reducing resource usage');
         
         // エフェクトの一時停止
@@ -885,9 +885,9 @@ export class MobileEffectIntegrator {
     }
     
     /**
-     * アプリ表示時の処理'
+     * アプリ表示時の処理
      */ : undefined''
-    private handleAppVisible('')';
+    private handleAppVisible()';
         console.log('App visible, resuming normal operation');
         
         // エフェクトの再開
@@ -908,8 +908,8 @@ export class MobileEffectIntegrator {
             this.applyIntegrationSettings();
         
         }
-            this.startAdaptiveQualityControl(); }'
-        } else {  // デスクトップモードに戻す''
+            this.startAdaptiveQualityControl(); }
+        } else {  // デスクトップモードに戻す
             if (this.mobileOptimizer') {' }'
                 this.mobileOptimizer.setOptimizationLevel('minimal''); }
             }
@@ -953,9 +953,9 @@ export class MobileEffectIntegrator {
     /**
      * パフォーマンスレポートの生成
      */
-    generatePerformanceReport(): PerformanceReport {'
+    generatePerformanceReport(): PerformanceReport {
         const optimizerReport = this.mobileOptimizer? .generateReport() || {};''
-        const resourceReport = this.resourceManager?.generateReport('')';
+        const resourceReport = this.resourceManager?.generateReport()';
             component: 'MobileEffectIntegrator',);
             timestamp: new Date().toISOString(),
             state: { ...this.state },
@@ -971,7 +971,7 @@ export class MobileEffectIntegrator {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying MobileEffectIntegrator...');
         
         // 子システムのクリーンアップ
@@ -982,9 +982,9 @@ export class MobileEffectIntegrator {
         }
         
         if(this.resourceManager) {
-        ';
+        ';'
             '';
-            this.resourceManager.destroy('')';
+            this.resourceManager.destroy()';
         if ('connection' in navigator) {'
         
         }'
@@ -997,7 +997,7 @@ export class MobileEffectIntegrator {
         
         // 参照のクリア
         this.effectManager = null;
-        ';
+        ';'
         this.state.initialized = false;''
         console.log('MobileEffectIntegrator destroyed'');'
     }''

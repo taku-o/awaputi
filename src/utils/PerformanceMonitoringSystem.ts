@@ -12,13 +12,13 @@ import { PerformanceDashboard,
     PerformanceDataGatherer, ;
     PerformanceHistoryTracker, ;
     PerformanceAlertManager, ;
-    MetricsRegistry, ';
+    MetricsRegistry, ';'
     RealtimeMetricsStream ' }'
 } from './performance-monitoring/PerformanceLegacyComponents.js';
 
-// Type definitions'
+// Type definitions
 interface ErrorHandler { ''
-    handleError(error: Error, context: any'): void; }
+    handleError(error: Error, context: any'): void }
 }
 
 interface MetricConfig { id: string,
@@ -45,7 +45,7 @@ interface MonitoringConfig { interval?: number;
 interface PerformanceMetrics extends Map<string, any> {}
 
 interface DataPoint { timestamp: number,
-    value: number; }
+    value: number }
 }
 
 interface MetricStats { current: number,
@@ -54,12 +54,12 @@ interface MetricStats { current: number,
     max: number,'';
     trend: 'stable' | 'increasing' | 'decreasing',
     variance: number,
-    samplesCount: number; }
+    samplesCount: number }
 }
 
 interface TimeRange { startTime: number,
     endTime: number,
-    duration: number; }
+    duration: number }
 }
 
 interface Alert { metricId: string,
@@ -84,7 +84,7 @@ interface ReportSummary { totalMetrics: number,
     healthyMetrics: number,
     warningMetrics: number,';
     criticalMetrics: number,'';
-    overallHealth: 'healthy' | 'warning' | 'critical' | 'unknown'; }
+    overallHealth: 'healthy' | 'warning' | 'critical' | 'unknown' }
 }
 
 interface PerformanceReport { timeRange: TimeRange,
@@ -93,7 +93,7 @@ interface PerformanceReport { timeRange: TimeRange,
     alerts: Alert[],
     analysisResults: AnalysisResults,
     performanceEvents: PerformanceEvent[],
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface MonitoringStatus { active: boolean,
@@ -102,7 +102,7 @@ interface MonitoringStatus { active: boolean,
     dataPoints: number,
     activeAlerts: number,
     realTimeStats: MonitoringStats,
-    analysisResults: AnalysisResults;
+    analysisResults: AnalysisResults
     }
 }
 
@@ -133,7 +133,7 @@ interface PerformanceHistoryTracker { initialize(): Promise<void>;
     addDataPoint(timestamp: number, metrics: PerformanceMetrics): void,
     getHistory(metricId: string, timeRange: number): DataPoint[],
     getAggregated(metricId: string, timeRange: number, aggregation: string): any,
-    getDataPointCount(): number; }
+    getDataPointCount(): number }
 }
 
 interface PerformanceAlertManager { initialize(): Promise<void>;
@@ -143,7 +143,7 @@ interface PerformanceAlertManager { initialize(): Promise<void>;
     handlePerformanceEvent(eventType: string, event: PerformanceEvent): void,
     addAlert(metricId: string, threshold: number, condition: string, callback?: Function): any;
     getActiveAlerts(): Alert[];
-    getAlertsInRange(startTime: number, endTime: number): Alert[];
+    getAlertsInRange(startTime: number, endTime: number): Alert[]
     }
 }
 
@@ -156,7 +156,7 @@ interface MetricsRegistry { register(metric: MetricConfig): any,
 interface RealtimeMetricsStream { initialize(): Promise<void>;
     start(config: MonitoringConfig): Promise<void>,
     stop(): Promise<void>;
-    send(timestamp: number, metrics: PerformanceMetrics): void; }
+    send(timestamp: number, metrics: PerformanceMetrics): void }
 }
 
 interface RealTimePerformanceMonitor { startMonitoring(config: MonitoringConfig): Promise<void>,
@@ -165,7 +165,7 @@ interface RealTimePerformanceMonitor { startMonitoring(config: MonitoringConfig)
     getEventsHistory(timeRange: number): PerformanceEvent[],
     subscribeToStream(callback: Function): Function,
     configure(config: any): void,
-    destroy(): void; }
+    destroy(): void }
 }
 
 interface PerformanceDataAnalyzer { analyzePerformanceData(timestamp: number, metrics: PerformanceMetrics): Promise<void>,
@@ -173,7 +173,7 @@ interface PerformanceDataAnalyzer { analyzePerformanceData(timestamp: number, me
     getTrendData(metricId: string): TrendData,
     getRecentInsights(category?: string | null): PerformanceInsight[];
     configure(config: any): void,
-    destroy(): void; }
+    destroy(): void }
 }
 
 export class PerformanceMonitoringSystem {
@@ -208,9 +208,9 @@ export class PerformanceMonitoringSystem {
         
         // Monitoring state
         this.monitoring = false;
-        this.monitoringConfig = null;'
+        this.monitoringConfig = null;
         '';
-        this.initializeMonitoring('');
+        this.initializeMonitoring();
     }
     }'
         console.log('[PerformanceMonitoringSystem] Initialized with Main Controller Pattern'); }
@@ -222,10 +222,10 @@ export class PerformanceMonitoringSystem {
             await this.dataGatherer.initialize();
             await this.historyTracker.initialize();'
             await this.alertManager.initialize();''
-            await this.realtimeStream.initialize('');'
+            await this.realtimeStream.initialize();'
             console.log('[PerformanceMonitoringSystem] Monitoring system initialized successfully');' }'
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'PerformanceMonitoringSystem.initializeMonitoring'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'PerformanceMonitoringSystem.initializeMonitoring') }
             });
             throw error;
         }
@@ -236,25 +236,25 @@ export class PerformanceMonitoringSystem {
             { id: 'frame_time', name: 'Frame Time', category: 'rendering', unit: 'ms', target: 16.67, max: 33.33 },''
             { id: 'frame_variance', name: 'Frame Variance', category: 'rendering', unit: 'ms', target: 0, max: 5 },
             ';
-            // メモリメトリクス''
+            // メモリメトリクス
             { id: 'memory_used', name: 'Memory Used', category: 'memory', unit: 'MB', target: 50, max: 150 },''
             { id: 'memory_growth', name: 'Memory Growth Rate', category: 'memory', unit: 'MB/s', target: 0, max: 1 },''
             { id: 'gc_frequency', name: 'GC Frequency', category: 'memory', unit: 'Hz', target: 0.1, max: 1 },
             ';
-            // レンダリングメトリクス''
+            // レンダリングメトリクス
             { id: 'render_time', name: 'Render Time', category: 'rendering', unit: 'ms', target: 10, max: 20 },''
             { id: 'draw_calls', name: 'Draw Calls', category: 'rendering', unit: 'count', target: 20, max: 100 },''
             { id: 'triangles', name: 'Triangle Count', category: 'rendering', unit: 'count', target: 5000, max: 50000 },
             ';
-            // ネットワークメトリクス''
+            // ネットワークメトリクス
             { id: 'network_latency', name: 'Network Latency', category: 'network', unit: 'ms', target: 50, max: 200 },''
             { id: 'bandwidth', name: 'Bandwidth Usage', category: 'network', unit: 'KB/s', target: 100, max: 1000 },''
             { id: 'error_rate', name: 'Network Error Rate', category: 'network', unit: '%', target: 0, max: 5 },
             ';
-            // ユーザーインタラクション''
+            // ユーザーインタラクション
             { id: 'input_lag', name: 'Input Lag', category: 'interaction', unit: 'ms', target: 10, max: 50 },')'
             { id: 'response_time', name: 'Response Time', category: 'interaction', unit: 'ms', target: 100, max: 500 })'
-            // バッテリー（モバイル）''
+            // バッテリー（モバイル）
             { id: 'power_consumption', name: 'Power Consumption', category: 'battery', unit: 'mW', target: 200, max: 800 },''
             { id: 'thermal_state', name: 'Thermal State', category: 'battery', unit: 'level', target: 0, max: 2 }
         ];
@@ -262,7 +262,7 @@ export class PerformanceMonitoringSystem {
         for (const metric of standardMetrics) { this.metricsRegistry.register(metric); }
         }
     }
-';
+';'
     async startMonitoring(config: MonitoringConfig = { ): Promise<void> {''
         if(this.monitoring') {'
             '';
@@ -308,20 +308,20 @@ export class PerformanceMonitoringSystem {
             if (this.monitoringConfig.enableRealtimeStream) { await this.realtimeStream.start(this.monitoringConfig); }
             }
 
-            // 定期データ収集'
+            // 定期データ収集
             this.monitoringInterval = setInterval(() => { this.collectAndProcessMetrics();' }'
             }, this.monitoringConfig.interval');'
 '';
             console.log('[PerformanceMonitoringSystem] Performance monitoring started');'
 '';
-        } catch (error') { this.monitoring = false;'
+        } catch (error) { this.monitoring = false;'
             this.errorHandler.handleError(error as Error, {')'
-                context: 'PerformanceMonitoringSystem.startMonitoring'); }
+                context: 'PerformanceMonitoringSystem.startMonitoring') }
             });
             throw error;
         }
     }
-';
+';'
     async stopMonitoring(): Promise<void> { ''
         if(!this.monitoring') {'
             '';
@@ -349,14 +349,14 @@ export class PerformanceMonitoringSystem {
             await this.realtimeStream.stop();
 
             // ダッシュボード非表示
-            if(this.monitoringConfig? .enableDashboard) {'
+            if(this.monitoringConfig? .enableDashboard) {
                 '';
-                await this.dashboard.hide('');'
+                await this.dashboard.hide();'
             console.log('[PerformanceMonitoringSystem] Performance monitoring stopped');
             }'
 ' }'
-        } catch (error') { this.errorHandler.handleError(error as Error, { : undefined')'
-                context: 'PerformanceMonitoringSystem.stopMonitoring'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, { : undefined')'
+                context: 'PerformanceMonitoringSystem.stopMonitoring') }
             });
         }
     }
@@ -389,10 +389,10 @@ export class PerformanceMonitoringSystem {
             }
 
             // データ分析
-            await this.dataAnalyzer.analyzePerformanceData(timestamp, filteredMetrics);'
+            await this.dataAnalyzer.analyzePerformanceData(timestamp, filteredMetrics);
 '';
-        } catch (error') { this.errorHandler.handleError(error as Error, { : undefined')'
-                context: 'PerformanceMonitoringSystem.collectAndProcessMetrics'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, { : undefined')'
+                context: 'PerformanceMonitoringSystem.collectAndProcessMetrics') }
             });
         }
     }
@@ -430,20 +430,20 @@ export class PerformanceMonitoringSystem {
         }
     }
 
-    // 履歴データへのアクセス'
-    getMetricsHistory(metricId: string, timeRange: number = 3600000): DataPoint[] { // デフォルト1時間''
+    // 履歴データへのアクセス
+    getMetricsHistory(metricId: string, timeRange: number = 3600000): DataPoint[] { // デフォルト1時間
         return this.historyTracker.getHistory(metricId, timeRange'); }
     }'
 '';
     getAggregatedMetrics(metricId: string, timeRange: number = 3600000, aggregation: string = 'average'): any { return this.historyTracker.getAggregated(metricId, timeRange, aggregation); }
     }
 
-    // カスタムメトリクス追加'
+    // カスタムメトリクス追加
     addCustomMetric(metricConfig: MetricConfig): any { ''
         return this.metricsRegistry.register(metricConfig'); }
     }
 ';
-    // アラート設定''
+    // アラート設定
     setAlert(metricId: string, threshold: number, condition: string = 'above', callback: Function | null = null): any { return this.alertManager.addAlert(metricId, threshold, condition, callback); }
     }
 
@@ -499,7 +499,7 @@ export class PerformanceMonitoringSystem {
     }
 
     private calculateAverage(history: DataPoint[]): number { return history.reduce((sum, h) => sum + h.value, 0) / history.length; }
-    }'
+    }
 '';
     private calculateTrend(history: DataPoint[]'): 'stable' | 'increasing' | 'decreasing' { ''
         if (history.length < 2') return 'stable';
@@ -589,8 +589,8 @@ export class PerformanceMonitoringSystem {
         }
 
         // Update data analyzer configuration
-        if(config.dataAnalyzer) {'
-            ';
+        if(config.dataAnalyzer) {
+            ';'
         }'
             this.dataAnalyzer.configure(config.dataAnalyzer'); }
         }'
@@ -611,9 +611,9 @@ export class PerformanceMonitoringSystem {
         }
         
         if(this.dataAnalyzer) {
-        ';
+        ';'
             '';
-            this.dataAnalyzer.destroy('');
+            this.dataAnalyzer.destroy();
         }'
         console.log('[PerformanceMonitoringSystem] Monitoring system destroyed''); }
     }

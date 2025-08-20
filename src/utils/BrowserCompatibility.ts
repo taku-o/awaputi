@@ -5,14 +5,14 @@
 // 型定義
 interface BrowserInfo { name: string,
     version: string,
-    engine: string; }
+    engine: string }
 }
 
 interface ScreenInfo { width: number,
     height: number,
     availWidth: number,
     availHeight: number,
-    pixelRatio: number; }
+    pixelRatio: number }
 }
 
 interface DeviceInfo { isMobile: boolean,
@@ -20,7 +20,7 @@ interface DeviceInfo { isMobile: boolean,
     isDesktop: boolean,
     isTouchDevice: boolean,
     screenInfo: ScreenInfo,
-    orientation: string; }
+    orientation: string }
 }
 
 interface Features { canvas: boolean,
@@ -32,21 +32,21 @@ interface Features { canvas: boolean,
     webGL: boolean,
     offscreenCanvas: boolean,
     intersectionObserver: boolean,
-    performanceObserver: boolean; }
+    performanceObserver: boolean }
 }
 
 interface CanvasSize { displayWidth: number,
     displayHeight: number,
     actualWidth: number,
     actualHeight: number,
-    pixelRatio: number; }
+    pixelRatio: number }
 }
 
 interface CompatibilityReport { browser: BrowserInfo,
     device: DeviceInfo,
     features: Features,
     recommendations: string[],
-    warnings: string[]; }
+    warnings: string[] }
 }
 
 // グローバルオブジェクトの型拡張
@@ -63,7 +63,7 @@ declare global { interface Window {
     }
 
     interface Screen { orientation?: {
-            type: string; }
+            type: string }
         };
     }
 }
@@ -100,7 +100,7 @@ export class BrowserCompatibility {
             },
         }
         ';
-        // Chrome''
+        // Chrome
         if (ua.includes('Chrome/'') && !ua.includes('Edg/')') { return { ''
                 name: 'chrome','';
                 version: this.extractVersion(ua, 'Chrome/''),' };'
@@ -108,7 +108,7 @@ export class BrowserCompatibility {
             },
         }
         ';
-        // Firefox''
+        // Firefox
         if (ua.includes('Firefox/')') { return { ''
                 name: 'firefox','';
                 version: this.extractVersion(ua, 'Firefox/''),' };'
@@ -116,7 +116,7 @@ export class BrowserCompatibility {
             },
         }
         ';
-        // Safari''
+        // Safari
         if (ua.includes('Safari/'') && !ua.includes('Chrome/')') { return { ''
                 name: 'safari','';
                 version: this.extractVersion(ua, 'Version/''),' };'
@@ -124,7 +124,7 @@ export class BrowserCompatibility {
             },
         }
         ';
-        // Internet Explorer''
+        // Internet Explorer
         if (ua.includes('MSIE'') || ua.includes('Trident/')') { return { ''
                 name: 'ie','';
                 version: ua.includes('MSIE'') ?   : undefined'';
@@ -133,7 +133,7 @@ export class BrowserCompatibility {
                 engine: 'trident' }
             },
         }
-        ';
+        ';'
         return { ''
             name: 'unknown','';
             version: '0',' };'
@@ -149,11 +149,11 @@ export class BrowserCompatibility {
         // モバイルデバイス検出
         const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
         
-        // タブレット検出'
+        // タブレット検出
         const isTablet = /iPad|Android(? =.*Mobile)|Tablet/i.test(ua) || '';
                          (isMobile && window.screen.width >= 768');
         ';
-        // タッチデバイス検出''
+        // タッチデバイス検出
         const isTouchDevice = 'ontouchstart' in window || ;
                              navigator.maxTouchPoints > 0 || ;
                              (window.msMaxTouchPoints || 0) > 0;
@@ -180,7 +180,7 @@ export class BrowserCompatibility {
      * 画面の向きを取得
      */
     private getOrientation(): string { if (screen.orientation) {
-            return screen.orientation.type; }'
+            return screen.orientation.type; }
         } else if (window.orientation !== undefined) { ''
             return Math.abs(window.orientation') === 90 ? 'landscape' : 'portrait'; }'
         } else {  ' }'
@@ -207,7 +207,7 @@ export class BrowserCompatibility {
     /**
      * Canvas サポート確認'
      */''
-    private supportsCanvas('')';
+    private supportsCanvas()';
             const canvas = document.createElement('canvas'');''
             return !!(canvas.getContext && canvas.getContext('2d');
         } catch (e) { return false; }
@@ -258,7 +258,7 @@ export class BrowserCompatibility {
     /**
      * WebGL サポート確認'
      */''
-    private supportsWebGL('')';
+    private supportsWebGL()';
             const canvas = document.createElement('canvas'');''
             return !!(canvas.getContext('webgl'') || canvas.getContext('experimental-webgl');
         } catch (e) { return false; }
@@ -291,7 +291,7 @@ export class BrowserCompatibility {
      */)'
     private extractVersion(ua: string, prefix: string): string { const index = ua.indexOf(prefix);''
         if (index === -1') return '0';
-        ';
+        ';'
         const version = ua.substring(index + prefix.length);''
         const match = version.match(/^(\d+(?:\.\d+)*)/');''
         return match ? match[1] : '0'; }
@@ -315,7 +315,7 @@ export class BrowserCompatibility {
                 window.mozRequestAnimationFrame ||;
                 window.msRequestAnimationFrame ||;
                 function(callback: FrameRequestCallback): number {
-                    return window.setTimeout(callback, 1000 / 60); }
+                    return window.setTimeout(callback, 1000 / 60) }
                 };
         }
         
@@ -341,8 +341,7 @@ export class BrowserCompatibility {
                 log: function() {},
                 error: function() {},
                 warn: function() {},
-                info: function() {}
-            },
+                info: function() {},
         }
     }
     
@@ -366,10 +365,10 @@ export class BrowserCompatibility {
     /**
      * タッチイベント修正'
      */''
-    private setupTouchEventFixes('')';
+    private setupTouchEventFixes()';
         if(this.browserInfo.name === 'safari' && this.deviceInfo.isMobile) {'
-            // パッシブリスナーの設定''
-            this.setupPassiveEventListeners('')';
+            // パッシブリスナーの設定
+            this.setupPassiveEventListeners()';
         if (this.browserInfo.name === 'chrome' && this.deviceInfo.isMobile) {
         }
             this.setupTouchDelayFix(); }
@@ -379,8 +378,8 @@ export class BrowserCompatibility {
     /**
      * パッシブイベントリスナーの設定'
      */''
-    private setupPassiveEventListeners('')';
-        document.addEventListener('touchstart', function(e: TouchEvent) { // ゲームエリア内でのみデフォルト動作を防ぐ''
+    private setupPassiveEventListeners()';
+        document.addEventListener('touchstart', function(e: TouchEvent) { // ゲームエリア内でのみデフォルト動作を防ぐ
             if ((e.target as HTMLElement').tagName === 'CANVAS') {
                 e.preventDefault(); }'
             }''
@@ -396,7 +395,7 @@ export class BrowserCompatibility {
     /**
      * タッチ遅延修正'
      */''
-    private setupTouchDelayFix('')';
+    private setupTouchDelayFix()';
         const meta = document.createElement('meta'');''
         meta.name = 'viewport';''
         meta.content = 'width=device-width, initial-scale=1.0, user-scalable=no';'
@@ -429,7 +428,7 @@ export class BrowserCompatibility {
         } else if (this.deviceInfo.isTablet) { // タブレット: 画面の80%を使用
             canvasSize = {
                 width: Math.min(viewport.width * 0.8, 600),
-                height: Math.min(viewport.height * 0.8, 450); }
+                height: Math.min(viewport.height * 0.8, 450) }
             };
         } else {  // デスクトップ: 固定サイズまたは画面の70%
             canvasSize = {
@@ -453,9 +452,9 @@ export class BrowserCompatibility {
     }
     
     /**
-     * フォールバック UI を表示'
+     * フォールバック UI を表示
      */''
-    showFallbackUI('')';
+    showFallbackUI()';
         const fallbackDiv = document.createElement('div'');''
         fallbackDiv.id = 'fallback-ui';'
         fallbackDiv.innerHTML = `'';
@@ -514,25 +513,25 @@ export class BrowserCompatibility {
         }'
         '';
         if(!this.features.webAudio') {'
-            ';
+            ';'
         }'
             recommendations.push('Web Audio API が利用できません。音声機能が制限されます。'); }
         }'
         '';
         if(!this.features.localStorage') {'
-            ';
+            ';'
         }'
             recommendations.push('LocalStorage が利用できません。進行状況が保存されません。''); }
         }'
         '';
         if(this.browserInfo.name === 'ie'') {'
-            ';
+            ';'
         }'
             recommendations.push('Internet Explorer は非推奨です。モダンブラウザの使用を推奨します。'); }
         }'
         '';
         if(this.deviceInfo.isMobile && this.deviceInfo.screenInfo.width < 375') {'
-            ';
+            ';'
         }'
             recommendations.push('画面が小さすぎる可能性があります。横向きでのプレイを推奨します。'); }
         }
@@ -546,19 +545,19 @@ export class BrowserCompatibility {
     private getWarnings(): string[] { const warnings: string[] = [],'
         '';
         if(this.deviceInfo.screenInfo.pixelRatio > 2') {'
-            ';
+            ';'
         }'
             warnings.push('高解像度ディスプレイが検出されました。パフォーマンスに影響する可能性があります。'); }
         }'
         '';
         if(this.deviceInfo.isMobile && !this.features.touchEvents') {'
-            ';
+            ';'
         }'
             warnings.push('タッチイベントが利用できません。操作に問題が生じる可能性があります。'); }
         }'
         '';
         if(!this.features.requestAnimationFrame') {'
-            ';
+            ';'
         }'
             warnings.push('requestAnimationFrame が利用できません。アニメーションが滑らかでない可能性があります。'); }
         }
@@ -570,7 +569,7 @@ export class BrowserCompatibility {
      * デバッグ情報を出力
      */'
     logDebugInfo(): void { ''
-        const report = this.generateCompatibilityReport('')';
+        const report = this.generateCompatibilityReport()';
         console.group('Browser Compatibility Report'');''
         console.log('Browser:', report.browser');''
         console.log('Device:', report.device');''
@@ -593,6 +592,6 @@ export class BrowserCompatibility {
 
 // シングルトンインスタンス（遅延初期化）
 let _browserCompatibility: BrowserCompatibility | null = null,
-';
+';'
 export function getBrowserCompatibility(): BrowserCompatibility { if (!_browserCompatibility) {''
         _browserCompatibility = new BrowserCompatibility(' })

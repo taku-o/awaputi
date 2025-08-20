@@ -9,7 +9,7 @@ interface ValidationResult { category: string,
     message: string,
     duration: number,
     timestamp: string,
-    error?: Error;
+    error?: Error
     }
 }
 
@@ -17,13 +17,13 @@ interface PerformanceMetrics { averageFPS: number,
     averageFrameTime: number,
     frameCount: number,
     duration: number,
-    memoryUsage: number; }
+    memoryUsage: number }
 }
 
 interface PerformanceImpact { fpsImpact: number,
     frameTimeImpact: number,
     memoryImpact: number,
-    overallImpact: number; }
+    overallImpact: number }
 }
 
 interface PerformanceTargets { debugOverhead: number,
@@ -31,7 +31,7 @@ interface PerformanceTargets { debugOverhead: number,
     initializationTime: number,
     panelSwitchTime: number,
     testExecutionTime: number,
-    frameRateImpact: number; }
+    frameRateImpact: number }
 }
 
 interface CompatibilityTargets { browsers: string[],
@@ -39,7 +39,7 @@ interface CompatibilityTargets { browsers: string[],
     screenSizes: {
         width: number,
         height: number,
-        name: string; }
+        name: string }
     }[];
 }
 
@@ -48,13 +48,13 @@ interface ValidationCategories { performance: string,
     memory: string,
     accessibility: string,
     security: string,
-    stability: string; }
+    stability: string }
 }
 
 interface CategoryStats { [category: string]: {
         total: number,
         passed: number,
-        failed: number; }
+        failed: number }
     };
 }
 
@@ -71,9 +71,9 @@ interface ValidationSummary { summary: {
     targets: PerformanceTargets,
     compatibility: CompatibilityTargets,
     }
-';
+';'
 interface OperationResult { name: string,''
-    status: 'success'; }
+    status: 'success' }
 }
 
 interface GameEngine { enhancedDebugInterface?: any; }
@@ -91,13 +91,13 @@ export class FinalValidationSuite {
     constructor(gameEngine: GameEngine') {
         this.gameEngine = gameEngine;
         
-        // 検証カテゴリ'
+        // 検証カテゴリ
         this.validationCategories = {''
             performance: 'Performance Validation','';
             compatibility: 'Browser Compatibility','';
             memory: 'Memory Management','';
             accessibility: 'Accessibility Compliance','';
-            security: 'Security Validation',';
+            security: 'Security Validation','
     }
     }'
             stability: 'System Stability' }
@@ -112,7 +112,7 @@ export class FinalValidationSuite {
             frameRateImpact: 5 // %以下 }
         },
 
-        // 互換性テスト対象'
+        // 互換性テスト対象
         this.compatibilityTargets = { ''
             browsers: ['Chrome', 'Firefox', 'Safari', 'Edge'],'';
             features: ['Performance API', 'LocalStorage', 'ResizeObserver', 'CSS Grid'],';
@@ -130,13 +130,13 @@ export class FinalValidationSuite {
      */'
     async runFinalValidation(): Promise<ValidationSummary> { ''
         if(this.validationRunning') {'
-            ';
+            ';'
         }'
             throw new Error('Final validation is already running'); }
         }
-';
+';'
         this.validationRunning = true;''
-        this.startTime = performance.now('')';
+        this.startTime = performance.now()';
         console.log('Starting final validation suite...');
 
         try { // カテゴリ別に検証を実行
@@ -148,7 +148,7 @@ export class FinalValidationSuite {
             await this.validateStability();
 
             const endTime = performance.now();
-            const duration = endTime - this.startTime;'
+            const duration = endTime - this.startTime;
 '';
             const summary = this.generateValidationSummary(duration');''
             console.log('Final validation completed:', summary);
@@ -161,7 +161,7 @@ export class FinalValidationSuite {
     /**
      * パフォーマンス検証'
      */''
-    private async validatePerformance('')';
+    private async validatePerformance()';
         await this.runValidation(category, 'Debug Interface Performance Impact', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
             
             // ベースライン測定
@@ -177,7 +177,7 @@ export class FinalValidationSuite {
             if (impact.overallImpact > this.performanceTargets.debugOverhead) { }
                 throw new Error(`Debug overhead ${impact.overallImpact.toFixed(2})}% exceeds target ${this.performanceTargets.debugOverhead}%`);
             }
-            ';
+            ';'
             return `Debug performance impact: ${impact.overallImpact.toFixed(2})}% (target: <${this.performanceTargets.debugOverhead}%)`;''
         }');'
 '';
@@ -189,7 +189,7 @@ export class FinalValidationSuite {
             const debugInterface = this.gameEngine.enhancedDebugInterface;
             const initialMemory = performance.memory.usedJSHeapSize;
             
-            // デバッグ機能を使用'
+            // デバッグ機能を使用
             debugInterface.show();''
             for(let i = 0; i < 10; i++') {'
                 '';
@@ -208,7 +208,7 @@ export class FinalValidationSuite {
             }
                 throw new Error(`Memory increase ${memoryIncrease.toFixed(2})}MB exceeds target ${this.performanceTargets.memoryIncrease}MB`);
             }
-            ';
+            ';'
             return `Memory increase: ${memoryIncrease.toFixed(2})}MB (target: <${this.performanceTargets.memoryIncrease)MB})`;''
         }');'
 '';
@@ -233,18 +233,18 @@ export class FinalValidationSuite {
                 }
             }
             
-            const averageTime = totalTime / panels.length;'
+            const averageTime = totalTime / panels.length;
             return `Average panel switch time: ${averageTime.toFixed(2})}ms (target: <${this.performanceTargets.panelSwitchTime)ms})`;''
         }');'
 '';
         await this.runValidation(category, 'Initialization Performance', async () => {  // デバッグインターフェースを再初期化して測定;
             const startTime = performance.now();
-            ';
+            ';'
             if (this.gameEngine.enhancedDebugInterface) {' }'
                 this.gameEngine.enhancedDebugInterface.destroy? .('); }
             }
             ';
-            // 新しいインスタンスを作成''
+            // 新しいインスタンスを作成
             const { EnhancedDebugInterface } = await import('./EnhancedDebugInterface.js');
             this.gameEngine.enhancedDebugInterface = new EnhancedDebugInterface(this.gameEngine);
             
@@ -266,20 +266,20 @@ export class FinalValidationSuite {
     /**
      * 互換性検証'
      */''
-    private async validateCompatibility('')';
+    private async validateCompatibility()';
         await this.runValidation(category, 'Browser API Compatibility', async () => {  const missingAPIs: string[] = [],
             const partialAPIs: string[] = [],
-            ';
+            ';'
             // 必須API';'
             if (!window.performance') missingAPIs.push('Performance API');''
             if (!window.localStorage') missingAPIs.push('LocalStorage');''
             if (!window.requestAnimationFrame') missingAPIs.push('RequestAnimationFrame');
             ';
-            // オプショナルAPI（グレースフルデグラデーション）''
+            // オプショナルAPI（グレースフルデグラデーション）
             if (!(window as any).ResizeObserver') partialAPIs.push('ResizeObserver');''
             if (!(window as any).IntersectionObserver') partialAPIs.push('IntersectionObserver'');
             ';
-            // CSS機能''
+            // CSS機能
             if (!CSS.supports('display', 'grid')') partialAPIs.push('CSS Grid'');''
             if (!CSS.supports('display', 'flex')') partialAPIs.push('CSS Flexbox');'
             ' }'
@@ -293,7 +293,7 @@ export class FinalValidationSuite {
             }
                 message += ` (${partialAPIs.length} optional APIs missing with graceful degradation)`;
             }
-            ';
+            ';'
             return message;''
         }');'
 '';
@@ -303,11 +303,11 @@ export class FinalValidationSuite {
             for(const size of this.compatibilityTargets.screenSizes) {
             
                 // レスポンシブレイアウトをテスト
-                if (debugInterface.responsiveLayout) {'
+                if (debugInterface.responsiveLayout) {
                     debugInterface.responsiveLayout.simulateResize(size.width, size.height);''
                     await this.wait(100');
                     
-                    // インターフェースが正常に表示されるかチェック'
+                    // インターフェースが正常に表示されるかチェック
                     const isVisible = debugInterface.debugPanel && '';
                                      debugInterface.debugPanel.style.display !== 'none';
             
@@ -334,8 +334,7 @@ export class FinalValidationSuite {
             const mockTouchEvent = {
                 touches: [{ clientX: 100, clientY: 100 }],
                 preventDefault: () => {},
-                stopPropagation: () => {}
-            },
+                stopPropagation: () => {},
             
             // タッチイベントが処理されるかテスト
             let touchHandled = false;
@@ -344,13 +343,13 @@ export class FinalValidationSuite {
             if (originalHandler) { debugInterface.responsiveLayout.handleTouch = () => {  }
                     touchHandled = true; }
                 };
-                ';
-                // タッチイベントをシミュレート''
+                ;
+                // タッチイベントをシミュレート
                 debugInterface.responsiveLayout.handleTouch(mockTouchEvent');
                 
                 // 元のハンドラーを復元
                 debugInterface.responsiveLayout.handleTouch = originalHandler;
-            }'
+            }
             '';
             return touchHandled ? 'Touch events handled correctly' : 'Touch event handling available';
         });
@@ -359,7 +358,7 @@ export class FinalValidationSuite {
     /**
      * メモリ管理検証'
      */''
-    private async validateMemoryManagement('')';
+    private async validateMemoryManagement()';
         await this.runValidation(category, 'Memory Leak Detection', async () => {  ''
             if (!performance.memory') {' };'
                 return 'Memory API not available - using alternative detection'; }
@@ -369,11 +368,11 @@ export class FinalValidationSuite {
             const initialMemory = performance.memory.usedJSHeapSize;
             
             // メモリリークテスト：大量の操作を実行
-            for(let i = 0; i < 50; i++) {'
+            for(let i = 0; i < 50; i++) {
                 '';
-                debugInterface.show('')';
+                debugInterface.show()';
                 debugInterface.switchPanel('performance');''
-                debugInterface.hide('')';
+                debugInterface.hide()';
                 const testPanel = debugInterface.panelManager? .createPanel('test-panel-' + i);
                 if (testPanel && testPanel.destroy) {
             }
@@ -403,13 +402,13 @@ export class FinalValidationSuite {
             if (memoryIncrease > acceptableIncrease) { : undefined }
                 throw new Error(`Potential memory leak detected: ${memoryIncrease.toFixed(2})}MB increase`);
             }
-            ';
+            ';'
             return `Memory increase after stress test: ${memoryIncrease.toFixed(2})}MB (acceptable)`;''
         }');'
 '';
         await this.runValidation(category, 'Event Listener Cleanup', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
             ';
-            // イベントリスナー数の推定''
+            // イベントリスナー数の推定
             const getListenerCount = (') => {' }'
                 return document.querySelectorAll('*').length; }
             };
@@ -423,9 +422,9 @@ export class FinalValidationSuite {
             debugInterface.hide();
             
             // パネル切り替えを繰り返し
-            for(let i = 0; i < 20; i++) {'
+            for(let i = 0; i < 20; i++) {
                 '';
-                debugInterface.show('')';
+                debugInterface.show()';
                 debugInterface.switchPanel(['overview', 'performance', 'console'][i % 3]);
             }
                 debugInterface.hide(); }
@@ -439,7 +438,7 @@ export class FinalValidationSuite {
             if (increase > acceptableIncrease) { : undefined }
                 console.warn(`Event listener increase: ${increase) (may indicate cleanup issues)`});
             }
-            ';
+            ';'
             return `Event listener management: ${increase} increase (baseline variation)`;''
         }');'
 '';
@@ -458,9 +457,9 @@ export class FinalValidationSuite {
             
             // 遅延読み込みマネージャーの最適化
             if (debugInterface.lazyLoadManager) { debugInterface.lazyLoadManager.optimizeMemoryUsage(); }
-            }'
+            }
             '';
-            debugInterface.hide('')';
+            debugInterface.hide()';
             return 'Resource cleanup completed successfully';)
         });
     }
@@ -468,7 +467,7 @@ export class FinalValidationSuite {
     /**
      * アクセシビリティ検証'
      */''
-    private async validateAccessibility('')';
+    private async validateAccessibility()';
         await this.runValidation(category, 'Keyboard Navigation', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;'
             '';
             if (!debugInterface.accessibilityManager') {' }'
@@ -477,19 +476,19 @@ export class FinalValidationSuite {
             
             debugInterface.show();
             ';
-            // キーボードナビゲーションをテスト''
-            const tabableElements = debugInterface.debugPanel.querySelectorAll('')';
+            // キーボードナビゲーションをテスト
+            const tabableElements = debugInterface.debugPanel.querySelectorAll()';
                 'button, input, select, textarea, [tabindex]:not([tabindex="-1"]")';
             );'
             '';
             if(tabableElements.length === 0') {'
-                ';
+                ';'
             }'
                 throw new Error('No keyboard navigable elements found'); }
             }
             ';
-            // ARIAラベルの存在をチェック''
-            const elementsNeedingLabels = debugInterface.debugPanel.querySelectorAll('')';
+            // ARIAラベルの存在をチェック
+            const elementsNeedingLabels = debugInterface.debugPanel.querySelectorAll()';
                 'button:not([aria-label]):not([aria-labelledby]')';
             );
             
@@ -500,21 +499,21 @@ export class FinalValidationSuite {
             }
                 console.warn(`${elementsNeedingLabels.length) elements missing ARIA labels`});
             }
-            ';
+            ';'
             return `Keyboard navigation: ${tabableElements.length} navigable elements, ARIA compliance checked`;''
         }');'
 '';
         await this.runValidation(category, 'Screen Reader Compatibility', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;''
-            debugInterface.show('')';
+            debugInterface.show()';
                 'h1, h2, h3, h4, h5, h6, main, section, article, nav, aside')'';
             ');
-            
-            // ライブリージョンの存在をチェック'
+            '
+            // ライブリージョンの存在をチェック
             const liveRegions = debugInterface.debugPanel.querySelectorAll(')';
                 '[aria-live], [role="status"], [role="alert"]')'';
             ');
-            
-            // フォーカス管理のテスト'
+            '
+            // フォーカス管理のテスト
             const focusableElements = debugInterface.debugPanel.querySelectorAll(')';
                 'button, input, select, textarea, [tabindex="0"]'); }
              }'
@@ -525,20 +524,20 @@ export class FinalValidationSuite {
             debugInterface.show();
             
             // 高コントラストテーマが利用可能かチェック
-            if(debugInterface.themeManager) {'
+            if(debugInterface.themeManager) {
                 '';
-                const themes = debugInterface.themeManager.getAvailableThemes('')';
+                const themes = debugInterface.themeManager.getAvailableThemes()';
                 const hasHighContrast = themes.includes('high-contrast');'
-                ';
+                ';'
             }'
                 if (!hasHighContrast') {' }'
                     throw new Error('High contrast theme not available''); }
                 }
                 ';
-                // 高コントラストモードをテスト''
+                // 高コントラストモードをテスト
                 debugInterface.themeManager.setTheme('high-contrast');''
                 await this.wait(100');''
-                debugInterface.themeManager.setTheme('dark''); // Reset'
+                debugInterface.themeManager.setTheme('dark''); // Reset
                 '';
                 return 'Color contrast: High contrast theme available and functional';
             }'
@@ -550,22 +549,22 @@ export class FinalValidationSuite {
     /**
      * セキュリティ検証'
      */''
-    private async validateSecurity('')';
+    private async validateSecurity()';
         await this.runValidation(category, 'XSS Prevention', async (') => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
             ';
-            // XSS攻撃のテスト''
+            // XSS攻撃のテスト
             const maliciousInput = '<script>alert("XSS"")</script>';
             ';
-            // コンソールパネルでのXSS防止をテスト''
+            // コンソールパネルでのXSS防止をテスト
             const consolePanel = debugInterface.panels? .get('console');
             if(consolePanel && consolePanel.executeCommand) {'
-                try {''
+                try {'
                     const result = consolePanel.executeCommand(maliciousInput');'
-                    // 結果にscriptタグが含まれていないことを確認'
+                    // 結果にscriptタグが含まれていないことを確認
             }'
                     if (result && result.includes('<script>')') {' }'
                         throw new Error('XSS vulnerability detected in console output'); }'
-                    } catch (error) { // エラーが適切に処理されることを確認''
+                    } catch (error) { // エラーが適切に処理されることを確認
                     if (!(error instanceof Error)') {''
                         throw new Error('Improper error handling for malicious input''); }
                     }
@@ -578,7 +577,7 @@ export class FinalValidationSuite {
         await this.runValidation(category, 'Data Validation', async (') => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
             
             // 設定値の検証をテスト
-            const invalidSettings: Record<string, any> = {'
+            const invalidSettings: Record<string, any> = {
                 fontSize: -1,'';
                 updateInterval: 'invalid','';
                 theme: '<script>', }
@@ -600,7 +599,7 @@ export class FinalValidationSuite {
                     } catch (error) { // エラーが投げられるのは良い（適切な検証） }
                 }
             }
-            ';
+            ';'
             if (vulnerabilities > 0) { ' }'
                 throw new Error(`${vulnerabilities} setting validation vulnerabilities detected`');
             }'
@@ -617,14 +616,14 @@ export class FinalValidationSuite {
             
             debugInterface.show();
             await this.wait(100);
-            debugInterface.hide();'
+            debugInterface.hide();
             '';
             if (window.console !== originalConsole') {' }'
                 throw new Error('Debug interface modified global console object'); }
             }'
             '';
             if(window.performance !== originalPerformance') {'
-                ';
+                ';'
             }'
                 throw new Error('Debug interface modified global performance object''); }
             }'
@@ -636,31 +635,31 @@ export class FinalValidationSuite {
     /**
      * システム安定性検証'
      */''
-    private async validateStability('')';
+    private async validateStability()';
         await this.runValidation(category, 'Error Recovery', async () => {  const debugInterface = this.gameEngine.enhancedDebugInterface;
             
             // 意図的にエラーを発生させて回復をテスト
             const originalConsoleError = console.error;
             let errorsCaught = 0;
             
-            console.error = (...args: any[]) => {'
+            console.error = (...args: any[]) => {
                 errorsCaught++;' }'
                 originalConsoleError.apply(console, args'); }
             };
             ';
-            try { // 無効なパネル切り替え''
+            try { // 無効なパネル切り替え
                 debugInterface.switchPanel('nonexistent-panel');
                 ';
-                // 無効なテーマ設定''
+                // 無効なテーマ設定
                 if(debugInterface.themeManager') {'
-                    ';
+                    ';'
                 }'
                     debugInterface.themeManager.setTheme('invalid-theme'); }
                 }
                 ';
-                // 無効なショートカット登録''
+                // 無効なショートカット登録
                 if(debugInterface.keyboardShortcutManager') {'
-                    ';
+                    ';'
                 }'
                     debugInterface.keyboardShortcutManager.registerShortcut('', null); }
                 }
@@ -672,7 +671,7 @@ export class FinalValidationSuite {
                 
             } finally { console.error = originalConsoleError; }
             }
-            ';
+            ';'
             return `Error recovery: System stable after ${errorsCaught} handled errors`;''
         }');'
 '';
@@ -683,9 +682,9 @@ export class FinalValidationSuite {
             let operationsFailed = 0;
             
             for(let i = 0; i < operations; i++) {
-            ';
-                try {''
-                    debugInterface.show('')';
+            ';'
+                try {'
+                    debugInterface.show()';
                     debugInterface.switchPanel(['overview', 'performance', 'console'][i % 3]);
                     
                     if (i % 10 === 0) {
@@ -717,7 +716,7 @@ export class FinalValidationSuite {
             }
                 throw new Error(`Stability test failed: ${successRate.toFixed(1})}% success rate (target: >95%)`),
             }
-            ';
+            ';'
             return `Long duration stability: ${successRate.toFixed(1})}% success rate over ${operations} operations`;''
         }');'
 '';
@@ -725,12 +724,12 @@ export class FinalValidationSuite {
             
             // 並行操作テスト
             const concurrentPromises: Promise<OperationResult>[] = [],
-            ';
-            // 複数の非同期操作を同時実行''
-            concurrentPromises.push('')';
+            ;
+            // 複数の非同期操作を同時実行
+            concurrentPromises.push()';
                 this.simulateConcurrentOperation('panel-switching', async () => {''
                     for(let i = 0; i < 10; i++') {'
-                        ';
+                        ';'
                     }'
                         debugInterface.switchPanel(['overview', 'performance'][i % 2]); }
                         await this.wait(50); }
@@ -738,7 +737,7 @@ export class FinalValidationSuite {
                 })
             );'
             '';
-            concurrentPromises.push('')';
+            concurrentPromises.push()';
                 this.simulateConcurrentOperation('performance-monitoring', async () => {  if (debugInterface.performanceMonitor) {
                         for(let i = 0; i < 20; i++) {
                             
@@ -750,7 +749,7 @@ export class FinalValidationSuite {
                 })
             );'
             '';
-            concurrentPromises.push('')';
+            concurrentPromises.push()';
                 this.simulateConcurrentOperation('settings-modification', async () => {  for (let i = 0; i < 5; i++) {
                         debugInterface.settings.fontSize = 12 + (i % 4); }
                         await this.wait(100); }
@@ -762,8 +761,8 @@ export class FinalValidationSuite {
             const failures = results.filter(r => r.status === 'rejected');
             
             if(failures.length > 0) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 const reasons = failures.map(f => (f as PromiseRejectedResult).reason').join(', '); }
                 throw new Error(`${failures.length} concurrent operations failed: ${reasons)`});
@@ -782,18 +781,18 @@ export class FinalValidationSuite {
      */
     private async runValidation(category: string, validationName: string, validationFunction: () => Promise<string>): Promise<ValidationResult> { const startTime = performance.now();
         let result: ValidationResult,
-        try {'
-            const validationResult = await validationFunction();''
+        try {
+            const validationResult = await validationFunction();
             const endTime = performance.now(''';
-                status: 'passed',);
+                status: 'passed');
                 message: validationResult);
                 duration: duration,);
-                timestamp: new Date().toISOString(); }
+                timestamp: new Date().toISOString() }
             };
 
             console.log(`✓ ${validationName}: ${validationResult) (${duration.toFixed(2})}ms)`);'
         } catch (error) { ''
-            const endTime = performance.now('')';
+            const endTime = performance.now()';
                 status: 'failed',);
                 message: (error as Error).message,
                 duration: duration,
@@ -869,7 +868,7 @@ export class FinalValidationSuite {
     /**
      * 並行操作シミュレーション
      */'
-    private async simulateConcurrentOperation(name: string, operation: () => Promise<void>): Promise<OperationResult> { try {''
+    private async simulateConcurrentOperation(name: string, operation: () => Promise<void>): Promise<OperationResult> { try {'
             await operation('' }'
             return { name, status: 'success' })
         } catch (error) {;
@@ -896,7 +895,7 @@ export class FinalValidationSuite {
             const categoryResults = this.validationResults.filter(r => r.category === category');
             categoryStats[category] = {'
                 total: categoryResults.length,'';
-                passed: categoryResults.filter(r => r.status === 'passed'').length,';
+                passed: categoryResults.filter(r => r.status === 'passed'').length,'
         }'
                 failed: categoryResults.filter(r => r.status === 'failed').length }
             },

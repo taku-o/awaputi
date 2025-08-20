@@ -7,13 +7,13 @@
 type Season = 'spring' | 'summer' | 'autumn' | 'winter';
 
 interface SeasonalPeriod { months: number[],
-    events: string[]; }
+    events: string[] }
 }
 
 interface SeasonalEventData { id: string,
     season: Season,
     startTime: number,
-    endTime: number; }
+    endTime: number }
 }
 
 interface SeasonalEffects { [key: string]: any, }
@@ -38,7 +38,7 @@ interface SpecialRules { bloomEffect?: boolean;
     bubbleColorFilters?: {
         hueShift: number,
         saturation: number,
-        brightness: number; }
+        brightness: number }
     };
     backgroundMusic?: string;
 }
@@ -50,7 +50,7 @@ interface Event { seasonalEffects?: SeasonalEffects;
 interface SeasonInfo { season: Season,
     seasonData: SeasonalPeriod,
     activeEvents: SeasonalEventData[],
-    timeUntilNextSeason: number; }
+    timeUntilNextSeason: number }
 }
 
 interface SavedSeasonalData { activeSeasonalEvents?: [string, SeasonalEventData][];
@@ -69,9 +69,9 @@ export class SeasonalEventManager { private gameEngine: any }
         
         // 季節イベント用定数
         this.SEASONAL_PERIODS = {
-            spring: { '
-                months: [3, 4, 5], ';
-    }
+            spring: { 
+                months: [3, 4, 5], '
+    }'
     }'
                 events: ['spring-cherry-blossom', 'spring-festival']  }
             },'
@@ -100,7 +100,7 @@ export class SeasonalEventManager { private gameEngine: any }
     getCurrentSeason(): Season { const currentMonth = new Date().getMonth() + 1; // 0-based to 1-based
         
         for(const [season, data] of Object.entries(this.SEASONAL_PERIODS) {
-        ';
+        ';'
             '';
             if (data.months.includes(currentMonth)') {
         
@@ -162,8 +162,8 @@ export class SeasonalEventManager { private gameEngine: any }
                 });
                 
                 console.log(`Activated seasonal event: ${eventId} for season: ${ season)`),
-                ';
-                // GameEngineに季節イベント開始を通知''
+                ;
+                // GameEngineに季節イベント開始を通知
                 if(this.gameEngine.eventBus') {'
                     '';
                     this.gameEngine.eventBus.emit('seasonalEventActivated', {
@@ -191,7 +191,7 @@ export class SeasonalEventManager { private gameEngine: any }
             this.activeSeasonalEvents.delete(eventId); }
             console.log(`Deactivated expired seasonal event: ${eventId}`);
             ';
-            // GameEngineに季節イベント終了を通知''
+            // GameEngineに季節イベント終了を通知
             if(this.gameEngine.eventBus') {'
                 '';
                 this.gameEngine.eventBus.emit('seasonalEventDeactivated', {)
@@ -224,7 +224,7 @@ export class SeasonalEventManager { private gameEngine: any }
     }
     
     /**
-     * 春のエフェクトを適用'
+     * 春のエフェクトを適用
      */''
     private applySpringEffects(specialRules: SpecialRules'): void { specialRules.bloomEffect = true;
         specialRules.pastelColors = true;
@@ -237,17 +237,17 @@ export class SeasonalEventManager { private gameEngine: any }
             saturation: 1.2,
             brightness: 1.1 }
         },
-        ';
-        // 春のBGM設定''
+        ;
+        // 春のBGM設定
         specialRules.backgroundMusic = 'spring-melody';
         ';
-        // 花びらエフェクト''
+        // 花びらエフェクト
         if(this.gameEngine.particleManager') {'
             '';
             this.gameEngine.particleManager.addSeasonalEffect('cherry-blossoms', {''
                 type: 'falling-petals',')';
                 color: '#FFB6C1')';
-                count: 15,');
+                count: 15,')
         }'
                 speed: 0.5)'); }
         }'
@@ -269,16 +269,16 @@ export class SeasonalEventManager { private gameEngine: any }
             saturation: 1.3,
             brightness: 1.2 }
         },
-        ';
-        // 夏のBGM設定''
+        ;
+        // 夏のBGM設定
         specialRules.backgroundMusic = 'summer-festival';
         ';
-        // 花火エフェクト''
+        // 花火エフェクト
         if(this.gameEngine.particleManager') {'
             '';
             this.gameEngine.particleManager.addSeasonalEffect('fireworks', {''
                 type: 'burst',')';
-                colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'],');
+                colors: ['#FF0000', '#00FF00', '#0000FF', '#FFFF00'],')
         }'
                 interval: 5000)'); }
         }'
@@ -300,17 +300,17 @@ export class SeasonalEventManager { private gameEngine: any }
             saturation: 1.1,
             brightness: 0.9 }
         },
-        ';
-        // 秋のBGM設定''
+        ;
+        // 秋のBGM設定
         specialRules.backgroundMusic = 'autumn-leaves';
         ';
-        // 落ち葉エフェクト''
+        // 落ち葉エフェクト
         if(this.gameEngine.particleManager') {'
             '';
             this.gameEngine.particleManager.addSeasonalEffect('falling-leaves', {''
                 type: 'falling',')';
                 colors: ['#FF8C00', '#DC143C', '#B8860B', '#CD853F'])';
-                count: 12,');
+                count: 12,')
         }'
                 speed: 0.8)'); }
         }'
@@ -332,17 +332,17 @@ export class SeasonalEventManager { private gameEngine: any }
             saturation: 0.8,
             brightness: 1.1 }
         },
-        ';
-        // 冬のBGM設定''
+        ;
+        // 冬のBGM設定
         specialRules.backgroundMusic = 'winter-wonderland';
         ';
-        // 雪エフェクト''
+        // 雪エフェクト
         if(this.gameEngine.particleManager') {'
             '';
             this.gameEngine.particleManager.addSeasonalEffect('snowfall', {''
                 type: 'falling','';
-                color: '#FFFFFF',);
-                count: 20);
+                color: '#FFFFFF');
+                count: 20)
         }'
                 speed: 0.3,') }'
                 size: { min: 2, max: 5 })');
@@ -415,9 +415,9 @@ export class SeasonalEventManager { private gameEngine: any }
     }
     
     /**
-     * 季節イベントデータを読み込み（EventStageManager対応）'
+     * 季節イベントデータを読み込み（EventStageManager対応）
      */''
-    load('')';
+    load()';
             const savedSeasonalData = localStorage.getItem('seasonalEventData');
             if(savedSeasonalData) {
                 const data: SavedSeasonalData = JSON.parse(savedSeasonalData),
@@ -427,8 +427,8 @@ export class SeasonalEventManager { private gameEngine: any }
             }
                     this.activeSeasonalEvents = new Map(data.activeSeasonalEvents); }
                 }
-                ';
-                // 現在の季節を復元''
+                ;
+                // 現在の季節を復元
                 if (data.currentSeason') { this.currentSeason = data.currentSeason; }
                 }'
                 '';
@@ -438,9 +438,9 @@ export class SeasonalEventManager { private gameEngine: any }
             }
             
             // 現在の季節をチェック
-            this.checkSeasonalEvents();'
+            this.checkSeasonalEvents();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[SeasonalEventManager] データ読み込みエラー:', error);
             // エラーの場合は現在の季節を再設定
             this.currentSeason = this.getCurrentSeason(); }
@@ -452,12 +452,12 @@ export class SeasonalEventManager { private gameEngine: any }
      */
     save(): void { try {
             const dataToSave: SavedSeasonalData = {
-                activeSeasonalEvents: Array.from(this.activeSeasonalEvents.entries(),';
+                activeSeasonalEvents: Array.from(this.activeSeasonalEvents.entries(),
                 currentSeason: this.currentSeason,'';
-                lastUpdated: Date.now('')';
+                lastUpdated: Date.now()';
             localStorage.setItem('seasonalEventData', JSON.stringify(dataToSave)');''
             console.log('[SeasonalEventManager] 季節イベントデータを保存しました');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[SeasonalEventManager] データ保存エラー:', error); }
         }
     }
@@ -475,9 +475,9 @@ export class SeasonalEventManager { private gameEngine: any }
         
         // パーティクルエフェクトをクリア
         if (this.gameEngine.particleManager) { this.gameEngine.particleManager.clearSeasonalEffects(); }
-        }'
+        }
         '';
-        this.activeSeasonalEvents.clear('')';
+        this.activeSeasonalEvents.clear()';
         console.log('SeasonalEventManager disposed'');'
     }''
 }

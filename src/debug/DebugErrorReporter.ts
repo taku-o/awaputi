@@ -8,7 +8,7 @@ import { ErrorScreenshotCapture } from './ErrorScreenshotCapture.js';''
 import { DebugErrorNotificationSystem } from './DebugErrorNotificationSystem.js';''
 import { ErrorRecoveryTracker } from './ErrorRecoveryTracker.js';
 ';
-// サブコンポーネントのインポート''
+// サブコンポーネントのインポート
 import { ErrorCollector } from './error-reporter/ErrorCollector.js';''
 import { DebugErrorAnalyzer } from './error-reporter/DebugErrorAnalyzer.js';''
 import { ErrorSubmissionManager } from './error-reporter/ErrorSubmissionManager.js';''
@@ -18,13 +18,13 @@ import type { GameEngine } from '../core/GameEngine';
 
 interface NotificationThresholds { critical: number,
     warning: number,
-    error: number; }
+    error: number }
 }
 
 interface DeveloperNotificationChannel { enabled: boolean,
     maxPerMinute: number,
     recentNotifications: any[],
-    channels: string[]; }
+    channels: string[] }
 }
 
 interface ErrorContext { type?: string;
@@ -35,7 +35,7 @@ interface ErrorContext { type?: string;
     userAgent?: string;
     viewport?: {
         width: number,
-        height: number; }
+        height: number }
     };
     browserInfo?: any;
     performanceInfo?: any;
@@ -98,12 +98,12 @@ interface EnhancedError { id: string,
     category: string,
     screenshot?: { id: string,
         timestamp: number,
-        size: number; }
+        size: number }
     };
     recovery?: any;
 }
 
-interface ErrorPattern { count: number; }
+interface ErrorPattern { count: number }
 }
 
 interface NotificationData { id: string,
@@ -111,7 +111,7 @@ interface NotificationData { id: string,
     type: string,
     error: EnhancedError,
     additionalInfo: any,
-    sessionId: string; }
+    sessionId: string }
 }
 
 export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
@@ -153,18 +153,18 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
         // 通知システム設定
         this.notificationThresholds = {
             critical: 1,      // 1回でも発生したら通知;
-            warning: 5,       // 5回で通知;
+            warning: 5,       // 5回で通知
     }
     }
             error: 10         // 10回で通知 }
         },
-        ';
-        // エラーパターン分析''
+        ;
+        // エラーパターン分析
         this.errorPatterns = new Map(''';
             channels: ['console', 'ui', 'storage'];
         };
         
-        // クリティカルエラー定義'
+        // クリティカルエラー定義
         this.criticalErrors = new Set(['';
             'TypeError','';
             'ReferenceError','';
@@ -195,10 +195,10 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
             const result = originalHandleError(error, context);
             
             // 拡張エラー収集を実行（非同期）
-            try { }'
+            try { }
                 await this.collectEnhancedError(error, context);' }'
-            } catch (collectionError') { ''
-                console.warn('Error collection failed:', (collectionError as Error).message); }
+            } catch (collectionError) { ''
+                console.warn('Error collection failed:', (collectionError as Error).message) }
             }
             
             return result;
@@ -209,21 +209,21 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     }
     
     /**
-     * 追加のエラーキャッチ設定'
+     * 追加のエラーキャッチ設定
      */''
-    private setupAdditionalErrorCatching('')';
-        window.addEventListener('unhandledrejection', async (event) => {  try {''
+    private setupAdditionalErrorCatching()';
+        window.addEventListener('unhandledrejection', async (event) => {  try {'
                 await this.collectEnhancedError(new Error(event.reason'), {''
                     type: 'unhandledrejection',
                     promise: event.promise, }
                     gameState: this.captureGameState(), };'
                 });''
-            } catch (e') { ''
-                console.warn('Unhandled rejection collection failed:', (e as Error).message); }'
+            } catch (e) { ''
+                console.warn('Unhandled rejection collection failed:', (e as Error).message) }'
             }''
         }');
         ';
-        // リソース読み込みエラー''
+        // リソース読み込みエラー
         window.addEventListener('error', async (event) => {  if (event.target !== window) {
                 try { }'
                     const target = event.target as HTMLElement;' }'
@@ -233,8 +233,8 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
                         source: (target as any).src || (target as any).href,
                         gameState: this.captureGameState(), };'
                     });''
-                } catch (e') { ''
-                    console.warn('Resource error collection failed:', (e as Error).message); }
+                } catch (e) { ''
+                    console.warn('Resource error collection failed:', (e as Error).message) }
                 }
             }
         }, true);
@@ -269,12 +269,12 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
             },
             
             // パターン分析用情報
-            fingerprint: this.generateErrorFingerprint(error, context),';
+            fingerprint: this.generateErrorFingerprint(error, context),;
             severity: this.calculateSeverity(error, context),'';
             category: this.categorizeError(error, context');
         };
         ';
-        // クリティカルエラーの場合はスクリーンショットを取得''
+        // クリティカルエラーの場合はスクリーンショットを取得
         if(enhancedError.severity === 'critical' || enhancedError.severity === 'high') {
             try {
                 const screenshot = await this.screenshotCapture.captureOnCriticalError(error, {)
@@ -288,8 +288,8 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
         }
                         size: screenshot.size };'
                     };''
-                } catch (screenshotError') { ''
-                console.warn('Failed to capture error screenshot:', (screenshotError as Error).message); }
+                } catch (screenshotError) { ''
+                console.warn('Failed to capture error screenshot:', (screenshotError as Error).message) }
             }
         }
         
@@ -310,10 +310,10 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
                 enhancedError.recovery = recoveryResult;
                 
         }
-                if (recoveryResult.success) { }'
+                if (recoveryResult.success) { }
                     console.log(`🔧 Error recovery successful: ${recoveryResult.result)`});''
-                } catch (recoveryError') { ''
-                console.warn('Recovery attempt failed:', (recoveryError as Error).message); }
+                } catch (recoveryError) { ''
+                console.warn('Recovery attempt failed:', (recoveryError as Error).message) }
             }
         }
         
@@ -323,18 +323,18 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     /**
      * 復旧試行の判定'
      */''
-    private shouldAttemptRecovery(error: EnhancedError'): boolean { // クリティカルまたは高重要度エラーの場合''
+    private shouldAttemptRecovery(error: EnhancedError'): boolean { // クリティカルまたは高重要度エラーの場合
         if(['critical', 'high'].includes(error.severity) {
             
         }
             return true; }
         }
         ';
-        // ゲーム実行中のエラーの場合''
+        // ゲーム実行中のエラーの場合
         if (error.context.gameState? .isRunning === true') { return true; }
         }
         ';
-        // 特定カテゴリのエラー''
+        // 特定カテゴリのエラー
         const recoverableCategories = ['rendering', 'audio', 'memory', 'storage', 'network'];
         if(recoverableCategories.includes(error.category) { return true; }
         }
@@ -346,8 +346,8 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
      * ゲーム状態のキャプチャ
      */ : undefined
     captureGameState(): GameState | null { if (!this.gameEngine) return null;
-        ';
-        try {''
+        ';'
+        try {'
             if(!this.gameEngine') {'
                 return { ''
                     currentScene: 'unknown',
@@ -361,7 +361,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
                     playerHP: 0 }
                 },
             }
-            ';
+            ';'
             return { ''
                 currentScene: this.gameEngine.sceneManager? .currentScene?.constructor.name || 'unknown', : undefined;
                 gameTime: this.gameEngine.gameTime || 0,
@@ -372,7 +372,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
                 score: this.gameEngine.scoreManager? .score || 0, : undefined };
                 playerHP: this.gameEngine.playerData? .currentHP || 0 }'
             };''
-        } catch (e') { : undefined' }'
+        } catch (e) { : undefined' }'
             return { error: 'Failed to capture game state', message: (e as Error).message }
         }
     }
@@ -411,7 +411,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
                     redirectCount: (performance as any).navigation.redirectCount }
                 } : null'
             };''
-        } catch (e') { ' }'
+        } catch (e) { ' }'
             return { error: 'Failed to capture performance info', timing: performance.now() }
         }
     }
@@ -419,7 +419,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     /**
      * エラーフィンガープリントの生成'
      */''
-    private generateErrorFingerprint(error: Error, context: ErrorContext'): string { const components = [error.name,]'
+    private generateErrorFingerprint(error: Error, context: ErrorContext'): string { const components = [error.name]'
             error.message,']';
             error.stack ? error.stack.split('\n'')[0] : '','';
             context.type || 'generic','';
@@ -435,15 +435,15 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     private calculateSeverity(error: Error, context: ErrorContext'): string { ''
         let severity = 'low';
         ';
-        // クリティカルエラーの判定''
+        // クリティカルエラーの判定
         if(error.name === 'TypeError' || error.name === 'ReferenceError'') {'
-            ';
+            ';'
         }'
             severity = 'high'; }
         }'
         '';
         if(context.type === 'unhandledrejection'') {'
-            ';
+            ';'
         }'
             severity = 'medium'; }
         }'
@@ -463,9 +463,9 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
      * エラーのカテゴリ化
      */ : undefined
     private categorizeError(error: Error, context: ErrorContext): string { if (context.type) return context.type;
-        ';
-        // メッセージベースのカテゴリ化''
-        const message = error.message.toLowerCase('')';
+        ;
+        // メッセージベースのカテゴリ化
+        const message = error.message.toLowerCase()';
         if (message.includes('network'') || message.includes('fetch')') {''
             return 'network'; }
         }'
@@ -490,9 +490,9 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
      */''
     private checkNotificationThreshold(error: EnhancedError'): void { const severity = error.severity;
         ';
-        // 重要度別の通知判定''
+        // 重要度別の通知判定
         if(severity === 'critical'') {'
-            ';
+            ';'
         }'
             this.notifyDeveloper(error, 'immediate'); }
         } else {  // パターンベースの通知判定 }
@@ -506,12 +506,12 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     private checkPatternBasedNotification(error: EnhancedError): void { const pattern = this.errorPatterns.get(error.fingerprint);
         if (!pattern) return;
         
-        const threshold = this.notificationThresholds[error.severity as keyof NotificationThresholds] || 10;'
+        const threshold = this.notificationThresholds[error.severity as keyof NotificationThresholds] || 10;
         '';
         if(pattern.count >= threshold') {'
             '';
             this.notifyDeveloper(error, 'pattern', {)'
-                patternInfo: pattern,');
+                patternInfo: pattern,')
         }'
                 totalOccurrences: pattern.count)'); }
         }
@@ -551,10 +551,10 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     /**
      * ストレージからエラーデータを読み込み
      */
-    private loadStoredErrors(): void { try {'
+    private loadStoredErrors(): void { try {
             this.errorStorage.loadSession(this.sessionId);' }'
-        } catch (e') { ''
-            console.warn('Failed to load stored errors:', (e as Error).message'); }
+        } catch (e) { ''
+            console.warn('Failed to load stored errors:', (e as Error).message') }
         }
     }
     
@@ -563,7 +563,7 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     // ========================================
     
     /**
-     * エラーレポートの生成（ErrorAnalyzerに委譲）'
+     * エラーレポートの生成（ErrorAnalyzerに委譲）
      */''
     generateErrorReport(timeframe: string = 'session'): any { return this.errorAnalyzer.generateReport(timeframe); }
     }
@@ -595,17 +595,17 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     
     // ========================================
     // ユーティリティメソッド
-    // ========================================'
+    // ========================================
     '';
-    generateSessionId('')';
+    generateSessionId()';
         return 'session_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
     }'
     '';
-    generateErrorId('')';
+    generateErrorId()';
         return 'error_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
     }'
     '';
-    generateNotificationId('')';
+    generateNotificationId()';
         return 'notification_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9);
     }
     
@@ -628,10 +628,10 @@ export class DebugErrorReporter extends ErrorHandler { public sessionId: string,
     /**
      * 設定の保存'
      */''
-    saveSettings('')';
+    saveSettings()';
             localStorage.setItem('errorReporter_settings', JSON.stringify(this.developerNotifications);''
-        } catch (e') { ''
-            console.warn('Failed to save settings:', (e as Error).message); }
+        } catch (e) { ''
+            console.warn('Failed to save settings:', (e as Error).message) }
         }
     }
     

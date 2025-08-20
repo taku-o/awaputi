@@ -5,13 +5,13 @@
 interface GameEngine { developerConsole?: DeveloperConsole;
     configManager?: ConfigManager;
     stop: () => void,
-    start: () => void; }
+    start: () => void }
 }
 
-interface DeveloperConsole { executeCommand: (command: string) => string; }
+interface DeveloperConsole { executeCommand: (command: string) => string }
 }
 
-interface ConfigManager { get: (key: string) => any; }
+interface ConfigManager { get: (key: string) => any }
 }
 
 interface DebugInterface { // Debug interface methods }
@@ -39,7 +39,7 @@ export class ConsolePanel {
     /**
      * パネルを作成'
      */''
-    public create('')';
+    public create()';
         this.element = document.createElement('div'');''
         this.element.className = 'debug-console-panel';'
         this.element.innerHTML = `'';
@@ -85,8 +85,8 @@ export class ConsolePanel {
         // コマンド実行
         const executeCommand = () => { 
             const command = input.value.trim();
-            if(command) {'
-                ';
+            if(command) {
+                ';'
             }'
                 this.executeCommand(command');' }'
                 input.value = ''; }
@@ -100,7 +100,7 @@ export class ConsolePanel {
             }''
         }');
 ';
-        // よく使うコマンドボタン''
+        // よく使うコマンドボタン
         this.element.querySelectorAll('.cmd-btn').forEach(btn => {  ')'
             const button = btn as HTMLButtonElement');''
             button.addEventListener('click', () => {
@@ -118,22 +118,22 @@ export class ConsolePanel {
     /**
      * コマンドを実行
      */'
-    private executeCommand(command: string): void { try {''
+    private executeCommand(command: string): void { try {'
             this.addOutput(`> ${command')`, 'command');
             
             if(this.developerConsole) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 const result = this.developerConsole.executeCommand(command');' }'
                 this.addOutput(result, 'result'});'
-            } else {  // フォールバック：基本的なコマンド処理''
+            } else {  // フォールバック：基本的なコマンド処理
                 const result = this.executeBasicCommand(command');' }'
                 this.addOutput(result, 'result'); }
             }
             
             this.addToHistory(command);
-            ';
+            ';'
         } catch (error) { ' }'
             this.addOutput(`エラー: ${(error as Error'}).message}`, 'error');
         }
@@ -142,9 +142,9 @@ export class ConsolePanel {
     /**
      * 基本的なコマンドを実行'
      */''
-    private executeBasicCommand(command: string'): string { // 簡単なコマンド解析''
+    private executeBasicCommand(command: string'): string { // 簡単なコマンド解析
         if(command.startsWith('game.') {'
-            ';
+            ';'
         }'
             return this.executeGameCommand(command');' }'
         } else if(command.startsWith('debug.') { ''
@@ -164,7 +164,7 @@ export class ConsolePanel {
         switch(command') {'
             '';
             case 'game.pause(')':'';
-                this.gameEngine.stop('')';
+                this.gameEngine.stop()';
                 return 'ゲームを一時停止しました';')'
             case 'game.resume(')':'';
                 this.gameEngine.start(''';
@@ -210,7 +210,7 @@ export class ConsolePanel {
      */""
     private executeTestCommand(command: string"): string { ""
         if(command.includes('generateBubbles') {'
-            ';
+            ';'
         }'
             const count = command.match(/generateBubbles\((\d+)\)/')? .[1]; }
             return `${count || 1}個のテスト用バブルを生成しました（シミュレーション）`;
@@ -226,7 +226,7 @@ export class ConsolePanel {
 '';
         const output = this.element.querySelector('#console-output') as HTMLElement;''
         if(output') {'
-            ';
+            ';'
         }'
             const div = document.createElement('div'); }
             div.className = `console-line console-${type}`;
@@ -270,10 +270,10 @@ export class ConsolePanel {
 
     /**
      * パネルを表示
-     */ : undefined'
+     */ : undefined
     public show(): void { ''
         if(this.element') {'
-            ';
+            ';'
         }'
             this.element.style.display = 'block'; }
         }
@@ -284,7 +284,7 @@ export class ConsolePanel {
      */'
     public hide(): void { ''
         if(this.element') {'
-            ';
+            ';'
         }'
             this.element.style.display = 'none'; }
         }
@@ -293,9 +293,9 @@ export class ConsolePanel {
     /**
      * パネルサイズを更新（レスポンシブレイアウト用）
      */'
-    public updateSize(): void { // パネルサイズ変更時の処理''
+    public updateSize(): void { // パネルサイズ変更時の処理
         if(this.element') {'
-            // コンソール出力を最新の位置にスクロール''
+            // コンソール出力を最新の位置にスクロール
             const output = this.element.querySelector('#console-output') as HTMLElement;
             if (output) {
         }

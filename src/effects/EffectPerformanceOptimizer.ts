@@ -29,7 +29,7 @@ interface EnhancedParticleManager { setParticleMultiplier(multiplier: number): v
     removeOldestParticles(count: number): void,
     enableBatchRendering(enabled: boolean): void,
     setAggressiveCulling(enabled: boolean): void,
-    particleMultiplier?: number; }
+    particleMultiplier?: number }
 }
 
 interface EnhancedEffectManager { clearCache(): void;
@@ -70,25 +70,25 @@ interface OptimizationSettings { enableFrameSkipping: boolean,
     enableRenderingOptimization: boolean,
     maxParticlesPerFrame: number,
     targetFPS: number,
-    minFPS: number; }
+    minFPS: number }
 }
 
 interface OptimizationStats { framesSkipped: number,
     qualityAdjustments: number,
     memoryCleanups: number,
-    renderOptimizations: number; }
+    renderOptimizations: number }
 }
 
 interface ExtendedOptimizationStats extends OptimizationStats { currentFPS: number,
     memoryUsage: number,
     particleCount: number,
-    isOptimizing: boolean; }
+    isOptimizing: boolean }
 }
 
 interface DebugInfo { enabled: boolean,
     settings: OptimizationSettings,
     stats: ExtendedOptimizationStats,
-    frameTimeHistory: number[]; }
+    frameTimeHistory: number[] }
 }
 
 type OptimizationReason = 'fps' | 'memory' | 'particles' | 'manual';
@@ -154,8 +154,8 @@ export class EffectPerformanceOptimizer {
         const currentFPS = this.getCurrentFPS();
         const memoryUsage = this.getCurrentMemoryUsage();
         const particleCount = this.getActiveParticleCount();
-        ';
-        // パフォーマンス劣化の検出''
+        ;
+        // パフォーマンス劣化の検出
         if(currentFPS < this.optimizationSettings.minFPS') {'
             this.isOptimizing = true;''
             this.optimizePerformance('fps', currentFPS);
@@ -176,7 +176,7 @@ export class EffectPerformanceOptimizer {
     }
 
     private optimizePerformance(reason: OptimizationReason, value: number): void {
-        console.log(`Optimizing performance due to ${reason}: ${ value)`);'
+        console.log(`Optimizing performance due to ${reason}: ${ value)`);
         '';
         switch(reason') {'
             '';
@@ -211,10 +211,10 @@ export class EffectPerformanceOptimizer {
         for (const optimize of optimizations) { optimize(); }
         }
     }
-';
-    private emergencyOptimization(): void { // 最低品質に設定''
+;
+    private emergencyOptimization(): void { // 最低品質に設定
         if(this.gameEngine.effectQualityController') {'
-            ';
+            ';'
         }'
             this.gameEngine.effectQualityController.setQualityLevel('low'); }
         }
@@ -227,8 +227,8 @@ export class EffectPerformanceOptimizer {
         }
         
         // 複雑なエフェクトを無効化
-        if(this.gameEngine.seasonalEffectManager) {'
-            ';
+        if(this.gameEngine.seasonalEffectManager) {
+            ';'
         }'
             this.gameEngine.seasonalEffectManager.setEnabled(false'); }
         }'
@@ -238,9 +238,9 @@ export class EffectPerformanceOptimizer {
 
     private advancedOptimization(): void { // 品質を下げる
         const qualityController = this.gameEngine.effectQualityController;
-        if(qualityController) {'
+        if(qualityController) {
             '';
-            const currentQuality = qualityController.getCurrentQualityLevel('')';
+            const currentQuality = qualityController.getCurrentQualityLevel()';
             const qualityLevels = ['low', 'medium', 'high', 'ultra'];)
             const currentIndex = qualityLevels.indexOf(currentQuality);
             
@@ -252,7 +252,7 @@ export class EffectPerformanceOptimizer {
         }
         
         // パーティクル数削減
-        if(this.gameEngine.enhancedParticleManager) {'
+        if(this.gameEngine.enhancedParticleManager) {
             const currentMultiplier = this.gameEngine.enhancedParticleManager.particleMultiplier || 1.0;'
         }'
             this.gameEngine.enhancedParticleManager.setParticleMultiplier(currentMultiplier * 0.7'); }
@@ -269,7 +269,7 @@ export class EffectPerformanceOptimizer {
         }
         
         // 軽微なパーティクル削減
-        if(this.gameEngine.enhancedParticleManager) {'
+        if(this.gameEngine.enhancedParticleManager) {
             const currentMultiplier = this.gameEngine.enhancedParticleManager.particleMultiplier || 1.0;'
         }'
             this.gameEngine.enhancedParticleManager.setParticleMultiplier(currentMultiplier * 0.9'); }
@@ -290,9 +290,9 @@ export class EffectPerformanceOptimizer {
         }
         
         // オブジェクトプールの最適化
-        if(this.gameEngine.poolManager) {'
+        if(this.gameEngine.poolManager) {
             '';
-            this.gameEngine.poolManager.cleanup('');
+            this.gameEngine.poolManager.cleanup();
         }'
         console.log('Memory optimization applied'); }
     }
@@ -390,21 +390,21 @@ export class EffectPerformanceOptimizer {
             ...this.optimizationSettings,
             ...newSettings }
         };
-    }'
+    }
 '';
     public setEnabled(enabled: boolean'): void { this.enabled = enabled;' }'
         console.log(`Performance optimizer ${enabled ? 'enabled' : 'disabled')`});
     }
 ';
-    // 手動最適化トリガー''
-    public manualOptimization('')';
+    // 手動最適化トリガー
+    public manualOptimization()';
         console.log('Manual optimization triggered'');''
         this.optimizePerformance('manual', 0);
     }
 
     // デバッグメソッド
     public getDebugInfo(): DebugInfo { return { enabled: this.enabled,
-            settings: this.optimizationSettings,';
+            settings: this.optimizationSettings,
             stats: this.getOptimizationStats(,') };'
             frameTimeHistory: this.frameTimeHistory.slice(-10') // 最新10フレーム }
         },
@@ -413,8 +413,8 @@ export class EffectPerformanceOptimizer {
 
 // グローバルアクセス用
 declare global { interface Window {
-        EffectPerformanceOptimizer: typeof EffectPerformanceOptimizer; }
+        EffectPerformanceOptimizer: typeof EffectPerformanceOptimizer }
     }
-}'
+}
 '';
 window.EffectPerformanceOptimizer = EffectPerformanceOptimizer;

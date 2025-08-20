@@ -11,7 +11,7 @@ interface GameEngine { eventListeners: Map<string, Function[]>;
 export class GameEngineEventManager {
     private gameEngine: GameEngine;
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine; }
+        this.gameEngine = gameEngine }
     }
     
     /**
@@ -68,9 +68,9 @@ export class GameEngineEventManager {
     
     /**
      * リソースの破棄
-     */'
-    destroy(): void { // イベントリスナーのクリア''
-        this.gameEngine.eventListeners.clear('')';
+     */
+    destroy(): void { // イベントリスナーのクリア
+        this.gameEngine.eventListeners.clear()';
         console.log('[GameEngineEventManager] Destroyed''); }
     }
 }'

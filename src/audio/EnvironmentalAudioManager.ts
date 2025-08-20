@@ -13,7 +13,7 @@ import { BiomeTransitionController } from './environmental-audio-manager/BiomeTr
 import { EnvironmentalAudioSettings } from './environmental-audio-manager/EnvironmentalAudioSettings.js';
 
 // エラーハンドラー型定義
-interface ErrorHandler { handleError(error: Error, type: string, context?: any): void; }
+interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
 }
 
 // 設定管理型定義
@@ -46,7 +46,7 @@ interface EnvironmentalAudioStatus { enabled: boolean,
     activeLayers: number,
     availableBiomes: number,
     availableWeatherEffects: number,
-    generatedSounds: number; }
+    generatedSounds: number }
 }
 
 // 設定型定義
@@ -55,14 +55,14 @@ interface EnvironmentalSettings { enabled: boolean,
     fadeTime: number,
     biomeBlending: boolean,
     weatherEffects: boolean,
-    timeOfDayVariation: boolean; }
+    timeOfDayVariation: boolean }
 }
 
 // パフォーマンスデータ型定義
 interface PerformanceData { activeLayers: number,
     cpuUsage: number,
     memoryUsage: number,
-    averageLatency: number; }
+    averageLatency: number }
 }
 
 export class EnvironmentalAudioManager {
@@ -93,13 +93,13 @@ export class EnvironmentalAudioManager {
             this.soundGenerator = new EnvironmentalSoundGenerator(this.audioContext);
             this.transitionController = new BiomeTransitionController(;
                 this.audioContext,
-                this.audioController,);
+                this.audioController);
                 this.soundGenerator);
                 this.biomeDefinitionManager;
             );
-            this.settings = new EnvironmentalAudioSettings(this.configManager);'
+            this.settings = new EnvironmentalAudioSettings(this.configManager);
             '';
-            this.initialize('')';
+            this.initialize()';
             console.warn('[EnvironmentalAudioManager] AudioContext not available - environmental audio disabled');
 
     }
@@ -111,7 +111,7 @@ export class EnvironmentalAudioManager {
     /**
      * 環境音管理システムを初期化
      */ : undefined'
-    initialize(): boolean { try {''
+    initialize(): boolean { try {'
             if(!this.audioContext') {'
                 '';
                 console.warn('[EnvironmentalAudioManager] AudioContext not available during initialization - skipping');
@@ -119,14 +119,14 @@ export class EnvironmentalAudioManager {
                 return false; }
             }
             ';
-            // 基本環境音を生成''
-            this.soundGenerator? .generateBasicEnvironmentalSounds('')';
+            // 基本環境音を生成
+            this.soundGenerator? .generateBasicEnvironmentalSounds()';
             console.log('EnvironmentalAudioManager initialized successfully');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined')'
                 operation: 'initialize',')';
-                component: 'EnvironmentalAudioManager'); }
+                component: 'EnvironmentalAudioManager') }
             });
             return false;
         }
@@ -154,7 +154,7 @@ export class EnvironmentalAudioManager {
     
     /**
      * 環境音音量を設定
-     */ : undefined'
+     */ : undefined
     setVolume(volume: number): void { ''
         if(this.disabled') {'
             '';
@@ -170,7 +170,7 @@ export class EnvironmentalAudioManager {
     
     /**
      * フェード時間を設定
-     */ : undefined'
+     */ : undefined
     setFadeTime(fadeTime: number): void { ''
         if(this.disabled') {'
             '';
@@ -239,9 +239,9 @@ export class EnvironmentalAudioManager {
             if (!biome) { : undefined }
                 throw new Error(`Unknown biome: ${biomeId)`});
             }
-            ';
+            ';'
             const { ''
-                fadeTime = this.settings? .getSettings('')';
+                fadeTime = this.settings? .getSettings()';
                 timeOfDay = 'day');
                 intensity = 1.0 } = options;
              : undefined);
@@ -251,20 +251,20 @@ export class EnvironmentalAudioManager {
             if(settings?.enabled) {
                 this.transitionController?.transitionToBiome(biome, { 
                     fadeTime,  : undefined);
-                    weather: settings.weatherEffects ? weather : null);
+                    weather: settings.weatherEffects ? weather : null)
             }
                     timeOfDay: settings.timeOfDayVariation ? timeOfDay : null, ) }
                     intensity )});
             }
             
             // 現在のバイオームを記録
-            this.currentBiome = biomeId;'
+            this.currentBiome = biomeId;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {''
                 operation: 'setBiome',')';
                 component: 'EnvironmentalAudioManager',);
-                biomeId: biomeId); }
+                biomeId: biomeId) }
             });
         }
     }
@@ -274,15 +274,15 @@ export class EnvironmentalAudioManager {
      */
     private _startCurrentEnvironment(): void { try {
             if(this.currentBiome) {'
-                ';
+                ';'
             }'
                 this.setBiome(this.currentBiome'); }'
             } else {  // デフォルトバイオームを設定' }'
                 this.setBiome('forest');' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', {')'
                 operation: '_startCurrentEnvironment',')';
-                component: 'EnvironmentalAudioManager'); }
+                component: 'EnvironmentalAudioManager') }
             });
         }
     }
@@ -297,12 +297,12 @@ export class EnvironmentalAudioManager {
         }
             return []; }
         }
-        ';
+        ';'
         try { return this.biomeDefinitionManager? .getAvailableBiomes() || [];' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined')'
                 operation: 'getAvailableBiomes',')';
-                component: 'EnvironmentalAudioManager'); }
+                component: 'EnvironmentalAudioManager') }
             });
             return [];
         }
@@ -318,12 +318,12 @@ export class EnvironmentalAudioManager {
         }
             return []; }
         }
-        ';
+        ';'
         try { return this.biomeDefinitionManager? .getAvailableWeatherEffects() || [];' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined')'
                 operation: 'getAvailableWeatherEffects',')';
-                component: 'EnvironmentalAudioManager'); }
+                component: 'EnvironmentalAudioManager') }
             });
             return [];
         }
@@ -339,12 +339,12 @@ export class EnvironmentalAudioManager {
         }
             return []; }
         }
-        ';
+        ';'
         try { return this.biomeDefinitionManager? .getAvailableTimeVariations() || [];' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined')'
                 operation: 'getAvailableTimeVariations',')';
-                component: 'EnvironmentalAudioManager'); }
+                component: 'EnvironmentalAudioManager') }
             });
             return [];
         }
@@ -393,7 +393,7 @@ export class EnvironmentalAudioManager {
     
     /**
      * アクティブレイヤー情報を取得
-     */'
+     */
     getActiveLayerInfo(): any[] { ''
         if(this.disabled') {'
             '';
@@ -485,12 +485,12 @@ export class EnvironmentalAudioManager {
                 
                 // アクティブな環境音を停止
                 this.transitionController?.stopAllEnvironmental();
-                ';
-                // バッファをクリア''
-                this.soundGenerator?.clearBuffers('');
+                ;
+                // バッファをクリア
+                this.soundGenerator?.clearBuffers();'
             }'
             console.log('EnvironmentalAudioManager disposed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'AUDIO_ERROR', { : undefined')'
                 operation: 'dispose',')';
                 component: 'EnvironmentalAudioManager'),' }'

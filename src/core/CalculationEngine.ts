@@ -16,14 +16,14 @@ interface CacheStats { hits: number,
     heavyCalculations: number,
     optimizedCalculations: number,
     averageCalculationTime: number,
-    totalCalculationTime: number; }
+    totalCalculationTime: number }
 }
 
 interface PerformanceStats { count: number,
     totalTime: number,
     avgTime: number,
     minTime: number,
-    maxTime: number; }
+    maxTime: number }
 }
 
 interface CacheConfig { maxSize: number,
@@ -32,24 +32,24 @@ interface CacheConfig { maxSize: number,
     cleanupInterval: number,
     intelligentCaching: boolean,
     preloadThreshold: number,
-    heavyCalculationThreshold: number; }
+    heavyCalculationThreshold: number }
 }
 
 interface OptimizationConfig { batchProcessing: boolean,
     memoization: boolean,
     parallelProcessing: boolean,
-    adaptiveCaching: boolean; }
+    adaptiveCaching: boolean }
 }
 
 interface BatchRequest { params: any[],
     resolve: (value: any) => void,
     reject: (reason?: any) => void,
-    options: CalculationOptions;
+    options: CalculationOptions
     }
 }
 
 interface BatchQueue { requests: BatchRequest[],
-    timeout: NodeJS.Timeout | null; }
+    timeout: NodeJS.Timeout | null }
 }
 
 interface CalculationOptions { batchable?: boolean;
@@ -126,9 +126,9 @@ export class CalculationEngine {
         
         // 定期的なキャッシュクリーンアップを開始
         this.startCacheCleanup();
-        ';
-        // パフォーマンス最適化タイマー''
-        this.startPerformanceOptimization('')';
+        ;
+        // パフォーマンス最適化タイマー
+        this.startPerformanceOptimization()';
         console.log('CalculationEngine initialized with optimizations'');
     }
     
@@ -139,7 +139,7 @@ export class CalculationEngine {
      */'
     registerCalculator(type: string, calculator: Calculator): void { ''
         if(!type || !calculator') {'
-            ';
+            ';'
         }'
             throw new Error('計算タイプと計算処理クラスは必須です'); }
         }
@@ -182,13 +182,13 @@ export class CalculationEngine {
             }
         }
         
-        // 計算処理クラスを取得'
+        // 計算処理クラスを取得
         const calculator = this.calculators.get(type);''
         if (!calculator') { ' }'
             throw new Error(`計算タイプ '${type')' が登録されていません`'});
         }
         ';
-        // メソッドの存在確認''
+        // メソッドの存在確認
         if (typeof calculator[method] !== 'function'') { ' }'
             throw new Error(`計算メソッド '${method}' が存在しません (type: ${type})`);
         }
@@ -306,8 +306,8 @@ export class CalculationEngine {
         
         const calculator = this.calculators.get(type);
         
-        try {'
-            // バッチメソッドが存在する場合はそれを使用'
+        try {
+            // バッチメソッドが存在する場合はそれを使用
     }'
             if (typeof calculator[`${method')Batch`] === 'function') { }
                 const allParams = batch.requests.map(req => req.params});
@@ -377,9 +377,9 @@ export class CalculationEngine {
         }
         
         const expiry = Date.now() + this.cacheConfig.ttl;
-        this.cache.set(key, { value: result,)
+        this.cache.set(key, { value: result)
             expiry: expiry),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -558,11 +558,11 @@ export class CalculationEngine {
         const now = Date.now();
         this.cache.set(key, { value: result,
             expiry: now + adaptiveTtl,
-            timestamp: now,);
+            timestamp: now);
             calculationTime);
             accessCount: 1,);
             lastAccess: now),
-            priority: this._calculateCachePriority(key, calculationTime); }
+            priority: this._calculateCachePriority(key, calculationTime) }
         });
     }
     
@@ -678,10 +678,10 @@ export class CalculationEngine {
         
             this.performanceStats.set(key, {
                 count: 0,
-                totalTime: 0,);
+                totalTime: 0);
                 avgTime: 0);
                 minTime: Infinity,
-    );
+    )
         }
                 maxTime: 0); }
         }
@@ -719,13 +719,13 @@ export class CalculationEngine {
             
             // 重い計算の最適化
             this._optimizeHeavyCalculations();
-            ';
-            // キャッシュ効率の最適化''
-            this._optimizeCacheEfficiency('');
+            ;
+            // キャッシュ効率の最適化
+            this._optimizeCacheEfficiency();'
     }'
             console.log('Performance optimization completed');' }'
-        } catch (error') { ''
-            console.error('Performance optimization error:', error); }
+        } catch (error) { ''
+            console.error('Performance optimization error:', error) }
         }
     }
     
@@ -759,7 +759,7 @@ export class CalculationEngine {
             .filter(([, stats]) => stats.avgTime > this.cacheConfig.heavyCalculationThreshold);
             .sort((a, b) => b[1].avgTime - a[1].avgTime);
         
-        // 重い計算のキャッシュ期間を延長'
+        // 重い計算のキャッシュ期間を延長
         for(const [methodKey] of heavyCalculations.slice(0, 10) {''
             for (const [cacheKey, cached] of this.cache.entries()') {''
                 if(cacheKey.includes(methodKey.replace('.', ':')) {
@@ -798,7 +798,7 @@ export class CalculationEngine {
      * @param {string} type - 計算タイプ
      * @param {Array} methods - メモ化するメソッド名の配列
      */
-    enableMemoization(type, methods = []) {'
+    enableMemoization(type, methods = []) {
         const calculator = this.calculators.get(type);'
     }'
         if (!calculator') {' }'
@@ -813,7 +813,7 @@ export class CalculationEngine {
             calculator._memoized = {};
         }
         
-        // 指定されたメソッドまたは全メソッドにメモ化を適用'
+        // 指定されたメソッドまたは全メソッドにメモ化を適用
         const targetMethods = methods.length > 0 ? methods : '';
             Object.getOwnPropertyNames(Object.getPrototypeOf(calculator)')'';
                 .filter(name => typeof calculator[name] === 'function' && name !== 'constructor');'
@@ -836,7 +836,7 @@ export class CalculationEngine {
         // パフォーマンス統計のサマリー
         const performanceSummary = Array.from(this.performanceStats.entries();
             .map(([key, stats]) => ({
-                method: key);
+                method: key)
     }
                 count: stats.count, }
                 avgTime: `${stats.avgTime.toFixed(2})}ms`,
@@ -879,7 +879,7 @@ export class CalculationEngine {
         this.clearCache();
         this.calculators.clear();'
         this.performanceStats.clear();''
-        this.frequentCalculations.clear('')';
+        this.frequentCalculations.clear()';
         console.log('CalculationEngine destroyed');
     }
 }
@@ -890,7 +890,7 @@ let calculationEngineInstance = null;
 /**
  * CalculationEngineのシングルトンインスタンスを取得
  * @returns {CalculationEngine} CalculationEngineインスタンス
- */'
+ */
 export function getCalculationEngine() { if (!calculationEngineInstance) {''
         calculationEngineInstance = new CalculationEngine('' })'
         import('./ScoreCalculator.js').then(({ getScoreCalculator }') => {  ' }'
@@ -911,6 +911,6 @@ export function getCalculationEngine() { if (!calculationEngineInstance) {''
             console.warn('EffectsCalculator registration failed:', error);' }'
         }');
     }
-    ';
+    ';'
     return calculationEngineInstance;''
 }

@@ -40,9 +40,9 @@ interface MockContext { drawImage: jest.Mock,
 interface MockCanvas { width: number,
     height: number,
     getContext: jest.Mock<MockContext>,
-    remove: jest.Mock; }
+    remove: jest.Mock }
 }
-interface MockGameEngine { canvas: MockCanvas;
+interface MockGameEngine { canvas: MockCanvas
     }
 }
 interface ScoreData { score: number,
@@ -55,13 +55,13 @@ interface AchievementData { name: string,
     rarity?: string; }
 }
 interface CustomElement { type: string,
-    text?: string; }
+    text?: string }
     position: { x: number; y: number }
     style?: { fontSize?: number;
         textColor?: string; }
     };
 }
-interface OverlayData { elements: CustomElement[];
+interface OverlayData { elements: CustomElement[]
     }
 }
 interface OverlayOptions { score?: {
@@ -73,7 +73,7 @@ interface OverlayOptions { score?: {
 interface OverlayStats { overlaysCreated: number,
     errors: number,
     successRate: number,
-    averageTimeMs: number; }
+    averageTimeMs: number }
 }
 interface ResponsiveConfig { score: {
         fontSize: number }
@@ -81,14 +81,14 @@ interface ResponsiveConfig { score: {
     logo: { fontSize: number }
     },
     layout: { scorePosition: string,
-        logoPosition?: string; }
+        logoPosition?: string }
     };
 }
 interface PresetConfig { logo?: {
         enabled: boolean,
-        textColor?: string; }
+        textColor?: string }
     };
-    watermark?: { enabled: boolean; }
+    watermark?: { enabled: boolean }
     };
     score?: { borderWidth?: number;
         backgroundColor?: string;
@@ -100,7 +100,7 @@ interface ScreenshotOverlay { gameEngine: MockGameEngine,
     stats: any,
     cache: {
         fonts: Map<string, any>;
-        images: Map<string, any>; }
+        images: Map<string, any> }
     };
     
     createScoreOverlay: (canvas: MockCanvas, scoreData: ScoreData | null, options?: OverlayOptions) => Promise<any>;
@@ -111,7 +111,7 @@ interface ScreenshotOverlay { gameEngine: MockGameEngine,
     formatNumber: (num: number) => string,
     getResponsiveConfig: (width: number, height: number) => ResponsiveConfig;
     getPresetConfig: (preset: string) => PresetConfig,
-    updateConfig: (newConfig: any) => void,';
+    updateConfig: (newConfig: any) => void,
     clearCache: () => void;''
     getStats: (') => OverlayStats,';
 }''
@@ -139,7 +139,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             restore: jest.fn(),
             setTransform: jest.fn(),
             translate: jest.fn(),
-            rotate: jest.fn(),';
+            rotate: jest.fn(),
             scale: jest.fn(),'';
             clip: jest.fn(''';
             font: '16px Arial','';
@@ -161,10 +161,10 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         mockCanvas = { width: 800)
             height: 600,);
             getContext: jest.fn<MockContext>().mockReturnValue(mockContext),
-        remove: jest.fn(); }
+        remove: jest.fn() }
         };
-        ';
-        // document.createElement のモック''
+        ;
+        // document.createElement のモック
         document.createElement = jest.fn().mockImplementation((tagName: string') => {  ' }'
             if (tagName === 'canvas') { }
                 return { ...mockCanvas };
@@ -173,7 +173,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         }');
         // GameEngineのモック
         mockGameEngine = { canvas: mockCanvas }
-        },'
+        },
         '';
         const { ScreenshotOverlay } = await import('../core/ScreenshotOverlay.ts');
         screenshotOverlay = new ScreenshotOverlay(mockGameEngine);
@@ -232,9 +232,9 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         test('ロゴとウォーターマークが描画される', async () => {  }
             const scoreData: ScoreData = { score: 1200 }
             await screenshotOverlay.createScoreOverlay(mockCanvas, scoreData);'
-            // ロゴテキストの描画確認''
+            // ロゴテキストの描画確認
             expect(mockContext.fillText').toHaveBeenCalledWith('BubblePop', expect.any(Number), expect.any(Number);'
-            // ウォーターマークテキストの描画確認''
+            // ウォーターマークテキストの描画確認
             expect(mockContext.fillText').toHaveBeenCalledWith('play.bubblepop.game', expect.any(Number), expect.any(Number);''
         }');''
         test('統計が正しく更新される', async () => {  }
@@ -265,7 +265,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             
             const result = await screenshotOverlay.createAchievementOverlay(mockCanvas, achievementData);
             expect(result).toBeDefined();
-            // fillTextが複数回呼ばれることで折り返しを確認'
+            // fillTextが複数回呼ばれることで折り返しを確認
             expect(mockContext.fillText.mock.calls.length).toBeGreaterThan(3);''
         }');''
         test('説明なしの実績でも動作する', async (') => { ' }'
@@ -309,7 +309,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             const overlayData: OverlayData = { elements: [] }
             const result = await screenshotOverlay.createCustomOverlay(mockCanvas, overlayData);
             expect(result).toBeDefined();
-            // ロゴとウォーターマークは描画される'
+            // ロゴとウォーターマークは描画される
             expect(mockContext.fillText).toHaveBeenCalled();''
         }');'
     }''
@@ -321,12 +321,12 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         }');''
         test('bottom-right位置が正しく計算される', (') => {  ''
             const position = screenshotOverlay.calculatePosition('bottom-right', 100, 50, 800, 600, 20);
-            expect(position.x).toBe(680); // 800 - 100 - 20 }'
+            expect(position.x).toBe(680); // 800 - 100 - 20 }
             expect(position.y).toBe(530); // 600 - 50 - 20' }'
         }');''
         test('center位置が正しく計算される', (') => {  ''
             const position = screenshotOverlay.calculatePosition('center', 100, 50, 800, 600, 0);
-            expect(position.x).toBe(350); // (800 - 100) / 2 }'
+            expect(position.x).toBe(350); // (800 - 100) / 2 }
             expect(position.y).toBe(275); // (600 - 50) / 2' }'
         }');''
         test('カスタム座標が正しく適用される', () => {  }
@@ -367,16 +367,16 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
         test('モバイルサイズでフォントが調整される', () => {
             const responsiveConfig = screenshotOverlay.getResponsiveConfig(400, 300); // モバイルサイズ
             
-            expect(responsiveConfig.score.fontSize).toBeLessThan(screenshotOverlay.config.score.fontSize); }'
+            expect(responsiveConfig.score.fontSize).toBeLessThan(screenshotOverlay.config.score.fontSize); }
             expect(responsiveConfig.logo.fontSize).toBeLessThan(screenshotOverlay.config.logo.fontSize);' }'
         }');''
-        test('ポートレートモードで位置が調整される', () => {  const responsiveConfig = screenshotOverlay.getResponsiveConfig(400, 800); // ポートレート'
+        test('ポートレートモードで位置が調整される', () => {  const responsiveConfig = screenshotOverlay.getResponsiveConfig(400, 800); // ポートレート
             '';
             expect(responsiveConfig.layout.scorePosition').toBe('top-center');' }'
             expect(responsiveConfig.layout.logoPosition').toBe('bottom-center');' }'
         }');''
         test('ランドスケープモードでデフォルト設定が維持される', () => {  const responsiveConfig = screenshotOverlay.getResponsiveConfig(800, 400); // ランドスケープ
-             }'
+             }
             expect(responsiveConfig.layout.scorePosition).toBe(screenshotOverlay.config.layout.scorePosition);' }'
         }');'
     }''
@@ -412,7 +412,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             screenshotOverlay.updateConfig(newConfig);'
             expect(screenshotOverlay.config.score.fontSize).toBe(30);''
             expect(screenshotOverlay.config.logo.textColor').toBe('#123456');
-            // 他の設定は保持される'
+            // 他の設定は保持される
             expect(screenshotOverlay.config.score.enabled).toBe(true);''
         }');''
         test('深いマージが正しく動作する', () => { const newConfig = { }
@@ -421,7 +421,7 @@ describe('ScreenshotOverlay', () => {  let screenshotOverlay: ScreenshotOverlay,
             
             screenshotOverlay.updateConfig(newConfig);
             expect(screenshotOverlay.config.layout.padding).toBe(30);'
-            // 他のlayout設定は保持される''
+            // 他のlayout設定は保持される
             expect(screenshotOverlay.config.layout.scorePosition').toBe('top-right');''
         }');'
     }''

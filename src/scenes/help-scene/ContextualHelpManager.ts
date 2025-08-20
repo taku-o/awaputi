@@ -12,13 +12,13 @@ import { getLoggingSystem, LoggingSystem } from '../../core/LoggingSystem';''
 import { GameEngine } from '../../core/GameEngine';''
 import { SceneManager } from '../../core/SceneManager';
 
-// ヘルプトリガー関連のインターフェース'
+// ヘルプトリガー関連のインターフェース
 interface HelpTriggerCondition { ''
     (context: HelpContext'): boolean, }
 }
 
 interface HelpAction { label: string,
-    action: string; }
+    action: string }
 }
 
 interface HelpContent { title: string,
@@ -26,13 +26,13 @@ interface HelpContent { title: string,
     detailed: string,
     category: string,
     relatedTopics: string[],
-    actions: HelpAction[];
+    actions: HelpAction[]
     }
 }
-';
+';'
 interface HelpTrigger { condition: HelpTriggerCondition,''
     priority: 'high' | 'medium' | 'low',
-    helpContent: HelpContent;
+    helpContent: HelpContent
     }
 }
 
@@ -48,14 +48,14 @@ interface HelpContext { error?: {
     [key: string]: any,
 }
 
-// ツールチップインターフェース'
+// ツールチップインターフェース
 interface Tooltip { content: string,''
     position: 'top' | 'bottom' | 'left' | 'right','';
-    trigger: 'hover' | 'click'; }
+    trigger: 'hover' | 'click' }
 }
 
 // インタラクティブガイドインターフェース
-interface GuideStep { target: string,'
+interface GuideStep { target: string,
     content: string,'';
     position: 'top' | 'bottom' | 'left' | 'right','';
     action?: (') => void; }
@@ -63,22 +63,22 @@ interface GuideStep { target: string,'
 
 interface InteractiveGuide { name: string,
     trigger: string,
-    steps: GuideStep[];
+    steps: GuideStep[]
     }
 }
 
 // ヘルプ履歴インターフェース
-interface HelpHistoryEntry { timestamp: number,'
+interface HelpHistoryEntry { timestamp: number,
     key: string,'';
     priority: 'high' | 'medium' | 'low',
-    context: HelpContext;
+    context: HelpContext
     }
 }
 
-// ヘルプ使用情報インターフェース'
+// ヘルプ使用情報インターフェース
 interface HelpUsageData { key: string,''
     priority: 'high' | 'medium' | 'low',
-    content: HelpContent;
+    content: HelpContent
     }
 }
 
@@ -86,15 +86,15 @@ interface HelpUsageData { key: string,''
 interface ErrorDetails { error: any,
     timestamp: number,
     userAgent: string,
-    url: string; }
+    url: string }
 }
 
-// 品質設定提案インターフェース'
+// 品質設定提案インターフェース
 interface QualitySuggestions { ''
     effectQuality: 'low' | 'medium' | 'high','';
     bubbleCount: 'reduced' | 'normal' | 'increased','';
     animation: 'minimal' | 'normal' | 'full',
-    reason: string; }
+    reason: string }
 }
 
 // デバッグ情報インターフェース
@@ -102,7 +102,7 @@ interface DebugInfo { triggers: string[],
     tooltips: string[],
     guides: string[],
     currentContext: HelpContext,
-    helpHistory: HelpHistoryEntry[];
+    helpHistory: HelpHistoryEntry[]
     }
 }
 
@@ -156,11 +156,11 @@ export class ContextualHelpManager {
      * 初期化処理
      */
     private initialize(): void { try {
-            this.setupHelpTriggers();'
+            this.setupHelpTriggers();
             this.setupTooltips();''
-            this.setupInteractiveGuides('')';
+            this.setupInteractiveGuides()';
             this.loggingSystem.info('ContextualHelpManager', 'Contextual help manager initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Initialization error', error); }
         }
     }
@@ -168,7 +168,7 @@ export class ContextualHelpManager {
     /**
      * ヘルプトリガーの設定'
      */''
-    private setupHelpTriggers('')';
+    private setupHelpTriggers()';
         this.helpTriggers.set('error-null-reference', { );''
             condition: (context: HelpContext') => context.error? .type === 'null_reference', : undefined'';
             priority: 'high',';
@@ -186,7 +186,7 @@ export class ContextualHelpManager {
             }''
         }');
         ';
-        // パフォーマンス関連トリガー''
+        // パフォーマンス関連トリガー
         this.helpTriggers.set('performance-low-fps', { );''
             condition: (context: HelpContext') => context.fps !== undefined && context.fps < 30,'';
             priority: 'medium',';
@@ -204,7 +204,7 @@ export class ContextualHelpManager {
             }')'
         }');
         ';
-        // ゲーム固有トリガー''
+        // ゲーム固有トリガー
         this.helpTriggers.set('gameplay-first-time', { );''
             condition: (context: HelpContext') => context.isFirstTime === true,'';
             priority: 'low',';
@@ -222,7 +222,7 @@ export class ContextualHelpManager {
             }')'
         }');
         ';
-        // ナビゲーション関連トリガー''
+        // ナビゲーション関連トリガー
         this.helpTriggers.set('navigation-help-from-scene', { );''
             condition: (context: HelpContext') => context.accessMethod && context.accessMethod.includes('keyboard''),'';
             priority: 'low',';
@@ -263,7 +263,7 @@ export class ContextualHelpManager {
         this.tooltips.set('help-contextual-indicator', {''
             content: 'この内容は現在の状況に応じて表示されています。',')';
             position: 'top',')';
-            trigger: 'hover'); }
+            trigger: 'hover') }
     }
     
     /**
@@ -285,12 +285,12 @@ export class ContextualHelpManager {
                     target: '.help-back-button','';
                     content: 'ESCキーまたはこのボタンで前の画面に戻れます。',')';
                     position: 'bottom',);
-                    action: () => this.highlightBackButton(); }]
+                    action: () => this.highlightBackButton() }]
                 }]'
             ]'';
         }');
         ';
-        // コンテキストヘルプガイド''
+        // コンテキストヘルプガイド
         this.interactiveGuides.set('contextual-help-intro', { ''
             name: 'コンテキストヘルプの紹介',')';
             trigger: 'contextual_help_first')';
@@ -302,7 +302,7 @@ export class ContextualHelpManager {
                     target: '.help-actions','';
                     content: 'これらのアクションで直接問題を解決できます。',')';
                     position: 'bottom',);
-                    action: () => this.highlightActions(); }]
+                    action: () => this.highlightActions() }]
                 }]
             ];
         });
@@ -339,9 +339,9 @@ export class ContextualHelpManager {
             }
                 return selectedHelp.content; }
             }
-            ';
+            ';'
             return null;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Context analysis error', error);
             return null; }
         }
@@ -350,7 +350,7 @@ export class ContextualHelpManager {
     /**
      * ヘルプアクションの実行'
      */''
-    public executeHelpAction(action: string, context: HelpContext = {}'): void { try {''
+    public executeHelpAction(action: string, context: HelpContext = {}'): void { try {'
             this.loggingSystem.info('ContextualHelpManager', `Executing help action: ${action)`),'
             '';
             switch(action') {'
@@ -370,7 +370,7 @@ export class ContextualHelpManager {
                 case 'lowerEffectQuality':'';
                     this.suggestQualitySettings(''';
                 case 'openSettings':'';
-                    this.navigateToSettings('')';
+                    this.navigateToSettings()';
                 case 'startTutorial':')';
                     this.startInteractiveGuide('first-time-help'');'
                     break;''
@@ -384,9 +384,9 @@ export class ContextualHelpManager {
                     this.showKeyboardShortcuts(''';
                 case 'openAccessibilitySettings':';
             })'
-                    this.navigateToAccessibilitySettings('') }'
+                    this.navigateToAccessibilitySettings() }'
                     this.loggingSystem.warn('ContextualHelpManager', `Unknown action: ${action)`});''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             this.loggingSystem.error('ContextualHelpManager', `Action execution error: ${action}`, error);
         }
     }
@@ -495,41 +495,41 @@ if (object && object.property) {
             this.loggingSystem.info('ContextualHelpManager', 'Showing error details', context);
             
             // エラー詳細を表示するダイアログやパネルの実装
-            const errorDetails: ErrorDetails = {'
+            const errorDetails: ErrorDetails = {
                 error: context.error || this.currentContext.error,'';
-                timestamp: Date.now('')';
+                timestamp: Date.now()';
             console.log('Error Details:', errorDetails');
             ';
-            // エラー詳細をHelpContentManagerに送信してカテゴリ表示''
+            // エラー詳細をHelpContentManagerに送信してカテゴリ表示
             this.navigateToCategory('troubleshooting');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to show error details', error); }
         }
     }'
     '';
-    private showStackTrace(context: HelpContext'): void { try {''
+    private showStackTrace(context: HelpContext'): void { try {'
             this.loggingSystem.info('ContextualHelpManager', 'Showing stack trace', context');
             ';
-            // スタックトレース情報の取得''
+            // スタックトレース情報の取得
             const stackTrace = context.error? .stack || this.currentContext.error?.stack || 'Stack trace not available';
             ';
-            // スタックトレースを表示''
+            // スタックトレースを表示
             console.group('Stack Trace');'
             console.log(stackTrace);''
-            console.groupEnd('')';
+            console.groupEnd()';
             this.navigateToCategory('troubleshooting');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to show stack trace', error); }
         }
     }'
      : undefined'';
-    private navigateToCategory(category: string'): boolean { try {''
+    private navigateToCategory(category: string'): boolean { try {'
             this.loggingSystem.info('ContextualHelpManager', `Navigating to category: ${category)`),
             
             // HelpScene内のHelpContentManagerにアクセス
-            if(this.gameEngine && this.gameEngine.sceneManager) {'
+            if(this.gameEngine && this.gameEngine.sceneManager) {
                 '';
-                const currentScene = this.gameEngine.sceneManager.getCurrentScene('');
+                const currentScene = this.gameEngine.sceneManager.getCurrentScene();
             }'
                 if (currentScene && 'helpContentManager' in currentScene) {' }'
                     (currentScene as any).helpContentManager.setCategory(category'});
@@ -539,21 +539,21 @@ if (object && object.property) {
             '';
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access HelpContentManager for category navigation');'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to category', error);
             return false; }
         }
     }'
     '';
-    private navigateToTopic(topic: string'): boolean { try {''
+    private navigateToTopic(topic: string'): boolean { try {'
             this.loggingSystem.info('ContextualHelpManager', `Navigating to topic: ${topic)`),
             
             // HelpScene内のHelpContentManagerにアクセス
-            if(this.gameEngine && this.gameEngine.sceneManager) {'
-                ';
+            if(this.gameEngine && this.gameEngine.sceneManager) {
+                '
             }'
-                const currentScene = this.gameEngine.sceneManager.getCurrentScene('') }'
-                if (currentScene && 'helpContentManager' in currentScene'}) { // トピックによってカテゴリを推測 }'
+                const currentScene = this.gameEngine.sceneManager.getCurrentScene() }'
+                if (currentScene && 'helpContentManager' in currentScene'}) { // トピックによってカテゴリを推測 }
                     const topicCategoryMap: { [key: string]: string } = { ''
                         'controls': 'gameplay','';
                         'scoring': 'gameplay', '';
@@ -570,59 +570,59 @@ if (object && object.property) {
             '';
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access HelpContentManager for topic navigation');'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to topic', error);
             return false; }
         }
     }'
     '';
-    private navigateToSettings('')';
+    private navigateToSettings()';
             this.loggingSystem.info('ContextualHelpManager', 'Navigating to settings');
             ';
-            // SceneManagerを使用して設定画面に移動''
+            // SceneManagerを使用して設定画面に移動
             if(this.gameEngine && this.gameEngine.sceneManager') {'
                 '';
                 return this.gameEngine.sceneManager.switchScene('settings', {''
                     accessMethod: 'contextual_help',')';
-                    sourceScene: 'help',');
+                    sourceScene: 'help',')
             }'
                     preserveContext: true)'); }
             }'
             '';
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access SceneManager for settings navigation');'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to settings', error);
             return false; }
         }
     }'
     '';
-    private navigateToAccessibilitySettings('')';
+    private navigateToAccessibilitySettings()';
             this.loggingSystem.info('ContextualHelpManager', 'Navigating to accessibility settings');
             ';
-            // 設定画面のアクセシビリティセクションに移動''
+            // 設定画面のアクセシビリティセクションに移動
             if(this.gameEngine && this.gameEngine.sceneManager') {'
                 '';
                 return this.gameEngine.sceneManager.switchScene('settings', {''
                     accessMethod: 'contextual_help_accessibility','';
                     sourceScene: 'help',')';
-                    initialSection: 'accessibility',');
+                    initialSection: 'accessibility',')
             }'
                     preserveContext: true)'); }
             }'
             '';
             this.loggingSystem.warn('ContextualHelpManager', 'Could not access SceneManager for accessibility settings navigation');'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to navigate to accessibility settings', error);
             return false; }
         }
     }'
     '';
-    private suggestQualitySettings('')';
+    private suggestQualitySettings()';
             this.loggingSystem.info('ContextualHelpManager', 'Suggesting quality settings'');
             
-            // パフォーマンス改善のための設定提案'
+            // パフォーマンス改善のための設定提案
             const suggestions: QualitySuggestions = { ''
                 effectQuality: 'low','';
                 bubbleCount: 'reduced','';
@@ -630,33 +630,33 @@ if (object && object.property) {
                 reason: 'Performance optimization for better frame rate' }
             },
             ';
-            // 提案をログに記録''
+            // 提案をログに記録
             this.loggingSystem.info('ContextualHelpManager', 'Quality settings suggestions', suggestions);
             
             // 設定画面に移動して品質設定を表示
             this.navigateToSettings();
-            ';
+            ';'
             return suggestions;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to suggest quality settings', error);
             return null; }
         }
     }'
     '';
-    private showKeyboardShortcuts('')';
+    private showKeyboardShortcuts()';
             this.loggingSystem.info('ContextualHelpManager', 'Showing keyboard shortcuts'');
             ';
-            // キーボードショートカット情報をHelpContentManagerで表示''
+            // キーボードショートカット情報をHelpContentManagerで表示
             return this.navigateToTopic('shortcuts');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to show keyboard shortcuts', error);
             return false; }
         }
     }'
     '';
-    public startInteractiveGuide(guideId: string'): boolean { try {''
+    public startInteractiveGuide(guideId: string'): boolean { try {'
             this.loggingSystem.info('ContextualHelpManager', `Starting interactive guide: ${guideId)`),
-            ';
+            ';'
             const guide = this.interactiveGuides.get(guideId);''
             if (!guide') {' }'
                 this.loggingSystem.warn('ContextualHelpManager', `Interactive guide not found: ${guideId)`});
@@ -669,55 +669,55 @@ if (object && object.property) {
             // ガイドの最初のステップを開始
             if (guide.steps && guide.steps.length > 0) { this.executeGuideStep(guide.steps[0]); }
             }
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to start interactive guide', error);
             return false; }
         }
     }
     ';
-    // ガイドステップ実行''
-    private executeGuideStep(step: GuideStep'): boolean { try {''
+    // ガイドステップ実行
+    private executeGuideStep(step: GuideStep'): boolean { try {'
             this.loggingSystem.debug('ContextualHelpManager', 'Executing guide step', step');
             ';
-            // ステップのアクションを実行''
+            // ステップのアクションを実行
             if(step.action && typeof step.action === 'function') {
                 
             }
                 step.action(); }
             }
             
-            // ビジュアル表示はスタブとして残す（実際のUI実装が必要）'
+            // ビジュアル表示はスタブとして残す（実際のUI実装が必要）
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('ContextualHelpManager', 'Failed to execute guide step', error);
             return false; }
         }
     }
     ';
-    // ユーティリティメソッド群''
-    private highlightCategories('')';
+    // ユーティリティメソッド群
+    private highlightCategories()';
         this.loggingSystem.debug('ContextualHelpManager', 'Highlighting categories');
         // UI highlighting implementation needed
-    }'
+    }
     '';
-    private focusSearchInput('')';
+    private focusSearchInput()';
         this.loggingSystem.debug('ContextualHelpManager', 'Focusing search input');
         // Search input focus implementation needed
-    }'
+    }
     '';
-    private highlightBackButton('')';
+    private highlightBackButton()';
         this.loggingSystem.debug('ContextualHelpManager', 'Highlighting back button');
         // Back button highlighting implementation needed
-    }'
+    }
     '';
-    private highlightContextualContent('')';
+    private highlightContextualContent()';
         this.loggingSystem.debug('ContextualHelpManager', 'Highlighting contextual content');
         // Contextual content highlighting implementation needed
-    }'
+    }
     '';
-    private highlightActions('')';
+    private highlightActions()';
         this.loggingSystem.debug('ContextualHelpManager', 'Highlighting actions');
         // Action buttons highlighting implementation needed
     }
@@ -754,9 +754,9 @@ if (object && object.property) {
     public cleanup(): void { this.helpTriggers.clear();
         this.activeHelp.clear();
         this.helpHistory = [];
-        this.tooltips.clear();'
+        this.tooltips.clear();
         this.activeTooltips.clear();''
-        this.interactiveGuides.clear('')';
+        this.interactiveGuides.clear()';
         this.loggingSystem.info('ContextualHelpManager', 'Contextual help manager cleaned up''); }'
     }''
 }

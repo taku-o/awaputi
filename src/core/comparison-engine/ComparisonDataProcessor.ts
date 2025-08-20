@@ -13,30 +13,30 @@ export interface DataProcessorConfig { outlierThreshold: number,
     minimumSampleSize: number,
     maximumSampleSize: number,
     defaultSamplingRate: number,
-    maxProcessingTime: number; }
+    maxProcessingTime: number }
 }
 
 export interface QualityMetrics { completeness: number,
     consistency: number,
     accuracy: number,
-    validity: number; }
+    validity: number }
 }
 
 export interface ProcessedComparisonData { timestamp: string,
     original?: ComparisonInputData;
     processed: NormalizedComparisonData,
     metadata: ProcessingMetadata,
-    error?: string; }
+    error?: string }
 }
 
 export interface ComparisonInputData { dataset1: number[],
     dataset2: number[],
-    metadata?: Record<string, any>; }
+    metadata?: Record<string, any> }
 }
 
 export interface NormalizedComparisonData { dataset1: number[],
     dataset2: number[],
-    metadata: NormalizationMetadata;
+    metadata: NormalizationMetadata
     }
 }
 
@@ -50,34 +50,34 @@ export interface NormalizationMetadata { normalizationType: NormalizationType,
 export interface ProcessingMetadata { processingTime: number,
     qualityScore: number,
     warnings: string[],
-    errors: string[]; }
+    errors: string[] }
 }
 
 export interface ValidationResult { valid: boolean,
     errors: string[],
     warnings: string[],
-    quality?: number; }
+    quality?: number }
 }
 
 export interface DatasetValidationResult { errors: string[],
-    warnings: string[]; }
+    warnings: string[] }
 }
 
 export interface OutlierRemovalMetadata { threshold: number,
     timestamp: string,
     dataset1: OutlierStats,
-    dataset2: OutlierStats;
+    dataset2: OutlierStats
     }
 }
 
 export interface OutlierStats { original: number,
     cleaned: number,
-    removed: number; }
+    removed: number }
 }
 
 export interface SamplingMetadata { method: SamplingMethod,
     rate: number,
-    timestamp: string; }
+    timestamp: string }
 }
 
 export interface ProcessingOptions { removeOutliers?: boolean;
@@ -97,7 +97,7 @@ export interface StatisticalSummary { mean: number,
     median: number,
     stddev: number,
     range: number,
-    count: number; }
+    count: number }
 }
 
 export interface DataQualityReport { overallQuality: number,
@@ -106,12 +106,12 @@ export interface DataQualityReport { overallQuality: number,
     completenessScore: number,
     varianceScore: number,
     sizeScore: number,
-    balanceScore: number; }
+    balanceScore: number }
 }
 
 export interface NormalizationResult { data: number[],
     method: NormalizationType,
-    parameters: NormalizationParameters;
+    parameters: NormalizationParameters
     }
 }
 
@@ -127,12 +127,12 @@ export interface SamplingResult { originalSize: number,
     sampledSize: number,
     method: SamplingMethod,
     rate: number,
-    data: number[]; }
+    data: number[] }
 }
 
 export interface QuantileResult { value: number,
     quantile: number,
-    position: number; }
+    position: number }
 }
 
 // 列挙型
@@ -153,7 +153,7 @@ export const DEFAULT_QUALITY_METRICS: QualityMetrics = { completeness: 0,
     consistency: 0,
     accuracy: 0,
     validity: 0 }
-},'
+},
 '';
 export const NORMALIZATION_TYPES: NormalizationType[] = ['none', 'z-score', 'min-max', 'robust'];''
 export const SAMPLING_METHODS: SamplingMethod[] = ['random', 'systematic', 'stratified'];''
@@ -171,7 +171,7 @@ export const VALIDATION_THRESHOLDS = { minValidRatio: 0.5,
     minBalanceRatio: 0.5 }
 } as const,
 ';
-// ユーティリティ関数''
+// ユーティリティ関数
 export function isValidNumber(value: any'): value is number { ''
     return typeof value === 'number' && !isNaN(value) && isFinite(value); }
 }
@@ -236,7 +236,7 @@ export function calculateQuantileFromSorted(sortedData: number[], quantile: numb
     const weight = index - lower;
     return sortedData[lower] * (1 - weight) + sortedData[upper] * weight;
 }
-';
+';'
 export function interpretQualityScore(score: number): string { ''
     if (score >= QUALITY_THRESHOLDS.excellent') return 'excellent';''
     if (score >= QUALITY_THRESHOLDS.good') return 'good';''
@@ -244,9 +244,9 @@ export function interpretQualityScore(score: number): string { ''
     if (score >= QUALITY_THRESHOLDS.poor') return 'poor';''
     return 'very_poor'; }
 }
-';
+';'
 export function createProcessingError(message: string, processingTime: number = 0): ProcessedComparisonData { return { ''
-        timestamp: new Date().toISOString('')';
+        timestamp: new Date().toISOString()';
                 normalizationType: 'none',) };
                 timestamp: new Date().toISOString(); }
             }
@@ -274,11 +274,11 @@ export class ComparisonDataProcessor {
     preprocessComparisonData(rawData: any, options: ProcessingOptions = { ): ProcessedComparisonData {
         const startTime = Date.now();
         
-        try {'
+        try {
             const processedData: ProcessedComparisonData = {''
-                timestamp: new Date().toISOString('')';
+                timestamp: new Date().toISOString()';
                         normalizationType: 'none',);
-                        timestamp: new Date().toISOString(); }
+                        timestamp: new Date().toISOString() }
                     }
                 },
                 metadata: { processingTime: 0,
@@ -314,9 +314,9 @@ export class ComparisonDataProcessor {
             // 警告生成
             processedData.metadata.warnings = this.generateDataWarnings(processedData.processed);
             
-            return processedData;'
+            return processedData;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown processing error','';
             console.error('Error in preprocessComparisonData:', error);
             return createProcessingError(errorMessage, Date.now() - startTime); }
@@ -329,15 +329,15 @@ export class ComparisonDataProcessor {
     validateComparisonData(data: any'): ValidationResult { const errors: string[] = [],
         const warnings: string[] = [],
         ';
-        // 基本構造チェック''
+        // 基本構造チェック
         if(!data || typeof data !== 'object'') {'
-            ';
+            ';'
         }'
             errors.push('Data must be an object''); }
             return { valid: false, errors, warnings };
         }
         ';
-        // データセットの存在チェック''
+        // データセットの存在チェック
         const requiredFields = ['dataset1', 'dataset2'];
         for (const field of requiredFields) { if (!data[field]) { }
                 errors.push(`Missing required field: ${field)`});
@@ -350,7 +350,7 @@ export class ComparisonDataProcessor {
             return { valid: false, errors, warnings };
         }
         ';
-        // データセット詳細検証''
+        // データセット詳細検証
         const dataset1Validation = this.validateDataset(data.dataset1, 'dataset1'');''
         const dataset2Validation = this.validateDataset(data.dataset2, 'dataset2');
         
@@ -445,12 +445,12 @@ export class ComparisonDataProcessor {
      * データを正規化
      */
     normalizeData(data: ComparisonInputData, options: ProcessingOptions = { ): NormalizedComparisonData {
-        const normalized: NormalizedComparisonData = {'
+        const normalized: NormalizedComparisonData = {
             dataset1: this.normalizeDataset(data.dataset1, options),'';
             dataset2: this.normalizeDataset(data.dataset2, options'),';
             metadata: {''
                 normalizationType: options.normalizationType || 'none',
-                timestamp: new Date().toISOString(); }
+                timestamp: new Date().toISOString() }
             }
         };
         
@@ -473,7 +473,7 @@ export class ComparisonDataProcessor {
         }
             return []; }
         }
-        ';
+        ';'
         const validNumbers = filterValidNumbers(dataset);''
         if (validNumbers.length === 0') { return []; }
         }'
@@ -590,7 +590,7 @@ export class ComparisonDataProcessor {
     }
 
     /**
-     * データをサンプリング'
+     * データをサンプリング
      */''
     sampleData(data: NormalizedComparisonData, samplingOptions: SamplingOptions = { )'): NormalizedComparisonData {''
         const method = samplingOptions.method || 'random';
@@ -670,7 +670,7 @@ export class ComparisonDataProcessor {
         const tercileSize = Math.floor(sorted.length / 3);
         
         const strata = [sorted.slice(0, tercileSize),
-            sorted.slice(tercileSize, tercileSize * 2),];
+            sorted.slice(tercileSize, tercileSize * 2)];
             sorted.slice(tercileSize * 2)];
         ];
         
@@ -679,7 +679,7 @@ export class ComparisonDataProcessor {
         
         for(const stratum of strata) {
         
-            const stratumSample = this.randomSample(stratum, samplePerStratum);
+            const stratumSample = this.randomSample(stratum, samplePerStratum)
         
         }
             sample.push(...stratumSample); }
@@ -702,9 +702,9 @@ export class ComparisonDataProcessor {
             const dataset1Quality = this.calculateDatasetQuality(data.dataset1);
             const dataset2Quality = this.calculateDatasetQuality(data.dataset2);
             
-            return (dataset1Quality + dataset2Quality) / 2;'
+            return (dataset1Quality + dataset2Quality) / 2;
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Error calculating data quality:', error);
             return 0; }
         }
@@ -769,7 +769,7 @@ export class ComparisonDataProcessor {
         }
         
         // サイズ不均衡警告
-        if(dataset1Size > 0 && dataset2Size > 0) {'
+        if(dataset1Size > 0 && dataset2Size > 0) {
             const ratio = Math.min(dataset1Size, dataset2Size) / Math.max(dataset1Size, dataset2Size);''
             if (ratio < VALIDATION_THRESHOLDS.minBalanceRatio') {'
         }'
@@ -777,10 +777,10 @@ export class ComparisonDataProcessor {
             }
         }
         
-        // 品質警告'
+        // 品質警告
         const qualityScore = this.calculateDataQuality(data);''
         if(qualityScore < QUALITY_THRESHOLDS.acceptable') {'
-            ';
+            ';'
         }'
             warnings.push('Data quality score is below recommended threshold'); }
         }
@@ -913,7 +913,7 @@ export class ComparisonDataProcessor {
      * 正規化結果を生成
      */
     generateNormalizationResult(;
-        data: number[], );
+        data: number[] );
         method: NormalizationType);
         parameters: Partial<NormalizationParameters> = { ): NormalizationResult {
         let normalizedData: number[], }'
@@ -942,12 +942,12 @@ export class ComparisonDataProcessor {
                     min, ;
                     max,
                     ...parameters  }
-                };
+                };'
                 break;'
             }''
             case 'robust': { const sorted = [...data].sort((a, b) => a - b);
                 const median = calculateMedianFromSorted(sorted);
-                const iqr = calculateQuantileFromSorted(sorted, 0.75) - ';
+                const iqr = calculateQuantileFromSorted(sorted, 0.75) - ';'
                           calculateQuantileFromSorted(sorted, 0.25);''
                 normalizedData = this.robustNormalization(data');
                 fullParameters = { 

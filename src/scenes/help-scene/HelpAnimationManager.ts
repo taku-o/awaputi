@@ -7,34 +7,34 @@
 interface AnimationState { isActive: boolean,
     startTime: number,
     duration: number,
-    progress: number; }
+    progress: number }
 }
 
 interface ContentTransitionState extends AnimationState { fromContent: any,
     toContent: any,
-    type: 'slide' | 'fade' | 'scale'; }
+    type: 'slide' | 'fade' | 'scale' }
 }
 
 interface CategoryTransitionState extends AnimationState { fromIndex: number,
-    toIndex: number; }
+    toIndex: number }
 }
 
-interface SearchTransitionState extends AnimationState { isEntering: boolean; }
+interface SearchTransitionState extends AnimationState { isEntering: boolean }
 }
 
 interface FocusTransitionState extends AnimationState { fromIndex: number,
-    toIndex: number; }
+    toIndex: number }
 }
 
 // アニメーション集合インターフェース
 interface AnimationCollection { contentTransition: ContentTransitionState,
     categoryTransition: CategoryTransitionState,
     searchTransition: SearchTransitionState,
-    focusTransition: FocusTransitionState;
+    focusTransition: FocusTransitionState
     }
 }
-';
-// イージング関数タイプ''
+;
+// イージング関数タイプ
 type EasingFunction = (t: number') => number;''
 type EasingType = 'linear' | 'easeOut' | 'easeInOut' | 'bounce';
 
@@ -47,7 +47,7 @@ export class HelpAnimationManager {
     private animations: AnimationCollection;
     // アニメーション設定
     private enableAnimations: boolean;
-    private easingFunctions: Record<EasingType, EasingFunction>;'
+    private easingFunctions: Record<EasingType, EasingFunction>;
 '';
     constructor(''';
                 type: 'slide' // 'slide', 'fade', 'scale' }
@@ -84,7 +84,7 @@ export class HelpAnimationManager {
                 if (t < 1 / d1) { }
                     return n1 * t * t; }
                 } else if (t < 2 / d1) { return n1 * (t -= 1.5 / d1) * t + 0.75; }
-                } else if (t < 2.5 / d1) { return n1 * (t -= 2.25 / d1) * t + 0.9375; }'
+                } else if (t < 2.5 / d1) { return n1 * (t -= 2.25 / d1) * t + 0.9375; }
                 } else {  ' }'
                     return n1 * (t -= 2.625 / d1') * t + 0.984375; }
                 }
@@ -217,7 +217,7 @@ export class HelpAnimationManager {
         if(this.animations.focusTransition.isActive) {
             const animation = this.animations.focusTransition;
             const elapsed = currentTime - animation.startTime;
-            animation.progress = Math.min(1, elapsed / animation.duration);'
+            animation.progress = Math.min(1, elapsed / animation.duration);
 '';
             if (animation.progress >= 1') {
                 animation.isActive = false;
@@ -274,7 +274,7 @@ export class HelpAnimationManager {
             this.stopAllAnimations(); }
         }
     }
-';
+';'
     public setAnimationDuration<K extends keyof AnimationCollection>(animationType: K, duration: number): void { ''
         if(this.animations[animationType]') {
             
@@ -309,9 +309,9 @@ export class HelpAnimationManager {
 
     /**
      * クリーンアップ
-     */'
+     */
     public destroy(): void { ''
-        this.stopAllAnimations('')';
+        this.stopAllAnimations()';
         console.log('HelpAnimationManager destroyed'); }
     }
 }
@@ -323,7 +323,7 @@ export class HelpAnimationManager {
 export class HelpTransitionRenderer {
     private animationManager: HelpAnimationManager;
     constructor(animationManager: HelpAnimationManager) {
-        this.animationManager = animationManager; }
+        this.animationManager = animationManager }
     }
 
     /**
@@ -471,8 +471,8 @@ export class HelpTransitionRenderer {
      */
     public renderCategoryTransition(;
         ctx: CanvasRenderingContext2D,
-        categories: any[], );
-        layout: any)';
+        categories: any[] );
+        layout: any);
         selectedCategory: string'';
     '): boolean { ''
         const transition = this.animationManager.getAnimationState('categoryTransition');''
@@ -519,7 +519,7 @@ export class HelpTransitionRenderer {
     }
 
     /**
-     * 検索遷移の描画効果'
+     * 検索遷移の描画効果
      */''
     public renderSearchTransition(ctx: CanvasRenderingContext2D, layout: any, isSearching: boolean'): boolean { ''
         const transition = this.animationManager.getAnimationState('searchTransition');''
@@ -541,14 +541,14 @@ export class HelpTransitionRenderer {
             const centerX = layout.searchBar.x + layout.searchBar.width / 2;
             const centerY = layout.searchBar.y + layout.searchBar.height / 2;
             
-            ctx.translate(centerX, centerY);'
+            ctx.translate(centerX, centerY);
             ctx.scale(scale, scale);'
         
         }'
             ctx.translate(-centerX, -centerY'); }
         }
         ';
-        // グロー効果''
+        // グロー効果
         ctx.shadowColor = '#4A90E2';
         ctx.shadowBlur = 10 * progress;
         
@@ -560,7 +560,7 @@ export class HelpTransitionRenderer {
         ctx: CanvasRenderingContext2D);
         sidebarLayout: { x: number; y: number; width: number; height: number ), '
         categoryIndex: number'';
-    '): void {
+    '): void {'
         const itemY = sidebarLayout.y + categoryIndex * 40,';
         '';
         ctx.fillStyle = 'rgba(74, 144, 226, 0.3')';''

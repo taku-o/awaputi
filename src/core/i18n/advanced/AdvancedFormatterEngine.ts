@@ -10,19 +10,19 @@ export interface ContextualPattern { levels?: string[];
     rules: Record<string, Record<string, string>>, };
 }
 export interface GenerationPattern { condition: (data: any) => boolean,
-    generate: (data: any, lang: string) => string; };
+    generate: (data: any, lang: string) => string };
 }
-export interface GenerationRule { patterns: GenerationPattern[];
+export interface GenerationRule { patterns: GenerationPattern[]
     };
 }
 export interface TranslationMemoryEntry { translation: string,
     original: string,
     timestamp: number,
-    usage: number; };
+    usage: number };
 }
 export interface MemoryConfig { maxEntries: number,
     expirationTime: number,
-    similarityThreshold: number; };
+    similarityThreshold: number };
 }
 export interface FormatOptions { context?: string | null;
     forcePlural?: boolean;
@@ -45,7 +45,7 @@ export interface SearchResult { similarity: number,
     translation: string,
     key: string,
     timestamp: number,
-    usage: number; };
+    usage: number };
 }
 export interface FormatterStats { pluralizations: number,
     contextualTranslations: number,
@@ -57,7 +57,7 @@ export interface FormatterStats { pluralizations: number,
     supportedLanguages: string[],
     contextualPatterns: number,
     generationRules: number,
-    hitRate: string; };
+    hitRate: string };
 }
 /**
  * 高度なフォーマット機能 - 複雑な複数形ルール、文脈依存翻訳、動的翻訳生成
@@ -73,26 +73,26 @@ export class AdvancedFormatterEngine {
         contextualTranslations: number,
         dynamicGenerations: number,
         memoryHits: number,
-        memoryMisses: number; }
-    };'
+        memoryMisses: number }
+    };
 '';
     constructor(''';
             ['ja', { '])'
                 categories: ['other'])';
                 rules: {''
-                    other: (') => true ;
+                    other: (') => true 
 }
                 },
                 examples: { other: [0, 1, 2, 5, 10, 100] };
 }
             }],
             ';
-            // 英語''
+            // 英語
             ['en', { ']'
                 categories: ['one', 'other'],
                 rules: {'
                     one: (n) => n === 1 && n % 1 === 0,'';
-                    other: (n') => true ;
+                    other: (n') => true 
 }
                 },
                 examples: { one: [1],
@@ -100,7 +100,7 @@ export class AdvancedFormatterEngine {
 }
             }],
             ';
-            // アラビア語（6つのカテゴリ）''
+            // アラビア語（6つのカテゴリ）
             ['ar', { ']'
                 categories: ['zero', 'one', 'two', 'few', 'many', 'other'],
                 rules: {
@@ -109,7 +109,7 @@ export class AdvancedFormatterEngine {
                     two: (n) => n === 2,
                     few: (n) => n % 100 >= 3 && n % 100 <= 10,';
                     many: (n) => n % 100 >= 11 && n % 100 <= 99,'';
-                    other: (n') => true ;
+                    other: (n') => true 
 }
                 },
                 examples: { zero: [0],
@@ -121,48 +121,48 @@ export class AdvancedFormatterEngine {
 }
             }],
             ';
-            // 中国語（複数形なし）''
+            // 中国語（複数形なし）
             ['zh', { ']'
                 categories: ['other'],';
                 rules: {''
-                    other: (') => true ;
+                    other: (') => true 
 }
                 },
                 examples: { other: [0, 1, 2, 5, 10, 100] };
 }
             }],
             ';
-            // 韓国語（複数形なし）''
+            // 韓国語（複数形なし）
             ['ko', { ']'
                 categories: ['other'],';
                 rules: {''
-                    other: (') => true ;
+                    other: (') => true 
 }
                 },
                 examples: { other: [0, 1, 2, 5, 10, 100] };
 }
             }],
             ';
-            // ロシア語（複雑な複数形）''
+            // ロシア語（複雑な複数形）
             ['ru', { ']'
                 categories: ['one', 'few', 'many', 'other'],
                 rules: {
                     one: (n) => n % 10 === 1 && n % 100 !== 11,
                     few: (n) => n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20),
                     many: (n) => n % 10 === 0 || (n % 10 >= 5 && n % 10 <= 9) || (n % 100 >= 11 && n % 100 <= 14),
-                    other: () => true ;
+                    other: () => true 
 }
                 },
                 examples: { one: [1, 21, 31, 41, 51, 61],
                     few: [2, 3, 4, 22, 23, 24, 32, 33],
                     many: [0, 5, 6, 7, 8, 9, 10, 11, 12],
-                    other: [] ;
+                    other: [] 
 }
                 }'
             }]''
         ]'),
         
-        // 文脈依存翻訳パターン'
+        // 文脈依存翻訳パターン
         this.contextualPatterns = new Map<string, ContextualPattern>([// 敬語レベル（日本語）']';
             ['ja-politeness', { ']'
                 levels: ['casual', 'polite', 'formal', 'honorific'],';
@@ -177,13 +177,13 @@ export class AdvancedFormatterEngine {
                         casual: 'する','';
                         polite: 'します','';
                         formal: 'いたします','';
-                        honorific: 'なさいます' ;
+                        honorific: 'なさいます' 
 };
 }
                 }
             }],
             ';
-            // 親密度レベル（韓国語）''
+            // 親密度レベル（韓国語）
             ['ko-intimacy', { ']'
                 levels: ['formal', 'polite', 'intimate', 'casual'],';
                 rules: {''
@@ -197,13 +197,13 @@ export class AdvancedFormatterEngine {
                         formal: '어떻게 하십니까','';
                         polite: '어떻게 해요','';
                         intimate: '어떻게 해','';
-                        casual: '어떻게' ;
+                        casual: '어떻게' 
 };
 }
                 }
             }],
             ';
-            // 性別依存（アラビア語）''
+            // 性別依存（アラビア語）
             ['ar-gender', { ']'
                 categories: ['masculine', 'feminine'])';
                 rules: {''
@@ -213,58 +213,58 @@ export class AdvancedFormatterEngine {
                     },''
                     'verb.went': { ''
                         masculine: 'ذهب','';
-                        feminine: 'ذهبت' ;
+                        feminine: 'ذهبت' 
 };
 }
                 }'
             }]''
         ]'),
         
-        // 動的翻訳生成ルール'
-        this.generationRules = new Map<string, GenerationRule>([// 数値表現の生成'';
+        // 動的翻訳生成ルール
+        this.generationRules = new Map<string, GenerationRule>([// 数値表現の生成;
             ['number-expression', { patterns: [
                     {
                         condition: (n: number) => n >= 1000000,
-                        generate: (n: number, lang: string) => this.generateLargeNumberExpression(n, lang); }
+                        generate: (n: number, lang: string) => this.generateLargeNumberExpression(n, lang) }
                     },'
                     { condition: (n: number) => n >= 1000,''
-                        generate: (n: number, lang: string) => this.generateThousandExpression(n, lang'); }]
+                        generate: (n: number, lang: string) => this.generateThousandExpression(n, lang') }]
                     }]
                 ];
             }],
             ';
-            // 時間表現の生成''
+            // 時間表現の生成
             ['time-expression', { patterns: ['
                     {''
                         condition: (time: string') => time.includes('ago'),
-                        generate: (time: string, lang: string) => this.generateRelativeTimeExpression(time, lang); }
+                        generate: (time: string, lang: string) => this.generateRelativeTimeExpression(time, lang) }
                     },'
                     { ''
                         condition: (time: string') => time.includes('in'),'';
-                        generate: (time: string, lang: string) => this.generateFutureTimeExpression(time, lang'); }]
+                        generate: (time: string, lang: string) => this.generateFutureTimeExpression(time, lang') }]
                     }]
                 ];
             }],
             ';
-            // 比較表現の生成''
+            // 比較表現の生成
             ['comparison-expression', { patterns: ['
                     {''
                         condition: (data: any') => data.type === 'comparative',
-                        generate: (data: any, lang: string) => this.generateComparativeExpression(data, lang); }
+                        generate: (data: any, lang: string) => this.generateComparativeExpression(data, lang) }
                     },'
                     { ''
                         condition: (data: any') => data.type === 'superlative',
-                        generate: (data: any, lang: string) => this.generateSuperlativeExpression(data, lang); }]
+                        generate: (data: any, lang: string) => this.generateSuperlativeExpression(data, lang) }]
                     }]
                 ];
             }]
         ]);
         ';
-        // 翻訳メモリ''
+        // 翻訳メモリ
         this.translationMemory = new Map<string, TranslationMemoryEntry>(');
         this.memoryConfig = { maxEntries: 10000,
             expirationTime: 24 * 60 * 60 * 1000, // 24時間;
-            similarityThreshold: 0.8 ;
+            similarityThreshold: 0.8 
 }
         },
         
@@ -273,9 +273,9 @@ export class AdvancedFormatterEngine {
             contextualTranslations: 0,
             dynamicGenerations: 0,
             memoryHits: 0,
-            memoryMisses: 0 ;
+            memoryMisses: 0 
 }
-        },'
+        },
         '';
         console.log('AdvancedFormatterEngine initialized');
     }
@@ -297,8 +297,8 @@ export class AdvancedFormatterEngine {
             }
                 return cached; };
 }
-            ';
-            // 複数形ルールを取得''
+            ;
+            // 複数形ルールを取得
             const pluralRule = customRules || this.pluralRules.get(language') || this.pluralRules.get('en')!;
             
             // 適切なカテゴリを決定
@@ -320,12 +320,12 @@ export class AdvancedFormatterEngine {
             this.statistics.pluralizations++;
             
             return translation;
-             }'
+             }
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'PLURAL_FORMATTING_ERROR', {)
                 key: key);
                 count: count,);
-                language: language); }
+                language: language) }
             });
             return `${key}[${count}]`;
         };
@@ -334,7 +334,7 @@ export class AdvancedFormatterEngine {
      * 文脈依存翻訳'
      */''
     formatContextual(key: string, context: string, language: string, options: FormatOptions = { )'): string {
-        try {'
+        try {
             const {''
                 fallbackContext = 'default' }
                 parameters = {},
@@ -376,12 +376,12 @@ export class AdvancedFormatterEngine {
             this.statistics.contextualTranslations++;
             
             return translation;
-             }'
+             }
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'CONTEXTUAL_FORMATTING_ERROR', {)
                 key: key);
                 context: context,);
-                language: language); }
+                language: language) }
             });
             return `${key}[${JSON.stringify(context})}]`;
         };
@@ -447,12 +447,12 @@ export class AdvancedFormatterEngine {
             
             this.statistics.dynamicGenerations++;
             return translation;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'DYNAMIC_GENERATION_ERROR', {)
                 type: type);
                 data: data,);
-                language: language); }
+                language: language) }
             });
             return `[${type}:${JSON.stringify(data})}]`;
         };
@@ -486,9 +486,9 @@ export class AdvancedFormatterEngine {
                 results.push({
                     similarity: similarity,
                     original: entry.original,
-                    translation: entry.translation,);
+                    translation: entry.translation);
                     key: key);
-                    timestamp: entry.timestamp,);
+                    timestamp: entry.timestamp,)
             }
                     usage: entry.usage || 0); };
 }
@@ -508,16 +508,16 @@ export class AdvancedFormatterEngine {
             const { nestedLevel = 0,
                 maxNestingLevel = 5,
                 customProcessors = new Map(); } = options;
-            ';
-            // 無限再帰防止''
+            ;
+            // 無限再帰防止
             if(nestedLevel > maxNestingLevel') {'
-                ';
+                ';'
             }'
                 throw new Error('Maximum nesting level exceeded'); };
 }
             let result = pattern;
             ';
-            // 複数形パターンを処理''
+            // 複数形パターンを処理
             result = result.replace(/\{(\w+),\s*plural,\s*([^}]+)\}/g, (match, variable, pluralDef') => {  const count = data[variable];''
                 if (typeof count === 'number') { }
                     return this.formatPlural(pluralDef, count, language); };
@@ -537,8 +537,8 @@ export class AdvancedFormatterEngine {
 }
                 return match;
             });
-            ';
-            // 数値パターンを処理''
+            ;
+            // 数値パターンを処理
             result = result.replace(/\{(\w+),\s*number,\s*([^}]+)\}/g, (match, variable, format') => {  const numberValue = data[variable];''
                 if (typeof numberValue === 'number') { }
                     return this.formatNumber(numberValue, format, language); };
@@ -546,7 +546,7 @@ export class AdvancedFormatterEngine {
                 return match;
             });
             
-            // カスタムプロセッサを処理'
+            // カスタムプロセッサを処理
             for (const [processorName, processor] of customProcessors) { ' }'
                 const regex = new RegExp(`\\{(\\w+),\\s*${processorName},\\s*([^}]+')\\}`, 'g');
                 result = result.replace(regex, (match, variable, processorDef) => {  const value = data[variable];
@@ -563,11 +563,11 @@ export class AdvancedFormatterEngine {
             });
             
             return result;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'COMPLEX_FORMAT_ERROR', {)
                 pattern: pattern,);
-                language: language); }
+                language: language) }
             });
             return pattern;
         };
@@ -575,22 +575,22 @@ export class AdvancedFormatterEngine {
     /**
      * ヘルパー関数群
      */
-    ';
+    ';'
     private determinePluralCategory(count: number, pluralRule: PluralRule, forcePlural: boolean): string { ''
         if(!pluralRule || !pluralRule.rules') {'
-            ';
+            ';'
         }'
             return 'other'; };
 }
         ';
-        // 強制複数形の場合''
+        // 強制複数形の場合
         if(forcePlural && count !== 1') {'
-            ';
+            ';'
         }'
             return pluralRule.categories.includes('other'') ? 'other' : pluralRule.categories[pluralRule.categories.length - 1]; };
 }
         // ルールに基づいてカテゴリを決定
-        for(const category of pluralRule.categories) {'
+        for(const category of pluralRule.categories) {
             '';
             if (pluralRule.rules[category] && pluralRule.rules[category](count)') {
         }
@@ -610,11 +610,11 @@ export class AdvancedFormatterEngine {
         }
         
         return null;
-    }'
+    }
     '';
-    private resolveDynamicContext(dynamicContext: any, parameters: Record<string, any>'): string { // 動的コンテキストの解決ロジック''
+    private resolveDynamicContext(dynamicContext: any, parameters: Record<string, any>'): string { // 動的コンテキストの解決ロジック
         if(typeof dynamicContext === 'function') {'
-            ';
+            ';'
         }'
             return dynamicContext(parameters'); }
         }'
@@ -629,11 +629,11 @@ export class AdvancedFormatterEngine {
             };
 }
         return dynamicContext;
-    }'
+    }
     '';
     private evaluateCondition(condition: string, parameters: Record<string, any>'): boolean { // 簡単な条件評価（実際の実装ではより高度な評価が必要）
-        try {'
-            // 安全な評価のため、限定的な条件のみサポート''
+        try {
+            // 安全な評価のため、限定的な条件のみサポート
             if (condition.includes('age') && parameters.age !== undefined') {''
                 if (condition.includes('>=')') {''
                     const threshold = parseInt(condition.split('>=')[1]');
@@ -657,18 +657,18 @@ export class AdvancedFormatterEngine {
         const parts: string[] = [],
         
         if(millions > 0) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             parts.push(this.getNumberWord(millions, language') + ' ' + this.getUnitWord('million', language); };
 }
         if(thousands > 0) {'
-            ';
+            ';'
         }'
             parts.push(this.getNumberWord(thousands, language') + ' ' + this.getUnitWord('thousand', language); };
 }
         if(hundreds > 0) {'
-            ';
+            ';'
         }'
             parts.push(this.getNumberWord(hundreds, language)'); }
         }'
@@ -676,13 +676,13 @@ export class AdvancedFormatterEngine {
         return parts.join(' ');
     }
     
-    private generateThousandExpression(number: number, language: string): string { const thousands = Math.floor(number / 1000);
+    private generateThousandExpression(number: number, language: string): string { const thousands = Math.floor(number / 1000);'
         const remainder = number % 1000;'
         '';
         let result = this.getNumberWord(thousands, language') + ' ' + this.getUnitWord('thousand', language);'
         '';
         if(remainder > 0') {'
-            ';
+            ';'
         }'
             result += ' ' + this.getNumberWord(remainder, language); };
 }
@@ -714,7 +714,7 @@ export class AdvancedFormatterEngine {
         return numberValue.toString(); }
     }'
     '';
-    private getNumberWord(number: number, language: string'): string { // 簡略化した数値単語変換'
+    private getNumberWord(number: number, language: string'): string { // 簡略化した数値単語変換
         const numberWords: Record<string, Record<number, string>> = {' }'
             ja: { 1: '一', 2: '二', 3: '三', 4: '四', 5: '五' },''
             en: { 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five' },''
@@ -739,7 +739,7 @@ export class AdvancedFormatterEngine {
         });
     }'
     '';
-    private getBaseTranslation(key: string, language: string'): string { // モック実装 - 実際の実装では翻訳システムから取得'
+    private getBaseTranslation(key: string, language: string'): string { // モック実装 - 実際の実装では翻訳システムから取得
         const mockTranslations: Record<string, Record<string, string>> = {' }'
             'item.one': { ja: '1つのアイテム', en: 'one item', ar: 'عنصر واحد' },''
             'item.other': { ja: '{count}つのアイテム', en: '{count} items', ar: '{count} عناصر' }
@@ -802,10 +802,10 @@ export class AdvancedFormatterEngine {
         }
             this.cleanupMemory(); };
 }
-        this.translationMemory.set(key, { translation: translation,)
+        this.translationMemory.set(key, { translation: translation)
             original: original || key),
             timestamp: Date.now(),
-            usage: 1 ;
+            usage: 1 
 }
         }),
     }
@@ -857,16 +857,16 @@ export class AdvancedFormatterEngine {
     
     /**
      * メモリ設定を更新
-     */'
+     */
     updateMemoryConfig(config: Partial<MemoryConfig>): void { ''
         Object.assign(this.memoryConfig, config');''
-        console.log('Translation memory config updated:', config); };
+        console.log('Translation memory config updated:', config) };
 }
     /**
      * メモリをクリア
      */'
     clearMemory(): void { ''
-        this.translationMemory.clear('')';
+        this.translationMemory.clear()';
         console.log('Translation memory cleared'); };
 }
     /**
@@ -888,6 +888,6 @@ let advancedFormatterEngineInstance: AdvancedFormatterEngine | null = null,
 
 /**
  * AdvancedFormatterEngineのシングルトンインスタンスを取得
- */'
+ */
 export function getAdvancedFormatterEngine(): AdvancedFormatterEngine { if (!advancedFormatterEngineInstance) {''
         advancedFormatterEngineInstance = new AdvancedFormatterEngine(' })

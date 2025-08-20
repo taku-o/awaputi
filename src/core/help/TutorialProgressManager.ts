@@ -12,7 +12,7 @@ export interface UserProgress { completedTutorials: Set<string>,
     currentTutorialId: string | null,
     currentStepIndex: number,
     startTime: number | null,
-    pausedTime: number | null; }
+    pausedTime: number | null }
 }
 
 export interface TourProgress { lastActiveStep: number,
@@ -20,7 +20,7 @@ export interface TourProgress { lastActiveStep: number,
     stepAttempts: number,
     tourType: string | null,
     completedSteps: string[],
-    skippedSteps: string[]; }
+    skippedSteps: string[] }
 }
 
 export interface SavedProgress { completedTutorials: string[],
@@ -28,7 +28,7 @@ export interface SavedProgress { completedTutorials: string[],
     currentStepIndex: number,
     startTime: number | null,
     pausedTime: number | null,
-    tourProgress: TourProgress;
+    tourProgress: TourProgress
     }
 }
 
@@ -49,7 +49,7 @@ export interface TourSpecificProgress { tourId: string,
     currentStep: number,
     totalSteps: number,
     completedSteps: string[],
-    stepDetails: StepDetail[];
+    stepDetails: StepDetail[]
     }
 }
 
@@ -58,7 +58,7 @@ export interface StepDetail { id: string,
     isCompleted: boolean,
     isCurrent: boolean,
     attempts: number,
-    lastAttemptTime: number | null; }
+    lastAttemptTime: number | null }
 }
 
 export interface ProgressInfo { completedTutorials: string[],
@@ -67,7 +67,7 @@ export interface ProgressInfo { completedTutorials: string[],
     isRunning: boolean,
     isPaused: boolean,
     elapsedTime: number,
-    startTime: number | null; }
+    startTime: number | null }
 }
 
 export interface ProgressStatistics { totalCompletedTutorials: number,
@@ -75,12 +75,12 @@ export interface ProgressStatistics { totalCompletedTutorials: number,
     totalTimeSpent: number,
     averageTimePerTutorial: number,
     mostRecentCompletion: number | null,
-    completionRate: number; }
+    completionRate: number }
 }
 
 export interface StepAttemptData { stepKey: string,
     attempts: number,
-    lastAttemptTime: number | null; }
+    lastAttemptTime: number | null }
 }
 
 /**
@@ -122,9 +122,9 @@ export class TutorialProgressManager {
     
     /**
      * 進捗管理システムを初期化
-     */'
-    private initialize(): void { try {''
-            this.loadUserProgress('')';
+     */
+    private initialize(): void { try {'
+            this.loadUserProgress()';
             this.loggingSystem.log('TutorialProgressManagerが初期化されました', 'info', 'TutorialProgressManager'); }'
         } catch (error) { ' }'
             this.loggingSystem.log(`進捗管理初期化エラー: ${(error as Error'}).message}`, 'error', 'TutorialProgressManager');
@@ -134,7 +134,7 @@ export class TutorialProgressManager {
     /**
      * ユーザー進捗を読み込み'
      */''
-    private loadUserProgress('')';
+    private loadUserProgress()';
             const saved = localStorage.getItem('awaputi_tutorial_progress');
             if(saved) {
                 const progress: SavedProgress = JSON.parse(saved),
@@ -163,16 +163,16 @@ export class TutorialProgressManager {
                 pausedTime: this.userProgress.pausedTime,
                 
                 // ガイドツアー専用の進捗情報
-                tourProgress: {'
+                tourProgress: {
                     lastActiveStep: currentStep,'';
-                    stepStartTime: Date.now('')';
+                    stepStartTime: Date.now()';
                     stepAttempts: this.stepAttempts.get(this.userProgress.currentTutorialId || '') || 0,
                     tourType: currentTutorial? .tourType || null, : undefined';
                     completedSteps: this.getCompletedStepsForCurrentTour(currentTutorial, currentStep),'';
-                    skippedSteps: this.getSkippedStepsForCurrentTour('')';
+                    skippedSteps: this.getSkippedStepsForCurrentTour()';
             localStorage.setItem('awaputi_tutorial_progress', JSON.stringify(progress)');
             ';
-            // ガイドツアー専用の詳細進捗も保存''
+            // ガイドツアー専用の詳細進捗も保存
             if(currentTutorial? .tourType === 'guided_tour') {
                 
             }
@@ -218,8 +218,8 @@ export class TutorialProgressManager {
     /**
      * チュートリアル一時停止
      */'
-    pauseTutorial(): void { try {''
-            this.userProgress.pausedTime = Date.now('')';
+    pauseTutorial(): void { try {'
+            this.userProgress.pausedTime = Date.now()';
             this.loggingSystem.log('チュートリアルが一時停止されました', 'info', 'TutorialProgressManager'); }'
         } catch (error) { ' }'
             this.loggingSystem.log(`チュートリアル一時停止エラー: ${(error as Error'}).message}`, 'error', 'TutorialProgressManager');
@@ -229,7 +229,7 @@ export class TutorialProgressManager {
     /**
      * チュートリアル再開'
      */''
-    resumeTutorial('')';
+    resumeTutorial()';
             this.loggingSystem.log('チュートリアルが再開されました', 'info', 'TutorialProgressManager');'
         } catch (error) { ' }'
             this.loggingSystem.log(`チュートリアル再開エラー: ${(error as Error'}).message}`, 'error', 'TutorialProgressManager');
@@ -240,7 +240,7 @@ export class TutorialProgressManager {
      * ステップ進行
      * @param stepIndex - 新しいステップインデックス
      */
-    advanceToStep(stepIndex: number): void { try {'
+    advanceToStep(stepIndex: number): void { try {
             this.userProgress.currentStepIndex = stepIndex;' }'
             this.loggingSystem.log(`ステップ${stepIndex')に進行`, 'info', 'TutorialProgressManager'});'
         } catch (error) { ' }'
@@ -312,12 +312,12 @@ export class TutorialProgressManager {
                     isCompleted: index < currentStep,
                     isCurrent: index === currentStep);
                     attempts: this.getStepAttempts(tourId, step.id),
-                    lastAttemptTime: this.getStepLastAttemptTime(tourId, step.id); }
+                    lastAttemptTime: this.getStepLastAttemptTime(tourId, step.id) }
                 });
             };
             
             const storageKey = `awaputi_tour_progress_${tourId}`;
-            localStorage.setItem(storageKey, JSON.stringify(tourProgress);'
+            localStorage.setItem(storageKey, JSON.stringify(tourProgress);
         } catch (error) { ' }'
             this.loggingSystem.log(`ツアー進捗保存エラー: ${(error as Error'}).message}`, 'error', 'TutorialProgressManager');
         }
@@ -383,7 +383,7 @@ export class TutorialProgressManager {
             // 最後の試行時間を保存
             const storageKey = `awaputi_step_attempt_${tourId}_${stepId}`;
             localStorage.setItem(storageKey, Date.now().toString();
-            ';
+            ';'
         } catch (error) { ' }'
             this.loggingSystem.log(`ステップ試行記録エラー: ${(error as Error'}).message}`, 'error', 'TutorialProgressManager');
         }
@@ -511,7 +511,7 @@ export class TutorialProgressManager {
      * 全ステップ試行データを取得
      * @returns ステップ試行データの配列
      */
-    getAllStepAttempts(): StepAttemptData[] { const attempts: StepAttemptData[] = [],'
+    getAllStepAttempts(): StepAttemptData[] { const attempts: StepAttemptData[] = [],
         '';
         this.stepAttempts.forEach((attemptCount, stepKey') => { ''
             const [tourId, stepId] = stepKey.split('_', 2);
@@ -574,7 +574,7 @@ export class TutorialProgressManager {
                 pausedTime: null }
             },'
             '';
-            this.stepAttempts.clear('')';
+            this.stepAttempts.clear()';
             localStorage.removeItem('awaputi_tutorial_progress'');'
             '';
             this.loggingSystem.log('進捗がリセットされました', 'info', 'TutorialProgressManager');'
@@ -619,7 +619,7 @@ export class TutorialProgressManager {
                 if (key? .startsWith(`awaputi_step_attempt_${tutorialId)_`)) { }
                     localStorage.removeItem(key});
                 }
-            }'
+            }
             '';
             this.loggingSystem.log(`チュートリアル${tutorialId')の進捗がリセットされました`, 'info', 'TutorialProgressManager'});'
         } catch (error) { : undefined' }'
@@ -636,7 +636,7 @@ export class TutorialProgressManager {
             
             // ローカルストレージから全関連データを削除
             const keysToRemove: string[] = [],
-            for(let i = 0; i < localStorage.length; i++) {'
+            for(let i = 0; i < localStorage.length; i++) {
                 '';
                 const key = localStorage.key(i');'
                 if (key && ('';
@@ -659,9 +659,9 @@ export class TutorialProgressManager {
     /**
      * リソースをクリーンアップ
      */
-    destroy(): void { try {'
-            // 現在の進捗を保存''
-            this.saveUserProgress('')';
+    destroy(): void { try {
+            // 現在の進捗を保存
+            this.saveUserProgress()';
             this.loggingSystem.log('TutorialProgressManagerがクリーンアップされました', 'info', 'TutorialProgressManager'); }'
         } catch (error) { ' }'
             this.loggingSystem.log(`クリーンアップエラー: ${(error as Error'}).message}`, 'error', 'TutorialProgressManager');
@@ -689,7 +689,7 @@ export function getTutorialProgressManager(loggingSystem?: LoggingSystem | null)
  * @returns 新しいシングルトンインスタンス
  */
 export function reinitializeTutorialProgressManager(loggingSystem?: LoggingSystem | null): TutorialProgressManager { if (tutorialProgressManagerInstance) {
-        tutorialProgressManagerInstance.destroy(); }'
+        tutorialProgressManagerInstance.destroy(); }
     }''
     tutorialProgressManagerInstance = new TutorialProgressManager(loggingSystem');
     return tutorialProgressManagerInstance;

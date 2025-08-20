@@ -3,7 +3,7 @@ import { getConfigurationManager } from '../core/ConfigurationManager.js';''
 import { getLocalizationManager } from '../core/LocalizationManager.js';
 
 // エラーハンドラー型定義
-interface ErrorHandler { handleError(error: Error, type: string, context?: any): void; }
+interface ErrorHandler { handleError(error: Error, type: string, context?: any): void }
 }
 
 // 設定管理型定義
@@ -43,7 +43,7 @@ interface AudioManager { audioContext?: AudioContext;
 
 // パフォーマンスメトリクス型定義
 interface PerformanceMetrics { cpuUsage: number,
-    averageLatency: number; }
+    averageLatency: number }
 }
 
 // エラー統計型定義
@@ -53,7 +53,7 @@ interface ErrorStats { totalErrors: number,
     recoveryAttempts: number,
     successfulRecoveries: number,
     fallbacksTriggered: number,
-    sessionStart: number; }
+    sessionStart: number }
 }
 
 // エラータイプ定義
@@ -71,7 +71,7 @@ interface ErrorTypes { WEB_AUDIO_INIT: string,
     PERFORMANCE: string,
     NETWORK: string,
     PERMISSION: string,
-    BROWSER_COMPAT: string; }
+    BROWSER_COMPAT: string }
 }
 
 // 回復戦略型定義
@@ -83,14 +83,14 @@ interface FallbackOptions { useHTMLAudio: boolean,
     useMinimalFeatures: boolean,
     disableEffects: boolean,
     reducedQuality: boolean,
-    noVibration: boolean; }
+    noVibration: boolean }
 }
 
 // エラー閾値型定義
 interface ErrorThresholds { maxErrorsPerMinute: number,
     maxConsecutiveErrors: number,
     maxRecoveryAttempts: number,
-    performanceDegradationThreshold: number; }
+    performanceDegradationThreshold: number }
 }
 
 // エラー状態型定義
@@ -98,20 +98,20 @@ interface ErrorState { consecutiveErrors: number,
     lastErrorTime: number,
     recoveryInProgress: boolean,
     fallbackMode: boolean,
-    criticalErrorsDetected: boolean; }
+    criticalErrorsDetected: boolean }
 }
 
 // ユーザー通知設定型定義
 interface UserNotificationSettings { showErrorMessages: boolean,
     showRecoveryMessages: boolean,
     showFallbackMessages: boolean,
-    notificationDuration: number; }
+    notificationDuration: number }
 }
 
 // メモリ使用量型定義
 interface MemoryUsage { used: number,
     total: number,
-    limit: number; }
+    limit: number }
 }
 
 // エラーレポート型定義
@@ -139,7 +139,7 @@ interface ErrorData { timestamp: string,
     context: any,
     userAgent: string,
     audioContextState?: AudioContextState;
-    memoryUsage: MemoryUsage | null; }
+    memoryUsage: MemoryUsage | null }
 }
 
 /**
@@ -182,7 +182,7 @@ export class AudioErrorHandler {
             errorsByType: new Map(),
             errorsBySource: new Map(),
             recoveryAttempts: 0,
-            successfulRecoveries: 0,';
+            successfulRecoveries: 0,
             fallbacksTriggered: 0,'';
             sessionStart: Date.now(''';
             WEB_AUDIO_INIT: 'web_audio_initialization','';
@@ -198,7 +198,7 @@ export class AudioErrorHandler {
             MEMORY: 'memory_error','';
             PERFORMANCE: 'performance_error','';
             NETWORK: 'network_error','';
-            PERMISSION: 'permission_error',';
+            PERMISSION: 'permission_error','
     }
     }'
             BROWSER_COMPAT: 'browser_compatibility_error' })
@@ -262,11 +262,11 @@ export class AudioErrorHandler {
             
             // Web Audio API の状態監視
             this.monitorWebAudioState();
-            ';
-            // パフォーマンス監視''
-            this.setupPerformanceMonitoring('')';
+            ;
+            // パフォーマンス監視
+            this.setupPerformanceMonitoring()';
             console.log('AudioErrorHandler initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to initialize AudioErrorHandler:', error);
             this.handleCriticalError(error as Error); }
         }
@@ -275,7 +275,7 @@ export class AudioErrorHandler {
     /**
      * 設定を読み込み'
      */''
-    loadSettings('')';
+    loadSettings()';
         const settings = this.configManager.get('audio.errorHandling') || {};
         
         Object.assign(this.errorThresholds, settings.thresholds || { );
@@ -286,7 +286,7 @@ export class AudioErrorHandler {
     /**
      * グローバルエラーハンドラーを設定
      */'
-    setupGlobalErrorHandlers(): void { // Web Audio API 関連のエラーをキャッチ''
+    setupGlobalErrorHandlers(): void { // Web Audio API 関連のエラーをキャッチ
         if(this.audioManager.audioContext') {'
             '';
             this.audioManager.audioContext.addEventListener('statechange', (') => { ''
@@ -298,14 +298,14 @@ export class AudioErrorHandler {
             }');
         }
         ';
-        // Promise rejection のキャッチ''
+        // Promise rejection のキャッチ
         window.addEventListener('unhandledrejection', (event) => {  if(this.isAudioRelatedError(event.reason) {
                 this.handleError(event.reason, this.determineErrorType(event.reason); }
                 event.preventDefault(); }'
             }''
         }');
         ';
-        // 一般的なエラーのキャッチ''
+        // 一般的なエラーのキャッチ
         window.addEventListener('error', (event) => {  if(this.isAudioRelatedError(event.error) { }
                 this.handleError(event.error, this.determineErrorType(event.error); }
             }
@@ -319,7 +319,7 @@ export class AudioErrorHandler {
             if(this.audioManager.audioContext') {
                 const context = this.audioManager.audioContext;
                 ';
-                // AudioContext の状態チェック''
+                // AudioContext の状態チェック
                 if (context.state === 'suspended' && !this.errorState.recoveryInProgress') {'
             }'
                     this.handleError(new Error('AudioContext suspended unexpectedly'),  }
@@ -340,7 +340,7 @@ export class AudioErrorHandler {
     setupPerformanceMonitoring(): void { // パフォーマンス劣化の検出
         const intervalId = window.setInterval(() => { 
             const metrics = this.audioManager.getPerformanceMetrics? .();
-            if(metrics) {'
+            if(metrics) {
                 '';
                 if (metrics.cpuUsage > 0.8') {'
             }'
@@ -388,9 +388,9 @@ export class AudioErrorHandler {
             }
             
             // ユーザー通知
-            this.notifyUser(error, errorType, severity);'
+            this.notifyUser(error, errorType, severity);
             '';
-        } catch (handlingError') { ''
+        } catch (handlingError) { ''
             console.error('Error in error handler:', handlingError);
             this.handleCriticalError(handlingError as Error); }
         }
@@ -423,15 +423,15 @@ export class AudioErrorHandler {
      * エラーの重要度を判定
      */
     determineSeverity(error: Error, errorType: string): string { const criticalTypes = [this.errorTypes.WEB_AUDIO_INIT,
-            this.errorTypes.MEMORY,];
+            this.errorTypes.MEMORY];
             this.errorTypes.BROWSER_COMPAT];
-        ];'
+        ];
         '';
         if (criticalTypes.includes(errorType)') {''
             return 'critical'; }
         }
         
-        const highTypes = [this.errorTypes.WEB_AUDIO_CONTEXT,];
+        const highTypes = [this.errorTypes.WEB_AUDIO_CONTEXT];
             this.errorTypes.PERFORMANCE];
         ];'
         '';
@@ -467,7 +467,7 @@ export class AudioErrorHandler {
             context: context,
             userAgent: navigator.userAgent,
             audioContextState: this.audioManager.audioContext? .state, : undefined;
-            memoryUsage: this.getMemoryUsage(); }
+            memoryUsage: this.getMemoryUsage() }
         };
         
         // グローバルエラーハンドラーに送信
@@ -492,8 +492,8 @@ export class AudioErrorHandler {
                 
                 if (recoveryResult) {
                     this.errorStats.successfulRecoveries++;
-                    this.errorState.consecutiveErrors = 0;'
-                    ';
+                    this.errorState.consecutiveErrors = 0;
+                    ';'
             }'
                     if (this.userNotificationSettings.showRecoveryMessages') {' }'
                         this.showUserNotification('音響システムが復旧しました', 'success'});
@@ -529,10 +529,10 @@ export class AudioErrorHandler {
                 
                 // 基本的な音響システムを再初期化
                 await this.audioManager.reinitialize? .();
-            }'
+            }
                 return true;' }'
-            } catch (recoveryError') { : undefined''
-            console.warn('Web Audio API recovery failed:', recoveryError); }
+            } catch (recoveryError) { : undefined''
+            console.warn('Web Audio API recovery failed:', recoveryError) }
         }
         
         return false;
@@ -541,7 +541,7 @@ export class AudioErrorHandler {
     /**
      * Web Audio Contextエラーの回復
      */
-    async recoverWebAudioContext(error: Error, context: any): Promise<boolean> { try {'
+    async recoverWebAudioContext(error: Error, context: any): Promise<boolean> { try {
             const audioContext = this.audioManager.audioContext;''
             if (!audioContext') return false;'
             '';
@@ -555,9 +555,9 @@ export class AudioErrorHandler {
             if(audioContext.state === 'interrupted') {
                 // ユーザーアクションを待って再開
                 return new Promise((resolve) => { 
-                    const resumeOnInteraction = async () => {'
-                        try {''
-                            await audioContext.resume('');'
+                    const resumeOnInteraction = async () => {
+                        try {'
+                            await audioContext.resume();'
                             document.removeEventListener('click', resumeOnInteraction');'
             }'
                             document.removeEventListener('touchstart', resumeOnInteraction');' }'
@@ -571,10 +571,10 @@ export class AudioErrorHandler {
                     document.addEventListener('touchstart', resumeOnInteraction);
                     
                     // 30秒でタイムアウト
-                    setTimeout(() => resolve(false), 30000);'
+                    setTimeout(() => resolve(false), 30000);
                 });''
-            } catch (recoveryError') { ''
-            console.warn('AudioContext recovery failed:', recoveryError); }
+            } catch (recoveryError) { ''
+            console.warn('AudioContext recovery failed:', recoveryError) }
         }
         
         return false;
@@ -585,7 +585,7 @@ export class AudioErrorHandler {
      */''
     async recoverAudioDecode(error: Error, context: any'): Promise<boolean> { try {
             // 異なる音響フォーマットで再試行 }
-            const { audioData, originalFormat } = context;'
+            const { audioData, originalFormat } = context;
             '';
             if(originalFormat !== 'wav') {
                 // WAV形式での再デコードを試行
@@ -598,10 +598,10 @@ export class AudioErrorHandler {
             // 品質を下げて再試行
             const lowerQualityData = await this.reduceAudioQuality(audioData);
             const result = await this.audioManager.decodeAudioData?.(lowerQualityData);
-            return !!result;'
+            return !!result;
             '';
-        } catch (recoveryError') { : undefined''
-            console.warn('Audio decode recovery failed:', recoveryError); }
+        } catch (recoveryError) { : undefined''
+            console.warn('Audio decode recovery failed:', recoveryError) }
         }
         
         return false;
@@ -623,7 +623,7 @@ export class AudioErrorHandler {
                     ...context,  : undefined;
             }
                     retryCount: retryCount + 1  }
-                }),;
+                }),
                 return !!result;
             }
             
@@ -631,10 +631,10 @@ export class AudioErrorHandler {
             const fallbackUrl = this.getFallbackAudioUrl(url);
             if(fallbackUrl) {
                 const result = await this.audioManager.loadAudioFile? .(fallbackUrl);
-            }'
+            }
                 return !!result;' }'
-            } catch (recoveryError') { : undefined''
-            console.warn('Audio load recovery failed:', recoveryError); }
+            } catch (recoveryError) { : undefined''
+            console.warn('Audio load recovery failed:', recoveryError) }
         }
         
         return false;
@@ -643,8 +643,8 @@ export class AudioErrorHandler {
     /**
      * 音響再生エラーの回復'
      */''
-    async recoverAudioPlay(error: Error, context: any'): Promise<boolean> { try {'
-            // AudioContextの状態を確認''
+    async recoverAudioPlay(error: Error, context: any'): Promise<boolean> { try {
+            // AudioContextの状態を確認
             if(this.audioManager.audioContext? .state !== 'running') {
                 
             }
@@ -654,10 +654,10 @@ export class AudioErrorHandler {
             // ソースノードを再作成して再試行
             const { soundId, options } = context;
             const result = await this.audioManager.recreateAndPlaySound?.(soundId, options);
-            return !!result;'
+            return !!result;
             '';
-        } catch (recoveryError') { : undefined''
-            console.warn('Audio play recovery failed:', recoveryError); }
+        } catch (recoveryError) { : undefined''
+            console.warn('Audio play recovery failed:', recoveryError) }
         }
         
         return false;
@@ -668,17 +668,17 @@ export class AudioErrorHandler {
      */''
     async recoverBGMGeneration(error: Error, context: any'): Promise<boolean> { try {
             // より簡単な生成パラメータで再試行 }
-            const { config } = context;'
+            const { config } = context;
             const simplifiedConfig = { ...config,''
                 complexity: 'simple',
-                duration: Math.min(config.duration, 30); }
+                duration: Math.min(config.duration, 30) }
             };
             
             const result = await this.audioManager.generateBGM? .(simplifiedConfig);
             return !!result;'
             '';
-        } catch (recoveryError') { : undefined''
-            console.warn('BGM generation recovery failed:', recoveryError); }
+        } catch (recoveryError) { : undefined''
+            console.warn('BGM generation recovery failed:', recoveryError) }
         }
         
         return false;
@@ -691,18 +691,18 @@ export class AudioErrorHandler {
             // キャッシュをクリア
             await this.audioManager.clearAudioCache? .();
             
-            // 不要な音響リソースを解放'
+            // 不要な音響リソースを解放
             this.audioManager.stopAllSounds?.();''
             this.audioManager.garbageCollect?.(');
             
-            // 低品質モードに切り替え'
+            // 低品質モードに切り替え
             this.fallbackOptions.reducedQuality = true;''
             this.audioManager.setQualityMode?.('low');
             
             return true;'
             ' }'
-        } catch (recoveryError') { : undefined''
-            console.warn('Memory error recovery failed:', recoveryError); }
+        } catch (recoveryError) { : undefined''
+            console.warn('Memory error recovery failed:', recoveryError) }
         }
         
         return false;
@@ -711,8 +711,8 @@ export class AudioErrorHandler {
     /**
      * パフォーマンスエラーの回復
      */
-    async recoverPerformanceError(error: Error, context: any): Promise<boolean> { try {'
-            // パフォーマンス設定を調整''
+    async recoverPerformanceError(error: Error, context: any): Promise<boolean> { try {
+            // パフォーマンス設定を調整
             this.audioManager.setMaxConcurrentSounds? .(10');''
             this.audioManager.setAudioQuality?.('medium');
             
@@ -720,10 +720,10 @@ export class AudioErrorHandler {
             this.fallbackOptions.disableEffects = true;
             this.audioManager.disableAllEffects?.();
             
-            return true;'
+            return true;
             ' }'
-        } catch (recoveryError') { : undefined''
-            console.warn('Performance error recovery failed:', recoveryError); }
+        } catch (recoveryError) { : undefined''
+            console.warn('Performance error recovery failed:', recoveryError) }
         }
         
         return false;
@@ -737,10 +737,10 @@ export class AudioErrorHandler {
             this.fallbackOptions.useHTMLAudio = true;
             await this.audioManager.switchToHTMLAudio? .();
             
-            return true;'
+            return true;
             ' }'
-        } catch (recoveryError') { : undefined''
-            console.warn('Browser compatibility recovery failed:', recoveryError); }
+        } catch (recoveryError) { : undefined''
+            console.warn('Browser compatibility recovery failed:', recoveryError) }
         }
         
         return false;
@@ -772,15 +772,15 @@ export class AudioErrorHandler {
                 
             case this.errorTypes.MEMORY:;
             case this.errorTypes.PERFORMANCE: this.enableMinimalMode(),
-                break;
+                break
                 
         }
             default: }
                 this.enableGeneralFallback(}),
-        }'
+        }
         '';
         if(this.userNotificationSettings.showFallbackMessages') {'
-            ';
+            ';'
         }'
             this.showUserNotification('音響システムが制限モードで動作しています', 'warning'); }
         }
@@ -838,17 +838,17 @@ export class AudioErrorHandler {
         '';
         console.error('Critical audio error detected:', error);
         ';
-        // 全音響機能を停止''
+        // 全音響機能を停止
         this.audioManager.emergencyShutdown? .(');
         ';
-        // ユーザーに通知''
+        // ユーザーに通知
         this.showUserNotification('音響システムで重大なエラーが発生しました', 'error'');
         ';
-        // エラーレポートを送信''
+        // エラーレポートを送信
         this.globalErrorHandler.handleError(error, 'AUDIO_CRITICAL_ERROR', { : undefined)
             errorStats: this.errorStats);
             errorState: this.errorState,);
-            fallbackOptions: this.fallbackOptions); }
+            fallbackOptions: this.fallbackOptions) }
     }
     
     /**
@@ -862,7 +862,7 @@ export class AudioErrorHandler {
         }'
         '';
         if(severity === 'critical'') {'
-            ';
+            ';'
         }'
             this.showUserNotification('音響システムエラーが発生しました', 'error'');' }'
         } else if (severity === 'high'') { ''
@@ -872,9 +872,9 @@ export class AudioErrorHandler {
     }
     
     /**
-     * ユーザー通知を表示'
+     * ユーザー通知を表示
      */''
-    showUserNotification(message: string, type: string = 'info''): void { // DOM通知の作成（簡単な実装）''
+    showUserNotification(message: string, type: string = 'info''): void { // DOM通知の作成（簡単な実装）
         const notification = document.createElement('div'); }
         notification.className = `audio-error-notification ${type}`;
         notification.textContent = message;
@@ -903,10 +903,10 @@ export class AudioErrorHandler {
     
     /**
      * 音響関連エラーかチェック
-     */'
+     */
     isAudioRelatedError(error: any): boolean { ''
         if (!error') return false;
-        ';
+        ';'
         const audioKeywords = ['';
             'audio', 'sound', 'web audio', 'audiocontext', 'audiobuffer',']';
             'vibration', 'bgm', 'sfx', 'microphone', 'speaker'];
@@ -943,7 +943,7 @@ export class AudioErrorHandler {
     }
     
     /**
-     * エラーの発生源を判定'
+     * エラーの発生源を判定
      */ : undefined''
     determineErrorSource(error: Error'): string { ''
         const stack = error.stack || '';'
@@ -966,7 +966,7 @@ export class AudioErrorHandler {
             const memoryLimit = memory.jsHeapSizeLimit;'
             '';
             if(memoryUsage / memoryLimit > 0.9') {'
-                ';
+                ';'
             }'
                 this.handleError(new Error('High memory usage detected'),  }
                     this.errorTypes.MEMORY, { memoryUsage, memoryLimit });
@@ -990,7 +990,7 @@ export class AudioErrorHandler {
     /**
      * 代替音響URLを取得'
      */''
-    getFallbackAudioUrl(originalUrl: string'): string | null { // 簡単な実装例''
+    getFallbackAudioUrl(originalUrl: string'): string | null { // 簡単な実装例
         if (originalUrl.endsWith('.mp3')') {''
             return originalUrl.replace('.mp3', '.ogg''); }'
         }''
@@ -1031,7 +1031,7 @@ export class AudioErrorHandler {
             },
             systemInfo: { userAgent: navigator.userAgent,
                 webAudioSupported: !!(window.AudioContext || (window as any).webkitAudioContext),
-                memoryInfo: this.getMemoryUsage(); }
+                memoryInfo: this.getMemoryUsage() }
             },
             recommendations: this.generateRecommendations(),
         };
@@ -1040,16 +1040,16 @@ export class AudioErrorHandler {
     /**
      * 推奨事項を生成
      */
-    generateRecommendations(): string[] { const recommendations: string[] = [],'
+    generateRecommendations(): string[] { const recommendations: string[] = [],
         '';
         if(this.errorStats.totalErrors > 10') {'
-            ';
+            ';'
         }'
             recommendations.push('高頻度のエラーが検出されています。ブラウザの更新または別のブラウザの使用を検討してください。'); }
         }'
         '';
         if(this.errorState.fallbackMode') {'
-            ';
+            ';'
         }'
             recommendations.push('制限モードで動作中です。最適な体験のためにブラウザを再起動してください。'); }
         }'
@@ -1071,7 +1071,7 @@ export class AudioErrorHandler {
             recoveryAttempts: 0,
             successfulRecoveries: 0,
             fallbacksTriggered: 0,
-            sessionStart: Date.now(); }
+            sessionStart: Date.now() }
         };
         
         this.errorState = { consecutiveErrors: 0,
@@ -1082,7 +1082,7 @@ export class AudioErrorHandler {
         },
         
         // フォールバック設定をリセット
-        Object.keys(this.fallbackOptions).forEach(key => {  ) }'
+        Object.keys(this.fallbackOptions).forEach(key => {  ) }
             (this.fallbackOptions as any)[key] = false;' }'
         }');'
         '';
@@ -1093,12 +1093,12 @@ export class AudioErrorHandler {
      * リソースの解放
      */
     dispose(): void { // 監視間隔をクリア
-        this.monitoringIntervals.forEach(intervalId => { ); }'
+        this.monitoringIntervals.forEach(intervalId => { ); }
             clearInterval(intervalId);' }'
         }');
         this.monitoringIntervals = [];
         ';
-        // DOM要素のクリーンアップ''
+        // DOM要素のクリーンアップ
         const notifications = document.querySelectorAll('.audio-error-notification');
         notifications.forEach(notification => {  );
             if (notification.parentNode) { }

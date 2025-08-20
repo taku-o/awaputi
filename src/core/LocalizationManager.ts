@@ -31,24 +31,24 @@ export class LocalizationManager {'
     }
     
     /**
-     * 非同期初期化'
+     * 非同期初期化
      */''
-    async initializeAsync('')';
+    async initializeAsync()';
             await this.integrationController.preloadLanguages(['ja', 'en']');
             ';
-            // ファイルベース翻訳をロード''
+            // ファイルベース翻訳をロード
             await this.loadLanguageData('ja'');''
             await this.loadLanguageData('en');
             ';
-            // パフォーマンス監視開始''
+            // パフォーマンス監視開始
             this.integrationController.startPerformanceMonitoring(this.currentLanguage');'
             '';
             console.log('LocalizationManager initialized with optimized file-based translations');'
             this.isInitialized = true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to initialize file-based translations, using fallback data:', error');'
             this.integrationController.reportError(error, { ')'
-                operation: 'initializeAsync' ); }
+                operation: 'initializeAsync' ) }
             });
             this.isInitialized = true; // エラーが発生してもフラグは立てる
         }
@@ -93,12 +93,12 @@ export class LocalizationManager {'
                 return true;
             } else {  }
                 console.warn(`No translations found for: ${language)`});
-                return false;'
+                return false;
             } catch (error) { ' }'
             console.error(`Failed to load language data for ${language}:`, error');'
             this.integrationController.reportError(error, { ')'
                 operation: 'loadLanguageData',);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -124,23 +124,23 @@ export class LocalizationManager {'
                 key, );
                 this.fallbackLanguage);
             
-            // デバッグ：翻訳が見つからない場合'
+            // デバッグ：翻訳が見つからない場合
             if (translation === key) { ' }'
                 console.warn(`LocalizationManager: Translation not found for key: ${key} in language: ${this.currentLanguage)`'});
             }
             ';
-            // パラメータ置換''
+            // パラメータ置換
             if (typeof translation === 'string' && Object.keys(params).length > 0) { translation = this.interpolate(translation, params); }
             }
-            ';
+            ';'
             return translation;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Translation error:', error');'
             this.integrationController.reportError(error, {''
-                operation: 'translate',);
+                operation: 'translate');
                 key: key);
                 language: this.currentLanguage,);
-                params: params); }
+                params: params) }
             });
             return key;
         }
@@ -208,12 +208,12 @@ export class LocalizationManager {'
             this.notifyLanguageChange(oldLanguage, language);
             
             console.log(`Language changed from ${oldLanguage} to ${language)`});
-            return true;'
+            return true;
         } catch (error) { ' }'
             console.error(`Failed to set language to ${language}:`, error');'
             this.integrationController.reportError(error, { ')'
                 operation: 'setLanguage',);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -343,8 +343,8 @@ export class LocalizationManager {'
     }
             try {); }'
                 listener({ oldLanguage, newLanguage );' }'
-            } catch (error') { ''
-                console.error('Language change listener error:', error); }
+            } catch (error) { ''
+                console.error('Language change listener error:', error) }
             }
         });
     }
@@ -373,7 +373,7 @@ export class LocalizationManager {'
     getDebugInfo(''';
             manager: 'LocalizationManager','';
             version: '2.0.0',
-            currentLanguage: this.currentLanguage,);
+            currentLanguage: this.currentLanguage);
             fallbackLanguage: this.fallbackLanguage);
             isRTL: this.isRTL(),
             textDirection: this.getTextDirection(),
@@ -422,7 +422,7 @@ export class LocalizationManager {'
                 fileBasedLoading: integrationStatus.capabilities.fileBasedLoading,
                 performanceMonitoring: integrationStatus.capabilities.performanceMonitoring,
                 securityValidation: integrationStatus.capabilities.securityValidation }
-            },)
+            })
             metrics: { supportedLanguages: translationStats.languageCount)
                 currentLanguage: this.currentLanguage,);
                 rtlSupport: this.isRTL(),
@@ -450,9 +450,9 @@ export class LocalizationManager {'
         
         if (this.integrationController) { this.integrationController.destroy(); }
         }
-        ';
-        // イベントリスナーをクリア''
-        this.languageChangeListeners.clear('')';
+        ;
+        // イベントリスナーをクリア
+        this.languageChangeListeners.clear()';
         console.log('LocalizationManager destroyed');
     }
 }
@@ -462,7 +462,7 @@ let localizationManagerInstance = null;
 
 /**
  * LocalizationManagerシングルトンインスタンスの取得
- */'
+ */
 export function getLocalizationManager() { ''
     if(!localizationManagerInstance') {'
         '';

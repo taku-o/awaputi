@@ -13,7 +13,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
 export interface AudioMetadata { numberOfChannels: number,
     length: number,
     sampleRate: number,
-    duration: number; }
+    duration: number }
 }
 
 /**
@@ -23,7 +23,7 @@ export interface PreloadQueueItem { key: string,
     loadFunction: () => Promise<AudioBuffer | null>,
     options: LoadOptions,
     priority: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 /**
@@ -38,7 +38,7 @@ export interface LoadOptions { chunkSize?: number;
  */
 export interface ChunkData { index: number,
     data: Float32Array[],
-    start: number; }
+    start: number }
 }
 
 /**
@@ -49,7 +49,7 @@ export interface LoaderStats { cacheHits: number,
     averageLoadTime: number,
     activeLoads: number,
     preloadQueueSize: number,
-    hitRate: number; }
+    hitRate: number }
 }
 
 /**
@@ -57,7 +57,7 @@ export interface LoaderStats { cacheHits: number,
  */
 interface CacheSettings { lazyLoading: {
         enabled: boolean,
-        chunkSize: number; }
+        chunkSize: number }
     };
 }
 
@@ -70,7 +70,7 @@ interface MainController { audioContext: AudioContext,
         get(key: string): { buffer: AudioBuffer } | null
     },
     chunkCache: { get(key: string): Float32Array[] | null,
-        set(key: string, data: Float32Array[], size: number): void; }
+        set(key: string, data: Float32Array[], size: number): void }
     };
     setAudioBuffer(key: string, buffer: AudioBuffer, metadata?: AudioMetadata): void;
 }
@@ -83,14 +83,14 @@ export class CacheDataLoader {
     private readonly lazyLoadManager: {
         activeLoads: Map<string, Promise<AudioBuffer | null>>,
         chunkIndex: Map<string, number>,
-        preloadQueue: PreloadQueueItem[];
+        preloadQueue: PreloadQueueItem[]
     }
     };
     
     // パフォーマンス統計
     private readonly performanceStats: { cacheHits: number,
         cacheMisses: number,
-        loadTimes: number[]; }
+        loadTimes: number[] }
     };
 
     constructor(mainController: MainController) {
@@ -139,12 +139,12 @@ export class CacheDataLoader {
             
             this.performanceStats.cacheMisses++;
             console.log(`Cache miss: ${key)`});
-            return null;'
+            return null;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'getAudioBuffer')';
                 key: key,')';
-                component: 'CacheDataLoader'); }
+                component: 'CacheDataLoader') }
             });
             return null;
         }
@@ -179,12 +179,12 @@ export class CacheDataLoader {
             if (buffer) { this.mainController.setAudioBuffer(key, buffer); }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'getLazyAudioBuffer')';
                 key: key,')';
-                component: 'CacheDataLoader'); }
+                component: 'CacheDataLoader') }
             });
             return null;
         }
@@ -215,12 +215,12 @@ export class CacheDataLoader {
             
             try { const result = await loadPromise;
                 return result; }
-            } finally { this.lazyLoadManager.activeLoads.delete(key); }'
+            } finally { this.lazyLoadManager.activeLoads.delete(key); }
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'performLazyLoad')';
                 key: key,')';
-                component: 'CacheDataLoader'); }
+                component: 'CacheDataLoader') }
             });
             return null;
         }
@@ -240,10 +240,10 @@ export class CacheDataLoader {
     ): Promise<AudioBuffer | null> { try {
             const chunkSize = options.chunkSize || this.cacheSettings.lazyLoading.chunkSize,
             
-            // まずメタデータを読み込み'
+            // まずメタデータを読み込み
             const metadata = await this.loadAudioMetadata(loadFunction);''
             if(!metadata') {'
-                ';
+                ';'
             }'
                 throw new Error('Failed to load audio metadata'); }
             }
@@ -274,7 +274,7 @@ export class CacheDataLoader {
                 
                     // チャンクを読み込み
                     chunkData = await this.loadAudioChunk(;
-                        loadFunction, );
+                        loadFunction );
                         startSample);
                         endSample - startSample,);
                         metadata);
@@ -288,7 +288,7 @@ export class CacheDataLoader {
                     }
                 }
                 
-                if (chunkData) { chunks.push({ index: chunkIndex, data: chunkData, start: startSample ); }
+                if (chunkData) { chunks.push({ index: chunkIndex, data: chunkData, start: startSample ) }
                 }
             }
             
@@ -299,12 +299,12 @@ export class CacheDataLoader {
             this.mainController.setAudioBuffer(key, fullBuffer, metadata);
             
             console.log(`Lazy load completed for: ${key} (${chunks.length) chunks)`});
-            return fullBuffer;'
+            return fullBuffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'executeLazyLoad')';
                 key: key,')';
-                component: 'CacheDataLoader'); }
+                component: 'CacheDataLoader') }
             });
             return null;
         }
@@ -331,11 +331,11 @@ export class CacheDataLoader {
                 length: buffer.length,
                 sampleRate: buffer.sampleRate, };
                 duration: buffer.duration }
-            },'
+            },
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'loadAudioMetadata',')';
-                component: 'CacheDataLoader'); }
+                component: 'CacheDataLoader') }
             });
             return null;
         }
@@ -372,13 +372,13 @@ export class CacheDataLoader {
                 channels.push(chunkData); }
             }
             
-            return channels;'
+            return channels;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {''
-                operation: 'loadAudioChunk',);
+                operation: 'loadAudioChunk');
                 startSample: startSample)';
                 sampleCount: sampleCount,')';
-                component: 'CacheDataLoader'); }
+                component: 'CacheDataLoader') }
             });
             return null;
         }
@@ -391,7 +391,7 @@ export class CacheDataLoader {
      * @param metadata - メタデータ
      */
     assembleChunksIntoBuffer(;
-        buffer: AudioBuffer,
+        buffer: AudioBuffer
     );
         chunks: ChunkData[]);
         metadata: AudioMetadata;
@@ -414,7 +414,7 @@ export class CacheDataLoader {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'assembleChunksIntoBuffer',')';
-                component: 'CacheDataLoader'); }
+                component: 'CacheDataLoader') }
             });
         }
     }
@@ -430,11 +430,11 @@ export class CacheDataLoader {
         loadFunction: () => Promise<AudioBuffer | null>, ;
         options: LoadOptions = {}
     ): void { this.lazyLoadManager.preloadQueue.push({
-            key,);
+            key);
             loadFunction);
             options,);
             priority: options.priority || 0),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         // 優先度順にソート
@@ -500,9 +500,9 @@ export class CacheDataLoader {
     /**
      * リソースの解放
      */
-    dispose(): void { try {'
-            this.lazyLoadManager.activeLoads.clear();''
-            this.lazyLoadManager.chunkIndex.clear('')';
+    dispose(): void { try {
+            this.lazyLoadManager.activeLoads.clear();
+            this.lazyLoadManager.chunkIndex.clear()';
             console.log('CacheDataLoader disposed'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'

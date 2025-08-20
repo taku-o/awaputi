@@ -34,12 +34,12 @@ export interface ProgressData { startTime: number | null,
     stepDurations: number[],
     totalDuration: number,
     skippedSteps: Set<number>,
-    failedValidations: FailedValidation[];
+    failedValidations: FailedValidation[]
     }
 }
 
 export interface FailedValidation { stepIndex: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface StepManagerConfig { allowSkipping: boolean,
@@ -48,7 +48,7 @@ export interface StepManagerConfig { allowSkipping: boolean,
     autoAdvanceDelay: number,
     validateOnAdvance: boolean,
     saveProgress: boolean,
-    maxRetries: number; }
+    maxRetries: number }
 }
 
 export interface ProgressInfo { currentStep: number,
@@ -61,14 +61,14 @@ export interface ProgressInfo { currentStep: number,
     stepDescription: string | undefined,
     canGoNext: boolean,
     canGoPrevious: boolean,
-    canSkip: boolean; }
+    canSkip: boolean }
 }
 
 export interface StepStatistics { averageStepDuration: number,
     longestStep: number,
     shortestStep: number,
     failedValidations: number,
-    completionRate: number; }
+    completionRate: number }
 }
 
 export interface SavedProgress { tutorialId: string,
@@ -76,10 +76,10 @@ export interface SavedProgress { tutorialId: string,
     skippedSteps: number[],
     totalDuration: number,
     stepDurations: number[],
-    completedAt: number; }
+    completedAt: number }
 }
 
-export interface ErrorHandler { handleError(error: Error, context: string): void; }
+export interface ErrorHandler { handleError(error: Error, context: string): void }
 }
 
 export class TutorialStepManager {
@@ -158,14 +158,14 @@ export class TutorialStepManager {
             // ステップ定義を登録
             if (tutorial.steps) { this.registerStepDefinitions(tutorial.steps); }
             }
-            ';
-            // 最初のステップを読み込み''
+            ;
+            // 最初のステップを読み込み
             this.loadStep(0');'
             '';
             this.loggingSystem.info('TutorialStepManager', `Tutorial started: ${tutorial.id}, ${this.totalSteps) steps`});
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.startTutorial');
             return false; }
         }
@@ -210,15 +210,15 @@ export class TutorialStepManager {
             this.stepIndex = index;
             this.currentStep = this.stepDefinitions.get(index) || null;
             this.progressData.stepStartTime = Date.now();
-            ';
+            ';'
             if (!this.currentStep) { ' }'
                 throw new Error(`Step definition not found for index: ${index)`'});
             }'
             '';
             this.loggingSystem.debug('TutorialStepManager', `Step loaded: ${index + 1}/${this.totalSteps)`});
-            ';
+            ';'
             return this.currentStep;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.loadStep');
             return null; }
         }
@@ -247,9 +247,9 @@ export class TutorialStepManager {
             
             // 次のステップを読み込み
             this.loadStep(this.stepIndex + 1);
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.nextStep');
             return false; }
         }
@@ -258,7 +258,7 @@ export class TutorialStepManager {
     /**
      * 前のステップに戻る
      */'
-    previousStep(): boolean { try {''
+    previousStep(): boolean { try {'
             if(!this.config.allowBackNavigation') {'
                 '';
                 this.loggingSystem.warn('TutorialStepManager', 'Back navigation is disabled');
@@ -275,9 +275,9 @@ export class TutorialStepManager {
             
             // 前のステップを読み込み
             this.loadStep(this.stepIndex - 1);
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.previousStep');
             return false; }
         }
@@ -294,7 +294,7 @@ export class TutorialStepManager {
             
             this.loadStep(index);'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.jumpToStep');
             return false; }
         }
@@ -303,7 +303,7 @@ export class TutorialStepManager {
     /**
      * 現在のステップをスキップ
      */'
-    skipCurrentStep(): boolean { try {''
+    skipCurrentStep(): boolean { try {'
             if(!this.config.allowSkipping') {'
                 '';
                 this.loggingSystem.warn('TutorialStepManager', 'Skipping is disabled');
@@ -315,7 +315,7 @@ export class TutorialStepManager {
             this.loggingSystem.debug('TutorialStepManager', `Step skipped: ${ this.stepIndex + 1)`),
              }'
             return this.nextStep(});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.skipCurrentStep');
             return false; }
         }
@@ -327,16 +327,16 @@ export class TutorialStepManager {
     private completeCurrentStep(): void { try {
             this.completedSteps.add(this.stepIndex);
             ';
-            // コールバック実行''
+            // コールバック実行
             const callback = this.stepCallbacks.get(this.stepIndex');''
             if(callback && typeof callback === 'function') {'
-                ';
+                ';'
             }'
                 callback(this.currentStep!, this.stepIndex'); }
             }'
             '';
             this.loggingSystem.debug('TutorialStepManager', `Step completed: ${this.stepIndex + 1}`);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.completeCurrentStep'); }
         }
     }
@@ -344,7 +344,7 @@ export class TutorialStepManager {
     /**
      * 現在のステップをバリデート
      */'
-    private async validateCurrentStep(): Promise<boolean> { try {''
+    private async validateCurrentStep(): Promise<boolean> { try {'
             const validator = this.stepValidators.get(this.stepIndex');''
             if(!validator || typeof validator !== 'function') {
                 
@@ -363,9 +363,9 @@ export class TutorialStepManager {
                     timestamp: Date.now(); }
                 });
             }
-            ';
+            ';'
             return result;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.validateCurrentStep');
             return false; }
         }
@@ -374,12 +374,12 @@ export class TutorialStepManager {
     /**
      * チュートリアルを完了
      */'
-    private completeTutorial(): void { try {''
+    private completeTutorial(): void { try {'
             this.progressData.totalDuration = Date.now() - (this.progressData.startTime || 0');'
             '';
             this.loggingSystem.info('TutorialStepManager', 'Tutorial completed', {
                 tutorial: this.currentTutorial? .id, : undefined;
-                totalSteps: this.totalSteps,);
+                totalSteps: this.totalSteps);
                 completedSteps: this.completedSteps.size);
                 skippedSteps: this.progressData.skippedSteps.size,);
                 totalDuration: this.progressData.totalDuration),
@@ -387,9 +387,9 @@ export class TutorialStepManager {
             // 進捗保存
             if(this.config.saveProgress) {
                 
-            }'
+            }
                 this.saveProgress();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.completeTutorial'); }
         }
     }
@@ -408,7 +408,7 @@ export class TutorialStepManager {
             '';
             localStorage.setItem(progressKey, JSON.stringify(progressData)');''
             this.loggingSystem.debug('TutorialStepManager', 'Progress saved');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.saveProgress'); }
         }
     }
@@ -422,9 +422,9 @@ export class TutorialStepManager {
             const savedProgress = localStorage.getItem(progressKey);
             
             if (!savedProgress) return null;
-            ';
+            ';'
             return JSON.parse(savedProgress) as SavedProgress;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'TutorialStepManager.loadProgress');
             return null; }
         }

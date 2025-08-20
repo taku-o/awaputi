@@ -6,23 +6,23 @@ import { ScenesBaseDialog, DialogButton, GameEngine, EventBus, GameState } from 
 // Type definitions for username dialog
 export interface UsernameValidation { allowedChars: RegExp,
     prohibitedWords: string[],
-    minLength: number; }
+    minLength: number }
 }
 
 export interface TextSettings { contentFont: string,
-    contentColor: string; }
+    contentColor: string }
 }
 
 export interface UsernameDialogData { currentUsername: string,
     newUsername: string,
-    error: string | null; }
+    error: string | null }
 }
 
 export interface PlayerDataManager { getUsername: () => string,
-    setUsername: (username: string) => void; }
+    setUsername: (username: string) => void }
 }
 
-export interface GameEngineWithPlayerData extends GameEngine { playerData: PlayerDataManager;
+export interface GameEngineWithPlayerData extends GameEngine { playerData: PlayerDataManager
     }
 }
 
@@ -38,7 +38,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     private textSettings: TextSettings;
     // ダイアログデータ（型安全性のため再定義）
     protected dialogData: UsernameDialogData,
-    constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {'
+    constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
         '';
         super(gameEngine, eventBus, state');'
         '';
@@ -50,7 +50,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         this.showCursor = true;
         
         // 入力検証設定
-        this.validation = {'
+        this.validation = {
             allowedChars: /^[a-zA-Z0-9ぁ-んァ-ヶー一-龯\s]*$/,'';
             prohibitedWords: ['admin', 'test', 'guest', 'null', 'undefined'],
     }
@@ -58,13 +58,13 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             minLength: 1 }
         },
         
-        // テキスト設定のデフォルト値'
+        // テキスト設定のデフォルト値
         this.textSettings = { ''
             contentFont: '14px Arial, sans-serif','';
             contentColor: '#333333' }
         },
         
-        // ダイアログデータの初期化'
+        // ダイアログデータの初期化
         this.dialogData = { ''
             currentUsername: '','';
             newUsername: '',
@@ -80,7 +80,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         await super.initialize(options);
         
         // 現在のユーザー名を取得
-        const gameEngine = this.gameEngine as GameEngineWithPlayerData;'
+        const gameEngine = this.gameEngine as GameEngineWithPlayerData;
         const playerData = gameEngine.playerData;''
         this.dialogData.currentUsername = playerData.getUsername(') || '';
         this.dialogData.newUsername = this.dialogData.currentUsername;
@@ -101,7 +101,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
                     return !this.isValidUsername(''';
                 text: 'キャンセル',')';
                 color: '#6C757D',);
-                callback: () => this.handleCancel(); }
+                callback: () => this.handleCancel() }
             }
         ];
     }
@@ -117,7 +117,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         const contentWidth = layout?.contentWidth || this.layout.width;
         
         // 現在のユーザー名を表示
-        context.font = this.textSettings.contentFont;'
+        context.font = this.textSettings.contentFont;
         context.fillStyle = this.textSettings.contentColor;''
         context.textAlign = 'left';''
         context.textBaseline = 'top';'
@@ -140,7 +140,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      */
     private renderUsernameInput(;
         context: CanvasRenderingContext2D);
-        layout: { contentX: number; contentWidth: number ), '
+        layout: { contentX: number; contentWidth: number ), 
         y: number'';
     '): void {
         const inputWidth = layout.contentWidth - 120,
@@ -154,16 +154,16 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         context.textBaseline = 'middle';''
         context.fillText('新しいユーザー名:', layout.contentX, y + inputHeight / 2');
         ';
-        // 入力ボックスの背景''
+        // 入力ボックスの背景
         context.fillStyle = this.inputActive ? '#FFFFFF' : '#F8F9FA';''
         context.fillRect(inputX, y, inputWidth, inputHeight');
         ';
-        // 入力ボックスの枠線''
+        // 入力ボックスの枠線
         context.strokeStyle = this.inputActive ? '#007BFF' : '#DEE2E6';'
         context.lineWidth = this.inputActive ? 2 : 1;''
         context.strokeRect(inputX, y, inputWidth, inputHeight');
         ';
-        // 入力テキストを描画''
+        // 入力テキストを描画
         const displayText = this.dialogData.newUsername || '';''
         context.fillStyle = displayText ? this.textSettings.contentColor: '#999999',';
         context.font = this.textSettings.contentFont;''
@@ -174,8 +174,8 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         const textY = y + inputHeight / 2;
         
         if(displayText) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             context.fillText(displayText, textX, textY'); }'
         } else {  ' }'
@@ -196,7 +196,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      * @param textX - テキストX座標
      * @param textY - テキストY座標
      * @param text - 表示テキスト
-     */'
+     */
     private renderCursor(context: CanvasRenderingContext2D, textX: number, textY: number, text: string): void { const beforeCursor = text.substring(0, this.cursorPosition);''
         const cursorX = textX + context.measureText(beforeCursor').width;'
         '';
@@ -281,16 +281,16 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
      */ : undefined
     protected handleContentKeyboard(event: KeyboardEvent): boolean { if (!this.inputActive) {
             return false; }
-        }'
+        }
         '';
         switch(event.key') {'
             '';
             case 'Backspace':';
                 event.preventDefault();''
-                this.handleBackspace('')';
+                this.handleBackspace()';
             case 'Delete':)';
                 event.preventDefault();''
-                this.handleDelete('')';
+                this.handleDelete()';
             case 'ArrowLeft':)';
                 event.preventDefault();''
                 this.cursorPosition = Math.max(0, this.cursorPosition - 1');
@@ -303,7 +303,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
                 return true;'
                 '';
             case 'Home':'';
-                event.preventDefault('')';
+                event.preventDefault()';
             case 'End':);
                 event.preventDefault();
                 this.cursorPosition = this.dialogData.newUsername ? this.dialogData.newUsername.length: 0,
@@ -333,7 +333,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             return; }
         }
         ';
-        // 仮のcanvasコンテキストを作成してテキスト幅を測定''
+        // 仮のcanvasコンテキストを作成してテキスト幅を測定
         const canvas = document.createElement('canvas'');''
         const context = canvas.getContext('2d')!;
         context.font = this.textSettings.contentFont;
@@ -387,7 +387,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     private handleCharacterInput(char: string'): void { ''
         const currentText = this.dialogData.newUsername || '';
         ';
-        // 文字数制限チェック''
+        // 文字数制限チェック
         if(currentText.length >= this.maxUsernameLength') {'
             '';
             this.setError('ユーザー名は10文字以下で入力してください');
@@ -395,7 +395,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             return; }
         }
         ';
-        // 文字種チェック''
+        // 文字種チェック
         if (!this.validation.allowedChars.test(char)') { ''
             this.setError('使用できない文字が含まれています');
             return; }
@@ -428,20 +428,20 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
             const gameEngine = this.gameEngine as GameEngineWithPlayerData;
             const playerData = gameEngine.playerData;
             playerData.setUsername(newUsername);
-            ';
-            // 成功結果を返す''
+            ;
+            // 成功結果を返す
             if(this.onResult') {'
                 this.onResult({ : undefined''
                     action: 'change',
                     data: {)
-                        oldUsername: this.dialogData.currentUsername);
+                        oldUsername: this.dialogData.currentUsername)
             }
                         newUsername: newUsername) }
                     }),
             }
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.setError('ユーザー名の変更に失敗しました'');''
             console.error('Username change error:', error);
             return false; }
@@ -484,7 +484,7 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
         
         // 禁止語チェック
         const lowerUsername = username.toLowerCase();
-        for(const prohibitedWord of this.validation.prohibitedWords) {'
+        for(const prohibitedWord of this.validation.prohibitedWords) {
             '';
             if (lowerUsername.includes(prohibitedWord)') {''
                 this.setError('使用できない単語が含まれています');
@@ -532,6 +532,6 @@ export class UsernameDialog extends ScenesBaseDialog { private title: string
     
     /**
      * クリーンアップ
-     */'
+     */
     cleanup(): void { ''
         super.cleanup(') }

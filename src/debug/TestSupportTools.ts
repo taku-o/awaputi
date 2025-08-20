@@ -21,7 +21,7 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
     private components = new Map<string, TestComponent>();
     private testEnvironment: TestEnvironment | null = null;
     private isRunning = false;
-    private initialized = false;'
+    private initialized = false;
 '';
     constructor(gameEngine: GameEngine') {'
         '';
@@ -37,9 +37,9 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
     public async initialize(): Promise<void> { if (this.initialized) {
             return; }
         }
-';
-        try { ''
-            this.setupTestEnvironment('')';
+';'
+        try {'
+            this.setupTestEnvironment()';
             this.components.set('executionManager', new TestExecutionManager(this)');''
             this.components.set('mockDataManager', new MockDataManager(this)');''
             this.components.set('benchmarkManager', new BenchmarkManager(this)');''
@@ -52,9 +52,9 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
                     await component.initialize(); }
                 }
             }
-';
+';'
             this.initialized = true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('Failed to initialize TestSupportTools', error);
             throw error; }
         }
@@ -69,6 +69,6 @@ export class TestSupportTools extends BaseComponent { private gameEngine: GameEn
     }
 
     public getComponent(name: string): TestComponent | undefined { return this.components.get(name); }
-    }'
+    }
 '';
     public isInitialized(');

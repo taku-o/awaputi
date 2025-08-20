@@ -26,13 +26,13 @@ export interface GameSceneComponents { inputManager: GameInputManager,
     stateManager: GameStateManager,
     uiManager: GameUIManager,
     visualizationManager: GameVisualizationManager,
-    performanceMonitor: GamePerformanceMonitor;
+    performanceMonitor: GamePerformanceMonitor
     };
 }
 export interface GameSceneStats { state: any,
     ui: any,
     visualization: any,
-    performance: any; };
+    performance: any };
 }
 export interface GameSceneDebugInfo { scene: string,
     isPaused: boolean,
@@ -41,13 +41,13 @@ export interface GameSceneDebugInfo { scene: string,
         stateManager: any,
         uiManager: any,
         visualizationManager: any,
-        performanceMonitor: any ;
+        performanceMonitor: any 
 }
     },
     gameStats: GameSceneStats;
 }
 export interface TimeWarnings { timeWarning: boolean,
-    urgentWarning: boolean; };
+    urgentWarning: boolean };
 }
 export interface PerformanceSettings { [key: string]: any, };
 }
@@ -120,9 +120,9 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         
         // イベントリスナーの設定
         this.setupEventListeners();
-        ';
-        // ゲーム開始メッセージ''
-        this.uiManager.showGameStartMessage('')';
+        ;
+        // ゲーム開始メッセージ
+        this.uiManager.showGameStartMessage()';
         console.log('Game scene started'); };
 }
     /**
@@ -134,9 +134,9 @@ export class GameScene extends Scene implements GameSceneState { // State proper
         this.removeEventListeners();
         
         this.stateManager.endGame();
-        this.uiManager.resetUIState();'
+        this.uiManager.resetUIState();
         this.visualizationManager.resetDragVisualization();''
-        this.performanceMonitor.stopMonitoring('')';
+        this.performanceMonitor.stopMonitoring()';
         console.log('Game scene exited'); };
 }
     /**
@@ -151,7 +151,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
             return; };
 }
         ';
-        // イベントリスナーを追加（バインドされたメソッドを使用）''
+        // イベントリスナーを追加（バインドされたメソッドを使用）
         this.canvas.addEventListener('click', this.boundHandleMouseClick');''
         this.canvas.addEventListener('mousemove', this.boundHandleMouseMove');''
         this.canvas.addEventListener('touchstart', this.boundHandleTouchStart, { passive: false )'),''
@@ -308,11 +308,11 @@ export class GameScene extends Scene implements GameSceneState { // State proper
 }
         // ゲーム状態の更新
         this.stateManager.updateGameState(deltaTime);
-        ';
-        // UI状態の更新''
+        ;
+        // UI状態の更新
         this.uiManager.updateUIState(deltaTime');
         ';
-        // 泡の更新''
+        // 泡の更新
         if (this.gameEngine.bubbleManager && typeof this.gameEngine.bubbleManager.update === 'function') { this.gameEngine.bubbleManager.update(deltaTime); }
         } else {  // Only log this error occasionally
             if (!this.lastBubbleErrorTime || performance.now() - this.lastBubbleErrorTime > 5000) { }
@@ -448,21 +448,21 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      * @param x - X座標
      * @param y - Y座標  
      * @param intensity - パーティクルの強度（数）
-     */'
-    createDragParticles(x: number, y: number, intensity: number = 10): void { try {' }'
+     */
+    createDragParticles(x: number, y: number, intensity: number = 10): void { try { }'
             console.log(`[DEBUG] createDragParticles called: x=${x}, y=${y}, intensity=${ intensity)`');
             ';
-            // 基本パーティクルマネージャーでクリックエフェクトを作成''
+            // 基本パーティクルマネージャーでクリックエフェクトを作成
             if(this.gameEngine.particleManager && typeof this.gameEngine.particleManager.createComboEffect === 'function'') {'
-                ';
+                ';'
             }'
                 console.log('[DEBUG] Using particleManager.createComboEffect');' }'
-                this.gameEngine.particleManager.createComboEffect(x, y, 1'}); // コンボ1としてエフェクト生成'
+                this.gameEngine.particleManager.createComboEffect(x, y, 1'}); // コンボ1としてエフェクト生成
             } else {  ' }'
                 console.warn('[DEBUG] particleManager.createComboEffect not available''); };
 }
             ';
-            // 拡張パーティクルマネージャーでパーティクルを個別生成''
+            // 拡張パーティクルマネージャーでパーティクルを個別生成
             if(this.gameEngine.enhancedParticleManager && typeof this.gameEngine.enhancedParticleManager.createParticle === 'function'') {'
                 '';
                 console.log('[DEBUG] Using enhancedParticleManager.createParticle');
@@ -470,10 +470,10 @@ export class GameScene extends Scene implements GameSceneState { // State proper
                 // 複数のパーティクルを放射状に生成
                 for (let i = 0; i < Math.min(intensity, 15); i++) {
                     const angle = (i / intensity) * Math.PI * 2;
-                    const speed = 50 + Math.random() * 30;'
+                    const speed = 50 + Math.random() * 30;
                     const vx = Math.cos(angle) * speed;''
                     const vy = Math.sin(angle') * speed;
-                    ';
+                    ';'
                     this.gameEngine.enhancedParticleManager.createParticle(x, y, vx, vy, {')'
                         color: '#FFD700'),
                         size: 3 + Math.random() * 2,
@@ -488,8 +488,8 @@ export class GameScene extends Scene implements GameSceneState { // State proper
             '';
             console.log('[DEBUG] createDragParticles completed');'
             '';
-        } catch (error') { ''
-            console.error('[GameScene] Error creating drag particles:', error); };
+        } catch (error) { ''
+            console.error('[GameScene] Error creating drag particles:', error) };
 }
     }
     
@@ -544,16 +544,16 @@ export class GameScene extends Scene implements GameSceneState { // State proper
 }
     /**
      * デバッグ情報の取得
-     * @returns デバッグ情報'
+     * @returns デバッグ情報
      */''
     getDebugInfo(''';
             scene: 'GameScene',
-            isPaused: this.isPaused,);
+            isPaused: this.isPaused);
             isGameOver: this.gameEngine.isGameOver);
             components: { stateManager: this.stateManager.getDebugInfo(),
                 uiManager: this.uiManager.getUIState(),
                 visualizationManager: this.visualizationManager.getVisualizationStats(),
-                performanceMonitor: this.performanceMonitor.getPerformanceStats(); }
+                performanceMonitor: this.performanceMonitor.getPerformanceStats() }
             },
             gameStats: this.getGameStats(),
         };
@@ -565,7 +565,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      */
     updateSettings(settings: { performance?: PerformanceSettings ): void {
         if(settings.performance) {'
-            ';
+            ';'
         }'
             this.performanceMonitor.updateSettings(settings.performance'); }
         }'
@@ -579,7 +579,7 @@ export class GameScene extends Scene implements GameSceneState { // State proper
      */
     validateComponents(): boolean { const validations = [this.stateManager.validateGameState(),
             !!this.uiManager,
-            !!this.visualizationManager,];
+            !!this.visualizationManager];
             !!this.performanceMonitor];
         ];'
         '';

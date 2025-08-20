@@ -20,20 +20,20 @@ interface CoreWebVitals { timestamp: number,
 
 interface LighthouseScore { timestamp: number,
     score: number,
-    details: SEOScoreDetails;
+    details: SEOScoreDetails
     }
 }
 
 interface MonitoringData { coreWebVitals: CoreWebVitals[],
     lighthouseScores: LighthouseScore[],
-    searchConsoleMetrics: any[]; }
+    searchConsoleMetrics: any[] }
 }
 
 interface SEOScoreDetails { metaTags: Record<string, string>;
     structuredData: StructuredDataResult[],
     images: ImageAnalysis,
     performance: PerformanceMetrics,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface StructuredDataResult { valid: boolean,
@@ -44,7 +44,7 @@ interface StructuredDataResult { valid: boolean,
 
 interface ImageAnalysis { total: number,
     withAlt: number,
-    withoutAlt: number; }
+    withoutAlt: number }
 }
 
 interface PerformanceMetrics { domContentLoaded?: number;
@@ -57,7 +57,7 @@ interface NavigationEntry extends PerformanceEntry { domContentLoadedEventStart:
     loadEventStart: number,
     loadEventEnd: number,
     requestStart: number,
-    responseStart: number; }
+    responseStart: number }
 }
 
 export class SEOMonitoringEngine {
@@ -85,7 +85,7 @@ export class SEOMonitoringEngine {
         try { // Largest Contentful Paint
             const lcpObserver = new PerformanceObserver((list) => { 
                 const entries = list.getEntries();
-                const lastEntry = entries[entries.length - 1]; }'
+                const lastEntry = entries[entries.length - 1]; }
                 this.recordLCP(lastEntry.startTime);' }'
             }');''
             lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
@@ -94,7 +94,7 @@ export class SEOMonitoringEngine {
             // First Input Delay
             const fidObserver = new PerformanceObserver((list) => {  const entries = list.getEntries();
                 entries.forEach(entry => {); }
-                    this.recordFID((entry as any).processingStart - entry.startTime); }'
+                    this.recordFID((entry as any).processingStart - entry.startTime); }
                 });''
             }');''
             fidObserver.observe({ entryTypes: ['first-input'] });
@@ -106,13 +106,13 @@ export class SEOMonitoringEngine {
                     const layoutShiftEntry = entry as any);
                     if (!layoutShiftEntry.hadRecentInput) { }
                         this.recordCLS(layoutShiftEntry.value); }
-                    }'
+                    }
                 });''
             }');''
             clsObserver.observe({ entryTypes: ['layout-shift'] ),
             this.observerInstances.push(clsObserver);'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to setup Performance Observer', error); }
         }
     }
@@ -171,12 +171,12 @@ export class SEOMonitoringEngine {
                 accessibility: this.generateRealisticScore(88, 100),
                 bestPractices: this.generateRealisticScore(80, 95),
                 seo: this.generateRealisticScore(90, 100),
-                timestamp: new Date().toISOString(); }
+                timestamp: new Date().toISOString() }
             };
             
             return score;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to check Lighthouse score', error);
             return null; }
         }
@@ -190,21 +190,21 @@ export class SEOMonitoringEngine {
                 LCP: this.generateRealisticMetric(1000, 3000),
                 FID: this.generateRealisticMetric(10, 150),';
                 CLS: this.generateRealisticMetric(0.01, 0.2),'';
-                timestamp: new Date().toISOString('')';
+                timestamp: new Date().toISOString()';
             if(typeof window !== 'undefined' && 'PerformanceObserver' in window) {
                 try {
                     vitals.LCP = await this.measureLCP(),;
                     vitals.FID = await this.measureFID();
             }'
                     vitals.CLS = await this.measureCLS();' }'
-                } catch (error') { ''
+                } catch (error) { ''
                     console.warn('Failed to measure real Core Web Vitals, using mock data'); }
                 }
             }
             
             return vitals;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to check Core Web Vitals', error);
             return null; }
         }
@@ -213,7 +213,7 @@ export class SEOMonitoringEngine {
     /**
      * Lighthouse SEOスコア監視'
      */''
-    async monitorLighthouseScore('')';
+    async monitorLighthouseScore()';
             if(typeof window !== 'undefined' && 'PerformanceObserver' in window) {
                 const observer = new PerformanceObserver((list) => { '
                     const entries = list.getEntries();''
@@ -226,7 +226,7 @@ export class SEOMonitoringEngine {
                 }');'
                 '';
                 observer.observe({ entryTypes: ['navigation'] ),
-                this.observerInstances.push(observer); }
+                this.observerInstances.push(observer) }
             }
 
             const seoScore = await this.calculateSEOScore();
@@ -239,9 +239,9 @@ export class SEOMonitoringEngine {
 
             if (this.monitoringData.lighthouseScores.length > 100) { this.monitoringData.lighthouseScores = this.monitoringData.lighthouseScores.slice(-100); }
             }
-';
+';'
             return { seo: seoScore }''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to monitor Lighthouse score', error');'
             return { seo: 0, ' };'
                 error: error instanceof Error ? error.message : 'Unknown error'  }
@@ -252,25 +252,25 @@ export class SEOMonitoringEngine {
     /**
      * SEOスコアの簡易計算'
      */''
-    private async calculateSEOScore('')';
+    private async calculateSEOScore()';
         if (typeof document === 'undefined'') { return 85; // Default score for server-side }
         }
         
         let score = 100;
         const penalties: string[] = [],
-';
-        try { // メタタグチェック''
+;
+        try { // メタタグチェック
             const requiredMetaTags = ['title', 'description', 'og:title', 'og: description'],'';
             for (const tagName of requiredMetaTags') {' }'
                 const tag = document.querySelector(`meta[${tagName.includes(':''}) ? 'property' : 'name'}="${tagName}"]`") ""
                     || (tagName === 'title' ? document.querySelector('title') : null);
-                ';
+                ';'
                 if (!tag || !(tag as HTMLMetaElement).content) { score -= 10;' }'
                     penalties.push(`Missing ${tagName)`'});
                 }
             }
 ';
-            // 構造化データチェック''
+            // 構造化データチェック
             const structuredDataScripts = document.querySelectorAll('script[type="application/ld+json"]');''
             if(structuredDataScripts.length === 0') {'
                 score -= 15;'
@@ -278,7 +278,7 @@ export class SEOMonitoringEngine {
                 penalties.push('No structured data found''); }
             }
 ';
-            // 画像alt属性チェック''
+            // 画像alt属性チェック
             const images = document.querySelectorAll('img');
             let imagesWithoutAlt = 0;
             images.forEach(img => {  ); }
@@ -288,7 +288,7 @@ export class SEOMonitoringEngine {
                 penalties.push(`${imagesWithoutAlt} images without alt text`');
             }
 ';
-            // リンクチェック''
+            // リンクチェック
             const links = document.querySelectorAll('a[href]');'
             let externalLinksWithoutNofollow = 0;''
             links.forEach(link => {  ');''
@@ -301,7 +301,7 @@ export class SEOMonitoringEngine {
             console.log('SEO score calculated', { score, penalties );
             return Math.max(0, score);'
 ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Error calculating SEO score', error);
             return 0; }
         }
@@ -310,16 +310,16 @@ export class SEOMonitoringEngine {
     /**
      * Core Web Vitals追跡
      */
-    async trackCoreWebVitals(): Promise<CoreWebVitals | null> { try {'
+    async trackCoreWebVitals(): Promise<CoreWebVitals | null> { try {
             const vitals: CoreWebVitals = {''
-                timestamp: Date.now('')';
+                timestamp: Date.now()';
             if(typeof window !== 'undefined' && 'PerformanceObserver' in window) {
                 try {
                     vitals.LCP = await this.measureLCP(),;
                     vitals.FID = await this.measureFID();
             }'
                     vitals.CLS = await this.measureCLS();' }'
-                } catch (error') { ''
+                } catch (error) { ''
                     console.warn('Failed to measure real Core Web Vitals, using mock data'); }
                 }
             }
@@ -331,7 +331,7 @@ export class SEOMonitoringEngine {
 
             return vitals;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to track Core Web Vitals', error);
             return null; }
         }
@@ -343,7 +343,7 @@ export class SEOMonitoringEngine {
     private recordNavigationMetrics(entry: NavigationEntry'): void { ''
         console.log('Navigation metrics recorded', {)
             domContentLoaded: entry.domContentLoadedEventEnd - entry.domContentLoadedEventStart,);
-            loadComplete: entry.loadEventEnd - entry.loadEventStart); }
+            loadComplete: entry.loadEventEnd - entry.loadEventStart) }
     }
     
     /**
@@ -360,13 +360,13 @@ export class SEOMonitoringEngine {
     /**
      * メタタグの分析'
      */''
-    private analyzeMetaTags('')';
+    private analyzeMetaTags()';
         if(typeof document === 'undefined'') {
             
         }
             return {};
         }
-        ';
+        ';'
         const tags: Record<string, string> = {};''
         const metaTags = document.querySelectorAll('meta');''
         metaTags.forEach(tag => {  ');''
@@ -381,20 +381,20 @@ export class SEOMonitoringEngine {
     /**
      * 構造化データの検証'
      */''
-    private validateStructuredData('')';
+    private validateStructuredData()';
         if (typeof document === 'undefined'') { return []; }
         }'
         '';
         const scripts = document.querySelectorAll('script[type="application/ld+json"]');
         const results: StructuredDataResult[] = [],
-        ';
+        ';'
         scripts.forEach(script => {  ')'
-            try {');' }'
+            try {);' }'
                 const data = JSON.parse(script.textContent || ''');' }'
                 results.push({ valid: true, type: data['@type'], data });''
-            } catch (error') { results.push({ )'
+            } catch (error) { results.push({ )'
                     valid: false, ')';
-                    error: error instanceof Error ? error.message : 'Unknown error' ); }
+                    error: error instanceof Error ? error.message : 'Unknown error' ) }
                 });
             }
         });
@@ -405,7 +405,7 @@ export class SEOMonitoringEngine {
     /**
      * 画像の分析'
      */''
-    private analyzeImages('')';
+    private analyzeImages()';
         if(typeof document === 'undefined'') {
             
         }
@@ -422,7 +422,7 @@ export class SEOMonitoringEngine {
     /**
      * パフォーマンスメトリクスの取得'
      */''
-    private async getPerformanceMetrics('')';
+    private async getPerformanceMetrics()';
         if(typeof performance === 'undefined' || !performance.getEntriesByType') {
             
         }
@@ -462,7 +462,7 @@ export class SEOMonitoringEngine {
     destroy(): void { this.observerInstances.forEach(observer => { )
             try {); }'
                 observer.disconnect();' }'
-            } catch (error') { ''
+            } catch (error) { ''
                 console.warn('Failed to disconnect observer', error); }'
             }''
         }');

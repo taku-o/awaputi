@@ -5,7 +5,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
  */
 interface RGBColor { r: number,
     g: number,
-    b: number; }
+    b: number }
 }
 
 /**
@@ -18,7 +18,7 @@ interface LightSource { x: number,
     currentIntensity?: number;
     color: RGBColor,
     enabled: boolean,
-    castShadows?: boolean; }
+    castShadows?: boolean }
 }
 
 /**
@@ -37,7 +37,7 @@ interface ShadowCaster { object: ShadowObject,
     enabled: boolean,';
     opacity: number,'';
     shadowType: 'hard' | 'soft',
-    blur: number; }
+    blur: number }
 }
 
 /**
@@ -59,7 +59,7 @@ export class LightingSystemRenderer {
     private errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas;
+        this.canvas = canvas
 
     }
     }
@@ -80,27 +80,27 @@ export class LightingSystemRenderer {
                 
                 // 放射状グラデーション
                 const gradient = context.createRadialGradient(;
-                    light.x, light.y, 0,);
+                    light.x, light.y, 0);
                     light.x, light.y, light.radius);
                 
                 const intensity = light.currentIntensity || light.intensity;
                 const alpha = Math.min(intensity, 1.0); }
-                 }'
+                 }
                 gradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha)`});''
                 gradient.addColorStop(1, `rgba(${light.color.r}, ${light.color.g}, ${ light.color.b), 0)`');'
                 '';
                 context.globalCompositeOperation = 'screen';
                 context.fillStyle = gradient;
                 context.fillRect(;
-                    light.x - light.radius,);
+                    light.x - light.radius);
                     light.y - light.radius);
                     light.radius * 2,);
                     light.radius * 2);
                  }
                 context.restore(});'
             });''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'LightingSystemRenderer.renderLighting'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'LightingSystemRenderer.renderLighting') }
             });
         }
     }
@@ -125,10 +125,10 @@ export class LightingSystemRenderer {
                     const shadowLength = 100 * (1 - distance / light.radius);
                     const shadowX = caster.object.x + (dx / distance) * shadowLength;
                     const shadowY = caster.object.y + (dy / distance) * shadowLength;
-                    ';
+                    ';'
                     context.save();''
                     context.globalAlpha = caster.opacity * (1 - distance / light.radius');
-                    ';
+                    ';'
                     // 影のソフトネス' }'
                     if (caster.shadowType === 'soft') {' }'
                         context.filter = `blur(${caster.blur)px'})`;
@@ -141,10 +141,10 @@ export class LightingSystemRenderer {
                     this.renderObjectShadow(context, caster.object, shadowX, shadowY, dx / distance, dy / distance);
                     
                     context.restore();
-                });'
+                });
             });''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'LightingSystemRenderer.renderBasicShadows'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'LightingSystemRenderer.renderBasicShadows') }
             });
         }
     }
@@ -168,10 +168,10 @@ export class LightingSystemRenderer {
                     
                     // 高品質バブル影 }
                     this.renderBubbleShadow(context, caster.object as BubbleObject, light, distance); }
-                });'
+                });
             });''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'LightingSystemRenderer.renderAdvancedShadows'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'LightingSystemRenderer.renderAdvancedShadows') }
             });
         }
     }
@@ -179,7 +179,7 @@ export class LightingSystemRenderer {
     /**
      * オブジェクトの形状に基づいた影を描画'
      */''
-    renderObjectShadow(context: CanvasRenderingContext2D, object: ShadowObject, shadowX: number, shadowY: number, dirX: number, dirY: number'): void { try {''
+    renderObjectShadow(context: CanvasRenderingContext2D, object: ShadowObject, shadowX: number, shadowY: number, dirX: number, dirY: number'): void { try {'
             if(object.type === 'bubble') {
                 // バブル用の楕円影
                 const radius = object.size || 20;
@@ -198,10 +198,10 @@ export class LightingSystemRenderer {
                 context.restore(); }
             } else {  // 一般的な円形影
                 context.beginPath();
-                context.arc(shadowX, shadowY, 15, 0, Math.PI * 2); }'
+                context.arc(shadowX, shadowY, 15, 0, Math.PI * 2); }
                 context.fill();' }'
-            } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'LightingSystemRenderer.renderObjectShadow'); }
+            } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'LightingSystemRenderer.renderObjectShadow') }
             });
         }
     }
@@ -220,14 +220,14 @@ export class LightingSystemRenderer {
             const lightAngle = Math.atan2(bubble.y - light.y, bubble.x - light.x);
             const shadowDistance = radius * 2.5;
             const shadowX = bubble.x + Math.cos(lightAngle) * shadowDistance;
-            const shadowY = bubble.y + Math.sin(lightAngle) * shadowDistance + radius * 0.5;'
+            const shadowY = bubble.y + Math.sin(lightAngle) * shadowDistance + radius * 0.5;
             '';
             context.save(''';
             context.globalCompositeOperation = 'multiply';
             
             // グラデーション影
             const gradient = context.createRadialGradient();
-                shadowX, shadowY, 0,)';
+                shadowX, shadowY, 0,);
                 shadowX, shadowY, radius * 1.2)'';
             ');''
             gradient.addColorStop(0, 'rgba(0, 0, 0, 0.8')'');''
@@ -244,9 +244,9 @@ export class LightingSystemRenderer {
             context.arc(0, 0, radius * 1.2, 0, Math.PI * 2);
             context.fill();
             context.restore();
-            ';
+            ';'
             context.restore();' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
+        } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'LightingSystemRenderer.renderBubbleShadow'),' }'
             }');
         }'

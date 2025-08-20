@@ -16,29 +16,29 @@ interface AnalyzerConfig { maxHistorySize?: number; }
 
 interface PredictionWeights { variance: number,
     trend: number,
-    memory: number; }
+    memory: number }
 }
 
 interface PredictionModel { weights: PredictionWeights,
-    confidence: number; }
+    confidence: number }
 }
 
 interface PerformanceSnapshot { timestamp: number,
     prediction: number,
-    actual: number | null; }
+    actual: number | null }
 }
 
 interface StabilityAnalysis { frameTimeBuffer: number[],
     performanceSnapshots: PerformanceSnapshot[],
     issueHistory: any[],
-    predictionModel: PredictionModel;
+    predictionModel: PredictionModel
     }
 }
 
 interface Stats { frameTimeVariance: number,
     stabilityScore: number,
     avgFrameTime: number,
-    performanceTrend: string; }
+    performanceTrend: string }
 }
 
 interface FrameStabilityResult { stabilityScore: number,
@@ -52,15 +52,15 @@ interface FrameStabilityResult { stabilityScore: number,
 
 interface MemoryMetrics { pressure: number,
     trend: string,
-    available: number; }
+    available: number }
 }
 
-interface RenderingMetrics { load: number; }
+interface RenderingMetrics { load: number }
 }
 
 interface PredictionMetrics { currentStability: FrameStabilityResult,
     memoryPressure: number,
-    renderingLoad: number; }
+    renderingLoad: number }
 }
 
 interface PerformancePrediction { timestamp: number,
@@ -70,17 +70,17 @@ interface PerformancePrediction { timestamp: number,
     degradationRisk: number,
     overallRisk: number,
     recommendations: string[],
-    error?: boolean; }
+    error?: boolean }
 }
 
 interface DetailedAnalysis { stats: Stats,
     frameHistory: number[],
-    stabilityAnalysis: StabilityAnalysis;
+    stabilityAnalysis: StabilityAnalysis
     }
 }
-';
+';'
 interface ErrorHandler { ''
-    logError(message: string, error: any'): void; }
+    logError(message: string, error: any'): void }
 }'
 '';
 type PerformanceTrend = 'improving' | 'degrading' | 'stable' | 'insufficient_data' | 'unknown';
@@ -93,7 +93,7 @@ export class PerformanceAnalyzer {
     private stabilityAnalysis: StabilityAnalysis;
     private stats: Stats;
     constructor(config: AnalyzerConfig = {) {
-';
+';'
         this.config = config;''
         this.errorHandler = getErrorHandler('';
     }
@@ -117,9 +117,9 @@ export class PerformanceAnalyzer {
             }
             
             // 基本統計更新
-            this.updateBasicStats();'
+            this.updateBasicStats();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to record frame time', error); }
         }
     }
@@ -137,7 +137,7 @@ export class PerformanceAnalyzer {
             
             return variance;'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to calculate frame time variance', error);
             return 0; }
         }
@@ -153,7 +153,7 @@ export class PerformanceAnalyzer {
             '';
             if(frameCount < 10') {
                 return { stabilityScore: 1.0,'
-                    variance: 0,';
+                    variance: 0,'
             }'
                     trend: 'insufficient_data', };
                     confidence: 0.1 }
@@ -181,9 +181,9 @@ export class PerformanceAnalyzer {
                 confidence,
                 frameCount, };
                 recommendations: this.generateStabilityRecommendations(stabilityScore, variance, trend); }
-            };'
+            };
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to analyze frame stability', error');
             return { stabilityScore: 0.5,'
                 variance: 0,'';
@@ -198,7 +198,7 @@ export class PerformanceAnalyzer {
      * 線形回帰を使用したパフォーマンストレンド計算''
      * @returns トレンド方向 ('improving', 'degrading', 'stable')
      */'
-    calculatePerformanceTrend(): PerformanceTrend { try {''
+    calculatePerformanceTrend(): PerformanceTrend { try {'
             if (this.frameTimeHistory.length < 10') return 'insufficient_data';
             
             const recentFrames = this.frameTimeHistory.slice(-30); // 最後の30フレーム
@@ -218,12 +218,12 @@ export class PerformanceAnalyzer {
             }
             
             const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-            ';
-            // トレンド判定''
+            ;
+            // トレンド判定
             if (Math.abs(slope) < 0.01') return 'stable';''
             return slope > 0 ? 'degrading' : 'improving';'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to calculate performance trend', error');''
             return 'unknown'; }
         }
@@ -260,15 +260,15 @@ export class PerformanceAnalyzer {
                 memoryRisk,
                 degradationRisk,
                 overallRisk: Math.max(memoryRisk, degradationRisk, 1 - nextFrameStability),
-                recommendations: this.generatePerformanceRecommendations(stability, memoryRisk, degradationRisk); }
+                recommendations: this.generatePerformanceRecommendations(stability, memoryRisk, degradationRisk) }
             };
             
             // 予測精度更新
             this.updatePredictionAccuracy(prediction);
             
-            return prediction;'
+            return prediction;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to predict performance issues', error);
             return { error: true,
                 timestamp: Date.now(), };
@@ -294,15 +294,15 @@ export class PerformanceAnalyzer {
             
             // レンダリング負荷の影響
             prediction -= renderingLoad * weights.variance;
-            ';
-            // トレンドの影響''
+            ;
+            // トレンドの影響
             if (currentStability.trend === 'degrading'') { prediction -= 0.1 * weights.trend;' }'
             } else if (currentStability.trend === 'improving') { prediction += 0.05 * weights.trend; }
             }
             
             return Math.max(0, Math.min(1, prediction);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to predict next frame stability', error);
             return 0.5; }
         }
@@ -318,7 +318,7 @@ export class PerformanceAnalyzer {
             
             let risk = pressure;
             ';
-            // メモリトレンドの影響''
+            // メモリトレンドの影響
             if (trend === 'increasing'') risk += 0.2;''
             if (trend === 'critical') risk += 0.4;
             
@@ -326,9 +326,9 @@ export class PerformanceAnalyzer {
             if (available < 0.1) risk += 0.3; // 10%未満で高リスク
             if (available < 0.05) risk += 0.5; // 5%未満で非常に高リスク
             
-            return Math.max(0, Math.min(1, risk);'
+            return Math.max(0, Math.min(1, risk);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to predict memory issue risk', error);
             return 0.5; }
         }
@@ -347,14 +347,14 @@ export class PerformanceAnalyzer {
             
             // メモリリスクの影響
             risk += memoryRisk * 0.5;
-            ';
-            // トレンドの影響''
+            ;
+            // トレンドの影響
             if (trend === 'degrading') risk += 0.3;
             if (stability.confidence < 0.5) risk += 0.2;
             
             return Math.max(0, Math.min(1, risk);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to predict performance degradation risk', error);
             return 0.5; }
         }
@@ -374,9 +374,9 @@ export class PerformanceAnalyzer {
             this.stats.frameTimeVariance = this.calculateFrameTimeVariance();
             
             // トレンド
-            this.stats.performanceTrend = this.calculatePerformanceTrend();'
+            this.stats.performanceTrend = this.calculatePerformanceTrend();
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to update basic stats', error); }
         }
     }
@@ -391,19 +391,19 @@ export class PerformanceAnalyzer {
     generateStabilityRecommendations(stabilityScore: number, variance: number, trend: string): string[] { const recommendations: string[] = [],'
         '';
         if(stabilityScore < 0.5') {'
-            ';
+            ';'
         }'
             recommendations.push('フレーム安定性が低下しています。品質設定を下げることを検討してください。'); }
         }'
         '';
         if(variance > 10') {'
-            ';
+            ';'
         }'
             recommendations.push('フレーム時間のばらつきが大きいです。レンダリング負荷を軽減してください。''); }
         }'
         '';
         if(trend === 'degrading'') {'
-            ';
+            ';'
         }'
             recommendations.push('パフォーマンスが低下傾向にあります。積極的な最適化を推奨します。'); }
         }
@@ -421,19 +421,19 @@ export class PerformanceAnalyzer {
     generatePerformanceRecommendations(stability: FrameStabilityResult, memoryRisk: number, degradationRisk: number): string[] { const recommendations: string[] = [],'
         '';
         if(memoryRisk > 0.7') {'
-            ';
+            ';'
         }'
             recommendations.push('メモリ使用量が高レベルです。即座にリソースクリーンアップが必要です。'); }
         }'
         '';
         if(degradationRisk > 0.6') {'
-            ';
+            ';'
         }'
             recommendations.push('パフォーマンス低下リスクが高いです。品質設定の見直しが必要です。'); }
         }'
         '';
         if(stability.confidence < 0.3') {'
-            ';
+            ';'
         }'
             recommendations.push('データが不十分です。より長期間の監視が必要です。'); }
         }
@@ -475,9 +475,9 @@ export class PerformanceAnalyzer {
             // 履歴制限
             if(this.stabilityAnalysis.performanceSnapshots.length > 100) {
                 
-            }'
+            }
                 this.stabilityAnalysis.performanceSnapshots.shift();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.logError('Failed to update prediction accuracy', error); }
         }
     }
@@ -507,7 +507,7 @@ export class PerformanceAnalyzer {
                 performanceTrend: 'stable');
             })'
             ')';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to reset analyzer', error'); }
         }'
     }''

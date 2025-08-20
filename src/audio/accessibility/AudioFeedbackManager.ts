@@ -16,13 +16,13 @@
 
 // Types for color mappings
 interface ColorMapping { color: string,
-    label: string; }
+    label: string }
 }
 
 interface ColorMappings { low: ColorMapping,
     medium: ColorMapping,
     high: ColorMapping,
-    critical: ColorMapping;
+    critical: ColorMapping
     }
 }
 
@@ -39,13 +39,13 @@ interface AudioToVibrationMapping { bubblePop: string,
     specialEffects: { electric: string,
         explosion: string,
         freeze: string,
-        magnetic: string; }
+        magnetic: string }
     };
 }
 
 interface HapticSettings { enabled: boolean,
     vibrationIntensity: number,
-    audioToVibrationMapping: AudioToVibrationMapping;
+    audioToVibrationMapping: AudioToVibrationMapping
     }
 }
 
@@ -59,7 +59,7 @@ interface RhythmData { bpm?: number;
 interface VibrationOptions { intensity: number,
     category: string,
     eventData: any,
-    duration?: number; }
+    duration?: number }
 }
 
 // VibrationManager interface
@@ -68,7 +68,7 @@ interface VibrationManager { triggerVibration(pattern: string, options: Vibratio
     setGlobalIntensity(intensity: number): void,
     destroy?(): void;
     userPreferences?: {
-        accessibilityEnhanced: boolean; }
+        accessibilityEnhanced: boolean }
     };
 }
 
@@ -76,7 +76,7 @@ interface VibrationManager { triggerVibration(pattern: string, options: Vibratio
 interface MainController { errorHandler: any,
     settings: {
         colorIndication?: boolean,
-        hapticFeedback?: boolean; }
+        hapticFeedback?: boolean }
     };
     audioManager?: { accessibilityManager?: {
             vibrationManager?: VibrationManager;
@@ -114,7 +114,7 @@ export class AudioFeedbackManager {
         
         // 触覚フィードバック設定
         this.hapticSettings = { enabled: false,
-            vibrationIntensity: 0.8,';
+            vibrationIntensity: 0.8,
             audioToVibrationMapping: {''
                 bubblePop: 'bubblePop','';
                 comboAchieved: 'combo','';
@@ -124,7 +124,7 @@ export class AudioFeedbackManager {
                     levelUp: 'levelUp','';
                     warning: 'warning' }'
                 },''
-                backgroundMusic: 'heartbeat', // BGMのリズムに合わせた振動';
+                backgroundMusic: 'heartbeat', // BGMのリズムに合わせた振動;
                 specialEffects: { ''
                     electric: 'electric','';
                     explosion: 'explosion','';
@@ -138,7 +138,7 @@ export class AudioFeedbackManager {
     /**
      * 色彩インジケーターを作成'
      */''
-    public createColorIndicator('')';
+    public createColorIndicator()';
         this.colorIndicator = document.createElement('div'');''
         this.colorIndicator.className = 'audio-accessibility-color-indicator';
         this.colorIndicator.style.cssText = `;
@@ -158,7 +158,7 @@ export class AudioFeedbackManager {
         this.colorIndicator.setAttribute('role', 'progressbar'');''
         this.colorIndicator.setAttribute('aria-label', '音響レベルインジケーター'');
         ';
-        // インジケーター内にレベル表示を追加''
+        // インジケーター内にレベル表示を追加
         const levelIndicator = document.createElement('div'');''
         levelIndicator.className = 'level-marker';
         levelIndicator.style.cssText = `;
@@ -185,13 +185,13 @@ export class AudioFeedbackManager {
         '';
         const levelMarker = this.colorIndicator.querySelector('.level-marker') as HTMLElement;
         if(levelMarker) {'
-            ';
+            ';'
         }'
-            const position = level * 196; // 200px - 4px (marker height'); }
+            const position = level * 196; // 200px - 4px (marker height); }
             levelMarker.style.bottom = `${position}px`;
         }
         ';
-        // アクセシビリティ属性を更新''
+        // アクセシビリティ属性を更新
         this.colorIndicator.setAttribute('aria-valuenow', Math.round(level * 100).toString()');''
         this.colorIndicator.setAttribute('aria-valuetext', `音響レベル ${Math.round(level * 100})}%`);
     }
@@ -211,14 +211,14 @@ export class AudioFeedbackManager {
 
     /**
      * VibrationManagerを動的に読み込み
-     * @private'
+     * @private
      */ : undefined''
-    private async loadVibrationManager('')';
+    private async loadVibrationManager()';
             const { VibrationManager } = await import('../../core/VibrationManager.js');'
             this.vibrationManager = new VibrationManager(this);''
-            this.updateVibrationManagerSettings('')';
+            this.updateVibrationManagerSettings()';
             console.log('VibrationManager loaded dynamically');''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to load VibrationManager:', error);
             this.mainController.settings.hapticFeedback = false; // フォールバック }
         }
@@ -244,7 +244,7 @@ export class AudioFeedbackManager {
      * 触覚フィードバックをトリガー
      * @param eventType - イベントタイプ
      * @param eventData - イベントデータ
-     */'
+     */
     public triggerHapticFeedback(eventType: string, eventData: any): void { ''
         if(!this.vibrationManager || !this.hapticSettings.enabled') {
             
@@ -256,28 +256,28 @@ export class AudioFeedbackManager {
             '';
             if(typeof mapping === 'string'') {
                 // 直接マッピング
-                this.vibrationManager.triggerVibration(mapping, {'
+                this.vibrationManager.triggerVibration(mapping, {
                     intensity: this.hapticSettings.vibrationIntensity,')';
-                    category: 'accessibility',');
+                    category: 'accessibility',')
             }'
                     eventData: eventData)');' }'
-            } else if (typeof mapping === 'object' && eventData.state) { // 状態ベースマッピング（gameStateChangeなど）'
+            } else if (typeof mapping === 'object' && eventData.state) { // 状態ベースマッピング（gameStateChangeなど）
                 const stateMapping = mapping[eventData.state as keyof typeof mapping];''
                 if(stateMapping') {
                     this.vibrationManager.triggerVibration(stateMapping, {'
                         intensity: this.hapticSettings.vibrationIntensity,')';
-                        category: 'accessibility',);
+                        category: 'accessibility',)
                 }
                         eventData: eventData); }
                 }
             }
-            ';
+            ';'
             console.log(`Haptic feedback triggered for: ${eventType)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'ACCESSIBILITY_ERROR', {''
                 component: 'AudioFeedbackManager',')';
                 operation: 'triggerHapticFeedback',);
-                eventType: eventType); }
+                eventType: eventType) }
             });
         }
     }
@@ -295,23 +295,23 @@ export class AudioFeedbackManager {
         if (audioLevel < 0.3) return;
         
         try { // 音響レベルに応じた振動パターンを生成
-            let vibrationPattern: string,';
+            let vibrationPattern: string,
             '';
             if(audioLevel < 0.5') {'
-                ';
+                ';'
             }'
                 vibrationPattern = 'pulse'; // 弱いパルス' }'
             } else if (audioLevel < 0.8') { ''
-                vibrationPattern = 'heartbeat'; // 心拍パターン }'
+                vibrationPattern = 'heartbeat'; // 心拍パターン }
             } else {  ' }'
                 vibrationPattern = 'wave'; // 波パターン }
             }
-            ';
+            ';'
             this.vibrationManager.triggerVibration(vibrationPattern, { intensity: audioLevel * this.hapticSettings.vibrationIntensity,')'
                 category: 'accessibility',) }'
                 eventData: { audioLevel, audioType });''
-        } catch (error') { ''
-            console.warn('Failed to trigger audio level vibration:', error); }
+        } catch (error) { ''
+            console.warn('Failed to trigger audio level vibration:', error) }
         }
     }
 
@@ -327,9 +327,9 @@ export class AudioFeedbackManager {
             const { bpm, intensity, beat } = rhythmData;
             
             if(bpm && beat) {
-            ';
+            ';'
                 '';
-                const vibrationDuration = Math.max(50, Math.min(200, (60000 / bpm) * 0.1)'); // BPMベースの長さ'
+                const vibrationDuration = Math.max(50, Math.min(200, (60000 / bpm) * 0.1)'); // BPMベースの長さ
                 '';
                 this.vibrationManager.triggerVibration('heartbeat', {);''
                     intensity: (intensity || 1') * this.hapticSettings.vibrationIntensity,';
@@ -339,8 +339,8 @@ export class AudioFeedbackManager {
             }
                     eventData: rhythmData }'
                 });''
-            } catch (error') { ''
-            console.warn('Failed to synchronize with BGM rhythm:', error); }
+            } catch (error) { ''
+            console.warn('Failed to synchronize with BGM rhythm:', error) }
         }
     }
 
@@ -363,8 +363,8 @@ export class AudioFeedbackManager {
             }
                  }'
                 console.log(`Special effect vibration triggered for: ${effectType)`});''
-            } catch (error') { ''
-            console.warn('Failed to trigger special effect vibration:', error); }
+            } catch (error) { ''
+            console.warn('Failed to trigger special effect vibration:', error) }
         }
     }
 
@@ -373,8 +373,8 @@ export class AudioFeedbackManager {
      * @param settings - 新しい設定
      */'
     public updateHapticSettings(settings: Partial<HapticSettings>): void { Object.assign(this.hapticSettings, settings);''
-        this.updateVibrationManagerSettings('')';
-        console.log('Haptic settings updated:', this.hapticSettings); }
+        this.updateVibrationManagerSettings()';
+        console.log('Haptic settings updated:', this.hapticSettings) }
     }
 
     /**
@@ -391,14 +391,14 @@ export class AudioFeedbackManager {
      * リソースの解放
      */
     public dispose(): void { // DOM要素を削除
-        if(this.colorIndicator && this.colorIndicator.parentNode) {'
-            ';
+        if(this.colorIndicator && this.colorIndicator.parentNode) {
+            ';'
         }'
             this.colorIndicator.parentNode.removeChild(this.colorIndicator'); }
         }
         ';
-        // VibrationManagerの解放''
+        // VibrationManagerの解放
         if(this.vibrationManager && typeof this.vibrationManager.destroy === 'function') {'
-            ';
+            ';'
         }'
             this.vibrationManager.destroy(') }

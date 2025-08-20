@@ -10,13 +10,13 @@ interface StoredError { id: string,
     message: string,
     stack?: string;
     context?: any;
-    sessionId: string; }
+    sessionId: string }
 }
 
 interface StorageConfig { maxItems: number,
     storageKey: string,
     useIndexedDB: boolean,
-    compressionEnabled: boolean; }
+    compressionEnabled: boolean }
 }
 
 interface StorageStatistics { totalStored: number,
@@ -57,7 +57,7 @@ export class ErrorStorage {
             
             await this.loadFromStorage();'
             this.initialized = true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[ErrorStorage] Failed to initialize, falling back to memory storage:', error);
             this.initialized = true; }
         }
@@ -160,7 +160,7 @@ export class ErrorStorage {
             if (!oldestTimestamp || error.timestamp < oldestTimestamp) { }
                 oldestTimestamp = error.timestamp; }
             }
-            if (!newestTimestamp || error.timestamp > newestTimestamp) { newestTimestamp = error.timestamp; }'
+            if (!newestTimestamp || error.timestamp > newestTimestamp) { newestTimestamp = error.timestamp; }
             }''
         }');
 
@@ -173,7 +173,7 @@ export class ErrorStorage {
     }'
 '';
     public async exportErrors(format: 'json' | 'csv' = 'json'): Promise<string> { ''
-        const errors = await this.getErrors('')';
+        const errors = await this.getErrors()';
         if(format === 'csv') {
             ;
         }
@@ -190,8 +190,8 @@ export class ErrorStorage {
     private async initializeIndexedDB(): Promise<void> { // IndexedDB initialization would go here
         // Simplified for TypeScript conversion }
     }
-';
-    private initializeLocalStorage(): void { // LocalStorage initialization''
+;
+    private initializeLocalStorage(): void { // LocalStorage initialization
         if (!this.isLocalStorageAvailable()') {''
             throw new Error('No storage mechanism available'); }
         }
@@ -203,8 +203,8 @@ export class ErrorStorage {
             }
                 await this.loadFromIndexedDB(); }'
             } else { this.loadFromLocalStorage();' }'
-            } catch (error') { ''
-            console.warn('[ErrorStorage] Failed to load from storage:', error); }
+            } catch (error) { ''
+            console.warn('[ErrorStorage] Failed to load from storage:', error) }
         }
     }
 
@@ -215,10 +215,10 @@ export class ErrorStorage {
             const stored = localStorage.getItem(this.config.storageKey);
             if(stored) {
                 const parsed = JSON.parse(stored);
-            }'
+            }
                 this.cache = Array.isArray(parsed) ? parsed: [],' }'
-            } catch (error') { ''
-            console.warn('[ErrorStorage] Failed to load from localStorage:', error); }
+            } catch (error) { ''
+            console.warn('[ErrorStorage] Failed to load from localStorage:', error) }
         }
     }
 
@@ -228,8 +228,8 @@ export class ErrorStorage {
             }
                 await this.persistToIndexedDB(); }'
             } else { this.persistToLocalStorage();' }'
-            } catch (error') { ''
-            console.warn('[ErrorStorage] Failed to persist to storage:', error); }
+            } catch (error) { ''
+            console.warn('[ErrorStorage] Failed to persist to storage:', error) }
         }
     }
 
@@ -237,10 +237,10 @@ export class ErrorStorage {
     }
 
     private persistToLocalStorage(): void { try {
-            const data = JSON.stringify(this.cache);'
+            const data = JSON.stringify(this.cache);
             localStorage.setItem(this.config.storageKey, data);' }'
-        } catch (error') { ''
-            console.warn('[ErrorStorage] Failed to persist to localStorage:', error); }
+        } catch (error) { ''
+            console.warn('[ErrorStorage] Failed to persist to localStorage:', error) }
         }
     }'
 '';
@@ -248,10 +248,10 @@ export class ErrorStorage {
         const headers = ['id', 'timestamp', 'severity', 'category', 'message'];
         const rows = errors.map(error => [)';
             error.id);''
-            new Date(error.timestamp).toISOString('')]';
+            new Date(error.timestamp).toISOString()]';
             error.message.replace(/"/g, '""')']';
         ]');
-';
+';'
         return ['';
             headers.join(',''),']';
             ...rows.map(row => row.map(cell => `"${cell")"`").join(',')')' }]'

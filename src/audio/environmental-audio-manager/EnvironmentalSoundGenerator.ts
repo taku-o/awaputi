@@ -6,7 +6,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
 export interface SoundCharacteristics { frequency: number,
     amplitude: number,
     noiseLevel: number,
-    modulation: number; }
+    modulation: number }
 }
 
 /**
@@ -20,7 +20,7 @@ export class EnvironmentalSoundGenerator {
 
     constructor(audioContext: AudioContext) {
 
-        this.audioContext = audioContext;
+        this.audioContext = audioContext
 
     }
     }
@@ -31,50 +31,50 @@ export class EnvironmentalSoundGenerator {
      * 基本環境音を生成
      */
     generateBasicEnvironmentalSounds(): void { try {
-            // 風音の生成'
+            // 風音の生成
             const windBuffer = this._generateWindSound();''
             if(windBuffer') {'
-                ';
+                ';'
             }'
                 this.environmentBuffers.set('wind', windBuffer); }
             }
             
-            // 波音の生成'
+            // 波音の生成
             const waveBuffer = this._generateWaveSound();''
             if(waveBuffer') {'
-                ';
+                ';'
             }'
                 this.environmentBuffers.set('waves', waveBuffer); }
             }
             
-            // 雨音の生成'
+            // 雨音の生成
             const rainBuffer = this._generateRainSound();''
             if(rainBuffer') {'
-                ';
+                ';'
             }'
                 this.environmentBuffers.set('rain', rainBuffer); }
             }
             
-            // 森の音の生成'
+            // 森の音の生成
             const forestBuffer = this._generateForestSound();''
             if(forestBuffer') {'
-                ';
+                ';'
             }'
                 this.environmentBuffers.set('forest', forestBuffer); }
             }
             
-            // 機械音の生成'
+            // 機械音の生成
             const machineryBuffer = this._generateMachinerySound();''
             if(machineryBuffer') {'
-                ';
+                ';'
             }'
                 this.environmentBuffers.set('machinery', machineryBuffer); }
             }
             
-            // 洞窟の共鳴音の生成'
+            // 洞窟の共鳴音の生成
             const caveBuffer = this._generateCaveResonanceSound();''
             if(caveBuffer') {'
-                ';
+                ';'
             }'
                 this.environmentBuffers.set('cave_resonance', caveBuffer); }
             }
@@ -83,7 +83,7 @@ export class EnvironmentalSoundGenerator {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: 'generateBasicEnvironmentalSounds',')';
-                component: 'EnvironmentalSoundGenerator'); }
+                component: 'EnvironmentalSoundGenerator') }
             });
         }
     }
@@ -99,7 +99,7 @@ export class EnvironmentalSoundGenerator {
                 return this.environmentBuffers.get(soundType)!; }
             }
             
-            // 新しい音響を生成'
+            // 新しい音響を生成
             let buffer: AudioBuffer | null = null,'';
             switch(soundType') {'
                 '';
@@ -118,7 +118,7 @@ export class EnvironmentalSoundGenerator {
                     buffer = this._generateForestSound(''';
                 case 'machinery':'';
                 case 'traffic':'';
-                    buffer = this._generateMachinerySound('')';
+                    buffer = this._generateMachinerySound()';
                 case 'cave_resonance':);
                     buffer = this._generateCaveResonanceSound();
                     break;
@@ -132,12 +132,12 @@ export class EnvironmentalSoundGenerator {
             if (buffer) { this.environmentBuffers.set(soundType, buffer); }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 operation: 'getOrGenerateSound',')';
                 component: 'EnvironmentalSoundGenerator',);
-                soundType: soundType); }
+                soundType: soundType) }
             });
             return null;
         }
@@ -178,10 +178,10 @@ export class EnvironmentalSoundGenerator {
                 rightChannel[i] = sample * 0.8 + noise * 0.1; // 右チャンネルに微小な差を追加 }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
-                operation: '_generateWindSound'); }
+                operation: '_generateWindSound') }
             });
             return null;
         }
@@ -222,10 +222,10 @@ export class EnvironmentalSoundGenerator {
                 rightChannel[i] = sample * 0.9 + (Math.random() - 0.5) * 0.05; }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
-                operation: '_generateWaveSound'); }
+                operation: '_generateWaveSound') }
             });
             return null;
         }
@@ -265,10 +265,10 @@ export class EnvironmentalSoundGenerator {
                 rightChannel[i] = sample * 0.95 + (Math.random() - 0.5) * 0.03; }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
-                operation: '_generateRainSound'); }
+                operation: '_generateRainSound') }
             });
             return null;
         }
@@ -308,10 +308,10 @@ export class EnvironmentalSoundGenerator {
                 rightChannel[i] = sample * 0.8 + leaves * 0.2; }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
-                operation: '_generateForestSound'); }
+                operation: '_generateForestSound') }
             });
             return null;
         }
@@ -354,10 +354,10 @@ export class EnvironmentalSoundGenerator {
                 rightChannel[i] = sample * 0.9; }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
-                operation: '_generateMachinerySound'); }
+                operation: '_generateMachinerySound') }
             });
             return null;
         }
@@ -400,10 +400,10 @@ export class EnvironmentalSoundGenerator {
                 rightChannel[i] = sample * 0.8 + drip * 0.2; }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
-                operation: '_generateCaveResonanceSound'); }
+                operation: '_generateCaveResonanceSound') }
             });
             return null;
         }
@@ -455,11 +455,11 @@ export class EnvironmentalSoundGenerator {
                 rightChannel[i] = sample * 0.9 + noise * 0.1; }
             }
             
-            return buffer;'
+            return buffer;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 operation: '_generateGenericEnvironmentalSound',);
-                soundType: soundType); }
+                soundType: soundType) }
             });
             return null;
         }

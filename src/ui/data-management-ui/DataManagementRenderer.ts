@@ -12,7 +12,7 @@ interface LayoutConfig { padding: number,
     dialogPadding: number,
     buttonHeight: number,
     buttonWidth: number,
-    sectionSpacing: number; }
+    sectionSpacing: number }
 }
 
 /**
@@ -28,7 +28,7 @@ interface ColorTheme { background: string,
     text: string,
     textSecondary: string,
     border: string,
-    overlay: string; }
+    overlay: string }
 }
 
 /**
@@ -37,21 +37,21 @@ interface ColorTheme { background: string,
 interface Bounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 /**
  * Button position interface
  */
 interface ButtonPosition { x: number,
-    width: number; }
+    width: number }
 }
 
 /**
  * Text metrics interface
  */
 interface TextMetrics { width: number,
-    height: number; }
+    height: number }
 }
 
 /**
@@ -90,7 +90,7 @@ interface ProgressBarOptions { backgroundColor?: string;
 interface BackupStatus { lastBackup?: string | number | Date;
     backupCount: number,
     totalSize: number,
-    autoBackupEnabled: boolean; }
+    autoBackupEnabled: boolean }
 }
 
 /**
@@ -105,7 +105,7 @@ interface ExportOptions { ''
  * Action definition interface
  */'
 interface ActionDef { text: string,''
-    variant: 'primary' | 'secondary' | 'success' | 'warning' | 'danger'; }
+    variant: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' }
 }
 
 /**
@@ -207,7 +207,7 @@ export class UIRenderer {
     ctx: CanvasRenderingContext2D | null = null,
 
     constructor(layoutManager: UILayoutManager) {
-        this.layoutManager = layoutManager; }
+        this.layoutManager = layoutManager }
     }'
 '';
     setCanvas(canvas: HTMLCanvasElement'): void { this.canvas = canvas;''
@@ -242,15 +242,15 @@ export class UIRenderer {
     }
 
     drawText(text: string, x: number, y: number, options: TextOptions = { ): void {
-        if (!this.ctx) return;'
+        if (!this.ctx) return;
 '';
         const colors = this.layoutManager.getColors(''';
             align = 'left','';
-            baseline = 'top',);
+            baseline = 'top');
             maxWidth = null);
             bold = false }
         } = options;
-';
+';'
         this.ctx.fillStyle = color;''
         this.ctx.font = `${bold ? 'bold ' : ''}${fontSize}px Arial, sans-serif`;
         this.ctx.textAlign = align;
@@ -289,16 +289,16 @@ export class UIRenderer {
         this.roundRect(x, y, width, height, 6, true);
 
         // Button border
-        this.ctx.strokeStyle = borderColor;'
+        this.ctx.strokeStyle = borderColor;
         this.ctx.lineWidth = 1;''
         this.roundRect(x, y, width, height, 6, false');
 
         // Button text
-        this.drawText(text, x + width / 2, y + height / 2, { fontSize)'
+        this.drawText(text, x + width / 2, y + height / 2, { fontSize)
             color: textColor,'';
             align: 'center','';
             baseline: 'middle',);
-            bold: true); }
+            bold: true) }
     }
 
     drawProgressBar(x: number, y: number, width: number, height: number, progress: number, options: ProgressBarOptions = { ): void {
@@ -329,14 +329,14 @@ export class UIRenderer {
         }
             this.roundRect(x + 2, y + 2, progressWidth, height - 4, 2, true); }
         }
-';
-        // Text''
+;
+        // Text
         if(showText && text') {
             this.drawText(text, x + width / 2, y + height / 2, {)
                 fontSize: 12)';
                 color: colors.text,'';
                 align: 'center','';
-                baseline: 'middle',);
+                baseline: 'middle',)
         }
                 bold: true); }
         }
@@ -382,24 +382,24 @@ export class UIRenderer {
         this.roundRect(bounds.x, bounds.y, bounds.width, 60, 8, true);
 
         // Header border
-        this.ctx.strokeStyle = colors.border;'
+        this.ctx.strokeStyle = colors.border;
         this.ctx.lineWidth = 1;''
         this.roundRect(bounds.x, bounds.y, bounds.width, 60, 8, false');
 
         // Title
-        this.drawText(title, bounds.x + padding, bounds.y + 30, { fontSize: 24)'
+        this.drawText(title, bounds.x + padding, bounds.y + 30, { fontSize: 24)
             color: colors.text,'';
             align: 'left','';
             baseline: 'middle',')';
             bold: true)'),
 ';
-        // Close button''
+        // Close button
         this.drawText('×', bounds.x + bounds.width - 30, bounds.y + 30, {)
             fontSize: 20)';
             color: colors.textSecondary,'';
             align: 'center','';
             baseline: 'middle',')';
-            bold: true)'); }
+            bold: true)') }
     }'
 '';
     drawStatusIndicator(x: number, y: number, status: 'success' | 'warning' | 'error' | string, text: string = ''): void { if (!this.ctx) return;
@@ -427,13 +427,13 @@ export class UIRenderer {
         this.ctx.beginPath();
         this.ctx.arc(x + 6, y + 6, 4, 0, 2 * Math.PI);
         this.ctx.fill();
-';
-        // Status text''
+;
+        // Status text
         if(text') {
             this.drawText(text, x + 20, y, {)
                 fontSize: 12)';
                 color: colors.textSecondary,'';
-                align: 'left',');
+                align: 'left',')
         }'
                 baseline: 'top'); }
         }
@@ -464,7 +464,7 @@ export class UIRenderer {
         }
     }
 
-    // Text measurement utilities'
+    // Text measurement utilities
     measureText(text: string, fontSize: number = 16, bold: boolean = false): TextMetrics { ' }'
         if (!this.ctx') return { width: 0, height: fontSize }''
         this.ctx.font = `${bold ? 'bold ' : ''}${fontSize}px Arial, sans-serif`;
@@ -474,7 +474,7 @@ export class UIRenderer {
             height: fontSize }
         },
     }
-';
+';'
     wrapText(text: string, maxWidth: number, fontSize: number = 16): string[] { ''
         if (!this.ctx') return [text];
  }'
@@ -512,7 +512,7 @@ export class ViewRenderer {
     private layoutManager: UILayoutManager;
     constructor(uiRenderer: UIRenderer, layoutManager: UILayoutManager) {
 
-        this.uiRenderer = uiRenderer;
+        this.uiRenderer = uiRenderer
 
     }
     }
@@ -534,32 +534,32 @@ export class ViewRenderer {
 
     renderBackupStatusCard(x: number, y: number, width: number, backupStatus: BackupStatus, selected: boolean = false): void { const colors = this.layoutManager.getColors(); }
         const { padding } = this.layoutManager.getLayoutConfig();
-';
-        // Card background''
+;
+        // Card background
         this.uiRenderer.drawCard(x, y, width, 100, selected');
 ';
-        // Title''
-        this.uiRenderer.drawText('Backup Status', x + padding, y + padding, { fontSize: 18,)
+        // Title
+        this.uiRenderer.drawText('Backup Status', x + padding, y + padding, { fontSize: 18)
             bold: true),
 
-        // Last backup'
+        // Last backup
         const lastBackupText = backupStatus.lastBackup '';
             ? new Date(backupStatus.lastBackup).toLocaleString(''';
             : 'Never';
          })
-        this.uiRenderer.drawText(`Last Backup: ${lastBackupText}`, x + padding, y + padding + 25, { fontSize: 14,)
+        this.uiRenderer.drawText(`Last Backup: ${lastBackupText}`, x + padding, y + padding + 25, { fontSize: 14)
             color: colors.textSecondary),
 
         // Backup count and size
-        const sizeText = this.formatFileSize(backupStatus.totalSize); }
-        this.uiRenderer.drawText(`${backupStatus.backupCount} backups (${sizeText)})`, x + padding, y + padding + 45, { fontSize: 14,'
+        const sizeText = this.formatFileSize(backupStatus.totalSize) }
+        this.uiRenderer.drawText(`${backupStatus.backupCount} backups (${sizeText)})`, x + padding, y + padding + 45, { fontSize: 14,
             color: colors.textSecondary' }'
         }'),
 ';
-        // Auto backup status''
+        // Auto backup status
         const autoStatus = backupStatus.autoBackupEnabled ? 'Enabled' : 'Disabled';
         const statusColor = backupStatus.autoBackupEnabled ? colors.success: colors.warning,
-        ';
+        ';'
         this.uiRenderer.drawStatusIndicator(x + width - 120, y + padding + 25, ')';
             backupStatus.autoBackupEnabled ? 'success' : 'warning');
             `Auto: ${autoStatus)`});
@@ -568,14 +568,14 @@ export class ViewRenderer {
     renderQuickActionsCard(x: number, y: number, width: number, selectedItem: number): void { const colors = this.layoutManager.getColors(); }
         const { padding, buttonHeight, buttonWidth } = this.layoutManager.getLayoutConfig();
 ';
-        // Card background''
+        // Card background
         this.uiRenderer.drawCard(x, y, width, 160, false');
 ';
-        // Title''
+        // Title
         this.uiRenderer.drawText('Quick Actions', x + padding, y + padding, { fontSize: 18,')'
             bold: true)'),
 
-        // Action buttons'
+        // Action buttons
         const actions: ActionDef[] = [' }'
             { text: 'Create Backup', variant: 'primary' },''
             { text: 'Export Data', variant: 'secondary' },''
@@ -613,15 +613,15 @@ export class ViewRenderer {
 
     renderExportOptionsCard(x: number, y: number, width: number, options: ExportOptions, selectedItem: number): void {
         const { padding, itemHeight } = this.layoutManager.getLayoutConfig();
-';
-        // Card background''
+;
+        // Card background
         this.uiRenderer.drawCard(x, y, width, 200, false');
 ';
-        // Title''
+        // Title
         this.uiRenderer.drawText('Export Options', x + padding, y + padding, { fontSize: 18,')'
             bold: true)'),
 ';
-        // Format options''
+        // Format options
         const formats: string[] = ['JSON', 'CSV', 'XML'];
         formats.forEach((format, index) => { 
             const itemY = y + padding + 40 + index * 30;
@@ -632,13 +632,13 @@ export class ViewRenderer {
             }
             
             this.uiRenderer.drawText(format, x + padding * 2, itemY, { )
-                fontSize: 14); }
+                fontSize: 14) }
         });
     }
-';
+';'
     formatFileSize(bytes: number): string { ''
         if (bytes === 0') return '0 B';
-        ';
+        ';'
         const k = 1024;''
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);'

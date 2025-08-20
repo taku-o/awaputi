@@ -9,7 +9,7 @@
 interface Bounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface QuadTreeObject { bounds: Bounds,
@@ -47,28 +47,28 @@ export class QuadTree {
         
         this.nodes[0] = new QuadTree({
             x: x + subWidth,
-            y: y,);
+            y: y);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[1] = new QuadTree({
             x: x,
-            y: y,);
+            y: y);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[2] = new QuadTree({
             x: x,
-            y: y + subHeight,);
+            y: y + subHeight);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1);
         
         this.nodes[3] = new QuadTree({
             x: x + subWidth,
-            y: y + subHeight,);
+            y: y + subHeight);
             width: subWidth);
             height: subHeight;
         ), this.maxObjects, this.maxLevels, this.level + 1); }

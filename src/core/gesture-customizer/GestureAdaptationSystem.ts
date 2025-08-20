@@ -7,14 +7,14 @@
 // 型定義
 export interface GestureAdaptationConfig { oneHandedMode: boolean,
     touchSensitivity: number,
-    alternativeGestures: AlternativeGesturesConfig;
+    alternativeGestures: AlternativeGesturesConfig
     }
 }
 
 export interface AlternativeGesturesConfig { singleFingerOnly: boolean,
     dwellActivation: boolean,
     simplifiedMode: boolean,
-    edgeGestures: boolean; }
+    edgeGestures: boolean }
 }
 
 export interface GameEngine { audioManager?: AudioManager;
@@ -28,7 +28,7 @@ export interface AudioManager {
 export interface AdaptationSystem { learningEnabled: boolean,
     userProfile: UserProfile,
     adaptiveThresholds: AdaptiveThresholds,
-    suggestions: ImprovementSuggestion[];
+    suggestions: ImprovementSuggestion[]
     }
 }
 
@@ -36,14 +36,14 @@ export interface UserProfile { dominantHand: DominantHand,
     reachability: ReachabilityLevel,
     precision: PrecisionLevel,
     speed: SpeedLevel,
-    endurance: EnduranceLevel;
+    endurance: EnduranceLevel
     }
 }
 
 export interface AdaptiveThresholds { errorRate: number,
     successRate: number,
     responseTime: number,
-    gestureCompletion: number; }
+    gestureCompletion: number }
 }
 
 export interface ImprovementSuggestion { type: SuggestionType,
@@ -70,7 +70,7 @@ export interface CustomGesture { name: string,
     pattern: GesturePattern,
     action: string,
     createdAt: number,
-    usageCount: number; }
+    usageCount: number }
 }
 
 export interface GesturePattern { type: string,
@@ -78,13 +78,13 @@ export interface GesturePattern { type: string,
     duration: number,
     distance: number,
     velocity: number,
-    direction?: number; }
+    direction?: number }
 }
 
 export interface TouchPoint { x: number,
     y: number,
     timestamp: number,
-    pressure?: number; }
+    pressure?: number }
 }
 
 export interface GestureStats { gesturesRecognized: number,
@@ -94,7 +94,7 @@ export interface GestureStats { gesturesRecognized: number,
     averageGestureTime: number,
     customizationChanges: number,
     adaptationTriggers: number,
-    sessionStart: number; }
+    sessionStart: number }
 }
 
 export interface GestureData { type?: string;
@@ -110,7 +110,7 @@ export interface GestureData { type?: string;
 }
 
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface AdaptationStatus { learningEnabled: boolean,
@@ -118,14 +118,14 @@ export interface AdaptationStatus { learningEnabled: boolean,
     adaptiveThresholds: AdaptiveThresholds,
     suggestions: ImprovementSuggestion[],
     oneHandedMode: boolean,
-    gestureComplexity: GestureComplexity;
+    gestureComplexity: GestureComplexity
     }
 }
 
 export interface UnrecognizedGestureRecord { timestamp: number,
     gestureData: GestureData,
     userProfile: UserProfile,
-    context?: GestureContext;
+    context?: GestureContext
     }
 }
 
@@ -137,7 +137,7 @@ export interface GestureContext { gameState?: string;
 
 export interface FeedbackElement { element: HTMLElement,
     type: FeedbackType,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface FeedbackOptions { duration?: number;
@@ -158,13 +158,13 @@ export interface LearningData { gesture: string,
     success: boolean,
     confidence: number,
     adjustments: ThresholdAdjustment[],
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface ThresholdAdjustment { parameter: string,
     oldValue: number,
     newValue: number,
-    improvement: number; }
+    improvement: number }
 }
 
 export interface PreferencesSerialized { oneHandedMode: boolean,
@@ -202,8 +202,8 @@ export const DEFAULT_GESTURE_TIMEOUT = 1000;
 export const MAX_UNRECOGNIZED_GESTURES = 100;
 export const LEARNING_RATE = 0.01;
 export const ADAPTATION_THRESHOLD = 0.1;
-';
-// 型ガード''
+;
+// 型ガード
 export function isValidUserProfile(profile: any'): profile is UserProfile { return profile &&''
            typeof profile.dominantHand === 'string' &&'';
            typeof profile.reachability === 'string' &&'';
@@ -233,12 +233,12 @@ export class GestureAdaptationSystem {
         
         // 入力適応システム
         this.adaptationSystem = {
-            learningEnabled: true,';
+            learningEnabled: true,
             userProfile: {''
                 dominantHand: 'right','';
                 reachability: 'normal','';
                 precision: 'normal','';
-                speed: 'normal',';
+                speed: 'normal','
     }
     }'
                 endurance: 'normal' }
@@ -251,7 +251,7 @@ export class GestureAdaptationSystem {
             suggestions: [];
         },
         
-        // ユーザー設定'
+        // ユーザー設定
         this.userPreferences = { oneHandedMode: false,''
             preferredHand: 'right','';
             gestureComplexity: 'normal',
@@ -262,7 +262,7 @@ export class GestureAdaptationSystem {
             hapticFeedback: true,
             customGestures: new Map<string, CustomGesture>(),
             disabledGestures: new Set<string>(),
-            alternativeBindings: new Map<string, string>(); }
+            alternativeBindings: new Map<string, string>() }
         };
         
         // 統計情報
@@ -273,7 +273,7 @@ export class GestureAdaptationSystem {
             averageGestureTime: 0,
             customizationChanges: 0,
             adaptationTriggers: 0,
-            sessionStart: Date.now(); }
+            sessionStart: Date.now() }
         };
         
         // フィードバック関連
@@ -287,16 +287,16 @@ export class GestureAdaptationSystem {
      */
     private initialize(): void { // ユーザー設定の読み込み
         this.loadUserPreferences();
-        ';
-        // ユーザープロファイルの初期化''
-        this.initializeUserProfile('')';
+        ;
+        // ユーザープロファイルの初期化
+        this.initializeUserProfile()';
         console.log('GestureAdaptationSystem initialized'); }
     }
     
     /**
      * ユーザー設定の読み込み'
      */''
-    private loadUserPreferences('')';
+    private loadUserPreferences()';
             const saved = localStorage.getItem('gestureCustomizer_preferences');
             if(saved) {
                 const preferences: PreferencesSerialized = JSON.parse(saved),
@@ -321,10 +321,10 @@ export class GestureAdaptationSystem {
                 if (preferences.alternativeBindings) { this.userPreferences.alternativeBindings = new Map(preferences.alternativeBindings); }
                 }
                 
-                // 設定を適用'
+                // 設定を適用
                 this.applyUserPreferences();''
-            } catch (error') { ''
-            console.warn('Failed to load gesture customizer preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load gesture customizer preferences:', error) }
         }
     }
     
@@ -343,13 +343,13 @@ export class GestureAdaptationSystem {
                 hapticFeedback: this.userPreferences.hapticFeedback,
                 customGestures: Array.from(this.userPreferences.customGestures.entries(),';
                 disabledGestures: Array.from(this.userPreferences.disabledGestures),'';
-                alternativeBindings: Array.from(this.userPreferences.alternativeBindings.entries()'); }
+                alternativeBindings: Array.from(this.userPreferences.alternativeBindings.entries()') }
             };'
             '';
             localStorage.setItem('gestureCustomizer_preferences');'
                 JSON.stringify(preferences);''
-        } catch (error') { ''
-            console.warn('Failed to save gesture customizer preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save gesture customizer preferences:', error) }
         }
     }
     
@@ -376,23 +376,23 @@ export class GestureAdaptationSystem {
      */
     private initializeUserProfile(): void { // 既存の統計から推測
         this.analyzeUserBehavior();
-        ';
-        // 適応的閾値の設定''
-        this.setAdaptiveThresholds('')';
-        console.log('User profile initialized:', this.adaptationSystem.userProfile); }
+        ;
+        // 適応的閾値の設定
+        this.setAdaptiveThresholds()';
+        console.log('User profile initialized:', this.adaptationSystem.userProfile) }
     }
     
     /**
      * ユーザー行動の分析'
      */''
-    private analyzeUserBehavior('')';
+    private analyzeUserBehavior()';
         console.log('Analyzing user behavior patterns...');
     }
     
     /**
      * 適応的閾値の設定'
      */''
-    private setAdaptiveThresholds('')';
+    private setAdaptiveThresholds()';
         if(profile.precision === 'low'') {
             this.adaptationSystem.adaptiveThresholds.errorRate = 0.2;
         }'
@@ -401,7 +401,7 @@ export class GestureAdaptationSystem {
             this.adaptationSystem.adaptiveThresholds.gestureCompletion = 0.95; }
         }
         ';
-        // 速度に基づく閾値調整''
+        // 速度に基づく閾値調整
         if (profile.speed === 'slow'') { this.adaptationSystem.adaptiveThresholds.responseTime = 2000;' }'
         } else if (profile.speed === 'fast') { this.adaptationSystem.adaptiveThresholds.responseTime = 500; }
         }
@@ -444,29 +444,29 @@ export class GestureAdaptationSystem {
             success,
             confidence: success ? 0.9 : 0.3, // 簡略化された信頼度;
             adjustments: [],
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         
         this.storeLearningData(learningData);
     }
     
     /**
-     * 学習データの保存'
+     * 学習データの保存
      */''
-    private storeLearningData(data: LearningData'): void { try {''
+    private storeLearningData(data: LearningData'): void { try {'
             const stored = JSON.parse(localStorage.getItem('gesture_learning_data'') || '[]');
             stored.push(data);
             
             // 最大1000件まで保持
-            if(stored.length > 1000) {'
-                ';
+            if(stored.length > 1000) {
+                ';'
             }'
                 stored.splice(0, stored.length - 1000'); }
             }'
             '';
             localStorage.setItem('gesture_learning_data', JSON.stringify(stored);''
-        } catch (error') { ''
-            console.warn('Failed to store learning data:', error); }
+        } catch (error) { ''
+            console.warn('Failed to store learning data:', error) }
         }
     }
     
@@ -476,7 +476,7 @@ export class GestureAdaptationSystem {
     private updateUserProfile(gestureData: GestureData, success: boolean): void { const profile = this.adaptationSystem.userProfile;
         
         // 精度の更新
-        if(gestureData.distance !== undefined) {'
+        if(gestureData.distance !== undefined) {
             '';
             if (gestureData.distance < 10') {'
         }'
@@ -487,7 +487,7 @@ export class GestureAdaptationSystem {
         }
         
         // 速度の更新
-        if(gestureData.duration !== undefined) {'
+        if(gestureData.duration !== undefined) {
             '';
             if (gestureData.duration < 200') {'
         }'
@@ -498,7 +498,7 @@ export class GestureAdaptationSystem {
         }
         
         // 利き手の推測（タッチ位置から）
-        if(gestureData.startPosition) {'
+        if(gestureData.startPosition) {
             const screenWidth = window.innerWidth;''
             if (gestureData.startPosition.x > screenWidth * 0.6') {'
         }'
@@ -528,45 +528,45 @@ export class GestureAdaptationSystem {
     }
     
     /**
-     * 改善提案の生成'
+     * 改善提案の生成
      */''
-    private generateImprovementSuggestions('')';
+    private generateImprovementSuggestions()';
         if(profile.precision === 'low'') {'
             suggestions.push({''
                 type: 'precision','';
                 message: 'ジェスチャーをよりゆっくりと正確に行うことをお勧めします',')';
-                action: 'adjustSensitivity',');
+                action: 'adjustSensitivity',')
         }'
                 priority: 'medium')'); }
         }
         ';
-        // 速度が遅い場合の提案''
+        // 速度が遅い場合の提案
         if(profile.speed === 'slow'') {'
             suggestions.push({''
                 type: 'speed','';
                 message: '簡単なジェスチャーモードに切り替えることをお勧めします',')';
-                action: 'enableSimpleMode',');
+                action: 'enableSimpleMode',')
         }'
                 priority: 'high')'); }
         }
         ';
-        // 片手操作の提案''
+        // 片手操作の提案
         if(profile.reachability === 'limited'') {'
             suggestions.push({''
                 type: 'accessibility','';
                 message: '片手操作モードを有効にすることをお勧めします',')';
-                action: 'enableOneHanded',');
+                action: 'enableOneHanded',')
         }'
                 priority: 'high'); }
         }
         
-        // 成功率が低い場合の提案'
+        // 成功率が低い場合の提案
         const successRate = this.getSuccessRate();''
         if(successRate < 0.7') {'
             suggestions.push({''
                 type: 'efficiency','';
                 message: 'ジェスチャーの複雑度を下げることをお勧めします',')';
-                action: 'changeComplexity',');
+                action: 'changeComplexity',')
         }'
                 priority: 'medium'); }
         }
@@ -578,7 +578,7 @@ export class GestureAdaptationSystem {
      * 成功率の計算
      */
     private getSuccessRate(): number { const total = this.stats.successfulGestures + this.stats.failedGestures;
-        return total > 0 ? this.stats.successfulGestures / total: 0; }
+        return total > 0 ? this.stats.successfulGestures / total: 0 }
     }
     
     /**
@@ -590,7 +590,7 @@ export class GestureAdaptationSystem {
             case 'simple':'';
                 this.enableSimpleGestures(''';
             case 'advanced':'';
-                this.enableAdvancedGestures('')';
+                this.enableAdvancedGestures()';
             case 'normal':);
             default: this.enableNormalGestures(),
         }
@@ -601,14 +601,14 @@ export class GestureAdaptationSystem {
     /**
      * 簡単なジェスチャーの有効化'
      */''
-    private enableSimpleGestures('')';
+    private enableSimpleGestures()';
         console.log('Simple gesture mode enabled');
     }
     
     /**
      * 通常ジェスチャーの有効化'
      */''
-    private enableNormalGestures('')';
+    private enableNormalGestures()';
         console.log('Normal gesture mode enabled');
     }
     
@@ -618,19 +618,19 @@ export class GestureAdaptationSystem {
     private enableAdvancedGestures(): void { // すべてのジェスチャーを有効化
         this.config.alternativeGestures.singleFingerOnly = false;
         this.config.alternativeGestures.simplifiedMode = false;
-        ';
-        // カスタムジェスチャーの推奨''
-        this.suggestAdvancedGestures('')';
+        ;
+        // カスタムジェスチャーの推奨
+        this.suggestAdvancedGestures()';
         console.log('Advanced gesture mode enabled'); }
     }
     
     /**
      * 高度なジェスチャーの提案'
      */''
-    private suggestAdvancedGestures('')';
+    private suggestAdvancedGestures()';
         console.log('Suggesting advanced gesture options...'');
         
-        // 高度なジェスチャーの提案例'
+        // 高度なジェスチャーの提案例
         const suggestions: ImprovementSuggestion[] = [{ ''
                 type: 'efficiency','';
                 message: 'カスタムジェスチャーを作成して効率を向上させましょう','';
@@ -666,18 +666,18 @@ export class GestureAdaptationSystem {
      */
     disableOneHandedMode(): void { this.config.oneHandedMode = false;
         this.userPreferences.oneHandedMode = false;
-        ';
-        // UIを元に戻す''
-        this.resetUILayout('')';
+        ;
+        // UIを元に戻す
+        this.resetUILayout()';
         console.log('One-handed mode disabled'); }
     }
     
     /**
      * UIの片手操作調整'
      */''
-    private adjustUIForOneHanded(preferredHand: PreferredHand'): void { // UI要素を操作しやすい位置に移動''
+    private adjustUIForOneHanded(preferredHand: PreferredHand'): void { // UI要素を操作しやすい位置に移動
         const uiElements = document.querySelectorAll('[data-ui-adjustable]');
-        ';
+        ';'
         uiElements.forEach(element => { ')'
             const htmlElement = element as HTMLElement');''
             if (preferredHand === 'right'') {' }'
@@ -692,9 +692,9 @@ export class GestureAdaptationSystem {
     /**
      * UIレイアウトのリセット'
      */''
-    private resetUILayout('')';
+    private resetUILayout()';
         const uiElements = document.querySelectorAll('[data-ui-adjustable]'');
-        ';
+        ';'
         uiElements.forEach(element => {  const htmlElement = element as HTMLElement;')'
             htmlElement.style.transform = ''');' }'
             htmlElement.classList.remove('one-handed-adjusted'); }
@@ -722,15 +722,15 @@ export class GestureAdaptationSystem {
     
     /**
      * 視覚フィードバックの表示
-     */'
+     */
     private showVisualFeedback(gestureName: string, gestureData: GestureData, options?: FeedbackOptions): void { ''
         if (!gestureData.endPosition') return;
         ';
-        // 一時的な視覚効果''
+        // 一時的な視覚効果
         const feedback = document.createElement('div'');''
         feedback.className = 'gesture-feedback';
         feedback.textContent = gestureName;
-        ';
+        ';'
         const defaultStyle: FeedbackStyle = {''
             backgroundColor: 'rgba(0, 255, 0, 0.8')','';
             color: 'white','';
@@ -850,7 +850,7 @@ export class GestureAdaptationSystem {
             };'
             '';
             const soundId = soundMap[gestureName] || 'gesture_generic';
-            this.gameEngine.audioManager.playSound(soundId, { volume: 0.3 ); }
+            this.gameEngine.audioManager.playSound(soundId, { volume: 0.3 ) }
         }
     }
     
@@ -875,22 +875,22 @@ export class GestureAdaptationSystem {
     /**
      * 未認識ジェスチャーの記録
      */
-    recordUnrecognizedGesture(gestureData: GestureData, context?: GestureContext): void { // 学習データとして保存'
+    recordUnrecognizedGesture(gestureData: GestureData, context?: GestureContext): void { // 学習データとして保存
         const unrecognizedData: UnrecognizedGestureRecord = {''
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             const saved = JSON.parse(localStorage.getItem('unrecognized_gestures'') || '[]'),
             saved.push(unrecognizedData);
             
             // 最大件数まで保持
-            if(saved.length > MAX_UNRECOGNIZED_GESTURES) {'
-                ';
+            if(saved.length > MAX_UNRECOGNIZED_GESTURES) {
+                ';'
             }'
                 saved.splice(0, saved.length - MAX_UNRECOGNIZED_GESTURES'); }
             }'
             '';
             localStorage.setItem('unrecognized_gestures', JSON.stringify(saved);''
-        } catch (error') { ''
-            console.warn('Failed to record unrecognized gesture:', error); }
+        } catch (error) { ''
+            console.warn('Failed to record unrecognized gesture:', error) }
         }
     }
     
@@ -901,7 +901,7 @@ export class GestureAdaptationSystem {
         '';
         console.log('Suggesting gesture alternatives based on:', gestureData');
         ';
-        // 類似パターンの提案''
+        // 類似パターンの提案
         if(gestureData.type === 'touch' && gestureData.duration && gestureData.duration > 500') {'
             '';
             suggestions.push('longPress'');'
@@ -983,9 +983,9 @@ export class GestureAdaptationSystem {
     /**
      * 設定の更新
      */
-    updateUserPreferences(newPreferences: Partial<UserPreferences>): void { Object.assign(this.userPreferences, newPreferences);'
+    updateUserPreferences(newPreferences: Partial<UserPreferences>): void { Object.assign(this.userPreferences, newPreferences);
         this.saveUserPreferences();''
-        this.applyUserPreferences('')';
+        this.applyUserPreferences()';
         console.log('User preferences updated'); }
     }
     
@@ -993,8 +993,8 @@ export class GestureAdaptationSystem {
      * ユーザープロファイルの手動更新
      */'
     updateUserProfile(profileUpdates: Partial<UserProfile>): void { Object.assign(this.adaptationSystem.userProfile, profileUpdates);''
-        this.setAdaptiveThresholds('')';
-        console.log('User profile updated:', this.adaptationSystem.userProfile); }
+        this.setAdaptiveThresholds()';
+        console.log('User profile updated:', this.adaptationSystem.userProfile) }
     }
     
     /**
@@ -1055,11 +1055,11 @@ export class GestureAdaptationSystem {
     /**
      * 提案の実行
      */'
-    applySuggestion(suggestion: ImprovementSuggestion): boolean { try {''
+    applySuggestion(suggestion: ImprovementSuggestion): boolean { try {'
             switch(suggestion.action') {'
                 '';
                 case 'adjustSensitivity':;
-                    this.userPreferences.touchSensitivity *= 0.8; // 感度を下げる'
+                    this.userPreferences.touchSensitivity *= 0.8; // 感度を下げる
                     break;''
                 case 'enableSimpleMode':'';
                     this.userPreferences.gestureComplexity = 'simple';'
@@ -1070,7 +1070,7 @@ export class GestureAdaptationSystem {
                     this.userPreferences.gestureComplexity = 'simple';
                     break;)'
                 default:')';
-                    console.warn('Unknown suggestion action:', suggestion.action);
+                    console.warn('Unknown suggestion action:', suggestion.action)
             }
                     return false; }
             }
@@ -1080,15 +1080,15 @@ export class GestureAdaptationSystem {
             
             // 適用した提案を削除
             const index = this.adaptationSystem.suggestions.indexOf(suggestion);
-            if(index > -1) {'
-                ';
+            if(index > -1) {
+                ';'
             }'
                 this.adaptationSystem.suggestions.splice(index, 1'); }
             }'
             '';
             console.log('Suggestion applied:', suggestion.action);'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to apply suggestion:', error);
             return false; }
         }
@@ -1105,7 +1105,7 @@ export class GestureAdaptationSystem {
             averageGestureTime: 0,
             customizationChanges: 0,';
             adaptationTriggers: 0,'';
-            sessionStart: Date.now('')';
+            sessionStart: Date.now()';
         console.log('Gesture statistics reset'), }
     }
     
@@ -1118,10 +1118,10 @@ export class GestureAdaptationSystem {
                 ...this.userPreferences,
                 customGestures: Array.from(this.userPreferences.customGestures.entries(),
                 disabledGestures: Array.from(this.userPreferences.disabledGestures),
-                alternativeBindings: Array.from(this.userPreferences.alternativeBindings.entries(); }
+                alternativeBindings: Array.from(this.userPreferences.alternativeBindings.entries() }
             },
             stats: { ...this.stats,
-                gesturesByType: Array.from(this.stats.gesturesByType.entries(); }
+                gesturesByType: Array.from(this.stats.gesturesByType.entries() }
             }
         };
         
@@ -1168,12 +1168,12 @@ export class GestureAdaptationSystem {
                     this.stats.gesturesByType = new Map(config.stats.gesturesByType); }
                 }
             }
-            ';
+            ';'
             this.applyUserPreferences();''
-            this.saveUserPreferences('')';
+            this.saveUserPreferences()';
             console.log('Configuration imported successfully');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to import configuration:', error);
             return false; }
         }
@@ -1198,9 +1198,9 @@ export class GestureAdaptationSystem {
         
         // データのクリア
         this.userPreferences.customGestures.clear();
-        this.userPreferences.disabledGestures.clear();'
+        this.userPreferences.disabledGestures.clear();
         this.userPreferences.alternativeBindings.clear();''
-        this.stats.gesturesByType.clear('')';
+        this.stats.gesturesByType.clear()';
         console.log('GestureAdaptationSystem destroyed'');'
     }''
 }

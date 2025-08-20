@@ -11,24 +11,24 @@ export { HelpErrorHandler, getHelpErrorHandler, reinitializeHelpErrorHandler } f
 export { TutorialActions, getTutorialActions, reinitializeTutorialActions } from './TutorialActions.js';''
 export { TutorialValidationEngine, getTutorialValidationEngine, reinitializeTutorialValidationEngine } from './TutorialValidationEngine.js';
 ';
-// UI Components''
+// UI Components
 export { TutorialOverlay, getTutorialOverlay, reinitializeTutorialOverlay } from './TutorialOverlay.js';
 ';
-// Content Management System Components''
+// Content Management System Components
 export { ContentLoader, getContentLoader, reinitializeContentLoader } from './components/ContentLoader.js';''
 export { HelpContentModel, TutorialModel, FAQModel, UserProgressModel, DataModelFactory } from './DataModels.js';''
 export { ContentValidation, getContentValidation, reinitializeContentValidation } from './ContentValidation.js';''
 export { SearchEngine, getSearchEngine, reinitializeSearchEngine } from './components/SearchEngine.js';''
 export { MultilingualContentManager, getMultilingualContentManager, reinitializeMultilingualContentManager } from './MultilingualContentManager.js';
 ';
-// Tutorial Components''
+// Tutorial Components
 export { TutorialInteractionHandler } from './components/TutorialInteractionHandler.js';''
 export { TutorialProgressTracker } from './components/TutorialProgressTracker.js';''
 export { TutorialAnimationController } from './components/TutorialAnimationController.js';''
 export { HelpPerformanceMonitor } from './components/HelpPerformanceMonitor.js';''
 export { TutorialStepManager } from './components/TutorialStepManager.js';
 ';
-// Effectiveness Analysis Components''
+// Effectiveness Analysis Components
 export { HelpMetricsCollector } from './effectiveness/HelpMetricsCollector.js';''
 export { HelpDataAnalyzer } from './effectiveness/HelpDataAnalyzer.js';''
 export { HelpReportGenerator } from './effectiveness/HelpReportGenerator.js';
@@ -48,7 +48,7 @@ export interface HelpSystemComponents { helpManager: any,
     searchEngine: any,
     multilingualContentManager: any,
     initialized: boolean,
-    version: string; }
+    version: string }
 }
 
 export interface HelpSystemInitResult { initialized: boolean,
@@ -81,12 +81,12 @@ export function initializeHelpSystem(gameEngine: GameEngine): HelpSystemInitResu
         
         // Content Management System
         const contentLoader = getContentLoader();
-        const contentValidation = getContentValidation();'
+        const contentValidation = getContentValidation();
         const searchEngine = getSearchEngine();''
         const multilingualContentManager = getMultilingualContentManager(''';
             version: '1.0.0' }'
         };')'
-    } catch (error') { ''
+    } catch (error) { ''
         console.error('Failed to initialize help system:', error);
         return { initialized: false, };
             error: error instanceof Error ? error.message : String(error); }
@@ -112,9 +112,9 @@ export function destroyHelpSystem(''';
             getTutorialOverlay({), undefined, undefined),
             getContentLoader(),
             getContentValidation(),
-            getSearchEngine(),];
+            getSearchEngine()];
             getMultilingualContentManager()];
-        ];'
+        ];
 '';
         components.forEach(component => { ');''
             if(component && typeof component.destroy === 'function') {
@@ -122,15 +122,15 @@ export function destroyHelpSystem(''';
             }
                 try { }'
                     component.destroy();' }'
-                } catch (error') { ''
-                    console.warn('Failed to destroy component:', error); }
+                } catch (error) { ''
+                    console.warn('Failed to destroy component:', error) }
                 }'
             }''
         }');'
 '';
         console.log('Help system destroyed successfully');'
         return true;''
-    } catch (error') { ''
+    } catch (error) { ''
         console.error('Failed to destroy help system:', error');
         return false; }'
     }''

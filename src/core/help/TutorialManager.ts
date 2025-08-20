@@ -11,7 +11,7 @@ import { ContentLoader, getContentLoader } from './components/ContentLoader.js';
 import { TutorialModel } from './DataModels.js';''
 import { TutorialOverlay, getTutorialOverlay } from './TutorialOverlay.js';
 ';
-// 分割されたコンポーネントをインポート''
+// 分割されたコンポーネントをインポート
 import { getTutorialAccessibilityManager } from './TutorialAccessibilityManager.js';''
 import { getTutorialStatsManager } from './TutorialStatsManager.js';''
 import { getTutorialProgressManager } from './TutorialProgressManager.js';''
@@ -30,9 +30,9 @@ export interface TutorialStep { id: string,
     target?: string;
     duration?: number;
     validation?: string;
-    timeout?: number;'
+    timeout?: number;
     highlight?: string | object;''
-    validationFunction?: (...args: any[]') => boolean; }
+    validationFunction?: (...args: any[]') => boolean }
 }
 
 export interface Tutorial { id: string,
@@ -51,7 +51,7 @@ export interface TutorialConfig { autoAdvance: boolean,
     allowSkip: boolean,
     allowBackNavigation: boolean,
     defaultTimeout: number,
-    highlightEnabled: boolean; }
+    highlightEnabled: boolean }
 }
 
 export interface TutorialProgress { tutorialId?: string;
@@ -66,7 +66,7 @@ export interface AvailableTutorial { id: string,
     description: string,'';
     difficulty: 'beginner' | 'intermediate' | 'advanced',
     estimatedTime: number,
-    isCompleted: boolean; }
+    isCompleted: boolean }
 }
 
 export interface ActionResult { timeout?: boolean;
@@ -74,11 +74,11 @@ export interface ActionResult { timeout?: boolean;
 }
 
 export interface ValidationResult { success: boolean,
-    error?: string; }
+    error?: string }
 }
-';
+';'
 export interface NavigationData { ''
-    direction: 'next' | 'previous' | 'skip'; }
+    direction: 'next' | 'previous' | 'skip' }
 }
 
 export interface TutorialAccessibilityManager { applyToTutorial(overlay: any, config: TutorialConfig): TutorialConfig,
@@ -86,7 +86,7 @@ export interface TutorialAccessibilityManager { applyToTutorial(overlay: any, co
     getConfig(): { simplifiedMode: boolean }
     applySimplifiedMode(tutorial: Tutorial): Tutorial,';
     updateConfig(config: any): void,'';
-    destroy('')';
+    destroy()';
     recordTutorialAttempt(tutorialId: string, result: 'complete' | 'skip'): void,
     updateStepStats(stepId: string, tutorialId: string, duration: number, success: boolean, skipped: boolean): void,
     getTutorialStatistics(tutorialData: Map<string, Tutorial>, completedTutorials: Set<string>, currentTutorialId?: string, currentTutorial?: Tutorial | null): Record<string, any>;
@@ -172,18 +172,18 @@ export class TutorialManager {
     }
 
     /**
-     * チュートリアルマネージャーの初期化'
+     * チュートリアルマネージャーの初期化
      */''
-    async initialize('')';
+    async initialize()';
             this.loggingSystem.info('TutorialManager', 'Initializing tutorial system...');
             
             // チュートリアルデータの読み込み
             await this.loadTutorialData();
-            ';
-            // オーバーレイ統合の設定''
-            this.setupOverlayIntegration('')';
+            ;
+            // オーバーレイ統合の設定
+            this.setupOverlayIntegration()';
             this.loggingSystem.info('TutorialManager', 'Tutorial system initialized successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to initialize tutorial system', error');''
             ErrorHandler.handleError(error, 'TutorialManager', 'Critical initialization error'); }
         }
@@ -194,7 +194,7 @@ export class TutorialManager {
      * @param tutorialId - チュートリアルID
      * @returns 開始成功フラグ
      */
-    async startTutorial(tutorialId: string): Promise<boolean> { try {'
+    async startTutorial(tutorialId: string): Promise<boolean> { try {
             const tutorial = this.tutorialData.get(tutorialId);''
             if (!tutorial') {' }'
                 this.loggingSystem.error('TutorialManager', `Tutorial not found: ${tutorialId)`});
@@ -220,14 +220,14 @@ export class TutorialManager {
 
             // TutorialOverlayにチュートリアルを表示
             await this.showTutorialOverlay();
-            ';
-            // 最初のステップを実行''
+            ;
+            // 最初のステップを実行
             await this.executeStep(0');'
             '';
             this.loggingSystem.info('TutorialManager', `Started tutorial: ${tutorialId)`});
             return true;'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('TutorialManager', `Failed to start tutorial: ${tutorialId}`, error);
             return false;
         }
@@ -240,12 +240,12 @@ export class TutorialManager {
             this.progressManager.pauseTutorial();
             
             if(this.tutorialOverlay) {
-            ';
+            ';'
                 '';
-                this.tutorialOverlay.pause('');
+                this.tutorialOverlay.pause();
             }'
             this.loggingSystem.info('TutorialManager', 'Tutorial paused');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to pause tutorial', error); }
         }
     }
@@ -257,12 +257,12 @@ export class TutorialManager {
             this.progressManager.resumeTutorial();
             
             if(this.tutorialOverlay) {
-            ';
+            ';'
                 '';
-                this.tutorialOverlay.resume('');
+                this.tutorialOverlay.resume();
             }'
             this.loggingSystem.info('TutorialManager', 'Tutorial resumed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to resume tutorial', error); }
         }
     }
@@ -270,17 +270,17 @@ export class TutorialManager {
     /**
      * チュートリアルをスキップ
      */
-    skipTutorial(): void { try {'
+    skipTutorial(): void { try {
             const tutorialId = this.currentTutorial? .id;''
             if(tutorialId') {'
-                ';
+                ';'
             }'
                 this.statsManager.recordTutorialAttempt(tutorialId, 'skip'); }
             }'
             '';
-            this.stopTutorial('')';
+            this.stopTutorial()';
             this.loggingSystem.info('TutorialManager', 'Tutorial skipped');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to skip tutorial', error); }
         }
     }
@@ -288,7 +288,7 @@ export class TutorialManager {
     /**
      * 次のステップに進む
      */ : undefined'
-    nextStep(): void { try {''
+    nextStep(): void { try {'
             if(!this.currentTutorial') {'
                 '';
                 this.loggingSystem.warn('TutorialManager', 'No tutorial is currently running');
@@ -304,7 +304,7 @@ export class TutorialManager {
             }
                 this.executeStep(this.currentStep); }'
             } else { this.completeTutorial();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to advance to next step', error); }
         }
     }
@@ -326,7 +326,7 @@ export class TutorialManager {
 
             }'
                 this.executeStep(this.currentStep);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to go to previous step', error); }
         }
     }
@@ -356,7 +356,7 @@ export class TutorialManager {
      * ステップを実行
      * @param stepIndex - ステップインデックス
      */ : undefined
-    async executeStep(stepIndex: number): Promise<void> { try {'
+    async executeStep(stepIndex: number): Promise<void> { try {
             const step = this.currentTutorial? .steps[stepIndex];''
             if (!step') { : undefined' }'
                 this.loggingSystem.error('TutorialManager', `Step not found: ${stepIndex)`});
@@ -398,19 +398,19 @@ export class TutorialManager {
                         this.nextStep(); }
                     }, this.config.autoAdvanceDelay);
                 }
-            } else {  // バリデーション失敗時'
+            } else {  // バリデーション失敗時
                 const duration = Date.now() - stepStartTime;''
                 this.statsManager.updateStepStats(step.id, this.currentTutorial!.id, duration, false, false');
-                ';
+                ';'
                 await this.validationEngine.showValidationError('';
-                    validationResult.error || 'Validation failed', );
+                    validationResult.error || 'Validation failed' );
                     this.tutorialOverlay);
                     this.currentTutorial!, );
                     this.currentStep);
                 
-                // ステップを再実行 }'
+                // ステップを再実行 }
                 await this.executeStep(stepIndex);' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             this.loggingSystem.error('TutorialManager', `Step execution error: ${stepIndex}`, error);
         }
     }
@@ -450,9 +450,9 @@ export class TutorialManager {
     showStepInstructions(step: TutorialStep): void { try {
             if(this.tutorialOverlay) {
                 
-            }'
+            }
                 this.tutorialOverlay.showStep(step);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to show step instructions', error); }
         }
     }
@@ -466,7 +466,7 @@ export class TutorialManager {
                 
             }'
                 this.tutorialOverlay.highlightElement(highlightData);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to highlight element', error); }
         }
     }
@@ -479,7 +479,7 @@ export class TutorialManager {
                 
             }'
                 await this.tutorialOverlay.show(this.currentTutorial);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to show tutorial overlay', error); }
         }
     }
@@ -494,8 +494,8 @@ export class TutorialManager {
         }
 
         // 前提チュートリアルの完了チェック
-        for(const prerequisite of tutorial.prerequisites) {'
-            ';
+        for(const prerequisite of tutorial.prerequisites) {
+            ';'
         }'
             if (!this.progressManager.isCompleted(prerequisite)') {' }'
                 this.loggingSystem.warn('TutorialManager', `Prerequisite not met: ${prerequisite)`});
@@ -521,11 +521,11 @@ export class TutorialManager {
             // オーバーレイを非表示
             if (this.tutorialOverlay) { this.tutorialOverlay.hide(); }
             }
-';
-            // ハイライトをクリア''
-            this.clearHighlight('')';
+;
+            // ハイライトをクリア
+            this.clearHighlight()';
             this.loggingSystem.info('TutorialManager', `Tutorial completed: ${tutorialId)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to complete tutorial', error); }
         }
     }
@@ -542,9 +542,9 @@ export class TutorialManager {
 
             this.clearHighlight();'
             this.validationEngine.clearStepTimer();''
-            this.validationEngine.clearInteractionHandlers('')';
+            this.validationEngine.clearInteractionHandlers()';
             this.loggingSystem.info('TutorialManager', 'Tutorial stopped');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to stop tutorial', error); }
         }
     }
@@ -557,7 +557,7 @@ export class TutorialManager {
                 
             }'
                 this.tutorialOverlay.clearHighlight();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to clear highlight', error); }
         }
     }
@@ -579,9 +579,9 @@ export class TutorialManager {
             }
 
             // ガイドツアーデータも読み込み
-            await this.loadGuidedTourData();'
+            await this.loadGuidedTourData();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to load tutorial data', error); }
         }
     }
@@ -597,7 +597,7 @@ export class TutorialManager {
             }
                     this.tutorialData.set(tourId, tutorial); }'
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to load guided tour data', error); }
         }
     }
@@ -615,14 +615,14 @@ export class TutorialManager {
     /**
      * オーバーレイ統合を設定
      */'
-    setupOverlayIntegration(): void { try {''
+    setupOverlayIntegration(): void { try {'
             if(this.gameEngine && this.gameEngine.eventBus') {'
-                ';
+                ';'
             }'
                 this.gameEngine.eventBus.on('tutorial_navigate', (data: NavigationData) => {  }
                     this.handleOverlayNavigation(data); }'
                 });''
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to setup overlay integration', error); }
         }
     }
@@ -642,10 +642,10 @@ export class TutorialManager {
                     this.previousStep(''';
                 case 'skip':';
             })'
-                    this.skipTutorial('') }'
+                    this.skipTutorial() }'
                     this.loggingSystem.warn('TutorialManager', `Unknown navigation direction: ${direction)`});'
                     break;''
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to handle overlay navigation', error); }
         }
     }
@@ -660,7 +660,7 @@ export class TutorialManager {
                 '';
                 if (this.checkPrerequisites(tutorial)') {
                     tutorials.push({
-                        id,);
+                        id);
                         title: tutorial.title)';
                         description: tutorial.description,'';
                         difficulty: tutorial.difficulty || 'beginner',);
@@ -671,7 +671,7 @@ export class TutorialManager {
                 }
             }'
             return tutorials;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to get available tutorials', error);
             return []; }
         }
@@ -689,7 +689,7 @@ export class TutorialManager {
                 progress.currentTutorialId,
                 this.currentTutorial';
             );' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to get tutorial statistics', error); }
             return {};
         }
@@ -708,9 +708,9 @@ export class TutorialManager {
                 
                 if (this.accessibilityManager.getConfig().simplifiedMode) {
             }
-                    this.currentTutorial = this.accessibilityManager.applySimplifiedMode(this.currentTutorial); }'
+                    this.currentTutorial = this.accessibilityManager.applySimplifiedMode(this.currentTutorial); }
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to update accessibility config', error); }
         }
     }
@@ -723,11 +723,11 @@ export class TutorialManager {
             
             // 分割されたコンポーネントをクリーンアップ
             this.accessibilityManager? .destroy();
-            this.statsManager?.destroy();'
+            this.statsManager?.destroy();
             this.progressManager?.destroy();''
-            this.validationEngine?.destroy('')';
+            this.validationEngine?.destroy()';
             this.loggingSystem.info('TutorialManager', 'Tutorial manager destroyed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TutorialManager', 'Failed to destroy tutorial manager', error); }
         }
     }
@@ -753,7 +753,7 @@ export function getTutorialManager(gameEngine: GameEngine): TutorialManager { if
  * @returns 新しいシングルトンインスタンス
  */
 export function reinitializeTutorialManager(gameEngine: GameEngine): TutorialManager { if (tutorialManagerInstance) {
-        tutorialManagerInstance.destroy(); }'
+        tutorialManagerInstance.destroy(); }
     }''
     tutorialManagerInstance = new TutorialManager(gameEngine');
     return tutorialManagerInstance;

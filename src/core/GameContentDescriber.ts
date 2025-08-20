@@ -16,7 +16,7 @@ export class GameContentDescriber {
         this.accessibilityManager = screenReaderManager.accessibilityManager;
         this.gameEngine = this.accessibilityManager.gameEngine;
         
-        // 説明設定'
+        // 説明設定
         this.config = {''
             verbosity: 'normal', // 'minimal', 'normal', 'verbose''';
             language: 'ja',
@@ -24,18 +24,18 @@ export class GameContentDescriber {
             includeInstructions: true,
             includeShortcuts: true,
             updateFrequency: 2000, // 2秒間隔;
-            maxDescriptionLength: 300,';
+            maxDescriptionLength: 300,
             priority: {''
                 critical: ['gameOver', 'levelComplete', 'error'],'';
                 high: ['scoreChange', 'comboStart', 'specialBubble'],'';
-                normal: ['bubbleSpawn', 'timeUpdate'],';
+                normal: ['bubbleSpawn', 'timeUpdate'],'
     }
     }'
                 low: ['background', 'ambient'] }
             }
         };
         
-        // 説明テンプレート'
+        // 説明テンプレート
         this.templates = { gameState: {''
                 loading: 'ゲームを読み込み中です。',' }'
                 ready: 'ゲームの準備が完了しました。{instructions}',''
@@ -44,7 +44,7 @@ export class GameContentDescriber {
                 gameOver: 'ゲーム終了。最終スコア{finalScore}点。{restartInstruction}',''
                 levelComplete: 'ステージクリア！獲得スコア{score}点。{nextLevelInstruction}'
             },
-            ';
+            ';'
             bubbleTypes: { ''
                 normal: '通常のバブル',' }'
                 stone: '硬いストーンバブル（{clicks}回クリック必要）',''
@@ -65,7 +65,7 @@ export class GameContentDescriber {
                 phantom: 'ファントムバブル（透明化）','';
                 multiplier: '倍率バブル（スコア倍率アップ）';
             },
-            ';
+            ';'
             actions: { ' }'
                 bubblePopped: '{bubbleType}をポップしました。{points}点獲得。',''
                 comboContinue: '{comboCount}コンボ継続中！',''
@@ -75,14 +75,14 @@ export class GameContentDescriber {
                 timeWarning: '残り時間{timeLeft}秒です。急いでください！',''
                 newHighScore: '新記録達成！{score}点！'
             },
-            ';
+            ';'
             instructions: { ''
                 basic: 'マウスクリックまたはスペースキーでバブルをポップしてください。','';
                 keyboard: 'Tab/矢印キーで移動、Enterで実行、Escapeでメニューです。','';
                 advanced: 'ドラッグでバブルを移動できます。特殊バブルには様々な効果があります。','';
                 shortcuts: '主なショートカット: P（一時停止）、R（リスタート）、H（ヘルプ）' }
             },
-            ';
+            ';'
             contextHelp: { ''
                 firstTime: 'バブルポップゲームへようこそ！バブルをクリックして破裂させ、高得点を目指しましょう。','';
                 struggling: 'コツ: 同じ色のバブルを連続でポップするとコンボボーナスがもらえます。','';
@@ -98,7 +98,7 @@ export class GameContentDescriber {
             lastCombo: 0,
             sessionStats: {
                 totalDescriptions: 0,
-                actionDescriptions: 0,';
+                actionDescriptions: 0,
                 helpRequests: 0,'';
                 startTime: Date.now(''';
                 verbosity: 'normal',
@@ -107,9 +107,9 @@ export class GameContentDescriber {
                 includeBubbleCounts: false }
             })
         })
-        // バブル位置管理（空間的説明用）'
+        // バブル位置管理（空間的説明用）
         this.spatialInfo = { ''
-            bubblePositions: new Map('')';
+            bubblePositions: new Map()';
         console.log('GameContentDescriber initialized'),
         this.initialize(); }
     }
@@ -124,14 +124,14 @@ export class GameContentDescriber {
             
             // ユーザー設定の読み込み
             this.loadUserPreferences();
-            ';
-            // 定期更新の開始''
-            this.startPeriodicUpdates('');
+            ;
+            // 定期更新の開始
+            this.startPeriodicUpdates();'
     }'
             console.log('GameContentDescriber initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'GAME_DESCRIBER_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -147,9 +147,9 @@ export class GameContentDescriber {
             return; }
         }
         ';
-        // GameEngineのイベントを監視''
+        // GameEngineのイベントを監視
         if(this.gameEngine.addEventListener') {'
-            ';
+            ';'
         }'
             this.gameEngine.addEventListener('gameStateChanged', (event) => {  }'
                 this.handleGameStateChange(event.newState, event.oldState);' }'
@@ -168,9 +168,9 @@ export class GameContentDescriber {
             });
         }
         ';
-        // BubbleManagerのイベント監視''
+        // BubbleManagerのイベント監視
         if(this.gameEngine.bubbleManager') {'
-            ';
+            ';'
         }'
             this.gameEngine.bubbleManager.addEventListener? .('bubbleSpawned', (event) => {  }'
                 this.handleBubbleSpawned(event.bubble);' }'
@@ -180,9 +180,9 @@ export class GameContentDescriber {
             });
         }
         ';
-        // SceneManagerのイベント監視''
+        // SceneManagerのイベント監視
         if(this.gameEngine.sceneManager') {'
-            ';
+            ';'
         }'
             this.gameEngine.sceneManager.addEventListener?.('sceneChanged', (event) => {  }
                 this.handleSceneChange(event.newScene, event.oldScene); }
@@ -193,28 +193,28 @@ export class GameContentDescriber {
     /**
      * ユーザー設定の読み込み'
      */''
-    loadUserPreferences('')';
+    loadUserPreferences()';
             const savedPrefs = localStorage.getItem('gameContentDescriber_preferences');
             if(savedPrefs) {
                 const prefs = JSON.parse(savedPrefs);
                 Object.assign(this.state.userPreferences, prefs);
                 
                 // 設定に基づいて動作を調整
-            }'
+            }
                 this.config.verbosity = this.state.userPreferences.verbosity;' }'
-            } catch (error') { : undefined''
-            console.warn('Failed to load user preferences:', error); }
+            } catch (error) { : undefined''
+            console.warn('Failed to load user preferences:', error) }
         }
     }
     
     /**
      * ユーザー設定の保存'
      */''
-    saveUserPreferences('')';
+    saveUserPreferences()';
             localStorage.setItem('gameContentDescriber_preferences');'
                 JSON.stringify(this.state.userPreferences);''
-        } catch (error') { ''
-            console.warn('Failed to save user preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save user preferences:', error) }
         }
     }
     
@@ -235,7 +235,7 @@ export class GameContentDescriber {
             return; }
         }'
         '';
-        const currentGameState = this.getCurrentGameState('')';
+        const currentGameState = this.getCurrentGameState()';
         if (currentGameState.phase === 'playing') { this.describeCurrentGameState(currentGameState); }
         }
     }
@@ -243,7 +243,7 @@ export class GameContentDescriber {
     /**
      * 更新提供判定'
      */''
-    shouldProvideUpdate('')';
+    shouldProvideUpdate()';
         const gameCanvas = document.querySelector('#game-canvas, canvas.game-canvas');
         
         if (gameCanvas && activeElement !== gameCanvas) { return false; }
@@ -258,7 +258,7 @@ export class GameContentDescriber {
     }
     
     /**
-     * 現在のゲーム状態取得'
+     * 現在のゲーム状態取得
      */''
     getCurrentGameState(''';
             phase: 'unknown',
@@ -272,12 +272,12 @@ export class GameContentDescriber {
         if (!this.gameEngine) { return defaultState; }
         }
         ';
-        try { // GameEngineから状態を取得''
-            const scene = this.gameEngine.sceneManager? .getCurrentScene('')';
+        try { // GameEngineから状態を取得
+            const scene = this.gameEngine.sceneManager? .getCurrentScene()';
             if (!scene || scene.constructor.name !== 'GameScene'') { : undefined' }'
                 return { ...defaultState, phase: 'menu' }
             }
-            ';
+            ';'
             return { ''
                 phase: scene.isPaused ? 'paused' : 'playing',
                 score: scene.scoreManager? .currentScore || 0, : undefined;
@@ -287,7 +287,7 @@ export class GameContentDescriber {
                 bubbleCount: scene.bubbleManager? .bubbles?.length || 0, : undefined };
                 level: scene.currentLevel || 1 }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to get current game state:', error);
             return defaultState; }
         }
@@ -315,7 +315,7 @@ export class GameContentDescriber {
     }
             return; }
         }
-        ';
+        ';'
         const scoreIncrease = newScore - oldScore;''
         if(scoreIncrease > 0') {'
             '';
@@ -334,7 +334,7 @@ export class GameContentDescriber {
                 '';
                 this.announceDescription(description, 'polite'');'
             }'
-                this.addToRecentActions('scoreChange', { newScore, oldScore, increase: scoreIncrease ); }
+                this.addToRecentActions('scoreChange', { newScore, oldScore, increase: scoreIncrease ) }
             }
         }
         
@@ -352,7 +352,7 @@ export class GameContentDescriber {
             bubbleType: bubbleType,);
             points: points),
         
-        // 特殊バブルの場合は詳細説明'
+        // 特殊バブルの場合は詳細説明
         if (this.isSpecialBubble(bubble) {'
     }'
             const specialDescription = this.getSpecialBubbleDescription(bubble'); }'
@@ -375,21 +375,21 @@ export class GameContentDescriber {
                 const template = this.templates.actions.comboEnd;
                 const description = this.fillTemplate(template, {)
                     comboCount: this.state.lastCombo),
-    }'
+    }
                     bonus: this.calculateComboBonus(this.state.lastCombo),' }'
                 }');''
                 this.announceDescription(description, 'polite');
             }
         } else {  // コンボ継続
             if(combo > this.state.lastCombo && combo >= 3) {
-                const template = this.templates.actions.comboContinue;'
+                const template = this.templates.actions.comboContinue;
                 const description = this.fillTemplate(template, {')
             }'
                     comboCount: combo)');' }'
                 this.announceDescription(description, 'polite''); }
             }
         }
-        ';
+        ';'
         this.state.lastCombo = combo;''
         this.addToRecentActions('comboChange', { combo, isNewCombo ); }
     }
@@ -414,7 +414,7 @@ export class GameContentDescriber {
      */
     handleBubbleSpawned(bubble) {
         // 重要な特殊バブルの場合のみ通知
-        if(this.isImportantBubble(bubble) {'
+        if(this.isImportantBubble(bubble) {
             const bubbleType = this.getBubbleTypeDescription(bubble);'
     }'
             const position = this.getBubblePosition(bubble'); }
@@ -429,15 +429,15 @@ export class GameContentDescriber {
     }
     
     /**
-     * バブル破裂の処理'
+     * バブル破裂の処理
      */''
     handleBubbleBurst(bubble') {'
-        // 自動破裂（時間切れ）の場合''
+        // 自動破裂（時間切れ）の場合
         if (bubble.burstReason === 'timeout'') {''
             const description = 'バブルが時間切れで破裂しました。ダメージを受けました。';''
             this.announceDescription(description, 'assertive'');'
     }'
-            this.addToRecentActions('bubbleBurst', { bubble, reason: 'timeout' ); }
+            this.addToRecentActions('bubbleBurst', { bubble, reason: 'timeout' ) }
         }
     }
     
@@ -461,7 +461,7 @@ export class GameContentDescriber {
         this.addToRecentActions('sceneChange', { newScene: sceneName, oldScene: oldScene? .constructor.name ),
         
         // シーン固有の初期説明
-        this.provideSceneIntroduction(newScene); }
+        this.provideSceneIntroduction(newScene) }
     }
     
     /**
@@ -479,7 +479,7 @@ export class GameContentDescriber {
         const variables = { : undefined
             score: newState.score || 0,
             finalScore: newState.finalScore || newState.score || 0,
-            timeLeft: Math.ceil((newState.timeLeft || 0) / 1000),';
+            timeLeft: Math.ceil((newState.timeLeft || 0) / 1000),
             bubbleCount: newState.bubbleCount || 0,'';
             instructions: this.getContextualInstructions(phase'),'';
             resumeInstruction: 'Spaceキーで再開できます。','';
@@ -577,10 +577,10 @@ export class GameContentDescriber {
             return '画面上'; }
         }
         ';
-        // Canvas サイズを取得''
+        // Canvas サイズを取得
         const canvas = document.querySelector('#game-canvas, canvas.game-canvas');''
         if(!canvas') {'
-            ';
+            ';'
         }'
             return '画面上'; }
         }
@@ -594,7 +594,7 @@ export class GameContentDescriber {
         
         // 領域を判定
         for(const [regionName, region] of Object.entries(this.spatialInfo.screenRegions) {
-            if (relativeX >= region.x && relativeX < region.x + region.width &&';
+            if (relativeX >= region.x && relativeX < region.x + region.width &&;
                 relativeY >= region.y && relativeY < region.y + region.height) {'
         }'
                 return this.getRegionDisplayName(regionName'); }
@@ -666,7 +666,7 @@ export class GameContentDescriber {
      * シーン導入説明の提供
      */
     provideSceneIntroduction(scene) {
-        const sceneName = scene.constructor.name;'
+        const sceneName = scene.constructor.name;
         '';
         switch (sceneName') {''
             case 'GameScene':;
@@ -678,7 +678,7 @@ export class GameContentDescriber {
                         this.announceDescription(intro, 'polite');' }'
                     }, 1000'); // 1秒後に説明
                 }
-                break;'
+                break;
                 '';
             case 'StageSelectScene':'';
                 this.announceDescription('矢印キーでステージを選択し、Enterで決定してください。', 'polite'');
@@ -717,8 +717,8 @@ export class GameContentDescriber {
      * テンプレート埋め込み
      */
     fillTemplate(template, variables) {
-        let result = template;'
-        ';
+        let result = template;
+        ';'
     }'
         Object.entries(variables).forEach(([key, value]') => { }'
             const placeholder = `{${key}}`;''
@@ -738,8 +738,8 @@ export class GameContentDescriber {
         }
         
         // 長さ制限
-        if(description.length > this.config.maxDescriptionLength) {'
-            ';
+        if(description.length > this.config.maxDescriptionLength) {
+            ';'
         }'
             description = description.substring(0, this.config.maxDescriptionLength - 3') + '...'; }
         }
@@ -772,14 +772,14 @@ export class GameContentDescriber {
     }
     
     /**
-     * コンテキストヘルプの提供'
+     * コンテキストヘルプの提供
      */''
     provideContextualHelp(context') {'
         '';
         let helpText = '';
-        ';
+        ';'
         const gameState = this.getCurrentGameState();''
-        const sessionTime = Date.now('')';
+        const sessionTime = Date.now()';
         if (context === 'firstTime' || sessionTime < 30000) {
     }
             helpText = this.templates.contextHelp.firstTime; }
@@ -804,7 +804,7 @@ export class GameContentDescriber {
      */
     describeDetailedGameSituation() {'
         '';
-        const gameState = this.getCurrentGameState('')';
+        const gameState = this.getCurrentGameState()';
         if (gameState.phase !== 'playing') {
     }
             return this.generateGameStateDescription(gameState); }
@@ -824,7 +824,7 @@ export class GameContentDescriber {
         
         description += `画面に${gameState.bubbleCount}個のバブル。`;
         
-        // 特殊バブルの情報'
+        // 特殊バブルの情報
         const specialBubbles = this.getSpecialBubblesOnScreen();''
         if (specialBubbles.length > 0') { ' }'
             description += ` 特殊バブル: ${specialBubbles.join('、''})}。`;
@@ -851,8 +851,8 @@ export class GameContentDescriber {
                         specialBubbles.push(`${position}の${type)`});
                     }'
                 });''
-            } catch (error') { : undefined''
-            console.warn('Failed to get special bubbles:', error); }
+            } catch (error) { : undefined''
+            console.warn('Failed to get special bubbles:', error) }
         }
         
         return specialBubbles;
@@ -867,7 +867,7 @@ export class GameContentDescriber {
             Object.assign(this.config, config.screenReader); }
         }
         ';
-        // ユーザー設定の更新''
+        // ユーザー設定の更新
         if(config.verbosity') {
             this.state.userPreferences.verbosity = config.verbosity;
         }
@@ -916,7 +916,7 @@ export class GameContentDescriber {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying GameContentDescriber...');
         
         // 定期更新の停止
@@ -926,9 +926,9 @@ export class GameContentDescriber {
         // ユーザー設定の保存
         this.saveUserPreferences();
         
-        // データのクリア'
+        // データのクリア
         this.state.recentActions = [];''
-        this.spatialInfo.bubblePositions.clear('')';
+        this.spatialInfo.bubblePositions.clear()';
         console.log('GameContentDescriber destroyed'');'
     }''
 }

@@ -13,11 +13,11 @@ import { DebugDataExporter } from './interface/DebugDataExporter.js';
 
 interface GameEngine { // Game engine interface }
 }
-';
+';'
 interface ErrorHandler { ''
-    handleComponentError: (error: Error, component: string, operation: string') => any; }
+    handleComponentError: (error: Error, component: string, operation: string') => any }
 }
-';
+';'
 interface DebugComponent { initialized?: boolean;''
     setErrorHandler?: (handler: ErrorHandler['handleComponentError']) => void;
     initialize?: () => Promise<void> | void;
@@ -44,26 +44,26 @@ interface DebugComponent { initialized?: boolean;''
     exportFinalValidationResults?: (format?: string) => void;
     updatePanelUI?: () => void;
     applyResponsiveLayout?: () => void;
-    setShortcutsEnabled?: (enabled: boolean) => void; }
+    setShortcutsEnabled?: (enabled: boolean) => void }
 }
 
 interface ComponentDefinition { name: string,
-    class: new (debugInterface: EnhancedDebugInterface) => DebugComponent; }
+    class: new (debugInterface: EnhancedDebugInterface) => DebugComponent }
 }
 
 interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 interface Size { width: number,
-    height: number; }
+    height: number }
 }
 
 interface Settings { theme: string,
     autoSave: boolean,
     keyboardNavigation: boolean,
     shortcuts: boolean,
-    performanceMonitoring: boolean; }
+    performanceMonitoring: boolean }
 }
 
 interface SessionData { sessionId: string,
@@ -72,7 +72,7 @@ interface SessionData { sessionId: string,
     activePanel: string,
     settings?: Settings;
     timestamp: number,
-    history?: string[]; }
+    history?: string[] }
 }
 
 interface PanelConfig { title?: string;
@@ -99,7 +99,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         
         // Main Controller Pattern用の設定
         this.components = new Map();
-        this.initialized = false;'
+        this.initialized = false;
         this.errorHandler = ComponentErrorHandler;''
         this.sessionId = this.generateSessionId(''';
         this.activePanel = 'console';'
@@ -125,7 +125,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             await this.initializeComponents();
             this.setupEnhancedUI();'
             this.initialized = true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleComponentError(error as Error, 'EnhancedDebugInterface', 'initialization'); }
         }
     }'
@@ -161,8 +161,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             switchPanel: () => {},
             registerShortcut: () => {},
             setTheme: () => {},
-            exportData: () => {}
-        },
+            exportData: () => {},
     }
 
     private setupEnhancedUI(): void { if (!this.container) {
@@ -175,9 +174,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     }
 
     private createEnhancedDebugPanel(): void { // 基本的なコンテナを作成（EffectDebugInterfaceの拡張）
-        if(this.container) {'
+        if(this.container) {
             '';
-            this.container.remove('')';
+            this.container.remove()';
         this.container = document.createElement('div'');''
         this.container.id = 'enhanced-debug-interface';''
         this.container.className = 'debug-interface enhanced';
@@ -192,7 +191,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             display: none,
         `;
 
-        // 基本構造を作成'
+        // 基本構造を作成
         this.container.innerHTML = `'';
             <div class="debug-header">"";
                 <div class="debug-title">Enhanced Debug Interface</div>"";
@@ -221,38 +220,38 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     private initializeComponentUI("): void { // パネルマネージャーにデフォルトパネルを作成させる""
         const panelManager = this.getComponent('panelManager');''
         if(panelManager && panelManager.switchPanel') {'
-            // デフォルトパネルは既にregisterDefaultPanelsで登録済み'
+            // デフォルトパネルは既にregisterDefaultPanelsで登録済み
         }'
             panelManager.switchPanel('console'); }
         }
     }
-';
+';'
     private bindEnhancedEvents(): void { ''
         if (!this.container') return;
 ';
-        // ヘッダーボタンのイベント''
+        // ヘッダーボタンのイベント
         const minimizeBtn = this.container.querySelector('.minimize-btn'') as HTMLButtonElement;''
         const settingsBtn = this.container.querySelector('.settings-btn'') as HTMLButtonElement;''
         const closeBtn = this.container.querySelector('.close-btn') as HTMLButtonElement;'
 '';
         if(minimizeBtn') {'
-            ';
+            ';'
         }'
             minimizeBtn.addEventListener('click', () => this.minimize(); }'
         }''
         if(settingsBtn') {'
-            ';
+            ';'
         }'
             settingsBtn.addEventListener('click', () => this.showSettings(); }'
         }''
         if(closeBtn') {'
-            ';
+            ';'
         }'
             closeBtn.addEventListener('click', () => this.hide(); }
         }
     }'
 '';
-    private setupDraggableInterface('')';
+    private setupDraggableInterface()';
         const header = this.container? .querySelector('.debug-header') as HTMLElement;
         if (header) { this.makeDraggable(header); }
         }
@@ -269,7 +268,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     // === 公開API（後方互換性維持） ===
 
     /**
-     * パネルを登録（後方互換性）'
+     * パネルを登録（後方互換性）
      */''
     public registerPanel(id: string, config: PanelConfig'): void { ''
         const panelManager = this.getComponent('panelManager');
@@ -281,7 +280,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     }
 
     /**
-     * パネルを切り替え（後方互換性）'
+     * パネルを切り替え（後方互換性）
      */''
     public switchPanel(panelId: string'): void { ''
         const panelManager = this.getComponent('panelManager');
@@ -330,7 +329,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
     }
 
     // === ウィンドウ操作 ===
-';
+';'
     public show(): void { ''
         if(this.container') {'
             '';
@@ -339,7 +338,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             this.saveSessionData(); }
         }
     }
-';
+';'
     public hide(): void { ''
         if(this.container') {'
             '';
@@ -348,7 +347,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             this.saveSessionData(); }
         }
     }
-';
+';'
     public toggle(): void { ''
         if(this.container') {'
             '';
@@ -360,7 +359,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             }
         }
     }
-';
+';'
     public minimize(): void { ''
         if(this.container') {'
             '';
@@ -381,12 +380,12 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         }
     }'
 '';
-    public restore('')';
+    public restore()';
         if(this.container && this.container.classList.contains('minimized') { this.minimize(); // toggles minimized state }
         }
-    }'
+    }
 '';
-    public showSettings('')';
+    public showSettings()';
         const modal = document.createElement('div'');''
         modal.className = 'debug-settings-modal';'
         modal.innerHTML = `'';
@@ -433,15 +432,15 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             if (commandProcessor && commandProcessor.setShortcutsEnabled) { }
                 commandProcessor.setShortcutsEnabled(shortcuts); }
             }
-            ';
+            ';'
             this.saveSettings();''
-            modal.remove('')';
+            modal.remove()';
         cancelBtn.addEventListener('click', () => { modal.remove(); }
         };
     }
 
     // === ドラッグ&リサイズ機能 ===
-';
+';'
     private makeDraggable(handle: HTMLElement): void { ''
         if (!handle || !this.container') return;
 
@@ -480,7 +479,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             }
         };
     }
-';
+';'
     private makeResizable(element: HTMLElement): void { ''
         if (!element') return;'
 '';
@@ -513,7 +512,7 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
 
             const deltaX = e.clientX - startX;
             const deltaY = e.clientY - startY;
-            ';
+            ';'
             this.size.width = Math.max(400, startWidth + deltaX);''
             this.size.height = Math.max(300, startHeight + deltaY'); }
              }
@@ -538,16 +537,16 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
             sessionId: this.sessionId,
             position: this.position,
             size: this.size,
-            activePanel: this.activePanel,';
+            activePanel: this.activePanel,
             settings: this.settings,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             localStorage.setItem('debug_session', JSON.stringify(sessionData);' }'
-        } catch (error') { ''
-            console.warn('Failed to save session data:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save session data:', error) }
         }
     }'
 '';
-    public loadSettings('')';
+    public loadSettings()';
             const sessionData = localStorage.getItem('debug_session');
             if(sessionData) {
                 const data: SessionData = JSON.parse(sessionData),
@@ -565,22 +564,22 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
                 }
                 if (data.activePanel) { this.activePanel = data.activePanel; }'
                 }''
-            } catch (error') { ''
-            console.warn('Failed to load settings:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load settings:', error) }
         }
     }
 
     public saveSettings(): void { this.saveSessionData(); }
     }
 
-    // === API取得メソッド（後方互換性） ==='
+    // === API取得メソッド（後方互換性） ===
 '';
-    public getActivePanel('')';
+    public getActivePanel()';
         const panelManager = this.getComponent('panelManager');
         return panelManager?.getActivePanel ? panelManager.getActivePanel() : this.activePanel;
     }'
 '';
-    public getPanelHistory('')';
+    public getPanelHistory()';
         const panelManager = this.getComponent('panelManager');
         return panelManager?.getPanelHistory ? panelManager.getPanelHistory() : this.panelHistory;
     }
@@ -595,51 +594,51 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         };
     }'
 '';
-    public getRegisteredPanels('')';
+    public getRegisteredPanels()';
         const panelManager = this.getComponent('panelManager');
         return panelManager?.getRegisteredPanels ? panelManager.getRegisteredPanels() : [];
     }'
 '';
-    public getShortcuts('')';
+    public getShortcuts()';
         const commandProcessor = this.getComponent('commandProcessor');
         return commandProcessor?.getShortcuts ? commandProcessor.getShortcuts() : new Map();
     }'
 '';
-    public getShortcutConflicts('')';
+    public getShortcutConflicts()';
         const commandProcessor = this.getComponent('commandProcessor');
         return commandProcessor?.getShortcutConflicts ? commandProcessor.getShortcutConflicts() : [];
     }'
 '';
-    public getCurrentTheme('')';
+    public getCurrentTheme()';
         const visualizer = this.getComponent('visualizer');
         return visualizer?.getCurrentTheme ? visualizer.getCurrentTheme() : null;
     }'
 '';
-    public getAvailableThemes('')';
+    public getAvailableThemes()';
         const visualizer = this.getComponent('visualizer');
         return visualizer?.getAvailableThemes ? visualizer.getAvailableThemes() : [];
     }'
 '';
-    public getCurrentBreakpoint('')';
+    public getCurrentBreakpoint()';
         const visualizer = this.getComponent('visualizer');''
         return visualizer?.getCurrentBreakpoint ? visualizer.getCurrentBreakpoint(') : 'desktop';
     }'
 '';
-    public isTouchDevice('')';
+    public isTouchDevice()';
         const visualizer = this.getComponent('visualizer');
         return visualizer?.isTouchDevice ? visualizer.isTouchDevice() : false;
     }'
 '';
-    public getOrientation('')';
+    public getOrientation()';
         const visualizer = this.getComponent('visualizer');''
         return visualizer?.getOrientation ? visualizer.getOrientation(') : 'landscape';
     }
 
-    // === テスト関連API（後方互換性） ==='
+    // === テスト関連API（後方互換性） ===
 '';
-    public getIntegrationTestResults('')';
+    public getIntegrationTestResults()';
         const dataExporter = this.getComponent('dataExporter');''
-        return dataExporter?.getIntegrationTestResults ? dataExporter.getIntegrationTestResults('')';
+        return dataExporter?.getIntegrationTestResults ? dataExporter.getIntegrationTestResults()';
     public exportIntegrationTestResults(format: string = 'json''): void { ''
         const dataExporter = this.getComponent('dataExporter');
         if(dataExporter? .exportIntegrationTestResults) {
@@ -649,9 +648,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         }
     }'
  : undefined'';
-    public getRequirementsValidationResults('')';
+    public getRequirementsValidationResults()';
         const dataExporter = this.getComponent('dataExporter');''
-        return dataExporter?.getRequirementsValidationResults ? dataExporter.getRequirementsValidationResults('')';
+        return dataExporter?.getRequirementsValidationResults ? dataExporter.getRequirementsValidationResults()';
     public exportRequirementsValidationResults(format: string = 'json''): void { ''
         const dataExporter = this.getComponent('dataExporter');
         if(dataExporter? .exportRequirementsValidationResults) {
@@ -661,9 +660,9 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         }
     }'
  : undefined'';
-    public getFinalValidationResults('')';
+    public getFinalValidationResults()';
         const dataExporter = this.getComponent('dataExporter');''
-        return dataExporter?.getFinalValidationResults ? dataExporter.getFinalValidationResults('')';
+        return dataExporter?.getFinalValidationResults ? dataExporter.getFinalValidationResults()';
     public exportFinalValidationResults(format: string = 'json''): void { ''
         const dataExporter = this.getComponent('dataExporter');
         if(dataExporter? .exportFinalValidationResults) {
@@ -698,21 +697,21 @@ export class EnhancedDebugInterface extends EffectDebugInterface { private compo
         this.initialized = false;
     }
 
-    // === リフレッシュ機能 ==='
+    // === リフレッシュ機能 ===
 '';
-    public refresh('')';
+    public refresh()';
         const panelManager = this.getComponent('panelManager');
         if(panelManager? .updatePanelUI) {'
             '';
-            panelManager.updatePanelUI('')';
+            panelManager.updatePanelUI()';
         const visualizer = this.getComponent('visualizer');'
         if (visualizer?.applyResponsiveLayout) {''
-            visualizer.applyResponsiveLayout('');
+            visualizer.applyResponsiveLayout();
         }'
         console.log('Debug interface refreshed'); }
     }
 
-    // === ステータス更新 ==='
+    // === ステータス更新 ===
  : undefined'';
     public updateStatus(message: string'): void { ''
         const statusElement = this.container? .querySelector('.debug-status') as HTMLElement;''

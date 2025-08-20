@@ -12,26 +12,26 @@ interface PerformanceConfig { lazyLoadingEnabled: boolean,
     memoryCleanupEnabled: boolean,
     maxConcurrentGeneration: number,
     cacheCompressionEnabled: boolean,
-    debounceDelay: number; }
+    debounceDelay: number }
 }
 
 interface CanvasPoolItem { canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     size: number,
     inUse: boolean,
-    createdAt: number; }
+    createdAt: number }
 }
 
 interface ResourcePool { canvasElements: CanvasPoolItem[],
     contexts: CanvasRenderingContext2D[],
     generationQueue: any[],
-    activeGenerations: number; }
+    activeGenerations: number }
 }
 
 interface CanvasInfo { canvas: HTMLCanvasElement,
     ctx: CanvasRenderingContext2D,
     fromPool: boolean,
-    poolIndex: number; }
+    poolIndex: number }
 }
 
 interface GenerationRequest { size: number,
@@ -56,7 +56,7 @@ interface PerformanceStats { resourcePool: {
 
 interface MemoryUsage { canvasMemoryBytes: number,
     canvasMemoryKB: number,
-    canvasMemoryMB: number; }
+    canvasMemoryMB: number }
 }
 
 type RenderCallback = (canvasInfo: CanvasInfo, request: GenerationRequest) => Promise<any>;
@@ -103,7 +103,7 @@ export default class FaviconPerformanceManager { /**
             const poolItem = this._resourcePool.canvasElements[poolIndex];
             poolItem.inUse = true;
             
-            // Canvasをクリア'
+            // Canvasをクリア
             const ctx = poolItem.context;''
             ctx.clearRect(0, 0, size, size');
             
@@ -116,14 +116,14 @@ export default class FaviconPerformanceManager { /**
             };
         }
         ';
-        // プールに無い場合は新規作成''
+        // プールに無い場合は新規作成
         const canvas = document.createElement('canvas'');
         canvas.width = size;'
         canvas.height = size;''
         const ctx = canvas.getContext('2d');'
         '';
         if(!ctx') {'
-            ';
+            ';'
         }'
             throw new Error('Could not get 2D context from canvas'); }
         }
@@ -133,7 +133,7 @@ export default class FaviconPerformanceManager { /**
             context: ctx,
             size,
             inUse: true,
-            createdAt: Date.now(); }
+            createdAt: Date.now() }
         };
         
         this._resourcePool.canvasElements.push(poolItem);
@@ -166,12 +166,12 @@ export default class FaviconPerformanceManager { /**
         for(const batch of batches) {
         
             const batchPromises = batch.map(request => );
-                this._processSingleRequest(request, renderCallback);'
+                this._processSingleRequest(request, renderCallback);
             '';
             const batchResults = await Promise.allSettled(batchPromises');
             results.push(...batchResults.map(result => ({'
                 status: result.status,')';
-                value: result.status === 'fulfilled' ? result.value : undefined,');
+                value: result.status === 'fulfilled' ? result.value : undefined,')
         }'
                 reason: result.status === 'rejected' ? result.reason : undefined))); }
         }
@@ -235,9 +235,9 @@ export default class FaviconPerformanceManager { /**
         });
         
         // デバウンスタイマーをクリーンアップ
-        this._debounceTimers.forEach((timer, identifier) => { clearTimeout(timer as number); }'
+        this._debounceTimers.forEach((timer, identifier) => { clearTimeout(timer as number); }
         });''
-        this._debounceTimers.clear('')';
+        this._debounceTimers.clear()';
         if (typeof window !== 'undefined' && (window as any).gc) { (window as any).gc(); }
         }
     }
@@ -280,7 +280,7 @@ export default class FaviconPerformanceManager { /**
             '';
             this.returnCanvasToPool(canvasInfo.poolIndex');' }'
             return { status: 'fulfilled', value: result }''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             return { status: 'rejected', reason: error }
         } finally { this._resourcePool.activeGenerations--; }
         }
@@ -314,7 +314,7 @@ export default class FaviconPerformanceManager { /**
             estimatedSize += item.size * item.size * 4; }
         });
         
-        return { canvasMemoryBytes: estimatedSize,'
+        return { canvasMemoryBytes: estimatedSize,
             canvasMemoryKB: Math.round(estimatedSize / 1024,') };'
             canvasMemoryMB: Math.round(estimatedSize / (1024 * 1024) * 10') / 10 }
         },'

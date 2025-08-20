@@ -41,7 +41,7 @@ interface InitializationMetrics { startTime: number | null,
     endTime: number | null,
     componentTimes: Record<string, number>;
     totalExecutionTime: number,
-    optimizationsApplied: string[]; }
+    optimizationsApplied: string[] }
 }
 
 interface StatusInfo { isInitialized: boolean,
@@ -61,7 +61,7 @@ interface HealthCheck { overall: 'healthy' | 'degraded' | 'unhealthy','
     checks: Record<string, {''
         status: 'pass' | 'warning' | 'fail',
         message: string,
-        value?: any; }
+        value?: any }
     }>;
     warnings: string[],
     errors: string[],
@@ -85,15 +85,15 @@ interface DebugInfo { status: StatusInfo,
             promises: string[] }
         },
         componentCache: { size: number,
-            keys: string[]; }
+            keys: string[] }
         };
     };
     cache: { componentCache?: {
             size: number,
-            entries: [string, any][]; }
+            entries: [string, any][] }
         };
         resourcePreloads?: { size: number,
-            keys: string[]; }
+            keys: string[] }
         };
         error?: string;
     };
@@ -104,7 +104,7 @@ interface DebugInfo { status: StatusInfo,
 
 interface ConfigChange { key: string,
     old: any,
-    new: any; }
+    new: any }
 }
 
 export default class LocalModeStatusManager { /**
@@ -151,7 +151,7 @@ export default class LocalModeStatusManager { /**
         const oldConfig = { ...manager.config };
         manager.config = { ...manager.config, ...newConfig };
         ';
-        // 設定変更のログ''
+        // 設定変更のログ
         if(manager.config.debugMode') {'
             '';
             console.log('LocalModeManager configuration updated:', {)
@@ -178,21 +178,21 @@ export default class LocalModeStatusManager { /**
             score: 0;
         },
         
-        // 初期化状態チェック'
+        // 初期化状態チェック
         health.checks.initialization = { ''
             status: manager.isInitialized ? 'pass' : 'fail','';
             message: manager.isInitialized ? 'Initialized successfully' : 'Not initialized' }
         },
         ';
-        // 実行コンテキストチェック''
+        // 実行コンテキストチェック
         if(manager.executionContext') {'
             health.checks.executionContext = {''
-                status: manager.executionContext.isLocal ? 'pass' : 'warning',';
+                status: manager.executionContext.isLocal ? 'pass' : 'warning','
         }'
                 message: manager.executionContext.isLocal ? 'Local execution detected' : 'Not in local mode' }
             },
             ';
-            // ブラウザ機能チェック''
+            // ブラウザ機能チェック
             const capabilities = ['canUseCanvas', 'canUseLocalStorage', 'canUseModules'] as const;
             capabilities.forEach(cap => {  const supported = manager.executionContext![cap];'
                 health.checks[cap] = {' })'
@@ -206,7 +206,7 @@ export default class LocalModeStatusManager { /**
             });
         }
         ';
-        // パフォーマンスチェック''
+        // パフォーマンスチェック
         if(manager._initializationMetrics? .totalExecutionTime') {
             const initTime = manager._initializationMetrics.totalExecutionTime;'
             health.checks.performance = { : undefined'
@@ -216,21 +216,21 @@ export default class LocalModeStatusManager { /**
                 value: initTime';
             };''
             if(initTime >= 5000') {'
-                ';
+                ';'
             }'
                 health.warnings.push('Slow initialization detected'); }
             }
         }
         ';
-        // スコア計算''
+        // スコア計算
         const checks = Object.values(health.checks');''
         const passCount = checks.filter(check => check.status === 'pass').length;
         const totalCount = checks.length;
         health.score = totalCount > 0 ? Math.round((passCount / totalCount) * 100) : 0;
         ';
-        // 全体状態判定''
+        // 全体状態判定
         if(health.score >= 80') {'
-            ';
+            ';'
         }'
             health.overall = 'healthy';' }'
         } else if (health.score >= 60') { ''
@@ -249,7 +249,7 @@ export default class LocalModeStatusManager { /**
     private static _getComponentsDebugInfo(manager: LocalModeManager'): Record<string, ComponentDebugInfo> {
         const components: Record<string, ComponentDebugInfo> = {};
         
-        // LocalExecutionDetector'
+        // LocalExecutionDetector
         try { const LocalExecutionDetector = ''
                 (typeof require !== 'undefined' && require('../LocalExecutionDetector.js')') ||'';
                 (typeof window !== 'undefined' && (window as any).LocalExecutionDetector);
@@ -262,7 +262,7 @@ export default class LocalModeStatusManager { /**
             components.localExecutionDetector = { available: false, error: (error as Error').message }
         }
         
-        // FaviconGenerator'
+        // FaviconGenerator
         try { const FaviconGenerator =''
                 (typeof require !== 'undefined' && require('../FaviconGenerator.js')') ||'';
                 (typeof window !== 'undefined' && (window as any).FaviconGenerator);
@@ -275,7 +275,7 @@ export default class LocalModeStatusManager { /**
             components.faviconGenerator = { available: false, error: (error as Error').message }
         }
         
-        // DeveloperGuidanceSystem'
+        // DeveloperGuidanceSystem
         try { const DeveloperGuidanceSystem =''
                 (typeof require !== 'undefined' && require('../DeveloperGuidanceSystem.js')') ||'';
                 (typeof window !== 'undefined' && (window as any).DeveloperGuidanceSystem);
@@ -288,7 +288,7 @@ export default class LocalModeStatusManager { /**
             components.developerGuidanceSystem = { available: false, error: (error as Error').message }
         }
         
-        // LocalExecutionErrorHandler'
+        // LocalExecutionErrorHandler
         try { const LocalExecutionErrorHandler =''
                 (typeof require !== 'undefined' && require('../LocalExecutionErrorHandler.js')') ||'';
                 (typeof window !== 'undefined' && (window as any).LocalExecutionErrorHandler);
@@ -302,7 +302,7 @@ export default class LocalModeStatusManager { /**
             components.localExecutionErrorHandler = { available: false, error: (error as Error').message }
         }
         
-        // BrowserCompatibilityManager'
+        // BrowserCompatibilityManager
         try { const BrowserCompatibilityManager =''
                 (typeof require !== 'undefined' && require('../BrowserCompatibilityManager.js')') ||'';
                 (typeof window !== 'undefined' && (window as any).BrowserCompatibilityManager);
@@ -328,7 +328,7 @@ export default class LocalModeStatusManager { /**
                 promises: Array.from(manager._resourcePreloadPromises? .keys() || []); }
             }, : undefined
             componentCache: { size: manager._componentCache? .size || 0, : undefined
-                keys: Array.from(manager._componentCache? .keys() || []); }
+                keys: Array.from(manager._componentCache? .keys() || []) }
             }
         };
     }
@@ -343,7 +343,7 @@ export default class LocalModeStatusManager { /**
                     entries: Array.from(manager._componentCache? .entries() || []); }
                 }, : undefined
                 resourcePreloads: { size: manager._resourcePreloadPromises? .size || 0, : undefined
-                    keys: Array.from(manager._resourcePreloadPromises? .keys() || []); }
+                    keys: Array.from(manager._resourcePreloadPromises? .keys() || []) }
                 }
             };
         } catch (error) { : undefined }
@@ -355,7 +355,7 @@ export default class LocalModeStatusManager { /**
      * エラーデバッグ情報取得
      * @private'
      */''
-    private static _getErrorDebugInfo('')';
+    private static _getErrorDebugInfo()';
                 (typeof require !== 'undefined' && require('./LocalModeErrorHandler.js')') ||'';
                 (typeof window !== 'undefined' && (window as any).LocalModeErrorHandler);
                 
@@ -369,7 +369,7 @@ export default class LocalModeStatusManager { /**
      * ブラウザデバッグ情報取得
      * @private'
      */''
-    private static _getBrowserDebugInfo('')';
+    private static _getBrowserDebugInfo()';
         if (typeof window === 'undefined'') { ' }'
             return { environment: 'non-browser' }
         }

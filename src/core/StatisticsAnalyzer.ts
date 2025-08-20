@@ -17,7 +17,7 @@ export class StatisticsAnalyzer {
             // デフォルト分析設定
             defaultTimeWindows: {
                 short: 7,    // 7日;
-                medium: 30,  // 30日;
+                medium: 30,  // 30日
     }
     }
                 long: 90     // 90日 }
@@ -49,7 +49,7 @@ export class StatisticsAnalyzer {
     async initialize() { try {
             // 分析コンポーネントの遅延読み込み
             await this.initializeAnalysisComponents(); }
-        } catch (error) { console.warn('StatisticsAnalyzer components not fully available:', error); }
+        } catch (error) { console.warn('StatisticsAnalyzer components not fully available:', error) }
         }
     }
     
@@ -59,7 +59,7 @@ export class StatisticsAnalyzer {
     async initializeAnalysisComponents() { try {
             const [}
                 { CoreTrendAnalyzer },
-                { CoreComparisonEngine },]'
+                { CoreComparisonEngine }]'
                 { InsightGenerator }']'
             ] = await Promise.all([');''
                 import('./CoreTrendAnalyzer.js''),'';
@@ -71,8 +71,8 @@ export class StatisticsAnalyzer {
             this.comparisonEngine = new CoreComparisonEngine();
             this.insightGenerator = new InsightGenerator();'
             '';
-        } catch (error') { ''
-            console.error('Failed to initialize analysis components:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize analysis components:', error) }
         }
     }
     
@@ -82,7 +82,7 @@ export class StatisticsAnalyzer {
     async performComprehensiveAnalysis(options = {}') {
         const analysisOptions = { ...this.analysisConfigs, ...options };
         ';
-        // キャッシュチェック''
+        // キャッシュチェック
         const cacheKey = this.generateCacheKey('comprehensive', analysisOptions);
         if(this.analysisConfigs.cache.enabled && this.analysisCache.has(cacheKey) {
             const cached = this.analysisCache.get(cacheKey);
@@ -91,7 +91,7 @@ export class StatisticsAnalyzer {
                 return cached.result; }
             }
         }
-        ';
+        ';'
         const analysisResult = { analysisId: this.generateAnalysisId(),''
             timestamp: Date.now(''';
             analysisType: 'comprehensive',
@@ -115,7 +115,7 @@ export class StatisticsAnalyzer {
             metadata: {)
                 dataQuality: null);
                 analysisConfidence: null,);
-                componentsAvailable: this.getComponentsStatus(); }
+                componentsAvailable: this.getComponentsStatus() }
             }
         };
         
@@ -144,9 +144,9 @@ export class StatisticsAnalyzer {
             analysisResult.metadata.dataQuality = this.assessDataQuality(analysisResult);
             analysisResult.metadata.analysisConfidence = this.calculateAnalysisConfidence(analysisResult);
             
-            // キャッシュに保存'
+            // キャッシュに保存
             if (this.analysisConfigs.cache.enabled) { this.cacheAnalysisResult(cacheKey, analysisResult);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Comprehensive analysis failed:', error);
             analysisResult.error = {
                 message: error.message,
@@ -164,13 +164,13 @@ export class StatisticsAnalyzer {
         if (!this.trendAnalyzer') {' }'
             return { error: 'TrendAnalyzer not available' }
         }
-        ';
+        ';'
         const trendResults = {};''
         const categories = ['score', 'efficiency', 'accuracy', 'playTime'];'
         '';
         for(const category of categories') {
-            try {'
-                // 時系列データの取得''
+            try {
+                // 時系列データの取得
                 const timeSeriesData = this.statisticsManager.getTimeSeriesData('daily', category);
                 
                 if (timeSeriesData.length >= this.analysisConfigs.qualityThresholds.minDataPoints) {
@@ -192,7 +192,7 @@ export class StatisticsAnalyzer {
     
     /**
      * 比較分析の実行
-     */'
+     */
     async performComparisonAnalysis(options = { ) {''
         if (!this.comparisonEngine') {' }'
             return { error: 'CoreComparisonEngine not available' }
@@ -200,7 +200,7 @@ export class StatisticsAnalyzer {
         
         const comparisonResults = {};
         ';
-        try { // 期間比較（今週 vs 先週）''
+        try { // 期間比較（今週 vs 先週）
             const thisWeekData = this.getWeeklyData('current'');''
             const lastWeekData = this.getWeeklyData('previous');'
             '';
@@ -212,9 +212,9 @@ export class StatisticsAnalyzer {
                     options)';
             }'
                 '); }
-            }
+            }'
             ';
-            // 月間比較（今月 vs 先月）''
+            // 月間比較（今月 vs 先月）
             const thisMonthData = this.getMonthlyData('current'');''
             const lastMonthData = this.getMonthlyData('previous');'
             '';
@@ -236,9 +236,9 @@ export class StatisticsAnalyzer {
                 comparisonResults.baselineComparison = this.comparisonEngine.compareAgainstBaseline(;
                     currentPerformance);
                     baselinePerformance,);
-            }'
+            }
                     options);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Comparison analysis failed:', error);
             comparisonResults.error = error.message; }
         }
@@ -262,10 +262,10 @@ export class StatisticsAnalyzer {
             // 追加的な洞察の生成
             insights.contextualInsights = this.generateContextualInsights(statisticsData);
             insights.predictiveInsights = this.generatePredictiveInsights(statisticsData);
-            ';
+            ';'
             return insights;' }'
-        } catch (error') { ''
-            console.error('Insight generation failed:', error); }
+        } catch (error) { ''
+            console.error('Insight generation failed:', error) }
             return { error: error.message }
         }
     }
@@ -318,8 +318,8 @@ export class StatisticsAnalyzer {
         }
             components++; }
         }
-        ';
-        // 成長トレンドスコア（20%）''
+        ;
+        // 成長トレンドスコア（20%）
         if(analysisResult.trendAnalysis && analysisResult.trendAnalysis.categories.score') {'
             const trend = analysisResult.trendAnalysis.categories.score;''
             const trendScore = trend.trends && trend.trends.overall.trendType.includes('improving') ? 1 : 0.5;
@@ -337,7 +337,7 @@ export class StatisticsAnalyzer {
     extractKeyFindings(analysisResult) {
         const findings = [];
         
-        // トレンド分析からの発見'
+        // トレンド分析からの発見
         if (analysisResult.trendAnalysis) {''
             Object.entries(analysisResult.trendAnalysis.categories).forEach(([category, analysis]') => { ''
                 if (analysis.trends && analysis.trends.overall.trendType.includes('strongly')') {'
@@ -352,7 +352,7 @@ export class StatisticsAnalyzer {
             });
         }
         ';
-        // 洞察からの発見''
+        // 洞察からの発見
         if(analysisResult.insights && analysisResult.insights.insights') {'
             const highPriorityInsights = analysisResult.insights.insights'';
                 .filter(insight => insight.priority === 'high' || insight.priority === 'critical')'';
@@ -360,8 +360,8 @@ export class StatisticsAnalyzer {
             
             highPriorityInsights.forEach(insight => { '
                 findings.push({''
-                    type: 'insight',);
-                    category: insight.type);
+                    type: 'insight');
+                    category: insight.type)
         }
                     finding: insight.description,) }
                     significance: insight.priority); }
@@ -380,21 +380,21 @@ export class StatisticsAnalyzer {
         if (analysisResult.basicStatistics) {
             const stats = analysisResult.basicStatistics;
             ';
-            // 精度が低い場合''
+            // 精度が低い場合
             if (stats.bubbles && parseFloat(stats.bubbles.accuracy) < 70') {'
                 areas.push({''
                     area: 'accuracy',')';
                     priority: 'high')';
                     currentValue: stats.bubbles.accuracy,'';
-                    targetValue: '80%+',');
+                    targetValue: '80%+',')
     }'
                     impact: 'high'); }
             }
             ';
-            // 完了率が低い場合''
+            // 完了率が低い場合
             if(stats.basic && stats.basic.completionRate < 50') {'
                 areas.push({')'
-                    area: 'completion_rate',');
+                    area: 'completion_rate',')
             }'
                     priority: 'high'),' }'
                     currentValue: `${stats.basic.completionRate.toFixed(1'})}%`,''
@@ -403,13 +403,13 @@ export class StatisticsAnalyzer {
                 }),
             }
             ';
-            // コンボ性能が低い場合''
+            // コンボ性能が低い場合
             if(stats.combos && stats.combos.highestCombo < 10') {'
                 areas.push({''
                     area: 'combo_performance',')';
                     priority: 'medium')';
                     currentValue: stats.combos.highestCombo,'';
-                    targetValue: '15+',');
+                    targetValue: '15+',')
             }'
                     impact: 'medium'); }
             }
@@ -424,13 +424,13 @@ export class StatisticsAnalyzer {
     generateActionPlan(analysisResult) {
         const plan = {
             immediate: [],  // 即座に実行可能;
-            shortTerm: [],  // 1週間以内;
+            shortTerm: [],  // 1週間以内
     }
             longTerm: []    // 1ヶ月以内 }
         },
         
         const priorityAreas = this.identifyPriorityAreas(analysisResult);
-        ';
+        ';'
         priorityAreas.forEach(area => {  );''
             switch(area.area') {'
                 '';
@@ -506,7 +506,7 @@ export class StatisticsAnalyzer {
         
         this.analysisCache.set(key, { )
             result: result),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -551,7 +551,7 @@ export class StatisticsAnalyzer {
         return Math.min(dataQuality.score * 0.6 + componentsAvailable * 0.4, 1.0); }
     }
     ';
-    // 簡略化されたヘルパーメソッド''
+    // 簡略化されたヘルパーメソッド
     summarizeTrendAnalysis(results') { return { summary: 'trend_analysis_complete' }; }'
     generateTrendRecommendations(results) { return []; }''
     summarizeComparisonAnalysis(results') { return { summary: 'comparison_complete' }; }

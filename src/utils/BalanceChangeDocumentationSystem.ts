@@ -12,14 +12,14 @@ import { getErrorHandler, ErrorHandler } from './ErrorHandler.js';
 interface DocumentationStatistics { totalChanges: number,
     appliedChanges: number,
     rolledBackChanges: number,
-    lastUpdate: number | null; }
+    lastUpdate: number | null }
 }
 
 interface QueryOptions { propertyType?: string;
     author?: string;
     reviewStatus?: string;
     applied?: boolean;
-    fromDate?: number;'
+    fromDate?: number;
     toDate?: number;''
     sortBy?: 'timestamp' | 'bubbleType' | 'propertyType' | 'author' | 'severity';''
     sortOrder?: 'asc' | 'desc';
@@ -33,21 +33,21 @@ interface QueryOptions { propertyType?: string;
 interface BubbleTypeStats { total: number,
     applied: number,
     rolledBack: number,
-    pending?: number; }
+    pending?: number }
 }
 
 interface PropertyTypeStats { total: number,
     applied: number,
-    rolledBack: number; }
+    rolledBack: number }
 }
 
 interface AuthorStats { total: number,
     applied: number,
-    rolledBack: number; }
+    rolledBack: number }
 }
 
 interface TimelineEntry { date: string,
-    count: number; }
+    count: number }
 }
 
 interface StatisticsReport { overview: DocumentationStatistics,
@@ -60,17 +60,17 @@ interface StatisticsReport { overview: DocumentationStatistics,
     timeline: TimelineEntry[],
     recentChanges: string[],
     generatedAt: number,
-    error?: string; }
+    error?: string }
 }
 
 interface RelatedChangeInfo { id: string,
     relationship: string,
     summary: string,
-    impact: any; }
+    impact: any }
 }
 
 interface RiskAssessment { level: string,
-    factors: string[]; }
+    factors: string[] }
 }
 
 interface ImpactReport { change?: string;
@@ -88,16 +88,16 @@ interface SystemIndexSizes { changes: number,
     bubbleTypes: number,
     propertyTypes: number,
     authors: number,
-    timeline: number; }
+    timeline: number }
 }
 
 interface StorageInfo { available: boolean,
     autoSave: boolean,
-    maxHistorySize: number; }
+    maxHistorySize: number }
 }
 
 interface SystemStatistics extends DocumentationStatistics { indexSizes: SystemIndexSizes,
-    storageInfo: StorageInfo;
+    storageInfo: StorageInfo
     }
 }
 
@@ -109,7 +109,7 @@ interface SystemSettings { maxHistorySize?: number;
 interface StorageData { changes: any[],
     statistics: DocumentationStatistics,
     version: string,
-    savedAt: number; }
+    savedAt: number }
 }
 
 export class BalanceChangeDocumentationSystem {
@@ -142,20 +142,20 @@ export class BalanceChangeDocumentationSystem {
     }
     }
             lastUpdate: null })
-        })'
+        })
         this._initializeStorage();''
-        this._loadFromStorage('')';
+        this._loadFromStorage()';
         console.log('[BalanceChangeDocumentationSystem] システムを初期化しました');
     }
     
     /**
      * ストレージシステムを初期化'
      */''
-    private _initializeStorage('')';
+    private _initializeStorage()';
             if (typeof localStorage !== 'undefined'') { this.storageAvailable = true; }'
             } else {  this.storageAvailable = false;' }'
                 console.warn('[BalanceChangeDocumentationSystem] LocalStorage利用不可');' }'
-            } catch (error') { this.storageAvailable = false;''
+            } catch (error) { this.storageAvailable = false;''
             this.errorHandler.handleError(error, 'DOCUMENTATION_STORAGE_INIT'); }
         }
     }
@@ -186,11 +186,11 @@ export class BalanceChangeDocumentationSystem {
                 this.statistics = { ...this.statistics, ...data.statistics };
             }
             
-            console.log(`[BalanceChangeDocumentationSystem] ${data.changes.length)件の変更履歴を読み込みました`});'
+            console.log(`[BalanceChangeDocumentationSystem] ${data.changes.length)件の変更履歴を読み込みました`});
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_LOAD', {)
-                storageKey: this.storageKey); }
+                storageKey: this.storageKey) }
             });
         }
     }
@@ -200,20 +200,20 @@ export class BalanceChangeDocumentationSystem {
      */
     private _saveToStorage(): void { try {
             if (!this.storageAvailable || !this.autoSaveEnabled) return;
-            ';
+            ';'
             const data: StorageData = {''
                 changes: Array.from(this.changes.values().map(change => change.toJSON()'),';
                 statistics: this.statistics,'';
                 version: '1.0',
-                savedAt: Date.now(); }
+                savedAt: Date.now() }
             };
             
             localStorage.setItem(this.storageKey, JSON.stringify(data);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_SAVE', {)
                 storageKey: this.storageKey,);
-                changesCount: this.changes.size); }
+                changesCount: this.changes.size) }
             });
         }
     }
@@ -327,7 +327,7 @@ export class BalanceChangeDocumentationSystem {
     public recordChange(changeData: any): BalanceChange | null { try {
             const change = new BalanceChange(changeData);
             
-            // 検証'
+            // 検証
             const validation = change.validate();''
             if(!validation.isValid') {'
                 '';
@@ -351,9 +351,9 @@ export class BalanceChangeDocumentationSystem {
             }
             
             console.log(`[BalanceChangeDocumentationSystem] 変更を記録: ${change.id)`});
-            return change;'
+            return change;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_RECORD', {)
                 changeData); }
             });
@@ -379,9 +379,9 @@ export class BalanceChangeDocumentationSystem {
                 }
             }
             
-            console.log(`[BalanceChangeDocumentationSystem] ${cleanupCount)件の古い変更履歴を削除`});'
+            console.log(`[BalanceChangeDocumentationSystem] ${cleanupCount)件の古い変更履歴を削除`});
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_CLEANUP'); }
         }
     }
@@ -421,13 +421,13 @@ export class BalanceChangeDocumentationSystem {
             }
             
             if(options.toDate) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 changes = changes.filter(change => change.timestamp <= options.toDate!'); }
             }
             ';
-            // ソート''
+            // ソート
             if(options.sortBy === 'timestamp') {'
                 '';
                 changes.sort((a, b') => { '
@@ -441,9 +441,9 @@ export class BalanceChangeDocumentationSystem {
             if (options.limit && options.limit > 0) { changes = changes.slice(0, options.limit); }
             }
             
-            return changes;'
+            return changes;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_BUBBLE', {)
                 bubbleType,);
                 options); }
@@ -461,9 +461,9 @@ export class BalanceChangeDocumentationSystem {
             let changes = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
             
             // 同様のフィルタリングとソート処理
-            return this._applyFiltersAndSort(changes, options);'
+            return this._applyFiltersAndSort(changes, options);
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_PROPERTY', {)
                 propertyType,);
                 options); }
@@ -482,7 +482,7 @@ export class BalanceChangeDocumentationSystem {
             
             return this._applyFiltersAndSort(changes, options);'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_AUTHOR', {)
                 author,);
                 options); }
@@ -504,7 +504,7 @@ export class BalanceChangeDocumentationSystem {
             
             return this._applyFiltersAndSort(changes, options);'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_GET_BY_DATE', {)
                 fromDate);
                 toDate,);
@@ -553,7 +553,7 @@ export class BalanceChangeDocumentationSystem {
         }
         
         // ソート
-        if(options.sortBy) {'
+        if(options.sortBy) {
             '';
             filtered.sort((a, b') => { ''
                 const order = options.sortOrder === 'desc' ? -1 : 1;
@@ -614,9 +614,9 @@ export class BalanceChangeDocumentationSystem {
             for(const [bubbleType, changeIds] of this.changesByBubble) {
                 const bubbleChanges = changeIds.map(id => this.changes.get(id).filter((change): change is BalanceChange => !!change);
                 report.byBubbleType[bubbleType] = {
-                    total: bubbleChanges.length,';
+                    total: bubbleChanges.length,
                     applied: bubbleChanges.filter(c => c.applied).length,'';
-                    rolledBack: bubbleChanges.filter(c => c.rolledBack').length,';
+                    rolledBack: bubbleChanges.filter(c => c.rolledBack').length,'
             }'
                     pending: bubbleChanges.filter(c => c.reviewStatus === 'pending').length }
                 },
@@ -664,7 +664,7 @@ export class BalanceChangeDocumentationSystem {
             report.byReviewStatus = reviewStatusCounts;
             
             // タイムライン（日別変更数）
-            const timelineData: Record<string, number> = {};'
+            const timelineData: Record<string, number> = {};
             changes.forEach(change => {  );''
                 const date = new Date(change.timestamp).toISOString(').split('T')[0]; }
                 timelineData[date] = (timelineData[date] || 0) + 1; }
@@ -684,9 +684,9 @@ export class BalanceChangeDocumentationSystem {
                 })
                 .filter((summary): summary is string => summary !== null);
             
-            return report;'
+            return report;
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'DOCUMENTATION_STATISTICS', { options }');'
             return { ''
                 error: 'Failed to generate statistics report', };
@@ -707,7 +707,7 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 変更影響レポートを生成
      */
-    public generateImpactReport(changeId: string): ImpactReport { try {'
+    public generateImpactReport(changeId: string): ImpactReport { try {
             const change = this.getChange(changeId);''
             if(!change') {'
                 return { '
@@ -745,11 +745,11 @@ export class BalanceChangeDocumentationSystem {
                     });
                 }
             }
-            ';
-            // リスク要因分析''
-            const impact = change.calculateImpact('')';
+            ;
+            // リスク要因分析
+            const impact = change.calculateImpact()';
             if(impact.magnitude === 'critical'') {'
-                ';
+                ';'
             }'
                 report.riskAssessment.factors.push('Critical magnitude change (>100%')'');' }'
             } else if (impact.magnitude === 'high'') { ''
@@ -757,18 +757,18 @@ export class BalanceChangeDocumentationSystem {
             }'
             '';
             if(!change.applied && change.reviewStatus !== 'approved'') {'
-                ';
+                ';'
             }'
                 report.riskAssessment.factors.push('Change not reviewed or approved'); }
             }'
             '';
             if(change.relatedChanges.length > 0') {'
-                ';
+                ';'
             }'
                 report.riskAssessment.factors.push('Has related changes that may compound effects''); }
             }
             ';
-            // 推奨事項''
+            // 推奨事項
             if(impact.magnitude === 'critical' || impact.magnitude === 'high'') {'
                 '';
                 report.recommendations.push('Consider gradual rollout or A/B testing'');'
@@ -777,7 +777,7 @@ export class BalanceChangeDocumentationSystem {
             }'
             '';
             if(change.reviewStatus === 'pending'') {'
-                ';
+                ';'
             }'
                 report.recommendations.push('Complete review process before applying'); }
             }'
@@ -788,7 +788,7 @@ export class BalanceChangeDocumentationSystem {
             
             return report;'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'DOCUMENTATION_IMPACT_REPORT', { changeId }');'
             return { ''
                 error: 'Failed to generate impact report',
@@ -796,9 +796,9 @@ export class BalanceChangeDocumentationSystem {
                 relatedChanges: [],' }'
                 riskAssessment: { level: 'unknown', factors: [] },'
                 recommendations: [],'';
-                generatedAt: Date.now('')';
+                generatedAt: Date.now()';
     public generateMarkdownReport(reportType: 'statistics' | 'impact', options: QueryOptions & { changeId?: string } = { )'): string {'
-        try {''
+        try {'
             let markdown = '';'
             '';
             if(reportType === 'statistics') {'
@@ -813,7 +813,7 @@ export class BalanceChangeDocumentationSystem {
             
             return markdown;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_MARKDOWN', {)
                 reportType,);
                 options); }
@@ -834,7 +834,7 @@ export class BalanceChangeDocumentationSystem {
         // 概要
         markdown += `## 概要\n\n`;
         markdown += `- **総変更数**: ${report.overview.totalChanges}\n`;
-        markdown += `- **適用済み**: ${report.overview.appliedChanges}\n`;'
+        markdown += `- **適用済み**: ${report.overview.appliedChanges}\n`;
         markdown += `- **ロールバック済み**: ${report.overview.rolledBackChanges}\n`;''
         markdown += `- **最終更新**: ${report.overview.lastUpdate ? new Date(report.overview.lastUpdate').toLocaleString('ja-JP''}) : 'N/A'}\n\n`;
         
@@ -878,7 +878,7 @@ export class BalanceChangeDocumentationSystem {
      */
     private _generateImpactMarkdown(report: ImpactReport): string { if (report.error) { }
             return `# エラー\n\n${report.error}`;
-        }'
+        }
         '';
         const date = new Date(report.generatedAt').toLocaleString('ja-JP');
         
@@ -961,7 +961,7 @@ export class BalanceChangeDocumentationSystem {
                 
             }
                 this.maxHistorySize = newSettings.maxHistorySize; }
-            }'
+            }
             '';
             if (newSettings.autoSaveEnabled !== undefined') { this.autoSaveEnabled = newSettings.autoSaveEnabled; }
             }'
@@ -971,7 +971,7 @@ export class BalanceChangeDocumentationSystem {
             '';
             console.log('[BalanceChangeDocumentationSystem] 設定を更新しました');'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'DOCUMENTATION_SETTINGS', { newSettings });
         }
     }
@@ -979,11 +979,11 @@ export class BalanceChangeDocumentationSystem {
     /**
      * 手動保存
      */'
-    public save(): boolean { try {''
-            this._saveToStorage('')';
+    public save(): boolean { try {'
+            this._saveToStorage()';
             console.log('[BalanceChangeDocumentationSystem] 手動保存完了');'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_MANUAL_SAVE');
             return false; }
         }
@@ -1003,12 +1003,12 @@ export class BalanceChangeDocumentationSystem {
                 totalChanges: 0,
                 appliedChanges: 0,
                 rolledBackChanges: 0,
-                lastUpdate: Date.now(); }
+                lastUpdate: Date.now() }
             };
             
             if(this.storageAvailable) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 localStorage.removeItem(this.storageKey'); }
             }'
@@ -1016,7 +1016,7 @@ export class BalanceChangeDocumentationSystem {
             console.log('[BalanceChangeDocumentationSystem] データをクリアしました');
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DOCUMENTATION_CLEAR');
             return false; }
         }
@@ -1028,6 +1028,6 @@ let documentationSystemInstance: BalanceChangeDocumentationSystem | null = null,
 
 /**
  * BalanceChangeDocumentationSystemのシングルトンインスタンスを取得
- */'
+ */
 export function getBalanceChangeDocumentationSystem(): BalanceChangeDocumentationSystem { if (!documentationSystemInstance) {''
         documentationSystemInstance = new BalanceChangeDocumentationSystem(' })

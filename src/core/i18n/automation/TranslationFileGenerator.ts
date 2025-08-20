@@ -1,21 +1,21 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';''
 import { getTranslationKeyManager } from '../management/TranslationKeyManager.js';''
 import { getProgressTracker } from '../management/ProgressTracker.js';
-';
+';'
 interface LanguageInfo { name: string,''
     direction: 'ltr' | 'rtl',
-    encoding: string; }
+    encoding: string }
 }
 
 interface CategoryInfo { name: string,
-    description: string; }
+    description: string }
 }
 
 interface TemplateConfig { placeholder: string,
     includeMetadata: boolean,
     includeComments: boolean,
     sortKeys: boolean,
-    validateStructure: boolean; }
+    validateStructure: boolean }
 }
 
 interface GenerateLanguageFilesOptions { baseLanguage?: string;
@@ -58,10 +58,10 @@ interface FileGenerationResult { language: string,
         category: string,
         name: string,
         keys: number,
-        content: string; }
+        content: string }
     }>;
     errors: Array<{ category: string,
-        error: string; }
+        error: string }
     }>;
 }
 
@@ -73,7 +73,7 @@ interface TranslationObject { _metadata: {
         completionRate: number,
         totalKeys: number,
         translatedKeys: number,
-        generator: string; }
+        generator: string }
     };
     [key: string]: any,
 }
@@ -81,7 +81,7 @@ interface TranslationObject { _metadata: {
 interface TranslationTemplate { _instructions?: {
         README: string,
         PLACEHOLDER: string,
-        GUIDELINES: string[]; }
+        GUIDELINES: string[] }
     };
     _metadata?: { language: string,
         templateVersion: string,
@@ -90,7 +90,7 @@ interface TranslationTemplate { _instructions?: {
         translator: string,
         reviewer: string,
         status: string,
-        notes: string; }
+        notes: string }
     };
     [key: string]: any,
 }
@@ -102,7 +102,7 @@ interface ExtractedKeyInfo { key: string,
     lines: Array<{
         file: string,
         line: number,
-        context: string; }
+        context: string }
     }>;
 }
 
@@ -112,7 +112,7 @@ interface ExtractionResults { totalFiles: number,
     keysByFile: Map<string, string[]>;
     errors: Array<{
         file: string,
-        error: string; }
+        error: string }
     }>;
 }
 
@@ -123,7 +123,7 @@ interface LanguageChanges { language: string,
     keysUpdated: string[],
     errors: Array<{
         category: string,
-        error: string; }
+        error: string }
     }>;
 }
 
@@ -136,19 +136,19 @@ interface SyncResults { baseLanguage: string,
         keysAdded: number,
         keysRemoved: number,
         keysUpdated: number,
-        errors: number; }
+        errors: number }
     };
     report?: string;
 }
 
 interface ProcessedTranslationData { translations: any,
     totalKeys: number,
-    translatedKeys: number; }
+    translatedKeys: number }
 }
 
 interface CategorySyncResult { added: string[],
     removed: string[],
-    updated: string[]; }
+    updated: string[] }
 }
 
 /**
@@ -161,7 +161,7 @@ export class TranslationFileGenerator {
     private categories: Map<string, CategoryInfo>;
     private templateConfig: TemplateConfig;
     constructor() {
-';
+';'
         this.keyManager = getTranslationKeyManager();'
 
     }
@@ -179,7 +179,7 @@ export class TranslationFileGenerator {
             ['es', { name: 'Español', direction: 'ltr', encoding: 'UTF-8' }]')'
         ]');
         
-        // カテゴリ情報'
+        // カテゴリ情報
         this.categories = new Map<string, CategoryInfo>([']';
             ['common', { name: '共通', description: '共通UI要素、ボタン、基本操作' }],''
             ['menu', { name: 'メニュー', description: 'メニュー画面、ナビゲーション' }],''
@@ -190,7 +190,7 @@ export class TranslationFileGenerator {
             ['help', { name: 'ヘルプ', description: 'ヘルプ、ガイド、説明' }]''
         ]');
         
-        // テンプレート設定'
+        // テンプレート設定
         this.templateConfig = { ''
             placeholder: '[TRANSLATION_NEEDED]',
             includeMetadata: true,
@@ -207,12 +207,12 @@ export class TranslationFileGenerator {
      */''
     async generateLanguageFiles(language: string, options: GenerateLanguageFilesOptions = { )'): Promise<{
         success: boolean,
-        results?: FileGenerationResult;
+        results?: FileGenerationResult
     }
         files?: { [key: string]: string }
         error?: string;
         language?: string;
-    }> { try {'
+    }> { try {
             const { ''
                 baseLanguage = 'ja',
                 includeEmpty = true,
@@ -251,7 +251,7 @@ export class TranslationFileGenerator {
                     const translationFile = await this.generateCategoryFile(;
                         language,
                         category,
-                        categoryData,);
+                        categoryData);
                         { includeEmpty: includeEmpty)
                             generateTemplate: generateTemplates,);
                             preserveExisting: preserveExisting);
@@ -270,14 +270,14 @@ export class TranslationFileGenerator {
                     console.error(`Error generating ${category} file for ${language}:`, error);
                     results.errors.push({ )
                         category: category),
-                        error: error instanceof Error ? error.message : String(error); }
+                        error: error instanceof Error ? error.message : String(error) }
                     });
                 }
             }
             
             results.totalFiles = generatedFiles.size;
-            ';
-            // メタデータファイル生成''
+            ;
+            // メタデータファイル生成
             const metadataFile = this.generateMetadataFile(language, results');''
             generatedFiles.set('_metadata', metadataFile);
             
@@ -296,11 +296,11 @@ export class TranslationFileGenerator {
                 results: results, }
                 files: Object.fromEntries(generatedFiles}),
             };
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'TRANSLATION_FILE_GENERATOR_ERROR', {')'
                 operation: 'generateLanguageFiles',);
-                language: language); }
+                language: language) }
             });
             
             return { success: false,
@@ -315,7 +315,7 @@ export class TranslationFileGenerator {
      */
     async generateCategoryFile(;
         language: string, ;
-        category: string, );
+        category: string );
         categoryData: any);
         options: GenerateCategoryFileOptions = { ): Promise<string>,
         const { includeEmpty = true,
@@ -326,7 +326,7 @@ export class TranslationFileGenerator {
         const existingTranslations = await this.loadExistingCategoryFile(language, category);
         
         const translationObject: TranslationObject = { _metadata: {
-                language: language,';
+                language: language,
                 category: category,'';
                 generatedAt: new Date().toISOString(''';
                 version: '1.0.0',
@@ -341,7 +341,7 @@ export class TranslationFileGenerator {
         const processedData = this.processTranslationData(;
             categoryData,
             existingTranslations,
-            { includeEmpty: includeEmpty,)
+            { includeEmpty: includeEmpty)
                 generateTemplate: generateTemplate);
                 preserveExisting: preserveExisting,);
                 language: language);
@@ -359,7 +359,7 @@ export class TranslationFileGenerator {
     }
     
     /**
-     * 翻訳テンプレートを生成'
+     * 翻訳テンプレートを生成
      */''
     generateTranslationTemplate(baseTranslations: any, options: GenerateTemplateOptions = { )'): string {'
         const { ''
@@ -368,7 +368,7 @@ export class TranslationFileGenerator {
             includeExamples = true,';
             includeMetadata = true,'';
             format = 'json' } = options;
-        ';
+        ';'
         const template: TranslationTemplate = { _instructions: includeInstructions ? { : undefined''
                 'README': 'This is a translation template file. Replace [TRANSLATION_NEEDED] with appropriate translations.','';
                 'PLACEHOLDER': this.templateConfig.placeholder,'';
@@ -394,7 +394,7 @@ export class TranslationFileGenerator {
         // 基準翻訳からテンプレートを生成)
         for(const [category, categoryData] of Object.entries(baseTranslations) {
             template[category] = this.generateCategoryTemplate(categoryData, {)
-                includeExamples: includeExamples,);
+                includeExamples: includeExamples,)
         }
                 language: language); }
         }
@@ -403,7 +403,7 @@ export class TranslationFileGenerator {
     }
     
     /**
-     * 翻訳キー自動抽出'
+     * 翻訳キー自動抽出
      */''
     async extractTranslationKeys(sourceFiles: string[], options: ExtractTranslationKeysOptions = { )'): Promise<any> {
         const { '
@@ -460,7 +460,7 @@ export class TranslationFileGenerator {
                             keyInfo.contexts.add(context);
                             keyInfo.lines.push({)
                                 file: filePath);
-                                line: lineNumber,);
+                                line: lineNumber,)
                         }
                                 context: context); }
                         }
@@ -474,7 +474,7 @@ export class TranslationFileGenerator {
                 console.error(`Error processing file ${filePath}:`, error);
                 results.errors.push({ )
                     file: filePath),
-                    error: error instanceof Error ? error.message : String(error); }
+                    error: error instanceof Error ? error.message : String(error) }
                 });
             }
         }
@@ -484,7 +484,7 @@ export class TranslationFileGenerator {
         // キーを自動登録
         if(autoRegister) {
             for (const [key, keyInfo] of extractedKeys) {
-                this.keyManager.registerKey(key, {)'
+                this.keyManager.registerKey(key, {)
                     description: `Extracted from source files`),'';
                     context: Array.from(keyInfo.contexts').join(', '),
                     category: keyInfo.category,
@@ -503,7 +503,7 @@ export class TranslationFileGenerator {
      * 翻訳ファイル同期機能
      */
     async synchronizeTranslationFiles(;
-        baseLanguage: string, );
+        baseLanguage: string );
         targetLanguages: string[]);
         options: SynchronizeTranslationFilesOptions = { ): Promise<SyncResults>,
         const { addMissingKeys = true,
@@ -553,7 +553,7 @@ export class TranslationFileGenerator {
                             baseCategoryData,
                             targetCategoryData,
                             { language: language,
-                                category: category,);
+                                category: category);
                                 addMissingKeys: addMissingKeys);
                                 removeObsoleteKeys: removeObsoleteKeys,);
                                 preserveTranslations: preserveTranslations);
@@ -568,7 +568,7 @@ export class TranslationFileGenerator {
                         console.error(`Error synchronizing ${category} for ${language}:`, error);
                         languageChanges.errors.push({ )
                             category: category),
-                            error: error instanceof Error ? error.message : String(error); }
+                            error: error instanceof Error ? error.message : String(error) }
                         });
                     }
                 }
@@ -604,7 +604,7 @@ export class TranslationFileGenerator {
     private async loadBaseTranslations(baseLanguage: string'): Promise<any | null> { // 実際の実装では適切な方法で翻訳データを読み込み
         // ここではモック実装
         try {
-            const mockTranslations = {'
+            const mockTranslations = {
                 common: {''
                     ok: 'OK','';
                     cancel: 'キャンセル','';
@@ -637,11 +637,11 @@ export class TranslationFileGenerator {
     '';
     private async loadExistingCategoryFile(language: string, category: string'): Promise<any | null> { // 実際の実装では適切な方法で既存ファイルを読み込み
         // ここではモック実装
-        try {'
-            // 既存の翻訳があるかシミュレート''
+        try {
+            // 既存の翻訳があるかシミュレート
             if(language === 'en' && category === 'common'') {'
                 return { ''
-                    ok: 'OK',';
+                    ok: 'OK','
             }'
                     cancel: 'Cancel',' };'
                     save: 'Save' }
@@ -656,9 +656,9 @@ export class TranslationFileGenerator {
         categoryData: any, ;
         existingTranslations: any, ;
         options: { includeEmpty: boolean,
-            generateTemplate: boolean,);
+            generateTemplate: boolean);
             preserveExisting: boolean);
-            language: string; }
+            language: string }
         }
     ): ProcessedTranslationData {
         const { includeEmpty, generateTemplate, preserveExisting, language } = options;
@@ -679,10 +679,10 @@ export class TranslationFileGenerator {
         }
                 translatedKeys++; }
             } else if (generateTemplate) { // テンプレート生成
-                processedTranslations[key] = includeEmpty ?   : undefined';
+                processedTranslations[key] = includeEmpty ?   : undefined;
                     this.templateConfig.placeholder: value,'';
                 if (!includeEmpty') translatedKeys++; }'
-            } else {  // 空の翻訳または基準値をコピー''
+            } else {  // 空の翻訳または基準値をコピー
                 processedTranslations[key] = includeEmpty ? '' : value; }
                 if (!includeEmpty) translatedKeys++; }
             }
@@ -696,7 +696,7 @@ export class TranslationFileGenerator {
             translatedKeys: translatedKeys }
         },
     }
-    ';
+    ';'
     private formatTranslationFile(translationObject: TranslationObject): string { ''
         return JSON.stringify(translationObject, null, 2'); }
     }'
@@ -722,10 +722,10 @@ export class TranslationFileGenerator {
                 generator: 'TranslationFileGenerator','';
                 version: '1.0.0' }
             },
-            statistics: { totalFiles: results.totalFiles,)
+            statistics: { totalFiles: results.totalFiles)
                 totalKeys: results.totalKeys);
                 completionRate: 0,);
-                lastUpdated: new Date().toISOString(); }
+                lastUpdated: new Date().toISOString() }
             },
             categories: results.filesGenerated.map(file => ({ name: file.category)
                 keys: file.keys,);
@@ -772,18 +772,18 @@ export class TranslationFileGenerator {
         return result;
     }
     ';
-    private registerGeneratedFiles(language: string, generatedFiles: Map<string, string>): void { // ProgressTrackerに翻訳セットを登録''
+    private registerGeneratedFiles(language: string, generatedFiles: Map<string, string>): void { // ProgressTrackerに翻訳セットを登録
         for(const [category, content] of generatedFiles') {'
             '';
             if (category !== '_metadata') {'
-                try {'
+                try {
         }'
                     const translations = JSON.parse(content'); }
                     const { _metadata, ...translationData } = translations;
                     
                     this.progressTracker.registerTranslationSet(;
                         language,
-                        category,);
+                        category);
                         translationData)';
                         { category: category,''
                             version: _metadata? .version || '1.0.0', : undefined')';
@@ -796,17 +796,17 @@ export class TranslationFileGenerator {
         }
     }
     ';
-    // These methods are referenced but not implemented in the original file''
+    // These methods are referenced but not implemented in the original file
     private async readSourceFile(filePath: string'): Promise<string>,';
-        // Mock implementation''
+        // Mock implementation
         return '';
     }
     
     private getLineNumber(content: string, index: number): number { // Mock implementation
         return 1; }
-    }'
+    }
     '';
-    private extractContext(content: string, index: number'): string { // Mock implementation''
+    private extractContext(content: string, index: number'): string { // Mock implementation
         return ''; }
     }
     
@@ -817,18 +817,18 @@ export class TranslationFileGenerator {
     private generateCategoryTemplate(categoryData: any, options: { includeExamples: boolean; language: string ): any {
         // Mock implementation }
         return {};
-    }'
+    }
     '';
-    private convertToCSV(template: TranslationTemplate'): string { // Mock implementation''
+    private convertToCSV(template: TranslationTemplate'): string { // Mock implementation
         return ''; }
     }'
     '';
-    private convertToXLSX(template: TranslationTemplate'): string { // Mock implementation''
+    private convertToXLSX(template: TranslationTemplate'): string { // Mock implementation
         return ''; }
     }
     
     private async synchronizeCategoryFile(;
-        baseCategoryData: any, );
+        baseCategoryData: any );
         targetCategoryData: any);
         options: any;
     ): Promise<CategorySyncResult>,
@@ -841,10 +841,10 @@ export class TranslationFileGenerator {
     }
     
     /**
-     * サポート言語を取得'
+     * サポート言語を取得
      */''
     getSupportedLanguages(''';
-        direction: 'ltr' | 'rtl',);
+        direction: 'ltr' | 'rtl');
         encoding: string);
     }> { return Array.from(this.supportedLanguages.entries().map(([code, info]) => ({
             code: code,
@@ -859,7 +859,7 @@ export class TranslationFileGenerator {
      */
     getSupportedCategories(): Array<{ code: string,
         name: string,
-        description: string; }
+        description: string }
     }> { return Array.from(this.categories.entries().map(([code, info]) => ({
             code: code,
             name: info.name);
@@ -873,7 +873,7 @@ export class TranslationFileGenerator {
     getStats(): { supportedLanguages: number,
         supportedCategories: number,
         templateConfig: TemplateConfig,
-        generatedFilesCount: number; }
+        generatedFilesCount: number }
     } { return { supportedLanguages: this.supportedLanguages.size,
             supportedCategories: this.categories.size,
             templateConfig: this.templateConfig, };
@@ -887,6 +887,6 @@ let translationFileGeneratorInstance: TranslationFileGenerator | null = null,
 
 /**
  * TranslationFileGeneratorのシングルトンインスタンスを取得
- */'
+ */
 export function getTranslationFileGenerator(): TranslationFileGenerator { if (!translationFileGeneratorInstance) {''
         translationFileGeneratorInstance = new TranslationFileGenerator(' })

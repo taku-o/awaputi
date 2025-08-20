@@ -15,7 +15,7 @@ export interface MotionManager { visualAccessibilityManager: VisualAccessibility
     userPreferences: UserPreferences,
     currentLevel: MotionLevel,
     config: MotionConfig,
-    setMotionLevel: (level: MotionLevel) => void; }
+    setMotionLevel: (level: MotionLevel) => void }
 }
 
 export interface VisualAccessibilityManager { [key: string]: any, }
@@ -34,7 +34,7 @@ export interface AnimationData { id: string,
     startTime: number,
     duration: number | null,
     isActive: boolean,
-    isPaused: boolean; }
+    isPaused: boolean }
 }
 
 export interface AnimationOptions { duration?: number;
@@ -47,29 +47,29 @@ export interface AnimationOptions { duration?: number;
 
 export interface PerformanceMonitor { frameRate: number,
     droppedFrames: number,
-    lastFrameTime: number; }
+    lastFrameTime: number }
 }
 
 export interface MotionStats { animationsControlled: number,
     animationsPaused: number,
     animationsReduced: number,
-    performanceAdjustments: number; }
+    performanceAdjustments: number }
 }
 
 export interface UserPreferences { autoReduceOnPerformance: boolean,
     granularControls: GranularControls,
-    selectiveReduction: SelectiveReduction;
+    selectiveReduction: SelectiveReduction
     }
 }
 
 export interface GranularControls { particleDensity: number,
     cameraMovement: number,
-    backgroundMotion: number; }
+    backgroundMotion: number }
 }
 
 export interface SelectiveReduction { disableRotation: boolean,
     disableScaling: boolean,
-    disableParallax: boolean; }
+    disableParallax: boolean }
 }
 
 export interface MotionConfig { vestibularSafety: boolean,
@@ -80,13 +80,13 @@ export interface MotionConfig { vestibularSafety: boolean,
 export interface VestibularGuidelines { maxRotationSpeed: number,
     maxScaleChange: number,
     maxTranslationSpeed: number,
-    maxFlashFrequency: number; }
+    maxFlashFrequency: number }
 }
 
 export interface MotionCategoryConfig { enabled: boolean,
     intensity: number,
     duration: number,
-    vestibularSafe: boolean; }
+    vestibularSafe: boolean }
 }
 
 export interface AnimationStatistics { active: number,
@@ -96,21 +96,21 @@ export interface AnimationStatistics { active: number,
     categories: Record<string, CategoryStats>,
     totalControlled: number,
     totalPaused: number,
-    totalReduced: number; }
+    totalReduced: number }
 }
 
 export interface PerformanceMetrics { frameRate: number,
     droppedFrames: number,
-    lastFrameTime: number; }
+    lastFrameTime: number }
 }
 
 export interface CategoryStats { active: number,
-    paused: number; }
+    paused: number }
 }
 
 // 列挙型
 export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhanced';
-';
+';'
 export type AnimationCategory = '';
     | 'general' | 'particles' | 'camera' | 'background' | 'ui' '';
     | 'parallax' | 'transitions' | 'effects' | 'gameplay';'
@@ -121,7 +121,7 @@ export type PerformanceLevel = 'low' | 'medium' | 'high' | 'critical';
 
 // 定数
 export const PERFORMANCE_THRESHOLD_FPS = 30;
-export const ANIMATION_ID_LENGTH = 9;'
+export const ANIMATION_ID_LENGTH = 9;
 export const DEFAULT_ANIMATION_DURATION = 1000;''
 export const DYNAMIC_STYLESHEET_ID = 'motion-manager-styles';
 export const PERFORMANCE_MONITOR_INTERVAL = 1000;'
@@ -145,7 +145,7 @@ export const DEFAULT_ANIMATION_OPTIONS: AnimationOptions = { duration: DEFAULT_A
 
 // ユーティリティ関数
 export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVEL_HIERARCHY.includes(level as MotionLevel); }
-}'
+}
 '';
 export function isValidAnimationCategory(category: string'): category is AnimationCategory { return [''
         'general', 'particles', 'camera', 'background', 'ui',']';
@@ -202,7 +202,7 @@ export function createMotionWarningStyle(): string { return `
             border: 3px solid #ff6b6b !important,'';
             background: rgba(255, 107, 107, 0.1') !important, }
         }
-        ';
+        ';'
         .motion-warning::before { ''
             content: '⚠️ 激しいアニメーション',
             position: absolute,
@@ -235,7 +235,7 @@ export class AnimationController {
     // パフォーマンス監視
     private performanceMonitor: PerformanceMonitor;
     // 統計情報
-    private stats: MotionStats';
+    private stats: MotionStats;
 '';
     constructor(motionManager: MotionManager') {
         this.motionManager = motionManager;
@@ -252,9 +252,9 @@ export class AnimationController {
         this.performanceMonitor = motionManager.performanceMonitor;
         
         // 統計情報
-        this.stats = motionManager.stats;'
+        this.stats = motionManager.stats;
         ';
-    }
+    }'
     }'
         console.log('[AnimationController] Component initialized'); }
     }
@@ -267,7 +267,7 @@ export class AnimationController {
             
         }
             return; // 既に作成済み }
-        }'
+        }
 '';
         this.dynamicStyleSheet = document.createElement('style');
         this.dynamicStyleSheet.id = DYNAMIC_STYLESHEET_ID;
@@ -275,7 +275,7 @@ export class AnimationController {
             /* モーションレベル基本設定 */
             .motion-none * { animation: none !important,
                 transition: none !important,
-                transform: none !important; }
+                transform: none !important }
             }
             
             .motion-essential * { animation-duration: 0.1s !important,
@@ -287,12 +287,12 @@ export class AnimationController {
                 animation-iteration-count: 1 !important, }
             }
             
-            .motion-reduced .parallax { transform: none !important; }
+            .motion-reduced .parallax { transform: none !important }
             }
             
             /* カテゴリ別制御 */
             .motion-category-disabled { animation-play-state: paused !important,
-                transition: none !important; }
+                transition: none !important }
             }
             
             /* 前庭安全モード */
@@ -304,29 +304,29 @@ export class AnimationController {
                 animation-iteration-count: 1 !important, }
             }
             
-            .vestibular-safe .scaling { transform: scale(1) !important; }
+            .vestibular-safe .scaling { transform: scale(1) !important }
             }
             
-            .vestibular-safe .parallax { transform: translateZ(0) !important; }
+            .vestibular-safe .parallax { transform: translateZ(0) !important }
             }
             
             /* パフォーマンス最適化 */
             .performance-mode * { will-change: auto !important,
-                transform: translateZ(0); }
+                transform: translateZ(0) }
             }
             
-            .performance-mode .complex-animation { animation: none !important; }
+            .performance-mode .complex-animation { animation: none !important }
             }
             
             ${createMotionWarningStyle(})}
             
             /* ゲーム要素特別制御 */
             .game-motion-controlled { --motion-intensity: var(--game-motion-intensity, 1.0);
-                --motion-duration: var(--game-motion-duration, 1.0); }
+                --motion-duration: var(--game-motion-duration, 1.0) }
             }
             
             .game-motion-controlled * { animation-duration: calc(var(--original-duration, 1s) * var(--motion-duration) !important;
-                transform: scale(var(--motion-intensity) !important; }
+                transform: scale(var(--motion-intensity) !important }
             }
         `;
         document.head.appendChild(this.dynamicStyleSheet);
@@ -380,7 +380,7 @@ export class AnimationController {
         
             
         
-        }'
+        }
             console.log(`Performance degradation detected. Reducing motion level: ${currentLevel} → ${ newLevel)`);' }'
             this.motionManager.setMotionLevel(newLevel'});
             this.stats.performanceAdjustments++;
@@ -391,11 +391,11 @@ export class AnimationController {
      * アニメーションの登録'
      */''
     registerAnimation(element: HTMLElement, category: AnimationCategory = 'general', options: AnimationOptions = { ): string | null {'
-        try {''
+        try {'
             if (!isHTMLElement(element)') {''
                 throw new Error('Invalid element provided'); }
             }
-';
+';'
             if(!isValidAnimationCategory(category) { ' }'
                 console.warn(`Invalid animation category: ${category'), using 'general'`'});''
                 category = 'general';
@@ -428,9 +428,9 @@ export class AnimationController {
             this.setupAnimationObserver(animationData);
             
             console.log(`Animation registered: ${id} (${category)`});
-            return id;'
+            return id;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to register animation:', error);
             return null; }
         }
@@ -469,7 +469,7 @@ export class AnimationController {
      * カテゴリ設定の適用
      */
     private applyCategorySettings(element: HTMLElement, category: string): void { const config = this.motionManager.config.motionCategories[category];
-        if (!config) return;'
+        if (!config) return;
         '';
         if(!config.enabled') {'
             '';
@@ -478,7 +478,7 @@ export class AnimationController {
             return; }
         }
         ';
-        // CSS カスタムプロパティで強度と速度を制御''
+        // CSS カスタムプロパティで強度と速度を制御
         element.style.setProperty('--motion-intensity', String(config.intensity)');''
         element.style.setProperty('--motion-duration', String(config.duration);
         
@@ -492,7 +492,7 @@ export class AnimationController {
     /**
      * 段階的制御の適用
      */
-    private applyGranularControls(element: HTMLElement, category: string): void { const granular = this.motionManager.userPreferences.granularControls;'
+    private applyGranularControls(element: HTMLElement, category: string): void { const granular = this.motionManager.userPreferences.granularControls;
         '';
         switch(category') {'
             '';
@@ -516,19 +516,19 @@ export class AnimationController {
         const currentTransform = element.style.transform;'
         '';
         if(selective.disableRotation && currentTransform? .includes('rotate') {'
-            ';
+            ';'
         }'
             element.style.transform = currentTransform.replace(/rotate\([^)]*\')/g, '''); }
         }'
         '';
         if(selective.disableScaling && currentTransform?.includes('scale') {'
-            ';
+            ';'
         }'
             element.style.transform = currentTransform.replace(/scale\([^)]*\')/g, '''); }
         }'
         '';
         if(selective.disableParallax && category === 'parallax'') {'
-            ';
+            ';'
         }'
             element.classList.add('motion-category-disabled'); }
         }
@@ -548,7 +548,7 @@ export class AnimationController {
     }
 
     /**
-     * 回転速度の検証'
+     * 回転速度の検証
      */''
     private validateRotationSpeed(element: HTMLElement, computedStyle: CSSStyleDeclaration, animationData: AnimationData'): void { const transform = computedStyle.transform;''
         if (!transform || !transform.includes('rotate')') return;'
@@ -600,7 +600,7 @@ export class AnimationController {
                 }'
             });''
         }');
-        ';
+        ';'
         observer.observe(animationData.element, { attributes: true,')'
             attributeFilter: ['style', 'class']);
         
@@ -718,10 +718,10 @@ export class AnimationController {
             console.error('Invalid intensity multiplier provided');
             return false; }
         }
-';
+';'
         const animation = this.activeAnimations.get(animationId);''
         if (!animation') return false;
-        ';
+        ';'
         const element = animation.element;''
         const currentIntensity = parseFloat(element.style.getPropertyValue('--motion-intensity'') || '1.0');''
         const newIntensity = clampIntensity(currentIntensity * intensityMultiplier');'
@@ -742,13 +742,13 @@ export class AnimationController {
         }
             return false; }
         }
-';
+';'
         const animation = this.activeAnimations.get(animationId);''
         if (!animation') return false;
-        ';
+        ';'
         const element = animation.element;''
         const currentDuration = parseFloat(element.style.getPropertyValue('--motion-duration'') || '1.0');''
-        const newDuration = clampDuration(currentDuration / speedMultiplier'); // 速度を上げる = 時間を短くする'
+        const newDuration = clampDuration(currentDuration / speedMultiplier'); // 速度を上げる = 時間を短くする
         '';
         element.style.setProperty('--motion-duration', newDuration.toFixed(2);
         
@@ -829,7 +829,7 @@ export class AnimationController {
     /**
      * パフォーマンス統計をリセット'
      */''
-    resetPerformanceStats('')';
+    resetPerformanceStats()';
         console.log('[AnimationController] Performance stats reset');
     }
     
@@ -851,9 +851,9 @@ export class AnimationController {
         }
             this.dynamicStyleSheet = null; }
         }
-        ';
-        // CSS ルールのクリア''
-        this.cssRules.clear('')';
+        ;
+        // CSS ルールのクリア
+        this.cssRules.clear()';
         console.log('[AnimationController] Component destroyed'');'
     }''
 }

@@ -32,7 +32,7 @@ interface HelpColors { background: string,
     buttonHover: string,
     scrollbar: string,
     scrollbarHover: string,
-    scrollbarTrack: string; }
+    scrollbarTrack: string }
 }
 
 // フォントサイズインターフェース
@@ -40,7 +40,7 @@ interface HelpFontSizes { title: number,
     header: number,
     normal: number,
     small: number,
-    tiny: number; }
+    tiny: number }
 }
 
 // スクロール状態インターフェース
@@ -51,7 +51,7 @@ interface ScrollState { offset: number,
     scrollbarWidth: number,
     isDragging: boolean,
     dragStartY: number,
-    dragStartOffset: number; }
+    dragStartOffset: number }
 }
 
 // コンテンツデータインターフェース
@@ -67,7 +67,7 @@ interface HelpState { searchQuery: string,
     selectedTopicIndex: number,
     isSearching: boolean,
     searchResults: any[],
-    currentContent: ContentData | null; }
+    currentContent: ContentData | null }
 }
 
 /**
@@ -86,12 +86,12 @@ export class HelpRenderer {
     // サイドバースクロール状態
     private sidebarScroll: ScrollState;
     // レイアウト
-    private layout: HelpLayout';
+    private layout: HelpLayout;
     '';
     constructor(gameEngine: GameEngine') {
         this.gameEngine = gameEngine;
         
-        // 色設定'
+        // 色設定
         this.colors = {''
             background: '#0f0f1a','';
             cardBackground: '#1a1a2e','';
@@ -105,7 +105,7 @@ export class HelpRenderer {
             buttonBackground: '#2d5aa0','';
             buttonHover: '#3d6ab0','';
             scrollbar: '#555','';
-            scrollbarHover: '#777',';
+            scrollbarHover: '#777','
     }
     }'
             scrollbarTrack: '#333' }
@@ -225,7 +225,7 @@ export class HelpRenderer {
     public render(;
         ctx: CanvasRenderingContext2D,
         state: HelpState,
-        accessibilityManager: HelpAccessibilityManager,
+        accessibilityManager: HelpAccessibilityManager
     );
         animationManager: HelpAnimationManager);
         transitionRenderer: HelpTransitionRenderer;
@@ -263,9 +263,9 @@ export class HelpRenderer {
             this.renderBackButton(ctx, accessibilityManager.getCurrentFocusIndex() === 4);
 
             // アクセシビリティ要素の描画
-            this.renderAccessibilityElements(ctx, accessibilityManager);'
+            this.renderAccessibilityElements(ctx, accessibilityManager);
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Render error in HelpRenderer:', error');''
             this.renderErrorMessage(ctx, 'レンダリングエラーが発生しました'); }
         }
@@ -309,14 +309,14 @@ export class HelpRenderer {
         if(focused) {
             ctx.strokeStyle = this.colors.secondary;
             ctx.lineWidth = 3;
-            ctx.setLineDash([5, 5]);'
+            ctx.setLineDash([5, 5]);
             this.roundRect(ctx, searchBar.x - 2, searchBar.y - 2, searchBar.width + 4, searchBar.height + 4, 10, false);'
         }'
             ctx.setLineDash([]'); }
         }
         
         // プレースホルダーまたは検索テキスト
-        ctx.fillStyle = this.colors.text;'
+        ctx.fillStyle = this.colors.text;
         ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;''
         ctx.textAlign = 'left';''
         ctx.textBaseline = 'middle';'
@@ -338,9 +338,9 @@ export class HelpRenderer {
             ctx.strokeStyle = this.colors.text;
             ctx.lineWidth = 1;
             ctx.beginPath();
-            ctx.moveTo(cursorX, textY - 8);'
+            ctx.moveTo(cursorX, textY - 8);
             ctx.lineTo(cursorX, textY + 8);''
-            ctx.stroke('')';
+            ctx.stroke()';
         ctx.textAlign = 'right';')
         }'
         ctx.fillText('🔍', searchBar.x + searchBar.width - 15, searchBar.y + searchBar.height / 2); }
@@ -380,9 +380,9 @@ export class HelpRenderer {
         },
         
         ctx.save();
-        ctx.beginPath();'
+        ctx.beginPath();
         ctx.rect(contentArea.x, contentArea.y, contentArea.width, contentArea.height);''
-        ctx.clip('')';
+        ctx.clip()';
             animationManager.getAnimationState('categoryTransition')? .isActive;
 
         let currentY = sidebar.y + 10 - this.sidebarScroll.offset;
@@ -402,7 +402,7 @@ export class HelpRenderer {
             
             // アニメーション中のカテゴリ特別処理
             let alpha = 1;
-            let offsetX = 0;'
+            let offsetX = 0;
             '';
             if(hasCategoryTransition') {'
                 '';
@@ -426,13 +426,13 @@ export class HelpRenderer {
             ctx.globalAlpha = alpha;
             
             // カテゴリ項目の背景
-            if(isSelected) {'
+            if(isSelected) {
                 ctx.fillStyle = this.colors.selected;'
             }'
                 this.roundRect(ctx, sidebar.x + 5 + offsetX, currentY - 2, contentArea.width - 5, 35, 4, true'); }
             }
             
-            // カテゴリ名'
+            // カテゴリ名
             ctx.fillStyle = isSelected ? this.colors.text: this.colors.textSecondary,'';
             ctx.font = `${isSelected ? 'bold ' : ''}${this.fontSizes.normal}px Arial, sans-serif`;''
             ctx.textAlign = 'left';''
@@ -560,8 +560,8 @@ export class HelpRenderer {
     public renderContentData(ctx: CanvasRenderingContext2D, contentArea: { x: number; y: number; width: number; height: number ), contentData: ContentData): void {
         let currentY = contentArea.y + 20;
         const maxWidth = contentArea.width - 40;
-        ';
-        // タイトル''
+        ;
+        // タイトル
         if(contentData.title') {
             
         }
@@ -636,14 +636,14 @@ export class HelpRenderer {
         if(focused) {
             ctx.strokeStyle = this.colors.secondary;
             ctx.lineWidth = 2;
-            ctx.setLineDash([5, 5]);'
+            ctx.setLineDash([5, 5]);
             this.roundRect(ctx, contentArea.x - 2, contentArea.y - 2, contentArea.width + 4, contentArea.height + 4, 10, false);'
         }'
             ctx.setLineDash([]'); }
         }
         
         // 検索結果ヘッダー
-        ctx.fillStyle = this.colors.text;'
+        ctx.fillStyle = this.colors.text;
         ctx.font = `bold ${this.fontSizes.header}px Arial, sans-serif`;''
         ctx.textAlign = 'left';''
         ctx.textBaseline = 'top';''
@@ -704,14 +704,14 @@ export class HelpRenderer {
         if(focused) {
             ctx.strokeStyle = this.colors.secondary;
             ctx.lineWidth = 3;
-            ctx.setLineDash([5, 5]);'
+            ctx.setLineDash([5, 5]);
             this.roundRect(ctx, backButton.x - 2, backButton.y - 2, backButton.width + 4, backButton.height + 4, 8, false);'
         }'
             ctx.setLineDash([]'); }
         }
         
         // ボタンテキスト
-        ctx.fillStyle = this.colors.text;'
+        ctx.fillStyle = this.colors.text;
         ctx.font = `bold ${this.fontSizes.normal}px Arial, sans-serif`;''
         ctx.textAlign = 'center';''
         ctx.textBaseline = 'middle';'
@@ -726,11 +726,11 @@ export class HelpRenderer {
      * コンテンツなしメッセージ'
      */''
     private renderNoContentMessage(ctx: CanvasRenderingContext2D, contentArea: { x: number; y: number; width: number; height: number )'): void {
-        ctx.fillStyle = this.colors.textSecondary; }'
+        ctx.fillStyle = this.colors.textSecondary }'
         ctx.font = `${this.fontSizes.normal}px Arial, sans-serif`;''
         ctx.textAlign = 'center';''
         ctx.textBaseline = 'middle';
-        ';
+        ';'
         ctx.fillText(')';
             'カテゴリとトピックを選択してください');
             contentArea.x + contentArea.width / 2,);
@@ -770,10 +770,10 @@ export class HelpRenderer {
         if(focusIndex >= 0 && focusIndex < elements.length) {
         
             const element = elements[focusIndex];
-            const ariaInfo = accessibilityManager.getAriaLabel(element.id);'
+            const ariaInfo = accessibilityManager.getAriaLabel(element.id);
             '';
             if (ariaInfo') {'
-                // アクセシビリティ情報のオーバーレイ''
+                // アクセシビリティ情報のオーバーレイ
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.8')';''
                 ctx.fillRect(10, ctx.canvas.height - 60, 400, 50');
                 
@@ -795,7 +795,7 @@ export class HelpRenderer {
      */'
     private wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] { ''
         if (!text') return [];
-        ';
+        ';'
         const lines: string[] = [],'';
         let currentLine = '';
         
@@ -804,14 +804,14 @@ export class HelpRenderer {
             const char = text[i];
             const testLine = currentLine + char;
             const metrics = ctx.measureText(testLine);
-            ';
+            ';'
             if (metrics.width > maxWidth && currentLine) {''
                 lines.push(currentLine');
         }
                 currentLine = char; }
             } else {  currentLine = testLine;
                 ';
-                // 句読点や改行で自然に改行''
+                // 句読点や改行で自然に改行
                 if(char === '。' || char === '、' || char === '\n') {
                     const nextChar = text[i + 1];'
                     if (nextChar && ctx.measureText(currentLine + nextChar).width > maxWidth) {'
@@ -837,7 +837,7 @@ export class HelpRenderer {
         x: number, ;
         y: number, ;
         width: number, ;
-        height: number, );
+        height: number );
         radius: number);
         fill: boolean = true;
     ): void { ctx.beginPath(),
@@ -1014,7 +1014,7 @@ export class HelpRenderer {
     }
 
     /**
-     * 点が矩形内にあるかチェック'
+     * 点が矩形内にあるかチェック
      */''
     public isPointInRect(x: number, y: number, rect: { x: number; y: number; width: number; height: number )'): boolean {
         return x >= rect.x && x <= rect.x + rect.width &&;

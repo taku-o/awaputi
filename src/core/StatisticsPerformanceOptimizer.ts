@@ -11,7 +11,7 @@ export class StatisticsPerformanceOptimizer {
             batchProcessing: {
                 enabled: true,
                 batchSize: 100,
-                processingInterval: 16, // 60fps対応;
+                processingInterval: 16, // 60fps対応
     }
     }
                 maxBatchWaitTime: 100 }
@@ -115,12 +115,12 @@ export class StatisticsPerformanceOptimizer {
             this.processBatch('dataOperations'); }
         }, this.config.batchProcessing.processingInterval);
         ';
-        // レンダリング操作バッチ処理''
+        // レンダリング操作バッチ処理
         setInterval((') => {  ' }'
             this.processBatch('renderOperations'); }
         }, this.config.batchProcessing.processingInterval);
         ';
-        // クリーンアップ操作バッチ処理''
+        // クリーンアップ操作バッチ処理
         setInterval((') => {  ' }'
             this.processBatch('cleanupOperations'); }
         }, this.config.batchProcessing.processingInterval * 4); // 低頻度実行
@@ -148,9 +148,9 @@ export class StatisticsPerformanceOptimizer {
         // オフスクリーンキャンバスの作成
         if (this.config.renderingOptimization.useOffscreenCanvas) {
             try {
-    }'
+    }
                 this.renderingOptimizer.offscreenCanvas = new OffscreenCanvas(1, 1);' }'
-            } catch (error') { ''
+            } catch (error) { ''
                 console.warn('OffscreenCanvas not supported, falling back to regular canvas'');''
                 this.renderingOptimizer.offscreenCanvas = document.createElement('canvas'); }
             }
@@ -165,13 +165,13 @@ export class StatisticsPerformanceOptimizer {
         
         // キャッシュ定期クリーンアップ
     }
-        setInterval(() => {  }'
+        setInterval(() => {  }
             this.cleanupExpiredCache();' }'
         }, 60000'); // 1分間隔
     }
     
     /**
-     * データ収集の最適化'
+     * データ収集の最適化
      */''
     optimizeDataCollection(operation, data, priority = 'normal') {'
         '';
@@ -185,15 +185,15 @@ export class StatisticsPerformanceOptimizer {
                 startTime' }'
             }');
             ';
-            // 高優先度の場合は即座に処理''
+            // 高優先度の場合は即座に処理
             if(priority === 'high'') {'
-                ';
+                ';'
             }'
                 this.processBatch('dataOperations'); }
             }
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Data collection optimization failed:', error');
             return false; }'
         } finally { ''
@@ -223,8 +223,8 @@ export class StatisticsPerformanceOptimizer {
         
         const batch = queue.splice(0, this.config.batchProcessing.batchSize);
         const startTime = performance.now();
-        ';
-        try {''
+        ';'
+        try {'
             switch(queueType') {'
                 '';
                 case 'dataOperations':'';
@@ -258,10 +258,10 @@ export class StatisticsPerformanceOptimizer {
         
             try {
         
-        }'
+        }
                 await this.executeDataOperation(operation);' }'
-            } catch (error') { ''
-                console.error('Data operation failed:', error); }
+            } catch (error) { ''
+                console.error('Data operation failed:', error) }
             }
         }
     }
@@ -318,10 +318,10 @@ export class StatisticsPerformanceOptimizer {
                     // 残りの操作を次のフレームに延期
                     this.processingQueue.renderOperations.unshift(...batch.slice(batch.indexOf(renderOp) + 1));
             }
-                    break; }'
+                    break; }
                 }''
-            } catch (error') { ''
-            console.error('Render batch processing failed:', error); }
+            } catch (error) { ''
+            console.error('Render batch processing failed:', error) }
         }
         
         this.updateRenderingMetrics(renderStartTime);
@@ -377,8 +377,8 @@ export class StatisticsPerformanceOptimizer {
      */
     async executeRenderOperation(operation) {
         const { type, context, data, options } = operation;
-        ';
-        try { ''
+        ';'
+        try {'
             switch(type') {'
                 '';
                 case 'chart':'';
@@ -402,10 +402,10 @@ export class StatisticsPerformanceOptimizer {
      * クリーンアップバッチの処理
      */
     async processCleanupBatch(batch) { for (const cleanupOp of batch) {
-            try {'
+            try {
                 await this.executeCleanupOperation(cleanupOp);' }'
-            } catch (error') { ''
-                console.error('Cleanup operation failed:', error); }
+            } catch (error) { ''
+                console.error('Cleanup operation failed:', error) }
             }
         }
     }
@@ -446,17 +446,17 @@ export class StatisticsPerformanceOptimizer {
                 memoryUsage = performance.memory.usedJSHeapSize;
                 this.performanceMetrics.memoryUsage.current = memoryUsage;
                 this.performanceMetrics.memoryUsage.peak = Math.max(;
-                    this.performanceMetrics.memoryUsage.peak,);
+                    this.performanceMetrics.memoryUsage.peak);
     }
                     memoryUsage); }
             }
             
             // 統計データのメモリ使用量を推定
             const statsMemoryUsage = this.estimateStatisticsMemoryUsage();
-            this.performanceMetrics.memoryUsage.allocated = statsMemoryUsage;'
+            this.performanceMetrics.memoryUsage.allocated = statsMemoryUsage;
             '';
-        } catch (error') { ''
-            console.warn('Memory measurement failed:', error); }
+        } catch (error) { ''
+            console.warn('Memory measurement failed:', error) }
         }
         
         // 測定履歴を記録
@@ -489,10 +489,10 @@ export class StatisticsPerformanceOptimizer {
             }
             
             // キャッシュサイズ
-            totalSize += this.estimateCacheSize();'
+            totalSize += this.estimateCacheSize();
             '';
-        } catch (error') { ''
-            console.warn('Memory estimation failed:', error); }
+        } catch (error) { ''
+            console.warn('Memory estimation failed:', error) }
         }
         
         return totalSize;
@@ -516,10 +516,10 @@ export class StatisticsPerformanceOptimizer {
         try {
             const manager = this.statisticsManager.timeSeriesDataManager;
             if (manager.data) {
-    }'
+    }
                 size += this.estimateObjectSize(manager.data);' }'
-            } catch (error') { ''
-            console.warn('Time series size estimation failed:', error); }
+            } catch (error) { ''
+            console.warn('Time series size estimation failed:', error) }
         }
         
         return size;
@@ -546,7 +546,7 @@ export class StatisticsPerformanceOptimizer {
     checkMemoryThresholds() {
         const currentUsage = this.performanceMetrics.memoryUsage.current;
         const maxUsage = this.config.memoryManagement.maxMemoryUsage;
-        const threshold = maxUsage * this.config.memoryManagement.cleanupThreshold;'
+        const threshold = maxUsage * this.config.memoryManagement.cleanupThreshold;
         '';
         if (currentUsage > threshold') {'
     }'
@@ -583,10 +583,10 @@ export class StatisticsPerformanceOptimizer {
                         if(Array.isArray(periodData) { }
                             count += periodData.length; }
                         }
-                    });'
+                    });
                 }''
-            } catch (error') { ''
-            console.warn('Record count estimation failed:', error); }
+            } catch (error) { ''
+            console.warn('Record count estimation failed:', error) }
         }
         
         return count;
@@ -605,9 +605,9 @@ export class StatisticsPerformanceOptimizer {
             timestamp: Date.now(),' }'
         }');
         ';
-        // 緊急時は即座に実行''
+        // 緊急時は即座に実行
         if(reason === 'high_usage'') {'
-            ';
+            ';'
         }'
             this.processBatch('cleanupOperations'); }
         }
@@ -635,7 +635,7 @@ export class StatisticsPerformanceOptimizer {
         this.addToBatch('cleanupOperations', { ')'
             type: 'archive',')';
             target: 'old_data'),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -653,11 +653,11 @@ export class StatisticsPerformanceOptimizer {
                 timestamp: Date.now(),
                 originalSize: this.estimateObjectSize(data),
                 compressedSize: this.estimateObjectSize(compressedData),
-                compressionRatio: this.estimateObjectSize(compressedData) / this.estimateObjectSize(data); }
+                compressionRatio: this.estimateObjectSize(compressedData) / this.estimateObjectSize(data) }
             });
-            ';
+            ';'
             return compressedData;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Data compression failed:', error);
             throw error; }
         } finally { this.compressionManager.isCompressing = false; }
@@ -760,7 +760,7 @@ export class StatisticsPerformanceOptimizer {
         this.cacheMetadata.set(cacheKey, { );
             timestamp: Date.now(),
             accessCount: 1,
-            size: this.estimateObjectSize(data); }
+            size: this.estimateObjectSize(data) }
         });
         
         return data;
@@ -967,7 +967,7 @@ export class StatisticsPerformanceOptimizer {
      * リソースのクリーンアップ
      */
     destroy() {
-        this.pause();'
+        this.pause();
         this.cache.clear();'
     }'
         this.cacheMetadata.clear(') }

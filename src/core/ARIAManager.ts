@@ -1,7 +1,7 @@
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 
 interface ScreenReaderManager { accessibilityManager: {
-        gameEngine: unknown; }
+        gameEngine: unknown }
     };
 }
 
@@ -10,7 +10,7 @@ interface ARIAConfig { autoManagement: boolean,
     relationshipTracking: boolean,
     validationEnabled: boolean,
     localization: boolean,
-    debugMode: boolean; }
+    debugMode: boolean }
 }
 
 /**
@@ -34,7 +34,7 @@ export class ARIAManager {
         
         // ARIA属性管理
         this.managedElements = new Map();
-        this.ariaDescriptions = new Map();'
+        this.ariaDescriptions = new Map();
         this.ariaLiveRegions = new Map();'
 
     }
@@ -51,7 +51,7 @@ export class ARIAManager {
             ['dialog', { role: 'dialog', requiredProps: ['aria-labelledby'], optionalProps: ['aria-describedby'] }],''
             ['alertdialog', { role: 'alertdialog', requiredProps: ['aria-labelledby'], optionalProps: ['aria-describedby'] }],
             ';
-            // 複合ウィジェット''
+            // 複合ウィジェット
             ['grid', { role: 'grid', requiredProps: [], optionalProps: ['aria-rowcount', 'aria-colcount'] }],''
             ['gridcell', { role: 'gridcell', requiredProps: [], optionalProps: ['aria-rowindex', 'aria-colindex'] }],''
             ['tree', { role: 'tree', requiredProps: [], optionalProps: ['aria-multiselectable'] }],''
@@ -60,7 +60,7 @@ export class ARIAManager {
             ['menuitem', { role: 'menuitem', requiredProps: [], optionalProps: ['aria-haspopup'] }],''
             ['menubar', { role: 'menubar', requiredProps: [], optionalProps: ['aria-orientation'] }],
             ';
-            // ランドマーク''
+            // ランドマーク
             ['banner', { role: 'banner', requiredProps: [], optionalProps: ['aria-label'] }],''
             ['main', { role: 'main', requiredProps: [], optionalProps: ['aria-label'] }],''
             ['navigation', { role: 'navigation', requiredProps: [], optionalProps: ['aria-label'] }],''
@@ -68,7 +68,7 @@ export class ARIAManager {
             ['contentinfo', { role: 'contentinfo', requiredProps: [], optionalProps: ['aria-label'] }],''
             ['search', { role: 'search', requiredProps: [], optionalProps: ['aria-label'] }],')'
             ['form', { role: 'form', requiredProps: [], optionalProps: ['aria-label'] }])'
-            // ゲーム固有''
+            // ゲーム固有
             ['game', { role: 'application', requiredProps: ['aria-label'], optionalProps: ['aria-describedby'] }],''
             ['score', { role: 'status', requiredProps: ['aria-label'], optionalProps: ['aria-live'] }],''
             ['timer', { role: 'timer', requiredProps: ['aria-label'], optionalProps: ['aria-live'] }],''
@@ -79,9 +79,9 @@ export class ARIAManager {
         this.state = {
             initialized: false,
             elementsManaged: 0,
-            validationErrors: [],';
+            validationErrors: [],
             lastValidation: null,'';
-            activeDescriptions: new Set('')';
+            activeDescriptions: new Set()';
         console.log('ARIAManager initialized'),
         this.initialize(); }
     }
@@ -100,14 +100,14 @@ export class ARIAManager {
             // ゲーム固有のARIA設定
             this.setupGameSpecificARIA();
             
-            // バリデーションの実行'
+            // バリデーションの実行
             if (this.config.validationEnabled) {''
-                this.validateAllElements('');
+                this.validateAllElements();
     }'
             console.log('ARIAManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ARIA_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -115,17 +115,17 @@ export class ARIAManager {
     /**
      * 既存要素のスキャンと設定'
      */''
-    scanAndSetupExistingElements('')';
+    scanAndSetupExistingElements()';
             'button', 'input', 'select', 'textarea', 'a[href]'')'';
             '[tabindex]:not([tabindex="-1"]")','';
             '[role="button"], [role="link"], [role="tab"], [role="menuitem"]''';
         ].join(', ');
-        
+        '
         focusableElements.forEach(element => {  ); }'
             this.setupElementARIA(element);' }'
         }');
         
-        // ランドマーク要素の設定'
+        // ランドマーク要素の設定
         const landmarks = document.querySelectorAll([')]';
             'main', 'nav', 'aside', 'header', 'footer', 'section', 'article', 'form'')']';
         ].join(', ');
@@ -153,7 +153,7 @@ export class ARIAManager {
         }
         
         // 要素を管理対象に追加
-        this.managedElements.set(element, { type: elementInfo.type,)
+        this.managedElements.set(element, { type: elementInfo.type)
             pattern: ariaPattern),
             lastUpdate: Date.now(),
             isValid: true }
@@ -167,10 +167,10 @@ export class ARIAManager {
      */
     setupLandmarkARIA(element) {'
         '';
-        const tagName = element.tagName.toLowerCase('')';
+        const tagName = element.tagName.toLowerCase()';
         let role = element.getAttribute('role');
         ';
-        // デフォルトロールの設定''
+        // デフォルトロールの設定
         if (!role') {'
             const defaultRoles = {''
                 'main': 'main','';
@@ -183,19 +183,19 @@ export class ARIAManager {
     }'
                 'form': 'form' }
             };
-            ';
+            ';'
             role = defaultRoles[tagName];''
             if(role') {'
-                ';
+                ';'
             }'
                 element.setAttribute('role', role); }
             }
         }
         ';
-        // ラベルの設定''
+        // ラベルの設定
         this.ensureLandmarkLabel(element, role');
         
-        // 管理対象に追加'
+        // 管理対象に追加
         this.managedElements.set(element, { ')'
             type: 'landmark',);
             role: role),
@@ -213,11 +213,11 @@ export class ARIAManager {
     }
             return; // 既にラベルがある }
         }
-        ';
-        // 自動ラベル生成''
+        ;
+        // 自動ラベル生成
         let label = '';
         ';
-        // 見出し要素を探す''
+        // 見出し要素を探す
         const heading = element.querySelector('h1, h2, h3, h4, h5, h6');
         if(heading) {
             
@@ -229,7 +229,7 @@ export class ARIAManager {
             return;
         }
         
-        // デフォルトラベルの設定'
+        // デフォルトラベルの設定
         const defaultLabels = { ''
             'navigation': 'ナビゲーション','';
             'main': 'メインコンテンツ','';
@@ -242,7 +242,7 @@ export class ARIAManager {
         
         label = defaultLabels[role] || role;
         ';
-        // 複数の同じロールがある場合は番号を付ける''
+        // 複数の同じロールがある場合は番号を付ける
         const existingSameRole = document.querySelectorAll(`[role="${ role")"]`);"
         if (existingSameRole.length > 1) {" }"
             const index = Array.from(existingSameRole).indexOf(element"}) + 1;
@@ -257,14 +257,14 @@ export class ARIAManager {
      */
     analyzeElement(element) {'
         '';
-        const tagName = element.tagName.toLowerCase('')';
+        const tagName = element.tagName.toLowerCase()';
         const role = element.getAttribute('role'');
         const type = element.type;
         
         let elementType = role || tagName;
         let needsARIA = false;
         ';
-        // ゲーム固有要素の判定''
+        // ゲーム固有要素の判定
         if (element.classList.contains('game-area'') || element.id === 'game-canvas'') {''
             elementType = 'game';
     }'
@@ -280,7 +280,7 @@ export class ARIAManager {
             needsARIA = true; }
         }
         ';
-        // 基本要素の判定''
+        // 基本要素の判定
         switch(tagName') {'
             '';
             case 'button':'';
@@ -301,7 +301,7 @@ export class ARIAManager {
                 break;
         }
         
-        return { type: elementType,)
+        return { type: elementType)
             needsARIA: needsARIA)';
             hasRole: !!role,')';
             hasLabel: !!(element.getAttribute('aria-label'') || element.getAttribute('aria-labelledby'), };
@@ -333,7 +333,7 @@ export class ARIAManager {
      * ARIAパターンの適用'
      */''
     applyARIAPattern(element, pattern, elementInfo') {'
-        // ロールの設定''
+        // ロールの設定
         if (pattern.role && !element.getAttribute('role')') {'
     }'
             element.setAttribute('role', pattern.role); }
@@ -360,14 +360,14 @@ export class ARIAManager {
     /**
      * ARIA値の生成
      */
-    generateARIAValue(element, property, elementInfo) {'
+    generateARIAValue(element, property, elementInfo) {
         '';
         switch (property') {''
             case 'aria-expanded':'';
-                return 'false'; // デフォルトは折りたたみ状態'
+                return 'false'; // デフォルトは折りたたみ状態
                 '';
             case 'aria-selected':'';
-                return 'false'; // デフォルトは非選択状態'
+                return 'false'; // デフォルトは非選択状態
                 '';
             case 'aria-pressed':'';
                 return element.classList.contains('pressed'') ? 'true' : 'false';'
@@ -384,7 +384,7 @@ export class ARIAManager {
                 '';
             case 'aria-valuenow':'';
                 if(elementInfo.type === 'progressbar'') {'
-                    ';
+                    ';'
                 }'
                     return element.getAttribute('value'') || '0'; }
                 }
@@ -408,17 +408,17 @@ export class ARIAManager {
         if (element.getAttribute('aria-label'') || element.getAttribute('aria-labelledby')') {
     }
             return; // 既にラベルがある }
-        }'
+        }
         '';
         let label = '';
         
         // テキストコンテンツから生成
         if(element.textContent && element.textContent.trim() { return; // テキストコンテンツがある場合は不要 }
         }
-        ';
-        // 関連ラベル要素を探す''
+        ;
+        // 関連ラベル要素を探す
         if(element.id') {'
-            ';
+            ';'
         }'
             const labelElement = document.querySelector(`label[for="${element.id")"]`); }
             if (labelElement}) { return; // label要素が存在 }
@@ -440,7 +440,7 @@ export class ARIAManager {
      */
     generateDefaultLabel(element, elementInfo) {'
         const type = elementInfo.type;''
-        const tagName = element.tagName.toLowerCase('')';
+        const tagName = element.tagName.toLowerCase()';
         if (type === 'game'') {'
     }'
             return 'ゲーム領域';' }'
@@ -450,7 +450,7 @@ export class ARIAManager {
             return 'タイマー表示'; }
         }
         
-        // 基本要素'
+        // 基本要素
         const defaultLabels = { ''
             'button': 'ボタン','';
             'textbox': '入力フィールド','';
@@ -462,7 +462,7 @@ export class ARIAManager {
         '';
         let label = defaultLabels[type] || defaultLabels[tagName] || '';
         ';
-        // クラス名から推測''
+        // クラス名から推測
         if(!label && element.className') {'
             '';
             const classList = element.className.split(' ');''
@@ -504,7 +504,7 @@ export class ARIAManager {
         }
         
         const description = this.generateElementDescription(element, elementInfo);
-        if(description) {'
+        if(description) {
             '';
             const descriptionId = this.createDescriptionElement(element, description');'
         }'
@@ -518,7 +518,7 @@ export class ARIAManager {
     generateElementDescription(element, elementInfo') {
         const type = elementInfo.type;
         ';
-        // ゲーム固有の説明''
+        // ゲーム固有の説明
         if (type === 'game'') {'
     }'
             return 'キーボードまたはマウスでバブルをクリックしてポップしてください。矢印キーで移動、Enterで実行できます。';' }'
@@ -529,7 +529,7 @@ export class ARIAManager {
         }
         
         // インタラクティブ要素の説明
-        if(elementInfo.isInteractive) {'
+        if(elementInfo.isInteractive) {
             const shortcuts = this.getElementShortcuts(element);'
         }'
             if (shortcuts.length > 0') {' }'
@@ -540,25 +540,25 @@ export class ARIAManager {
         return null;
     }
     
-    /**
+    /**'
      * 要素のショートカット取得'
      */''
     getElementShortcuts(element') {
         const shortcuts = [];
         ';
-        // data-shortcut属性から取得''
+        // data-shortcut属性から取得
         const shortcut = element.getAttribute('data-shortcut');
         if (shortcut) {
     }
             shortcuts.push(shortcut); }
         }
         ';
-        // 一般的なショートカット''
-        const tagName = element.tagName.toLowerCase('')';
+        // 一般的なショートカット
+        const tagName = element.tagName.toLowerCase()';
         const role = element.getAttribute('role'');'
         '';
         if(tagName === 'button' || role === 'button'') {'
-            ';
+            ';'
         }'
             shortcuts.push('Enter または Space'');' }'
         } else if (tagName === 'a' || role === 'link'') { ''
@@ -579,8 +579,8 @@ export class ARIAManager {
         const descriptionId = `desc-${Date.now(})}-${Math.random().toString(36).substr(2, 9})}`;
         
         // 既存の説明要素をチェック
-        if(this.ariaDescriptions.has(description) {'
-            ';
+        if(this.ariaDescriptions.has(description) {
+            ';'
         }'
             return this.ariaDescriptions.get(description'); }
         }'
@@ -601,22 +601,22 @@ export class ARIAManager {
     }
     
     /**
-     * ゲーム固有のARIA設定'
+     * ゲーム固有のARIA設定
      */''
-    setupGameSpecificARIA('')';
+    setupGameSpecificARIA()';
         const canvas = document.querySelector('#game-canvas, canvas.game-canvas');''
         if(canvas') {'
             '';
             canvas.setAttribute('role', 'application'');''
             canvas.setAttribute('aria-label', 'バブルポップゲーム'');''
             canvas.setAttribute('tabindex', '0');
-            ';
-            // ゲーム状態の説明要素を作成'
+            ';'
+            // ゲーム状態の説明要素を作成
         }'
             this.createGameStateDescription(canvas'); }
         }
         ';
-        // スコア表示の設定''
+        // スコア表示の設定
         const scoreElements = document.querySelectorAll('.score, .score-display, #score');''
         scoreElements.forEach(element => {  ');''
             element.setAttribute('role', 'status'');''
@@ -624,7 +624,7 @@ export class ARIAManager {
             element.setAttribute('aria-label', 'スコア');' }'
         }');
         ';
-        // タイマー表示の設定''
+        // タイマー表示の設定
         const timerElements = document.querySelectorAll('.timer, .time-display, #timer');''
         timerElements.forEach(element => {  ');''
             element.setAttribute('role', 'timer'');''
@@ -632,7 +632,7 @@ export class ARIAManager {
             element.setAttribute('aria-label', '残り時間');' }'
         }');
         ';
-        // HP表示の設定''
+        // HP表示の設定
         const hpElements = document.querySelectorAll('.hp, .health, .lives');''
         hpElements.forEach(element => {  ');''
             element.setAttribute('role', 'status'');''
@@ -661,7 +661,7 @@ export class ARIAManager {
         '';
         canvas.setAttribute('aria-describedby', descriptionId');
         ';
-        // 初期説明を設定''
+        // 初期説明を設定
         descElement.textContent = 'バブルポップゲームが開始されました。画面上のバブルをクリックしてポップしてください。';
     }
     
@@ -688,7 +688,7 @@ export class ARIAManager {
                     // 要素の削除
                     mutation.removedNodes.forEach(node => {  );
                         if (node.nodeType === Node.ELEMENT_NODE) { }
-                            this.handleRemovedElement(node); }'
+                            this.handleRemovedElement(node); }
                         }''
                     }');''
                 } else if (mutation.type === 'attributes') { // 属性の変更
@@ -702,12 +702,12 @@ export class ARIAManager {
                 // デバウンス処理
             
             }
-                this.scheduleValidation(); }'
+                this.scheduleValidation(); }
             }''
         }');
         
         this.domObserver.observe(document.body, { childList: true,
-            subtree: true,);
+            subtree: true);
             attributes: true)';
             attributeOldValue: true,')';
             attributeFilter: ['role', 'aria-label', 'aria-labelledby', 'aria-describedby', 'class', 'id'])');'
@@ -719,7 +719,7 @@ export class ARIAManager {
      * 新しい要素の処理'
      */''
     handleNewElement(element') {
-        // 要素とその子要素をスキャン'
+        // 要素とその子要素をスキャン
         const elementsToProcess = [element];''
         elementsToProcess.push(...element.querySelectorAll('*');
         
@@ -735,10 +735,10 @@ export class ARIAManager {
      * 削除された要素の処理
      */
     handleRemovedElement(element) {'
-        // 管理対象から削除''
-        this.managedElements.delete(element');
+        // 管理対象から削除
+        this.managedElements.delete(element);
         ';
-        // 関連する説明要素をクリーンアップ''
+        // 関連する説明要素をクリーンアップ
         const describedBy = element.getAttribute('aria-describedby');'
         if (describedBy) {''
             const descElement = document.getElementById(describedBy');''
@@ -758,7 +758,7 @@ export class ARIAManager {
         '';
         const managedInfo = this.managedElements.get(element');
         ';
-        // 重要な属性の変更を検出''
+        // 重要な属性の変更を検出
         if(['role', 'aria-label'].includes(attributeName) {
             // 要素情報を更新
             const newElementInfo = this.analyzeElement(element);
@@ -776,18 +776,18 @@ export class ARIAManager {
     /**
      * 要素管理対象判定
      */
-    shouldManageElement(element) {'
-        // 既に管理されている場合はスキップ''
+    shouldManageElement(element) {
+        // 既に管理されている場合はスキップ
         if (this.managedElements.has(element)') {
     }
             return false; }
         }
         ';
-        // 非表示要素はスキップ''
+        // 非表示要素はスキップ
         if (element.offsetParent === null && element.tagName !== 'SCRIPT'') { return false; }
         }
         ';
-        // 管理対象の要素タイプ''
+        // 管理対象の要素タイプ
         const managedTags = ['button', 'input', 'select', 'textarea', 'a', 'canvas'];''
         const managedRoles = ['button', 'link', 'tab', 'menuitem', 'dialog'];''
         const managedClasses = ['game-area', 'score-display', 'timer-display'];'
@@ -804,12 +804,12 @@ export class ARIAManager {
     updateElementARIA(element, updates) {'
         '';
         if (!this.managedElements.has(element)') {''
-            console.warn('Element not managed by ARIAManager:', element);
+            console.warn('Element not managed by ARIAManager:', element)
     }
             return false; }
         }
-        ';
-        try { ''
+        ';'
+        try {'
             Object.entries(updates).forEach(([attribute, value]') => { ''
                 if (attribute.startsWith('aria-'') || attribute === 'role') {
                     if (value === null || value === undefined) { }
@@ -830,12 +830,12 @@ export class ARIAManager {
                 managedInfo.isValid = isValid; }
             }
             
-            return true;'
+            return true;
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ARIA_ERROR', {')'
                 operation: 'updateElementARIA');
                 element: element.tagName,);
-                updates: updates); }
+                updates: updates) }
             });
             return false;
         }
@@ -845,7 +845,7 @@ export class ARIAManager {
      * ゲーム状態のARIA更新'
      */''
     updateGameState(gameState') {'
-        try {''
+        try {'
             const descriptionElement = document.getElementById('game-state-description');''
             if (!descriptionElement') return;'
             '';
@@ -877,11 +877,11 @@ export class ARIAManager {
                 default: description = 'ゲーム状態が更新されました。' }
             
             // 前回と同じ内容の場合は更新しない（スクリーンリーダーの過度な通知を避ける）
-            if (descriptionElement.textContent !== description) { descriptionElement.textContent = description; }'
+            if (descriptionElement.textContent !== description) { descriptionElement.textContent = description; }
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'ARIA_ERROR', {')'
                 operation: 'updateGameState',);
-                gameState: gameState); }
+                gameState: gameState) }
             });
         }
     }
@@ -892,13 +892,13 @@ export class ARIAManager {
     validateElement(element') {
         const issues = [];
         ';
-        // 基本的な検証''
+        // 基本的な検証
         const role = element.getAttribute('role'');''
         const hasLabel = element.getAttribute('aria-label'') || '';
                          element.getAttribute('aria-labelledby') ||;
                          element.textContent? .trim();
         ';
-        // インタラクティブ要素のラベル検証''
+        // インタラクティブ要素のラベル検証
         if (this.isInteractiveElement(element) && !hasLabel') {'
     }'
             issues.push('Interactive element missing accessible name'); }
@@ -937,10 +937,10 @@ export class ARIAManager {
     }
     
     /**
-     * ARIA関係性の検証'
+     * ARIA関係性の検証
      */''
     validateARIARelationships(element, issues') {'
-        // aria-labelledby の検証''
+        // aria-labelledby の検証
         const labelledBy = element.getAttribute('aria-labelledby');
         if (labelledBy) {
             const labelElement = document.getElementById(labelledBy);
@@ -950,7 +950,7 @@ export class ARIAManager {
             }
         }
         ';
-        // aria-describedby の検証''
+        // aria-describedby の検証
         const describedBy = element.getAttribute('aria-describedby');
         if(describedBy) {
             const descElement = document.getElementById(describedBy);
@@ -960,7 +960,7 @@ export class ARIAManager {
             }
         }
         ';
-        // aria-controls の検証''
+        // aria-controls の検証
         const controls = element.getAttribute('aria-controls');
         if(controls) {
             const controlledElement = document.getElementById(controls);
@@ -1011,7 +1011,7 @@ export class ARIAManager {
     /**
      * 設定の適用
      */
-    applyConfig(config) {'
+    applyConfig(config) {
         if (config.screenReader) {'
     }'
             Object.assign(this.config, config.screenReader'); }
@@ -1043,20 +1043,20 @@ export class ARIAManager {
         if (this.domObserver) {
             if (enabled) {
                 this.domObserver.observe(document.body, {
-                    childList: true,);
+                    childList: true);
                     subtree: true);
-                    attributes: true,);
+                    attributes: true,)
     }
                     attributeOldValue: true); }'
             } else {  ' }'
-                this.domObserver.disconnect('') }'
+                this.domObserver.disconnect() }'
         console.log(`ARIAManager ${enabled ? 'enabled' : 'disabled')`});
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying ARIAManager...');
         
         // DOM監視の停止
@@ -1067,7 +1067,7 @@ export class ARIAManager {
         if (this.validationTimeout) { clearTimeout(this.validationTimeout); }
         }
         
-        // 作成した説明要素の削除'
+        // 作成した説明要素の削除
         this.state.activeDescriptions.forEach(descId => {  );''
             const descElement = document.getElementById(descId');''
             if(descElement && descElement.classList.contains('aria-description') { }
@@ -1078,9 +1078,9 @@ export class ARIAManager {
         // データのクリア
         this.managedElements.clear();
         this.ariaDescriptions.clear();
-        this.ariaLiveRegions.clear();'
+        this.ariaLiveRegions.clear();
         this.ariaRelationships.clear();''
-        this.state.activeDescriptions.clear('')';
+        this.state.activeDescriptions.clear()';
         console.log('ARIAManager destroyed'');'
     }''
 }

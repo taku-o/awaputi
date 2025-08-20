@@ -16,7 +16,7 @@ export class RealtimeMonitor {
             errorRateThreshold: 5, // 分あたりのエラー数;
             monitoringInterval: 1000, // 監視間隔（1秒）;
             warningCooldown: 10000, // 同じ警告の再表示間隔（10秒）;
-            maxAlerts: 50, // 保持する最大アラート数;
+            maxAlerts: 50, // 保持する最大アラート数
     }
     }
             ...options }
@@ -58,9 +58,9 @@ export class RealtimeMonitor {
      */
     startMonitoring() {
         if (this.isMonitoring) return;
-';
+';'
         this.isMonitoring = true;''
-        this.monitoringStats.startTime = Date.now('')';
+        this.monitoringStats.startTime = Date.now()';
         console.log('Real-time monitoring started');
 
         // 定期監視を開始
@@ -68,8 +68,8 @@ export class RealtimeMonitor {
         this.monitoringTimer = setInterval(() => {  }
             this.performMonitoringCheck(); }
         }, this.options.monitoringInterval);
-';
-        // デバッグパネルを表示''
+;
+        // デバッグパネルを表示
         if(this.debugPanel') {'
             '';
             this.debugPanel.style.display = 'block';
@@ -84,7 +84,7 @@ export class RealtimeMonitor {
     stopMonitoring() {'
         '';
         if (!this.isMonitoring') return;
-';
+';'
         this.isMonitoring = false;''
         console.log('Real-time monitoring stopped');
 
@@ -94,8 +94,8 @@ export class RealtimeMonitor {
     }
             this.monitoringTimer = null; }
         }
-';
-        // デバッグパネルを隠す''
+;
+        // デバッグパネルを隠す
         if(this.debugPanel') {'
             '';
             this.debugPanel.style.display = 'none';
@@ -112,25 +112,25 @@ export class RealtimeMonitor {
 
         const currentStats = this.dataCollector.getCurrentStats();
         ';
-        // FPSチェック''
+        // FPSチェック
         if (currentStats.currentFPS && currentStats.currentFPS < this.options.fpsThreshold') {''
             this.generateAlert('low_fps', {''
-                type: 'performance',';
+                type: 'performance','
     }'
                 severity: 'warning', }
                 message: `Low FPS detected: ${currentStats.currentFPS}`,
-                details: { currentFPS: currentStats.currentFPS,)
+                details: { currentFPS: currentStats.currentFPS)
                     threshold: this.options.fpsThreshold);
                     frameTime: currentStats.averageFrameTime) }
                 }),
         }
 
-        // メモリ使用量チェック'
+        // メモリ使用量チェック
         if(currentStats.currentMemoryUsage && ')';
             currentStats.currentMemoryUsage.usagePercent > this.options.memoryThreshold') {'
             '';
             this.generateAlert('high_memory', {')'
-                type: 'performance',');
+                type: 'performance',')
         }'
                 severity: 'warning'), }
                 message: `High memory usage detected: ${currentStats.currentMemoryUsage.usagePercent.toFixed(1})}%`,
@@ -141,26 +141,26 @@ export class RealtimeMonitor {
             }),
         }
 
-        // エラー率チェック'
+        // エラー率チェック
         const errorRate = this.calculateErrorRate();''
         if(errorRate > this.options.errorRateThreshold') {'
             '';
             this.generateAlert('high_error_rate', {''
-                type: 'error',';
+                type: 'error','
         }'
                 severity: 'error', }
                 message: `High error rate detected: ${errorRate} errors/min`,
-                details: { errorRate: errorRate,)
+                details: { errorRate: errorRate)
                     threshold: this.options.errorRateThreshold);
                     recentErrors: currentStats.errorCount) }
                 }),
         }
 ';
-        // 応答性チェック（フレームタイムが長い場合）''
+        // 応答性チェック（フレームタイムが長い場合）
         if(currentStats.averageFrameTime && currentStats.averageFrameTime > 33.33') {'
-            // 30FPS未満''
+            // 30FPS未満
             this.generateAlert('poor_responsiveness', {')'
-                type: 'performance',');
+                type: 'performance',')
         }'
                 severity: 'warning'), }
                 message: `Poor responsiveness detected: ${currentStats.averageFrameTime.toFixed(1})}ms frame time`,
@@ -173,14 +173,14 @@ export class RealtimeMonitor {
     }
 
     /**
-     * パフォーマンス警告の処理'
+     * パフォーマンス警告の処理
      */''
     handlePerformanceWarning(warningData') {'
         const alertData = {''
             type: 'performance',';
             severity: this.getSeverityLevel(warningData.type),'';
             message: this.formatWarningMessage(warningData'),';
-            details: warningData.details,';
+            details: warningData.details,'
     }'
             source: 'performance_collector' }
         },
@@ -202,9 +202,9 @@ export class RealtimeMonitor {
     }
             ...alertData }
         };
-';
+';'
         this.alerts.unshift(alert);''
-        this.trimAlerts('')';
+        this.trimAlerts()';
         if (alert.type === 'error'') { this.monitoringStats.errorsDetected++;' }'
         } else if (alert.type === 'performance') { this.monitoringStats.performanceIssues++; }
         }
@@ -230,11 +230,11 @@ export class RealtimeMonitor {
     /**
      * 通知の送信
      */
-    sendNotification(alert) {'
+    sendNotification(alert) {
         '';
         if (!this.options.enableNotifications') return;
 ';
-        // ブラウザ通知（許可されている場合）''
+        // ブラウザ通知（許可されている場合）
         if (Notification && Notification.permission === 'granted'') {
             const notification = new Notification(`Game Performance Alert`, {'
                 body: alert.message,'';
@@ -255,10 +255,10 @@ export class RealtimeMonitor {
     }
 
     /**
-     * ページ内通知の表示'
+     * ページ内通知の表示
      */''
     showInPageNotification(alert') {'
-        ';
+        ';'
     }'
         const notification = document.createElement('div''); }
         notification.className = `performance-notification ${alert.severity}`;'
@@ -287,7 +287,7 @@ export class RealtimeMonitor {
             fontFamily: 'monospace'' }'
         }'),
 ';
-        // 閉じるボタンの処理''
+        // 閉じるボタンの処理
         const closeButton = notification.querySelector('.notification-close'');''
         closeButton.addEventListener('click', () => { notification.remove(); }
         });
@@ -302,9 +302,9 @@ export class RealtimeMonitor {
     }
 
     /**
-     * デバッグパネルの作成'
+     * デバッグパネルの作成
      */''
-    createDebugPanel('')';
+    createDebugPanel()';
         this.debugPanel = document.createElement('div'');''
         this.debugPanel.id = 'realtime-debug-panel';'
         this.debugPanel.innerHTML = `'';
@@ -344,7 +344,7 @@ export class RealtimeMonitor {
             display: 'none'' }'
         }'),
 ';
-        // パネルの折りたたみ機能''
+        // パネルの折りたたみ機能
         const toggleButton = this.debugPanel.querySelector('#debug-panel-toggle'');''
         const content = this.debugPanel.querySelector('.debug-panel-content'');
         let isCollapsed = false;'
@@ -381,11 +381,11 @@ export class RealtimeMonitor {
      */
     updateDebugPanel() {
         if (!this.debugPanel || !this.dataCollector) return;
-';
+';'
         const currentStats = this.dataCollector.getCurrentStats();''
         const recentAlerts = this.alerts.slice(0, 5');
 ';
-        // 現在の統計''
+        // 現在の統計
         const currentStatsElement = this.debugPanel.querySelector('#current-stats'');
     }'
         currentStatsElement.innerHTML = `' }'
@@ -395,7 +395,7 @@ export class RealtimeMonitor {
             <div>Frame Time: ${currentStats.averageFrameTime ? currentStats.averageFrameTime.toFixed(1'}) + 'ms' : 'N/A'}</div>
         `;
 ';
-        // 最近のアラート''
+        // 最近のアラート
         const recentAlertsElement = this.debugPanel.querySelector('#recent-alerts');''
         recentAlertsElement.innerHTML = recentAlerts.map(alert => `')'';
             <div class="alert-item ${ alert.severity")">" }"
@@ -404,7 +404,7 @@ export class RealtimeMonitor {
             </div>"";
         `").join(''');
 ';
-        // 監視統計''
+        // 監視統計
         const monitoringStatsElement = this.debugPanel.querySelector('#monitoring-stats');
         const uptime = this.monitoringStats.startTime ?   : undefined;
             Math.floor((Date.now() - this.monitoringStats.startTime) / 1000) : 0;
@@ -436,7 +436,7 @@ export class RealtimeMonitor {
     }
 
     /**
-     * 警告の重要度レベル取得'
+     * 警告の重要度レベル取得
      */''
     getSeverityLevel(warningType') {'
         const severityMap = {''
@@ -510,7 +510,7 @@ export class RealtimeMonitor {
      * アラートのログ出力'
      */''
     logAlert(alert') {'
-        ';
+        ';'
     }'
         const logMethod = alert.severity === 'error' ? console.error: console.warn }
         logMethod(`[${alert.type.toUpperCase(})}] ${alert.message}`, alert.details);
@@ -576,7 +576,7 @@ export class RealtimeMonitor {
     }
 
     /**
-     * 設定の更新'
+     * 設定の更新
      */''
     updateOptions(newOptions') {
         
@@ -588,7 +588,7 @@ export class RealtimeMonitor {
     /**
      * アラートのクリア'
      */''
-    clearAlerts('')';
+    clearAlerts()';
         console.log('Alerts cleared');
     }
 
@@ -612,11 +612,11 @@ export class RealtimeMonitor {
         }
             return false; }
         }
-';
-        try { ''
+';'
+        try {'
             const permission = await Notification.requestPermission('';)'
             return permission === 'granted';') }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to request notification permission:', error);
             return false; }
         }
@@ -650,9 +650,9 @@ export class RealtimeMonitor {
     }
             this.debugPanel = null; }
         }
-';
+';'
         this.alerts = [];''
-        this.warningHistory.clear('')';
+        this.warningHistory.clear()';
         console.log('RealtimeMonitor destroyed'');'
     }''
 }

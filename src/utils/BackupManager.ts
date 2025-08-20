@@ -11,7 +11,7 @@ import { execSync } from 'child_process';
 interface BackupMetadata { gitBranch: string,
     gitCommit: string,
     nodeVersion: string,
-    platform: NodeJS.Platform; }
+    platform: NodeJS.Platform }
 }
 
 interface BackupFileInfo { originalPath: string,
@@ -20,7 +20,7 @@ interface BackupFileInfo { originalPath: string,
     size: number,
     modifiedTime: Date,
     backupTime: Date,
-    checksum: string; }
+    checksum: string }
 }
 
 interface BackupOperation { timestamp: Date,
@@ -33,10 +33,10 @@ interface BackupSession { id: string,
     backupDir: string,
     files: BackupFileInfo[],
     operations: BackupOperation[],
-    metadata: BackupMetadata;
+    metadata: BackupMetadata
     }
 }
-';
+';'
 interface BackupResult { file: string,''
     status: 'success' | 'failed',
     backup?: BackupFileInfo;
@@ -47,7 +47,7 @@ interface RollbackOptions { selective?: boolean;
     filePatterns?: string[];
     dryRun?: boolean; }
 }
-';
+';'
 interface RollbackResult { file: string,''
     status: 'restored' | 'failed',
     dryRun?: boolean;
@@ -59,9 +59,9 @@ interface BackupSessionInfo { id: string,
     startTime: Date | string,
     endTime?: Date | string;
     fileCount: number,
-    operationCount: number; }
+    operationCount: number }
 }
-';
+';'
 interface VerificationResult { file: string,''
     status: 'valid' | 'corrupted' | 'missing',
     checksum?: string;
@@ -75,11 +75,11 @@ export class BackupManager {
     private backups: Map<string, BackupSession>;
 
     constructor() {
-';
+';'
         '';
         this.backupRoot = path.join(process.cwd('), '.backup');'
         this.currentBackupId = null;''
-        this.backups = new Map('')';
+        this.backups = new Map()';
     public async startBackupSession(sessionName: string = 'deduplication'): Promise<string> {'
 
     }
@@ -116,17 +116,17 @@ export class BackupManager {
 
     /**
      * ファイルの完全バックアップを作成
-     */'
+     */
     public async createFullBackup(filePaths: string[]): Promise<BackupResult[]> { ''
         if(!this.currentBackupId') {'
-            ';
+            ';'
         }'
             throw new Error('No active backup session. Call startBackupSession first.'); }
         }
-';
+';'
         const session = this.backups.get(this.currentBackupId);''
         if(!session') {'
-            ';
+            ';'
         }'
             throw new Error('Active backup session not found.'); }
         }
@@ -135,16 +135,16 @@ export class BackupManager {
 
         for(const filePath of filePaths) {
 
-            try {'
+            try {
                 const backupInfo = await this.backupSingleFile(filePath, session);''
                 session.files.push(backupInfo');'
 
         }'
                 results.push({ file: filePath, status: 'success', backup: backupInfo ),' }'
-            } catch (error') { results.push({ )'
+            } catch (error) { results.push({ )'
                     file: filePath, ')';
                     status: 'failed' ),
-                    error: error instanceof Error ? error.message : String(error); }
+                    error: error instanceof Error ? error.message : String(error) }
                 });
             }
         }'
@@ -204,10 +204,10 @@ export class BackupManager {
         if(selective && filePatterns.length > 0) {
             filesToRestore = session.files.filter(file =>);
                 filePatterns.some(pattern => );
-                    file.relativePath.includes(pattern) ||';
+                    file.relativePath.includes(pattern) ||;
                     file.originalPath.includes(pattern)';
         }'
-            '); }
+            '); }'
         }'
 '';
         console.log(`${dryRun ? '[DRY RUN] ' : ''}Rolling back ${ filesToRestore.length) files...`);
@@ -220,19 +220,19 @@ export class BackupManager {
                 if (!dryRun) {' }'
                     await this.restoreSingleFile(fileInfo'});
                 }
-                ';
+                ';'
                 results.push({ file: fileInfo.originalPath, ')'
                     status: 'restored',')';
                     dryRun: dryRun)'),';
                 ' }'
                 console.log(`${dryRun ? '[DRY RUN] ' : ''}✓ Restored: ${fileInfo.relativePath)`});'
                 '';
-            } catch (error') { results.push({ )'
+            } catch (error) { results.push({ )'
                     file: fileInfo.originalPath, ')';
                     status: 'failed' ),
-                    error: error instanceof Error ? error.message : String(error); }
+                    error: error instanceof Error ? error.message : String(error) }
                 });
-                ';
+                ';'
                 console.error(`✗ Failed to restore: ${ fileInfo.relativePath)`),' }'
                 console.error(`  Error: ${error instanceof Error ? error.message : String(error})}`');
             }
@@ -262,8 +262,8 @@ export class BackupManager {
         
         // ファイル復元
         await fs.copyFile(fileInfo.backupPath, fileInfo.originalPath);
-        ';
-        // タイムスタンプ復元''
+        ;
+        // タイムスタンプ復元
         await fs.utimes(fileInfo.originalPath, fileInfo.modifiedTime, fileInfo.modifiedTime');
     }
 
@@ -277,7 +277,7 @@ export class BackupManager {
         }
             return; }
         }
-';
+';'
         const session = this.backups.get(this.currentBackupId);''
         if(!session') {'
             '';
@@ -288,7 +288,7 @@ export class BackupManager {
 
         session.operations.push({ )
             ...operation);
-            timestamp: new Date(); }
+            timestamp: new Date() }
         });
     }
 
@@ -300,12 +300,12 @@ export class BackupManager {
         const metadata = {
             ...session,
             files: session.files.length, // ファイルの詳細は別途保存;
-            endTime: new Date(); }
-        };'
+            endTime: new Date() }
+        };
 '';
         await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2)');
         ';
-        // ファイル詳細は別ファイルに保存''
+        // ファイル詳細は別ファイルに保存
         const filesPath = path.join(session.backupDir, 'files-manifest.json');
         await fs.writeFile(filesPath, JSON.stringify(session.files, null, 2);
     }
@@ -318,18 +318,18 @@ export class BackupManager {
             const sessions: BackupSessionInfo[] = [],
 
             for(const dir of backupDirs) {
-';
+';'
                 '';
                 if (dir.isDirectory()') {'
-                    try {';'
+                    try {;'
                         const metadataPath = path.join(this.backupRoot, dir.name, 'session-metadata.json'');''
                         const metadata = JSON.parse(await fs.readFile(metadataPath, 'utf8');
                         sessions.push({
                             id: dir.name,
                             name: metadata.name,
-                            startTime: metadata.startTime,);
+                            startTime: metadata.startTime);
                             endTime: metadata.endTime);
-                            fileCount: metadata.files,);
+                            fileCount: metadata.files,)
             }
                             operationCount: metadata.operations? .length || 0); }
                     } catch (error) { : undefined }
@@ -360,7 +360,7 @@ export class BackupManager {
 
             try {
                 const sessionDir = path.join(this.backupRoot, session.id);
-                await fs.rm(sessionDir, { recursive: true, force: true ),;
+                await fs.rm(sessionDir, { recursive: true, force: true ),
 
         }
                 deletedCount++; }
@@ -386,9 +386,9 @@ export class BackupManager {
     /**
      * 現在のGitブランチを取得'
      */''
-    private getCurrentGitBranch('')';
+    private getCurrentGitBranch()';
             return execSync('git branch --show-current', { encoding: 'utf8' ).trim(),' }'
-        } catch (error') { ''
+        } catch (error) { ''
             return 'unknown'; }
         }
     }
@@ -396,9 +396,9 @@ export class BackupManager {
     /**
      * 現在のGitコミットハッシュを取得'
      */''
-    private getCurrentGitCommit('')';
+    private getCurrentGitCommit()';
             return execSync('git rev-parse HEAD', { encoding: 'utf8' }).trim();''
-        } catch (error') { ''
+        } catch (error) { ''
             return 'unknown'; }
         }
     }
@@ -418,8 +418,8 @@ export class BackupManager {
             try {
                 // バックアップファイルが存在するかチェック
                 await fs.access(fileInfo.backupPath);
-                ';
-                // チェックサム検証''
+                ;
+                // チェックサム検証
                 const currentChecksum = await this.calculateChecksum(fileInfo.backupPath');
                 const isValid = currentChecksum === fileInfo.checksum;
                 
@@ -431,7 +431,7 @@ export class BackupManager {
 
         }'
                 ' }'
-            } catch (error') { results.push({)'
+            } catch (error) { results.push({)'
                     file: fileInfo.relativePath,')';
                     status: 'missing'),';
                     error: error instanceof Error ? error.message : String(error),' }'

@@ -5,7 +5,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler';
  */
 interface RGBColor { r: number,
     g: number,
-    b: number; }
+    b: number }
 }
 
 /**
@@ -27,7 +27,7 @@ interface ReflectionSurface { ''
 interface ReflectionObject { surface: ReflectionSurface,
     reflectivity: number,
     blur: number,
-    enabled: boolean; }
+    enabled: boolean }
 }
 
 /**
@@ -39,7 +39,7 @@ interface LightSource { x: number,
     intensity: number,
     currentIntensity?: number;
     color: RGBColor,
-    enabled: boolean; }
+    enabled: boolean }
 }
 
 /**
@@ -55,7 +55,7 @@ interface BubbleObject { x: number,
  * レンダリング設定インターフェース
  */'
 interface RenderSettings { enableReflections: boolean,''
-    qualityLevel: 'low' | 'medium' | 'high' | 'ultra'; }
+    qualityLevel: 'low' | 'medium' | 'high' | 'ultra' }
 }
 
 /**
@@ -67,7 +67,7 @@ export class ReflectionRenderer {
     private errorHandler: any;
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas;
+        this.canvas = canvas
 
     }
     }
@@ -77,10 +77,10 @@ export class ReflectionRenderer {
     /**
      * 反射をレンダリング
      */'
-    renderReflections(context: CanvasRenderingContext2D, reflectionSurfaces: ReflectionObject[], renderSettings: RenderSettings): void { try {''
+    renderReflections(context: CanvasRenderingContext2D, reflectionSurfaces: ReflectionObject[], renderSettings: RenderSettings): void { try {'
             if (reflectionSurfaces.length === 0') return;
             ';
-            // 品質に基づいて反射レンダリングを調整''
+            // 品質に基づいて反射レンダリングを調整
             if(renderSettings.qualityLevel === 'low') {
                 
             }
@@ -89,8 +89,8 @@ export class ReflectionRenderer {
             
             reflectionSurfaces.forEach(surface => {  );
                 if (!surface.enabled) return;
-                ';
-                // 反射面のタイプに基づいて処理''
+                ;
+                // 反射面のタイプに基づいて処理
                 switch(surface.surface.type') {'
                     '';
                     case 'water':'';
@@ -108,8 +108,8 @@ export class ReflectionRenderer {
                         break; }
                 }'
             });''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'ReflectionRenderer.renderReflections'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'ReflectionRenderer.renderReflections') }
             });
         }
     }
@@ -137,10 +137,10 @@ export class ReflectionRenderer {
             const time = Date.now() * 0.001;
             const waveOffset = Math.sin(time * 2) * 2;
             context.translate(waveOffset, 0);
-            ';
+            ';'
             context.restore();' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'ReflectionRenderer.renderWaterReflection'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'ReflectionRenderer.renderWaterReflection') }
             });
         }
     }
@@ -170,10 +170,10 @@ export class ReflectionRenderer {
             context.beginPath();
             context.rect(mirror.x || 0, mirror.y || 0, mirror.width || 0, mirror.height || 0);
             context.clip();
-            ';
+            ';'
             context.restore();' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'ReflectionRenderer.renderMirrorReflection'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'ReflectionRenderer.renderMirrorReflection') }
             });
         }
     }
@@ -189,19 +189,19 @@ export class ReflectionRenderer {
             
             context.save();
             ';
-            // バブルの光沢効果''
+            // バブルの光沢効果
             this.renderBubbleGloss(context, bubble as BubbleObject, reflectivity');
             ';
-            // 環境反射''
+            // 環境反射
             if(renderSettings.qualityLevel === 'ultra' || renderSettings.qualityLevel === 'high') {
                 
             }
                 this.renderBubbleEnvironmentReflection(context, bubble as BubbleObject, reflectivity, []); }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'ReflectionRenderer.renderBubbleReflection'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'ReflectionRenderer.renderBubbleReflection') }
             });
         }
     }
@@ -217,12 +217,12 @@ export class ReflectionRenderer {
             
             // 主要な光沢
             const gradient = context.createRadialGradient(;
-                glossX, glossY, 0,);
-                glossX, glossY, glossSize);'
+                glossX, glossY, 0);
+                glossX, glossY, glossSize);
             gradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity * 0.8)`);''
             gradient.addColorStop(0.5, `rgba(255, 255, 255, ${reflectivity * 0.4)`');''
             gradient.addColorStop(1, 'rgba(255, 255, 255, 0')'');
-            ';
+            ';'
             context.fillStyle = gradient;''
             context.globalCompositeOperation = 'screen';
             context.beginPath();
@@ -235,7 +235,7 @@ export class ReflectionRenderer {
             const secondaryGlossY = bubble.y + radius * 0.1;
             
             const secondaryGradient = context.createRadialGradient(;
-                secondaryGlossX, secondaryGlossY, 0,)';
+                secondaryGlossX, secondaryGlossY, 0);
                 secondaryGlossX, secondaryGlossY, secondaryGlossSize);''
             secondaryGradient.addColorStop(0, `rgba(255, 255, 255, ${reflectivity * 0.4)`');''
             secondaryGradient.addColorStop(1, 'rgba(255, 255, 255, 0')');
@@ -244,8 +244,8 @@ export class ReflectionRenderer {
             context.beginPath();
             context.arc(secondaryGlossX, secondaryGlossY, secondaryGlossSize, 0, Math.PI * 2); }'
             context.fill(});''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'ReflectionRenderer.renderBubbleGloss'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'ReflectionRenderer.renderBubbleGloss') }
             });
         }
     }
@@ -276,21 +276,21 @@ export class ReflectionRenderer {
                 const lightInfluence = Math.max(0, 1 - distance / light.radius);
                 
                 const reflectionGradient = context.createRadialGradient(;
-                    reflectionX, reflectionY, 0,);
+                    reflectionX, reflectionY, 0);
                     reflectionX, reflectionY, radius * 0.4);
                  }
-                const alpha = intensity * lightInfluence * 0.3; }'
+                const alpha = intensity * lightInfluence * 0.3; }
                 reflectionGradient.addColorStop(0, `rgba(${light.color.r}, ${light.color.g}, ${light.color.b}, ${alpha)`});''
                 reflectionGradient.addColorStop(1, `rgba(${light.color.r}, ${light.color.g}, ${ light.color.b), 0)`');
-                ';
+                ';'
                 context.fillStyle = reflectionGradient;''
                 context.globalCompositeOperation = 'screen';
                 context.beginPath();
                 context.arc(reflectionX, reflectionY, radius * 0.4, 0, Math.PI * 2); }
                 context.fill(});'
             });''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'ReflectionRenderer.renderBubbleEnvironmentReflection'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'ReflectionRenderer.renderBubbleEnvironmentReflection') }
             });
         }
     }
@@ -298,7 +298,7 @@ export class ReflectionRenderer {
     /**
      * 汎用反射をレンダリング
      */'
-    renderGenericReflection(context: CanvasRenderingContext2D, surface: ReflectionObject): void { try {''
+    renderGenericReflection(context: CanvasRenderingContext2D, surface: ReflectionObject): void { try {'
             context.save(''';
             context.globalCompositeOperation = 'multiply';
             );
@@ -311,7 +311,7 @@ export class ReflectionRenderer {
             const obj = surface.surface;
             if(obj.x !== undefined && obj.y !== undefined) {
                 const gradient = context.createRadialGradient(;
-                    obj.x, obj.y, 0,)';
+                    obj.x, obj.y, 0);
                     obj.x, obj.y, 50)'';
                 ');''
                 gradient.addColorStop(0, 'rgba(255, 255, 255, 0.3')'');''
@@ -323,10 +323,10 @@ export class ReflectionRenderer {
             }
                 context.fill(); }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'ReflectionRenderer.renderGenericReflection'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'ReflectionRenderer.renderGenericReflection') }
             });
         }
     }
@@ -334,23 +334,23 @@ export class ReflectionRenderer {
     /**
      * バブル表面の光沢とリフレクションを統合描画'
      */''
-    renderBubbleCompleteReflectionSystem(context: CanvasRenderingContext2D, bubble: BubbleObject, renderSettings: RenderSettings'): void { try {''
+    renderBubbleCompleteReflectionSystem(context: CanvasRenderingContext2D, bubble: BubbleObject, renderSettings: RenderSettings'): void { try {'
             if(!renderSettings.enableReflections || renderSettings.qualityLevel === 'low'') {
                 
             }
                 return; }
             }
             
-            // バブル反射面を自動追加'
+            // バブル反射面を自動追加
             const reflectionSurface: ReflectionObject = { ' }'
                 surface: { ...bubble, type: 'bubble' },
                 reflectivity: 0.7,
                 blur: 0,
                 enabled: true;
             },
-            ';
+            ';'
             this.renderBubbleReflection(context, reflectionSurface, renderSettings);''
-        } catch (error') { this.errorHandler.handleError(error, {')'
+        } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'ReflectionRenderer.renderBubbleCompleteReflectionSystem'),' }'
             }');
         }'

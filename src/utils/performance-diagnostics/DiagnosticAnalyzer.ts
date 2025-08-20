@@ -32,26 +32,26 @@ interface Bottleneck { type: string,
     minValue?: number;
     maxValue?: number; }
 }
-';
+';'
 interface Anomaly { ''
     severity: 'low' | 'medium' | 'high' | 'critical',
     description: string,
     metric: string,
-    deviation: number; }
+    deviation: number }
 }
 
 interface RootCause { issue: string,
     potentialCauses: string[],
     confidence: number,
-    recommendedActions: string[]; }
+    recommendedActions: string[] }
 }
-';
+';'
 interface OverallAssessment { healthScore: number,''
     performanceLevel: 'excellent' | 'good' | 'fair' | 'poor' | 'critical',
     criticalIssues: CriticalIssue[],
     majorConcerns: any[],
     improvements: any[],
-    summary: string; }
+    summary: string }
 }
 
 interface CriticalIssue { type: string,
@@ -67,7 +67,7 @@ interface CollectedData { rawData: {
         metrics: Record<string, any>;
         startTime: number,
         endTime: number,
-        collectionDuration: number; }
+        collectionDuration: number }
     };
     summary?: any;
 }
@@ -77,14 +77,14 @@ interface DataSample { timestamp: number,
     memoryUsage: number,
     renderTime: number,
     networkLatency: number,
-    inputLag: number; }
+    inputLag: number }
 }
 
 interface AnalysisCapabilities { bottleneckAnalysis: boolean,
     anomalyDetection: boolean,
     rootCauseAnalysis: boolean,
     performanceAssessment: boolean,
-    supportedMetrics: string[]; }
+    supportedMetrics: string[] }
 }
 
 interface AnalyzerConfig { bottleneckThresholds?: Record<string, any>;
@@ -93,11 +93,11 @@ interface AnalyzerConfig { bottleneckThresholds?: Record<string, any>;
 
 interface Threshold { critical: number,
     high: number,
-    medium: number; }
+    medium: number }
 }
 
 interface Baseline { mean: number,
-    stdDev: number; }
+    stdDev: number }
 }
 
 export class DiagnosticAnalyzer {
@@ -114,7 +114,7 @@ export class DiagnosticAnalyzer {
         // Analysis components
         this.diagnosticEngine = new DiagnosticEngine();
         this.bottleneckIdentifier = new BottleneckIdentifier();
-        this.issueAnalyzer = new IssueAnalyzer();'
+        this.issueAnalyzer = new IssueAnalyzer();
         this.anomalyDetector = new AnomalyDetector();''
         this.rootCauseAnalyzer = new RootCauseAnalyzer('';
     }
@@ -130,9 +130,9 @@ export class DiagnosticAnalyzer {
             await this.bottleneckIdentifier.initialize();
             await this.issueAnalyzer.initialize();'
             await this.anomalyDetector.initialize();''
-            await this.rootCauseAnalyzer.initialize('');'
+            await this.rootCauseAnalyzer.initialize();'
             console.log('[DiagnosticAnalyzer] All analysis components initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[DiagnosticAnalyzer] Failed to initialize analysis components:', error);
             throw error; }
         }
@@ -143,7 +143,7 @@ export class DiagnosticAnalyzer {
      */
     async runAnalyses(collectedData: CollectedData, options: AnalysisOptions): Promise<AnalysisResults> {
         const results: AnalysisResults = {}'
-        // ボトルネック分析''
+        // ボトルネック分析
         if(options.includeBottleneckAnalysis') {'
             '';
             console.log('[DiagnosticAnalyzer] Running bottleneck analysis...');
@@ -151,7 +151,7 @@ export class DiagnosticAnalyzer {
             results.bottlenecks = await this.bottleneckIdentifier.analyze(collectedData); }
         }
         ';
-        // 異常検出''
+        // 異常検出
         if(options.includeAnomalyDetection') {'
             '';
             console.log('[DiagnosticAnalyzer] Running anomaly detection...');
@@ -159,7 +159,7 @@ export class DiagnosticAnalyzer {
             results.anomalies = await this.anomalyDetector.detect(collectedData); }
         }
         ';
-        // 根本原因分析''
+        // 根本原因分析
         if(options.includeRootCauseAnalysis') {'
             '';
             console.log('[DiagnosticAnalyzer] Running root cause analysis...');
@@ -182,7 +182,7 @@ export class DiagnosticAnalyzer {
             summary: '' }
         },
 ';
-        // ボトルネック評価''
+        // ボトルネック評価
         if(analysisResults.bottlenecks') {'
             '';
             const criticalBottlenecks = analysisResults.bottlenecks.filter(b => b.severity === 'critical'');''
@@ -190,16 +190,16 @@ export class DiagnosticAnalyzer {
             
             assessment.healthScore -= criticalBottlenecks.length * 20;
             assessment.healthScore -= majorBottlenecks.length * 10;
-            ';
+            ';'
             assessment.criticalIssues.push(...criticalBottlenecks.map(b => ({''
-                type: 'bottleneck',);
+                type: 'bottleneck');
                 description: b.description);
-                component: b.component,);
+                component: b.component,)
         }
                 impact: b.impact))); }
         }
 ';
-        // 異常評価''
+        // 異常評価
         if(analysisResults.anomalies') {'
             '';
             const criticalAnomalies = analysisResults.anomalies.filter(a => a.severity === 'critical'');''
@@ -207,16 +207,16 @@ export class DiagnosticAnalyzer {
             
             assessment.healthScore -= criticalAnomalies.length * 15;
             assessment.healthScore -= majorAnomalies.length * 8;
-            ';
+            ';'
             assessment.criticalIssues.push(...criticalAnomalies.map(a => ({''
-                type: 'anomaly',);
+                type: 'anomaly');
                 description: a.description);
-                metric: a.metric,);
+                metric: a.metric,)
         }
                 deviation: a.deviation))); }
         }
 
-        // パフォーマンスレベル決定'
+        // パフォーマンスレベル決定
         assessment.healthScore = Math.max(0, assessment.healthScore);''
         if (assessment.healthScore >= 90') assessment.performanceLevel = 'excellent';''
         else if (assessment.healthScore >= 75') assessment.performanceLevel = 'good';''
@@ -231,7 +231,7 @@ export class DiagnosticAnalyzer {
     }
 
     /**
-     * Generate assessment summary text'
+     * Generate assessment summary text
      */''
     private generateAssessmentSummary(assessment: OverallAssessment'): string { const level = assessment.performanceLevel;
         const score = assessment.healthScore;
@@ -295,8 +295,8 @@ export class DiagnosticAnalyzer {
         }
         
         if(config.anomalyBaselines) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.anomalyDetector.updateBaselines(config.anomalyBaselines'); }
         }'
@@ -311,9 +311,9 @@ export class DiagnosticAnalyzer {
         const components = [this.diagnosticEngine,
             this.bottleneckIdentifier,
             this.issueAnalyzer,
-            this.anomalyDetector,];
+            this.anomalyDetector];
             this.rootCauseAnalyzer];
-        ];'
+        ];
 '';
         components.forEach(component => { ');''
             if (component.destroy && typeof component.destroy === 'function') { }
@@ -339,9 +339,9 @@ class DiagnosticEngine { private processors: Map<string, any>;
 
     async initialize(): Promise<void> { await this.setupProcessors();
         await this.ruleEngine.initialize(); }
-    }'
+    }
 '';
-    private async setupProcessors('')';
+    private async setupProcessors()';
         this.processors.set('frame_analysis', new FrameAnalysisProcessor()');''
         this.processors.set('memory_analysis', new MemoryAnalysisProcessor()');''
         this.processors.set('render_analysis', new RenderAnalysisProcessor()');''
@@ -379,9 +379,9 @@ class BottleneckIdentifier { private detectors: Map<string, any>;
 
     async initialize(): Promise<void> { this.setupDetectors();
         this.setupThresholds(); }
-    }'
+    }
 '';
-    private setupDetectors('')';
+    private setupDetectors()';
         this.detectors.set('frame_rate', new FrameRateBottleneckDetector()');''
         this.detectors.set('memory', new MemoryBottleneckDetector()');''
         this.detectors.set('rendering', new RenderingBottleneckDetector()');''
@@ -390,19 +390,19 @@ class BottleneckIdentifier { private detectors: Map<string, any>;
     }'
 '';
     private setupThresholds(''';
-        this.thresholds.set('frame_rate', { critical: 20, // 20fps以下は致命的)'
+        this.thresholds.set('frame_rate', { critical: 20, // 20fps以下は致命的)
             high: 40,     // 40fps以下は高優先度')';
             medium: 55    // 55fps以下は中優先度)'),';
 '';
         this.thresholds.set('memory_growth', {
-            critical: 5 * 1024 * 1024, // 5MB/s以上の成長は致命的)';
+            critical: 5 * 1024 * 1024, // 5MB/s以上の成長は致命的);
             high: 2 * 1024 * 1024,     // 2MB/s以上は高優先度')';
             medium: 1 * 1024 * 1024    // 1MB/s以上は中優先度)'),';
 '';
         this.thresholds.set('render_time', {
             critical: 50, // 50ms以上は致命的);
             high: 33.33,  // 30fps相当以上は高優先度);
-            medium: 20    // 20ms以上は中優先度); }
+            medium: 20    // 20ms以上は中優先度) }
     }
 
     updateThresholds(newThresholds: Record<string, any>): void { for(const [key, value] of Object.entries(newThresholds) {
@@ -415,7 +415,7 @@ class BottleneckIdentifier { private detectors: Map<string, any>;
         for(const [detectorName, detector] of this.detectors) {
 
             try {
-                const detected = await detector.detect(collectedData, this.thresholds);
+                const detected = await detector.detect(collectedData, this.thresholds)
 
         }
                 bottlenecks.push(...detected); }
@@ -441,9 +441,9 @@ class IssueAnalyzer { private analyzers: Map<string, any>;
 
     }
         this.analyzers = new Map(); }
-    }'
+    }
 '';
-    async initialize('')';
+    async initialize()';
         this.analyzers.set('performance_degradation', new PerformanceDegradationAnalyzer()');''
         this.analyzers.set('resource_contention', new ResourceContentionAnalyzer()');''
         this.analyzers.set('inefficient_algorithms', new InefficientAlgorithmAnalyzer()');''
@@ -456,7 +456,7 @@ class IssueAnalyzer { private analyzers: Map<string, any>;
         for(const [analyzerName, analyzer] of this.analyzers) {
 
             try {
-                const detected = await analyzer.analyze(data, context);
+                const detected = await analyzer.analyze(data, context)
 
         }
                 issues.push(...detected); }
@@ -484,21 +484,21 @@ class AnomalyDetector { private detectors: Map<string, any>;
 
     async initialize(): Promise<void> { this.setupDetectors();
         this.loadBaselines(); }
-    }'
+    }
 '';
-    private setupDetectors('')';
+    private setupDetectors()';
         this.detectors.set('statistical', new StatisticalAnomalyDetector()');''
         this.detectors.set('threshold', new ThresholdAnomalyDetector()');''
         this.detectors.set('pattern', new PatternAnomalyDetector()');''
         this.detectors.set('trend', new TrendAnomalyDetector();
     }'
 '';
-    private loadBaselines('')';
+    private loadBaselines()';
         this.baselines.set('frameRate', { mean: 60, stdDev: 5 )'),''
         this.baselines.set('memoryUsage', { mean: 50 * 1024 * 1024, stdDev: 10 * 1024 * 1024 )'),''
         this.baselines.set('renderTime', { mean: 12, stdDev: 3 )'),''
         this.baselines.set('networkLatency', { mean: 50, stdDev: 20 )'),''
-        this.baselines.set('inputLag', { mean: 15, stdDev: 5 ); }
+        this.baselines.set('inputLag', { mean: 15, stdDev: 5 ) }
     }
 
     updateBaselines(newBaselines: Record<string, any>): void { for(const [key, value] of Object.entries(newBaselines) {
@@ -511,7 +511,7 @@ class AnomalyDetector { private detectors: Map<string, any>;
         for(const [detectorName, detector] of this.detectors) {
 
             try {
-                const detected = await detector.detect(collectedData, this.baselines);
+                const detected = await detector.detect(collectedData, this.baselines)
 
         }
                 anomalies.push(...detected); }
@@ -567,10 +567,10 @@ class RootCauseAnalyzer { private correlationAnalyzer: CorrelationAnalyzer
         }
 
         return rootCauses;
-    }'
+    }
 '';
     private async identifyRootCause(issue: Bottleneck, correlations: any, causalities: any, dependencies: any'): Promise<RootCause> { // 簡易的な根本原因特定
-        return { issue: issue.description,'
+        return { issue: issue.description,
             potentialCauses: ['';
                 'システム負荷の増大','';
                 '不適切な設定値','';
@@ -587,19 +587,19 @@ class RootCauseAnalyzer { private correlationAnalyzer: CorrelationAnalyzer
     }
 }
 
-// 基本的な検出器の実装'
+// 基本的な検出器の実装
 class FrameRateBottleneckDetector { ''
     async detect(data: CollectedData, thresholds: Map<string, Threshold>'): Promise<Bottleneck[]> {'
         const bottlenecks: Bottleneck[] = [],'';
         const frameRateThreshold = thresholds.get('frame_rate')!;
         
         for(const sample of data.rawData.samples) {
-        ';
+        ';'
             '';
             if (sample.frameRate < frameRateThreshold.critical') {'
                 bottlenecks.push({''
                     type: 'frame_rate',')';
-                    severity: 'critical',');
+                    severity: 'critical',')
         }'
                     component: 'rendering_pipeline'),' }'
                     description: `Critical frame rate drop: ${sample.frameRate.toFixed(1'})}fps`,
@@ -633,9 +633,9 @@ class FrameRateBottleneckDetector { ''
                 grouped.set(key, {
                     ...bottleneck,
                     occurrences: 1,
-                    firstSeen: bottleneck.timestamp,);
+                    firstSeen: bottleneck.timestamp);
                     lastSeen: bottleneck.timestamp);
-                    minValue: bottleneck.value,);
+                    minValue: bottleneck.value,)
             }
                     maxValue: bottleneck.value); }
             } else {  const existing = grouped.get(key)!;
@@ -652,22 +652,22 @@ class FrameRateBottleneckDetector { ''
 
 // 基本的な分析器の実装（スタブ）
 class MemoryBottleneckDetector { async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> { 
-        return [];  }
+        return []  }
     }
 }
 
 class RenderingBottleneckDetector { async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> { 
-        return [];  }
+        return []  }
     }
 }
 
 class NetworkBottleneckDetector { async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> { 
-        return [];  }
+        return []  }
     }
 }
 
 class ComputationBottleneckDetector { async detect(data: CollectedData, thresholds: Map<string, Threshold>): Promise<Bottleneck[]> { 
-        return [];  }
+        return []  }
     }
 }
 
@@ -724,22 +724,22 @@ class ExcessiveGCAnalyzer {
 }
 
 class StatisticalAnomalyDetector { async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> { 
-        return [];  }
+        return []  }
     }
 }
 
 class ThresholdAnomalyDetector { async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> { 
-        return [];  }
+        return []  }
     }
 }
 
 class PatternAnomalyDetector { async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> { 
-        return [];  }
+        return []  }
     }
 }
 
 class TrendAnomalyDetector { async detect(data: CollectedData, baselines: Map<string, Baseline>): Promise<Anomaly[]> { 
-        return [];  }
+        return []  }
     }
 }
 
@@ -753,7 +753,7 @@ class CausalityDetector {
     async detect(data: CollectedData, results: AnalysisResults): Promise<any[]> { return [], }
 }
 
-class DependencyMapper {'
+class DependencyMapper {
     async initialize(): Promise<void> {}''
     async map(results: AnalysisResults'): Promise<any[]> { return [], }''
 }

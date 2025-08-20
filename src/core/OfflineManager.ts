@@ -20,13 +20,13 @@ export class OfflineManager {
             offlineDataExpiry: 7 * 24 * 60 * 60 * 1000, // 7日間;
             autoSyncOnReconnect: true,
             syncDelay: 2000, // オンライン復帰後の同期遅延（ms）;
-            heartbeatInterval: 30000, // 30秒;
+            heartbeatInterval: 30000, // 30秒
     }
     }
             maxHeartbeatRetries: 3 }
         },
         
-        this.state = { isOnline: navigator.onLine,'
+        this.state = { isOnline: navigator.onLine,
             lastOnlineTime: navigator.onLine ? Date.now() : null,'';
             lastOfflineTime: navigator.onLine ? null : Date.now(''';
             connectionQuality: 'unknown' // 'good', 'poor', 'unstable', 'offline' }
@@ -42,7 +42,7 @@ export class OfflineManager {
     /**
      * オフライン管理の初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('OfflineManager: オフライン管理を初期化中...'),
             
             // 保存されたオフライン状態の復元
@@ -53,11 +53,11 @@ export class OfflineManager {
             
             // ハートビート監視の開始
             this.startHeartbeat();
-            ';
-            // 初期接続テスト''
-            await this.checkConnectionQuality('')';
+            ;
+            // 初期接続テスト
+            await this.checkConnectionQuality()';
             console.log('OfflineManager: 初期化が完了しました'),
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'OFFLINE_MANAGER_INITIALIZATION_ERROR', {')'
                 operation: 'initialize'), };
@@ -79,13 +79,13 @@ export class OfflineManager {
         
         }
             // オフライン → オンライン }
-            await this.handleOnlineRecovery(});'
-        } else if (!isOnline && previousState) { // オンライン → オフライン''
+            await this.handleOnlineRecovery(});
+        } else if (!isOnline && previousState) { // オンライン → オフライン
             await this.handleOfflineTransition(''';
         this.emitEvent('connectionStateChanged', {)
             isOnline,);
             previousState);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         // オフライン状態の保存
@@ -94,22 +94,22 @@ export class OfflineManager {
     
     /**
      * オンライン復帰時の処理
-     */'
-    async handleOnlineRecovery() { try {''
-            this.state.lastOnlineTime = Date.now('')';
+     */
+    async handleOnlineRecovery() { try {'
+            this.state.lastOnlineTime = Date.now()';
             console.log('OfflineManager: Handling online recovery...'),
             
             // 接続品質の確認
             await this.checkConnectionQuality();
-            ';
-            // 自動同期の実行（設定されている場合）''
+            ;
+            // 自動同期の実行（設定されている場合）
             if(this.config.autoSyncOnReconnect && this.syncManager') {'
                 '';
                 console.log('OfflineManager: Scheduling auto-sync after reconnection...'),
                 ';
-                // 遅延後に同期実行''
+                // 遅延後に同期実行
                 setTimeout(async (') => { 
-                    try {'
+                    try {
                         await this.syncManager.sync({'
             })'
                             direction: 'bidirectional',') }'
@@ -117,22 +117,22 @@ export class OfflineManager {
                         }');'
                         '';
                         console.log('OfflineManager: Auto-sync after reconnection completed'),'';
-                    } catch (error') { ''
-                        console.error('OfflineManager: Auto-sync after reconnection failed:', error); }
+                    } catch (error) { ''
+                        console.error('OfflineManager: Auto-sync after reconnection failed:', error) }
                     }
                 }, this.config.syncDelay);
             }
             ';
-            // オフライン操作の処理''
-            await this.processOfflineOperations('')';
+            // オフライン操作の処理
+            await this.processOfflineOperations()';
             this.emitEvent('onlineRecovery', { )
                 offlineOperations: this.state.offlineOperations.length),
                 offlineDuration: Date.now() - (this.state.lastOfflineTime || Date.now(), };
             });
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ONLINE_RECOVERY_ERROR', {')'
-                operation: 'handleOnlineRecovery'); }
+                operation: 'handleOnlineRecovery') }
             });
         }
     }
@@ -140,21 +140,21 @@ export class OfflineManager {
     /**
      * オフライン移行時の処理
      */'
-    async handleOfflineTransition() { try {''
+    async handleOfflineTransition() { try {'
             this.state.lastOfflineTime = Date.now(''';
             this.state.connectionQuality = 'offline';)'
             ')';
             console.log('OfflineManager: Handling offline transition...''),
             ';
-            // オフライン通知''
+            // オフライン通知
             this.emitEvent('offlineTransition', {)
                 lastOnlineTime: this.state.lastOnlineTime),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'OFFLINE_TRANSITION_ERROR', {')'
-                operation: 'handleOfflineTransition'); }
+                operation: 'handleOfflineTransition') }
             });
         }
     }
@@ -164,15 +164,15 @@ export class OfflineManager {
      */'
     async recordOfflineOperation(operation) { ''
         if(!this.config.enableOfflineMode') {'
-            ';
+            ';'
         }'
             throw new Error('Offline mode is disabled'); }
         }
         
         try { // 操作キューの容量チェック
-            if(this.state.offlineOperations.length >= this.config.maxOfflineOperations) {'
-                // 古い操作を削除''
-                this.state.offlineOperations.shift('');
+            if(this.state.offlineOperations.length >= this.config.maxOfflineOperations) {
+                // 古い操作を削除
+                this.state.offlineOperations.shift();
             }'
                 console.warn('OfflineManager: Offline operations queue is full, removing oldest operation'); }
             }
@@ -193,11 +193,11 @@ export class OfflineManager {
             await this.saveOfflineState(});
             
             return offlineOperation.id;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'OFFLINE_OPERATION_RECORD_ERROR', {')'
                 operation: 'recordOfflineOperation',);
-                operationType: operation.type); }
+                operationType: operation.type) }
             });
             throw error;
         }
@@ -216,8 +216,8 @@ export class OfflineManager {
         const failedOperations = [];
         
         for(const operation of this.state.offlineOperations) {
-        ';
-            try {''
+        ';'
+            try {'
                 await this.executeOfflineOperation(operation');'
         
         }'
@@ -241,11 +241,11 @@ export class OfflineManager {
         
         // 完了した操作を削除
         this.state.offlineOperations = this.state.offlineOperations.filter();
-            op => !processedOperations.includes(op) && !failedOperations.includes(op);'
+            op => !processedOperations.includes(op) && !failedOperations.includes(op);
         '';
         console.log(`OfflineManager: Processed ${processedOperations.length} operations, ${ failedOperations.length) failed`');
         ';
-        // 結果の通知''
+        // 結果の通知
         this.emitEvent('offlineOperationsProcessed', {)
             processed: processedOperations.length);
             failed: failedOperations.length,);
@@ -257,7 +257,7 @@ export class OfflineManager {
     
     /**
      * 個別オフライン操作の実行
-     */'
+     */
     async executeOfflineOperation(operation) { ''
         switch(operation.type') {'
             '';
@@ -288,8 +288,8 @@ export class OfflineManager {
         }'
             return 'offline'; }
         }
-        ';
-        try { ''
+        ';'
+        try {'
             const startTime = performance.now(''';
             const response = await fetch('/favicon.ico', {')'
                 method: 'HEAD',')';
@@ -299,10 +299,10 @@ export class OfflineManager {
             const endTime = performance.now();
             const responseTime = endTime - startTime;
             
-            // 応答時間による品質判定'
+            // 応答時間による品質判定
             let quality;''
             if(responseTime < 200') {'
-                ';
+                ';'
             }'
                 quality = 'good';' }'
             } else if (responseTime < 1000') { ''
@@ -323,7 +323,7 @@ export class OfflineManager {
             if(this.state.heartbeatFailures >= this.config.maxHeartbeatRetries') {'
                 '';
                 this.state.connectionQuality = 'offline';'
-                // navigator.onLineが間違っている場合の対処''
+                // navigator.onLineが間違っている場合の対処
                 if (navigator.onLine') {''
                     console.warn('OfflineManager: Navigator reports online but connection failed, treating as offline');'
             }'
@@ -367,17 +367,17 @@ export class OfflineManager {
     /**
      * オフライン状態の保存'
      */''
-    async saveOfflineState('')';
+    async saveOfflineState()';
             await this.dataStorage.save('_offlineState', stateData);''
-        } catch (error') { ''
-            console.warn('OfflineManager: Failed to save offline state:', error); }
+        } catch (error) { ''
+            console.warn('OfflineManager: Failed to save offline state:', error) }
         }
     }
     
     /**
      * オフライン状態の復元'
      */''
-    async restoreOfflineState('')';
+    async restoreOfflineState()';
             const stateData = await this.dataStorage.load('_offlineState');''
             if(stateData') {
                 this.state.lastOnlineTime = stateData.lastOnlineTime;
@@ -391,30 +391,30 @@ export class OfflineManager {
                     op => (now - op.timestamp) < this.config.offlineDataExpiry;
                 );
             }
-                 }'
+                 }
                 console.log(`OfflineManager: Restored ${this.state.offlineOperations.length) offline operations`});''
-            } catch (error') { ''
-            console.warn('OfflineManager: Failed to restore offline state:', error); }
+            } catch (error) { ''
+            console.warn('OfflineManager: Failed to restore offline state:', error) }
         }
     }
     
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         window.addEventListener('online', () => { this.handleOnlineStateChange(true);' }'
         }');'
         '';
         window.addEventListener('offline', () => { this.handleOnlineStateChange(false);' }'
         }');
         ';
-        // ページ非表示時の状態保存''
+        // ページ非表示時の状態保存
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.saveOfflineState(); }'
             }''
         }');
         ';
-        // ページアンロード時の状態保存''
+        // ページアンロード時の状態保存
         window.addEventListener('beforeunload', () => { this.saveOfflineState(); }
         });
     }
@@ -445,9 +445,9 @@ export class OfflineManager {
         this.config = { ...this.config, ...newConfig };
         
         // ハートビート間隔が変更された場合は再起動
-        if(newConfig.heartbeatInterval && newConfig.heartbeatInterval !== oldHeartbeatInterval) {'
+        if(newConfig.heartbeatInterval && newConfig.heartbeatInterval !== oldHeartbeatInterval) {
             '';
-            this.startHeartbeat('');
+            this.startHeartbeat();
         }'
         console.log('OfflineManager: Configuration updated', this.config); }
     }
@@ -457,7 +457,7 @@ export class OfflineManager {
      */
     clearOfflineOperations() {'
         this.state.offlineOperations = [];''
-        this.saveOfflineState('');
+        this.saveOfflineState();
     }'
         console.log('OfflineManager: Offline operations cleared'), }
     }
@@ -517,11 +517,11 @@ export class OfflineManager {
             
             // イベントリスナーの削除
             this.eventListeners.clear();
-            ';
-            // オフライン状態の最終保存''
-            this.saveOfflineState('')';
+            ;
+            // オフライン状態の最終保存
+            this.saveOfflineState()';
             console.log('OfflineManager: Destroyed'),
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'OFFLINE_MANAGER_DESTROY_ERROR', {')'
                 operation: 'destroy'),' }'

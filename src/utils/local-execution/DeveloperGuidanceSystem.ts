@@ -15,12 +15,12 @@ import type { BrowserInfo, CanvasSupport, LocalStorageSupport, ModulesSupport, C
 
 // インターフェース定義
 interface GuidanceCommand { devServer: string,
-    simpleServers: string[]; }
+    simpleServers: string[] }
 }
 
 interface GuidanceConfig { showWarning: boolean,
     autoHide: boolean,
-    hideDelay: number,';
+    hideDelay: number,
     persistDismissal: boolean,'';
     position: 'top' | 'bottom' | 'center','';
     theme: 'blue' | 'red' | 'yellow' | 'green',
@@ -38,11 +38,11 @@ interface GuidanceConfig { showWarning: boolean,
 interface FaviconInfo { rel: string,
     type?: string;
     href: string,
-    sizes?: string; }
+    sizes?: string }
 }
 
 interface DismissalInfo { dismissed: boolean,
-    dismissedAt: Date | null; }
+    dismissedAt: Date | null }
 }
 
 interface DebugInfo { isPermanentlyDismissed: boolean,
@@ -52,9 +52,9 @@ interface DebugInfo { isPermanentlyDismissed: boolean,
     }
     browserCompatibility: ComprehensiveSupportInfo | { error: string; available: false }
 }
-';
+';'
 interface Recommendation { message: string,''
-    priority: 'high' | 'medium' | 'low'; }
+    priority: 'high' | 'medium' | 'low' }
 }
 
 class DeveloperGuidanceSystem { /**
@@ -63,7 +63,7 @@ class DeveloperGuidanceSystem { /**
     static readonly DEFAULT_CONFIG: GuidanceConfig = {
         showWarning: true,
         autoHide: false,
-        hideDelay: 10000, // 10秒';
+        hideDelay: 10000, // 10秒;
         persistDismissal: true,'';
         position: 'top' as const,'';
         theme: 'blue' as const,';
@@ -94,14 +94,14 @@ class DeveloperGuidanceSystem { /**
         
         // DOMに追加
         document.body.appendChild(warningElement);
-        ';
-        // アニメーション付きで表示''
+        ;
+        // アニメーション付きで表示
         setTimeout((') => {  ' }'
             warningElement.classList.add('awaputi-guidance-show'); }
         }, 100);
         
         // 自動非表示
-        if (mergedConfig.autoHide) { setTimeout(() => {  }'
+        if (mergedConfig.autoHide) { setTimeout(() => {  }
                 this.dismissGuidance();' }'
             }, mergedConfig.hideDelay');
         }'
@@ -116,7 +116,7 @@ class DeveloperGuidanceSystem { /**
     static showDeveloperServerGuidance(config: Partial<GuidanceConfig> = { )'): void { }
         const mergedConfig: GuidanceConfig = { ...this.DEFAULT_CONFIG, ...config };
         
-        // より詳細なガイダンス表示'
+        // より詳細なガイダンス表示
         const guidanceConfig: GuidanceConfig = { ...mergedConfig,''
             title: 'Development Server Recommended','';
             message: 'For the best development experience, please use a development server.',
@@ -152,9 +152,9 @@ class DeveloperGuidanceSystem { /**
                 showTroubleshooting: true;
             },
             
-            this.showLocalExecutionWarning(guidanceConfig);'
+            this.showLocalExecutionWarning(guidanceConfig);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('DeveloperGuidanceSystem: Compatibility guidance failed', error);
             // フォールバック: 標準のガイダンスを表示
             this.showDeveloperServerGuidance(config); }
@@ -164,19 +164,19 @@ class DeveloperGuidanceSystem { /**
     /**
      * ガイダンスUI要素を作成
      * @param config - 設定オプション
-     * @returns ガイダンス要素'
+     * @returns ガイダンス要素
      */''
     static createGuidanceUI(config: Partial<GuidanceConfig> = { )'): HTMLElement { }
         const mergedConfig: GuidanceConfig = { ...this.DEFAULT_CONFIG, ...config };
         ';
-        // メインコンテナ''
+        // メインコンテナ
         const guidance = document.createElement('div'');''
         guidance.id = 'awaputi-local-execution-guidance';
         guidance.className = `awaputi-guidance awaputi-guidance-${mergedConfig.position} awaputi-guidance-${mergedConfig.theme}`;
         ';
-        // スタイルを追加''
+        // スタイルを追加
         this._injectStyles(');
-        ';
+        ';'
         // コンテンツを構築')'
         guidance.innerHTML = `'';
             <div class="awaputi-guidance-content">"";
@@ -229,12 +229,12 @@ class DeveloperGuidanceSystem { /**
     /**
      * 警告の永続的な非表示設定'
      */''
-    static permanentlyDismissWarning('')';
+    static permanentlyDismissWarning()';
             localStorage.setItem('awaputi-guidance-dismissed', 'true'');''
             localStorage.setItem('awaputi-guidance-dismissed-at', new Date().toISOString();''
-            this.dismissGuidance('')';
+            this.dismissGuidance()';
             console.log('DeveloperGuidanceSystem: Warning permanently dismissed'),'';
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('DeveloperGuidanceSystem: Could not save dismissal preference', error);
             this.dismissGuidance(); }
         }
@@ -244,7 +244,7 @@ class DeveloperGuidanceSystem { /**
      * 警告が永続的に非表示設定されているかチェック
      * @returns 非表示設定されている場合 true'
      */''
-    static isPermanentlyDismissed('')';
+    static isPermanentlyDismissed()';
             return localStorage.getItem('awaputi-guidance-dismissed'') === 'true';
         } catch (error) { return false; }
         }
@@ -253,12 +253,12 @@ class DeveloperGuidanceSystem { /**
     /**
      * 非表示設定をリセット'
      */''
-    static resetDismissal('')';
+    static resetDismissal()';
             localStorage.removeItem('awaputi-guidance-dismissed'');''
             localStorage.removeItem('awaputi-guidance-dismissed-at'');''
             console.log('DeveloperGuidanceSystem: Dismissal reset'),'';
-        } catch (error') { ''
-            console.warn('DeveloperGuidanceSystem: Could not reset dismissal', error); }
+        } catch (error) { ''
+            console.warn('DeveloperGuidanceSystem: Could not reset dismissal', error) }
         }
     }
 
@@ -270,13 +270,13 @@ class DeveloperGuidanceSystem { /**
      */'
     private static _createCommandsSection(config: GuidanceConfig): string { ''
         if(!config.showCommands && !config.commands') {'
-            ';
+            ';'
         }'
             return ''; }
         }
 
         const commands = config.commands || this.DEFAULT_CONFIG.commands;
-        ';
+        ';'
         return `'';
             <div class="awaputi-guidance-section">";
                 <h4>🚀 Recommended Development Server:</h4>"";
@@ -332,7 +332,7 @@ class DeveloperGuidanceSystem { /**
         const compatibility = config.compatibilityInfo;
         const browserInfo = compatibility.browser;
         const recommendations = compatibility.recommendations;
-';
+';'
         let content: string = `'';
             <div class="awaputi-guidance-section awaputi-guidance-compatibility">";
                 <h4>📊 Browser Compatibility:</h4>"";
@@ -344,7 +344,7 @@ class DeveloperGuidanceSystem { /**
                 </div>;
         `;
 ';
-        // 機能サポート状況''
+        // 機能サポート状況
         if(browserInfo.supportedFeatures && browserInfo.supportedFeatures.length > 0') {'
             content += `';
         }'
@@ -352,9 +352,9 @@ class DeveloperGuidanceSystem { /**
                     <strong>Supported features:</strong> ${browserInfo.supportedFeatures.join(', '})}
                 </div>;
             `;
-        }
+        }'
 ';
-        // 制限事項''
+        // 制限事項
         if(browserInfo.restrictions && browserInfo.restrictions.length > 0') {'
             content += `';
         }'
@@ -371,10 +371,10 @@ class DeveloperGuidanceSystem { /**
             if (highPriorityRecs.length > 0') {'
                 content += `'';
                     <div class="awaputi-recommendations">;
-                        <strong>Recommendations:</strong>;
+                        <strong>Recommendations:</strong>
         }"
                         <ul>" }"
-                            ${highPriorityRecs.map((rec: Recommendation}) => `<li>${rec.message}</li>`").join('')}
+                            ${highPriorityRecs.map((rec: Recommendation}) => `<li>${rec.message}</li>`").join()}
                         </ul>;
                     </div>;
                 `;
@@ -393,11 +393,11 @@ class DeveloperGuidanceSystem { /**
      */'
     private static _createTroubleshootingSection(config: GuidanceConfig): string { ''
         if(!config.showTroubleshooting') {'
-            ';
+            ';'
         }'
             return ''; }
         }
-';
+';'
         return `'';
             <div class="awaputi-guidance-section awaputi-guidance-troubleshooting">;
                 <h4>🔧 Troubleshooting:</h4>;
@@ -419,13 +419,13 @@ class DeveloperGuidanceSystem { /**
     private static _setupEventListeners(guidance: HTMLElement, config: GuidanceConfig"): void { // 閉じるボタン""
         const closeBtn = guidance.querySelector('.awaputi-guidance-close'');''
         closeBtn? .addEventListener('click', () => { ''
-            this.dismissGuidance('')';
+            this.dismissGuidance()';
         const dismissBtn = guidance.querySelector('.awaputi-guidance-dismiss'');''
         dismissBtn?.addEventListener('click', () => {''
-            this.permanentlyDismissWarning('')';
+            this.permanentlyDismissWarning()';
         const continueBtn = guidance.querySelector('.awaputi-guidance-continue'');''
         continueBtn?.addEventListener('click', () => {''
-            this.dismissGuidance('')';
+            this.dismissGuidance()';
         const copyBtns = guidance.querySelectorAll('.awaputi-guidance-copy');''
         copyBtns.forEach(btn => {');''
             btn.addEventListener('click', (e') => {'
@@ -437,12 +437,12 @@ class DeveloperGuidanceSystem { /**
             };
         };
 ';
-        // ESCキーで閉じる : undefined''
+        // ESCキーで閉じる : undefined
         const handleEscape = (e: KeyboardEvent') => {  ''
             if(e.key === 'Escape') {'
-                ';
+                ';'
             }'
-                this.dismissGuidance('') }'
+                this.dismissGuidance() }'
                 document.removeEventListener('keydown', handleEscape'); }
             }'
         };''
@@ -455,10 +455,10 @@ class DeveloperGuidanceSystem { /**
      * @param button - ボタン要素
      * @private
      */'
-    private static async _copyToClipboard(text: string, button: HTMLElement): Promise<void> { try {''
+    private static async _copyToClipboard(text: string, button: HTMLElement): Promise<void> { try {'
             await navigator.clipboard.writeText(text');
             
-            // ボタンのテキストを一時変更'
+            // ボタンのテキストを一時変更
             const originalText = button.textContent;''
             button.textContent = 'Copied!';''
             button.classList.add('awaputi-guidance-copied');'
@@ -468,7 +468,7 @@ class DeveloperGuidanceSystem { /**
                 button.classList.remove('awaputi-guidance-copied'); }
             }, 2000);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('DeveloperGuidanceSystem: Could not copy to clipboard', error);
             
             // フォールバック: テキストを選択状態にする
@@ -480,7 +480,7 @@ class DeveloperGuidanceSystem { /**
      * クリップボードコピーのフォールバック
      * @param text - コピーするテキスト
      * @param button - ボタン要素
-     * @private'
+     * @private
      */''
     private static _fallbackCopy(text: string, button: HTMLElement'): void { ''
         const textarea = document.createElement('textarea'');'
@@ -488,13 +488,13 @@ class DeveloperGuidanceSystem { /**
         textarea.style.position = 'fixed';''
         textarea.style.opacity = '0';'
         document.body.appendChild(textarea);''
-        textarea.select('')';
+        textarea.select()';
             document.execCommand('copy'');''
             button.textContent = 'Copied!';''
             setTimeout((') => { ' }'
                 button.textContent = 'Copy'; }'
             }, 2000);''
-        } catch (error') { ''
+        } catch (error) { ''
             button.textContent = 'Failed';''
             setTimeout((') => { ' }'
                 button.textContent = 'Copy'; }
@@ -508,7 +508,7 @@ class DeveloperGuidanceSystem { /**
      * 既存の警告を削除
      * @private'
      */''
-    private static _removeExistingWarning('')';
+    private static _removeExistingWarning()';
         const existing = document.getElementById('awaputi-local-execution-guidance');
         if (existing) { existing.remove(); }
         }
@@ -518,7 +518,7 @@ class DeveloperGuidanceSystem { /**
      * CSSスタイルを注入
      * @private'
      */''
-    private static _injectStyles('')';
+    private static _injectStyles()';
         if (document.getElementById('awaputi-guidance-styles')') { return; }
         }'
 '';
@@ -540,18 +540,18 @@ class DeveloperGuidanceSystem { /**
             );
             .awaputi-guidance-top { top: 20px,
                 left: 50%,
-                transform: translateX(-50%) translateY(-20px; }
+                transform: translateX(-50%) translateY(-20px }
             }
             );
             .awaputi-guidance-show { opacity: 1 !important)
-                transform: translateX(-50%) translateY(0) !important; }
+                transform: translateX(-50%) translateY(0) !important }
             }
             
             .awaputi-guidance-hide { opacity: 0 !important,
-                transform: translateX(-50%) translateY(-20px) !important; }
+                transform: translateX(-50%) translateY(-20px) !important }
             }
             
-            .awaputi-guidance-content { padding: 0; }
+            .awaputi-guidance-content { padding: 0 }
             }
             
             .awaputi-guidance-header { display: flex,
@@ -583,11 +583,11 @@ class DeveloperGuidanceSystem { /**
                 display: flex,
                 align-items: center,
                 justify-content: center,
-                transition: background-color 0.2s; }
+                transition: background-color 0.2s }
             }
-            ';
+            ';'
             .awaputi-guidance-close:hover { ''
-                background-color: rgba(255, 255, 255, 0.2'); }
+                background-color: rgba(255, 255, 255, 0.2') }
             }
             
             .awaputi-guidance-body { padding: 20px,
@@ -595,7 +595,7 @@ class DeveloperGuidanceSystem { /**
             }
             
             .awaputi-guidance-message { margin: 0 0 20px 0,
-                color: #333; }
+                color: #333 }
             }
             
             .awaputi-guidance-section { margin-bottom: 20px, }
@@ -621,7 +621,7 @@ class DeveloperGuidanceSystem { /**
             
             .awaputi-guidance-alternatives { list-style: none,
                 padding: 0,
-                margin: 0; }
+                margin: 0 }
             }
             
             .awaputi-guidance-alternatives li { display: flex,
@@ -645,31 +645,31 @@ class DeveloperGuidanceSystem { /**
                 border-radius: 3px,
                 cursor: pointer,
                 font-size: 12px,
-                transition: background-color 0.2s; }
+                transition: background-color 0.2s }
             }
             
-            .awaputi-guidance-copy:hover { background: #1976D2; }
+            .awaputi-guidance-copy:hover { background: #1976D2 }
             }
             
-            .awaputi-guidance-copied { background: #4CAF50 !important; }
+            .awaputi-guidance-copied { background: #4CAF50 !important }
             }
             
             .awaputi-guidance-limitations { list-style: disc,
                 padding-left: 20px,
-                margin: 0; }
+                margin: 0 }
             }
             
             .awaputi-guidance-limitations li { margin-bottom: 4px,
-                color: #666; }
+                color: #666 }
             }
             
             .awaputi-guidance-troubleshooting ul { list-style: disc,
                 padding-left: 20px,
-                margin: 0; }
+                margin: 0 }
             }
             
             .awaputi-guidance-troubleshooting li { margin-bottom: 6px,
-                color: #666; }
+                color: #666 }
             }
             
             .awaputi-guidance-compatibility { background-color: #f8f9fa,
@@ -684,7 +684,7 @@ class DeveloperGuidanceSystem { /**
             .awaputi-browser-info { display: flex,
                 align-items: center,
                 font-weight: 600,
-                color: #333; }
+                color: #333 }
             }
             
             .awaputi-support-badge { margin-left: 8px,
@@ -696,23 +696,23 @@ class DeveloperGuidanceSystem { /**
             }
             
             .awaputi-support-good { background-color: #d4edda,
-                color: #155724; }
+                color: #155724 }
             }
             
             .awaputi-support-limited { background-color: #fff3cd,
-                color: #856404; }
+                color: #856404 }
             }
             
             .awaputi-features-support,
             .awaputi-restrictions,
             .awaputi-recommendations { margin-top: 8px,
                 font-size: 13px,
-                color: #666; }
+                color: #666 }
             }
             
             .awaputi-features-support strong,
             .awaputi-restrictions strong,
-            .awaputi-recommendations strong { color: #333; }
+            .awaputi-recommendations strong { color: #333 }
             }
             
             .awaputi-recommendations ul { margin: 4px 0 0 0,
@@ -720,7 +720,7 @@ class DeveloperGuidanceSystem { /**
             }
             
             .awaputi-recommendations li { margin-bottom: 4px,
-                color: #856404; }
+                color: #856404 }
             }
             
             .awaputi-guidance-footer { display: flex,
@@ -738,15 +738,15 @@ class DeveloperGuidanceSystem { /**
                 border-radius: 4px,
                 cursor: pointer,
                 font-size: 13px,
-                transition: all 0.2s; }
+                transition: all 0.2s }
             }
             
             .awaputi-guidance-dismiss { background: white,
-                color: #666; }
+                color: #666 }
             }
             
             .awaputi-guidance-dismiss:hover { border-color: #999,
-                color: #333; }
+                color: #333 }
             }
             
             .awaputi-guidance-continue { background: #2196F3,
@@ -762,13 +762,13 @@ class DeveloperGuidanceSystem { /**
                     max-width: calc(100vw - 40px),
                     left: 20px !important,
                     right: 20px,
-                    transform: translateY(-20px) !important; }
+                    transform: translateY(-20px) !important }
                 }
                 
-                .awaputi-guidance-show { transform: translateY(0) !important; }
+                .awaputi-guidance-show { transform: translateY(0) !important }
                 }
                 
-                .awaputi-guidance-hide { transform: translateY(-20px) !important; }
+                .awaputi-guidance-hide { transform: translateY(-20px) !important }
                 }
             }
         `;
@@ -789,7 +789,7 @@ class DeveloperGuidanceSystem { /**
  }
         let message = `Running on ${browserInfo.name} ${browserInfo.version}. `;
 ';
-        // ブラウザ固有の問題を特定''
+        // ブラウザ固有の問題を特定
         if(browserInfo.name === 'safari'') {'
             '';
             message += 'Safari has some restrictions with local file execution. ';''
@@ -799,26 +799,26 @@ class DeveloperGuidanceSystem { /**
             }''
         } else if (browserInfo.name === 'firefox'') { ''
             if(window.location && window.location.protocol === 'file:'') {'
-                ';
+                '
             }'
                 message += 'Firefox restricts localStorage access for local files. '; }'
             }''
         } else if (browserInfo.name === 'ie'') { ''
             message += 'Internet Explorer has limited support. Consider upgrading to a modern browser. '; }
-        }
+        }'
 ';
-        // Canvas API問題''
+        // Canvas API問題
         if(!canvasSupport.available') {'
-            ';
+            ';'
         }'
             message += 'Canvas API is not available - favicon generation will use fallbacks. '; }
-        }
-';
-        // ES6 modules問題''
-        if(!modulesSupport.available && window.location.protocol === 'file:'') {'
-            ';
         }'
-            message += 'ES6 modules are restricted in local file mode. '; }
+';
+        // ES6 modules問題
+        if(!modulesSupport.available && window.location.protocol === 'file:'') {'
+            ';'
+        }'
+            message += 'ES6 modules are restricted in local file mode. '; }'
         }'
 '';
         message += 'For the best experience, please use a development server.';
@@ -831,9 +831,9 @@ class DeveloperGuidanceSystem { /**
      * @returns デバッグ情報'
      */''
     static getDebugInfo(''';
-            hasExistingGuidance: !!document.getElementById('awaputi-local-execution-guidance',);
+            hasExistingGuidance: !!document.getElementById('awaputi-local-execution-guidance');
             config: this.DEFAULT_CONFIG);
-            dismissalInfo: this._getDismissalInfo(,);
+            dismissalInfo: this._getDismissalInfo();
             browserCompatibility: this._getBrowserCompatibilityInfo(),
         };
     }
@@ -856,14 +856,14 @@ class DeveloperGuidanceSystem { /**
      * @returns 非表示設定情報
      * @private'
      */''
-    private static _getDismissalInfo('')';
+    private static _getDismissalInfo()';
             const dismissed = localStorage.getItem('awaputi-guidance-dismissed'');''
             const dismissedAt = localStorage.getItem('awaputi-guidance-dismissed-at'');'
             return { ''
                 dismissed: dismissed === 'true' };
                 dismissedAt: dismissedAt ? new Date(dismissedAt) : null }'
             };''
-        } catch (error') {
+        } catch (error) {
             return { dismissed: false, dismissedAt: null }
         }
     }

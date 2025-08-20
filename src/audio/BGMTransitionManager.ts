@@ -15,13 +15,13 @@ interface TransitionInfo { fromTrack: string,
     toTrack: string,
     type: string,
     duration: number,
-    curve: string; }
+    curve: string }
 }
 
 // キューエントリ型定義
 interface QueueEntry { fromTrack: string,
     toTrack: string,
-    options: TransitionOptions;
+    options: TransitionOptions
     }
 }
 
@@ -44,12 +44,12 @@ interface TrackInfo { metadata: {
 
 // BGM情報型定義
 interface BGMInfo { volume: number,
-    isPlaying: boolean; }
+    isPlaying: boolean }
 }
 
-// エラーハンドラー型定義'
+// エラーハンドラー型定義
 interface ErrorHandler { ''
-    handleError(error: Error, type: string, context?: any'): void; }
+    handleError(error: Error, type: string, context?: any'): void }
 }
 
 // 設定型定義
@@ -65,7 +65,7 @@ interface TransitionState { isTransitioning: boolean,
     settings: {
         defaultFadeInDuration: number,
         defaultFadeOutDuration: number,
-        defaultCrossfadeDuration: number; }
+        defaultCrossfadeDuration: number }
     };
 }
 
@@ -83,7 +83,7 @@ export class BGMTransitionManager {
     private defaultFadeInDuration: number = 2.0;
     private defaultFadeOutDuration: number = 2.0;
     private defaultCrossfadeDuration: number = 3.0;
-    // トランジションタイプ'
+    // トランジションタイプ
     private readonly transitionTypes = {''
         FADE_OUT_IN: 'fade_out_in','';
         CROSSFADE: 'crossfade','';
@@ -91,7 +91,7 @@ export class BGMTransitionManager {
         SMART_CROSSFADE: 'smart_crossfade' }
     } as const,
     
-    // 音量カーブタイプ'
+    // 音量カーブタイプ
     private readonly curveTypes = { ''
         LINEAR: 'linear','';
         EXPONENTIAL: 'exponential','';
@@ -103,7 +103,7 @@ export class BGMTransitionManager {
         this.audioContext = audioContext;
         this.bgmSystem = bgmSystem;'
         ';
-    }
+    }'
     }'
         console.log('BGMTransitionManager initialized'); }
     }
@@ -172,13 +172,13 @@ export class BGMTransitionManager {
                     this.transitionTo(nextTransition.fromTrack, nextTransition.toTrack, nextTransition.options});
                 }, 100); // 短い遅延を入れて処理を安定させる
             } catch (error) { this.isTransitioning = false;
-            this.currentTransition = null;'
+            this.currentTransition = null;
             '';
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {''
-                operation: 'transitionTo',);
+                operation: 'transitionTo');
                 fromTrack: fromTrack);
                 toTrack: toTrack,);
-                options: options); }
+                options: options) }
             });
         }
     }
@@ -199,8 +199,8 @@ export class BGMTransitionManager {
         }
         
         // 新しいBGMをフェードインで開始
-        await this.bgmSystem.playBGM(toTrack, { volume: volume,)
-            fadeInDuration: fadeInDuration); }
+        await this.bgmSystem.playBGM(toTrack, { volume: volume)
+            fadeInDuration: fadeInDuration) }
     }
     
     /**
@@ -219,7 +219,7 @@ export class BGMTransitionManager {
         const currentVolume = currentBGMInfo ? currentBGMInfo.volume: 0,
         
         // 新しいBGMを無音で開始
-        await this.bgmSystem.playBGM(toTrack, { volume: 0,)
+        await this.bgmSystem.playBGM(toTrack, { volume: 0)
             fadeInDuration: 0),
         
         // クロスフェードを実行;
@@ -236,12 +236,12 @@ export class BGMTransitionManager {
         const { volume = 1.0 } = options;
         
         // 現在のBGMを即座に停止
-        if (this.bgmSystem.isPlaying) { await this.bgmSystem.stopBGM({ fadeOutDuration: 0 ); }
+        if (this.bgmSystem.isPlaying) { await this.bgmSystem.stopBGM({ fadeOutDuration: 0 ) }
         }
         
         // 新しいBGMを即座に開始
-        await this.bgmSystem.playBGM(toTrack, { volume: volume,)
-            fadeInDuration: 0); }
+        await this.bgmSystem.playBGM(toTrack, { volume: volume)
+            fadeInDuration: 0) }
     }
     
     /**
@@ -291,7 +291,7 @@ export class BGMTransitionManager {
         // 調整されたクロスフェードを実行
         await this._crossfadeTransition(fromTrack, toTrack, { ...options)
             duration: adjustedDuration,);
-            curve: curve); }
+            curve: curve) }
     }
     
     /**
@@ -339,11 +339,11 @@ export class BGMTransitionManager {
      * @param key1 - キー1
      * @param key2 - キー2
      * @returns 調和度 (0-1)
-     */ : undefined'
+     */ : undefined
     private _getKeyCompatibility(key1: string, key2: string): number { ''
         if (key1 === key2') return 1.0;
         
-        // 簡単な調和度計算（完全5度、4度関係を重視）'
+        // 簡単な調和度計算（完全5度、4度関係を重視）
         const keyMap: Record<string, number> = {''
             'C': 0, 'G': 7, 'D': 2, 'A': 9, 'E': 4, 'B': 11,'';
             'F#': 6, 'Db': 1, 'Ab': 8, 'Eb': 3, 'Bb': 10, 'F': 5,'';
@@ -405,7 +405,7 @@ export class BGMTransitionManager {
             case this.curveTypes.LOGARITHMIC: return Math.sqrt(progress);
             case this.curveTypes.SMOOTH:;
                 return progress * progress * (3 - 2 * progress); // smoothstep
-            default: return progress; }
+            default: return progress }
         }
     }
     
@@ -442,8 +442,8 @@ export class BGMTransitionManager {
             }
             
             // 完全に停止
-            await this.bgmSystem.stopBGM({ fadeOutDuration: 0 );
-             }'
+            await this.bgmSystem.stopBGM({ fadeOutDuration: 0 )
+             }
         } catch (error) { ''
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {')'
                 operation: 'fadeOut');
@@ -481,14 +481,14 @@ export class BGMTransitionManager {
             
             }
                     await this._wait(stepDuration); }
-                }'
+                }
             } catch (error) { ''
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {''
                 operation: 'fadeIn',
-                trackName: trackName,);
+                trackName: trackName);
                 duration: duration);
                 curve: curve,);
-                targetVolume: targetVolume); }
+                targetVolume: targetVolume) }
             });
         }
     }
@@ -496,12 +496,12 @@ export class BGMTransitionManager {
     /**
      * 即座にトランジションを停止'
      */''
-    stopTransition('')';
+    stopTransition()';
             console.log('All transitions stopped');
-            ';
+            ';'
         } catch (error) { ''
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {')'
-                operation: 'stopTransition'); }
+                operation: 'stopTransition') }
             });
         }
     }
@@ -521,18 +521,18 @@ export class BGMTransitionManager {
             }
             
             if(settings.defaultCrossfadeDuration !== undefined) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 this.defaultCrossfadeDuration = Math.max(0.5, Math.min(20, settings.defaultCrossfadeDuration)'); }
             }'
             '';
             console.log('Transition settings updated', settings);
-            ';
+            ';'
         } catch (error) { ''
             (getErrorHandler() as ErrorHandler').handleError(error as Error, 'BGM_TRANSITION_ERROR', {')'
                 operation: 'updateSettings',);
-                settings: settings); }
+                settings: settings) }
             });
         }
     }
@@ -563,8 +563,8 @@ export class BGMTransitionManager {
     /**
      * リソースの解放
      */'
-    dispose(): void { try {''
-            this.stopTransition('')';
+    dispose(): void { try {'
+            this.stopTransition()';
             console.log('BGMTransitionManager disposed');
              }'
         } catch (error) { ''

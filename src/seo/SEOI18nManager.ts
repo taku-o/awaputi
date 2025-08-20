@@ -18,15 +18,15 @@ interface LocalizationManager { getCurrentLanguage(): string;
     getSupportedLanguages(): string[]; }
 }
 
-// SEOMetaManager インターフェース'
+// SEOMetaManager インターフェース
 interface SEOMetaManager { updateMetaTags(context: any): Promise<void>,''
     updateLanguage(language: string'): void, }
 }
 
 // hreflangタグインターフェース
-interface HreflangTag { hreflang: string,'
+interface HreflangTag { hreflang: string,
     href: string,'';
-    rel: 'alternate'; }
+    rel: 'alternate' }
 }
 
 // 言語別URLマッピングインターフェース
@@ -64,14 +64,14 @@ export class SEOI18nManager {
                 
                 // 言語変更リスナーの設定
             }
-                this.localizationManager.addLanguageChangeListener((newLang: string) => {  }'
+                this.localizationManager.addLanguageChangeListener((newLang: string) => {  }
                     this.handleLanguageChange(newLang as LanguageCode);' }'
                 }');
             }
-            ';
+            ';'
             this.initialized = true;''
             seoLogger.info('SEOI18nManager initialized successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'seoi18nManagerInit''); }
         }
     }
@@ -95,14 +95,14 @@ export class SEOI18nManager {
         // 各サポート言語のhreflangタグを生成
         SEOConfig.supportedLanguages.forEach(lang => {  );
             const localizedUrl = getLocalizedUrl(lang, path);
-            hreflangTags.push({)'
+            hreflangTags.push({)
                 hreflang: lang),'';
                 href: normalizeUrl(localizedUrl'),' }'
                 rel: 'alternate' }
             }),
         });
         ';
-        // x-default タグの追加''
+        // x-default タグの追加
         const defaultUrl = getLocalizedUrl(SEOConfig.defaultLanguage, path');'
         hreflangTags.push({ ')'
             hreflang: 'x-default'),'';
@@ -131,9 +131,9 @@ export class SEOI18nManager {
     }
     
     /**
-     * 現在の言語の取得'
+     * 現在の言語の取得
      */''
-    getCurrentLanguage('')';
+    getCurrentLanguage()';
     generateLanguageUrlMapping(path: string = ''): LanguageUrlMapping {
         const mapping: LanguageUrlMapping = {}
         SEOConfig.supportedLanguages.forEach(lang => {  ); }
@@ -147,7 +147,7 @@ export class SEOI18nManager {
      * リソースのクリーンアップ
      */'
     cleanup(): void { ''
-        this.hreflangCache.clear('')';
+        this.hreflangCache.clear()';
         seoLogger.info('SEOI18nManager cleaned up''); }'
     }''
 }

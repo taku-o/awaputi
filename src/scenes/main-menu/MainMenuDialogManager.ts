@@ -1,7 +1,7 @@
 import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 // インターフェース定義
-interface DialogManagerConfig { gameEngine: any; }
+interface DialogManagerConfig { gameEngine: any }
 }
 
 interface PlayerData { username: string,
@@ -9,10 +9,10 @@ interface PlayerData { username: string,
     tap: number,
     unlockedStages: string[],
     ownedItems: any[],
-    highScores: Record<string, number>; }
+    highScores: Record<string, number> }
 }
 
-interface StageConfig { name: string; }
+interface StageConfig { name: string }
 }
 
 /**
@@ -25,7 +25,7 @@ export class MainMenuDialogManager {
 
     constructor(gameEngine: any) {
 
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine
 
     }
     }
@@ -38,38 +38,38 @@ export class MainMenuDialogManager {
     renderUserInfo(context: CanvasRenderingContext2D): void { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             const playerData = this.gameEngine.playerData as PlayerData;
-            ';
-            // 半透明オーバーレイ''
-            context.save('')';
+            ;
+            // 半透明オーバーレイ
+            context.save()';
             context.fillStyle = 'rgba(0,0,0,0.8')';''
             context.fillRect(0, 0, canvas.width, canvas.height');
             ';
-            // タイトル''
+            // タイトル
             context.fillStyle = '#FFFFFF';''
             context.font = 'bold 32px Arial';''
             context.textAlign = 'center';''
             context.textBaseline = 'middle';
             
-            // Transform行列のスケールを考慮した中央位置'
+            // Transform行列のスケールを考慮した中央位置
             const transform = context.getTransform();''
             const centerX = (canvas.width / 2') / transform.a;''
             context.fillText('ユーザー情報', centerX, 120);
             
             // ユーザー情報
             this.renderUserInfoContent(context, playerData);
-            ';
-            // 戻るボタン''
+            ;
+            // 戻るボタン
             this.renderBackButton(context');
             ';
-            // 操作説明''
+            // 操作説明
             context.fillStyle = '#AAAAAA';''
             context.font = '14px Arial';''
             context.fillText('クリックまたはESCで戻る', canvas.width / 2, canvas.height - 40);
-            ';
+            ';'
             context.restore();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderUserInfo'); }
+                context: 'DialogManager.renderUserInfo') }
             });
         }
     }
@@ -103,7 +103,7 @@ export class MainMenuDialogManager {
             context.fillText(`所持アイテム: ${playerData.ownedItems.length)`, infoX, infoY');
             infoY += lineHeight;
             ';
-            // ハイスコア表示''
+            // ハイスコア表示
             context.fillText('ハイスコア:', infoX, infoY');
             infoY += lineHeight;'
             '';
@@ -119,9 +119,9 @@ export class MainMenuDialogManager {
                 }');'
             } else {  ' }'
                 context.fillText('  まだ記録がありません', infoX + 20, infoY);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderUserInfoContent'); }
+                context: 'DialogManager.renderUserInfoContent') }
             });
         }
     }
@@ -132,28 +132,28 @@ export class MainMenuDialogManager {
     renderDataClearConfirmation(context: CanvasRenderingContext2D): void { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             ';
-            // 半透明オーバーレイ''
-            context.save('')';
+            // 半透明オーバーレイ
+            context.save()';
             context.fillStyle = 'rgba(0,0,0,0.9')';
             context.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Transform行列のスケールを考慮した中央位置'
+            // Transform行列のスケールを考慮した中央位置
             const transform = context.getTransform();''
             const centerX = (canvas.width / 2') / transform.a;
             ';
-            // 警告アイコン''
+            // 警告アイコン
             context.fillStyle = '#FF6666';''
             context.font = 'bold 48px Arial';''
             context.textAlign = 'center';''
             context.textBaseline = 'middle';''
             context.fillText('⚠️', centerX, 150');
             ';
-            // タイトル''
+            // タイトル
             context.fillStyle = '#FFFFFF';''
             context.font = 'bold 28px Arial';''
             context.fillText('データクリア確認', centerX, 200');
             ';
-            // 警告メッセージ''
+            // 警告メッセージ
             context.font = '18px Arial';''
             context.fillStyle = '#FFCCCC';''
             context.fillText('すべてのデータが削除されます。', centerX, 250');''
@@ -161,20 +161,20 @@ export class MainMenuDialogManager {
             
             // 削除データ詳細
             this.renderDataClearDetails(context);
-            ';
-            // ボタン''
+            ;
+            // ボタン
             this.renderDataClearButtons(context');
             ';
-            // 操作説明''
+            // 操作説明
             context.fillStyle = '#AAAAAA';''
             context.font = '14px Arial';''
             context.textAlign = 'center';''
             context.fillText('ESCでキャンセル', canvas.width / 2, canvas.height - 40);
-            ';
+            ';'
             context.restore();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderDataClearConfirmation'); }
+                context: 'DialogManager.renderDataClearConfirmation') }
             });
         }
     }
@@ -182,7 +182,7 @@ export class MainMenuDialogManager {
     /**
      * データクリア詳細を描画'
      */''
-    renderDataClearDetails(context: CanvasRenderingContext2D'): void { try {''
+    renderDataClearDetails(context: CanvasRenderingContext2D'): void { try {'
             context.font = '16px Arial';''
             context.fillStyle = '#CCCCCC';''
             context.textAlign = 'left';
@@ -199,9 +199,9 @@ export class MainMenuDialogManager {
             context.fillText('• 開放済みステージ', detailX, detailY');'
             detailY += lineHeight;''
             context.fillText('• 所持アイテム', detailX, detailY);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderDataClearDetails'); }
+                context: 'DialogManager.renderDataClearDetails') }
             });
         }
     }
@@ -215,7 +215,7 @@ export class MainMenuDialogManager {
             const buttonHeight = 45;
             const buttonY = 450;
             
-            // 削除実行ボタン'
+            // 削除実行ボタン
             const deleteButtonX = canvas.width / 2 - buttonWidth - 15;''
             context.fillStyle = '#CC0000';''
             context.fillRect(deleteButtonX, buttonY, buttonWidth, buttonHeight');'
@@ -230,7 +230,7 @@ export class MainMenuDialogManager {
             context.textBaseline = 'middle';''
             context.fillText('削除実行', deleteButtonX + buttonWidth / 2, buttonY + buttonHeight / 2');
             
-            // キャンセルボタン'
+            // キャンセルボタン
             const cancelButtonX = canvas.width / 2 + 15;''
             context.fillStyle = '#666666';''
             context.fillRect(cancelButtonX, buttonY, buttonWidth, buttonHeight');'
@@ -241,9 +241,9 @@ export class MainMenuDialogManager {
             '';
             context.fillStyle = '#FFFFFF';''
             context.fillText('キャンセル', cancelButtonX + buttonWidth / 2, buttonY + buttonHeight / 2);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderDataClearButtons'); }
+                context: 'DialogManager.renderDataClearButtons') }
             });
         }
     }
@@ -254,16 +254,16 @@ export class MainMenuDialogManager {
     renderControlsHelp(context: CanvasRenderingContext2D): void { try {
             const canvas = this.gameEngine.canvas as HTMLCanvasElement;
             ';
-            // 半透明オーバーレイ''
-            context.save('')';
+            // 半透明オーバーレイ
+            context.save()';
             context.fillStyle = 'rgba(0,0,0,0.8')';
             context.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Transform行列のスケールを考慮した中央位置'
+            // Transform行列のスケールを考慮した中央位置
             const transform = context.getTransform();''
             const centerX = (canvas.width / 2') / transform.a;
             ';
-            // タイトル''
+            // タイトル
             context.fillStyle = '#FFFFFF';''
             context.font = 'bold 32px Arial';''
             context.textAlign = 'center';''
@@ -275,11 +275,11 @@ export class MainMenuDialogManager {
             
             // 戻るボタン
             this.renderBackButton(context, canvas.height - 80);
-            ';
+            ';'
             context.restore();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderControlsHelp'); }
+                context: 'DialogManager.renderControlsHelp') }
             });
         }
     }
@@ -300,7 +300,7 @@ export class MainMenuDialogManager {
             let rightY = 130;
             const lineHeight = 30;
             ';
-            // 左列：基本操作''
+            // 左列：基本操作
             context.fillStyle = '#FFFF99';''
             context.font = 'bold 20px Arial';''
             context.fillText('基本操作', leftX, leftY');
@@ -322,7 +322,7 @@ export class MainMenuDialogManager {
                 leftY += lineHeight;' }'
             }');
             ';
-            // 右列：ゲームのコツ''
+            // 右列：ゲームのコツ
             context.fillStyle = '#99FFFF';''
             context.font = 'bold 20px Arial';''
             context.fillText('ゲームのコツ', rightX, rightY');
@@ -344,7 +344,7 @@ export class MainMenuDialogManager {
                 rightY += lineHeight;' }'
             }');
             ';
-            // 泡の種類説明''
+            // 泡の種類説明
             context.fillStyle = '#FFCC99';''
             context.font = 'bold 20px Arial';''
             context.textAlign = 'center';''
@@ -354,9 +354,9 @@ export class MainMenuDialogManager {
             context.textAlign = 'left';''
             context.fillStyle = '#CCCCCC';''
             context.fillText('普通(青) 石(灰) 鉄(茶) ダイヤ(白) ピンク(回復) 毒(緑) とげとげ(連鎖) 虹色(ボーナス) 時計(時停) S字(得点) ビリビリ(妨害) 逃げる(移動')', leftX, 410);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderControlsHelpContent'); }
+                context: 'DialogManager.renderControlsHelpContent') }
             });
         }
     }
@@ -383,9 +383,9 @@ export class MainMenuDialogManager {
             context.textAlign = 'center';''
             context.textBaseline = 'middle';''
             context.fillText('戻る', buttonX + buttonWidth / 2, y + buttonHeight / 2);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DIALOG_RENDER_ERROR', {')'
-                context: 'DialogManager.renderBackButton'); }
+                context: 'DialogManager.renderBackButton') }
             });
         }
     }
@@ -400,13 +400,13 @@ export class MainMenuDialogManager {
             playerData.highScores = {};''
             playerData.unlockedStages = ['tutorial', 'normal'];
             playerData.ownedItems = [];
-            ';
+            ';'
             // ローカルストレージからも削除')'
             localStorage.removeItem('bubblePop_playerData'');'
             '';
             console.log('All player data has been cleared');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'DATA_CLEAR_ERROR', {')'
                 context: 'DialogManager.executeDataClear'),' }'
             }');

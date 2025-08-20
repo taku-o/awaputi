@@ -113,7 +113,7 @@ export class SocialAnalyticsTracker {
 
         this.addToHistory({ action: 'error')
             timestamp: errorRecord.timestamp,);
-            data: errorRecord); }
+            data: errorRecord) }
     }
 
     /**
@@ -159,7 +159,7 @@ export class SocialAnalyticsTracker {
                 this.i18nStats.languageUsage.set();
                     language)';
                     (this.i18nStats.languageUsage.get(language) || 0) + 1'';
-                ');
+                ');'
                 break;'
                 '';
             case 'region_request':'';
@@ -167,7 +167,7 @@ export class SocialAnalyticsTracker {
                 this.i18nStats.regionUsage.set();
                     region)';
                     (this.i18nStats.regionUsage.get(region) || 0) + 1'';
-                ');
+                ');'
                 break;'
                 '';
             case 'translation_request':;
@@ -211,7 +211,7 @@ export class SocialAnalyticsTracker {
                 this.timestamps.lastSuccessfulShare = endTime;
                 
                 // レスポンス時間の計算
-                if (startTime) {'
+                if (startTime) {
                     const responseTime = endTime - startTime;'
     }'
                     this.updateAverageResponseTime(responseTime'); }
@@ -370,7 +370,7 @@ export class SocialAnalyticsTracker {
     exportAnalyticsData() {
         return { metadata: {
                 exportDate: new Date().toISOString(),';
-                sessionStart: new Date(this.timestamps.sessionStart).toISOString(),';
+                sessionStart: new Date(this.timestamps.sessionStart).toISOString(),'
     }'
                 sessionDuration: Date.now('' };'
                 version: '1.0' })
@@ -390,8 +390,7 @@ export class SocialAnalyticsTracker {
             failedShares: 0,
     }
             averageResponseTime: 0, }
-            platformBreakdown: {}
-        },
+            platformBreakdown: {},
         
         this.errorStats = { total: 0 }
             byType: {},

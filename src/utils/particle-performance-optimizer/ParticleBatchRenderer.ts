@@ -13,7 +13,7 @@ interface BatchConfig { enabled: boolean,
     dynamicBuffering: boolean,
     frustumCulling: boolean,
     instancing: boolean,
-    atlasOptimization: boolean; }
+    atlasOptimization: boolean }
 }
 
 interface Batch { material: string,
@@ -26,7 +26,7 @@ interface Batch { material: string,
     shader: any,
     drawCalls: number,
     vertexCount: number,
-    triangleCount: number; }
+    triangleCount: number }
 }
 
 interface BatchManager { batches: Map<string, Batch>;
@@ -36,7 +36,7 @@ interface BatchManager { batches: Map<string, Batch>;
     vertexBuffers: Map<string, any>;
     indexBuffers: Map<string, any>;
     currentBuffer: any,
-    bufferPool: any[]; }
+    bufferPool: any[] }
 }
 
 interface TextureAtlas { enabled: boolean,
@@ -48,14 +48,14 @@ interface TextureAtlas { enabled: boolean,
     utilization: number,
     fragmentation: number,
     totalSlots: number,
-    usedSlots: number; }
+    usedSlots: number }
 }
 
 interface InstanceBuffer { transforms: Float32Array | null,
     colors: Float32Array | null,
     uvs: Float32Array | null,
     count: number,
-    maxInstances: number; }
+    maxInstances: number }
 }
 
 interface RenderingStats { batchesCreated: number,
@@ -70,7 +70,7 @@ interface RenderingStats { batchesCreated: number,
     sortingTime: number,
     batchEfficiency: number,
     averageBatchSize: number,
-    fillRate: number; }
+    fillRate: number }
 }
 
 interface Particle { x: number,
@@ -89,7 +89,7 @@ interface Particle { x: number,
 interface BoundingBox { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface ParticleBatchRendererConfig { enabled?: boolean;
@@ -208,10 +208,10 @@ export class ParticleBatchRenderer {
      * Initialize rendering buffers
      */
     private initializeBuffers(): void { // Initialize instance buffer arrays
-        this.instanceBuffer.transforms = new Float32Array(this.instanceBuffer.maxInstances * 16); // 4x4 matrices'
-        this.instanceBuffer.colors = new Float32Array(this.instanceBuffer.maxInstances * 4); // RGBA''
+        this.instanceBuffer.transforms = new Float32Array(this.instanceBuffer.maxInstances * 16); // 4x4 matrices
+        this.instanceBuffer.colors = new Float32Array(this.instanceBuffer.maxInstances * 4); // RGBA
         this.instanceBuffer.uvs = new Float32Array(this.instanceBuffer.maxInstances * 4'); // UV coordinates
-        this.instanceBuffer.count = 0;'
+        this.instanceBuffer.count = 0;
         '';
         console.log('[ParticleBatchRenderer] Buffers initialized for', this.instanceBuffer.maxInstances, 'instances'); }
     }
@@ -227,8 +227,8 @@ export class ParticleBatchRenderer {
         
         // Initialize free slots
         this.textureAtlas.freeSlots = [];
-        for(let i = 0; i < this.textureAtlas.totalSlots; i++) {'
-            ';
+        for(let i = 0; i < this.textureAtlas.totalSlots; i++) {
+            ';'
         }'
             this.textureAtlas.freeSlots.push(i'); }
         }'
@@ -270,8 +270,8 @@ export class ParticleBatchRenderer {
      */
     private sortParticlesForBatching(particles: Particle[]): Particle[] { const sortingStart = performance.now();
         
-        const sorted = [...particles].sort((a, b) => { '
-            // Primary: Sort by texture/material''
+        const sorted = [...particles].sort((a, b) => { 
+            // Primary: Sort by texture/material
             if(this.batchConfig.sortByTexture') {'
                 '';
                 const textureA = a.texture || a.type || 'default';''
@@ -282,7 +282,7 @@ export class ParticleBatchRenderer {
                 }
             }
             ';
-            // Secondary: Sort by blend mode''
+            // Secondary: Sort by blend mode
             if(this.batchConfig.sortByBlendMode') {'
                 '';
                 const blendA = a.blendMode || 'normal';''
@@ -343,7 +343,7 @@ export class ParticleBatchRenderer {
     /**
      * Create a new render batch
      */
-    private createBatch(material: string): Batch { // Try to reuse batch from pool'
+    private createBatch(material: string): Batch { // Try to reuse batch from pool
         let batch = this.batchManager.batchPool.pop();''
         if(batch') {
             batch.particles.length = 0;
@@ -357,7 +357,7 @@ export class ParticleBatchRenderer {
                 indexBuffer: null,
                 boundingBox: null,
                 
-                // Rendering state'
+                // Rendering state
                 texture: null,'';
                 blendMode: 'normal',
                 shader: null,
@@ -373,7 +373,7 @@ export class ParticleBatchRenderer {
     }
     
     /**
-     * Get material identifier for particle'
+     * Get material identifier for particle
      */''
     private getParticleMaterial(particle: Particle'): string { ''
         const texture = particle.texture || particle.type || 'default';''
@@ -498,10 +498,10 @@ export class ParticleBatchRenderer {
     }
     
     /**
-     * Optimize batch texture usage'
+     * Optimize batch texture usage
      */''
-    private optimizeBatchTextureUsage(batch: Batch'): void { // Texture atlas optimization would be implemented here'
-        // For now, this is a placeholder''
+    private optimizeBatchTextureUsage(batch: Batch'): void { // Texture atlas optimization would be implemented here
+        // For now, this is a placeholder
         const textureKey = batch.material.split('_')[0];
         
         if(!this.textureAtlas.atlasSlots.has(textureKey) {
@@ -552,9 +552,9 @@ export class ParticleBatchRenderer {
     }
     
     /**
-     * Render individual batch'
+     * Render individual batch
      */''
-    private renderBatch(ctx: CanvasRenderingContext2D, batch: Batch'): void { // Set batch-specific rendering state'
+    private renderBatch(ctx: CanvasRenderingContext2D, batch: Batch'): void { // Set batch-specific rendering state
         const previousGlobalCompositeOperation = ctx.globalCompositeOperation;''
         ctx.globalCompositeOperation = batch.blendMode || 'normal';
         
@@ -576,7 +576,7 @@ export class ParticleBatchRenderer {
     }
     
     /**
-     * Render individual particle'
+     * Render individual particle
      */''
     private renderParticle(ctx: CanvasRenderingContext2D, particle: Particle'): void { const size = particle.size || 10;''
         const color = particle.color || '#ffffff';
@@ -625,7 +625,7 @@ export class ParticleBatchRenderer {
      * Cleanup renderer resources
      */
     cleanup(): void { // Return batches to pool
-        for(const batch of this.batchManager.activeBatches) {'
+        for(const batch of this.batchManager.activeBatches) {
             if (this.batchManager.batchPool.length < this.batchManager.maxBatches) {'
         }'
                 this.batchManager.batchPool.push(batch'); }

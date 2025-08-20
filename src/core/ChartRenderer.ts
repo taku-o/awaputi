@@ -27,7 +27,7 @@ export interface ChartTheme { colors: {
         danger: string,
         info: string,
         light: string,
-        dark: string ;
+        dark: string 
 }
     },
     palette: string[],
@@ -36,30 +36,30 @@ export interface ChartTheme { colors: {
             small: number,
             normal: number,
             large: number,
-            title: number ;
+            title: number 
 }
         },
         weight: { normal: string,
-            bold: string; }
+            bold: string }
         };
     };
     spacing: { padding: number,
         margin: number,
-        gap: number ;
+        gap: number 
 }
     },
     borders: { width: number,
         radius: number,
-        style: string ;
+        style: string 
 }
     },
     shadows: { light: string,
         medium: string,
-        heavy: string ;
+        heavy: string 
 }
     },
     animation: { duration: number,
-        easing: string; }
+        easing: string }
     };
 }
 
@@ -90,7 +90,7 @@ export interface ChartOptions { width?: number;
 interface ChartArea { x: number,
     y: number,
     width: number,
-    height: number; };
+    height: number };
 }
 /**
  * レンダリング結果インターフェース
@@ -118,7 +118,7 @@ export interface ChartData { value?: number;
  */
 export interface MultiChartConfig { type: string,
     data: ChartData[],
-    options?: ChartOptions;
+    options?: ChartOptions
     };
 }
 /**
@@ -126,12 +126,12 @@ export interface MultiChartConfig { type: string,
  */
 interface CacheEntry { result: RenderResult,
     canvas: HTMLCanvasElement,
-    timestamp: number; };
+    timestamp: number };
 }
 /**
  * チャートレンダラーインターフェース
  */
-interface ChartRendererInterface { render(context: CanvasRenderingContext2D, data: ChartData[], options: ChartOptions): RenderResult;
+interface ChartRendererInterface { render(context: CanvasRenderingContext2D, data: ChartData[], options: ChartOptions): RenderResult
     };
 }
 export class CoreChartRenderer {
@@ -144,12 +144,12 @@ export class CoreChartRenderer {
     private responsiveBreakpoints = {
         small: 480,
         medium: 768,
-        large: 1024 ;
+        large: 1024 
 }
     },
     private performanceConfig = { maxDataPoints: 1000,
         animationFrameLimit: 60,
-        cacheEnabled: true ;
+        cacheEnabled: true 
 }
     },
     private renderCache: Map<string, CacheEntry>;
@@ -162,7 +162,7 @@ export class CoreChartRenderer {
             line: new LineChartRenderer(),
             pie: new PieChartRenderer(),
             area: new AreaChartRenderer(),
-            scatter: new ScatterChartRenderer();
+            scatter: new ScatterChartRenderer()
 };
 }
             progress: new ProgressBarRenderer(); }
@@ -186,11 +186,11 @@ export class CoreChartRenderer {
      */
     render(;
         context: CanvasRenderingContext2D,
-        type: string, );
+        type: string );
         data: ChartData[] | ChartData);
         options: ChartOptions = { ): RenderResult {
-        try {'
-            // 入力検証''
+        try {
+            // 入力検証
             if (!this.validateInput(context, type, data)') {''
                 throw new Error('Invalid input parameters'); };
 }
@@ -231,7 +231,7 @@ export class CoreChartRenderer {
                 renderResult = this.animationEngine.animateChart();
             }
                     context, renderer, processedData, responsiveOptions); }
-            } else { renderResult = renderer.render(context, processedData, responsiveOptions); };
+            } else { renderResult = renderer.render(context, processedData, responsiveOptions); }
 }
             // インタラクション設定
             if(responsiveOptions.interactive) {
@@ -245,9 +245,9 @@ export class CoreChartRenderer {
             // レンダリング結果をキャッシュ
             if (this.performanceConfig.cacheEnabled) { this.cacheRenderResult(cacheKey, renderResult, context); };
 }
-            return renderResult;'
+            return renderResult;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Chart rendering failed:', error);''
             return this.renderErrorChart(context, (error as Error).message, options'); };
 }
@@ -278,11 +278,11 @@ export class CoreChartRenderer {
                 chart.type, );
                 chart.data);
                 { ...chart.options, area: chartArea )
-            );
-             }'
+            )
+             }
             results.push(result);' }'
         }');
-        ';
+        ';'
         return { ''
             type: 'multiple',
             layout: layout,
@@ -309,14 +309,14 @@ export class CoreChartRenderer {
     }
     
     /**
-     * レスポンシブ設定の適用'
+     * レスポンシブ設定の適用
      */''
     private applyResponsiveSettings(context: CanvasRenderingContext2D, options: ChartOptions'): ChartOptions { const canvas = context.canvas;
         const width = canvas.width;'
         '';
         let breakpoint: 'small' | 'medium' | 'large' = 'large','';
         if(width <= this.responsiveBreakpoints.small') {'
-            ';
+            ';'
         }'
             breakpoint = 'small';' }'
         } else if (width <= this.responsiveBreakpoints.medium') { ''
@@ -324,7 +324,7 @@ export class CoreChartRenderer {
 }
         const responsiveOptions = { ...options };
         ';
-        // ブレークポイント別設定''
+        // ブレークポイント別設定
         switch(breakpoint') {'
             '';
             case 'small':';
@@ -371,7 +371,7 @@ export class CoreChartRenderer {
     }
     
     /**
-     * デフォルトテーマの作成'
+     * デフォルトテーマの作成
      */''
     private createDefaultTheme(''';
                 primary: '#3B82F6','';
@@ -393,18 +393,18 @@ export class CoreChartRenderer {
                     small: 10,
                     normal: 12,
                     large: 14,
-                    title: 16 ;
+                    title: 16 
 }
                 },'
                 weight: { ''
                     normal: 'normal','';
-                    bold: 'bold' ;
+                    bold: 'bold' 
 };
 }
             },
             spacing: { padding: 20,
                 margin: 10,
-                gap: 5 ;
+                gap: 5 
 }
             },
             borders: { width: 1,'
@@ -417,7 +417,7 @@ export class CoreChartRenderer {
                 heavy: '0 10px 15px rgba(0, 0, 0, 0.1')' }
             },'
             animation: { duration: 800,''
-                easing: 'easeInOutCubic' ;
+                easing: 'easeInOutCubic' 
 };
 }
         },
@@ -440,7 +440,7 @@ export class CoreChartRenderer {
             animated: false,
             interactive: true,
             responsive: true,
-            accessibility: true ;
+            accessibility: true 
 }
         },
         
@@ -456,23 +456,23 @@ export class CoreChartRenderer {
         if(devicePixelRatio !== 1) {
         
             const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * devicePixelRatio;'
+            canvas.width = rect.width * devicePixelRatio;
             canvas.height = rect.height * devicePixelRatio;'
         
         }'
             context.scale(devicePixelRatio, devicePixelRatio'); };
 }
-        // アンチエイリアシング設定'
+        // アンチエイリアシング設定
         context.imageSmoothingEnabled = true;''
         context.imageSmoothingQuality = 'high';
         
         // 背景色設定
-        if(options.backgroundColor) {'
+        if(options.backgroundColor) {
             context.fillStyle = options.backgroundColor;'
         }'
             context.fillRect(0, 0, canvas.width, canvas.height'); };
 }
-        // フォント設定'
+        // フォント設定
         context.font = `${options.fontSize}px ${options.fontFamily}`;''
         context.textAlign = 'left';''
         context.textBaseline = 'top';
@@ -490,17 +490,17 @@ export class CoreChartRenderer {
         
         // エラーアイコン
         context.fillStyle = this.currentTheme.colors.danger;
-        context.fillRect(centerX - 20, centerY - 30, 40, 4);'
+        context.fillRect(centerX - 20, centerY - 30, 40, 4);
         context.fillRect(centerX - 2, centerY - 15, 4, 20);''
         context.fillRect(centerX - 2, centerY + 10, 4, 4');
         
         // エラーメッセージ
-        context.fillStyle = this.currentTheme.colors.dark; }'
+        context.fillStyle = this.currentTheme.colors.dark; }
         context.font = `${mergedOptions.fontSize}px ${mergedOptions.fontFamily}`;''
         context.textAlign = 'center';''
         context.fillText('グラフの描画に失敗しました', centerX, centerY + 30);''
         context.fillText(errorMessage, centerX, centerY + 50');
-        ';
+        ';'
         return { ''
             type: 'error',
             message: errorMessage, };
@@ -516,15 +516,15 @@ export class CoreChartRenderer {
         
         const canvas = context.canvas;
         ';
-        // ARIA属性の設定''
+        // ARIA属性の設定
         canvas.setAttribute('role', 'img'');''
         canvas.setAttribute('aria-label', this.generateAriaLabel(renderResult, options);
         ';
-        // 代替テキストの生成''
+        // 代替テキストの生成
         const altText = this.generateAltText(renderResult, options');''
         canvas.setAttribute('aria-describedby', 'chart-description'');
         ';
-        // 説明要素の作成（既存の要素がない場合）''
+        // 説明要素の作成（既存の要素がない場合）
         let descElement = document.getElementById('chart-description');''
         if(!descElement') {'
             '';
@@ -563,7 +563,7 @@ export class CoreChartRenderer {
     private applyCachedRender(context: CanvasRenderingContext2D, cached: CacheEntry): RenderResult { const canvas = context.canvas;
         context.drawImage(cached.canvas, 0, 0, canvas.width, canvas.height);
         return cached.result; }
-    }'
+    }
     '';
     private cacheRenderResult(key: string, result: RenderResult, context: CanvasRenderingContext2D'): void { ''
         const cacheCanvas = document.createElement('canvas'');''
@@ -577,7 +577,7 @@ export class CoreChartRenderer {
         this.renderCache.set(key, {)
             result: result,);
             canvas: cacheCanvas),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         // キャッシュサイズ制限
@@ -598,8 +598,8 @@ export class CoreChartRenderer {
         const step = Math.ceil(data.length / maxPoints);
         return data.filter((_, index) => index % step === 0); };
 }
-    ';
-    private normalizeData(data: ChartData[], type: string): ChartData[] { // データの正規化（型に応じて）''
+    ;
+    private normalizeData(data: ChartData[], type: string): ChartData[] { // データの正規化（型に応じて）
         return data.map(item => { ');' }'
             if (typeof item === 'number') { }
                 return { value: item, label: item.toString() };
@@ -609,7 +609,7 @@ export class CoreChartRenderer {
     }
     
     private handleMissingValues(data: ChartData[], options: ChartOptions): ChartData[] { // 欠損値の処理
-        return data.filter(item => )';
+        return data.filter(item => );
             item !== null && ')';
             item !== undefined && ')'';
             (typeof item === 'object' ? item.value !== null && item.value !== undefined : true);
@@ -625,7 +625,7 @@ export class CoreChartRenderer {
                     ...this.defaultTheme.colors,'';
                     primary: '#60A5FA','';
                     light: '#1E293B','';
-                    dark: '#F8FAFC' ;
+                    dark: '#F8FAFC' 
 };
 }
             },

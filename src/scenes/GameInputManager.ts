@@ -8,14 +8,14 @@ import { InputCoordinateConverter } from '../utils/InputCoordinateConverter';
 
 interface Position { x: number,
     y: number,
-    originalEvent?: MouseEvent | TouchEvent; }
+    originalEvent?: MouseEvent | TouchEvent }
 }
 
 interface DragVector { x: number,
-    y: number; }
+    y: number }
 }
 
-interface TouchData { position: Position;
+interface TouchData { position: Position
     }
 }
 
@@ -44,10 +44,7 @@ export class GameInputManager extends InputManager { private gameScene: any
         this.initializeCoordinateConverter();
         
         // モバイルデバイスの場合はEnhancedTouchManagerを使用
-        if (getBrowserCompatibility().deviceInfo.isMobile) {
-    
-    }
-    }
+        if (getBrowserCompatibility().deviceInfo.isMobile) {}
             this.setupEnhancedTouch(); }
         }
     }
@@ -59,15 +56,15 @@ export class GameInputManager extends InputManager { private gameScene: any
             // GameEngineからResponsiveCanvasManagerとScaledCoordinateManagerを取得
             const responsiveCanvasManager = this.gameEngine? .responsiveCanvasManager;
             if(responsiveCanvasManager && responsiveCanvasManager.scaledCoordinateManager) {
-                this.inputCoordinateConverter = new InputCoordinateConverter(';
+                this.inputCoordinateConverter = new InputCoordinateConverter(;
                     responsiveCanvasManager.scaledCoordinateManager')';
                 '); : undefined'
             }'
                 console.log('GameInputManager: InputCoordinateConverter initialized''), }'
             } else {  ''
-                console.warn('GameInputManager: ScaledCoordinateManager not available, coordinate conversion disabled'); }'
+                console.warn('GameInputManager: ScaledCoordinateManager not available, coordinate conversion disabled') }'
                 this.inputCoordinateConverter = null;' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('GameInputManager: Failed to initialize coordinate converter', error);
             this.inputCoordinateConverter = null; }
         }
@@ -86,10 +83,10 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent as MouseEvent);
                 convertedPosition = {
                     x: converted.x,
-                    y: converted.y }'
+                    y: converted.y }
                 };''
-            } catch (error') { ''
-            console.warn('GameInputManager: Coordinate conversion failed for click, using original position', error); }
+            } catch (error) { ''
+            console.warn('GameInputManager: Coordinate conversion failed for click, using original position', error) }
         }
         
         // 泡のクリック処理（変換された座標を使用）
@@ -113,10 +110,10 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(position.originalEvent as MouseEvent);
                 convertedPosition = {
                     x: converted.x,
-                    y: converted.y }'
+                    y: converted.y }
                 };''
-            } catch (error') { ''
-            console.warn('GameInputManager: Coordinate conversion failed for pointer move, using original position', error); }
+            } catch (error) { ''
+            console.warn('GameInputManager: Coordinate conversion failed for pointer move, using original position', error) }
         }
         
         // マウス位置の更新（変換された座標を使用）
@@ -136,18 +133,18 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(startPosition.originalEvent as MouseEvent);
                 convertedPosition = {
                     x: converted.x,
-                    y: converted.y }'
+                    y: converted.y }
                 };''
-            } catch (error') { ''
-            console.warn('GameInputManager: Coordinate conversion failed for drag start, using original position', error); }
+            } catch (error) { ''
+            console.warn('GameInputManager: Coordinate conversion failed for drag start, using original position', error) }
         }
         ';
-        // ドラッグ対象の泡を検索（変換された座標を使用）''
+        // ドラッグ対象の泡を検索（変換された座標を使用）
         const targetBubble = this.gameEngine.bubbleManager.handleDragStart(convertedPosition.x, convertedPosition.y');
         ';
-        // ビジュアルフィードバックを開始（変換された座標を使用）''
+        // ビジュアルフィードバックを開始（変換された座標を使用）
         if(this.gameScene && typeof this.gameScene.startDragVisualization === 'function') {'
-            ';
+            ';'
         }'
             this.gameScene.startDragVisualization(convertedPosition, targetBubble'); }'
         } else {  ' }'
@@ -168,13 +165,13 @@ export class GameInputManager extends InputManager { private gameScene: any
                 const converted = this.inputCoordinateConverter.convertMouseEvent(currentPosition.originalEvent as MouseEvent);
                 convertedPosition = {
                     x: converted.x,
-                    y: converted.y }'
+                    y: converted.y }
                 };''
-            } catch (error') { ''
-            console.warn('GameInputManager: Coordinate conversion failed for drag move, using original position', error'); }
+            } catch (error) { ''
+            console.warn('GameInputManager: Coordinate conversion failed for drag move, using original position', error') }
         }
         ';
-        // ビジュアルフィードバックを更新（変換された座標を使用）''
+        // ビジュアルフィードバックを更新（変換された座標を使用）
         if (this.gameScene && typeof this.gameScene.updateDragVisualizationPosition === 'function') { this.gameScene.updateDragVisualizationPosition(convertedPosition); }
         }
         
@@ -205,36 +202,36 @@ export class GameInputManager extends InputManager { private gameScene: any
                     convertedEndPosition = {
                         x: convertedEnd.x }
                         y: convertedEnd.y }
-                    },'
+                    },
                 }''
-            } catch (error') { ''
-            console.warn('GameInputManager: Coordinate conversion failed for drag end, using original positions', error); }
+            } catch (error) { ''
+            console.warn('GameInputManager: Coordinate conversion failed for drag end, using original positions', error) }
         }
         
         // 泡を吹き飛ばす処理（変換された座標を使用）
         const success = this.gameEngine.bubbleManager.handleDragEnd(;
-            convertedStartPosition.x, );
+            convertedStartPosition.x );
             convertedStartPosition.y);
             convertedEndPosition.x, );
             convertedEndPosition.y);
         
         if(success) {
         
-            // パーティクル効果を生成（変換された座標を使用）'
+            // パーティクル効果を生成（変換された座標を使用）
             const force = Math.sqrt(dragVector.x * dragVector.x + dragVector.y * dragVector.y);''
             this.gameScene.createDragParticles(convertedEndPosition.x, convertedEndPosition.y, force / 5');
             
             // ドラッグ成功のフローティングテキスト（変換された座標を使用）
             this.gameScene.floatingTextManager.addAnimatedText(;
-                convertedEndPosition.x)';
+                convertedEndPosition.x);
                 convertedEndPosition.y - 30,'';
                 'FLICK!',')';
                 'gentle')';
         }'
             '); }
-        }
+        }'
         ';
-        // ビジュアルフィードバックをリセット''
+        // ビジュアルフィードバックをリセット
         if (this.gameScene && typeof this.gameScene.resetDragVisualization === 'function') { this.gameScene.resetDragVisualization(); }
         }
     }
@@ -245,7 +242,7 @@ export class GameInputManager extends InputManager { private gameScene: any
     private setupEnhancedTouch(): void { ''
         this.enhancedTouchManager = new EnhancedTouchManager(this.canvas, this.gameEngine');
         ';
-        // タッチコールバックの登録''
+        // タッチコールバックの登録
         this.enhancedTouchManager.registerCallback('onTouchStart', (touchData: TouchData) => {  }'
             this.notifyPointerDown(touchData.position);' }'
         }');'
@@ -256,7 +253,7 @@ export class GameInputManager extends InputManager { private gameScene: any
         this.enhancedTouchManager.registerCallback('onTouchEnd', (touchData: TouchData) => { this.notifyClick(touchData.position);' }'
         }');
         ';
-        // ジェスチャーコールバックの登録''
+        // ジェスチャーコールバックの登録
         this.enhancedTouchManager.registerCallback('onSwipe', (gestureData: GestureData) => { this.handleSwipeGesture(gestureData);' }'
         }');'
         '';
@@ -275,7 +272,7 @@ export class GameInputManager extends InputManager { private gameScene: any
      */
     private handleSwipeGesture(gestureData: GestureData): void { if (this.gameScene.isPaused || this.gameEngine.isGameOver) return;
         ';
-        // スワイプで複数のバブルを吹き飛ばす''
+        // スワイプで複数のバブルを吹き飛ばす
         const swipeForce = (gestureData.velocity || 0') * 500;'
         const swipeVector = {''
             x: Math.cos(this.getAngleFromDirection(gestureData.direction || 'right')') * swipeForce,'';
@@ -285,7 +282,7 @@ export class GameInputManager extends InputManager { private gameScene: any
         // スワイプパス上のバブルを検出
         if(gestureData.startPosition && gestureData.endPosition) {
             const bubbles = this.gameEngine.bubbleManager.getBubblesAlongPath(;
-                gestureData.startPosition,);
+                gestureData.startPosition);
                 gestureData.endPosition);
             
             // バブルを吹き飛ばす
@@ -345,10 +342,10 @@ export class GameInputManager extends InputManager { private gameScene: any
      * 長押しジェスチャー処理
      */
     private handleLongPressGesture(gestureData: GestureData): void { if (this.gameScene.isPaused || this.gameEngine.isGameOver) return;
-        ';
-        // 長押しで特殊アクション（例：時間停止効果）''
+        ;
+        // 長押しで特殊アクション（例：時間停止効果）
         if(this.gameEngine.activateSpecialPower && gestureData.position') {'
-            ';
+            ';'
         }'
             this.gameEngine.activateSpecialPower('timestop', gestureData.position); }
         }
@@ -360,7 +357,7 @@ export class GameInputManager extends InputManager { private gameScene: any
     
     /**
      * 方向からラジアン角度を取得
-     */'
+     */
     private getAngleFromDirection(direction: string): number { ''
         switch(direction') {'
             '';
@@ -387,7 +384,7 @@ export class GameInputManager extends InputManager { private gameScene: any
     cleanup(): void { super.cleanup();
         
         if(this.enhancedTouchManager) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.enhancedTouchManager.cleanup(') }

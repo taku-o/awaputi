@@ -9,7 +9,7 @@ interface ErrorPattern { id: string,
     severity: 'low' | 'medium' | 'high' | 'critical',
     description: string,
     solution?: string;
-    frequency: number; }
+    frequency: number }
 }
 
 interface AnalysisResult { errorId: string,
@@ -17,13 +17,13 @@ interface AnalysisResult { errorId: string,
     suggestions: string[],
     severity: string,
     category: string,
-    confidence: number; }
+    confidence: number }
 }
 
 interface ErrorTrend { category: string,'
     count: number,'';
     trend: 'increasing' | 'decreasing' | 'stable',
-    timeframe: number; }
+    timeframe: number }
 }
 
 export class DebugErrorAnalyzer {
@@ -120,12 +120,12 @@ export class DebugErrorAnalyzer {
         });
     }
 
-    public getCommonIssues(limit: number = 10): ErrorPattern[] { return this.patterns'
+    public getCommonIssues(limit: number = 10): ErrorPattern[] { return this.patterns
             .sort((a, b) => b.frequency - a.frequency)'';
             .slice(0, limit'); }
     }'
 '';
-    public addCustomPattern(pattern: Omit<ErrorPattern, 'frequency'>): void { this.patterns.push({ ...pattern, frequency: 0 ); }
+    public addCustomPattern(pattern: Omit<ErrorPattern, 'frequency'>): void { this.patterns.push({ ...pattern, frequency: 0 ) }
     }
 
     public getErrorStatistics(): { totalErrors: number, }
@@ -156,7 +156,7 @@ export class DebugErrorAnalyzer {
             .filter(p => p.solution);
             .map(p => p.solution!);
 
-        // Add context-specific suggestions'
+        // Add context-specific suggestions
         if (error.context? .component) {' }'
             suggestions.push(`Check the ${error.context.component) component for issues`'});
         }'
@@ -166,7 +166,7 @@ export class DebugErrorAnalyzer {
         }
 
         return [...new Set(suggestions)]; // Remove duplicates
-    }'
+    }
  : undefined'';
     private determineSeverity(patterns: ErrorPattern[]'): string { ''
         if (patterns.some(p => p.severity === 'critical')') return 'critical';''
@@ -174,7 +174,7 @@ export class DebugErrorAnalyzer {
         if (patterns.some(p => p.severity === 'medium')') return 'medium';''
         return 'low'; }
     }
-';
+';'
     private determineCategory(patterns: ErrorPattern[]): string { ''
         if (patterns.length === 0') return 'unknown';
         
@@ -203,7 +203,7 @@ export class DebugErrorAnalyzer {
         }
 
         return Math.min(1, confidence);
-    }'
+    }
 '';
     private calculateTrend(category: string, timeframe: number'): 'increasing' | 'decreasing' | 'stable' { const now = Date.now();
         const halfTimeframe = timeframe / 2;
@@ -234,7 +234,7 @@ export class DebugErrorAnalyzer {
             const char = str.charCodeAt(i);
             hash = ((hash << 5) - hash) + char;
         }
-            hash = hash & hash; // Convert to 32-bit integer }'
+            hash = hash & hash; // Convert to 32-bit integer }
         }''
         return Math.abs(hash).toString(36');'
     }''

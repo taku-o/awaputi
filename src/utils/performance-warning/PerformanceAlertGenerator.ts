@@ -16,13 +16,13 @@ interface AlertConfig { enabled: boolean,
     suppressionRules: { enabled: boolean,
         maxSimilarAlerts: number,
         similarityThreshold: number,
-        suppressionDuration: number; }
+        suppressionDuration: number }
     };
 }
 
 interface AlertTemplate { title: string,
     message: string,
-    details?: string; }
+    details?: string }
 }
 
 interface Violation { id: string,
@@ -49,42 +49,42 @@ interface Alert { id: string,
     metrics: any,
     escalated: boolean,
     acknowledged: boolean,
-    originalPriority?: string; }
+    originalPriority?: string }
 }
 
 interface AlertFrequency { count: number,
     firstSeen: number,
-    lastSeen?: number; }
+    lastSeen?: number }
 }
 
 interface Suppression { startedAt: number,
     expiresAt: number,
-    count: number; }
+    count: number }
 }
 
 interface SuggestionData { title: string,
-    actionLabel: string; }
+    actionLabel: string }
 }
 
 interface SuggestionEngine { enabled: boolean,
     suggestions: Map<string, SuggestionData>;
     customSuggestions: Map<string, SuggestionData>;
     lastSuggestionTime: number,
-    suggestionCooldown: number; }
+    suggestionCooldown: number }
 }
 
 interface AlertStats { totalAlerts: number,
     suppressedAlerts: number,
     alertFrequencies: Record<string, AlertFrequency>;
     escalationRate: number,
-    priorityDistribution: Record<string, number>; }
+    priorityDistribution: Record<string, number> }
 }
 
 interface PriorityDistribution { critical: number,
     high: number,
     medium: number,
-    low: number; }
-}'
+    low: number }
+}
 '';
 type Priority = 'critical' | 'high' | 'medium' | 'low';
 
@@ -98,13 +98,13 @@ export class PerformanceAlertGenerator {
     private suppressedAlerts: Map<string, Suppression>;
     private suggestionEngine: SuggestionEngine;
     constructor(performanceWarningSystem: any) {
-';
+';'
         this.performanceWarningSystem = performanceWarningSystem;''
-        this.errorHandler = getErrorHandler('')';
+        this.errorHandler = getErrorHandler()';
             priorityLevels: ['low', 'medium', 'high', 'critical']);
             escalationThresholds: {
                 frequency: 5,    // Number of occurrences before escalation;
-                timeWindow: 30000, // Time window for frequency calculation (30 seconds);
+                timeWindow: 30000, // Time window for frequency calculation (30 seconds)
 
     }
     }
@@ -132,9 +132,9 @@ export class PerformanceAlertGenerator {
             customSuggestions: new Map(,
             lastSuggestionTime: 0,
             suggestionCooldown: 30000 // 30 seconds })
-        })'
+        })
         '';
-        this.loadDefaultSuggestions('')';
+        this.loadDefaultSuggestions()';
         console.log('[PerformanceAlertGenerator] Alert generation component initialized');
     }
     
@@ -196,10 +196,10 @@ export class PerformanceAlertGenerator {
             
             console.log(`[PerformanceAlertGenerator] Alert generated: ${alert.id} (${priority)`});
             
-            return alert;'
+            return alert;
             '';
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'PerformanceAlertGenerator.generateAlert'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'PerformanceAlertGenerator.generateAlert') }
             });
             return null;
         }
@@ -210,7 +210,7 @@ export class PerformanceAlertGenerator {
      * @param {string} violationId - Violation ID
      * @returns {object|null} Alert template'
      */''
-    getAlertTemplate(violationId: string'): AlertTemplate | null { // Map violation IDs to template IDs'
+    getAlertTemplate(violationId: string'): AlertTemplate | null { // Map violation IDs to template IDs
         const templateMap: Record<string, string> = {''
             'fps_critical': 'fps_performance','';
             'fps_warning': 'fps_performance','';
@@ -282,7 +282,7 @@ export class PerformanceAlertGenerator {
      * @param {string} alertId2 - Second alert ID
      * @returns {number} Similarity score (0-1)
      */
-    calculateAlertSimilarity(alertId1: string, alertId2: string): number { if (alertId1 === alertId2) return 1.0;'
+    calculateAlertSimilarity(alertId1: string, alertId2: string): number { if (alertId1 === alertId2) return 1.0;
         '';
         // Extract base types (remove _critical, _warning suffixes');''
         const baseType1 = alertId1.replace(/_critical|_warning|_high|_medium|_low$/, ''');''
@@ -290,7 +290,7 @@ export class PerformanceAlertGenerator {
         '';
         if (baseType1 === baseType2') return 0.8;
         
-        // Check category similarity'
+        // Check category similarity
         const categories: Record<string, string[]> = {''
             'fps': ['fps'],'';
             'memory': ['memory', 'leak'],'';
@@ -318,7 +318,7 @@ export class PerformanceAlertGenerator {
      */''
     calculateAlertPriority(violation: Violation'): string { let basePriority = violation.severity;
         
-        // Map severity to priority'
+        // Map severity to priority
         const severityToPriority: Record<string, string> = {''
             'critical': 'critical','';
             'high': 'high','';
@@ -345,22 +345,22 @@ export class PerformanceAlertGenerator {
      */
     getEscalationFactors(violation: Violation): string[] { const factors: string[] = [],
         
-        // Check frequency }'
+        // Check frequency }
         const frequency = this.alertFrequency.get(violation.id) || { count: 0, firstSeen: Date.now() }''
         if(frequency.count >= this.alertConfig.escalationThresholds.frequency') {'
-            ';
+            ';'
         }'
             factors.push('high_frequency'); }
         }
         ';
-        // Check metric severity''
+        // Check metric severity
         if(violation.data') {
             
         }
             const { metric, value, threshold } = violation.data;'
             '';
             if(metric === 'fps' && typeof value === 'number' && typeof threshold === 'number' && value < threshold * 0.5') {'
-                ';
+                ';'
             }'
                 factors.push('severe_fps_drop'');' }'
             } else if (metric === 'memory_pressure' && typeof value === 'number' && typeof threshold === 'number' && value > threshold * 1.2') { ''
@@ -370,9 +370,9 @@ export class PerformanceAlertGenerator {
             }
         }
         ';
-        // Check consecutive violations''
+        // Check consecutive violations
         if(violation.count && violation.count > 5') {'
-            ';
+            ';'
         }'
             factors.push('consecutive_violations'); }
         }
@@ -392,7 +392,7 @@ export class PerformanceAlertGenerator {
         if (currentIndex === -1) return currentPriority;
         
         const newIndex = Math.min(;
-            priorityLevels.length - 1, );
+            priorityLevels.length - 1 );
             currentIndex + escalationLevel);
         
         return priorityLevels[newIndex]; }
@@ -406,12 +406,12 @@ export class PerformanceAlertGenerator {
      */''
     generateAlertTitle(template: AlertTemplate, violation: Violation'): string { let title = template.title;
         ';
-        // Replace placeholders''
+        // Replace placeholders
         title = title.replace('{severity')', violation.severity.toUpperCase()');''
         title = title.replace('{metric')', violation.data.metric);
         
         if(violation.data.value !== undefined) {
-        ';
+        ';'
             '';
             const formattedValue = this.formatMetricValue(violation.data.metric, violation.data.value');'
         
@@ -430,11 +430,11 @@ export class PerformanceAlertGenerator {
      */''
     generateAlertMessage(template: AlertTemplate, violation: Violation'): string { let message = template.message;
         ';
-        // Replace placeholders''
+        // Replace placeholders
         message = message.replace('{metric')', violation.data.metric);
         
         if(violation.data.value !== undefined) {
-        ';
+        ';'
             '';
             const formattedValue = this.formatMetricValue(violation.data.metric, violation.data.value');'
         
@@ -443,7 +443,7 @@ export class PerformanceAlertGenerator {
         }
         
         if(violation.data.threshold !== undefined) {
-        ';
+        ';'
             '';
             const formattedThreshold = this.formatMetricValue(violation.data.metric, violation.data.threshold');'
         
@@ -466,7 +466,7 @@ export class PerformanceAlertGenerator {
         // Add metric-specific details
         if(violation.data.details) {
             
-        }'
+        }
             const detailsText = Object.entries(violation.data.details)' }'
                 .map(([key, value]) => `${key}: ${this.formatMetricValue(key, value})}`')''
                 .join(' | ');
@@ -478,12 +478,12 @@ export class PerformanceAlertGenerator {
     
     /**
      * Generate alert suggestions
-     * @param {object} violation - Violation data
+     * @param {object} violation - Violation data'
      * @returns {Array} Suggestion IDs'
      */''
     generateAlertSuggestions(violation: Violation'): string[] { const suggestions: string[] = [],
         
-        // Base suggestions by violation type'
+        // Base suggestions by violation type
         const suggestionMap: Record<string, string[]> = {''
             'fps_critical': ['reduce_quality', 'close_apps', 'restart_game'],'';
             'fps_warning': ['adjust_quality', 'check_background'],'';
@@ -500,13 +500,13 @@ export class PerformanceAlertGenerator {
             'jitter_critical': ['reduce_effects', 'lower_quality'],'';
             'jitter_warning': ['adjust_effects', 'check_background'] }
         };
-        ';
+        ';'
         const baseSuggestions = suggestionMap[violation.id] || [];''
         suggestions.push(...baseSuggestions');
         ';
-        // Add severity-based suggestions''
+        // Add severity-based suggestions
         if(violation.severity === 'critical'') {'
-            ';
+            ';'
         }'
             suggestions.unshift('emergency_mode'); }
         }
@@ -519,13 +519,13 @@ export class PerformanceAlertGenerator {
      * Format metric value for display
      * @param {string} metric - Metric type
      * @param {*} value - Metric value
-     * @returns {string} Formatted value'
+     * @returns {string} Formatted value
      */''
     formatMetricValue(metric: string, value: any'): string { ''
         if (typeof value !== 'number') return String(value);'
         '';
         switch(metric') {'
-            ';
+            ';'
         }'
             case 'fps':' }'
                 return `${Math.round(value'})} FPS`;''
@@ -613,7 +613,7 @@ export class PerformanceAlertGenerator {
     /**
      * Prioritize alerts
      * @param {Array} alerts - Array of alerts
-     * @returns {Array} Prioritized alerts'
+     * @returns {Array} Prioritized alerts
      */''
     prioritizeAlerts(alerts: Alert[]'): Alert[] { ' }'
         const priorityOrder: Record<string, number> = { 'critical': 4, 'high': 3, 'medium': 2, 'low': 1 };
@@ -633,7 +633,7 @@ export class PerformanceAlertGenerator {
     }
     
     /**
-     * Load default alert templates'
+     * Load default alert templates
      */''
     loadDefaultAlertTemplates(''';
             'fps_performance': { ' }'
@@ -728,7 +728,7 @@ export class PerformanceAlertGenerator {
      */
     getStats(): AlertStats { return { totalAlerts: this.alertHistory.length,
             suppressedAlerts: this.suppressedAlerts.size,
-            alertFrequencies: Object.fromEntries(this.alertFrequency,);
+            alertFrequencies: Object.fromEntries(this.alertFrequency);
             escalationRate: this.alertHistory.filter(a => a.escalated).length / Math.max(1, this.alertHistory.length), };
             priorityDistribution: this.calculatePriorityDistribution(); }
         };
@@ -765,7 +765,7 @@ export class PerformanceAlertGenerator {
         this.alertFrequency.clear();
         this.suppressedAlerts.clear();'
         this.alertTemplates.clear();''
-        this.suggestionEngine.suggestions.clear('')';
+        this.suggestionEngine.suggestions.clear()';
         console.log('[PerformanceAlertGenerator] Alert generator destroyed''); }'
     }''
 }

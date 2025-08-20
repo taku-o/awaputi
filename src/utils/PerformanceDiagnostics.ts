@@ -21,7 +21,7 @@ interface DiagnosticSession { id: number,
     endTime?: number;
     duration?: number;
     options: DiagnosticOptions,
-    results: DiagnosticResults;
+    results: DiagnosticResults
     }
 }
 
@@ -29,13 +29,13 @@ interface CollectedDataSummary { totalMetrics: number,
     collectionDuration: number,
     metricsPerSecond: number,';
     categories: string[],'';
-    dataQuality: 'excellent' | 'good' | 'fair' | 'poor'; }
+    dataQuality: 'excellent' | 'good' | 'fair' | 'poor' }
 }
 
 interface CollectedData { summary: CollectedDataSummary,
     metrics: Record<string, any>;
     timestamps: number[],
-    metadata: Record<string, any>; }
+    metadata: Record<string, any> }
 }
 
 interface Bottleneck { id: string,'
@@ -44,7 +44,7 @@ interface Bottleneck { id: string,'
     impact: number,
     description: string,
     metrics: Record<string, any>;
-    suggested_actions: string[]; }
+    suggested_actions: string[] }
 }
 
 interface Anomaly { id: string,
@@ -53,7 +53,7 @@ interface Anomaly { id: string,
     severity: 'low' | 'medium' | 'high',
     description: string,
     metrics: Record<string, any>;
-    confidence: number; }
+    confidence: number }
 }
 
 interface RootCause { id: string,
@@ -62,7 +62,7 @@ interface RootCause { id: string,
     evidence: string[],
     confidence: number,
     impact_assessment: string,
-    remediation_steps: string[]; }
+    remediation_steps: string[] }
 }
 
 interface Recommendation { id: string,'
@@ -72,21 +72,21 @@ interface Recommendation { id: string,'
     description: string,';
     estimated_impact: string,'';
     implementation_difficulty: 'easy' | 'medium' | 'hard',
-    steps: string[]; }
+    steps: string[] }
 }
 ';
-interface OverallAssessment { score: number; // 0-100''
+interface OverallAssessment { score: number; // 0-100
     grade: 'A' | 'B' | 'C' | 'D' | 'F',
     summary: string,
     key_issues: string[],
     strengths: string[],
-    critical_recommendations: string[]; }
+    critical_recommendations: string[] }
 }
 
 interface AnalysisResults { bottlenecks: Bottleneck[],
     anomalies: Anomaly[],
     rootCauses: RootCause[],
-    recommendations?: Recommendation[];
+    recommendations?: Recommendation[]
     }
 }
 
@@ -104,7 +104,7 @@ interface DiagnosticReport { timestamp: number,
     summary: OverallAssessment,
     details: DiagnosticResults,
     charts?: any[];
-    metadata: Record<string, any>; }
+    metadata: Record<string, any> }
 }
 
 interface DiagnosticCapabilities {
@@ -120,12 +120,12 @@ interface ComponentConfig { dataCollection?: any;
 
 interface ComponentReferences { dataCollector: DiagnosticDataCollector,
     analyzer: DiagnosticAnalyzer,
-    reporter: DiagnosticReporter;
+    reporter: DiagnosticReporter
     }
 }
 
 interface QuickDiagnosisResult { session: DiagnosticSession,
-    report: DiagnosticReport;
+    report: DiagnosticReport
     }
 }
 
@@ -160,7 +160,7 @@ interface DiagnosticReporter { initialize(): Promise<void>;
 // Dummy implementations for missing dependencies (will be replaced when actual files are converted);
 class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async collectDiagnosticData(options: DiagnosticOptions): Promise<CollectedData> {
         console.log(`[DiagnosticDataCollector] Collecting data for ${options.duration)ms`);
-        ';
+        ';'
         // Simulate data collection' }'
         await new Promise(resolve => setTimeout(resolve, Math.min(options.duration || 5000, 1000)'});
         
@@ -191,19 +191,19 @@ class DummyDiagnosticDataCollector implements DiagnosticDataCollector { async co
         console.log('[DiagnosticDataCollector] Configuration updated'); }
     }'
     '';
-    destroy('')';
+    destroy()';
         console.log('[DiagnosticDataCollector] Destroyed');
     }
 }
-';
+';'
 class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
-    async initialize('')';
+    async initialize()';
         console.log('[DiagnosticAnalyzer] Initialized'); }
     }'
     '';
     async runAnalyses(collectedData: CollectedData, options: DiagnosticOptions'): Promise<AnalysisResults> { ''
         console.log('[DiagnosticAnalyzer] Running analyses'');
-        ';
+        ';'
         const bottlenecks: Bottleneck[] = [{''
             id: 'bottle_001','';
             component: 'renderer','';
@@ -213,17 +213,17 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
             metrics: { avgRenderTime: 18.5 },']'
             suggested_actions: ['Reduce particle count', 'Lower rendering quality'];
         }];
-        ';
+        ';'
         const anomalies: Anomaly[] = [{ ''
             id: 'anom_001','';
             type: 'memory_spike',';
             detection_time: Date.now(,'';
             severity: 'low','';
             description: 'Unusual memory usage pattern detected', }
-            metrics: { peakMemory: 65.2 },]
+            metrics: { peakMemory: 65.2 }]
             confidence: 0.75];
         }],
-        ';
+        ';'
         const rootCauses: RootCause[] = [{ ''
             id: 'root_001','';
             component: 'particle_system',']';
@@ -238,7 +238,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
     }'
     ')';
     async generateOverallAssessment(analysisResults: AnalysisResults'): Promise<OverallAssessment> { const score = 75; // Calculate based on analysis results
-        ';
+        ';'
         return { score,''
             grade: score >= 90 ? 'A' : score >= 80 ? 'B' : score >= 70 ? 'C' : score >= 60 ? 'D' : 'F','';
             summary: 'System performance is generally good with some optimization opportunities','';
@@ -265,7 +265,7 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
             detection_time: Date.now(,'';
             severity: 'medium','';
             description: 'Sudden FPS drop detected', }
-            metrics: { minFps: 35 },]
+            metrics: { minFps: 35 }]
             confidence: 0.9]);
         }])
     }'
@@ -278,13 +278,13 @@ class DummyDiagnosticAnalyzer implements DiagnosticAnalyzer { ''
         console.log('[DiagnosticAnalyzer] Configuration updated'); }
     }'
     '';
-    destroy('')';
+    destroy()';
         console.log('[DiagnosticAnalyzer] Destroyed');
     }
 }
-';
+';'
 class DummyDiagnosticReporter implements DiagnosticReporter { ''
-    async initialize('')';
+    async initialize()';
         console.log('[DiagnosticReporter] Initialized'); }
     }'
     '';
@@ -331,7 +331,7 @@ class DummyDiagnosticReporter implements DiagnosticReporter { ''
         console.log('[DiagnosticReporter] Configuration updated'); }
     }'
     '';
-    destroy('')';
+    destroy()';
         console.log('[DiagnosticReporter] Destroyed');
     }
 }
@@ -348,28 +348,28 @@ export class PerformanceDiagnostics {
         this.analyzer = new DummyDiagnosticAnalyzer();
         this.reporter = new DummyDiagnosticReporter();
         
-        this.initialized = false;'
+        this.initialized = false;
         '';
-        this.initializeDiagnostics('');
+        this.initializeDiagnostics();
     }
     }'
         console.log('[PerformanceDiagnostics] Main controller initialized successfully'); }
     }
 
     async initializeDiagnostics(): Promise<void> { try {
-            // Initialize sub-components'
+            // Initialize sub-components
             await this.analyzer.initialize();''
-            await this.reporter.initialize('');'
+            await this.reporter.initialize();'
             console.log('[PerformanceDiagnostics] Main controller initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PerformanceDiagnostics] Failed to initialize:', error);
             throw error; }
         }
     }
-';
+';'
     async runComprehensiveDiagnosis(options: DiagnosticOptions = {}): Promise<QuickDiagnosisResult> { ''
         if(!this.initialized') {'
-            ';
+            ';'
         }'
             throw new Error('PerformanceDiagnostics not initialized''); }
         }
@@ -380,7 +380,7 @@ export class PerformanceDiagnostics {
                 duration: options.duration || 30000, // 30秒;
                 includeBottleneckAnalysis: options.includeBottleneckAnalysis !== false,
                 includeAnomalyDetection: options.includeAnomalyDetection !== false,
-                includeRootCauseAnalysis: options.includeRootCauseAnalysis !== false,';
+                includeRootCauseAnalysis: options.includeRootCauseAnalysis !== false,
                 generateRecommendations: options.generateRecommendations !== false,'';
                 detailLevel: options.detailLevel || 'comprehensive', // basic, standard, comprehensive;
                 ...options }
@@ -417,9 +417,9 @@ export class PerformanceDiagnostics {
             
             return { session: diagnosticSession };
                 report: report }
-            },'
+            },
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PerformanceDiagnostics] Comprehensive diagnosis failed:', error);
             throw error; }
         }
@@ -457,10 +457,10 @@ export class PerformanceDiagnostics {
     /**
      * Quick diagnosis with basic analysis
      * @param targetMetric - Optional target metric to focus on
-     * @returns Quick diagnosis results'
+     * @returns Quick diagnosis results
      */''
     async quickDiagnosis(targetMetric: string | null = null'): Promise<QuickDiagnosisResult> { const options: DiagnosticOptions = {'
-            duration: 5000, // 5秒'';
+            duration: 5000, // 5秒;
             detailLevel: 'basic',
             includeRootCauseAnalysis: false }
         },
@@ -510,7 +510,7 @@ export class PerformanceDiagnostics {
      * Get performance recommendations
      * @returns Performance recommendations
      */
-    async getRecommendations(): Promise<Recommendation[]> { const result = await this.runComprehensiveDiagnosis({ duration: 10000 ),;
+    async getRecommendations(): Promise<Recommendation[]> { const result = await this.runComprehensiveDiagnosis({ duration: 10000 ),
         return result.session.results.recommendations || []; }
     }
 
@@ -540,8 +540,8 @@ export class PerformanceDiagnostics {
         }
         
         if(config.reporting) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.reporter.configure && this.reporter.configure(config.reporting'); }
         }'
@@ -564,12 +564,12 @@ export class PerformanceDiagnostics {
      */
     destroy(): void { try {
             // Destroy sub-components
-            this.dataCollector.destroy && this.dataCollector.destroy();'
+            this.dataCollector.destroy && this.dataCollector.destroy();
             this.analyzer.destroy && this.analyzer.destroy();''
-            this.reporter.destroy && this.reporter.destroy('')';
+            this.reporter.destroy && this.reporter.destroy()';
             console.log('[PerformanceDiagnostics] Main controller destroyed');' }'
-        } catch (error') { ''
-            console.error('[PerformanceDiagnostics] Error during cleanup:', error); }
+        } catch (error) { ''
+            console.error('[PerformanceDiagnostics] Error during cleanup:', error) }
         }
     }
 }
@@ -580,6 +580,6 @@ let performanceDiagnosticsInstance: PerformanceDiagnostics | null = null,
 /**
  * Get PerformanceDiagnostics singleton instance
  * @returns Diagnostics instance
- */'
+ */
 export function getPerformanceDiagnostics(): PerformanceDiagnostics { if (!performanceDiagnosticsInstance) {''
         performanceDiagnosticsInstance = new PerformanceDiagnostics(' })

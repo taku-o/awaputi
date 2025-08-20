@@ -10,7 +10,7 @@ interface ViewportCullerConfig { enabled?: boolean;
 interface Viewport { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface Frustum { left: number,
@@ -18,13 +18,13 @@ interface Frustum { left: number,
     top: number,
     bottom: number,
     near: number,
-    far: number; }
+    far: number }
 }
 
 interface ObjectBounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface RenderableObject { id: string,
@@ -32,7 +32,7 @@ interface RenderableObject { id: string,
     metadata: Record<string, any>;
     visible: boolean,
     lastCullCheck: number,
-    gridCells: Set<string>;
+    gridCells: Set<string>
     }
 }
 
@@ -40,19 +40,19 @@ interface CullingStats { totalObjects: number,
     culledObjects: number,
     cullingEfficiency: number,
     renderTime: number,
-    cullingTime: number; }
+    cullingTime: number }
 }
 
 interface PerformanceEntry { timestamp: number,
     cullingTime: number,
     cullingEfficiency: number,
     totalObjects: number,
-    culledObjects: number; }
+    culledObjects: number }
 }
 
 interface VisibleObjectData { id: string,
     bounds: ObjectBounds,
-    metadata: Record<string, any>; }
+    metadata: Record<string, any> }
 }
 
 /**
@@ -131,9 +131,9 @@ export class AdvancedViewportCuller {
             this.visibilityCache.clear();
             
             // Update spatial grid
-            this._updateSpatialGrid();'
+            this._updateSpatialGrid();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to set viewport', error); }
         }
     }
@@ -156,7 +156,7 @@ export class AdvancedViewportCuller {
             this.renderableObjects.set(id, object);
             this._assignToGrid(object);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to add object to culler', error); }
         }
     }
@@ -172,7 +172,7 @@ export class AdvancedViewportCuller {
                 this.culledObjects.delete(id);
             }'
                 this.visibilityCache.delete(id);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.logError('Failed to remove object from culler', error); }
         }
     }
@@ -189,9 +189,9 @@ export class AdvancedViewportCuller {
                 object.bounds = { ...newBounds };
                 this._assignToGrid(object);
                 
-                // Invalidate cached visibility'
+                // Invalidate cached visibility
                 this.visibilityCache.delete(id);''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.logError('Failed to update object in culler', error); }
         }
     }
@@ -247,9 +247,9 @@ export class AdvancedViewportCuller {
             // Track performance history
             this._trackPerformance();
             
-            return visibleObjects;'
+            return visibleObjects;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to cull objects', error);
             return Array.from(this.renderableObjects.keys(); }
         }
@@ -269,7 +269,7 @@ export class AdvancedViewportCuller {
         for(const [id, object] of this.renderableObjects) {
             if (object.visible) {
         }
-                visible.push({ id, bounds: object.bounds, metadata: object.metadata ); }
+                visible.push({ id, bounds: object.bounds, metadata: object.metadata ) }
             }
         }
         return visible;
@@ -395,7 +395,7 @@ export class AdvancedViewportCuller {
         this.performanceHistory.push(entry);
         
         if(this.performanceHistory.length > this.historySize) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.performanceHistory.shift(') }

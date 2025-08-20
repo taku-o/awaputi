@@ -19,13 +19,13 @@ interface GameEngine { performanceMonitor?: any;
 export class GameEngineUtilities {
     private gameEngine: GameEngine;
     constructor(gameEngine: GameEngine) {
-        this.gameEngine = gameEngine; }
+        this.gameEngine = gameEngine }
     }
     
     /**
      * デバッグモードかどうか'
      */''
-    isDebugMode('')';
+    isDebugMode()';
         return localStorage.getItem('debug'') === 'true';
     }
     
@@ -51,7 +51,7 @@ export class GameEngineUtilities {
     /**
      * Canvas リサイズ時のコールバック'
      */''
-    onCanvasResize('')';
+    onCanvasResize()';
         console.log('[GameEngineUtilities] Canvas resized:', { width: this.gameEngine.canvas? .width, : undefined)
             height: this.gameEngine.canvas? .height),
         
@@ -64,18 +64,18 @@ export class GameEngineUtilities {
     }
     
     /**
-     * メモリクリーンアップ'
+     * メモリクリーンアップ
      */ : undefined''
-    performMemoryCleanup('')';
+    performMemoryCleanup()';
         console.log('[GameEngineUtilities] Performing memory cleanup...');
         
         // メモリマネージャーによるクリーンアップ
         if (this.gameEngine.memoryManager? .cleanup) { this.gameEngine.memoryManager.cleanup(); }
         }
         
-        // ガベージコレクションのヒント'
+        // ガベージコレクションのヒント
         if ((window as any).gc) { ''
-            (window as any).gc('')';
+            (window as any).gc()';
         console.log('[GameEngineUtilities] Memory cleanup completed'); }
     }
     
@@ -86,7 +86,7 @@ export class GameEngineUtilities {
      */ : undefined
     reportError(error: Error, context: string): void { console.error(`[GameEngineUtilities] Error in ${context):`, error);
         ';
-        // エラーハンドラーに通知''
+        // エラーハンドラーに通知
         if(this.gameEngine.errorHandler? .handleError') {'
             '';
             this.gameEngine.errorHandler.handleError(error, 'GAME_ENGINE_ERROR', { : undefined'
@@ -129,7 +129,7 @@ export class GameEngineUtilities {
     /**
      * リソースの破棄'
      */''
-    destroy('')';
+    destroy()';
         console.log('[GameEngineUtilities] Destroyed'');
     }
 }'

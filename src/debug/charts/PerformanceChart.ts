@@ -16,19 +16,19 @@ interface ChartConfig { label?: string;
 }
 
 interface DataPoint { value: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ChartPadding { top: number,
     right: number,
     bottom: number,
-    left: number; }
+    left: number }
 }
 
 interface ChartArea { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface Metrics { [key: string]: number, }
@@ -55,7 +55,7 @@ export class PerformanceChart {
             throw new Error('Failed to get 2D context from canvas''); }
         }
         this.ctx = context;
-        ';
+        ';'
         this.config = { ''
             label: 'Metric','';
             color: '#00ff00','';
@@ -82,7 +82,7 @@ export class PerformanceChart {
         
         this.setupCanvas();
         this.render();
-    }'
+    }
 '';
     private setupCanvas(''';
         this.ctx.lineCap = 'round';''
@@ -127,22 +127,22 @@ export class PerformanceChart {
     }
 
     private clear(): void { this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }
-    }'
+    }
 '';
-    private drawBackground('')';
+    private drawBackground()';
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3')';
         this.ctx.fillRect(;
-            this.chartArea.x, );
+            this.chartArea.x );
             this.chartArea.y);
             this.chartArea.width, )';
             this.chartArea.height)'';
-        ');
+        ');'
         ';
-        // チャート境界線''
+        // チャート境界線
         this.ctx.strokeStyle = '#333';
         this.ctx.lineWidth = 1;
         this.ctx.strokeRect(;
-            this.chartArea.x, );
+            this.chartArea.x );
             this.chartArea.y);
             this.chartArea.width, );
             this.chartArea.height);
@@ -174,12 +174,12 @@ export class PerformanceChart {
         }
             this.ctx.stroke(); }
         }
-    }'
+    }
 '';
-    private drawThresholdLines('')';
+    private drawThresholdLines()';
         this.drawThresholdLine(this.config.warning, '#ffaa00', 'Warning'');
         ';
-        // 危険ライン''
+        // 危険ライン
         this.drawThresholdLine(this.config.critical, '#ff3333', 'Critical');
     }
 
@@ -192,7 +192,7 @@ export class PerformanceChart {
         this.ctx.beginPath();
         this.ctx.moveTo(this.chartArea.x, y);'
         this.ctx.lineTo(this.chartArea.x + this.chartArea.width, y);''
-        this.ctx.stroke('')';
+        this.ctx.stroke()';
         this.ctx.font = '10px monospace';)
         this.ctx.fillText() }
             `${label}: ${ value)`,
@@ -256,7 +256,7 @@ export class PerformanceChart {
         }
             this.ctx.fill(); }
         }
-    }'
+    }
 '';
     private drawLabels(''';
         this.ctx.fillStyle = '#ccc';''
@@ -292,7 +292,7 @@ export class PerformanceChart {
                     this.chartArea.y + this.chartArea.height + 20); }
             }
         }
-    }'
+    }
 '';
     private drawLegend(''';
         this.ctx.fillStyle = '#fff';''
@@ -314,7 +314,7 @@ export class PerformanceChart {
         // 統計値
         if(this.dataPoints.length > 0) {
             const values = this.dataPoints.map(p => p.value);
-            const min = Math.min(...values);'
+            const min = Math.min(...values);
             const max = Math.max(...values);''
             const avg = values.reduce((a, b) => a + b, 0') / values.length;'
             '';
@@ -379,7 +379,7 @@ export class PerformanceChart {
     getConfig(): Required<ChartConfig> {
         return { ...this.config };
     }
-';
+';'
     destroy(): void { if (this.animationId) {''
             cancelAnimationFrame(this.animationId');
             this.animationId = null; }

@@ -3,7 +3,7 @@ export interface FontSourceConfig { enabledSources?: string[];
     timeouts?: {
         google: number,
         local: number,
-        system: number; }
+        system: number }
     };
     fontDirectory?: string;
     formats?: string[];
@@ -15,14 +15,14 @@ export interface FontSourceConfig { enabledSources?: string[];
 
 export interface LoadAttempt { timestamp: number,
     failed: boolean,
-    error?: string; }
+    error?: string }
 }
 
 export interface FontLoadResult { success: boolean,
     fontFamily: string,
     source: string,
     loadTime: number,
-    result: any; }
+    result: any }
 }
 
 export interface FontLoadOptions { cooldown?: number;
@@ -66,7 +66,7 @@ export class FontSourceManager {
             system: new SystemFontSource(this.config); }
         };
     }
-';
+';'
     async loadFromSource(sourceName: string, fontFamily: string, options: FontLoadOptions = { ): Promise<FontLoadResult> {''
         if (!this.enabledSources.includes(sourceName)') {' }'
             throw new Error(`Font source '${sourceName')' is disabled`});
@@ -230,16 +230,16 @@ export class LocalFontSource implements IFontSource { private config: FontSource
         this.fontDirectory = config.fontDirectory || '/fonts';''
         this.formats = config.formats || ['woff2', 'woff', 'ttf']; }
     }
-';
+';'
     async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean; path: string }> { ''
         if(!document.fonts') {'
-            ';
+            ';'
         }'
             throw new Error('CSS Font Loading API not supported'); }
         }
 
         const fontPath = this._getFontPath(fontFamily, options.format);
-        ';
+        ';'
         if(!await this._checkFontExists(fontPath) { ' };'
             throw new Error(`Font file not found: ${fontPath)`'});
         }'
@@ -260,8 +260,8 @@ export class LocalFontSource implements IFontSource { private config: FontSource
         return `${this.fontDirectory}/${sanitizedName}.${format}`;
     }'
 '';
-    private async _checkFontExists(fontPath: string'): Promise<boolean> { try {''
-            const response = await fetch(fontPath, { method: 'HEAD' ),;
+    private async _checkFontExists(fontPath: string'): Promise<boolean> { try {'
+            const response = await fetch(fontPath, { method: 'HEAD' ),
             return response.ok; }
         } catch (error) { return false; }
         }
@@ -284,7 +284,7 @@ export class GoogleFontSource implements IFontSource { private config: FontSourc
         this.display = config.display || 'swap';
         this.loadedFonts = new Set<string>(); }
     }
-';
+';'
     async load(fontFamily: string, options: FontLoadOptions = {): Promise<{ loaded: boolean; url?: string; cached?: boolean }> { ''
         if (this.loadedFonts.has(fontFamily)') { }
             return { loaded: true, cached: true }
@@ -306,7 +306,7 @@ export class GoogleFontSource implements IFontSource { private config: FontSourc
             document.head.appendChild(link);
         });
     }
-';
+';'
     private _buildFontUrl(fontFamily: string, options: FontLoadOptions = {}): string { ''
         const family = encodeURIComponent(fontFamily');
         const weights = options.weights || this.weights;
@@ -325,7 +325,7 @@ export class SystemFontSource implements IFontSource { private config: FontSourc
 
     constructor(config: FontSourceConfig = {) {
 
-        this.config = config;
+        this.config = config
 
     }
     }

@@ -18,14 +18,14 @@
 export interface MainController { config: VisualFocusConfig,
     state: VisualFocusState,
     elements: VisualFocusElements,
-    cssClasses: CSSClasses;
+    cssClasses: CSSClasses
     }
 }
 
 export interface VisualFocusConfig { focusRing: FocusRingConfig,
     navigationFeedback: NavigationFeedbackConfig,
     highContrast: HighContrastConfig,
-    animations: AnimationConfig;
+    animations: AnimationConfig
     }
 }
 
@@ -34,32 +34,32 @@ export interface FocusRingConfig { color: string,
     offset: number,
     borderRadius: number,
     animationDuration: number,
-    enabled: boolean; }
+    enabled: boolean }
 }
 
 export interface NavigationFeedbackConfig { fadeTimeout: number,
-    enabled: boolean; }
+    enabled: boolean }
 }
 
 export interface HighContrastConfig { color: string,
     width: number,
-    enabled: boolean; }
+    enabled: boolean }
 }
 
 export interface AnimationConfig { enabled: boolean,
     duration: number,
     easing: string,
-    reducedMotion: boolean; }
+    reducedMotion: boolean }
 }
 
 export interface VisualFocusState { animationTimers: Map<string, number>,
     currentFocusElement: HTMLElement | null,
     isHighContrastMode: boolean,
-    keyboardMode: boolean; }
+    keyboardMode: boolean }
 }
 
 export interface VisualFocusElements { focusRing: HTMLElement,
-    focusOverlay: HTMLElement;
+    focusOverlay: HTMLElement
     }
 }
 
@@ -67,7 +67,7 @@ export interface CSSClasses { keyboardMode: string,
     mouseMode: string,
     highContrast: string,
     focusRing: string,
-    focusOverlay: string; }
+    focusOverlay: string }
 }
 
 export interface ElementBounds { left: number,
@@ -75,13 +75,13 @@ export interface ElementBounds { left: number,
     width: number,
     height: number,
     right: number,
-    bottom: number; }
+    bottom: number }
 }
 
 export interface ViewportBounds { top: number,
     left: number,
     bottom: number,
-    right: number; }
+    right: number }
 }
 
 export interface EffectOptions { duration?: number;
@@ -96,7 +96,7 @@ export interface CustomEffectStyle { position: string,
     width: string,
     height: string,
     pointerEvents: string,
-    zIndex: string; }
+    zIndex: string }
 }
 
 export interface RenderingOptimizationResult { shouldRender: boolean,
@@ -112,11 +112,11 @@ export type LandmarkType = 'main' | 'nav' | 'aside' | 'header' | 'footer' | 'sec
 export type GroupType = 'form' | 'fieldset' | 'section' | 'nav' | 'aside' | 'group' | 'radiogroup';''
 export type TimerType = 'focusRing' | 'overlay' | 'fadeOut' | 'customEffect';
 
-// 定数'
+// 定数
 export const LANDMARK_SELECTORS: LandmarkType[] = [']';
     'main', 'nav', 'aside', 'header', 'footer', 'section', 'article'];
 ];
-';
+';'
 export const GROUP_SELECTORS: GroupType[] = [']';
     'form', 'fieldset', 'section', 'nav', 'aside'];
 ];'
@@ -130,7 +130,7 @@ export const EFFECT_DURATIONS: Record<EffectType, number> = { pulse: 1000,
     slide: 600,
     zoom: 400 }
 },
-';
+';'
 export const CSS_ANIMATIONS: Record<EffectType, string> = { ''
     pulse: 'custom-pulse 1s ease-in-out','';
     glow: 'custom-glow 1.5s ease-in-out','';
@@ -152,7 +152,7 @@ export const Z_INDEX = { FOCUS_RING: 9999,
     LANDMARK: 9997,
     GROUP: 9996 }
 } as const,
-';
+';'
 export const CSS_CLASSES = { ''
     ACTIVE: 'active','';
     HIGHLIGHTED: 'highlighted','';
@@ -187,9 +187,9 @@ export function isElementInViewport(bounds: ElementBounds, viewport: ViewportBou
 }
 
 export function createCustomEffectStyles(;
-    bounds: ElementBounds,
+    bounds: ElementBounds
     );
-    effectType: EffectType)';
+    effectType: EffectType);
     config: FocusRingConfig'';
 '): CustomEffectStyle { const baseStyle: CustomEffectStyle = {''
         position: 'absolute' }
@@ -207,7 +207,7 @@ export function createCustomEffectStyles(;
 export function getEffectCSS(effectType: EffectType, config: FocusRingConfig): string { const animation = CSS_ANIMATIONS[effectType] || CSS_ANIMATIONS.pulse;'
     '';
     switch(effectType') {'
-        ';
+        ';'
     }'
         case 'pulse': return ` }
                 border: 2px solid ${config.color}
@@ -251,7 +251,7 @@ export function clearTimerIfExists(timers: Map<string, number>, timerType: Timer
     }
 }'
 '';
-export function prefersReducedMotion('')';
+export function prefersReducedMotion()';
            window.matchMedia('(prefers-reduced-motion: reduce')').matches,
 }
 
@@ -287,14 +287,14 @@ export class FocusEffectRenderer {
         
         // アクセシビリティ対応の調整
         this.adjustRingForAccessibility(ring);
-        ';
-        // アニメーション付きで表示''
+        ;
+        // アニメーション付きで表示
         ring.classList.add(CSS_CLASSES.ACTIVE');
         ';
-        // 前のタイマーをクリア''
+        // 前のタイマーをクリア
         clearTimerIfExists(this.state.animationTimers, 'focusRing');
         
-        // 自動非表示タイマー'
+        // 自動非表示タイマー
         const timer = window.setTimeout(() => { ring.classList.remove(CSS_CLASSES.ACTIVE);' }'
         }, this.config.navigationFeedback.fadeTimeout');'
         '';
@@ -332,7 +332,7 @@ export class FocusEffectRenderer {
         while(current && current !== document.body) {
         
             if(this.isLandmarkElement(current) {
-                current.classList.add(CSS_CLASSES.LANDMARK, CSS_CLASSES.HIGHLIGHTED);
+                current.classList.add(CSS_CLASSES.LANDMARK, CSS_CLASSES.HIGHLIGHTED)
         
         }
                 break; }
@@ -353,7 +353,7 @@ export class FocusEffectRenderer {
         while(current && current !== document.body) {
         
             if(this.isGroupElement(current) {
-                current.classList.add(CSS_CLASSES.GROUP, CSS_CLASSES.ACTIVE);
+                current.classList.add(CSS_CLASSES.GROUP, CSS_CLASSES.ACTIVE)
         
         }
                 break; }
@@ -385,11 +385,11 @@ export class FocusEffectRenderer {
     }
 
     /**
-     * エフェクトのフェードアウト'
+     * エフェクトのフェードアウト
      */''
-    fadeOutEffects('')';
+    fadeOutEffects()';
         clearTimerIfExists(this.state.animationTimers, 'fadeOut');
-        ';
+        ';'
         const timer = window.setTimeout(() => { this.clearAllEffects();' }'
         }, fadeDelay');'
         '';
@@ -406,7 +406,7 @@ export class FocusEffectRenderer {
             setTimeout(() => { 
         }
                 if (this.state.currentFocusElement) { }
-                    this.positionFocusRing(this.state.currentFocusElement); }'
+                    this.positionFocusRing(this.state.currentFocusElement); }
                 }''
             }, 100');
         }
@@ -432,8 +432,8 @@ export class FocusEffectRenderer {
         // エフェクト固有のCSSを追加
         const effectCSS = getEffectCSS(effectType, this.config.focusRing);
         effect.style.cssText += effectCSS;
-        ';
-        // モーション設定の確認''
+        ;
+        // モーション設定の確認
         if (prefersReducedMotion()') { ''
             effect.style.animation = 'none'; }
         }
@@ -466,8 +466,8 @@ export class FocusEffectRenderer {
         if(this.state.currentFocusElement) {
             const elementBounds = getElementBounds(this.state.currentFocusElement);
             const viewportBounds = getViewportBounds();
-            ';
-            // 要素が画面外の場合''
+            ;
+            // 要素が画面外の場合
             if (!isElementInViewport(elementBounds, viewportBounds)') {'
                 return { shouldRender: false,''
                     reason: 'Element is outside viewport',
@@ -498,7 +498,7 @@ export class FocusEffectRenderer {
 
     /**
      * フォーカスリングのアクセシビリティ調整
-     */'
+     */
     private adjustRingForAccessibility(ring: HTMLElement): void { ''
         if(this.state.isHighContrastMode') {'
             '';
@@ -515,7 +515,7 @@ export class FocusEffectRenderer {
         this.elements.focusRing.style.animation = 'none';''
         this.elements.focusOverlay.style.animation = 'none';
         
-        // カスタムエフェクトのアニメーションも無効化)'
+        // カスタムエフェクトのアニメーションも無効化)
         document.querySelectorAll(`.${ CSS_CLASSES.CUSTOM_EFFECT)`).forEach((element) => {' }'
             (element as HTMLElement'}).style.animation = 'none';
         });
@@ -525,7 +525,7 @@ export class FocusEffectRenderer {
      * ランドマーク要素かどうかの判定
      */'
     private isLandmarkElement(element: HTMLElement): boolean { ''
-        const tagName = element.tagName.toLowerCase('')';
+        const tagName = element.tagName.toLowerCase()';
         const role = element.getAttribute('role');
         
         return LANDMARK_SELECTORS.includes(tagName) ||;
@@ -536,7 +536,7 @@ export class FocusEffectRenderer {
      * グループ要素かどうかの判定
      */'
     private isGroupElement(element: HTMLElement): boolean { ''
-        const tagName = element.tagName.toLowerCase('')';
+        const tagName = element.tagName.toLowerCase()';
         const role = element.getAttribute('role');
         
         return GROUP_SELECTORS.includes(tagName) ||;
@@ -591,7 +591,7 @@ export class FocusEffectRenderer {
             el.classList.remove(CSS_CLASSES.LANDMARK});
         });
         
-        document.querySelectorAll(`.${CSS_CLASSES.GROUP}`).forEach(el => {  ); }'
+        document.querySelectorAll(`.${CSS_CLASSES.GROUP}`).forEach(el => {  ); }
             el.classList.remove(CSS_CLASSES.GROUP);' }'
         }');'
         '';

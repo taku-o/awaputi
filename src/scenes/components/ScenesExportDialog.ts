@@ -9,18 +9,18 @@ export interface ExportOptions { playerData: {
         scores: boolean,
         achievements: boolean,
         settings: boolean,
-        statistics: boolean ;
+        statistics: boolean 
 }
     },
     gameSettings: { graphics: boolean,
         audio: boolean,
         gameplay: boolean,
-        accessibility: boolean ;
+        accessibility: boolean 
 }
     },
     achievements: { unlocked: boolean,
         progress: boolean,
-        timestamps: boolean; }
+        timestamps: boolean }
     };
 }
 
@@ -46,15 +46,15 @@ export interface Achievement { id: string,
     requirement?: number;
     unlockedAt?: string; };
 }
-';
+';'
 export interface AchievementManager { ''
-    getUnlockedAchievements: (') => Achievement[]; };
+    getUnlockedAchievements: (') => Achievement[] };
 }
 export interface ExportData { metadata?: {
         exportedAt: string,
         exportType: string,
         format: string,
-        version: string; }
+        version: string }
     };
     playerData?: PlayerData;
     gameSettings?: GameSettings;
@@ -78,11 +78,11 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
     private previewData: ExportData | null;
     private showPreview: boolean;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: GameState) {
-';
+';'
         '';
         super(gameEngine, eventBus, state');
         ';
-        // エクスポート設定''
+        // エクスポート設定
         this.exportType = 'playerData';''
         this.exportFormat = 'json';
         this.includeMetadata = true;
@@ -93,7 +93,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
                 username: true,
                 scores: true,
                 achievements: true,
-                settings: true;
+                settings: true
 };
 }
                 statistics: true ;
@@ -102,12 +102,12 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             gameSettings: { graphics: true,
                 audio: true,
                 gameplay: true,
-                accessibility: true ;
+                accessibility: true 
 }
             },
             achievements: { unlocked: true,
                 progress: true,
-                timestamps: true ;
+                timestamps: true 
 };
 }
         },
@@ -115,11 +115,11 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         // プレビューデータ
         this.previewData = null;
         this.showPreview = false;
-        ';
-        // ボタン設定''
+        ;
+        // ボタン設定
         this.setupButtons([')'';
-            { text: 'プレビュー', callback: () => this.generatePreview('')'
-            { text: 'エクスポート', callback: () => this.executeExport('') }]'
+            { text: 'プレビュー', callback: () => this.generatePreview()'
+            { text: 'エクスポート', callback: () => this.executeExport() }]'
             { text: 'キャンセル', callback: () => this.handleCancel() }]
         ]);
         
@@ -165,7 +165,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
      * @param context - Canvas描画コンテキスト
      * @param x - X座標
      * @param y - Y座標
-     * @param width - 幅'
+     * @param width - 幅
      */''
     private renderExportTypeSelection(context: CanvasRenderingContext2D, x: number, y: number, width: number'): void { ''
         context.fillStyle = '#333333';''
@@ -180,16 +180,16 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             { key: 'achievements', label: '実績データ' },']'
             { key: 'all', label: '全データ' }]
         ];
-        ';
+        ';'
         types.forEach((type, index) => {  ''
             const typeY = y + 25 + (index * 20');
             const isSelected = this.exportType === type.key;
             ';
-            // ラジオボタン''
+            // ラジオボタン
             context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC';''
             context.fillRect(x + 10, typeY, 12, 12');
             ';
-            // ラベル''
+            // ラベル
             context.fillStyle = '#333333';''
             context.font = '14px Arial, sans-serif'; }
             context.fillText(type.label, x + 30, typeY); }
@@ -215,16 +215,16 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             { key: 'csv', label: 'CSV形式' },']'
             { key: 'txt', label: 'テキスト形式' }]
         ];
-        ';
+        ';'
         formats.forEach((format, index) => {  ''
             const formatX = x + 10 + (index * 120');
             const isSelected = this.exportFormat === format.key;
             ';
-            // ラジオボタン''
+            // ラジオボタン
             context.fillStyle = isSelected ? '#4CAF50' : '#CCCCCC';''
             context.fillRect(formatX, y + 25, 12, 12');
             ';
-            // ラベル''
+            // ラベル
             context.fillStyle = '#333333';''
             context.font = '14px Arial, sans-serif'; }
             context.fillText(format.label, formatX + 20, y + 25); }
@@ -245,7 +245,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         context.textBaseline = 'top';''
         context.fillText('エクスポートオプション:', x, y');
         
-        // メタデータ含有チェックボックス'
+        // メタデータ含有チェックボックス
         const metadataY = y + 25;''
         context.fillStyle = this.includeMetadata ? '#4CAF50' : '#CCCCCC';''
         context.fillRect(x + 10, metadataY, 12, 12');'
@@ -254,7 +254,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         context.font = '14px Arial, sans-serif';''
         context.fillText('メタデータを含む', x + 30, metadataY');
         ';
-        // タイプ別詳細オプション''
+        // タイプ別詳細オプション
         if(this.exportType !== 'all') {
             
         }
@@ -277,11 +277,11 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             const optionX = x + 20 + (optionIndex % 2) * 200;''
             const optionY = y + Math.floor(optionIndex / 2') * 20;
             ';
-            // チェックボックス''
+            // チェックボックス
             context.fillStyle = enabled ? '#4CAF50' : '#CCCCCC';''
             context.fillRect(optionX, optionY, 10, 10');
             ';
-            // ラベル''
+            // ラベル
             context.fillStyle = '#666666';''
             context.font = '12px Arial, sans-serif';
             context.fillText(this.getOptionLabel(key), optionX + 18, optionY);
@@ -304,7 +304,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         context.textBaseline = 'top';''
         context.fillText('プレビュー:', x, y');
         ';
-        // プレビュー背景''
+        // プレビュー背景
         context.fillStyle = '#F5F5F5';''
         context.fillRect(x, y + 20, width, 80');''
         context.strokeStyle = '#CCCCCC';
@@ -319,7 +319,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             const lines = preview.split('\n').slice(0, 5); // 最初の5行のみ表示
             
         }
-            lines.forEach((line, index) => {  }'
+            lines.forEach((line, index) => {  }
                 context.fillText(line, x + 5, y + 35 + (index * 12);' }'
             }');'
             '';
@@ -345,7 +345,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             accessibility: 'アクセシビリティ','';
             unlocked: '解除済み','';
             progress: '進行状況','';
-            timestamps: 'タイムスタンプ' ;
+            timestamps: 'タイムスタンプ' 
 }
         },
         return labels[key] || key;
@@ -386,7 +386,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             lines.push(`Player,AP,${data.playerData.ap || 0)`); }
             lines.push(`Player,TAP,${data.playerData.tap || 0)`});
         }
-        ';
+        ';'
         if (data.playerData? .highScores) { Object.entries(data.playerData.highScores).forEach(([stage, score]) => {' }'
                 lines.push(`HighScore,${stage},${score}`');
             };
@@ -438,7 +438,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
         const exportData: ExportData = {}
         if(this.includeMetadata) {'
             exportData.metadata = {''
-                exportedAt: new Date().toISOString('';
+                exportedAt: new Date().toISOString(''
         }'
                 version: '1.0.0' })
             })
@@ -451,7 +451,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
             case 'gameSettings':'';
                 exportData.gameSettings = this.collectGameSettings(''';
             case 'achievements':'';
-                exportData.achievements = this.collectAchievements('')';
+                exportData.achievements = this.collectAchievements()';
             case 'all':);
                 exportData.playerData = this.collectPlayerData();
                 exportData.gameSettings = this.collectGameSettings();
@@ -539,7 +539,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
                     description: achievement.description),
                 
                 if (options.unlocked) {
-                    achievementData.id = achievement.id;
+                    achievementData.id = achievement.id
         
         }
                     achievementData.name = achievement.name; }
@@ -574,14 +574,14 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
                     action: 'export',
                     data: {
                         type: this.exportType,
-                        format: this.exportFormat,);
+                        format: this.exportFormat);
                         filename);
             }
                         size: content.length) ;
 }
                     }'
                 );''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Export error:', error');''
             alert('エクスポートに失敗しました: ' + (error as Error).message); };
 }
@@ -589,7 +589,7 @@ export class ScenesExportDialog extends ScenesBaseDialog { private exportType: E
     
     /**
      * ファイル名を生成
-     * @returns ファイル名
+     * @returns ファイル名'
      */'
     private generateFilename(): string { ''
         const date = new Date().toISOString().slice(0, 10');''

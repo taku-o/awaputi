@@ -10,7 +10,7 @@ import { LoggingSystem } from '../LoggingSystem.js';
 // 型定義
 export interface GameEngine { canvas?: HTMLCanvasElement;
     currentScene?: any;
-    gameState?: string;'
+    gameState?: string;
     scoreManager?: {''
         getCurrentScore(''';
 export type TooltipPositionType = 'top' | 'bottom' | 'left' | 'right';''
@@ -49,7 +49,7 @@ export class TooltipSystem {
         this.ctx = null;
         
         // ツールチップ管理
-        this.activeTooltips = new Map<string, TooltipInfo>();'
+        this.activeTooltips = new Map<string, TooltipInfo>();
         this.tooltipQueue = [];''
         this.hoveredElements = new Set<string>(');
         
@@ -62,13 +62,13 @@ export class TooltipSystem {
             fontSize: 12,          // フォントサイズ;
             lineHeight: 16,        // 行の高さ;
             fadeInDuration: 200,   // フェードイン時間;
-            fadeOutDuration: 150,  // フェードアウト時間;
+            fadeOutDuration: 150,  // フェードアウト時間
     }
     }
             zIndex: 10000          // Z-index }
         },
         
-        // ツールチップスタイル'
+        // ツールチップスタイル
         this.styles = { ''
             background: 'rgba(33, 33, 33, 0.95')','';
             color: '#ffffff','';
@@ -104,8 +104,8 @@ export class TooltipSystem {
     /**
      * システムの初期化
      */
-    initialize(): void { try {'
-            // Canvas要素の取得''
+    initialize(): void { try {
+            // Canvas要素の取得
             if(this.gameEngine.canvas') {'
                 this.canvas = this.gameEngine.canvas;'
             }'
@@ -114,11 +114,11 @@ export class TooltipSystem {
             
             // イベントリスナーの設定
             this.setupEventListeners();
-            ';
-            // 既存のUI要素のツールチップ設定''
-            this.setupDefaultTooltips('')';
+            ;
+            // 既存のUI要素のツールチップ設定
+            this.setupDefaultTooltips()';
             this.loggingSystem.info('TooltipSystem', 'Tooltip system initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TooltipSystem', 'Failed to initialize tooltip system', error');''
             ErrorHandler.handle(error as Error, 'TooltipSystem.initialize'); }
         }
@@ -130,19 +130,19 @@ export class TooltipSystem {
     setupEventListeners(): void { ''
         if (!this.canvas') return;
         ';
-        // マウスイベント''
+        // マウスイベント
         this.canvas.addEventListener('mousemove', (event: MouseEvent) => this.handleMouseMove(event)');''
         this.canvas.addEventListener('mouseleave', () => this.handleMouseLeave()');''
         this.canvas.addEventListener('click', () => this.hideAllTooltips()');
         ';
-        // キーボードイベント（ESCキーでツールチップを隠す）''
+        // キーボードイベント（ESCキーでツールチップを隠す）
         document.addEventListener('keydown', (event: KeyboardEvent') => { ''
             if (event.key === 'Escape') { }
                 this.hideAllTooltips(); }'
             }''
         }');
         ';
-        // ウィンドウリサイズ''
+        // ウィンドウリサイズ
         window.addEventListener('resize', () => this.handleResize();
     }
     
@@ -150,14 +150,14 @@ export class TooltipSystem {
      * デフォルトツールチップの設定'
      */''
     setupDefaultTooltips(''';
-            id: 'score_display',);
+            id: 'score_display');
             bounds: { x: 10, y: 10, width: 150, height: 30 })'
             content: { ''
                 title: 'スコア','';
                 description: '現在のスコアを表示します。泡を割ったりコンボを決めると増加します。' }'
             },''
             position: 'bottom')'),
-        ';
+        ';'
         this.registerTooltipArea({ ''
             id: 'hp_display', })
             bounds: { x: 10, y: 50, width: 200, height: 20 })'
@@ -166,7 +166,7 @@ export class TooltipSystem {
                 description: '残りHPを表示します。泡が破裂するとダメージを受けます。0になるとゲームオーバーです。' }'
             },')'
             position: 'bottom')'),
-        ';
+        ';'
         this.registerTooltipArea({ ''
             id: 'combo_display', })
             bounds: { x: 10, y: 80, width: 120, height: 25 })'
@@ -195,7 +195,7 @@ export class TooltipSystem {
             '';
             this.activeTooltips.set(config.id, tooltipInfo');''
             this.loggingSystem.debug('TooltipSystem', `Tooltip area registered: ${config.id)`});''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('TooltipSystem', `Failed to register tooltip area: ${config.id}`, error);
         }
     }
@@ -210,7 +210,7 @@ export class TooltipSystem {
             }'
                 this.hideTooltip(id');' }'
                 this.loggingSystem.debug('TooltipSystem', `Tooltip area unregistered: ${id)`});''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             this.loggingSystem.error('TooltipSystem', `Failed to unregister tooltip area: ${id}`, error);
         }
     }
@@ -264,9 +264,9 @@ export class TooltipSystem {
                 if (!isStillHovered) {
                     this.hideTooltip(hoveredId);
             }
-                    this.hoveredElements.delete(hoveredId); }'
+                    this.hoveredElements.delete(hoveredId); }
                 }''
-            } catch (error') { ''
+            } catch (error) { ''
             this.loggingSystem.error('TooltipSystem', 'Mouse move handling error', error); }
         }
     }
@@ -282,7 +282,7 @@ export class TooltipSystem {
      * ウィンドウリサイズ処理
      */
     handleResize(): void { // ツールチップ位置の再計算
-        for(const animation of this.animations.values() {'
+        for(const animation of this.animations.values() {
             if (animation.element && animation.element.parentNode) {'
         }'
                 this.updateTooltipPosition(animation.element, animation.tooltip'); }
@@ -311,13 +311,13 @@ export class TooltipSystem {
             
             // アニメーション情報を保存
             this.animations.set(tooltip.id, { tooltip: tooltip,
-                showTimer: showTimer as any,);
+                showTimer: showTimer as any);
                 element: null);
                 fadeAnimation: null,);
-                animationType: animationType); }
-            });'
+                animationType: animationType) }
+            });
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('TooltipSystem', `Failed to show tooltip: ${tooltip.id}`, error');
         }
     }
@@ -329,8 +329,8 @@ export class TooltipSystem {
      * @param mouseY - マウスY座標
      * @param animationType - アニメーションタイプ'
      */''
-    createTooltipElement(tooltip: TooltipInfo, mouseX: number, mouseY: number, animationType: AnimationType = 'fadeUp''): void { try {'
-            // DOM要素の作成''
+    createTooltipElement(tooltip: TooltipInfo, mouseX: number, mouseY: number, animationType: AnimationType = 'fadeUp''): void { try {
+            // DOM要素の作成
             const element = document.createElement('div'); }
             element.id = `tooltip-${tooltip.id}`;
             element.style.cssText = this.buildTooltipCSS();
@@ -347,13 +347,13 @@ export class TooltipSystem {
             // アニメーションタイプに応じたフェードインアニメーション
             this.animateTooltipIn(element, tooltip.id, animationType);
             
-            // アニメーション情報を更新'
+            // アニメーション情報を更新
             const animation = this.animations.get(tooltip.id);''
             if (animation') { animation.element = element; }
             }'
             '';
             this.loggingSystem.debug('TooltipSystem', `Tooltip shown with ${animationType}: ${tooltip.id)`});''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.loggingSystem.error('TooltipSystem', `Failed to create tooltip element: ${tooltip.id}`, error);
         }
     }
@@ -462,7 +462,7 @@ export class TooltipSystem {
         } else if (position.x + tooltipSize.width > viewport.width - margin) { position.x = viewport.width - tooltipSize.width - margin; }
         }
         
-        // 上下の調整'
+        // 上下の調整
         if (position.y < margin) { position.y = margin;' }'
         } else if (position.y + tooltipSize.height > viewport.height - margin') { position.y = viewport.height - tooltipSize.height - margin; }
         }
@@ -485,16 +485,16 @@ export class TooltipSystem {
         const animate = (currentTime) => { 
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            ';
-            // イージング関数（ease-out-back）''
+            ;
+            // イージング関数（ease-out-back）
             const easeOutBack = 1 - Math.pow(1 - progress, 3) * (1 - progress * 0.3');
             ';
-            // アニメーションタイプに応じた効果適用''
+            // アニメーションタイプに応じた効果適用
             this.applyAnimationEffect(element, animationType, easeOutBack, 'in');
             
             if (progress < 1) { }
                 requestAnimationFrame(animate); }
-            } else {  // アニメーション完了'
+            } else {  // アニメーション完了
                 const animation = this.animations.get(tooltipId);''
                 if (animation') { }
                     animation.fadeAnimation = null; }'
@@ -546,7 +546,7 @@ export class TooltipSystem {
                 element.style.opacity = '0';''
                 element.style.transform = 'scale(0.1')';'
                 break;''
-            default: element.style.opacity = '0',';
+            default: element.style.opacity = '0','
         }'
                 element.style.transform = 'translateY(10px')'; }
         }
@@ -626,7 +626,7 @@ export class TooltipSystem {
      * アニメーション完了時の最終処理
      * @param element - ツールチップ要素
      * @param animationType - アニメーションタイプ
-     * @param direction - 方向'
+     * @param direction - 方向
      */''
     finalizeAnimation(element: HTMLElement, animationType: AnimationType, direction: AnimationDirection'): void { ''
         if(direction === 'in'') {'
@@ -672,20 +672,20 @@ export class TooltipSystem {
             if (!animation) return;
             
             // 表示タイマーのクリア
-            if(animation.showTimer) {'
-                ';
+            if(animation.showTimer) {
+                ';'
             }'
                 clearTimeout(animation.showTimer'); }
             }
             ';
-            // アニメーションタイプの決定（出現時の逆アニメーション）''
+            // アニメーションタイプの決定（出現時の逆アニメーション）
             const hideAnimationType = animationType || this.getExitAnimationType(animation.animationType || 'fadeUp');
             
             // 要素が存在する場合はフェードアウト
             if (animation.element) { this.animateTooltipOut(animation.element, tooltipId, hideAnimationType); }
-            } else {  // 要素がない場合は直接削除 }'
+            } else {  // 要素がない場合は直接削除 }
                 this.animations.delete(tooltipId);' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             this.loggingSystem.error('TooltipSystem', `Failed to hide tooltip: ${tooltipId}`, error);
         }
     }
@@ -727,10 +727,10 @@ export class TooltipSystem {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             ';
-            // イージング関数（ease-in-back）''
+            // イージング関数（ease-in-back）
             const easeInBack = Math.pow(progress, 2) * ((1.7 + 1) * progress - 1.7');
             ';
-            // アニメーション効果の適用''
+            // アニメーション効果の適用
             this.applyAnimationEffect(element, animationType, easeInBack, 'out');
             
             if(progress >= 1) {
@@ -739,7 +739,7 @@ export class TooltipSystem {
             
             }
                 if (element.parentNode) { }
-                    element.parentNode.removeChild(element); }'
+                    element.parentNode.removeChild(element); }
                 }''
                 this.animations.delete(tooltipId');''
                 this.loggingSystem.debug('TooltipSystem', `Tooltip hidden with ${animationType}: ${tooltipId)`});
@@ -760,7 +760,7 @@ export class TooltipSystem {
                 this.hideTooltip(tooltipId); }
             }'
             this.hoveredElements.clear();''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TooltipSystem', 'Failed to hide all tooltips', error); }
         }
     }
@@ -808,9 +808,9 @@ export class TooltipSystem {
                     return false; }
                 }
             }
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TooltipSystem', 'Condition check error', error);
             return true; // エラー時はツールチップを表示 }
         }
@@ -819,7 +819,7 @@ export class TooltipSystem {
     /**
      * HTMLエスケープ
      * @param text - エスケープするテキスト
-     * @returns エスケープされたテキスト'
+     * @returns エスケープされたテキスト
      */''
     escapeHTML(text: string'): string { ''
         const div = document.createElement('div');
@@ -864,19 +864,19 @@ export class TooltipSystem {
     /**
      * リソースのクリーンアップ
      */
-    cleanup(): void { try {'
-            // 全ツールチップの非表示''
-            this.hideAllTooltips('')';
+    cleanup(): void { try {
+            // 全ツールチップの非表示
+            this.hideAllTooltips()';
             this.canvas.removeEventListener('mousemove', this.handleMouseMove');''
             this.canvas.removeEventListener('mouseleave', this.handleMouseLeave');''
             this.canvas.removeEventListener('click', this.hideAllTooltips);
             
             // データのクリア
-            this.activeTooltips.clear();'
+            this.activeTooltips.clear();
             this.hoveredElements.clear();''
-            this.animations.clear('')';
+            this.animations.clear()';
             this.loggingSystem.info('TooltipSystem', 'Tooltip system cleaned up');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.loggingSystem.error('TooltipSystem', 'Failed to cleanup tooltip system', error); }
         }
     }
@@ -902,7 +902,7 @@ export function getTooltipSystem(gameEngine: GameEngine): TooltipSystem { if (!t
  * @returns 新しいTooltipSystemインスタンス
  */
 export function reinitializeTooltipSystem(gameEngine: GameEngine): TooltipSystem { if (tooltipSystemInstance) {
-        tooltipSystemInstance.cleanup(); }'
+        tooltipSystemInstance.cleanup(); }
     }''
     tooltipSystemInstance = new TooltipSystem(gameEngine');'
     return tooltipSystemInstance;''

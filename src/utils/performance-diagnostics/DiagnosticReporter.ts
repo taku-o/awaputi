@@ -10,7 +10,7 @@ interface MainController { [key: string]: any, }
 interface DataCollection { duration: number,
     sampleCount: number,
     metricsCollected: number,
-    dataQuality: Record<string, any>; }
+    dataQuality: Record<string, any> }
 }
 
 interface Bottleneck { type: string,
@@ -57,22 +57,22 @@ interface ReportSummary { sessionId: string,
     criticalIssues: number,
     bottlenecks: number,
     anomalies: number,
-    recommendations: number; }
+    recommendations: number }
 }
 
 interface TechnicalDetails { dataCollection: {
         duration: number,
         sampleCount: number,
         metricsCollected: number,
-        dataQuality: Record<string, any>; }
+        dataQuality: Record<string, any> }
     };
     bottleneckAnalysis: { totalBottlenecks: number,
         criticalBottlenecks: number,
-        categories: Record<string, number>; }
+        categories: Record<string, number> }
     };
     anomalyDetection: { totalAnomalies: number,
         criticalAnomalies: number,
-        detectionTypes: Record<string, number>; }
+        detectionTypes: Record<string, number> }
     };
     systemAssessment: OverallAssessment,
     }
@@ -82,7 +82,7 @@ interface Report { type: string,
     summary?: ReportSummary;
     technicalDetails?: TechnicalDetails;
     rawResults?: DiagnosticResults;
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 interface Recommendation { type: string,
@@ -93,14 +93,14 @@ interface Recommendation { type: string,
     actions: string[],
     estimatedImpact: string,
     implementationEffort: string,
-    timeToImplement: string; }
+    timeToImplement: string }
 }
 
 interface ReportingCapabilities { reportTypes: string[],
     outputFormats: string[],
     recommendationTypes: string[],
     customTemplates: boolean,
-    realTimeReporting: boolean; }
+    realTimeReporting: boolean }
 }
 
 interface ReportingConfig { reportTemplate?: string;
@@ -120,7 +120,7 @@ export class DiagnosticReporter {
 
         this.mainController = mainController;
         
-        // Reporting components'
+        // Reporting components
         this.reportGenerator = new DiagnosticReportGenerator();''
         this.recommendationEngine = new RecommendationEngine('';
     }
@@ -131,11 +131,11 @@ export class DiagnosticReporter {
     /**
      * Initialize reporting components
      */
-    async initialize(): Promise<void> { try {'
+    async initialize(): Promise<void> { try {
             await this.reportGenerator.initialize();''
-            await this.recommendationEngine.initialize('');'
+            await this.recommendationEngine.initialize();'
             console.log('[DiagnosticReporter] All reporting components initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[DiagnosticReporter] Failed to initialize reporting components:', error);
             throw error; }
         }
@@ -166,7 +166,7 @@ export class DiagnosticReporter {
             anomalies: diagnosticSession.results.anomalies? .length || 0, : undefined;
             recommendations: diagnosticSession.results.recommendations? .length || 0 }
         },
-        ';
+        ';'
         return { : undefined''
             type: 'summary',')';
             title: 'Performance Diagnostic Summary');
@@ -183,19 +183,18 @@ export class DiagnosticReporter {
                 duration: diagnosticSession.results.dataCollection? .duration || 0, : undefined;
                 sampleCount: diagnosticSession.results.dataCollection? .sampleCount || 0, : undefined;
                 metricsCollected: diagnosticSession.results.dataCollection? .metricsCollected || 0, : undefined }
-                dataQuality: diagnosticSession.results.dataCollection? .dataQuality || {}
-            }, : undefined'
+                dataQuality: diagnosticSession.results.dataCollection? .dataQuality || {}, : undefined'
             bottleneckAnalysis: { totalBottlenecks: diagnosticSession.results.bottlenecks? .length || 0, : undefined''
                 criticalBottlenecks: diagnosticSession.results.bottlenecks? .filter(b => b.severity === 'critical').length || 0, : undefined'';
-                categories: this.categorizeIssues(diagnosticSession.results.bottlenecks || []'); }
+                categories: this.categorizeIssues(diagnosticSession.results.bottlenecks || []') }
             },'
             anomalyDetection: { totalAnomalies: diagnosticSession.results.anomalies? .length || 0, : undefined''
                 criticalAnomalies: diagnosticSession.results.anomalies? .filter(a => a.severity === 'critical').length || 0, : undefined'';
-                detectionTypes: this.categorizeAnomalies(diagnosticSession.results.anomalies || []'); }
+                detectionTypes: this.categorizeAnomalies(diagnosticSession.results.anomalies || []') }
             },
             systemAssessment: diagnosticSession.results.overallAssessment || {} as OverallAssessment
         },
-        ';
+        ';'
         return { ''
             type: 'technical','';
             title: 'Technical Performance Analysis Report',
@@ -210,7 +209,7 @@ export class DiagnosticReporter {
      */''
     categorizeIssues(issues: Bottleneck[]'): Record<string, number> {
         const categories: Record<string, number> = {};
-        ';
+        ';'
         issues.forEach(issue => {  ')'
             const category = issue.type || 'unknown'); }
             categories[category] = (categories[category] || 0) + 1; }
@@ -224,7 +223,7 @@ export class DiagnosticReporter {
      */''
     categorizeAnomalies(anomalies: Anomaly[]'): Record<string, number> {
         const categories: Record<string, number> = {};
-        ';
+        ';'
         anomalies.forEach(anomaly => {  ')'
             const category = anomaly.detectionType || 'unknown'); }'
             categories[category] = (categories[category] || 0) + 1;' }'
@@ -256,13 +255,13 @@ export class DiagnosticReporter {
         '';
         lines.push(`=== ${report.title || 'Diagnostic Report') ===`);''
         lines.push(`Generated: ${report.generatedAt)`'),''
-        lines.push('');'
+        lines.push();'
         '';
         if(report.summary') {'
             '';
             lines.push('Summary: '),
             lines.push(`  Health Score: ${report.summary.overallHealth)/100`),
-            lines.push(`  Performance Level: ${report.summary.performanceLevel)`),
+            lines.push(`  Performance Level: ${report.summary.performanceLevel)`),'
             lines.push(`  Critical Issues: ${report.summary.criticalIssues)`),'
             lines.push(`  Total Bottlenecks: ${report.summary.bottlenecks)`),'
         }'
@@ -272,7 +271,7 @@ export class DiagnosticReporter {
         '';
         if(report.technicalDetails') {'
             '';
-            lines.push('Technical Details: '),
+            lines.push('Technical Details: '),'
             lines.push(`  Data Collection Duration: ${report.technicalDetails.dataCollection.duration)ms`),'
             lines.push(`  Samples Collected: ${report.technicalDetails.dataCollection.sampleCount)`),'
         }'
@@ -330,8 +329,8 @@ export class DiagnosticReporter {
         }
         
         if(config.recommendationSettings) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.recommendationEngine.configure(config.recommendationSettings'); }
         }'
@@ -347,9 +346,9 @@ export class DiagnosticReporter {
         }
         
         if(this.recommendationEngine.destroy) {
-        ';
+        ';'
             '';
-            this.recommendationEngine.destroy('');
+            this.recommendationEngine.destroy();
         }'
         console.log('[DiagnosticReporter] Reporter destroyed'); }
     }
@@ -369,9 +368,9 @@ class RecommendationEngine { private generators: Map<string, any>;
 
     async initialize(): Promise<void> { await this.knowledgeBase.initialize();
         this.setupGenerators(); }
-    }'
+    }
 '';
-    setupGenerators('')';
+    setupGenerators()';
         this.generators.set('optimization', new OptimizationRecommendationGenerator()');''
         this.generators.set('configuration', new ConfigurationRecommendationGenerator()');''
         this.generators.set('architecture', new ArchitectureRecommendationGenerator()');''
@@ -383,7 +382,7 @@ class RecommendationEngine { private generators: Map<string, any>;
         // ボトルネックベースの推奨事項
         if(analysisResults.bottlenecks) {
             for (const bottleneck of analysisResults.bottlenecks) {
-                const rec = await this.generateBottleneckRecommendations(bottleneck);
+                const rec = await this.generateBottleneckRecommendations(bottleneck)
         }
                 recommendations.push(...rec); }
             }
@@ -405,7 +404,7 @@ class RecommendationEngine { private generators: Map<string, any>;
         return this.prioritizeAndDeduplicateRecommendations(recommendations);
     }
 
-    async generateBottleneckRecommendations(bottleneck: Bottleneck): Promise<Recommendation[]> { const recommendations: Recommendation[] = [],'
+    async generateBottleneckRecommendations(bottleneck: Bottleneck): Promise<Recommendation[]> { const recommendations: Recommendation[] = [],
 '';
         switch(bottleneck.type') {'
             '';
@@ -515,9 +514,9 @@ class RecommendationEngine { private generators: Map<string, any>;
         return unique.sort((a, b) => ;
             (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
         );
-    }'
+    }
 '';
-    configure(config: Record<string, any>'): void { // Configure recommendation engine settings''
+    configure(config: Record<string, any>'): void { // Configure recommendation engine settings
         console.log('[RecommendationEngine] Configuration updated'); }
     }
 
@@ -537,9 +536,9 @@ class DiagnosticReportGenerator { private templates: Map<string, ReportTemplate>
     }
 
     async initialize(): Promise<void> { this.setupTemplates(); }
-    }'
+    }
 '';
-    setupTemplates('')';
+    setupTemplates()';
         this.templates.set('comprehensive', new ComprehensiveReportTemplate()');''
         this.templates.set('summary', new SummaryReportTemplate()');''
         this.templates.set('technical', new TechnicalReportTemplate();
@@ -569,8 +568,7 @@ class MonitoringRecommendationGenerator {}
 
 class PerformanceKnowledgeBase {
     async initialize(): Promise<void> {}
-}
-';
+';'
 class ComprehensiveReportTemplate implements ReportTemplate { ''
     async generate(session: DiagnosticSession'): Promise<Report> {'
         return { ''
@@ -580,7 +578,7 @@ class ComprehensiveReportTemplate implements ReportTemplate { ''
         };
     }
 }
-';
+';'
 class SummaryReportTemplate implements ReportTemplate { ''
     async generate(session: DiagnosticSession'): Promise<Report> {'
         return { ''
@@ -590,7 +588,7 @@ class SummaryReportTemplate implements ReportTemplate { ''
         };
     }
 }
-';
+';'
 class TechnicalReportTemplate implements ReportTemplate { ''
     async generate(session: DiagnosticSession'): Promise<Report> {'
         return { ''

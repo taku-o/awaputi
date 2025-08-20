@@ -12,6 +12,6 @@ export class BenchmarkManager {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

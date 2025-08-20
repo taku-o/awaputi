@@ -75,9 +75,9 @@ export class AsyncOperationQueue {
     /**
      * 初期化
      */
-    initialize() {'
-        // 定期的なキュー処理開始''
-        this.startProcessing('');
+    initialize() {
+        // 定期的なキュー処理開始
+        this.startProcessing();
     }'
         console.log('AsyncOperationQueue initialized'); }
     }
@@ -93,14 +93,13 @@ export class AsyncOperationQueue {
         return new Promise((resolve, reject) => { ''
             const operationId = this.generateOperationId(''';
                 priority: options.priority || 'normal', // 'high', 'normal', 'low';
-                timeout: options.timeout || this.queueTimeout,);
+                timeout: options.timeout || this.queueTimeout);
                 retryCount: 0);
                 maxRetries: options.maxRetries || this.retryAttempts,) }
                 timestamp: Date.now(), }
-                metadata: options.metadata || {}
-            },
+                metadata: options.metadata || {},
             ';
-            // 優先度順にキューに挿入''
+            // 優先度順にキューに挿入
             this.insertByPriority(queueItem');
             this.stats.totalQueued++;
             this.stats.currentQueueSize = this.queue.length;'
@@ -110,7 +109,7 @@ export class AsyncOperationQueue {
                 queueSize: this.queue.length),
             
             // キュー処理をトリガー
-            this.processQueue(); }
+            this.processQueue() }
         });
     }
     
@@ -142,9 +141,9 @@ export class AsyncOperationQueue {
      * @param {Array} operations - 操作の配列
      * @param {Object} options - オプション
      * @returns {Promise<Array>} - 全操作の結果
-     */'
+     */
     async executeBatch(operations, options = { ) {''
-        const batchId = this.generateOperationId('')';
+        const batchId = this.generateOperationId()';
             this.emit('batchStarted', { batchId, size: operations.length ),
             
             // 並列実行か順次実行かを選択
@@ -156,12 +155,12 @@ export class AsyncOperationQueue {
                 results = await Promise.allSettled(promises); }
             } else {  // 順次実行
                 results = [];
-                for(const operation of operations) {'
-                    try {'
+                for(const operation of operations) {
+                    try {
                 }'
                         const result = await this.enqueue(operation, batchOptions');' }'
                         results.push({ status: 'fulfilled', value: result ),' }'
-                    } catch (error') { ' }'
+                    } catch (error) { ' }'
                         results.push({ status: 'rejected', reason: error }');
                     }
                 }
@@ -170,7 +169,7 @@ export class AsyncOperationQueue {
             this.emit('batchCompleted', { batchId, results });
             return results;'
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.emit('batchFailed', { batchId, error });
             throw error;
         }
@@ -203,7 +202,7 @@ export class AsyncOperationQueue {
     
     /**
      * 個別操作の実行
-     */'
+     */
     async executeOperation(item) { ''
         const startTime = Date.now(''';
             this.emit('operationStarted', {)
@@ -211,14 +210,14 @@ export class AsyncOperationQueue {
                 priority: item.priority,);
                 activeCount: this.activeOperations.size),
             
-            // タイムアウト設定'
+            // タイムアウト設定
             const timeoutPromise = new Promise((_, reject) => { ' }'
                 setTimeout((') => reject(new Error('Operation timeout'), item.timeout); }
             });
             
             // 操作実行
             const result = await Promise.race([);
-                item.operation(),];
+                item.operation()];
                 timeoutPromise];
             ]);
             
@@ -229,18 +228,18 @@ export class AsyncOperationQueue {
             this.completedOperations.set(item.id, { ...item)
                 result,);
                 executionTime);
-                completedAt: Date.now(); }
-            });'
+                completedAt: Date.now() }
+            });
             '';
             this.activeOperations.delete(item.id');
             this.stats.totalCompleted++;'
             '';
-            this.emit('operationCompleted', { id: item.id,)
+            this.emit('operationCompleted', { id: item.id)
                 result);
                 executionTime,);
                 activeCount: this.activeOperations.size),
             
-            item.resolve(result);
+            item.resolve(result)
              }
         } catch (error) { await this.handleOperationError(item, error, startTime); }
         }
@@ -251,12 +250,12 @@ export class AsyncOperationQueue {
      */
     async handleOperationError(item, error, startTime) { const executionTime = Date.now() - startTime;
         ';
-        // リトライ可能かチェック''
+        // リトライ可能かチェック
         if (item.retryCount < item.maxRetries && this.isRetryableError(error)') {
             item.retryCount++;'
             '';
             this.emit('operationRetry', {
-                id: item.id,);
+                id: item.id);
                 retryCount: item.retryCount);
                 maxRetries: item.maxRetries,);
                 error: error.message),
@@ -275,14 +274,14 @@ export class AsyncOperationQueue {
         this.failedOperations.set(item.id, { ...item)
             error,);
             executionTime);
-            failedAt: Date.now(); }
-        });'
+            failedAt: Date.now() }
+        });
         '';
         this.activeOperations.delete(item.id');
         this.stats.totalFailed++;'
         '';
         this.emit('operationFailed', { id: item.id,
-            error,);
+            error);
             executionTime);
             retryCount: item.retryCount,);
             activeCount: this.activeOperations.size),';
@@ -292,14 +291,14 @@ export class AsyncOperationQueue {
             retryCount: item.retryCount,);
             metadata: item.metadata),
         
-        item.reject(error); }
+        item.reject(error) }
     }
     
     /**
      * エラーがリトライ可能かチェック'
      */''
     isRetryableError(error') {'
-        // ネットワークエラー、一時的なエラーなどはリトライ可能''
+        // ネットワークエラー、一時的なエラーなどはリトライ可能
         return error.message.includes('timeout'') ||'';
                error.message.includes('network'') ||'';
                error.message.includes('temporary'') ||';
@@ -404,7 +403,7 @@ export class AsyncOperationQueue {
      */
     cancelOperation(operationId) {
         // キューから削除
-        const queueIndex = this.queue.findIndex(item => item.id === operationId);'
+        const queueIndex = this.queue.findIndex(item => item.id === operationId);
         if (queueIndex !== -1) {''
             const item = this.queue.splice(queueIndex, 1')[0];''
             item.reject(new Error('Operation cancelled');
@@ -421,13 +420,13 @@ export class AsyncOperationQueue {
      * 全操作をクリア
      */
     clearQueue() {
-        // キューの全操作をキャンセル'
+        // キューの全操作をキャンセル
         while (this.queue.length > 0) {''
-            const item = this.queue.pop('');
+            const item = this.queue.pop();
     }'
             item.reject(new Error('Queue cleared')'); }
         }
-        ';
+        ';'
         this.stats.currentQueueSize = 0;''
         this.emit('queueCleared');
     }
@@ -497,9 +496,9 @@ export class AsyncOperationQueue {
                 };
             });
         
-        Promise.allSettled(activePromises).then(() => {  this.listeners.clear();'
+        Promise.allSettled(activePromises).then(() => {  this.listeners.clear();
             this.completedOperations.clear();''
-            this.failedOperations.clear('') }'
+            this.failedOperations.clear() }'
             console.log('AsyncOperationQueue destroyed'); }
         });
     }
@@ -510,6 +509,6 @@ let queueInstance = null;
 
 /**
  * AsyncOperationQueueシングルトンインスタンスの取得
- */'
+ */
 export function getAsyncOperationQueue() { if (!queueInstance) {''
         queueInstance = new AsyncOperationQueue(' })

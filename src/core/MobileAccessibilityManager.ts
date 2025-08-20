@@ -6,14 +6,14 @@
 
 import { ErrorHandler } from '../utils/ErrorHandler.js';
 ';
-// サブコンポーネントのインポート''
+// サブコンポーネントのインポート
 import { MobileAccessibilityValidator } from './mobile-accessibility/MobileAccessibilityValidator.js';
 
 class MobileAccessibilityManager { constructor(gameEngine) {
         this.gameEngine = gameEngine;
         this.errorHandler = ErrorHandler.getInstance();
         ';
-        // サブコンポーネントの初期化（依存性注入）''
+        // サブコンポーネントの初期化（依存性注入）
         this.validator = new MobileAccessibilityValidator(this');
         
         // アクセシビリティ設定
@@ -27,7 +27,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
                 focusManagement: true }
             },
-            visualSupport: { highContrast: false,'
+            visualSupport: { highContrast: false,
                 colorBlindnessSupport: false,'';
                 colorBlindnessType: 'none', // 'protanopia', 'deuteranopia', 'tritanopia''';
                 fontSize: 'normal', // 'small', 'normal', 'large', 'xlarge''';
@@ -56,7 +56,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         // スクリーンリーダー状態
         this.screenReaderState = { active: false,
             currentFocus: null,
-            announceQueue: [],';
+            announceQueue: [],
             liveRegions: new Map(,'';
             navigationMode: 'normal' // 'normal', 'explore', 'reading' }
         };
@@ -76,9 +76,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         },
         
         // 音声・触覚フィードバック
-        this.feedbackSystems = { speechSynthesis: null,)
+        this.feedbackSystems = { speechSynthesis: null)
             haptics: null);
-            audioBeeps: new Map(); }
+            audioBeeps: new Map() }
         };
         
         this.initialize();
@@ -94,12 +94,12 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             this.initializeColorSupport();
             this.setupKeyboardNavigation();
             this.initializeFeedbackSystems();
-            this.setupAccessibilityEventListeners();'
+            this.setupAccessibilityEventListeners();
             this.loadAccessibilitySettings();''
-            this.applyInitialSettings('');
+            this.applyInitialSettings();
     }'
             console.log('[MobileAccessibilityManager] モバイルアクセシビリティシステム初期化完了');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'MobileAccessibilityManager.initialize'); }
         }
     }
@@ -110,9 +110,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     
     /**
      * モバイルアクセシビリティ検証（MobileAccessibilityValidatorに委譲）
-     */'
+     */
     async validateAccessibility() { ''
-        return await this.validator.validateMobileAccessibility('')';
+        return await this.validator.validateMobileAccessibility()';
     async checkWCAGCompliance(level = 'AA') {;
         return await this.validator.checkWCAGCompliance(level); }
     }
@@ -143,23 +143,23 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     detectAccessibilityCapabilities() {
         this.capabilities = {'
-            // スクリーンリーダー検出''
-            screenReader: this.detectScreenReader('')';
+            // スクリーンリーダー検出
+            screenReader: this.detectScreenReader()';
             speechSynthesis: 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window)';
             // CSS色フィルターサポート')'
             cssFilters: CSS.supports('filter', 'hue-rotate(0deg')''),
             ';
-            // 振動API''
+            // 振動API
             haptics: 'vibrate' in navigator,
             ';
-            // プリファレンス検出''
+            // プリファレンス検出
             prefersReducedMotion: window.matchMedia('(prefers-reduced-motion: reduce')'').matches,'';
             prefersHighContrast: window.matchMedia('(prefers-contrast: high')'').matches,'';
             prefersReducedTransparency: window.matchMedia('(prefers-reduced-transparency: reduce')').matches,
             ';
-            // デバイス機能''
+            // デバイス機能
             hasKeyboard: this.detectKeyboardSupport(''';
-            hasTouch: 'ontouchstart' in window,';
+            hasTouch: 'ontouchstart' in window,'
     }'
             hasPointer: 'PointerEvent' in window })
         })'
@@ -170,17 +170,17 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * スクリーンリーダー検出'
      */''
-    detectScreenReader('')';
+    detectScreenReader()';
         if (navigator.userAgent.includes('iPhone'') || navigator.userAgent.includes('iPad')') { ''
             return window.speechSynthesis && window.speechSynthesis.speaking !== undefined ? 'voiceover' : null; }
         }
         ';
-        // Android TalkBack検出''
+        // Android TalkBack検出
         if (navigator.userAgent.includes('Android')') { ''
             return window.speechSynthesis ? 'talkback' : null; }
         }
         ';
-        // その他スクリーンリーダー''
+        // その他スクリーンリーダー
         if (window.navigator.userAgent.includes('NVDA'') || '';
             window.navigator.userAgent.includes('JAWS') ||'';
             window.speechSynthesis') { ''
@@ -193,7 +193,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * キーボードサポート検出'
      */''
-    detectKeyboardSupport('')';
+    detectKeyboardSupport()';
                navigator.userAgent.includes('iPad'); // iPadは外部キーボード想定
     }
     
@@ -211,9 +211,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         
         // キーボードナビゲーション
         this.setupScreenReaderKeyboardShortcuts();
-        ';
-        // 動的コンテンツアナウンス''
-        this.setupDynamicAnnouncements('');
+        ;
+        // 動的コンテンツアナウンス
+        this.setupDynamicAnnouncements();'
     }'
         console.log('[MobileAccessibilityManager] スクリーンリーダーサポート設定完了'); }
     }
@@ -221,16 +221,16 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * ARIAライブリージョン作成'
      */''
-    createLiveRegions('')';
+    createLiveRegions()';
         this.createLiveRegion('game-status', 'polite', 'ゲーム状態'');
         ';
-        // スコア・時間アナウンス用''
+        // スコア・時間アナウンス用
         this.createLiveRegion('score-updates', 'polite', 'スコア更新'');
         ';
-        // 重要な通知用''
+        // 重要な通知用
         this.createLiveRegion('announcements', 'assertive', '重要な通知'');
         ';
-        // エラー・警告用''
+        // エラー・警告用
         this.createLiveRegion('errors', 'assertive', 'エラーと警告');
     }
     
@@ -238,7 +238,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      * ライブリージョン作成'
      */''
     createLiveRegion(id, politeness, description') {'
-        ';
+        ';'
     }'
         const region = document.createElement('div''); }'
         region.id = `sr-${id}`;''
@@ -276,7 +276,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     /**
-     * フォーカス可能要素更新（簡略化）'
+     * フォーカス可能要素更新（簡略化）
      */''
     updateFocusableElements(''';
             'button', 'input', 'select', 'textarea', 'a[href]',')';
@@ -284,11 +284,11 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             '[role="menuitem"]', '.focusable';
         ];'
         '';
-        this.focusManager.focusableElements = Array.from('')';
+        this.focusManager.focusableElements = Array.from()';
             document.querySelectorAll(selectors.join(', ')'';
         ').filter(el => !el.disabled && !el.hasAttribute('aria-hidden') && el.offsetParent !== null');
         
-        // ゲームCanvas追加'
+        // ゲームCanvas追加
         const canvas = this.gameEngine.canvas;''
         if (canvas && !canvas.hasAttribute('tabindex')') { ''
             canvas.setAttribute('tabindex', '0'');''
@@ -301,7 +301,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * フォーカストラップ設定'
      */''
-    setupFocusTrap('')';
+    setupFocusTrap()';
         document.addEventListener('keydown', (e') => {  ''
             if (e.key === 'Tab' && this.focusManager.trapStack.length > 0) { }
                 this.handleTrappedTabNavigation(e); }
@@ -314,7 +314,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     handleTrappedTabNavigation(e) {'
         const currentTrap = this.focusManager.trapStack[this.focusManager.trapStack.length - 1];''
-        const focusableInTrap = currentTrap.querySelectorAll('')';
+        const focusableInTrap = currentTrap.querySelectorAll()';
             'button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"]")';
         );
         
@@ -326,7 +326,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         if (e.shiftKey) {
             // Shift+Tab: 後方移動
             if (document.activeElement === firstElement) {
-                e.preventDefault();
+                e.preventDefault()
     }
                 lastElement.focus(); }
             }
@@ -341,9 +341,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     /**
-     * フォーカスインジケーター強化（簡略化）'
+     * フォーカスインジケーター強化（簡略化）
      */''
-    enhanceFocusIndicators('')';
+    enhanceFocusIndicators()';
         const style = document.createElement('style');
         style.textContent = `;
             .enhanced-focus { outline: 3px solid #4CAF50 !important,
@@ -367,14 +367,14 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * タッチデバイスフォーカス管理'
      */''
-    setupTouchFocusManagement('')';
+    setupTouchFocusManagement()';
         document.addEventListener('touchstart', (e) => {  const target = e.target;
             if(this.isInteractiveElement(target) { }
                 this.setVirtualFocus(target); }'
             }''
         }, { passive: true }');
         ';
-        // タッチ終了時のフォーカス解除''
+        // タッチ終了時のフォーカス解除
         document.addEventListener('touchend', () => {  setTimeout(() => { }
                 this.clearVirtualFocus(); }
             }, 100);
@@ -386,7 +386,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      */
     setVirtualFocus(element) {'
         '';
-        this.clearVirtualFocus('')';
+        this.clearVirtualFocus()';
         element.classList.add('virtual-focus');
     }
         this.announceElementFocus(element); }
@@ -395,7 +395,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * 仮想フォーカス解除'
      */''
-    clearVirtualFocus('')';
+    clearVirtualFocus()';
         document.querySelectorAll('.virtual-focus').forEach(el => {  ');' }'
             el.classList.remove('virtual-focus'); }
         });
@@ -410,7 +410,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         '';
         let announcement = '';
         ';
-        // 要素の説明を構築''
+        // 要素の説明を構築
         const label = element.getAttribute('aria-label'') || '';
                      element.getAttribute('title'') || ;
                      element.textContent || ;
@@ -469,7 +469,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * スクリーンリーダーキーボードショートカット'
      */''
-    setupScreenReaderKeyboardShortcuts('')';
+    setupScreenReaderKeyboardShortcuts()';
         document.addEventListener('keydown', (e) => {  if (!this.accessibilityConfig.screenReader.enabled) return;
             
             // ゲーム固有のショートカット
@@ -485,7 +485,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * ゲームキーボードショートカット処理
      */
-    handleGameKeyboardShortcuts(e) {'
+    handleGameKeyboardShortcuts(e) {
         '';
         switch (e.key') {''
             case 'h':'';
@@ -510,14 +510,14 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         }
     }
     
-    /**
+    /**'
      * スクリーンリーダーショートカット処理'
      */''
     handleScreenReaderShortcuts(e') {'
-        // Ctrl+; で読み上げモード切り替え''
+        // Ctrl+; で読み上げモード切り替え
         if (e.ctrlKey && e.key === ';') {'
             e.preventDefault();''
-            this.toggleReadingMode('')';
+            this.toggleReadingMode()';
         if (e.ctrlKey && e.key === '.') {
             e.preventDefault();
     }
@@ -572,7 +572,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
      * UI変更アナウンス設定
      */
     setupUIChangeAnnouncements() {
-        // MutationObserver でDOM変更を監視'
+        // MutationObserver でDOM変更を監視
         const observer = new MutationObserver((mutations) => { ''
             mutations.forEach((mutation') => {'
     }'
@@ -583,10 +583,10 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             });''
         }');
         
-        observer.observe(document.body, { childList: true,)
+        observer.observe(document.body, { childList: true)
             subtree: true)';
             attributes: true,')';
-            attributeFilter: ['aria-label', 'aria-describedby', 'aria-live']); }
+            attributeFilter: ['aria-label', 'aria-describedby', 'aria-live']) }
     }
     
     /**
@@ -610,7 +610,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     /**
-     * 属性変更処理'
+     * 属性変更処理
      */''
     handleAttributeChanges(mutation') {'
         '';
@@ -622,13 +622,13 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     /**
-     * 通知アナウンス設定'
+     * 通知アナウンス設定
      */''
-    setupNotificationAnnouncements('')';
+    setupNotificationAnnouncements()';
         document.addEventListener('notification:show', (e) => { this.announceNotification(e.detail);' }'
         }');
         ';
-        // エラーイベントリスナー''
+        // エラーイベントリスナー
         document.addEventListener('error:show', (e) => { this.announceError(e.detail); }
         });
     }
@@ -639,7 +639,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     initializeColorSupport() {
         this.setupColorFilters();'
         this.setupContrastControls();''
-        this.setupColorPalettes('');
+        this.setupColorPalettes();
     }'
         console.log('[MobileAccessibilityManager] 色覚支援システム初期化完了'); }
     }
@@ -647,7 +647,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * 色フィルター設定（簡略化）'
      */''
-    setupColorFilters('')';
+    setupColorFilters()';
             'protanopia': 'hue-rotate(120deg) saturate(0.8')','';
             'deuteranopia': 'hue-rotate(-120deg) saturate(0.8')','';
             'tritanopia': 'hue-rotate(180deg) saturate(0.9')','';
@@ -662,7 +662,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * コントラスト制御設定'
      */''
-    setupContrastControls('')';
+    setupContrastControls()';
         this.colorSupport.contrastRatios.set('normal', 4.5');''
         this.colorSupport.contrastRatios.set('enhanced', 7.0);
         
@@ -673,14 +673,14 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * 動的コントラスト設定（簡略化）
      */
-    setupDynamicContrast() {'
+    setupDynamicContrast() {
         const observer = new MutationObserver(() => { ''
             if (this.accessibilityConfig.visualSupport.highContrast') {''
                 document.querySelectorAll('*').forEach(el => {);
                     const style = getComputedStyle(el);
                     const bgColor = style.backgroundColor;
                     const textColor = style.color;
-                    ';
+                    ';'
                     if (bgColor && textColor) {''
                         const ratio = this.calculateContrastRatio(bgColor, textColor');'
     }'
@@ -691,10 +691,10 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             }''
         }');
         
-        observer.observe(document.body, { childList: true,)
+        observer.observe(document.body, { childList: true)
             subtree: true)';
             attributes: true,')';
-            attributeFilter: ['style', 'class']); }
+            attributeFilter: ['style', 'class']) }
     }
     
     /**
@@ -725,13 +725,13 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         '';
         this.colorSupport.colorPalettes.set('high-contrast', {')'
             primary: '#FFFFFF', secondary: '#FFFF00', success: '#00FF00',')';
-            warning: '#FFFF00', error: '#FF0000', text: '#FFFFFF', background: '#000000'); }
+            warning: '#FFFF00', error: '#FF0000', text: '#FFFFFF', background: '#000000') }
     }
     
     /**
      * キーボードナビゲーション設定'
      */''
-    setupKeyboardNavigation('')';
+    setupKeyboardNavigation()';
         document.addEventListener('keydown', (e) => { this.handleKeyboardNavigation(e); }
         });
         
@@ -742,7 +742,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * キーボードナビゲーション処理（簡略化）
      */
-    handleKeyboardNavigation(e) {'
+    handleKeyboardNavigation(e) {
         '';
         switch (e.key') {''
             case 'Tab':'';
@@ -803,15 +803,15 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * 音声合成設定（簡略化）
      */
-    setupSpeechSynthesis() {'
+    setupSpeechSynthesis() {
         '';
-        const voices = this.feedbackSystems.speechSynthesis.getVoices('')';
+        const voices = this.feedbackSystems.speechSynthesis.getVoices()';
         this.selectedVoice = voices.find(voice => voice.lang.startsWith('ja') || voices[0];'
         '';
         if (voices.length === 0') {''
             this.feedbackSystems.speechSynthesis.addEventListener('voiceschanged', () => { '
     }'
-                const newVoices = this.feedbackSystems.speechSynthesis.getVoices('') }'
+                const newVoices = this.feedbackSystems.speechSynthesis.getVoices() }'
                 this.selectedVoice = newVoices.find(voice => voice.lang.startsWith('ja') || newVoices[0]; }
             });
         }
@@ -857,7 +857,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         const gainNode = this.audioContext.createGain();
         
         oscillator.connect(gainNode);
-        gainNode.connect(this.audioContext.destination);'
+        gainNode.connect(this.audioContext.destination);
         '';
         oscillator.frequency.setValueAtTime(config.frequency, this.audioContext.currentTime');''
         oscillator.type = 'sine';
@@ -886,15 +886,15 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     /**
-     * メディアクエリリスナー設定'
+     * メディアクエリリスナー設定
      */''
-    setupMediaQueryListeners('')';
+    setupMediaQueryListeners()';
         const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce')'),
         motionQuery.addListener((e) => {  this.accessibilityConfig.cognitiveSupport.reducedMotion = e.matches; }'
             this.applyMotionSettings();' }'
         }');
         ';
-        // コントラスト設定変更''
+        // コントラスト設定変更
         const contrastQuery = window.matchMedia('(prefers-contrast: high')'),
         contrastQuery.addListener((e) => {  this.accessibilityConfig.visualSupport.highContrast = e.matches; }
             this.applyContrastSettings(); }
@@ -904,7 +904,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * フォーカスリスナー設定'
      */''
-    setupFocusListeners('')';
+    setupFocusListeners()';
         document.addEventListener('focusin', (e') => {  ' }'
             this.playAudioBeep('focus');' }'
         }');'
@@ -912,7 +912,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         document.addEventListener('focusout', (e) => {  // フォーカス履歴に追加
             this.focusManager.focusHistory.push(e.target);
             if (this.focusManager.focusHistory.length > 10) { }
-                this.focusManager.focusHistory.shift(); }'
+                this.focusManager.focusHistory.shift(); }
             }''
         }');
     }
@@ -928,7 +928,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         const region = this.screenReaderState.liveRegions.get(regionId);'
         '';
         if (region') {'
-            // 既存の内容をクリア''
+            // 既存の内容をクリア
             region.textContent = '';
             
             // 少し遅延してからメッセージを設定（再読み上げを確実にする）
@@ -963,7 +963,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     /**
-     * ゲーム固有のアナウンス関数群（簡略化）'
+     * ゲーム固有のアナウンス関数群（簡略化）
      */''
     announceGameHelp(''';
         const helpMessage = 'BubblePop ゲーム。スペース/エンターでポップ、Sで状態確認、矢印キーで移動';')'
@@ -979,7 +979,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         const hp = this.gameEngine.playerData.getHP();' }'
         this.announceToScreenReader(`スコア: ${score}点、HP: ${hp')`, 'polite'});
     }
-    ';
+    ';'
     announceScoreUpdate(points, totalScore) { ' }'
         this.announceToScreenReader(`${points}点獲得。合計: ${ totalScore')点`, 'polite'');' }'
         this.playAudioBeep('success'});
@@ -994,7 +994,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * 設定関連メソッド'
      */''
-    enableScreenReader('')';
+    enableScreenReader()';
         this.announceToScreenReader('スクリーンリーダーサポートが有効になりました', 'assertive');
         this.saveAccessibilitySettings();
     }
@@ -1017,7 +1017,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     applyColorFilter(type) {
-    ';
+    ';'
         '';
         const filter = this.colorSupport.filters.get(type');''
         if (filter && type !== 'none'') {
@@ -1053,19 +1053,19 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     /**
      * 設定の保存と読み込み'
      */''
-    loadAccessibilitySettings('')';
+    loadAccessibilitySettings()';
             const saved = localStorage.getItem('bubblepop_accessibility_settings');
             if (saved) { const settings = JSON.parse(saved); }'
                 this.accessibilityConfig = { ...this.accessibilityConfig, ...settings };''
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('[MobileAccessibilityManager] 設定読み込みエラー:', error); }
         }
     }'
     '';
-    saveAccessibilitySettings('')';
+    saveAccessibilitySettings()';
             localStorage.setItem('bubblepop_accessibility_settings');'
                 JSON.stringify(this.accessibilityConfig);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'MobileAccessibilityManager.saveAccessibilitySettings'); }
         }
     }
@@ -1086,7 +1086,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     applyContrastSettings() {
-    ';
+    ';'
         '';
         if (this.accessibilityConfig.visualSupport.highContrast') {''
             document.body.classList.add('high-contrast'');'
@@ -1099,7 +1099,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
     }
     
     applyMotionSettings() {
-    ';
+    ';'
         '';
         if (this.accessibilityConfig.cognitiveSupport.reducedMotion') {'
     
@@ -1146,9 +1146,9 @@ class MobileAccessibilityManager { constructor(gameEngine) {
         try {
             this.saveAccessibilitySettings();
             
-            // 音声合成停止'
+            // 音声合成停止
             if (this.feedbackSystems.speechSynthesis) {''
-                this.feedbackSystems.speechSynthesis.cancel('')';
+                this.feedbackSystems.speechSynthesis.cancel()';
             if (this.audioContext && this.audioContext.state !== 'closed') {
     }
                 this.audioContext.close(); }
@@ -1157,12 +1157,12 @@ class MobileAccessibilityManager { constructor(gameEngine) {
             // ライブリージョン削除
             this.screenReaderState.liveRegions.forEach(region => {  );
                 if (region.parentNode) { }
-                    region.parentNode.removeChild(region); }'
+                    region.parentNode.removeChild(region); }
                 }''
             }');'
             '';
             console.log('[MobileAccessibilityManager] クリーンアップ完了');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'MobileAccessibilityManager.cleanup'); }
         }
     }
@@ -1170,7 +1170,7 @@ class MobileAccessibilityManager { constructor(gameEngine) {
 
 // シングルトンインスタンス
 let mobileAccessibilityManagerInstance = null;
-';
+';'
 export function getMobileAccessibilityManager(gameEngine = null) { if (!mobileAccessibilityManagerInstance && gameEngine) {''
         mobileAccessibilityManagerInstance = new MobileAccessibilityManager(gameEngine'); }
     }

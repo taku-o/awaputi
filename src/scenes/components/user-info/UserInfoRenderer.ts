@@ -12,19 +12,19 @@ interface Layout { isMobile: boolean,
     fontSize: {
         title: number,
         tab: number,
-        content: number; }
+        content: number }
     };
 }
 
 // タブ情報のインターフェース
 interface Tab { id: string,
     name: string,
-    icon?: string; }
+    icon?: string }
 }
 
 // ヒット領域のインターフェース
 interface HitAreas { tabs: TabArea[],
-    backButton: ButtonInfo | null; }
+    backButton: ButtonInfo | null }
 }
 
 // タブ領域のインターフェース
@@ -32,36 +32,36 @@ interface TabArea { id: string,
     x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 // ボタン情報のインターフェース
 interface ButtonInfo { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 // ゲームエンジンのインターフェース
-interface GameEngine { canvas: HTMLCanvasElement;
+interface GameEngine { canvas: HTMLCanvasElement
     }
 }
 
 // イベントバスのインターフェース
 interface EventBus { on(event: string, callback: (data?: any) => void): void;
     off(event: string, callback?: (data?: any) => void): void;
-    emit(event: string, data?: any): void; }
+    emit(event: string, data?: any): void }
 }
 
 // シーン状態のインターフェース
 interface SceneState { get(key: string): any,
-    set(key: string, value: any): void; }
+    set(key: string, value: any): void }
 }
 
 // タブマネージャーのインターフェース
 interface TabManager { renderTabHeaders(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void,
     renderTabContent(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void,
-    getTabs(): Tab[];
+    getTabs(): Tab[]
     }
 }
 
@@ -70,7 +70,7 @@ interface ProfileManager { // プロフィール関連のメソッド }
 }
 
 // ヘルプシステムのインターフェース
-interface HelpSystem { render(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void; }
+interface HelpSystem { render(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void }
 }
 
 // ダイアログマネージャーのインターフェース
@@ -104,7 +104,7 @@ export class UserInfoRenderer {
     public render(;
         context: CanvasRenderingContext2D,
         tabManager: TabManager,
-        profileManager: ProfileManager,
+        profileManager: ProfileManager
     );
         helpSystem: HelpSystem);
         dialogManager: DialogManager;
@@ -139,9 +139,9 @@ export class UserInfoRenderer {
             if (helpSystem) { helpSystem.render(context, canvas); }
             }
             
-            // ダイアログをレンダリング'
+            // ダイアログをレンダリング
             if (dialogManager) { dialogManager.render(context);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('UserInfoRenderer render error:', error);
             this.renderErrorState(context); }
         }
@@ -150,7 +150,7 @@ export class UserInfoRenderer {
     /**
      * 背景をレンダリング
      */'
-    private renderBackground(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { // グラデーション背景''
+    private renderBackground(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement): void { // グラデーション背景
         const gradient = context.createLinearGradient(0, 0, 0, canvas.height');''
         gradient.addColorStop(0, '#1a1a2e'');''
         gradient.addColorStop(1, '#16213e');
@@ -170,7 +170,7 @@ export class UserInfoRenderer {
         context.textBaseline = 'top';''
         context.fillText('ユーザー情報', canvas.width / 2, titleY');
         
-        // タイトル下のライン'
+        // タイトル下のライン
         const lineY = titleY + 50;''
         context.strokeStyle = '#4A90E2';
         context.lineWidth = 2;
@@ -198,12 +198,12 @@ export class UserInfoRenderer {
         const contentY = this.headerHeight + this.tabHeight;''
         const contentWidth = canvas.width - (this.contentPadding * 2');
         const contentHeight = canvas.height - contentY - 80; // 戻るボタンのスペースを考慮
-        ';
-        // コンテンツ背景''
+        ;
+        // コンテンツ背景
         context.fillStyle = '#2A2A2A';''
         context.fillRect(contentX, contentY, contentWidth, contentHeight');
         ';
-        // コンテンツ境界線''
+        // コンテンツ境界線
         context.strokeStyle = '#444444';
         context.lineWidth = 1;
         context.strokeRect(contentX, contentY, contentWidth, contentHeight);
@@ -213,35 +213,35 @@ export class UserInfoRenderer {
     }
     
     /**
-     * 戻るボタンをレンダリング'
+     * 戻るボタンをレンダリング
      */''
     private renderBackButton(context: CanvasRenderingContext2D, canvas: HTMLCanvasElement'): void { const buttonWidth = 120;
         const buttonHeight = 40;
         const buttonX = this.contentPadding;
         const buttonY = canvas.height - 60;
         ';
-        // ボタン背景''
+        // ボタン背景
         context.fillStyle = '#4A90E2';''
         context.fillRect(buttonX, buttonY, buttonWidth, buttonHeight');
         ';
-        // ボタン境界線''
+        // ボタン境界線
         context.strokeStyle = '#66A3E8';'
         context.lineWidth = 2;''
         context.strokeRect(buttonX, buttonY, buttonWidth, buttonHeight');
         ';
-        // ボタンテキスト''
+        // ボタンテキスト
         context.fillStyle = '#FFFFFF';''
         context.font = '16px Arial';''
         context.textAlign = 'center';''
         context.textBaseline = 'middle';''
         context.fillText('戻る', buttonX + buttonWidth / 2, buttonY + buttonHeight / 2');
         ';
-        // 戻るボタンの座標を保存''
+        // 戻るボタンの座標を保存
         this.sceneState.set('backButton', {
-            x: buttonX,);
+            x: buttonX);
             y: buttonY);
             width: buttonWidth,);
-            height: buttonHeight); }
+            height: buttonHeight) }
     }
     
     /**
@@ -254,7 +254,7 @@ export class UserInfoRenderer {
         const messageX = canvas.width / 2;
         const messageY = canvas.height - 120;
         
-        // エラー背景'
+        // エラー背景
         const padding = 20;''
         const textWidth = Math.min(400, canvas.width - 40');
         const textHeight = 60;'
@@ -263,7 +263,7 @@ export class UserInfoRenderer {
         context.fillRect(messageX - textWidth / 2 - padding, messageY - textHeight / 2 - padding / 2);''
                         textWidth + padding * 2, textHeight + padding');
         ';
-        // エラーテキスト''
+        // エラーテキスト
         context.fillStyle = '#FFFFFF';''
         context.font = '16px Arial';''
         context.textAlign = 'center';''
@@ -276,18 +276,18 @@ export class UserInfoRenderer {
      */''
     private renderErrorState(context: CanvasRenderingContext2D'): void { const canvas = context.canvas;
         ';
-        // 背景''
+        // 背景
         context.fillStyle = '#1a1a2e';''
         context.fillRect(0, 0, canvas.width, canvas.height');
         ';
-        // エラーメッセージ''
+        // エラーメッセージ
         context.fillStyle = '#FF6B6B';''
         context.font = '24px Arial';''
         context.textAlign = 'center';''
         context.textBaseline = 'middle';''
         context.fillText('レンダリングエラーが発生しました', canvas.width / 2, canvas.height / 2');
         ';
-        // サブメッセージ''
+        // サブメッセージ
         context.fillStyle = '#CCCCCC';''
         context.font = '16px Arial';''
         context.fillText('ページを再読み込みしてください', canvas.width / 2, canvas.height / 2 + 40); }
@@ -316,7 +316,7 @@ export class UserInfoRenderer {
     
     /**
      * ヒット領域の計算
-     */'
+     */
     public calculateHitAreas(canvas: HTMLCanvasElement, tabManager: TabManager): HitAreas { ''
         const layout = this.calculateLayout(canvas');
         const hitAreas: HitAreas = {'
@@ -333,7 +333,7 @@ export class UserInfoRenderer {
         
         tabs.forEach((tab, index) => {  hitAreas.tabs.push({
                 id: tab.id,
-                x: headerX + index * tabWidth,);
+                x: headerX + index * tabWidth);
                 y: headerY);
                 width: tabWidth,) }
                 height: layout.tabHeight); }
@@ -352,9 +352,9 @@ export class UserInfoRenderer {
     
     /**
      * リソースのクリーンアップ
-     */'
+     */
     public dispose(): void { ''
-        this.clearCache('')';
+        this.clearCache()';
         console.log('UserInfoRenderer disposed''); }'
     }''
 }

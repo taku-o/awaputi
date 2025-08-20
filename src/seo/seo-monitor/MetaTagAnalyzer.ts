@@ -10,7 +10,7 @@ interface MetaTagThresholds { metaTags: {
             max: number }
         },
         descriptionLength: { min: number,
-            max: number; }
+            max: number }
         };
     };
 }
@@ -21,7 +21,7 @@ interface MetaTagAlert { type: string,
     current?: number;
     threshold?: string;
     message: string,
-    timestamp: string; }
+    timestamp: string }
 }
 
 interface MetaTags { title: string | null,
@@ -29,13 +29,13 @@ interface MetaTags { title: string | null,
     keywords: string | null,
     ogTags: Record<string, string>;
     twitterTags: Record<string, string>;
-    timestamp: string; }
+    timestamp: string }
 }
 
 export class MetaTagAnalyzer {
     private thresholds: MetaTagThresholds;
     constructor(thresholds: MetaTagThresholds) {
-        this.thresholds = thresholds; }
+        this.thresholds = thresholds }
     }
     
     /**
@@ -48,12 +48,12 @@ export class MetaTagAnalyzer {
                 keywords: this.extractKeywordsTag(),
                 ogTags: this.extractOGTags(),
                 twitterTags: this.extractTwitterTags(),
-                timestamp: new Date().toISOString(); }
+                timestamp: new Date().toISOString() }
             };
             
             return metaTags;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to check meta tags', error);
             return null; }
         }
@@ -69,13 +69,13 @@ export class MetaTagAnalyzer {
             
         }
             const titleLength = metaTags.title.length; }
-            const { min, max } = this.thresholds.metaTags.titleLength;'
+            const { min, max } = this.thresholds.metaTags.titleLength;
             '';
             if(titleLength < min || titleLength > max') {'
                 alerts.push({''
                     type: 'metaTags','';
                     severity: 'warning',')';
-                    metric: 'title_length');
+                    metric: 'title_length')
             }
                     current: titleLength,) }
                     threshold: `${min}-${max}`),
@@ -94,13 +94,13 @@ export class MetaTagAnalyzer {
         
         // 説明文長のチェック
         if (metaTags.description) { const descLength = metaTags.description.length; }
-            const { min, max } = this.thresholds.metaTags.descriptionLength;'
+            const { min, max } = this.thresholds.metaTags.descriptionLength;
             '';
             if(descLength < min || descLength > max') {'
                 alerts.push({''
                     type: 'metaTags','';
                     severity: 'warning',')';
-                    metric: 'description_length');
+                    metric: 'description_length')
             }
                     current: descLength,) }
                     threshold: `${min}-${max}`),
@@ -121,16 +121,16 @@ export class MetaTagAnalyzer {
     /**
      * タイトルタグの抽出'
      */''
-    private extractTitleTag('')';
+    private extractTitleTag()';
         if (typeof document !== 'undefined'') { return document.title || null; }'
         }''
         return 'BubblePop - 泡割りゲーム'; // モックデータ
     }
     
     /**
-     * 説明メタタグの抽出'
+     * 説明メタタグの抽出
      */''
-    private extractDescriptionTag('')';
+    private extractDescriptionTag()';
         if(typeof document !== 'undefined'') {'
             '';
             const meta = document.querySelector('meta[name="description"]'');'
@@ -141,9 +141,9 @@ export class MetaTagAnalyzer {
     }
     
     /**
-     * キーワードメタタグの抽出'
+     * キーワードメタタグの抽出
      */''
-    private extractKeywordsTag('')';
+    private extractKeywordsTag()';
         if(typeof document !== 'undefined'') {'
             '';
             const meta = document.querySelector('meta[name="keywords"]'');'
@@ -154,9 +154,9 @@ export class MetaTagAnalyzer {
     }
     
     /**
-     * Open Graphタグの抽出'
+     * Open Graphタグの抽出
      */''
-    private extractOGTags('')';
+    private extractOGTags()';
         if(typeof document !== 'undefined'') {'
             '';
             const ogMetas = document.querySelectorAll('meta[property^="og: "]'),'';
@@ -180,7 +180,7 @@ export class MetaTagAnalyzer {
     /**
      * Twitterタグの抽出'
      */''
-    private extractTwitterTags('')';
+    private extractTwitterTags()';
         if(typeof document !== 'undefined'') {'
             '';
             const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]'),'';

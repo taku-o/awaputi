@@ -11,7 +11,7 @@ import { SettingsExportImport } from './settings/SettingsExportImport.js';
 interface GameEngine { [key: string]: any, }
 }
 
-interface SettingsListener { (category: string, key: string, value: any, oldValue?: any): void; }
+interface SettingsListener { (category: string, key: string, value: any, oldValue?: any): void }
 }
 
 interface ConfigWatcher { (): void; }
@@ -52,10 +52,10 @@ export class SettingsManager {
         
         // ConfigurationManagerのセットアップ
         this._setupConfigurationManager();
-        ';
-        // 設定を読み込み''
-        this.load('');
-    }
+        ;
+        // 設定を読み込み
+        this.load();
+    }'
     }'
         console.log('[SettingsManager] Main Controller initialized with sub-components'); }
     }
@@ -71,23 +71,23 @@ export class SettingsManager {
             sfxVolume: defaultSettings.sfxVolume,
             bgmVolume: defaultSettings.bgmVolume,
             isMuted: defaultSettings.isMuted }
-        }, { masterVolume: this.validator.validationRules.masterVolume,)
+        }, { masterVolume: this.validator.validationRules.masterVolume)
             sfxVolume: this.validator.validationRules.sfxVolume)';
             bgmVolume: this.validator.validationRules.bgmVolume,') }'
             isMuted: { type: 'boolean' })'),
         ';
-        // UI設定''
+        // UI設定
         this.dataManager.setupSettingsCategory('ui', { language: defaultSettings.language)
             quality: defaultSettings.quality,)';
             ...defaultSettings.ui)'';
         '), {'
             language: { ''
                 type: 'string', '';
-                validator: (value') => ['ja', 'en'].includes(value'); }
+                validator: (value') => ['ja', 'en'].includes(value') }
             },'
             quality: { ''
                 type: 'string', '';
-                validator: (value') => ['low', 'medium', 'high', 'auto'].includes(value'); }'
+                validator: (value') => ['low', 'medium', 'high', 'auto'].includes(value') }'
             },''
             showFPS: { type: 'boolean' },''
             showDebugInfo: { type: 'boolean' },''
@@ -95,7 +95,7 @@ export class SettingsManager {
             uiScale: { type: 'number', min: 0.5, max: 2.0 }''
         }');
         ';
-        // その他の設定カテゴリもセットアップ''
+        // その他の設定カテゴリもセットアップ
         this.dataManager.setupSettingsCategory('accessibility', defaultSettings.accessibility, { ' }'
             highContrast: { type: 'boolean' },''
             reducedMotion: { type: 'boolean' },''
@@ -141,9 +141,9 @@ export class SettingsManager {
     }
                 return this.dataManager.getLegacyValue(key); }
             }
-            ';
+            ';'
             return this.configManager.get(parsed.category, parsed.settingName);''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'SETTINGS_GET_ERROR', { key });
             return this.dataManager.getDefaultValue(key);
         }
@@ -166,10 +166,10 @@ export class SettingsManager {
             
             const oldValue = this.get(key);
             const parsed = this.dataManager.parseSettingKey(key);
-            ';
-            // ConfigurationManagerに設定''
+            ;
+            // ConfigurationManagerに設定
             if(parsed.isLegacy') {'
-                // レガシーキーの場合は特別処理が必要かもしれない'
+                // レガシーキーの場合は特別処理が必要かもしれない
             }'
                 this.configManager.set('legacy', parsed.settingName, value); }
             } else { this.configManager.set(parsed.category, parsed.settingName, value); }
@@ -177,9 +177,9 @@ export class SettingsManager {
             
             // 変更通知
             this.notifyChange(key, value, oldValue);
-            ';
+            ';'
             return true;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'SETTINGS_SET_ERROR', { key, value });
             return false;
         }
@@ -218,17 +218,17 @@ export class SettingsManager {
         try {
             if (key === null) {
                 // 全設定をリセット
-                const defaultSettings = this.dataManager.getDefaultSettings();'
+                const defaultSettings = this.dataManager.getDefaultSettings();
                 for(const [settingKey, defaultValue] of Object.entries(defaultSettings) {'
     }'
                     this.set(settingKey, defaultValue'); }'
                 }''
                 console.log('[SettingsManager] All settings reset to defaults');
-            } else {  // 特定の設定をリセット'
+            } else {  // 特定の設定をリセット
                 const defaultValue = this.dataManager.getDefaultValue(key);' }'
                 this.set(key, defaultValue');' }'
                 console.log(`[SettingsManager] Setting '${key')' reset to default`});''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             this.errorHandler.handleError(error, 'SETTINGS_RESET_ERROR', { key });
         }
     }
@@ -249,7 +249,7 @@ export class SettingsManager {
      * @param {Function} callback コールバック関数
      * @param {Object} options オプション
      * @returns {string} リスナーID
-     */'
+     */
     addListener(key, callback, options = { ) {' }'
         const listenerId = options.id || `listener_${Date.now(})}_${ Math.random('''
         const priority = options.priority || 'normal';)
@@ -260,11 +260,11 @@ export class SettingsManager {
             this.listeners.set(key, []); }
         }
         
-        this.listeners.get(key).push({ id: listenerId,)
+        this.listeners.get(key).push({ id: listenerId)
             callback);
             priority,);
             once: options.once || false),
-            addedAt: Date.now(); }
+            addedAt: Date.now() }
         });
         
         // 優先度でソート
@@ -333,18 +333,18 @@ export class SettingsManager {
                         
                         // onceオプションの処理
                         if (listener.once) {
-    }'
+    }
                             this.removeListenerById(listener.id);' }'
-                        } catch (error') { ''
-                        console.error('[SettingsManager] Listener error:', error); }
+                        } catch (error) { ''
+                        console.error('[SettingsManager] Listener error:', error) }
                     }
                 }
             }
             
             // UI設定の適用
-            this.uiController.applySettingChange(key, newValue, oldValue);'
+            this.uiController.applySettingChange(key, newValue, oldValue);
             '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'SETTINGS_NOTIFY_ERROR', { key, newValue, oldValue });
         }
     }
@@ -352,15 +352,15 @@ export class SettingsManager {
     // ========== 設定適用 ==========
     
     /**
-     * 全ての設定を適用'
+     * 全ての設定を適用
      */''
-    applyAllSettings('')';
+    applyAllSettings()';
             console.log('[SettingsManager] Applying all settings');
             ';
-            // UI設定の適用''
-            this.uiController.applyAllUISettings('')';
+            // UI設定の適用
+            this.uiController.applyAllUISettings()';
             console.log('[SettingsManager] All settings applied successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SETTINGS_APPLY_ALL_ERROR'); }
         }
     }
@@ -374,9 +374,9 @@ export class SettingsManager {
     save() {
         try {
             const configData = this.configManager.exportConfig();
-    }'
+    }
             return this.storageManager.saveSettings(configData);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SETTINGS_SAVE_ERROR');
             return false; }
         }
@@ -399,15 +399,15 @@ export class SettingsManager {
     }
                     this.configManager.set(key, value); }
                 }
-                ';
-                // 設定を適用''
-                this.applyAllSettings('')';
+                ;
+                // 設定を適用
+                this.applyAllSettings()';
                 console.log('[SettingsManager] Settings loaded and applied successfully');
                 return true;
             }
-            ';
+            ';'
             return false;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SETTINGS_LOAD_ERROR');
             return false; }
         }
@@ -591,9 +591,9 @@ export class SettingsManager {
         }
         
         // 通知システムをクリーンアップ
-        if(this.notificationSystem) {'
+        if(this.notificationSystem) {
             '';
-            this.notificationSystem.cleanup('');
+            this.notificationSystem.cleanup();
         }'
         console.log('[SettingsManager] Main Controller cleanup completed'); }
     }
@@ -604,7 +604,7 @@ let settingsManagerInstance = null;
 
 /**
  * SettingsManagerシングルトンインスタンスの取得
- */'
+ */
 export function getSettingsManager(gameEngine) { if (!settingsManagerInstance && gameEngine) {''
         settingsManagerInstance = new SettingsManager(gameEngine'); }
     }'

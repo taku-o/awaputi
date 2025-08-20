@@ -24,7 +24,7 @@ export class StatisticsCollector {
             HEAL: 'heal','';
             SPECIAL_EFFECT: 'special_effect','';
             GAME_STATE: 'game_state','';
-            USER_ACTION: 'user_action',';
+            USER_ACTION: 'user_action','
     }
     }'
             PERFORMANCE: 'performance' }
@@ -64,9 +64,9 @@ export class StatisticsCollector {
     collectBubbleEvent(eventType, bubbleData) {
         this.collectEvent(eventType, {
             bubbleType: bubbleData.type,
-            position: bubbleData.position,);
+            position: bubbleData.position);
             reactionTime: bubbleData.reactionTime);
-            comboMultiplier: bubbleData.comboMultiplier,);
+            comboMultiplier: bubbleData.comboMultiplier,)
     }
             scoreEarned: bubbleData.scoreEarned), this.eventCategories.BUBBLE); }
     }
@@ -76,9 +76,9 @@ export class StatisticsCollector {
      */
     collectComboEvent(eventType, comboData) {
         this.collectEvent(eventType, {
-            comboCount: comboData.count,);
+            comboCount: comboData.count);
             comboMultiplier: comboData.multiplier);
-            comboBroken: comboData.broken,);
+            comboBroken: comboData.broken,)
     }
             totalScore: comboData.totalScore), this.eventCategories.COMBO); }
     }
@@ -88,9 +88,9 @@ export class StatisticsCollector {
      */
     collectDamageEvent(eventType, damageData) {
         this.collectEvent(eventType, {
-            damageAmount: damageData.amount,);
+            damageAmount: damageData.amount);
             damageSource: damageData.source);
-            currentHP: damageData.currentHP,);
+            currentHP: damageData.currentHP,)
     }
             maxHP: damageData.maxHP), this.eventCategories.DAMAGE); }
     }
@@ -100,9 +100,9 @@ export class StatisticsCollector {
      */
     collectHealEvent(eventType, healData) {
         this.collectEvent(eventType, {
-            healAmount: healData.amount,);
+            healAmount: healData.amount);
             healSource: healData.source);
-            currentHP: healData.currentHP,);
+            currentHP: healData.currentHP,)
     }
             maxHP: healData.maxHP), this.eventCategories.HEAL); }
     }
@@ -112,9 +112,9 @@ export class StatisticsCollector {
      */
     collectSpecialEffectEvent(eventType, effectData) {
         this.collectEvent(eventType, {
-            effectType: effectData.type,);
+            effectType: effectData.type);
             duration: effectData.duration);
-            intensity: effectData.intensity,);
+            intensity: effectData.intensity,)
     }
             triggeredBy: effectData.triggeredBy), this.eventCategories.SPECIAL_EFFECT); }
     }
@@ -124,9 +124,9 @@ export class StatisticsCollector {
      */
     collectUserActionEvent(eventType, actionData) {
         this.collectEvent(eventType, {
-            actionType: actionData.type,);
+            actionType: actionData.type);
             position: actionData.position);
-            timestamp: actionData.timestamp,);
+            timestamp: actionData.timestamp,)
     }
             inputDevice: actionData.inputDevice), this.eventCategories.USER_ACTION); }
     }
@@ -136,9 +136,9 @@ export class StatisticsCollector {
      */
     collectPerformanceEvent(eventType, performanceData) {
         this.collectEvent(eventType, {
-            frameRate: performanceData.frameRate,);
+            frameRate: performanceData.frameRate);
             memoryUsage: performanceData.memoryUsage);
-            processingTime: performanceData.processingTime,);
+            processingTime: performanceData.processingTime,)
     }
             renderTime: performanceData.renderTime), this.eventCategories.PERFORMANCE); }
     }
@@ -163,20 +163,20 @@ export class StatisticsCollector {
     }
     
     /**
-     * イベントリスナーの設定'
+     * イベントリスナーの設定
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         window.addEventListener('beforeunload', () => { this.flushEvents(true); }
         });
         
         // 定期的なフラッシュ
         this.flushTimer = setInterval(() => {  const now = Date.now();
             if (now - this.lastFlushTime >= this.flushInterval) { }
-                this.flushEvents(); }'
+                this.flushEvents(); }
             }''
         }, this.flushInterval');
         ';
-        // フォーカス喪失時のフラッシュ''
+        // フォーカス喪失時のフラッシュ
         window.addEventListener('blur', () => { this.flushEvents(); }
         });
     }
@@ -243,9 +243,9 @@ export class StatisticsCollector {
             
             // 処理時間の記録
             const processingTime = performance.now() - startTime;
-            this.recordProcessingMetrics(processingTime, eventsToProcess.length);'
+            this.recordProcessingMetrics(processingTime, eventsToProcess.length);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Error processing event batch:', error);
             this.handleProcessingError(error); }
         } finally { this.isProcessing = false; }
@@ -279,7 +279,7 @@ export class StatisticsCollector {
                 '';
                 case 'bubble_popped':;
                     this.statisticsManager.onBubblePopped(;
-                        event.data.bubbleType,)';
+                        event.data.bubbleType)';
                         event.data.reactionTime)'';
                     ');'
                     break;''
@@ -296,13 +296,13 @@ export class StatisticsCollector {
     
     /**
      * コンボ関連イベントの処理
-     */'
+     */
     async processComboEvents(events) { for (const event of events) {''
             switch(event.type') {'
                 '';
                 case 'combo_updated':;
                     this.statisticsManager.onComboUpdate(;
-                        event.data.comboCount,)';
+                        event.data.comboCount)';
                         event.data.comboBroken)'';
                     ');'
                     break;''
@@ -420,7 +420,7 @@ export class StatisticsCollector {
     }
     
     /**
-     * 処理エラーのハンドリング'
+     * 処理エラーのハンドリング
      */''
     handleProcessingError(error') {'
         '';
@@ -428,9 +428,9 @@ export class StatisticsCollector {
         
         // エラー統計の更新
         if (!this.errorMetrics) {
-            this.errorMetrics = {'
+            this.errorMetrics = {
                 totalErrors: 0,'';
-                errorTypes: new Map('')';
+                errorTypes: new Map()';
         const errorType = error.name || 'UnknownError');
         this.errorMetrics.errorTypes.set();
             errorType);
@@ -492,9 +492,9 @@ export class StatisticsCollector {
         
         // 最後のフラッシュ
         this.flushEvents(true);
-        ';
-        // バッファのクリア''
-        this.clearBuffer('')';
+        ;
+        // バッファのクリア
+        this.clearBuffer()';
         window.removeEventListener('beforeunload', this.flushEvents');''
         window.removeEventListener('blur', this.flushEvents');'
     }''

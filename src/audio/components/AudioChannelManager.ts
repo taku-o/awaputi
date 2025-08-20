@@ -21,7 +21,7 @@ interface VolumeMap { master: number,
     sfx: number,
     ui: number,
     voice: number,
-    environmental: number; }
+    environmental: number }
 }
 
 /**
@@ -32,7 +32,7 @@ interface MuteStateMap { master: boolean,
     sfx: boolean,
     ui: boolean,
     voice: boolean,
-    environmental: boolean; }
+    environmental: boolean }
 }
 
 /**
@@ -43,7 +43,7 @@ interface GainNodeMap { master: GainNode | null,
     sfx: GainNode | null,
     ui: GainNode | null,
     voice: GainNode | null,
-    environmental: GainNode | null; }
+    environmental: GainNode | null }
 }
 
 /**
@@ -53,7 +53,7 @@ interface ChannelConfig { defaultVolumes: VolumeMap,
     volumeStep: number,
     minVolume: number,
     maxVolume: number,
-    fadeStep: number; }
+    fadeStep: number }
 }
 
 /**
@@ -63,7 +63,7 @@ interface ManagerState { volumes: VolumeMap,
     muteStates: MuteStateMap,
     effectiveVolumes: VolumeMap,
     channelConfig: ChannelConfig,
-    availableChannels: string[]; }
+    availableChannels: string[] }
 }
 
 /**
@@ -71,13 +71,13 @@ interface ManagerState { volumes: VolumeMap,
  */
 interface ConfigurationManager { get(category: string): any,
     set(category: string, path: string, value: any): void,
-    watch(category: string, path: string, callback: (value: any) => void): string | null; }
+    watch(category: string, path: string, callback: (value: any) => void): string | null }
 }
 
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler { handleError(error: any, context: string): void; }
+interface ErrorHandler { handleError(error: any, context: string): void }
 }
 
 /**
@@ -174,11 +174,11 @@ export class AudioChannelManager {
             
             // 初期音量を読み込み
             this.loadInitialVolumes();
-            ';
-            // 設定監視を設定''
-            this.setupConfigWatchers('')';
+            ;
+            // 設定監視を設定
+            this.setupConfigWatchers()';
             this.loggingSystem.info('AudioChannelManager', 'Audio channel manager initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.initialize'); }
         }
     }
@@ -190,8 +190,8 @@ export class AudioChannelManager {
             // マスターゲインノード
             this.gainNodes.master = this.audioContext.createGain();
             this.gainNodes.master.connect(this.audioContext.destination);
-            ';
-            // 各チャンネルのゲインノード''
+            ;
+            // 各チャンネルのゲインノード
             (Object.keys(this.gainNodes) as AudioChannel[]).forEach(channel => { ');''
                 if(channel !== 'master') {
                     
@@ -201,10 +201,10 @@ export class AudioChannelManager {
                 }
             });
             ';
-            // 初期音量を設定''
-            this.applyVolumeToGainNodes('')';
+            // 初期音量を設定
+            this.applyVolumeToGainNodes()';
             this.loggingSystem.debug('AudioChannelManager', 'Gain node hierarchy created');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.createGainNodeHierarchy'); }
         }
     }
@@ -212,7 +212,7 @@ export class AudioChannelManager {
     /**
      * 初期音量を読み込み'
      */''
-    private loadInitialVolumes('')';
+    private loadInitialVolumes()';
             const audioConfig = this.configManager.get('audio');
             
             if(audioConfig && audioConfig.volumes) {
@@ -237,9 +237,9 @@ export class AudioChannelManager {
                 });
             }'
             '';
-            this.applyVolumeToGainNodes('')';
+            this.applyVolumeToGainNodes()';
             this.loggingSystem.debug('AudioChannelManager', 'Initial volumes loaded', this.volumes);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.loadInitialVolumes'); }
         }
     }
@@ -256,7 +256,7 @@ export class AudioChannelManager {
                     this.gainNodes[channel]!.gain.value = Math.max(0, Math.min(2, volume); }
                 }'
             });''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.applyVolumeToGainNodes'); }
         }
     }
@@ -264,8 +264,8 @@ export class AudioChannelManager {
     /**
      * 設定監視を設定
      */
-    private setupConfigWatchers(): void { try {'
-            // 音量設定の監視''
+    private setupConfigWatchers(): void { try {
+            // 音量設定の監視
             (Object.keys(this.volumes) as AudioChannel[]).forEach(channel => { ');''
                 const watcher = this.configManager.watch('audio', `volumes.${channel)`, (newValue: number) => { }
                     if (newValue !== undefined) { }
@@ -274,19 +274,19 @@ export class AudioChannelManager {
                 });
                 if (watcher) this.configWatchers.add(watcher);
             });
-            ';
-            // ミュート設定の監視''
+            ;
+            // ミュート設定の監視
             (Object.keys(this.muteStates) as AudioChannel[]).forEach(channel => {  ');''
                 const watcher = this.configManager.watch('audio', `mute.${channel)`, (newValue: boolean) => { }
                     if (newValue !== undefined) { }
                         this.setMute(channel, newValue, false}); // 設定保存をスキップ
                     }
-                });'
+                });
                 if (watcher) this.configWatchers.add(watcher);''
             }');'
             '';
             this.loggingSystem.debug('AudioChannelManager', 'Config watchers setup completed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.setupConfigWatchers'); }
         }
     }
@@ -310,16 +310,16 @@ export class AudioChannelManager {
             }
             
             // 設定に保存
-            if(saveToConfig) {'
-                ';
+            if(saveToConfig) {
+                ';'
             }'
                 this.saveVolumeToConfig(channel, clampedVolume'); }
             }'
             '';
             this.loggingSystem.debug('AudioChannelManager', `Volume set: ${channel} = ${clampedVolume)`});
-            ';
+            ';'
             return clampedVolume;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.setVolume');
             return this.volumes[channel] || 0; }
         }
@@ -334,9 +334,9 @@ export class AudioChannelManager {
             if(!(channel in this.volumes) { }
                 throw new Error(`Unknown audio channel: ${channel)`});
             }
-            ';
+            ';'
             return this.volumes[channel];''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.getVolume');
             return 0; }
         }
@@ -364,16 +364,16 @@ export class AudioChannelManager {
             }
             
             // 設定に保存
-            if(saveToConfig) {'
-                ';
+            if(saveToConfig) {
+                ';'
             }'
                 this.saveMuteToConfig(channel, muted'); }
             }'
             '';
             this.loggingSystem.debug('AudioChannelManager', `Mute set: ${channel} = ${muted)`});
-            ';
+            ';'
             return muted;''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.setMute');
             return this.muteStates[channel] || false; }
         }
@@ -388,9 +388,9 @@ export class AudioChannelManager {
             if(!(channel in this.muteStates) { }
                 throw new Error(`Unknown audio channel: ${channel)`});
             }
-            ';
+            ';'
             return this.muteStates[channel];''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.getMute');
             return false; }
         }
@@ -432,9 +432,9 @@ export class AudioChannelManager {
             const currentVolume = this.getVolume(channel);
             const step = this.channelConfig.volumeStep;
             const newVolume = increase ? currentVolume + step: currentVolume - step,
-            ';
+            ';'
             return this.setVolume(channel, newVolume);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.adjustVolumeByStep');
             return this.getVolume(channel); }
         }
@@ -453,13 +453,13 @@ export class AudioChannelManager {
                     this.setVolume(channel, defaultVolume); }
                 }
             } else {  // 全チャンネルをリセット }
-                (Object.keys(this.channelConfig.defaultVolumes) as AudioChannel[]).forEach(ch => { ); }'
+                (Object.keys(this.channelConfig.defaultVolumes) as AudioChannel[]).forEach(ch => { ); }
                     this.setVolume(ch, this.channelConfig.defaultVolumes[ch]);' }'
                 }');
             }'
             '';
             this.loggingSystem.info('AudioChannelManager', `Volume reset: ${channel || 'all channels'}`);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.resetVolume'); }
         }
     }
@@ -474,13 +474,13 @@ export class AudioChannelManager {
             }
                 this.setMute(channel, false); }
             } else {  // 全チャンネルをリセット }
-                (Object.keys(this.muteStates) as AudioChannel[]).forEach(ch => { ); }'
+                (Object.keys(this.muteStates) as AudioChannel[]).forEach(ch => { ); }
                     this.setMute(ch, false);' }'
                 }');
             }'
             '';
             this.loggingSystem.info('AudioChannelManager', `Mute reset: ${channel || 'all channels'}`);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.resetMute'); }
         }
     }
@@ -518,9 +518,9 @@ export class AudioChannelManager {
      * @param channel - チャンネル名
      * @param volume - 音量'
      */''
-    private saveVolumeToConfig(channel: AudioChannel, volume: number'): void { try {' }'
+    private saveVolumeToConfig(channel: AudioChannel, volume: number'): void { try { }'
             this.configManager.set('audio', `volumes.${channel)`, volume});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.saveVolumeToConfig'); }
         }
     }
@@ -530,9 +530,9 @@ export class AudioChannelManager {
      * @param channel - チャンネル名
      * @param muted - ミュート状態'
      */''
-    private saveMuteToConfig(channel: AudioChannel, muted: boolean'): void { try {' }'
+    private saveMuteToConfig(channel: AudioChannel, muted: boolean'): void { try { }'
             this.configManager.set('audio', `mute.${channel)`, muted});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.saveMuteToConfig'); }
         }
     }
@@ -550,15 +550,15 @@ export class AudioChannelManager {
      * オーディオコンテキストとの統合
      * @param audioManager - AudioManagerインスタンス'
      */''
-    integrateWithAudioManager(audioManager: AudioManager'): void { try {''
+    integrateWithAudioManager(audioManager: AudioManager'): void { try {'
             if(audioManager && typeof audioManager.registerGainNodes === 'function') {'
-                ';
+                ';'
             }'
                 audioManager.registerGainNodes(this.gainNodes'); }
             }'
             '';
             this.loggingSystem.debug('AudioChannelManager', 'Integrated with AudioManager');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.integrateWithAudioManager'); }
         }
     }
@@ -566,8 +566,8 @@ export class AudioChannelManager {
     /**
      * チャンネルマネージャーを破棄
      */
-    dispose(): void { try {'
-            // 設定監視を停止''
+    dispose(): void { try {
+            // 設定監視を停止
             this.configWatchers.forEach(watcher => { ');''
                 if (typeof watcher === 'function') { }
                     watcher(); // アンサブスクライブ }
@@ -583,12 +583,12 @@ export class AudioChannelManager {
             });
             
             // 状態をクリア
-            (Object.keys(this.gainNodes) as AudioChannel[]).forEach(channel => {  ) }'
+            (Object.keys(this.gainNodes) as AudioChannel[]).forEach(channel => {  ) }
                 this.gainNodes[channel] = null);' }'
             }');'
             '';
             this.loggingSystem.info('AudioChannelManager', 'Audio channel manager disposed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'AudioChannelManager.dispose''); }
         }'
     }''

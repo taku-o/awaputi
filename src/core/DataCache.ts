@@ -30,12 +30,12 @@ export interface CacheEntry<T = any> { value: T,
     expiresAt: number,
     accessCount: number,
     priority: CachePriority,
-    dataSize: number; }
+    dataSize: number }
 }
 
 export interface CacheMetadata { priority: CachePriority,
     tags: string[],
-    dependencies: string[]; }
+    dependencies: string[] }
 }
 
 export interface CacheStatistics { hits: number,
@@ -44,7 +44,7 @@ export interface CacheStatistics { hits: number,
     sets: number,
     deletes: number,
     memoryPeakUsage: number,
-    lastCleanup: number; }
+    lastCleanup: number }
 }
 
 export interface CacheStatsReport extends CacheStatistics { hitRate: string,
@@ -52,9 +52,9 @@ export interface CacheStatsReport extends CacheStatistics { hitRate: string,
     maxSize: number,
     memoryUsage: number,
     maxMemory: number,
-    memoryUsagePercent: string; }
+    memoryUsagePercent: string }
 }
-';
+';'
 export type CacheEventType = '';
     | 'cacheSet' '';
     | 'cacheHit' '';
@@ -133,16 +133,16 @@ export class DataCache {
     
     /**
      * 初期化
-     */'
+     */
     initialize(): void { ''
-        this.startCleanupTimer('')';
+        this.startCleanupTimer()';
         console.log('DataCache initialized'); }
     }
     
     /**
      * データをキャッシュに設定
      */'
-    set<T>(key: string, value: T, options: CacheSetOptions = {}): void { try {''
+    set<T>(key: string, value: T, options: CacheSetOptions = {}): void { try {'
             const now = Date.now(''';
             const priority = options.priority || 'normal';
             );
@@ -183,7 +183,7 @@ export class DataCache {
                 dependencies: options.dependencies || []),
             
             this.currentMemoryUsage += dataSize;
-            this.stats.sets++;'
+            this.stats.sets++;
             '';
             if(this.currentMemoryUsage > this.stats.memoryPeakUsage') {
                 
@@ -217,7 +217,7 @@ export class DataCache {
             }
             
             // TTLチェック
-            if(entry.expiresAt <= now) {'
+            if(entry.expiresAt <= now) {
                 '';
                 this.delete(key');'
                 this.stats.misses++;''
@@ -228,14 +228,14 @@ export class DataCache {
             
             // アクセス情報更新
             entry.lastAccessed = now;
-            entry.accessCount++;'
+            entry.accessCount++;
             this.accessOrder.set(key, now);''
             this.lastAccess.set(key, now');
-            ';
+            ';'
             this.stats.hits++;''
             this.emit('cacheHit', { key, accessCount: entry.accessCount ),
             
-            return entry.value;
+            return entry.value
              }'
         } catch (error) { ' }'
             getErrorHandler(').handleError(error, 'CACHE_GET_ERROR', { key });
@@ -263,8 +263,8 @@ export class DataCache {
             const startTime = Date.now();
             value = await valueProvider();
             const generationTime = Date.now() - startTime;
-            ';
-            // キャッシュに設定''
+            ;
+            // キャッシュに設定
             this.set(key, value, options');'
             '';
             this.emit('cacheGenerated', { key, generationTime );
@@ -297,10 +297,10 @@ export class DataCache {
             // キャッシュから削除
             this.cache.delete(key);
             this.accessOrder.delete(key);
-            this.lastAccess.delete(key);'
+            this.lastAccess.delete(key);
             this.sizeEstimator.delete(key);''
             this.keyMetadata.delete(key');
-            ';
+            ';'
             this.stats.deletes++;''
             this.emit('cacheDelete', { key, dataSize );
             
@@ -376,7 +376,7 @@ export class DataCache {
         this.accessOrder.clear();
         this.lastAccess.clear();'
         this.sizeEstimator.clear();''
-        this.keyMetadata.clear('')';
+        this.keyMetadata.clear()';
         this.emit('cacheCleared', { entryCount, memoryUsage ); }
     }
     
@@ -393,7 +393,7 @@ export class DataCache {
         let keyToEvict: string | null = null,
         
         // まず低優先度のアイテムを探す
-        for(const [key] of sortedEntries) {'
+        for(const [key] of sortedEntries) {
             '';
             const metadata = this.keyMetadata.get(key');''
             if (metadata && metadata.priority === 'low') {
@@ -408,13 +408,13 @@ export class DataCache {
         }
         
         if(keyToEvict) {
-        ';
+        ';'
             '';
             this.delete(keyToEvict');'
             this.stats.evictions++;'
         
         }'
-            this.emit('cacheEvicted', { key: keyToEvict, reason: 'lru' ); }
+            this.emit('cacheEvicted', { key: keyToEvict, reason: 'lru' ) }
         }
     }
     
@@ -451,7 +451,7 @@ export class DataCache {
         this.stats.lastCleanup = now;'
         '';
         if(deletedCount > 0') {'
-            ';
+            ';'
         }'
             this.emit('cacheCleanup', { deletedCount, expiredKeys ); }
         }
@@ -469,7 +469,7 @@ export class DataCache {
                 return 8; // 基本サイズ }
             }
             
-            const type = typeof value;'
+            const type = typeof value;
             '';
             switch(type') {'
                 '';
@@ -478,7 +478,7 @@ export class DataCache {
                 case 'number':';
                     return 8;''
                 case 'string':';
-                    return value.length * 2; // Unicode文字を考慮''
+                    return value.length * 2; // Unicode文字を考慮
                 case 'object':;
                     if(Array.isArray(value) {
             }
@@ -597,9 +597,9 @@ export class DataCache {
     /**
      * リソースの解放
      */
-    destroy(): void { this.stopCleanupTimer();'
+    destroy(): void { this.stopCleanupTimer();
         this.clear();''
-        this.listeners.clear('')';
+        this.listeners.clear()';
         console.log('DataCache destroyed'); }
     }
 }
@@ -609,6 +609,6 @@ let cacheInstance: DataCache | null = null,
 
 /**
  * DataCacheシングルトンインスタンスの取得
- */'
+ */
 export function getDataCache(): DataCache { if (!cacheInstance) {''
         cacheInstance = new DataCache(' })

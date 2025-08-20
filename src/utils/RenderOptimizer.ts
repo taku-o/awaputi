@@ -7,18 +7,18 @@
 interface Viewport { x: number,
     y: number,
     width: number,
-    height: number; };
+    height: number };
 }
 interface Region { x: number,
     y: number,
     width: number,
-    height: number; };
+    height: number };
 }
 interface RenderStats { totalObjects: number,
     renderedObjects: number,
     culledObjects: number,
     dirtyRegions: number,
-    renderTime: number; };
+    renderTime: number };
 }
 interface RenderObject { id?: string;
     x: number,
@@ -31,13 +31,13 @@ interface RenderObject { id?: string;
     scale?: number;
     opacity?: number;
     type?: string;
-    render?: (ctx: CanvasRenderingContext2D) => void; };
+    render?: (ctx: CanvasRenderingContext2D) => void };
 }
 interface Layer { canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     zIndex: number,
     isDirty: boolean,
-    objects: RenderObject[];
+    objects: RenderObject[]
     };
 }
 interface PerformanceStats { fps: number,
@@ -47,7 +47,7 @@ interface PerformanceStats { fps: number,
     memoryUsage: {
         usedJSHeapSize: number,
         totalJSHeapSize: number,
-        jsHeapSizeLimit: number; }
+        jsHeapSizeLimit: number }
     };
 }
 
@@ -89,15 +89,15 @@ export class RenderOptimizer {
         this.dirtyRegions = [];
         this.lastFrameObjects = new Map();
         this.currentFrameObjects = new Map();
-        ';
-        // レイヤーシステム''
-        this.layers = new Map('')';
+        ;
+        // レイヤーシステム
+        this.layers = new Map()';
         this.offscreenCanvas = document.createElement('canvas'');
         this.offscreenCanvas.width = this.width;'
         this.offscreenCanvas.height = this.height;''
         const offscreenContext = this.offscreenCanvas.getContext('2d');''
         if(!offscreenContext') {'
-            ';
+            ';'
         }'
             throw new Error('Failed to get 2D context from offscreen canvas'); };
 }
@@ -121,7 +121,7 @@ export class RenderOptimizer {
             }
             
             this.layers.set(layerName, { canvas: canvas,
-                context: context,);
+                context: context);
                 zIndex: zIndex);
                 isDirty: false,);
                 objects: []),
@@ -129,7 +129,7 @@ export class RenderOptimizer {
             // zIndexでソート
             this.layerOrder = Array.from(this.layers.keys().sort((a, b) => { 
                 const layerA = this.layers.get(a)!;
-                const layerB = this.layers.get(b)!; }'
+                const layerB = this.layers.get(b)!; }
                 return layerA.zIndex - layerB.zIndex;' }'
             }');
         };
@@ -147,10 +147,10 @@ export class RenderOptimizer {
         
         // 差分チェック用にオブジェクトを記録
         const objId = obj.id || `${obj.x}_${obj.y}_${obj.type}`;
-        this.currentFrameObjects.set(objId, { ...obj,)
+        this.currentFrameObjects.set(objId, { ...obj)
             layer: layerName),
         
-        this.stats.totalObjects++; };
+        this.stats.totalObjects++ };
 }
     /**
      * フラスタムカリング判定
@@ -258,7 +258,7 @@ export class RenderOptimizer {
             this.dirtyRegions.forEach(region => { ); }
                 ctx.clearRect(region.x, region.y, region.width, region.height); }
             });
-        } else { ctx.clearRect(0, 0, this.width, this.height); };
+        } else { ctx.clearRect(0, 0, this.width, this.height); }
 }
         // オブジェクトをレンダリング
         layer.objects.forEach(obj => {  );
@@ -267,7 +267,7 @@ export class RenderOptimizer {
             }
                 this.renderObject(ctx, obj); }
                 this.stats.renderedObjects++; }
-            } else { this.stats.culledObjects++; };
+            } else { this.stats.culledObjects++; }
 }
         });
         
@@ -290,14 +290,14 @@ export class RenderOptimizer {
         if (obj.rotation) { ctx.rotate(obj.rotation); };
 }
         if (obj.scale && obj.scale !== 1) { ctx.scale(obj.scale, obj.scale); }
-        }'
+        }
         '';
         if (obj.opacity !== undefined && obj.opacity !== 1') { ctx.globalAlpha = obj.opacity; };
 }
         ';
-        // オブジェクト固有のレンダリング''
+        // オブジェクト固有のレンダリング
         if (obj.render && typeof obj.render === 'function') { obj.render(ctx); }
-        } else { this.renderDefault(ctx, obj); };
+        } else { this.renderDefault(ctx, obj); }
 }
         ctx.restore();
     }
@@ -326,7 +326,7 @@ export class RenderOptimizer {
             renderedObjects: 0,
             culledObjects: 0,
             dirtyRegions: this.dirtyRegions.length,
-            renderTime: 0 ;
+            renderTime: 0 
 }
         },
         
@@ -337,7 +337,7 @@ export class RenderOptimizer {
         if (this.dirtyRegions.length > 0) { this.dirtyRegions.forEach(region => { ); }
                 this.context.clearRect(region.x, region.y, region.width, region.height); }
             });
-        } else { this.context.clearRect(0, 0, this.width, this.height); };
+        } else { this.context.clearRect(0, 0, this.width, this.height); }
 }
         // レイヤーを順番にレンダリング
         this.layerOrder.forEach(layerName => {  );
@@ -353,7 +353,7 @@ export class RenderOptimizer {
                         region.x, region.y, region.width, region.height,) }
                         region.x, region.y, region.width, region.height); }
                 });
-            } else { this.context.drawImage(layer.canvas, 0, 0); };
+            } else { this.context.drawImage(layer.canvas, 0, 0); }
 }
         });
         
@@ -400,7 +400,7 @@ export class RenderOptimizer {
      * @param {RenderObject & { layer: string }} lastObj - 前フレームのオブジェクト
      * @param {RenderObject & { layer: string }} currentObj - 現フレームのオブジェクト
      * @returns {boolean} 変更されたか
-     */'
+     */
     private objectChanged(lastObj: RenderObject & { layer: string }, currentObj: RenderObject & { layer: string ): boolean {''
         const keys: (keyof RenderObject')[] = ['x', 'y', 'size', 'color', 'rotation', 'scale', 'opacity'];
         return keys.some(key => lastObj[key] !== currentObj[key]); };
@@ -467,7 +467,7 @@ export class PerformanceMonitor {
     private memoryUsage: {
         usedJSHeapSize: number,
         totalJSHeapSize: number,
-        jsHeapSizeLimit: number; }
+        jsHeapSizeLimit: number }
     };
 
     constructor() {
@@ -481,7 +481,7 @@ export class PerformanceMonitor {
         
         this.memoryUsage = {
             usedJSHeapSize: 0,
-            totalJSHeapSize: 0;
+            totalJSHeapSize: 0
 };
 }
             jsHeapSizeLimit: 0 ;
@@ -514,7 +514,7 @@ export class PerformanceMonitor {
         if ((performance as any).memory) { this.memoryUsage = {
                 usedJSHeapSize: (performance as any).memory.usedJSHeapSize,
                 totalJSHeapSize: (performance as any).memory.totalJSHeapSize,
-                jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit ;
+                jsHeapSizeLimit: (performance as any).memory.jsHeapSizeLimit 
 }
             },
         };
@@ -536,22 +536,22 @@ export class PerformanceMonitor {
      * パフォーマンス警告をチェック
      * @returns {string[]} 警告メッセージ
      */
-    getWarnings(): string[] { const warnings: string[] = [],'
+    getWarnings(): string[] { const warnings: string[] = [],
         '';
         if(this.fps < 30') {'
-            ';
+            ';'
         }'
-            warnings.push('Low FPS detected: ' + Math.round(this.fps); }
+            warnings.push('Low FPS detected: ' + Math.round(this.fps); }'
         }'
         '';
         if(this.deltaTime > 50') {'
-            ';
+            ';'
         }'
             warnings.push('High frame time: ' + Math.round(this.deltaTime') + 'ms'); }
         }'
         '';
         if(this.memoryUsage.usedJSHeapSize > this.memoryUsage.jsHeapSizeLimit * 0.8') {'
-            ';
+            ';'
         }'
             warnings.push('High memory usage: ' + Math.round(this.memoryUsage.usedJSHeapSize / 1024 / 1024') + 'MB''); };
 }

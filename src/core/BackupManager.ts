@@ -10,7 +10,7 @@ interface BackupConfig { autoBackupInterval: number,
     maxBackups: number,
     maxBackupAge: number,
     compressionEnabled: boolean,
-    encryptionEnabled: boolean; }
+    encryptionEnabled: boolean }
 }
 
 interface BackupJob { [key: string]: unknown, }
@@ -75,9 +75,9 @@ export class BackupManager {
     async initialize() { try {
             // 既存バックアップの読み込み
             await this.loadBackupHistory();
-            ';
-            // 自動バックアップの開始''
-            this.startAutoBackup('')';
+            ;
+            // 自動バックアップの開始
+            this.startAutoBackup()';
             console.log('BackupManager initialized');
              }'
         } catch (error) { ''
@@ -91,9 +91,9 @@ export class BackupManager {
      * 手動バックアップの作成'
      */''
     async createBackup(dataType = 'all', options = { ) {'
-        try {''
+        try {'
             if(this.isBackupInProgress && !options.force') {'
-                ';
+                ';'
             }'
                 throw new Error('Backup already in progress'); }
             }
@@ -105,16 +105,16 @@ export class BackupManager {
             const backupData = await this.collectBackupData(dataType);
             
             // バックアップメタデータの作成
-            const metadata = this.createBackupMetadata(dataType, backupData, { manual: true,)
+            const metadata = this.createBackupMetadata(dataType, backupData, { manual: true)
                 ...options);
-            ';
-            // 検証の実行''
+            ;
+            // 検証の実行
             if(this.validation && options.validate !== false') {'
                 '';
                 const validationResult = await this.validation.validate('backup', {)
                     metadata,);
                     data: backupData),';
-                ';
+                ';'
             }'
                 if (!validationResult.isValid') {' };'
                     throw new Error(`Backup validation failed: ${validationResult.errors.join(', '})}`);
@@ -159,7 +159,7 @@ export class BackupManager {
                 duration, };
                 size: JSON.stringify(finalBackupData).length }
             },
-            ';
+            ';'
         } catch (error) { this.updateStatistics(false, 0, 0, false);''
             getErrorHandler(').handleError(error, 'BACKUP_CREATION_ERROR', {')'
                 operation: 'createBackup');
@@ -178,13 +178,13 @@ export class BackupManager {
     /**
      * 自動バックアップの作成'
      */''
-    async createAutoBackup('')';
-            const result = await this.createBackup('all', { automatic: true,)
+    async createAutoBackup()';
+            const result = await this.createBackup('all', { automatic: true)
                 validate: true),
             
             if(result.success) {
             
-                ;
+                
             
             }'
                 this.statistics.autoBackups++;' }'
@@ -194,10 +194,10 @@ export class BackupManager {
             }
             
             return result;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUTO_BACKUP_ERROR', {')'
-                operation: 'createAutoBackup'); }
+                operation: 'createAutoBackup') }
             });
             
             return { success: false, };
@@ -213,35 +213,35 @@ export class BackupManager {
             const backupData = {};'
             '';
             if(dataType === 'all' || dataType === 'playerData'') {'
-                ';
+                ';'
             }'
                 backupData.playerData = await this.storage.load('playerData''); }
             }'
             '';
             if(dataType === 'all' || dataType === 'settings'') {'
-                ';
+                ';'
             }'
                 backupData.settings = await this.storage.load('settings''); }
             }'
             '';
             if(dataType === 'all' || dataType === 'statistics'') {'
-                ';
+                ';'
             }'
                 backupData.statistics = await this.storage.load('statistics''); }
             }'
             '';
             if(dataType === 'all' || dataType === 'achievements'') {'
-                ';
+                ';'
             }'
                 backupData.achievements = await this.storage.load('achievements''); }
             }
             ';
-            // カスタムデータタイプの処理''
+            // カスタムデータタイプの処理
             if(dataType !== 'all' && !['playerData', 'settings', 'statistics', 'achievements'].includes(dataType) { backupData[dataType] = await this.storage.load(dataType); }
             }
             
             return backupData;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_DATA_COLLECTION_ERROR', {')'
                 operation: 'collectBackupData',);
@@ -257,7 +257,7 @@ export class BackupManager {
      */
     createBackupMetadata(dataType, data, options = { ) {'
         return { version: this.version,''
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
             gameVersion: window.GAME_VERSION || '1.0.0',);
             dataTypes: Object.keys(data),';
             dataType,'';
@@ -269,7 +269,7 @@ export class BackupManager {
             encrypted: this.config.encryptionEnabled,
             userAgent: navigator.userAgent,
             platform: navigator.platform,
-    }'
+    }
             language: navigator.language,' };'
             description: options.description || (options.automatic ? 'Automatic backup' : 'Manual backup'); }
         };
@@ -288,13 +288,13 @@ export class BackupManager {
     /**
      * バックアップ履歴の読み込み'
      */''
-    async loadBackupHistory('')';
+    async loadBackupHistory()';
             const history = await this.storage.load('backupHistory');
             this.backupHistory = history || [];
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_HISTORY_LOAD_ERROR', {')'
-                operation: 'loadBackupHistory'); }
+                operation: 'loadBackupHistory') }
             });
             
             this.backupHistory = [];
@@ -313,20 +313,20 @@ export class BackupManager {
             
             this.backupHistory.push({ id: backupId,
                 timestamp: metadata.timestamp,
-                dataType: metadata.dataType,);
+                dataType: metadata.dataType);
                 size: metadata.size);
                 automatic: metadata.automatic,);
                 description: metadata.description),
             
             // 履歴の制限（最大100件）
-            if(this.backupHistory.length > 100) {'
-                ';
+            if(this.backupHistory.length > 100) {
+                '
             }'
                 this.backupHistory = this.backupHistory.slice(-100'); }
             }'
             '';
             await this.storage.save('backupHistory', this.backupHistory);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_HISTORY_UPDATE_ERROR', {')'
                 operation: 'updateBackupHistory',);
@@ -362,10 +362,10 @@ export class BackupManager {
             );
             
             return backupList;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_LIST_ERROR', {')'
-                operation: 'getBackupList'); }
+                operation: 'getBackupList') }
             });
             
             return [];
@@ -380,15 +380,15 @@ export class BackupManager {
             await this.storage.remove(`backup_${backupId)`);
             
             // 履歴からの削除
-            if(this.backupHistory) {'
-                ';
+            if(this.backupHistory) {
+                ';'
             }'
                 this.backupHistory = this.backupHistory.filter(backup => backup.id !== backupId');' }'
                 await this.storage.save('backupHistory', this.backupHistory});
             }
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_DELETE_ERROR', {')'
                 operation: 'deleteBackup',);
@@ -427,10 +427,10 @@ export class BackupManager {
             }
             
             return toDelete.length;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_CLEANUP_ERROR', {')'
-                operation: 'cleanupOldBackups'); }
+                operation: 'cleanupOldBackups') }
             });
             
             return 0;
@@ -449,16 +449,16 @@ export class BackupManager {
             
             this.autoBackupTimer = setInterval(async () => {  try { }'
                     await this.createAutoBackup();' }'
-                } catch (error') { ''
-                    console.error('Auto backup error:', error); }
+                } catch (error) { ''
+                    console.error('Auto backup error:', error) }
                 }
             }, this.config.autoBackupInterval);
             
             console.log(`Auto backup started with ${this.config.autoBackupInterval / 1000}s interval`);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUTO_BACKUP_START_ERROR', {')'
-                operation: 'startAutoBackup'); }
+                operation: 'startAutoBackup') }
             });
         }
     }
@@ -467,7 +467,7 @@ export class BackupManager {
      * 自動バックアップの停止
      */
     stopAutoBackup() {
-        try {'
+        try {
             if (this.autoBackupTimer) {''
                 clearInterval(this.autoBackupTimer');'
                 this.autoBackupTimer = null;'
@@ -475,7 +475,7 @@ export class BackupManager {
                 console.log('Auto backup stopped'); }'
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUTO_BACKUP_STOP_ERROR', {')'
-                operation: 'stopAutoBackup'); }
+                operation: 'stopAutoBackup') }
             });
         }
     }
@@ -490,7 +490,7 @@ export class BackupManager {
             if(newConfig.autoBackupInterval && this.autoBackupTimer) {
                 this.stopAutoBackup();
             }
-                this.startAutoBackup(); }'
+                this.startAutoBackup(); }
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_CONFIG_UPDATE_ERROR', {')'
                 operation: 'updateConfig',);
@@ -521,10 +521,10 @@ export class BackupManager {
     }
                     this.statistics.autoBackups++; }
                 } else { this.statistics.manualBackups++; }
-                }'
+                }
             } else { this.statistics.failedBackups++;' }'
-            } catch (error') { ''
-            console.error('Statistics update error:', error); }
+            } catch (error) { ''
+            console.error('Statistics update error:', error) }
         }
     }
     
@@ -553,7 +553,7 @@ export class BackupManager {
             }
             
             return backupData;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BACKUP_GET_ERROR', {')'
                 operation: 'getBackup',);
@@ -568,8 +568,8 @@ export class BackupManager {
      * リソースの解放
      */
     destroy() {'
-        try {''
-            this.stopAutoBackup('')';
+        try {'
+            this.stopAutoBackup()';
             console.log('BackupManager destroyed');
     }
              }'

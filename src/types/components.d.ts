@@ -13,7 +13,7 @@ export interface Component { id: string,
   
   init(): Promise<void>;
   update(deltaTime: number): void,
-  destroy(): void; }
+  destroy(): void }
 }
 
 export interface RenderableComponent extends Component { visible: boolean,
@@ -81,7 +81,7 @@ export interface Dialog extends UIComponent { title: string,
   buttons: DialogButton[],
   modal: boolean,
   
-  show(): void;'
+  show(): void;
   hide(): void;''
   addButton(button: DialogButton'): void, }
 }
@@ -89,11 +89,11 @@ export interface Dialog extends UIComponent { title: string,
 export interface DialogButton { id: string,'
   text: string,'';
   style: 'primary' | 'secondary' | 'danger',
-  onClick: () => void; }
+  onClick: () => void }
 }
 
 export interface ConfirmDialog extends Dialog { onConfirm: () => void,
-  onCancel: () => void; }
+  onCancel: () => void }
 }
 
 // Settings components
@@ -102,11 +102,11 @@ export interface SettingsPanel extends UIComponent { categories: SettingsCategor
   
   addCategory(category: SettingsCategory): void,
   switchCategory(categoryId: string): void,
-  applySettings(): void;'
+  applySettings(): void;
   resetSettings(): void;''
   restoreDefaults(''';
   type: 'boolean' | 'number' | 'string' | 'select' | 'range',
-  value: any,);
+  value: any);
   defaultValue: any);
   options?: SettingOption[];
   min?: number;
@@ -121,7 +121,7 @@ export interface SettingsPanel extends UIComponent { categories: SettingsCategor
 
 export interface SettingOption { value: any,
   label: string,
-  description?: string; }
+  description?: string }
 }
 
 // Help and tutorial components
@@ -140,7 +140,7 @@ export interface HelpTopic { id: string,
   content: string,
   category: string,
   tags: string[],
-  relatedTopics: string[]; }
+  relatedTopics: string[] }
 }
 
 export interface Tutorial extends Component { steps: TutorialStep[],
@@ -149,7 +149,7 @@ export interface Tutorial extends Component { steps: TutorialStep[],
   
   start(): void;
   nextStep(): void;
-  previousStep(): void;'
+  previousStep(): void;
   skip(): void;''
   complete(''';
   action?: 'click' | 'hover' | 'key' | 'wait';
@@ -170,7 +170,7 @@ export interface InputField extends UIComponent { value: string,
   blur(): void;
   clear(): void;
   setValue(value: string): void,
-  getValue(): string; }
+  getValue(): string }
 }
 
 export interface Button extends UIComponent { text: string,
@@ -179,7 +179,7 @@ export interface Button extends UIComponent { text: string,
   state: ButtonState,
   click(): void;
   press(): void;
-  release(): void;'
+  release(): void;
   hover(): void;''
   unhover(''';
 export type ButtonState = 'normal' | 'hover' | 'pressed' | 'disabled';
@@ -188,10 +188,10 @@ export type ButtonState = 'normal' | 'hover' | 'pressed' | 'disabled';
 export interface Container extends UIComponent {
   children: UIComponent[],
   layout: LayoutType,
-  padding: number,);
+  padding: number);
   spacing: number);
   addChild(child: UIComponent): void,
-  removeChild(child: UIComponent): void,';
+  removeChild(child: UIComponent): void,
   clearChildren(): void;''
   arrangeChildren(''';
 export type LayoutType = 'absolute' | 'horizontal' | 'vertical' | 'grid';
@@ -200,25 +200,25 @@ export interface Panel extends Container {
   title?: string;
   border: boolean,
   backgroundColor: Color,
-  borderColor: Color;
+  borderColor: Color
     }
 }
 
 export interface ScrollContainer extends Container { scrollX: number,
   scrollY: number,
-  scrollWidth: number,);
+  scrollWidth: number);
   scrollHeight: number)';
   scrollTo(x: number, y: number): void,'';
-  scrollBy(dx: number, dy: number'): void; }
+  scrollBy(dx: number, dy: number'): void }
 }
 
-// Data display components'
+// Data display components
 export interface Label extends UIComponent { text: string,''
   textAlign: 'left' | 'center' | 'right',
   wordWrap: boolean,
   fontSize: number,
   fontFamily: string,
-  textColor: Color;
+  textColor: Color
     }
 }
 
@@ -230,7 +230,7 @@ export interface ProgressBar extends UIComponent { value: number,
   borderColor: Color,
   setValue(value: number): void,
   setMaxValue(maxValue: number): void,
-  getProgress(): number; }
+  getProgress(): number }
 }
 
 export interface Chart extends UIComponent { data: ChartData[],
@@ -245,12 +245,12 @@ export type ChartType = 'bar' | 'line' | 'pie' | 'area';
 // Game-specific UI components
 export interface ScoreDisplay extends Label {
   score: number,
-  animatedScore: number,);
-  animationSpeed: number)';
+  animatedScore: number);
+  animationSpeed: number);
   setScore(score: number, animate?: boolean): void;''
   formatScore(score: number'): string, }
 }
-';
+';'
 export interface TimerDisplay extends Label { time: number,''
   format: 'seconds' | 'minutes' | 'hours',
   countUp: boolean,
@@ -269,7 +269,7 @@ export interface HealthBar extends ProgressBar { maxHealth: number,
   setHealth(health: number): void,
   damage(amount: number): void,
   heal(amount: number): void,
-  isCritical(): boolean; }
+  isCritical(): boolean }
 }
 
 // Notification and feedback components
@@ -279,7 +279,7 @@ export interface NotificationManager extends Manager { notifications: Notificati
   
   show(message: string, type?: NotificationType, duration?: number): void;
   hide(id: string): void,
-  clear(): void; }
+  clear(): void }
 }
 
 export interface Notification extends UIComponent { id: string,
@@ -289,14 +289,14 @@ export interface Notification extends UIComponent { id: string,
   remaining: number,
   
   show(): void;
-  hide(): void;'
+  hide(): void;
   pause(): void;''
   resume(''';
 export type NotificationType = 'info' | 'success' | 'warning' | 'error';
 
 export interface Toast extends Notification {
   position: ToastPosition,
-  animation: ToastAnimation;
+  animation: ToastAnimation
     }
 }'
 '';
@@ -307,7 +307,7 @@ export type ToastAnimation = 'slide' | 'fade' | 'bounce';
 export interface PerformanceMonitor extends Component { fps: number,
   frameTime: number,
   memoryUsage: number,
-  renderTime: number,);
+  renderTime: number);
   updateTime: number);
   startFrame(): void;
   endFrame(): void;
@@ -320,7 +320,7 @@ export interface PerformanceStats { fps: number,
   memory: number,
   renderTime: number,
   updateTime: number,
-  drawCalls: number; }
+  drawCalls: number }
 }
 
 export interface DebugConsole extends UIComponent { commands: Map<string, ConsoleCommand>,
@@ -330,11 +330,11 @@ export interface DebugConsole extends UIComponent { commands: Map<string, Consol
   addCommand(name: string, command: ConsoleCommand): void,
   executeCommand(commandLine: string): void,
   log(message: string): void,
-  clear(): void; }
+  clear(): void }
 }
 
 export interface ConsoleCommand { name: string,
-  description: string,';
+  description: string,
   usage: string,'';
   execute: (args: string[]') => string,' }'
 }

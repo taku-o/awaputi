@@ -12,7 +12,7 @@ interface BackgroundEffectOptions { density: number,
     speed: number,
     color: string,
     size: number,
-    opacity: number; }
+    opacity: number }
 }
 
 /**
@@ -21,14 +21,14 @@ interface BackgroundEffectOptions { density: number,
 interface BackgroundEffect { effectType: BackgroundEffectType,
     enabled: boolean,
     intensity: number,
-    options: BackgroundEffectOptions;
+    options: BackgroundEffectOptions
     }
 }
 
 /**
  * Error handler interface
  */
-interface ErrorHandler { handleError(error: any, details?: any): void; }
+interface ErrorHandler { handleError(error: any, details?: any): void }
 }
 
 /**
@@ -40,7 +40,7 @@ export class BackgroundEffectRenderer {
     private errorHandler: ErrorHandler;
     constructor(canvas: HTMLCanvasElement) {
 
-        this.canvas = canvas;
+        this.canvas = canvas
 
     }
     }
@@ -74,8 +74,8 @@ export class BackgroundEffectRenderer {
                         break; }
                 }'
             });''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderBackgroundEffects'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'BackgroundEffectRenderer.renderBackgroundEffects') }
             });
         }
     }
@@ -103,10 +103,10 @@ export class BackgroundEffectRenderer {
             }
                 context.fill(); }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderParticleBackground'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'BackgroundEffectRenderer.renderParticleBackground') }
             });
         }
     }
@@ -136,10 +136,10 @@ export class BackgroundEffectRenderer {
             }
                 context.stroke(); }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderRainEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'BackgroundEffectRenderer.renderRainEffect') }
             });
         }
     }
@@ -167,10 +167,10 @@ export class BackgroundEffectRenderer {
             }
                 context.fill(); }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderSnowEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'BackgroundEffectRenderer.renderSnowEffect') }
             });
         }
     }
@@ -178,7 +178,7 @@ export class BackgroundEffectRenderer {
     /**
      * 霧効果をレンダリング
      */'
-    renderFogEffect(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {''
+    renderFogEffect(context: CanvasRenderingContext2D, effect: BackgroundEffect): void { try {'
             context.save(''';
             context.globalCompositeOperation = 'multiply';
             );
@@ -190,10 +190,10 @@ export class BackgroundEffectRenderer {
             
             context.fillStyle = gradient;
             context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-             }'
+             }
             context.restore(});''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderFogEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'BackgroundEffectRenderer.renderFogEffect') }
             });
         }
     }
@@ -222,10 +222,10 @@ export class BackgroundEffectRenderer {
             }
                 context.fill(); }
             }
-            ';
+            ';'
             context.restore();''
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'BackgroundEffectRenderer.renderStarsEffect'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'BackgroundEffectRenderer.renderStarsEffect') }
             });
         }
     }
@@ -233,22 +233,22 @@ export class BackgroundEffectRenderer {
     /**
      * 個別背景効果の更新
      */'
-    updateBackgroundEffect(effect: BackgroundEffect, deltaTime: number): void { try {''
+    updateBackgroundEffect(effect: BackgroundEffect, deltaTime: number): void { try {'
             switch(effect.effectType') {'
                 '';
                 case 'particles':;
-                    // パーティクル位置更新などの処理'
+                    // パーティクル位置更新などの処理
                     break;''
                 case 'rain':'';
                 case 'snow':;
-                    // 天候エフェクトの更新'
+                    // 天候エフェクトの更新
                     break;''
                 case 'fog':'';
                 case 'clouds':;
                     // 雲・霧エフェクトの更新
-            }'
+            }
                     break;' }'
-            } catch (error') { this.errorHandler.handleError(error, {')'
+            } catch (error) { this.errorHandler.handleError(error, {')'
                 context: 'BackgroundEffectRenderer.updateBackgroundEffect'),' }'
             }');
         }'

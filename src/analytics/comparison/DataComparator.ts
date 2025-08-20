@@ -9,7 +9,7 @@ export class DataComparator {
         // 比較期間設定
         this.comparisonPeriods = {
             week: 7 * 24 * 60 * 60 * 1000,      // 1週間;
-            month: 30 * 24 * 60 * 60 * 1000,    // 1ヶ月;
+            month: 30 * 24 * 60 * 60 * 1000,    // 1ヶ月
     }
     }
             quarter: 90 * 24 * 60 * 60 * 1000   // 3ヶ月 }
@@ -20,31 +20,31 @@ export class DataComparator {
                 key: 'averageScore','';
                 displayName: 'スコア','';
                 unit: 'pts','';
-                format: (value) => Math.round(value'); }
+                format: (value) => Math.round(value') }
             },'
             accuracy: { ''
                 key: 'averageAccuracy','';
                 displayName: '精度','';
                 unit: '%','';
-                format: (value) => Math.round(value * 100'); }
+                format: (value) => Math.round(value * 100') }
             },'
             playTime: { ''
                 key: 'averagePlayTime','';
                 displayName: 'プレイ時間','';
                 unit: '秒','';
-                format: (value) => Math.round(value'); }
+                format: (value) => Math.round(value') }
             },'
             completionRate: { ''
                 key: 'completionRate','';
                 displayName: '完了率','';
                 unit: '%','';
-                format: (value) => Math.round(value * 100'); }
+                format: (value) => Math.round(value * 100') }
             },'
             maxCombo: { ''
                 key: 'maxCombo','';
                 displayName: '最大コンボ','';
                 unit: '',
-                format: (value) => Math.round(value); }
+                format: (value) => Math.round(value) }
             }
         };
     }
@@ -63,8 +63,7 @@ export class DataComparator {
             declines: 0,
     }
             unchanged: 0, }
-            metrics: {}
-        },
+            metrics: {},
 
         for(const metricName of metrics) {
 
@@ -77,7 +76,7 @@ export class DataComparator {
             const changePercent = pastValue !== 0 ? (change / pastValue') * 100 : 0;'
 '';
             let trend = 'unchanged';''
-            if (Math.abs(changePercent) > 5') { // 5%以上の変化で傾向判定'
+            if (Math.abs(changePercent) > 5') { // 5%以上の変化で傾向判定
 
         }'
                 trend = change > 0 ? 'improved' : 'declined'; }
@@ -116,12 +115,11 @@ export class DataComparator {
             declines: 0,
     }
             unchanged: 0, }
-            metrics: {}
-        },
-';
+            metrics: {},
+';'
         const relevantMetrics = [...metrics];''
         if(current.completionRate !== undefined && past.completionRate !== undefined') {'
-            ';
+            ';'
         }'
             relevantMetrics.push('completionRate'); }
         }
@@ -177,8 +175,7 @@ export class DataComparator {
             average: 0,
     }
             below_average: 0, }
-            metrics: {}
-        },
+            metrics: {},
 
         for(const metricName of metrics) {
 
@@ -259,8 +256,8 @@ export class DataComparator {
      */
     calculateStageDifficulty(stageData) {
         const difficulty = 10 - (stageData.completionRate * 5) - ;
-                          (stageData.averageAccuracy * 3);'
-        ';
+                          (stageData.averageAccuracy * 3);
+        ';'
     }'
         if (difficulty <= 2') {' }'
             return { level: difficulty, label: '簡単' }''

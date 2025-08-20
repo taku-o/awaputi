@@ -10,14 +10,14 @@
 interface CacheData { dataURL: string,
     timestamp: number,
     size: number,
-    configHash: string; }
+    configHash: string }
 }
 
 interface CacheStats { totalEntries: number,
     totalSize: number,
     expiredCount?: number;
     available: boolean,
-    error?: string; }
+    error?: string }
 }
 
 interface FaviconConfig { backgroundColor?: string;
@@ -74,9 +74,9 @@ export default class FaviconCacheManager { /**
             }
                 return null; }
             }
-            ';
+            ';'
             return data.dataURL;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Error reading favicon from cache:', error);
             return null; }
         }
@@ -99,9 +99,9 @@ export default class FaviconCacheManager { /**
                 size,
                 configHash }
             };
-            ';
+            ';'
             localStorage.setItem(key, JSON.stringify(data);''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Error saving favicon to cache:', error);
             // キャッシュ容量が満杯の場合、古いエントリを削除
             this._cleanupOldEntries(); }
@@ -140,10 +140,10 @@ export default class FaviconCacheManager { /**
             } else {  // 特定サイズのみ削除
                 const keys = Object.keys(localStorage).filter(key => );
                     key.startsWith(this.CACHE_PREFIX) && key.includes(`_${size)_`) }
-                ); }'
+                ); }
                 keys.forEach(key => localStorage.removeItem(key)});''
-            } catch (error') { ''
-            console.warn('Error clearing favicon cache:', error); }
+            } catch (error) { ''
+            console.warn('Error clearing favicon cache:', error) }
         }
     }
     
@@ -240,10 +240,10 @@ export default class FaviconCacheManager { /**
                         }
                     } catch (e) { // 壊れたエントリも削除
                     localStorage.removeItem(key); }
-                }'
+                }
             });''
-        } catch (error') { ''
-            console.warn('Error cleaning up favicon cache:', error); }
+        } catch (error) { ''
+            console.warn('Error cleaning up favicon cache:', error) }
         }
     }
     
@@ -263,7 +263,7 @@ export default class FaviconCacheManager { /**
         
         }
             hash = hash & hash; // 32bit整数に変換 }
-        }'
+        }
         '';
         return Math.abs(hash).toString(36');'
     }''

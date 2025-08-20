@@ -9,29 +9,29 @@ import { Season } from './SeasonDetector.js';
 // テーマ関連の型定義
 export interface ThemeColors { primary: string[],
     secondary: string[],
-    accent: string[]; }
+    accent: string[] }
 }
 
 export interface ThemeParticles { types: string[],
     density: number,
     movement: string,
-    spawnRate: number; }
+    spawnRate: number }
 }
 
 export interface ThemeEffects { bubbleDestruction: string,
     comboEffect: string,
-    backgroundPattern: string; }
+    backgroundPattern: string }
 }
 
 export interface ThemeAudio { ambientSounds: string[],
-    destructionSounds: string[]; }
+    destructionSounds: string[] }
 }
 
 export interface SeasonalTheme { name: string,
     colors: ThemeColors,
     particles: ThemeParticles,
     effects: ThemeEffects,
-    audio: ThemeAudio;
+    audio: ThemeAudio
     }
 }
 
@@ -49,7 +49,7 @@ export interface SeasonalThemes { [key: string]: SeasonalTheme,
     spring: SeasonalTheme,
     summer: SeasonalTheme,
     autumn: SeasonalTheme,
-    winter: SeasonalTheme;
+    winter: SeasonalTheme
     }
 }
 
@@ -57,19 +57,19 @@ export interface EventThemes { [key: string]: EventTheme,
     new_year: EventTheme,
     valentine: EventTheme,
     halloween: EventTheme,
-    christmas: EventTheme;
+    christmas: EventTheme
     }
 }
 
 export interface ThemeStatistics { seasonalThemes: number,
     eventThemes: number,
     totalParticleTypes: number,
-    totalColors: number; }
+    totalColors: number }
 }
 
 export class ThemeManager {
     public readonly seasonalThemes: SeasonalThemes,
-    public readonly eventThemes: EventThemes,';
+    public readonly eventThemes: EventThemes,
     '';
     constructor(''';
                 name: '春',';
@@ -165,7 +165,7 @@ export class ThemeManager {
             }
         };
         
-        // 特別イベントテーマ'
+        // 特別イベントテーマ
         this.eventThemes = { new_year: {''
                 name: '新年',' }'
                 duration: { start: '01-01', end: '01-07' },'

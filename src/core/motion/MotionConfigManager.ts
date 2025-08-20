@@ -12,7 +12,7 @@ export interface MotionManager { visualAccessibilityManager: VisualAccessibility
     hazardPatterns: Record<string, HazardPattern>,
     currentLevel: MotionLevel,
     stats: MotionStats,
-    setMotionLevel: (level: MotionLevel) => void; }
+    setMotionLevel: (level: MotionLevel) => void }
 }
 
 export interface VisualAccessibilityManager { [key: string]: any, }
@@ -35,45 +35,45 @@ export interface MotionConfig { respectSystemPreference: boolean,
 export interface VestibularGuidelines { maxRotationSpeed: number,
     maxScaleChange: number,
     maxParallaxDistance: number,
-    flashingThreshold: number; }
+    flashingThreshold: number }
 }
 
 export interface MotionCategoryConfig { enabled: boolean,
     intensity: number,
     duration: number,
-    vestibularSafe?: boolean; }
+    vestibularSafe?: boolean }
 }
 
 export interface MotionLevelConfig { name: string,
     description: string,
-    enabled: boolean; }
+    enabled: boolean }
 }
 
 export interface UserPreferences { motionLevel: MotionLevel,
     granularControls: GranularControls,
     selectiveReduction: SelectiveReduction,
     customIntensities: Map<string, number>,
-    autoReduceOnPerformance: boolean; }
+    autoReduceOnPerformance: boolean }
 }
 
 export interface GranularControls { particleDensity: number,
     cameraMovement: number,
     backgroundMotion: number,
     uiTransitions: number,
-    gameplayEffects: number; }
+    gameplayEffects: number }
 }
 
 export interface SelectiveReduction { disableRotation: boolean,
     disableScaling: boolean,
     disableParallax: boolean,
     disableFlashing: boolean,
-    disableAutoplay: boolean; }
+    disableAutoplay: boolean }
 }
 
 export interface HazardPattern { threshold: number,
     detected: boolean,
     description: string,
-    severity: HazardSeverity;
+    severity: HazardSeverity
     }
 }
 
@@ -88,46 +88,46 @@ export interface AnimationParams { rotationSpeed?: number;
 export interface ViolationInfo { type: ViolationType,
     value: number,
     limit: number,
-    severity?: HazardSeverity;
+    severity?: HazardSeverity
     }
 }
 
 export interface ConfigChangeData { [key: string]: any, }
 }
 
-export interface SystemPreferenceData { reducedMotion: boolean; }
+export interface SystemPreferenceData { reducedMotion: boolean }
 }
 
 export interface MotionLevelChangeData { previous: MotionLevel,
-    current: MotionLevel;
+    current: MotionLevel
     }
 }
 
 export interface CategoryConfigChangeData { category: string,
     previous: MotionCategoryConfig,
-    current: MotionCategoryConfig;
+    current: MotionCategoryConfig
     }
 }
 
 export interface GranularControlsChangeData { previous: GranularControls,
-    current: GranularControls;
+    current: GranularControls
     }
 }
 
 export interface SelectiveReductionChangeData { previous: SelectiveReduction,
-    current: SelectiveReduction;
+    current: SelectiveReduction
     }
 }
 
 export interface HazardDetectedData { pattern: string,
     value: number,
-    threshold: number; }
+    threshold: number }
 }
 
 export interface MotionStats { vestibularWarnings: number,
     configChanges: number,
     hazardDetections: number,
-    performanceReductions: number; }
+    performanceReductions: number }
 }
 
 export interface ConfigStats { currentLevel: MotionLevel,
@@ -135,7 +135,7 @@ export interface ConfigStats { currentLevel: MotionLevel,
     vestibularSafety: boolean,
     enabledCategories: string[],
     hazardDetections: string[],
-    listenerCount: number; }
+    listenerCount: number }
 }
 
 export interface LevelSettings { [category: string]: MotionCategoryConfig,
@@ -144,25 +144,25 @@ export interface LevelSettings { [category: string]: MotionCategoryConfig,
 
 // 列挙型
 export type MotionLevel = 'none' | 'essential' | 'reduced' | 'normal' | 'enhanced';
-';
+';'
 export type ViolationType = '';
     | 'rotation_speed' | 'scale_change' | 'parallax_distance' '';
     | 'flashing_rate' | 'intensity_too_high' | 'duration_too_long';'
 '';
 export type HazardSeverity = 'low' | 'medium' | 'high' | 'critical';
-';
+';'
 export type ConfigEventType = '';
     | 'systemPreference' | 'motionLevel' | 'categoryConfig' '';
     | 'granularControls' | 'selectiveReduction' | 'hazardDetected';
-';
+';'
 export type MotionCategory = '';
     | 'transitions' | 'transforms' | 'parallax' | 'particles' '';
     | 'camera' | 'ui' | 'game' | 'background';
 ';
-// 型ガード''
+// 型ガード
 export type ConfigListener = (type: ConfigEventType, data: ConfigChangeData') => void;
 ';
-// 定数''
+// 定数
 export const MOTION_LEVELS: MotionLevel[] = ['none', 'essential', 'reduced', 'normal', 'enhanced'];''
 export const STORAGE_KEY = 'motionManager_preferences';''
 export const MEDIA_QUERY_REDUCED_MOTION = '(prefers-reduced-motion: reduce')',
@@ -195,7 +195,7 @@ export const DEFAULT_SELECTIVE_REDUCTION: SelectiveReduction = { disableRotation
 
 // ユーティリティ関数
 export function isValidMotionLevel(level: string): level is MotionLevel { return MOTION_LEVELS.includes(level as MotionLevel); }
-}'
+}
 '';
 export function isValidCategory(category: string'): category is MotionCategory { return [''
         'transitions', 'transforms', 'parallax', 'particles',']';
@@ -319,8 +319,8 @@ export class MotionConfigManager {
         this.config = motionManager.config;
         this.userPreferences = motionManager.userPreferences;
         this.hazardPatterns = motionManager.hazardPatterns;
-        ';
-        // レベル別設定のキャッシュを初期化''
+        ;
+        // レベル別設定のキャッシュを初期化
         this.levelSettingsCache = createDefaultLevelSettings('';
     }
     })'
@@ -343,15 +343,15 @@ export class MotionConfigManager {
                 console.log('System reduced motion preference detected'); }
             }
             
-            // 変更を監視'
+            // 変更を監視
             const changeHandler = (e: MediaQueryListEvent) => {  ' }'
                 this.handleSystemPreferenceChange(e.matches'); }
             };'
             '';
             reducedMotionQuery.addEventListener('change', changeHandler);'
             '';
-        } catch (error') { ''
-            console.warn('Failed to detect motion preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to detect motion preferences:', error) }
         }
     }
     
@@ -383,15 +383,15 @@ export class MotionConfigManager {
                 // 基本設定をマージ
                 Object.assign(this.userPreferences, preferences);
                 
-                // カスタム強度の復元（Map形式）'
+                // カスタム強度の復元（Map形式）
                 if(preferences.customIntensities && Array.isArray(preferences.customIntensities) {'
             }'
                     this.userPreferences.customIntensities = new Map(preferences.customIntensities'); }
                 }'
                 '';
                 console.log('Motion preferences loaded:', this.userPreferences);''
-            } catch (error') { ''
-            console.warn('Failed to load motion preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load motion preferences:', error) }
         }
     }
     
@@ -406,13 +406,13 @@ export class MotionConfigManager {
 
         try { const toSave = {
                 ...this.userPreferences,
-                customIntensities: Array.from(this.userPreferences.customIntensities.entries(); }
+                customIntensities: Array.from(this.userPreferences.customIntensities.entries() }
             };'
             '';
             localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave)');''
             console.log('Motion preferences saved');''
-        } catch (error') { ''
-            console.warn('Failed to save motion preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save motion preferences:', error) }
         }
     }
     
@@ -439,10 +439,10 @@ export class MotionConfigManager {
         
         // カテゴリ設定の更新
         this.updateCategorySettings(level);
-        ';
-        // 設定の保存''
-        this.saveUserPreferences('')';
-        this.notifyConfigListeners('motionLevel', { previous: previousLevel, )
+        ;
+        // 設定の保存
+        this.saveUserPreferences()';
+        this.notifyConfigListeners('motionLevel', { previous: previousLevel )
             current: level ),
          }
         console.log(`Motion level changed: ${previousLevel} → ${level)`});
@@ -504,7 +504,7 @@ export class MotionConfigManager {
         
         const previousConfig = { ...this.config.motionCategories[category] };
         
-        // 設定値の検証とクランプ'
+        // 設定値の検証とクランプ
         const validatedConfig = this.validateCategoryConfig(config);''
         Object.assign(this.config.motionCategories[category], validatedConfig');'
         '';
@@ -512,7 +512,7 @@ export class MotionConfigManager {
             previous: previousConfig,);
             current: this.config.motionCategories[category]),
         
-        return true; }
+        return true }
     }
 
     /**
@@ -524,13 +524,13 @@ export class MotionConfigManager {
         }'
         '';
         if(typeof config.intensity === 'number') {'
-            ';
+            ';'
         }'
             validated.intensity = clampIntensity(config.intensity'); }
         }'
         '';
         if(typeof config.duration === 'number') {'
-            ';
+            ';'
         }'
             validated.duration = clampDuration(config.duration'); }
         }'
@@ -547,7 +547,7 @@ export class MotionConfigManager {
     updateGranularControls(controls: Partial<GranularControls>): void {
         const previousControls = { ...this.userPreferences.granularControls };
         
-        // 値の検証とクランプ'
+        // 値の検証とクランプ
         Object.keys(controls).forEach(key => {  ')'
             const value = controls[key as keyof GranularControls]');''
             if (typeof value === 'number') { }
@@ -555,12 +555,12 @@ export class MotionConfigManager {
             }
         });
         ';
-        // 設定の保存''
-        this.saveUserPreferences('')';
+        // 設定の保存
+        this.saveUserPreferences()';
         this.notifyConfigListeners('granularControls', { previous: previousControls,')'
             current: this.userPreferences.granularControls)'),';
         '';
-        console.log('Granular motion controls updated:', this.userPreferences.granularControls); }
+        console.log('Granular motion controls updated:', this.userPreferences.granularControls) }
     }
     
     /**
@@ -569,7 +569,7 @@ export class MotionConfigManager {
     updateSelectiveReduction(reductions: Partial<SelectiveReduction>): void {
         const previousReductions = { ...this.userPreferences.selectiveReduction };
         
-        // Boolean値のみ更新'
+        // Boolean値のみ更新
         Object.keys(reductions).forEach(key => {  ')'
             const value = reductions[key as keyof SelectiveReduction]');''
             if (typeof value === 'boolean') { }
@@ -577,12 +577,12 @@ export class MotionConfigManager {
             }
         });
         ';
-        // 設定の保存''
-        this.saveUserPreferences('')';
+        // 設定の保存
+        this.saveUserPreferences()';
         this.notifyConfigListeners('selectiveReduction', { previous: previousReductions,')'
             current: this.userPreferences.selectiveReduction)'),';
         '';
-        console.log('Selective motion reduction updated:', this.userPreferences.selectiveReduction); }
+        console.log('Selective motion reduction updated:', this.userPreferences.selectiveReduction) }
     }
     
     /**
@@ -595,53 +595,53 @@ export class MotionConfigManager {
         const guidelines = this.config.vestibularGuidelines;
         const violations: ViolationInfo[] = [],
         
-        // 回転速度チェック'
+        // 回転速度チェック
         if(animationParams.rotationSpeed !== undefined && ')';
             animationParams.rotationSpeed > guidelines.maxRotationSpeed') {'
             violations.push({''
-                type: 'rotation_speed',);
+                type: 'rotation_speed');
                 value: animationParams.rotationSpeed)';
-                limit: guidelines.maxRotationSpeed,');
+                limit: guidelines.maxRotationSpeed,')
         }'
                 severity: 'high'); }
         }
         
-        // スケール変更チェック'
+        // スケール変更チェック
         if(animationParams.scaleChange !== undefined && ')';
             animationParams.scaleChange > guidelines.maxScaleChange') {'
             violations.push({''
-                type: 'scale_change',);
+                type: 'scale_change');
                 value: animationParams.scaleChange)';
-                limit: guidelines.maxScaleChange,');
+                limit: guidelines.maxScaleChange,')
         }'
                 severity: 'medium'); }
         }
         
-        // パララックス距離チェック'
+        // パララックス距離チェック
         if(animationParams.parallaxDistance !== undefined && ')';
             animationParams.parallaxDistance > guidelines.maxParallaxDistance') {'
             violations.push({''
-                type: 'parallax_distance',);
+                type: 'parallax_distance');
                 value: animationParams.parallaxDistance)';
-                limit: guidelines.maxParallaxDistance,');
+                limit: guidelines.maxParallaxDistance,')
         }'
                 severity: 'medium'); }
         }
         
-        // 点滅頻度チェック'
+        // 点滅頻度チェック
         if(animationParams.flashingRate !== undefined && ')';
             animationParams.flashingRate > guidelines.flashingThreshold') {'
             violations.push({''
-                type: 'flashing_rate',);
+                type: 'flashing_rate');
                 value: animationParams.flashingRate)';
-                limit: guidelines.flashingThreshold,');
+                limit: guidelines.flashingThreshold,')
         }'
                 severity: 'critical'); }
         }'
         '';
         if(violations.length > 0') {'
             this.motionManager.stats.vestibularWarnings++;''
-            console.warn('Vestibular safety violations detected:', violations);
+            console.warn('Vestibular safety violations detected:', violations)
         }
             return false; }
         }
@@ -696,8 +696,8 @@ export class MotionConfigManager {
     private notifyConfigListeners(type: ConfigEventType, data: ConfigChangeData): void { this.configListeners.forEach(listener => { )
             try {); }'
                 listener(type, data);' }'
-            } catch (error') { ''
-                console.error('Config listener error:', error); }
+            } catch (error) { ''
+                console.error('Config listener error:', error) }
             }
         });
     }
@@ -728,13 +728,13 @@ export class MotionConfigManager {
     exportConfig(): { motionLevel: MotionLevel,
         categoryConfigs: Record<string, MotionCategoryConfig>,
         userPreferences: UserPreferences,
-        vestibularGuidelines: VestibularGuidelines;
+        vestibularGuidelines: VestibularGuidelines
     }
     } { return {  };
             motionLevel: this.motionManager.currentLevel, }
             categoryConfigs: { ...this.config.motionCategories },
             userPreferences: { ...this.userPreferences,
-                customIntensities: new Map(this.userPreferences.customIntensities); }
+                customIntensities: new Map(this.userPreferences.customIntensities) }
             },
             vestibularGuidelines: { ...this.config.vestibularGuidelines }
         },
@@ -759,8 +759,8 @@ export class MotionConfigManager {
                 }
                 
                 if(importedConfig.userPreferences.selectiveReduction) {
-                ';
-                    ';
+                ';'
+                    ';'
                 }'
                     this.updateSelectiveReduction(importedConfig.userPreferences.selectiveReduction'); }
                 }
@@ -768,7 +768,7 @@ export class MotionConfigManager {
             '';
             console.log('Configuration imported successfully');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to import configuration:', error);
             return false; }
         }
@@ -777,7 +777,7 @@ export class MotionConfigManager {
     /**
      * 設定をデフォルトにリセット'
      */''
-    resetToDefaults('')';
+    resetToDefaults()';
         this.setMotionLevel('normal');
         
         // 段階的制御をデフォルトにリセット
@@ -788,9 +788,9 @@ export class MotionConfigManager {
         
         // カスタム強度をクリア
         this.userPreferences.customIntensities.clear();
-        ';
-        // 設定を保存''
-        this.saveUserPreferences('')';
+        ;
+        // 設定を保存
+        this.saveUserPreferences()';
         console.log('Configuration reset to defaults');
     }
     
@@ -798,7 +798,7 @@ export class MotionConfigManager {
      * コンポーネントクリーンアップ
      */'
     destroy(): void { ''
-        this.configListeners.clear('')';
+        this.configListeners.clear()';
         console.log('[MotionConfigManager] Component destroyed''); }'
     }''
 }

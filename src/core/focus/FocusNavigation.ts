@@ -5,7 +5,7 @@
 
 // 型定義
 export interface FocusManager { gameEngine: GameEngine,
-    emit: (event: string, data: any) => void; }
+    emit: (event: string, data: any) => void }
 }
 
 export interface GameEngine { // GameEngineインターフェースの基本定義
@@ -14,28 +14,28 @@ export interface GameEngine { // GameEngineインターフェースの基本定�
 
 export interface Navigation2DConfig { enabled: boolean,
     grid: NavigationGrid | null,
-    currentPosition: GridPosition;
+    currentPosition: GridPosition
     }
 }
 
 export interface NavigationGrid { rows: number,
     columns: number,
-    elements: HTMLElement[][];
+    elements: HTMLElement[][]
     }
 }
 
 export interface GridPosition { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface KeyboardNavigationConfig { enabled: boolean,
     wrapAround: boolean,
     arrowKeysEnabled: boolean,
-    homeEndEnabled: boolean; }
+    homeEndEnabled: boolean }
 }
 
 export interface FocusableElementsUpdateEvent { count: number,
-    previousCount: number; }
+    previousCount: number }
 }
 
 export interface NavigationStats { focusableElementsCount: number,
@@ -43,7 +43,7 @@ export interface NavigationStats { focusableElementsCount: number,
     focusHistoryLength: number,
     navigation2DEnabled: boolean,
     keyboardNavigationEnabled: boolean,
-    wrapAroundEnabled: boolean; }
+    wrapAroundEnabled: boolean }
 }
 
 export interface ElementRect { left: number,
@@ -51,23 +51,23 @@ export interface ElementRect { left: number,
     right: number,
     bottom: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface Point2D { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface NavigationScoreCalculation { distance: number,
     alignment: number,
     totalScore: number,
-    isValidDirection: boolean; }
+    isValidDirection: boolean }
 }
 
 export interface ViewportInfo { height: number,
     scrollTop: number,
     visibleTop: number,
-    visibleBottom: number; }
+    visibleBottom: number }
 }
 
 export interface FocusValidationResult { isValid: boolean,
@@ -79,7 +79,7 @@ export interface FocusValidationResult { isValid: boolean,
 export interface NavigationContext { currentElement: HTMLElement | null,
     targetElement: HTMLElement | null,
     direction: NavigationDirection,
-    method: NavigationMethod;
+    method: NavigationMethod
     }
 }
 
@@ -90,7 +90,7 @@ export type FocusableElementType = '';
     | 'anchor' | 'button' | 'input' | 'select' | 'textarea' '';
     | 'contenteditable' | 'audio' | 'video' | 'summary' | 'iframe' | 'custom';
 
-// 定数'
+// 定数
 export const FOCUSABLE_SELECTORS = [']';
     'a[href]','';
     'button:not([disabled]')','';
@@ -115,7 +115,7 @@ export const DEFAULT_2D_CONFIG: Navigation2DConfig = { enabled: false,
     grid: null, }
     currentPosition: { x: 0, y: 0 }
 };
-';
+';'
 export const NAVIGATION_KEYS = { ''
     TAB: 'Tab','';
     ARROW_UP: 'ArrowUp','';
@@ -131,7 +131,7 @@ export const NAVIGATION_KEYS = { ''
 export const ALIGNMENT_WEIGHT = 100;
 export const DEFAULT_MAX_HISTORY_SIZE = 10;
 ';
-// ユーティリティ関数''
+// ユーティリティ関数
 export function isValidHTMLElement(element: any'): element is HTMLElement { return element && '
            element.nodeType === Node.ELEMENT_NODE && '';
            typeof element.focus === 'function'; }
@@ -181,9 +181,9 @@ export function isDirectionValid(from: Point2D, to: Point2D, direction: Navigati
         default: return true; }
     }
 }
-';
+';'
 export function getFocusableElementType(element: HTMLElement): FocusableElementType { ''
-    const tagName = element.tagName.toLowerCase('')';
+    const tagName = element.tagName.toLowerCase()';
     if (tagName === 'a' && element.hasAttribute('href')') return 'anchor';''
     if (tagName === 'button'') return 'button';''
     if (tagName === 'input'') return 'input';''
@@ -210,7 +210,7 @@ export class FocusNavigation {
     // 2Dナビゲーション設定
     private navigation2D: Navigation2DConfig;
     // キーボードナビゲーション設定
-    private keyboardNavigation: KeyboardNavigationConfig';
+    private keyboardNavigation: KeyboardNavigationConfig;
 '';
     constructor(focusManager: FocusManager') {
         this.focusManager = focusManager;
@@ -220,7 +220,7 @@ export class FocusNavigation {
     }
         // 設定の初期化 }
         this.navigation2D = { ...DEFAULT_2D_CONFIG };
-        this.keyboardNavigation = { ...DEFAULT_KEYBOARD_CONFIG };'
+        this.keyboardNavigation = { ...DEFAULT_KEYBOARD_CONFIG };
         '';
         console.log('[FocusNavigation] Component initialized');
     }
@@ -231,7 +231,7 @@ export class FocusNavigation {
     updateFocusableElements(container: Document | HTMLElement = document'): void { try {
             const previousCount = this.focusableElements.length;
             ';
-            // 要素を取得してフィルタリング''
+            // 要素を取得してフィルタリング
             const elements = Array.from(container.querySelectorAll(FOCUSABLE_SELECTORS.join(', '));
                 .filter((element): element is HTMLElement => isValidHTMLElement(element);
                 .filter(element => this.isElementFocusable(element);
@@ -245,13 +245,13 @@ export class FocusNavigation {
             ' }'
             console.log(`[FocusNavigation] Updated focusable elements: ${previousCount} -> ${ this.focusableElements.length)`');
             ';
-            // 変更をFocusManagerに通知''
+            // 変更をFocusManagerに通知
             this.focusManager.emit('focusableElementsUpdated', {)
                 count: this.focusableElements.length,) }
                 previousCount) as FocusableElementsUpdateEvent});'
             '';
-        } catch (error') { ''
-            console.error('[FocusNavigation] Error updating focusable elements:', error); }
+        } catch (error) { ''
+            console.error('[FocusNavigation] Error updating focusable elements:', error) }
         }
     }
     
@@ -260,34 +260,34 @@ export class FocusNavigation {
      */
     isElementFocusable(element: HTMLElement): boolean { if (!element || (element as any).disabled) return false;
         ';
-        // hidden属性のチェック''
+        // hidden属性のチェック
         if ((element as any).hidden') return false;
         ';
-        // aria-hiddenのチェック''
+        // aria-hiddenのチェック
         if (element.getAttribute('aria-hidden'') === 'true'') return false;
         ';
-        // tabindexが-1の場合はプログラム的にのみフォーカス可能''
+        // tabindexが-1の場合はプログラム的にのみフォーカス可能
         const tabIndex = element.getAttribute('tabindex'');''
         if (tabIndex === '-1'') return false;
         ';
-        // contenteditable要素のチェック''
+        // contenteditable要素のチェック
         if (element.contentEditable === 'true'') return true;
         ';
-        // フォーム要素のチェック''
+        // フォーム要素のチェック
         if(element.matches('input, select, textarea, button') {'
             const formElement = element as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | HTMLButtonElement;'
         }'
             return !formElement.disabled && (element as HTMLInputElement').type !== 'hidden'; }
         }
         ';
-        // リンクのチェック''
+        // リンクのチェック
         if(element.matches('a') {'
             const linkElement = element as HTMLAnchorElement;'
         }'
             return !!(linkElement.href && linkElement.href.length > 0'); }
         }
         ';
-        // その他のインタラクティブ要素''
+        // その他のインタラクティブ要素
         if(element.matches('audio[controls], video[controls], summary, iframe') { return true; }
         }
         
@@ -300,8 +300,8 @@ export class FocusNavigation {
      */
     isElementVisible(element: HTMLElement): boolean { if (!element) return false;
         
-        try {'
-            // display: noneやvisibility: hiddenのチェック''
+        try {
+            // display: noneやvisibility: hiddenのチェック
             const style = window.getComputedStyle(element');''
             if(style.display === 'none' || style.visibility === 'hidden'') {
                 
@@ -309,15 +309,15 @@ export class FocusNavigation {
                 return false; }
             }
             ';
-            // 親要素も含めて透明度をチェック''
+            // 親要素も含めて透明度をチェック
             if (style.opacity === '0') return false;
             
             // 要素のサイズをチェック
             const rect = element.getBoundingClientRect();
             if (rect.width === 0 && rect.height === 0) return false;
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[FocusNavigation] Error checking element visibility:', error);
             return false; }
         }
@@ -394,10 +394,10 @@ export class FocusNavigation {
             const targetElement = this.focusableElements[newIndex];
             if(targetElement) {
                 this.setFocus(targetElement);
-            }'
+            }
                 return targetElement;' }'
-            } catch (error') { ''
-            console.error('[FocusNavigation] Error moving to next element:', error); }
+            } catch (error) { ''
+            console.error('[FocusNavigation] Error moving to next element:', error) }
         }
         
         return null;
@@ -444,10 +444,10 @@ export class FocusNavigation {
             // インデックスを更新
             this.currentFocusIndex = this.focusableElements.indexOf(element);
             
-            console.log(`[FocusNavigation] Focus set to element:`, element.tagName, element.id || element.className);'
+            console.log(`[FocusNavigation] Focus set to element:`, element.tagName, element.id || element.className);
             ' }'
-        } catch (error') { ''
-            console.error('[FocusNavigation] Error setting focus:', error); }
+        } catch (error) { ''
+            console.error('[FocusNavigation] Error setting focus:', error) }
         }
     }
     
@@ -506,10 +506,10 @@ export class FocusNavigation {
                     }
                     break;
                     
-                case NAVIGATION_KEYS.PAGE_UP:';
+                case NAVIGATION_KEYS.PAGE_UP:;
                 case NAVIGATION_KEYS.PAGE_DOWN: return this.handlePageNavigation(event),'';
-            } catch (error') { ''
-            console.error('[FocusNavigation] Error handling keyboard navigation:', error); }
+            } catch (error) { ''
+            console.error('[FocusNavigation] Error handling keyboard navigation:', error) }
         }
         
         return false;
@@ -567,7 +567,7 @@ export class FocusNavigation {
      */
     private handle2DNavigation(event: KeyboardEvent): boolean {
         const { key } = event;
-        let direction: NavigationDirection,';
+        let direction: NavigationDirection,
         '';
         switch(key') {'
             '';
@@ -578,7 +578,7 @@ export class FocusNavigation {
             case NAVIGATION_KEYS.ARROW_LEFT: direction = 'left',';
                 break;''
             case NAVIGATION_KEYS.ARROW_RIGHT: direction = 'right',
-                break;
+                break
         }
             default: return false; }
         }
@@ -642,7 +642,7 @@ export class FocusNavigation {
     }
     
     /**
-     * 要素間のアライメントを計算'
+     * 要素間のアライメントを計算
      */''
     private calculateAlignment(fromRect: DOMRect, toRect: DOMRect, direction: NavigationDirection'): number { ''
         if(direction === 'up' || direction === 'down') {
@@ -700,7 +700,7 @@ export class FocusNavigation {
     }
     
     /**
-     * 2Dナビゲーションを有効/無効化'
+     * 2Dナビゲーションを有効/無効化
      */''
     set2DNavigationEnabled(enabled: boolean'): void { this.navigation2D.enabled = enabled;' }'
         console.log(`[FocusNavigation] 2D navigation ${enabled ? 'enabled' : 'disabled')`});
@@ -738,7 +738,7 @@ export class FocusNavigation {
     /**
      * フォーカス履歴をクリア'
      */''
-    clearFocusHistory('')';
+    clearFocusHistory()';
         console.log('[FocusNavigation] Focus history cleared');
     }
     
@@ -821,7 +821,7 @@ export class FocusNavigation {
     /**
      * コンポーネントクリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('[FocusNavigation] Component destroyed'');'
     }''
 }

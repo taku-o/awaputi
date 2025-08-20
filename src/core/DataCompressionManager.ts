@@ -18,14 +18,14 @@ interface CompressionConfig { compression: {
     },
     thresholds: { memoryUsage: number,
         recordCount: number,
-        compressionRatio: number; }
+        compressionRatio: number }
     };
 }
 
 interface CompressionState { isCompressing: boolean,
     queue: CompressionJob[],
     history: CompressionHistoryEntry[],
-    statistics: CompressionStatistics;
+    statistics: CompressionStatistics
     }
 }
 
@@ -34,7 +34,7 @@ interface CompressionJob { data: any,
     options: CompressionOptions,
     resolve: (result: CompressionResult) => void,
     reject: (error: Error) => void,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface CompressionOptions { sampleRate?: number;
@@ -55,7 +55,7 @@ interface CompressionInfo { originalSize: number,
     finalSize?: number;
     compressionRatio?: number;
     compressionTime?: number;
-    stages: CompressionStageInfo[];
+    stages: CompressionStageInfo[]
     }
 }
 
@@ -64,7 +64,7 @@ interface CompressionStageInfo { algorithm: string,
     compressedSize: number,
     ratio: number,
     processingTime: number,
-    error?: string; }
+    error?: string }
 }
 
 interface CompressionMetadata { id: string,
@@ -72,16 +72,16 @@ interface CompressionMetadata { id: string,
     strategies: string[],
     compressionInfo: CompressionInfo,
     timestamp: number,
-    version: string; }
+    version: string }
 }
 
 interface CompressionStatistics { totalCompressed: number,
     totalSaved: number,
     averageRatio: number,
-    lastCompression: number | null; }
+    lastCompression: number | null }
 }
 
-interface CompressionHistoryEntry extends CompressionInfo { timestamp: number; }
+interface CompressionHistoryEntry extends CompressionInfo { timestamp: number }
 }
 
 interface NumericSummary { type: 'numeric_summary',
@@ -96,16 +96,16 @@ interface NumericSummary { type: 'numeric_summary',
         p25: number,
         p75: number,
         p90: number,
-        p95: number; }
+        p95: number }
     };
 }
-';
+';'
 interface ObjectArraySummary { ''
     type: 'object_array_summary',
     count: number,
     fields: Record<string, FieldInfo>;
     dateRange: DateRange | null,
-    sample: any[]; }
+    sample: any[] }
 }
 
 interface FieldInfo { type: string,
@@ -117,7 +117,7 @@ interface FieldInfo { type: string,
 
 interface DateRange { start: number,
     end: number,
-    span: number; }
+    span: number }
 }
 
 export class DataCompressionManager {
@@ -155,7 +155,7 @@ export class DataCompressionManager {
                 lastCompression: null }
             })
         })
-        // 圧縮アルゴリズム'
+        // 圧縮アルゴリズム
         this.compressionAlgorithms = new Map(['])';
             ['summary', this.createSummaryCompression.bind(this')],'';
             ['sampling', this.createSamplingCompression.bind(this')],'';
@@ -164,7 +164,7 @@ export class DataCompressionManager {
             ['dictionary', this.createDictionaryCompression.bind(this)]'';
         ]');
         
-        // データタイプ別圧縮戦略'
+        // データタイプ別圧縮戦略
         this.compressionStrategies = new Map([']';
             ['sessions', ['summary', 'sampling']],'';
             ['timeSeriesData', ['aggregation', 'delta']],'';
@@ -229,7 +229,7 @@ export class DataCompressionManager {
             compressionInfo.compressionRatio = compressionInfo.finalSize / compressionInfo.originalSize;
             compressionInfo.compressionTime = Date.now() - startTime;
             
-            // 圧縮が効果的でない場合は元データを返す'
+            // 圧縮が効果的でない場合は元データを返す
             if (compressionInfo.compressionRatio > this.config.thresholds.compressionRatio) { ' }'
                 console.warn(`Compression not effective: ${compressionInfo.compressionRatio.toFixed(2})}`');
                 return { data: data,'
@@ -250,9 +250,9 @@ export class DataCompressionManager {
                 compressed: true,
                 metadata: metadata, };
                 info: compressionInfo }
-            },'
+            },
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Data compression failed:', error);
             throw error; }
         } finally { this.compressionState.isCompressing = false;
@@ -263,19 +263,19 @@ export class DataCompressionManager {
     /**
      * 圧縮戦略の決定
      */'
-    private determineCompressionStrategy(dataType: string, data: any): string[] { // 既定戦略から開始''
+    private determineCompressionStrategy(dataType: string, data: any): string[] { // 既定戦略から開始
         let strategies = this.compressionStrategies.get(dataType') || ['summary'];
         
-        // データサイズに基づく調整'
+        // データサイズに基づく調整
         const dataSize = this.calculateDataSize(data);''
         if(dataSize > 10 * 1024 * 1024') {'
-            // 10MB以上'
+            // 10MB以上
         }'
             strategies = ['aggregation', ...strategies]; }
         }
         
         // データ構造に基づく調整
-        if(Array.isArray(data) {'
+        if(Array.isArray(data) {
             '';
             if (data.length > 10000') {'
         }'
@@ -296,7 +296,7 @@ export class DataCompressionManager {
     private hasTimeSeriesPattern(data: any'): boolean { ''
         if (!data || typeof data !== 'object') return false;
         ';
-        // タイムスタンプフィールドの存在確認''
+        // タイムスタンプフィールドの存在確認
         const hasTimestamp = Object.keys(data).some(key => ');''
             key.includes('timestamp'') || key.includes('date'') || key.includes('time');
         
@@ -360,21 +360,21 @@ export class DataCompressionManager {
     private compressArrayToSummary(array: any[], options: CompressionOptions): any { ''
         if (array.length === 0') return array;
         ';
-        // 数値配列の統計サマリー''
+        // 数値配列の統計サマリー
         if(array.every(item => typeof item === 'number') {'
-            ';
+            ';'
         }'
             return this.createNumericSummary(array'); }
         }
         ';
-        // オブジェクト配列のサマリー''
+        // オブジェクト配列のサマリー
         if(array.every(item => typeof item === 'object') {'
-            ';
+            ';'
         }'
             return this.createObjectArraySummary(array, options'); }
         }
         
-        // その他の配列'
+        // その他の配列
         return { ''
             type: 'array_summary',
             length: array.length,
@@ -389,7 +389,7 @@ export class DataCompressionManager {
     private createNumericSummary(numbers: number[]): NumericSummary { ''
         const sorted = [...numbers].sort((a, b) => a - b');
         const length = numbers.length;
-        ';
+        ';'
         return { ''
             type: 'numeric_summary',
             count: length,
@@ -426,7 +426,7 @@ export class DataCompressionManager {
             count: array.length,
             fields: new Map(),
             dateRange: null,
-            sample: array.slice(0, Math.min(100, array.length); }
+            sample: array.slice(0, Math.min(100, array.length) }
         };
         
         // フィールド分析
@@ -434,18 +434,18 @@ export class DataCompressionManager {
             Object.entries(obj).forEach(([key, value]) => {
                 if(!summary.fields.has(key) {
                     summary.fields.set(key, {)
-                        type: typeof value);
+                        type: typeof value)
                 }
                         count: 0,) }
                         values: []); }
                     });
-                }'
+                }
                 '';
                 const fieldInfo = summary.fields.get(key');
                 fieldInfo.count++;'
                 '';
                 if(typeof value === 'number') {'
-                    ';
+                    ';'
                 }'
                     fieldInfo.values.push(value');' }'
                 } else if (typeof value === 'string' && value.length < 100) { fieldInfo.values.push(value); }
@@ -453,7 +453,7 @@ export class DataCompressionManager {
             });
         });
         ';
-        // フィールド統計の計算''
+        // フィールド統計の計算
         for(const [key, fieldInfo] of summary.fields') {'
             '';
             if (fieldInfo.type === 'number' && fieldInfo.values.length > 0) {'
@@ -488,7 +488,7 @@ export class DataCompressionManager {
      * タイムスタンプの抽出
      */
     private extractTimestamps(array: any[]): number[] { const timestamps = [];
-        ';
+        ';'
         array.forEach(obj => { );''
             Object.entries(obj).forEach(([key, value]') => {''
                 if ((key.includes('timestamp'') || key.includes('date'') || key.includes('time')') &&'';
@@ -511,10 +511,10 @@ export class DataCompressionManager {
         const sampleSize = Math.min(maxSamples, Math.floor(data.length * sampleRate);
         
         if (sampleSize >= data.length) return data;
-        ';
-        // 戦略的サンプリング''
+        ;
+        // 戦略的サンプリング
         const samples = this.strategicSampling(data, sampleSize');
-        ';
+        ';'
         return { ''
             type: 'sampled_data',
             originalCount: data.length,
@@ -538,13 +538,13 @@ export class DataCompressionManager {
         // 等間隔サンプリング + ランダム要素
         for(let i = 0; i < sampleSize; i++) {
             const baseIndex = i * interval;
-            const randomOffset = Math.floor(Math.random() * interval);'
+            const randomOffset = Math.floor(Math.random() * interval);
             const index = Math.min(baseIndex + randomOffset, data.length - 1);'
         }'
             samples.push(data[index]'); }
         }
         ';
-        // 重要なポイント（極値など）を優先的に含める''
+        // 重要なポイント（極値など）を優先的に含める
         if(data.length > 0 && typeof data[0] === 'object') {
             const importantSamples = this.findImportantSamples(data, Math.floor(sampleSize * 0.2);
         }
@@ -577,11 +577,11 @@ export class DataCompressionManager {
     
     /**
      * 集約圧縮の作成
-     */'
+     */
     private async createAggregationCompression(data: any, options: CompressionOptions): Promise<any> { ''
         if (!Array.isArray(data)') return data;'
         '';
-        const aggregationPeriod = options.aggregationPeriod || 'hour'; // hour, day, week''
+        const aggregationPeriod = options.aggregationPeriod || 'hour'; // hour, day, week
         const aggregationFields = options.aggregationFields || ['score', 'playTime', 'accuracy'];
         
         return this.aggregateTimeSeriesData(data, aggregationPeriod, aggregationFields); }
@@ -599,7 +599,7 @@ export class DataCompressionManager {
             if(!aggregated.has(periodKey) {
             
                 aggregated.set(periodKey, {)
-                    period: periodKey,);
+                    period: periodKey,)
             }
                     count: 0) }
                     ...fields.reduce((acc, field) => { }
@@ -642,10 +642,10 @@ export class DataCompressionManager {
                     };
                 }
             });
-            ';
+            ';'
             return processed;''
         }');
-        ';
+        ';'
         return { ''
             type: 'aggregated_data',
             aggregationPeriod: period,
@@ -662,12 +662,12 @@ export class DataCompressionManager {
     private getPeriodKey(timestamp: number, period: string): string { const date = new Date(timestamp);'
         '';
         switch(period') {'
-            ';
+            ';'
         }'
             case 'hour':' }'
-                return `${date.getFullYear(})}-${date.getMonth(})}-${date.getDate(})}-${ date.getHours('')'
+                return `${date.getFullYear(})}-${date.getMonth(})}-${date.getDate(})}-${ date.getHours()'
             case 'day':') }'
-                return `${date.getFullYear(})}-${date.getMonth(})}-${ date.getDate('')'
+                return `${date.getFullYear(})}-${date.getMonth(})}-${ date.getDate()'
             case 'week':);
                 const weekStart = new Date(date);'
                 weekStart.setDate(date.getDate() - date.getDay();' }'
@@ -707,7 +707,7 @@ export class DataCompressionManager {
             const delta = {};
             const current = data[i];
             const previous = data[i - 1];
-            ';
+            ';'
             Object.keys(current).forEach(key => {  );''
                 if (deltaFields.includes(key') && typeof current[key] === 'number') { }
                     delta[key] = current[key] - (previous[key] || 0); }
@@ -717,7 +717,7 @@ export class DataCompressionManager {
             '';
             result.push(delta');
         }
-        ';
+        ';'
         return { ''
             type: 'delta_compressed',
             deltaFields: deltaFields,
@@ -739,7 +739,7 @@ export class DataCompressionManager {
             if(Array.isArray(obj) { }
                 return obj.map(item => compress(item); }
             }
-            ';
+            ';'
             const result = {};''
             Object.entries(obj).forEach(([key, value]') => {  ''
                 if (typeof value === 'string' && value.length > 10) { }
@@ -779,7 +779,7 @@ export class DataCompressionManager {
     private createCompressionMetadata(dataType: string, compressionInfo: CompressionInfo, strategies: string[]): CompressionMetadata { return { }
             id: `compression_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`,
             dataType,
-            strategies,';
+            strategies,;
             compressionInfo,'';
             timestamp: Date.now(''';
             version: '1.0');
@@ -832,9 +832,9 @@ export class DataCompressionManager {
     }
     
     /**
-     * 圧縮ニーズのチェック'
+     * 圧縮ニーズのチェック
      */''
-    private checkCompressionNeeds('')';
+    private checkCompressionNeeds()';
         console.debug('Checking compression needs...');
     }
     
@@ -845,7 +845,7 @@ export class DataCompressionManager {
         const cutoffTime = Date.now() - (this.config.retention.maxRetentionDays * 24 * 60 * 60 * 1000);
         
         for(const [id, metadata] of this.compressionMetadata) {
-        ';
+        ';'
             if (metadata.timestamp < cutoffTime) {'
         
         }'

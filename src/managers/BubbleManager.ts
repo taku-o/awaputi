@@ -12,7 +12,7 @@ import { BubbleDragSystem } from './bubble-manager/BubbleDragSystem';''
 import { BubbleEffectProcessor } from './bubble-manager/BubbleEffectProcessor';
 import type { BubbleManager as IBubbleManager, 
     Bubble, ;
-    Position, ';
+    Position, ';'
     TestBubbleInfo ' }'
 } from '../types/game';
 
@@ -51,7 +51,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     }
     
     /**
-     * 泡を生成'
+     * 泡を生成
      */''
     spawnBubble(type: string | null = null, position: Position | null = null'): Bubble | null { ''
         console.log('[DEBUG] BubbleManager.spawnBubble 呼び出し開始'');''
@@ -165,7 +165,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         // 優先度の低い泡を削除
         const bubblesWithPriority = this.bubbles.map((bubble, index) => ({ bubble)
             index, : undefined;
-            priority: this.calculateBubblePriority(bubble); }
+            priority: this.calculateBubblePriority(bubble) }
         });
         
         // 優先度順にソート（低い順）
@@ -191,13 +191,13 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
      * 泡の優先度を計算（低いほど削除対象）
      */ : undefined
     calculateBubblePriority(bubble: Bubble): number { let priority = 0;
-        ';
-        // 画面内の泡は高優先度''
+        ;
+        // 画面内の泡は高優先度
         if (this.physicsEngine.isBubbleVisible(bubble)') {
             priority += 100; }
         }
         ';
-        // レア泡は高優先度''
+        // レア泡は高優先度
         const rareTypes = ['rainbow', 'pink', 'clock', 'score', 'diamond', 'boss'];
         if(rareTypes.includes(bubble.type) { priority += 50; }
         }
@@ -229,7 +229,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     
     /**
      * 泡を描画
-     */'
+     */
     render(context: CanvasRenderingContext2D): void { const performanceOptimizer = getPerformanceOptimizer();''
         const renderQuality = (performanceOptimizer as any).getRenderQuality? .(') || 'medium';
         
@@ -296,11 +296,11 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
     
     /**
      * 泡を割る
-     */'
+     */
     popBubble(bubble: Bubble, x: number, y: number): boolean { ''
         console.log(`${bubble.type) bubble popped`');
         ';
-        // 幻の泡のすり抜け判定''
+        // 幻の泡のすり抜け判定
         if(bubble.type === 'phantom') {'
             const config = bubble.getTypeConfig();'
         }'
@@ -368,9 +368,9 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
             this.gameEngine.returnBubbleToPool(bubble); }
         });
         this.bubbles = [];
-        this.dragSystem.resetDrag();'
+        this.dragSystem.resetDrag();
         this.offscreenBubbles.clear();''
-        this.offscreenTimer.clear('')';
+        this.offscreenTimer.clear()';
         console.log('All bubbles cleared');
     }
     
@@ -424,7 +424,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
         }
                     removedCount++; }
                     return false; }
-                }'
+                }
                 return true;''
             }');''
         } else if (typeof condition === 'function') { // 条件関数による削除
@@ -434,7 +434,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
                 }
                     removedCount++; }
                     return false; }
-                }'
+                }
                 return true;''
             }');''
         } else if (condition === 'all') { // 全削除
@@ -469,7 +469,7 @@ export class BubbleManager implements IBubbleManager { public gameEngine: any,
 
     /**
      * イベント用バブルタイプを設定
-     */'
+     */
     setEventBubbleTypes(types: string[]): void { if (this.spawner && this.spawner.setEventBubbleTypes) {''
             this.spawner.setEventBubbleTypes(types'); }'
         } else {  ' }'

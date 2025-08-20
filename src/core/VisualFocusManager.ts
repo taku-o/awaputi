@@ -41,7 +41,7 @@ export class VisualFocusManager {'
         // 視覚フィードバック設定
         this.config = {
             focusRing: {
-                enabled: true,';
+                enabled: true,
                 width: 3,'';
                 color: '#4A90E2',
                 offset: 2,
@@ -81,7 +81,7 @@ export class VisualFocusManager {'
         // 状態管理
         this.state = { currentFocusElement: null,
             previousFocusElement: null,
-            navigationPath: [],';
+            navigationPath: [],
             activeVisualCues: new Set(),'';
             animationTimers: new Map(''';
             focusVisible: 'visual-focus-visible','';
@@ -92,7 +92,7 @@ export class VisualFocusManager {'
         })
         // Main Controller Pattern: サブコンポーネント管理
         this.focusStateManager = new FocusStateManager(this);
-        this.focusEffectRenderer = new FocusEffectRenderer(this);'
+        this.focusEffectRenderer = new FocusEffectRenderer(this);
         this.focusEventHandler = new FocusEventHandler(this);''
         this.focusAccessibilitySupport = new FocusAccessibilitySupport(this');'
         '';
@@ -113,14 +113,14 @@ export class VisualFocusManager {'
             
             // イベントリスナーの設定
             this.focusEventHandler.setupEventListeners();
-            ';
-            // システム設定の検出と適用''
-            this.focusStateManager.detectAndApplySystemSettings('');
+            ;
+            // システム設定の検出と適用
+            this.focusStateManager.detectAndApplySystemSettings();'
     }'
             console.log('VisualFocusManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'VISUAL_FOCUS_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -133,9 +133,9 @@ export class VisualFocusManager {'
         
         // 既存のスタイルを削除)
         const existingStyle = document.getElementById(styleId);
-        if(existingStyle) {'
+        if(existingStyle) {
             '';
-            existingStyle.remove('')';
+            existingStyle.remove()';
         const style = document.createElement('style');
         style.id = styleId;
         style.textContent = this.generateVisualCSS();'
@@ -189,7 +189,7 @@ export class VisualFocusManager {'
             /* キーボードモード専用表示 */
             body:not(.${this.cssClasses.keyboardMode)}) .${this.cssClasses.focusVisible} { outline: none !important,
                 box-shadow: none !important,
-                animation: none !important; }
+                animation: none !important }
             }
             
             /* フォーカスリング要素 */
@@ -203,7 +203,7 @@ export class VisualFocusManager {'
                 opacity: 0,
             }
             
-            .visual-focus-ring.active { opacity: 1; }
+            .visual-focus-ring.active { opacity: 1 }
             }
             
             /* ナビゲーションインジケータ */
@@ -219,14 +219,14 @@ export class VisualFocusManager {'
                 z-index: 10000,
                 pointer-events: none,
                 opacity: 0, }
-                transform: translateY(-10px},)
+                transform: translateY(-10px})
                 transition: all ${navigationFeedback.animationSpeed}ms ease-out)
                 backdrop-filter: blur(8px),
                 border: 1px solid rgba(255, 255, 255, 0.1),
             }
             
             .visual-focus-navigation.visible { opacity: 1,
-                transform: translateY(0); }
+                transform: translateY(0) }
             }
             
             /* キーボードヒント */
@@ -249,7 +249,7 @@ export class VisualFocusManager {'
             }
             
             .visual-focus-keyboard-hint.visible { opacity: 1,
-                transform: translateY(0); }
+                transform: translateY(0) }
             }
             
             /* パンくずリスト */
@@ -264,7 +264,7 @@ export class VisualFocusManager {'
                 z-index: 10000,
                 pointer-events: none,
                 opacity: 0, }
-                transform: translateY(-10px},)
+                transform: translateY(-10px})
                 transition: all ${navigationFeedback.animationSpeed}ms ease-out)
                 backdrop-filter: blur(4px),
                 border: 1px solid rgba(0, 0, 0, 0.1),
@@ -272,7 +272,7 @@ export class VisualFocusManager {'
             }
             
             .visual-focus-breadcrumb.visible { opacity: 1,
-                transform: translateY(0); }
+                transform: translateY(0) }
             }
             
             /* フォーカスオーバーレイ */
@@ -284,7 +284,7 @@ export class VisualFocusManager {'
                 transition: opacity ${focusRing.animationDuration}ms ease-out,
             }
             
-            .visual-focus-overlay.active { opacity: 1; }
+            .visual-focus-overlay.active { opacity: 1 }
             }
             
             /* レスポンシブ対応 */
@@ -300,7 +300,7 @@ export class VisualFocusManager {'
                 
                 .visual-focus-breadcrumb { top: 10px,
                     left: 10px,
-                    right: 10px; }
+                    right: 10px }
                 }
             }
             
@@ -312,7 +312,7 @@ export class VisualFocusManager {'
                 .visual-focus-keyboard-hint,
                 .visual-focus-breadcrumb,
                 .visual-focus-overlay { animation: none !important,
-                    transition: none !important; }
+                    transition: none !important }
                 }
             }
         `;
@@ -321,13 +321,13 @@ export class VisualFocusManager {'
     /**
      * 視覚要素の作成'
      */''
-    createVisualElements('')';
+    createVisualElements()';
         this.elements.focusRing = document.createElement('div'');''
         this.elements.focusRing.className = 'visual-focus-ring';''
         this.elements.focusRing.setAttribute('aria-hidden', 'true');''
         document.body.appendChild(this.elements.focusRing');
         ';
-        // ナビゲーションインジケータ''
+        // ナビゲーションインジケータ
         this.elements.navigationIndicator = document.createElement('div'');''
         this.elements.navigationIndicator.className = 'visual-focus-navigation';''
         this.elements.navigationIndicator.setAttribute('aria-hidden', 'true'');'
@@ -401,11 +401,11 @@ export class VisualFocusManager {'
             
             // ナビゲーションパスの更新
             this.focusStateManager.updateNavigationPath(element);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'VISUAL_FOCUS_ERROR', {')'
                 operation: 'handleFocusChange',);
-                element: element.tagName); }
+                element: element.tagName) }
             });
         }
     }
@@ -469,7 +469,7 @@ export class VisualFocusManager {'
             }
             
             // 視覚設定の更新
-            if(config.visual.motion) {'
+            if(config.visual.motion) {
                 '';
                 if (config.visual.motion.reduced') {'
             }'
@@ -481,8 +481,8 @@ export class VisualFocusManager {'
         }
         
         // 設定の反映
-        if(config.keyboard) {'
-            ';
+        if(config.keyboard) {
+            ';'
         }'
             Object.assign(this.config.keyboardHints, config.keyboard'); }
         }'
@@ -519,7 +519,7 @@ export class VisualFocusManager {'
         if (!enabled) {'
             this.focusEffectRenderer.clearAllEffects();'
     }'
-            this.focusAccessibilitySupport.hideKeyboardHints('') }'
+            this.focusAccessibilitySupport.hideKeyboardHints() }'
         console.log(`VisualFocusManager ${enabled ? 'enabled' : 'disabled')`});
     }
     
@@ -544,8 +544,8 @@ export class VisualFocusManager {'
         this.setupVisualStyles();
         
         // 現在のフォーカスがある場合は再描画
-        if(this.state.currentFocusElement && this.focusEffectRenderer) {'
-            ';
+        if(this.state.currentFocusElement && this.focusEffectRenderer) {
+            ';'
         }'
             this.focusEffectRenderer.render(this.state.currentFocusElement'); }
         }'
@@ -558,7 +558,7 @@ export class VisualFocusManager {'
      * @param {string} key - 押されたキー
      */
     handleKeyPress(key) {
-        // イベントハンドラーに委譲'
+        // イベントハンドラーに委譲
         if (this.focusEventHandler) {'
     }'
             this.focusEventHandler.handleKeyPress(key'); }
@@ -570,7 +570,7 @@ export class VisualFocusManager {'
     /**
      * クリーンアップ（Main Controller Pattern）'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying VisualFocusManager...');
         
         // コンポーネントの解放
@@ -593,22 +593,22 @@ export class VisualFocusManager {'
         // DOM要素の削除
         Object.values(this.elements).forEach(element => {  );
             if (element && element.parentNode) { }
-                element.parentNode.removeChild(element); }'
+                element.parentNode.removeChild(element); }
             }''
         }');
         ';
-        // スタイル要素の削除''
+        // スタイル要素の削除
         const styleElement = document.getElementById('visual-focus-manager-styles');
         if (styleElement) { styleElement.remove(); }
         }
         
         // CSSクラスの削除
         document.body.classList.remove(;
-            this.cssClasses.keyboardMode,);
+            this.cssClasses.keyboardMode);
             this.cssClasses.highContrast);
         
         // 全てのフォーカス関連クラスを削除
-        document.querySelectorAll(`.${ this.cssClasses.focusVisible)`).forEach(el => {); }'
+        document.querySelectorAll(`.${ this.cssClasses.focusVisible)`).forEach(el => {); }
             el.classList.remove(this.cssClasses.focusVisible});''
         }');'
         '';
@@ -620,9 +620,9 @@ export class VisualFocusManager {'
             el.classList.remove('visual-focus-group', 'active'); }
         });
         
-        // データのクリア'
+        // データのクリア
         this.state.navigationPath = [];''
-        this.state.activeVisualCues.clear('')';
+        this.state.activeVisualCues.clear()';
         console.log('VisualFocusManager destroyed with component architecture'');'
     }''
 }

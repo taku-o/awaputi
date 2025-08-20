@@ -244,7 +244,7 @@ export class ComparisonAlgorithms {
     /**
      * データ品質を評価
      * @param {Array} playerMetrics - プレイヤーメトリクス
-     * @returns {Object} データ品質評価'
+     * @returns {Object} データ品質評価
      */''
     assessBenchmarkDataQuality(playerMetrics') {'
         const sampleSize = playerMetrics.length;''
@@ -358,7 +358,7 @@ export class ComparisonAlgorithms {
      * @returns {Object} 信頼区間
      */
     calculateConfidenceInterval(mean, stdDev, sampleSize) {
-        // 95%信頼区間（z値 = 1.96）'
+        // 95%信頼区間（z値 = 1.96）
         const zScore = 1.96;''
         const standardError = stdDev / Math.sqrt(sampleSize');
         const marginOfError = zScore * standardError;

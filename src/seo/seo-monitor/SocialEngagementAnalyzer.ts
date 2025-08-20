@@ -15,13 +15,13 @@ interface SocialEngagementData { timestamp: number,
     twitterCard?: Record<string, string>; }
 }
 
-interface MonitoringData { socialEngagement: SocialEngagementData[];
+interface MonitoringData { socialEngagement: SocialEngagementData[]
     }
 }
 
 interface SocialEngagementTrend { timestamp: number,
     totalShares: number,
-    engagementRate: number; }
+    engagementRate: number }
 }
 
 export class SocialEngagementAnalyzer {
@@ -29,7 +29,7 @@ export class SocialEngagementAnalyzer {
     private monitoringData: MonitoringData;
     constructor(config: SEOConfig, monitoringData: MonitoringData) {
 
-        this.config = config;
+        this.config = config
 
     }
     }
@@ -99,7 +99,7 @@ export class SocialEngagementAnalyzer {
     /**
      * Open Graphタグの分析'
      */''
-    private analyzeOGTags('')';
+    private analyzeOGTags()';
         if(typeof document !== 'undefined'') {'
             '';
             const ogMetas = document.querySelectorAll('meta[property^="og: "]'),'';
@@ -123,7 +123,7 @@ export class SocialEngagementAnalyzer {
     /**
      * Twitter Cardの分析'
      */''
-    private analyzeTwitterCard('')';
+    private analyzeTwitterCard()';
         if(typeof document !== 'undefined'') {'
             '';
             const twitterMetas = document.querySelectorAll('meta[name^="twitter: "]'),'';
@@ -171,6 +171,6 @@ export class SocialEngagementAnalyzer {
     getSocialEngagementTrend(): SocialEngagementTrend[] { return this.monitoringData.socialEngagement.map(data => ({)
             timestamp: data.timestamp)';
             totalShares: data.totalShares,')';
-            engagementRate: data.engagementRate))'); }'
+            engagementRate: data.engagementRate))') }'
     }''
 }

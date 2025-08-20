@@ -11,13 +11,13 @@ interface TutorialConfig { enableInteractiveTutorials: boolean,
     tutorialSpeed: 'slow' | 'normal' | 'fast',
     enableVoiceGuidance: boolean,
     showVisualIndicators: boolean,
-    allowTutorialSkipping: boolean; }
+    allowTutorialSkipping: boolean }
 }
 
 interface TutorialStep { id: string,'
     title: string,'';
     type: 'explanation' | 'practice' | 'configuration',
-    duration: number; }
+    duration: number }
 }
 
 interface TutorialDefinition { title: string,
@@ -25,13 +25,13 @@ interface TutorialDefinition { title: string,
     steps: TutorialStep[],';
     estimatedTime: number,'';
     difficulty: 'beginner' | 'intermediate' | 'advanced',
-    prerequisites: string[]; }
+    prerequisites: string[] }
 }
 
 interface TutorialContent { keyboardNavigation: TutorialDefinition,
     screenReader: TutorialDefinition,
     visualAdjustments: TutorialDefinition,
-    audioSettings: TutorialDefinition;
+    audioSettings: TutorialDefinition
     }
 }
 
@@ -42,7 +42,7 @@ interface TutorialState { currentTutorial: string | null,
     practiceResults: Map<string, PracticeSessionResult>;
     userProgress: Map<string, any>;
     sessionStartTime: number | null,
-    interactionHistory: InteractionRecord[];
+    interactionHistory: InteractionRecord[]
     }
 }
 
@@ -50,7 +50,7 @@ interface InteractionRecord { type: string,
     key?: string;
     timestamp: number,
     tutorial: string,
-    step: number; }
+    step: number }
 }
 
 interface PracticeSession { active: boolean,
@@ -58,7 +58,7 @@ interface PracticeSession { active: boolean,
     attempts: number,
     successRate: number,
     feedback: PracticeFeedback[],
-    timeSpent: number; }
+    timeSpent: number }
 }
 
 interface Exercise { name: string,
@@ -71,35 +71,35 @@ interface ExerciseResult { name: string,
     attempts: number,
     time: number,
     score: number,
-    error?: string; }
+    error?: string }
 }
-';
+';'
 interface PracticeFeedback { ''
     type: 'success' | 'improvement',
     message: string,
     score: number,
-    suggestions: string[]; }
+    suggestions: string[] }
 }
 
 interface PracticeSessionResult { sessionTime: number,
     exercises: ExerciseResult[],
     successRate: number,
     feedback: PracticeFeedback[],
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface DeliverySettings { highlightElements: boolean,
     showTooltips: boolean,
     enableAnimations: boolean,
     pauseOnInteraction: boolean,
-    repeatInstructions: boolean; }
+    repeatInstructions: boolean }
 }
 
 interface PerformanceMetrics { tutorialStartTimes: Map<string, number>;
     tutorialCompletionTimes: Map<string, number>;
     stepTransitionTimes: number[],
     practiceSessionTimes: number[],
-    userEngagementMetrics: Map<string, any>; }
+    userEngagementMetrics: Map<string, any> }
 }
 
 interface TutorialProgress { tutorialId: string,
@@ -110,13 +110,13 @@ interface TutorialProgress { tutorialId: string,
     progress: number,
     isCompleted: boolean,
     estimatedTimeRemaining: number,
-    lastAccessed: number | null; }
+    lastAccessed: number | null }
 }
 
 interface AllTutorialProgress { tutorials: TutorialProgress[],
     overallProgress: number,
     completedTutorials: number,
-    totalTutorials: number; }
+    totalTutorials: number }
 }
 
 interface TutorialDeliveryResult { success: boolean,
@@ -144,7 +144,7 @@ interface PracticeSessionResultResponse { success: boolean,
     detailedResults?: ExerciseResult[];
     error?: string; }
 }
-';
+';'
 interface UserProfile { ''
     experience?: 'beginner' | 'intermediate' | 'expert';
     disabilities?: string[];
@@ -156,13 +156,13 @@ interface TutorialAnalytics { tutorialsCompleted: number,
     averageCompletionTime: number,
     practiceSessionsCompleted: number,
     userEngagement: UserEngagement,
-    performance: PerformanceMetrics;
+    performance: PerformanceMetrics
     }
 }
 
 interface UserEngagement { totalInteractions: number,
     sessionTime: number,
-    interactionsPerMinute: number; }
+    interactionsPerMinute: number }
 }
 
 export class AccessibilityTutorial {
@@ -187,7 +187,7 @@ export class AccessibilityTutorial {
             ...config }
         };
 
-        // Tutorial content and state'
+        // Tutorial content and state
         this.tutorialContent = { keyboardNavigation: {''
                 title: 'キーボードナビゲーション','';
                 description: 'キーボードを使用してゲームを操作する方法を学習します',
@@ -255,7 +255,7 @@ export class AccessibilityTutorial {
             tutorialCompletionTimes: new Map(),
             stepTransitionTimes: [],
             practiceSessionTimes: [],
-            userEngagementMetrics: new Map(); }
+            userEngagementMetrics: new Map() }
         };
 
         this.initialized = false;
@@ -264,7 +264,7 @@ export class AccessibilityTutorial {
 
     /**
      * Initialize tutorial system
-     */'
+     */
     initialize(): boolean { ''
         if (this.initialized') return true;'
 '';
@@ -275,11 +275,11 @@ export class AccessibilityTutorial {
 
         // Initialize delivery settings based on user preferences
         this.initializeDeliverySettings();
-';
-        // Setup event listeners for tutorial interactions''
-        this.setupTutorialEventListeners('')';
+;
+        // Setup event listeners for tutorial interactions
+        this.setupTutorialEventListeners()';
         console.log('AccessibilityTutorial: Initialized successfully'),
-        return true; }
+        return true }
     }
 
     /**
@@ -287,7 +287,7 @@ export class AccessibilityTutorial {
      */'
     async deliverTutorialContent(tutorialId: string, userProfile: UserProfile | null = null): Promise<TutorialDeliveryResult> { ''
         if(!this.initialized') {'
-            ';
+            ';'
         }'
             throw new Error('AccessibilityTutorial must be initialized first'); }
         }
@@ -302,7 +302,7 @@ export class AccessibilityTutorial {
                 throw new Error(`Tutorial not found: ${tutorialId)`});
             }
 
-            // Check prerequisites'
+            // Check prerequisites
             const prerequisitesMet = await this.checkPrerequisites(tutorial.prerequisites);''
             if(!prerequisitesMet') {'
                 return { success: false,'
@@ -337,9 +337,9 @@ export class AccessibilityTutorial {
                 completionTime: tutorialTime,
                 stepsCompleted: this.getTutorialProgress(tutorialId).stepsCompleted, };
                 deliveryResult }
-            };'
+            };
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('AccessibilityTutorial: Tutorial delivery error:', error);'
             return { success: false,''
                 error: (error as Error').message, };
@@ -356,7 +356,7 @@ export class AccessibilityTutorial {
             return { success: false, error: 'Feature demonstrations are disabled', featuresShown: featureList }
         }'
 '';
-        const startTime = performance.now('')';
+        const startTime = performance.now()';
         console.log(`Starting feature demonstration: ${featureList.join(', '})}`);
 
         try { const demonstrationResults = [];
@@ -385,7 +385,7 @@ export class AccessibilityTutorial {
                 results: demonstrationResults }
             },'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('AccessibilityTutorial: Feature demonstration error:', error);
             return { success: false,
                 error: (error as Error).message, };
@@ -443,11 +443,11 @@ export class AccessibilityTutorial {
             this.practiceSession.successRate = (this.practiceSession.successRate / exercises.length) * 100;
 
             // Store practice results
-            this.tutorialState.practiceResults.set(practiceType, { sessionTime,)
+            this.tutorialState.practiceResults.set(practiceType, { sessionTime)
                 exercises: practiceResults);
                 successRate: this.practiceSession.successRate,);
                 feedback: this.practiceSession.feedback),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
 
             // Record performance metrics
@@ -465,9 +465,9 @@ export class AccessibilityTutorial {
                 successRate: this.practiceSession.successRate,
                 feedback: this.practiceSession.feedback, };
                 detailedResults: practiceResults }
-            },'
+            },
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('AccessibilityTutorial: Practice session error:', error);
             this.practiceSession.active = false;
             
@@ -541,7 +541,7 @@ export class AccessibilityTutorial {
         if (!this.config.allowTutorialSkipping') {' }'
             return { success: false, error: 'Tutorial step skipping is disabled' }
         }
-';
+';'
         const currentTutorial = this.tutorialState.currentTutorial;''
         if (!currentTutorial') { ' }'
             return { success: false, error: 'No active tutorial' }
@@ -562,9 +562,9 @@ export class AccessibilityTutorial {
                     currentStep: this.tutorialState.currentStep, };
                     tutorialId: currentTutorial }
                 },
-            } else {  // Tutorial completed }'
+            } else {  // Tutorial completed }
                 return await this.completeTutorial(currentTutorial);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('AccessibilityTutorial: Skip step error:', error);
             return { success: false, };
                 error: (error as Error).message }
@@ -601,9 +601,9 @@ export class AccessibilityTutorial {
                 completionTime,
                 title: tutorial.title, };
                 stepsCompleted: tutorial.steps.length }
-            },'
+            },
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('AccessibilityTutorial: Complete tutorial error:', error);
             return { success: false,
                 error: (error as Error).message, };
@@ -643,9 +643,9 @@ export class AccessibilityTutorial {
             
             this.performance.tutorialStartTimes.clear();
             this.performance.tutorialCompletionTimes.clear();
-            this.performance.stepTransitionTimes = [];'
+            this.performance.stepTransitionTimes = [];
             this.performance.practiceSessionTimes = [];''
-            this.performance.userEngagementMetrics.clear('') }'
+            this.performance.userEngagementMetrics.clear() }'
             console.log('All tutorial progress reset'); }
         }
     }
@@ -654,7 +654,7 @@ export class AccessibilityTutorial {
     
     /**
      * Setup tutorial content definitions
-     */'
+     */
     private setupTutorialContent(): void { ''
         // Tutorial step definitions (simplified for MCP compatibility');'
         this.tutorialContent.keyboardNavigation.steps = [' }'
@@ -662,19 +662,19 @@ export class AccessibilityTutorial {
             { id: 'basic-navigation', title: '基本的なナビゲーション', type: 'practice', duration: 60 },']'
             { id: 'game-controls', title: 'ゲーム操作', type: 'practice', duration: 90 }]
         ];
-';
+';'
         this.tutorialContent.screenReader.steps = ['';
             { id: 'setup', title: 'スクリーンリーダー設定', type: 'configuration', duration: 60 },''
             { id: 'navigation-modes', title: 'ナビゲーションモード', type: 'explanation', duration: 90 },']'
             { id: 'game-interaction', title: 'ゲームとの連携', type: 'practice', duration: 90 }]
         ];
-';
+';'
         this.tutorialContent.visualAdjustments.steps = ['';
             { id: 'contrast-settings', title: 'コントラスト調整', type: 'configuration', duration: 45 },''
             { id: 'text-scaling', title: '文字サイズ調整', type: 'configuration', duration: 30 },']'
             { id: 'color-customization', title: '色彩調整', type: 'configuration', duration: 75 }]
         ];
-';
+';'
         this.tutorialContent.audioSettings.steps = ['';
             { id: 'volume-control', title: '音量調整', type: 'configuration', duration: 30 },''
             { id: 'audio-cues', title: '音声ガイド', type: 'configuration', duration: 60 },']'
@@ -685,7 +685,7 @@ export class AccessibilityTutorial {
     /**
      * Initialize delivery settings based on user preferences'
      */''
-    private initializeDeliverySettings('')';
+    private initializeDeliverySettings()';
         if(this.config.tutorialSpeed === 'slow'') {
             this.deliverySettings.pauseOnInteraction = true;
         }'
@@ -698,9 +698,9 @@ export class AccessibilityTutorial {
     /**
      * Setup event listeners for tutorial interactions'
      */''
-    private setupTutorialEventListeners('')';
+    private setupTutorialEventListeners()';
         if(typeof document !== 'undefined'') {'
-            ';
+            ';'
         }'
             document.addEventListener('keydown', (event) => {  }
                 this.handleTutorialKeyboardEvent(event); }
@@ -714,7 +714,7 @@ export class AccessibilityTutorial {
     private handleTutorialKeyboardEvent(event: KeyboardEvent): void { ''
         if (!this.tutorialState.currentTutorial') return;
 
-        // Record interaction for analytics'
+        // Record interaction for analytics
         this.tutorialState.interactionHistory.push({')'
             type: 'keyboard',);
             key: event.key),
@@ -723,12 +723,12 @@ export class AccessibilityTutorial {
             step: this.tutorialState.currentStep }
         }),
 ';
-        // Handle tutorial-specific keyboard shortcuts''
+        // Handle tutorial-specific keyboard shortcuts
         switch(event.key') {'
             '';
             case 'F1':';
                 event.preventDefault();''
-                this.showTutorialHelp('')';
+                this.showTutorialHelp()';
             case 'Escape':);
                 if (event.ctrlKey) {
                     event.preventDefault();
@@ -782,7 +782,7 @@ export class AccessibilityTutorial {
         try { }
             console.log(`Delivering tutorial step: ${step.title} (${ step.type)`);
 
-            // Apply step-specific delivery method'
+            // Apply step-specific delivery method
             let deliveryResult;''
             switch(step.type') {'
                 '';
@@ -837,12 +837,12 @@ export class AccessibilityTutorial {
     private async adaptTutorialContent(tutorialId: string, userProfile: UserProfile): Promise<void> { const tutorial = this.tutorialContent[tutorialId as keyof TutorialContent];''
         if (!tutorial || !userProfile') return;
 ';
-        // Adjust tutorial complexity based on user experience''
+        // Adjust tutorial complexity based on user experience
         const experience = userProfile.experience || 'beginner';''
         if(experience === 'expert') {
             // Reduce step durations and simplify explanations
         }
-            tutorial.steps.forEach(step => { ); }'
+            tutorial.steps.forEach(step => { ); }
                 step.duration = Math.floor(step.duration * 0.7);' }'
             }');''
         } else if (experience === 'beginner') { // Increase step durations and add more detail
@@ -850,8 +850,8 @@ export class AccessibilityTutorial {
                 step.duration = Math.floor(step.duration * 1.3); }
             });
         }
-';
-        // Adapt based on accessibility needs''
+;
+        // Adapt based on accessibility needs
         if(userProfile.disabilities') {'
             '';
             if (userProfile.disabilities.includes('visual')') {
@@ -895,9 +895,9 @@ export class AccessibilityTutorial {
                 attempts,
                 time: exerciseTime, };
                 score: success ? Math.floor(Math.random() * 30) + 70 : Math.floor(Math.random() * 50) + 20 }
-            },'
+            },
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Practice exercise error:', error);
             return { name: exercise.name,
                 success: false,
@@ -922,7 +922,7 @@ export class AccessibilityTutorial {
                 score: exerciseResult.score,
                 suggestions: [];
             },'
-        } else { return { ' };'
+        } else { return { ' }'
                 type: 'improvement', }
                 message: `「${exerciseResult.name}」をもう一度試してみましょう。`,
                 score: exerciseResult.score,';
@@ -969,7 +969,7 @@ export class AccessibilityTutorial {
             const handleInteraction = (') => {''
                 document.removeEventListener('keydown', handleInteraction');''
                 document.removeEventListener('click', handleInteraction);''
-                resolve('')';
+                resolve()';
             document.addEventListener('keydown', handleInteraction');''
             document.addEventListener('click', handleInteraction);
 
@@ -977,8 +977,8 @@ export class AccessibilityTutorial {
             setTimeout(resolve, 5000); }
         });
     }
-';
-    // Step delivery methods''
+;
+    // Step delivery methods
     private async deliverExplanationStep(step: TutorialStep'): Promise<any> { // Deliver explanation content' }'
         return { type: 'explanation', delivered: true }
     }'
@@ -995,8 +995,8 @@ export class AccessibilityTutorial {
         return { type: 'generic', delivered: true }
     }
 ';
-    // Tutorial control methods''
-    private showTutorialHelp('')';
+    // Tutorial control methods
+    private showTutorialHelp()';
         console.log('Tutorial help requested');
     }
 
@@ -1064,15 +1064,15 @@ export class AccessibilityTutorial {
         // Clear performance metrics
         this.performance.tutorialStartTimes.clear();
         this.performance.tutorialCompletionTimes.clear();
-        this.performance.stepTransitionTimes = [];'
+        this.performance.stepTransitionTimes = [];
         this.performance.practiceSessionTimes = [];''
-        this.performance.userEngagementMetrics.clear('')';
+        this.performance.userEngagementMetrics.clear()';
         if(typeof document !== 'undefined'') {'
-            ';
+            ';'
         }'
             document.removeEventListener('keydown', this.handleTutorialKeyboardEvent'); }
         }
-';
+';'
         this.initialized = false;''
         console.log('AccessibilityTutorial: Destroyed''),';
     }''

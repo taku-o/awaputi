@@ -8,12 +8,12 @@
 import { seoLogger } from '../SEOLogger.js';''
 import { seoErrorHandler } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string; }
+interface MainController { baseUrl: string }
 }
 
 interface TestResult { name: string,
     passed: boolean,
-    message?: string; }
+    message?: string }
 }
 
 interface CategoryResult { category: string,
@@ -42,7 +42,7 @@ interface LighthouseScore { performance: number,
     details: {
         performance: Record<string, number>;
         accessibility: Record<string, string>;
-        seo: Record<string, string>; }
+        seo: Record<string, string> }
     };
 }
 
@@ -61,20 +61,20 @@ interface ExecutiveSummary { grade: string,
         passedTests: number,
         failedTests: number,
         warnings: number,
-        passRate: number; }
+        passRate: number }
     };
 }
 
 interface EnhancedCategory extends CategoryResult { score: number,
     impact: string,
-    priority: string; }
+    priority: string }
 }
 
 interface Recommendation { category: string,
     test: string,
     issue: string,
     recommendation: string,
-    priority: string; }
+    priority: string }
 }
 
 interface Timeline { testStartTime: string,
@@ -89,7 +89,7 @@ interface VisualizationData { scoreDistribution: Record<string, number>;
         passed: number,
         failed: number,
         warnings: number,
-        total: number; }
+        total: number }
     }>;
     timeSeriesData: any[],
     heatmapData: any[],
@@ -119,7 +119,7 @@ interface ComparisonResult { scoreChange: number,
     categoryChanges: Record<string, { category: string,
         currentScore: number,
         previousScore: number,
-        change: number; }
+        change: number }
     }>;
     improvements: Array<{ category: string; improvement: number }>,
     regressions: Array<{ category: string; regression: number }>;
@@ -130,7 +130,7 @@ export class SEOReportGenerator {
     private baseUrl: string';
 '';
     constructor(mainController: MainController') {
-        this.mainController = mainController;
+        this.mainController = mainController
     }
     }
         this.baseUrl = mainController.baseUrl; }
@@ -142,7 +142,7 @@ export class SEOReportGenerator {
      * @param format - エクスポート形式 ('json', 'html', 'csv'')
      * @returns エクスポートされたレポート文字列'
      */''
-    exportResults(results: TestResults, format: string = 'json'): string { try {''
+    exportResults(results: TestResults, format: string = 'json'): string { try {'
             switch(format') {'
                 '';
                 case 'json':'';
@@ -163,7 +163,7 @@ export class SEOReportGenerator {
             }
                 default: }'
                     throw new Error(`Unsupported export format: ${format)`});''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             return seoErrorHandler.handle(error, 'exportResults', { format });
         }
     }
@@ -178,7 +178,7 @@ export class SEOReportGenerator {
             const lighthouseScore: LighthouseScore = {
                 performance: 95,
                 accessibility: 92,
-                bestPractices: 88,';
+                bestPractices: 88,
                 seo: 96,'';
                 timestamp: new Date().toISOString(''';
                         'first-contentful-paint': 1200,'';
@@ -206,7 +206,7 @@ export class SEOReportGenerator {
             seoLogger.info('Lighthouse score monitored', lighthouseScore);
             return lighthouseScore;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'monitorLighthouseScore'); }
         }
     }
@@ -223,9 +223,9 @@ export class SEOReportGenerator {
                 includeTimeline = true,
                 includeComparison = false,
                 previousResults = null } = options;
-';
+';'
             const detailedReport: DetailedReport = { metadata: {''
-                    generatedAt: new Date().toISOString('')';
+                    generatedAt: new Date().toISOString()';
                     reportVersion: '1.0.0');
                     totalTests: results.summary? .totalTests || 0, : undefined;
                     executionTime: results.executionTime || 0 }
@@ -235,12 +235,12 @@ export class SEOReportGenerator {
                 recommendations: includeRecommendations ? this._generateRecommendations(results) : null,
                 timeline: includeTimeline ? this._generateTimeline(results) : null,
                 comparison: includeComparison && previousResults ? this._generateComparison(results, previousResults) : null,
-                visualizations: this._generateVisualizationData(results); }
+                visualizations: this._generateVisualizationData(results) }
             };
 
             return detailedReport;'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'generateDetailedReport', options); }
         }
     }
@@ -256,7 +256,7 @@ export class SEOReportGenerator {
                 timeSeriesData: this._generateTimeSeriesData(results), };
                 heatmapData: this._generateHeatmapData(results); }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'generateVisualizationData'); }
         }
     }
@@ -273,7 +273,7 @@ export class SEOReportGenerator {
     /**
      * HTMLレポートの生成
      * @private
-     */'
+     */
     private _generateHTMLReport(results: TestResults): string { ''
         const timestamp = new Date(').toLocaleString('ja-JP'');'
         const overallScore = results.overallScore || 0;''
@@ -299,7 +299,7 @@ export class SEOReportGenerator {
             background: white, ;
             border-radius: 8px, ;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-            overflow: hidden; }
+            overflow: hidden }
         }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
             color: white, ;
@@ -312,13 +312,13 @@ export class SEOReportGenerator {
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr); 
             gap: 20px, ;
             padding: 30px, ;
-            background: #f8f9fa; }
+            background: #f8f9fa }
         }
         .summary-card { background: white, 
             padding: 20px, ;
             border-radius: 8px, ;
             text-align: center, ;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1) }
         }
         .summary-card h3 { margin: 0 0 10px; color: #333, }
         .summary-card .number { font-size: 2em; font-weight: bold; margin: 10px 0, }
@@ -333,7 +333,7 @@ export class SEOReportGenerator {
         .category-header { background: #f8f9fa, 
             padding: 20px 30px, ;
             border-left: 4px solid #4CAF50,
-            margin: 0; }
+            margin: 0 }
         }
         .category-header h3 { margin: 0, 
             color: #333, ;
@@ -351,11 +351,11 @@ export class SEOReportGenerator {
         .footer { background: #333, 
             color: white, ;
             text-align: center, ;
-            padding: 20px; }'
+            padding: 20px }'
         }''
         @media (max-width: 768px') {
             .summary { grid-template-columns: 1fr, }
-            .test { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .test { flex-direction: column; align-items: flex-start; gap: 10px }
         }
     </style>;
 </head>';
@@ -419,7 +419,7 @@ export class SEOReportGenerator {
      */""
     private _generateCSVReport(results: TestResults"): string { ""
         const rows = ['Category,Test Name,Status,Message'];
-        ';
+        ';'
         Object.entries(results.categories || {).forEach(([name, category]) => { ''
             category.tests? .forEach(test => {'); : undefined''
                 const status = test.passed ? 'PASSED' : test.message?.includes('⚠️'') ? 'WARNING' : 'FAILED';' }'
@@ -619,7 +619,7 @@ export class SEOReportGenerator {
      * @private
      */
     private _generateRecommendations(results: TestResults): Recommendation[] { const recommendations: Recommendation[] = [],
-        ';
+        ';'
         Object.entries(results.categories || {).forEach(([key, category]) => { ''
             category.tests? .forEach(test => {');''
                 if (!test.passed && !test.message?.includes('⚠️')') {
@@ -718,19 +718,19 @@ export class SEOReportGenerator {
         passed: number,
         failed: number,
         warnings: number,
-        total: number; }
+        total: number }
     }> { const breakdown: Array<{
             name: string,
             passed: number,
             failed: number,
             warnings: number,
-            total: number; }
+            total: number }
         }> = [];
         
         Object.entries(results.categories || { ).forEach(([key, category]) => { 
             breakdown.push({
                 name: category.category,
-                passed: category.passed || 0,);
+                passed: category.passed || 0);
                 failed: category.failed || 0);
                 warnings: category.warnings || 0,) }
                 total: category.tests? .length || 0); }
@@ -776,7 +776,7 @@ export class SEOReportGenerator {
             testChanges: {
                 newPassed: (currentResults.summary? .passedTests || 0) - (previousResults.summary?.passedTests || 0), : undefined;
                 newFailed: (currentResults.summary? .failedTests || 0) - (previousResults.summary?.failedTests || 0), : undefined;
-                newWarnings: (currentResults.summary? .warnings || 0) - (previousResults.summary?.warnings || 0); }
+                newWarnings: (currentResults.summary? .warnings || 0) - (previousResults.summary?.warnings || 0) }
             }, : undefined
             categoryChanges: {},
             improvements: [],
@@ -802,13 +802,13 @@ export class SEOReportGenerator {
                 if(currentScore > previousScore) {
                 
                     comparison.improvements.push({)
-                        category: current.category,);
+                        category: current.category,)
                 }
                         improvement: currentScore - previousScore); }
                 } else if (currentScore < previousScore) { comparison.regressions.push({)
                         category: current.category,);
-                        regression: previousScore - currentScore); }
-                }'
+                        regression: previousScore - currentScore) }
+                }
             }''
         }');
         

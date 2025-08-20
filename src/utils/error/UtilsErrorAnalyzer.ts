@@ -16,7 +16,7 @@ interface ErrorInfo { id: string,
 
 interface MainController { logger?: {
         generateErrorId: () => string,
-        getErrorLog: () => ErrorInfo[]; }
+        getErrorLog: () => ErrorInfo[] }
     };
     isBrowser?: boolean;
     isNode?: boolean;
@@ -26,7 +26,7 @@ interface ErrorMetadata { userAgent?: string;
     url?: string;
     viewport?: {
         width: number,
-        height: number; }
+        height: number }
     };
     performanceNow?: number;
     memory?: { used?: number;
@@ -59,11 +59,11 @@ interface PatternAnalysis { recurring: Record<string, number>;
     timeline: Array<{
         timestamp: string,
         context: string,
-        severity: string; }
+        severity: string }
     }>;
     correlations: Array<{ type: string,
         description: string,
-        contexts: string[]; }
+        contexts: string[] }
     }>;
 }
 
@@ -86,13 +86,13 @@ interface AnalysisReport { errorId: string,
 
 interface ImpactAssessment { userExperience: 'minimal' | 'moderate' | 'severe',''
     systemStability: 'stable' | 'unstable','';
-    dataIntegrity: 'secure' | 'at_risk' | 'compromised'; }
+    dataIntegrity: 'secure' | 'at_risk' | 'compromised' }
 }
 
 interface ErrorClassification { category: string,
     type: string,
     source: string,
-    recoverable: boolean; }
+    recoverable: boolean }
 }
 
 interface AnalyzerConfig { severityRules?: Record<string, string>;
@@ -102,7 +102,7 @@ interface AnalyzerConfig { severityRules?: Record<string, string>;
 interface AnalyzerStats { severityRulesCount: number,
     contextPatternsCount: number,
     criticalPatternsCount: number,
-    highSeverityPatternsCount: number; }
+    highSeverityPatternsCount: number }
 }'
 '';
 type SeverityLevel = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
@@ -112,15 +112,15 @@ declare global { interface Window {
         gameEngine?: {
             currentScene?: {
                 constructor: {
-                    name: string; }
+                    name: string }
                 };
             };
             performanceOptimizer?: { getCurrentFPS: () => number,
                 currentLevel: string,
                 currentQuality: string,
-                activeOptimizations: string[]; }
+                activeOptimizations: string[] }
             };
-            memoryManager?: { getUsage: () => any; }
+            memoryManager?: { getUsage: () => any }
             };
         };
     }
@@ -128,7 +128,7 @@ declare global { interface Window {
     interface Performance { memory?: {
             usedJSHeapSize: number,
             totalJSHeapSize: number,
-            jsHeapSizeLimit: number; }
+            jsHeapSizeLimit: number }
         };
     }
 }
@@ -138,12 +138,12 @@ export class UtilsErrorAnalyzer {
     private contextPatterns: Map<string, RegExp>;
     private severityRules: Map<string, string>;
     private criticalPatterns: RegExp[];
-    private highSeverityPatterns: RegExp[]';
+    private highSeverityPatterns: RegExp[];
 '';
     constructor(mainController: MainController') {
         this.mainController = mainController;
         
-        // Context mapping for error classification'
+        // Context mapping for error classification
         this.contextPatterns = new Map([']';
             ['CANVAS_ERROR', /canvas|webgl|2d|3d|context|rendering/i],'';
             ['AUDIO_ERROR', /audio|sound|webaudio|media/i],'';
@@ -157,7 +157,7 @@ export class UtilsErrorAnalyzer {
             ['MODULE_ERROR', /module|import|export|require/i]')';
         ]');
         
-        // Severity determination rules'
+        // Severity determination rules
         this.severityRules = new Map([']';
             ['TypeError', 'HIGH'],'';
             ['ReferenceError', 'HIGH'],'';
@@ -172,18 +172,18 @@ export class UtilsErrorAnalyzer {
         // Critical message patterns
         this.criticalPatterns = [/cannot read property|cannot access before initialization/i,
             /out of memory|memory allocation failed/i,
-            /script error|cross-origin|blocked by CORS/i,];
+            /script error|cross-origin|blocked by CORS/i];
             /webgl.*lost|canvas.*corrupted/i];
         ];
         
         // High severity patterns
         this.highSeverityPatterns = [/undefined is not a function|cannot read properties of undefined/i,
             /failed to fetch|network error/i,
-            /audio.*failed|sound.*error/i,];
+            /audio.*failed|sound.*error/i];
             /canvas.*error|rendering.*failed/i];
-        ];'
+        ];
         ';
-    }
+    }'
     }'
         console.log('[ErrorAnalyzer] Error analysis component initialized'); }
     }
@@ -204,7 +204,7 @@ export class UtilsErrorAnalyzer {
                 message: error.message,
                 stack: error.stack,
                 timestamp,
-        }'
+        }
                 context: this.determineContext(error),' };'
                 metadata: this.extractErrorMetadata(error'); }
             };
@@ -230,11 +230,10 @@ export class UtilsErrorAnalyzer {
         }'
                 timestamp,' };'
                 context: this.determineContext({ message: error )'), }
-                metadata: {}
-            },
+                metadata: {},
         }
         
-        // Fallback for unknown error types'
+        // Fallback for unknown error types
         return { id: errorId,''
             name: 'UnknownError','';
             message: 'An unknown error occurred','';
@@ -257,7 +256,7 @@ export class UtilsErrorAnalyzer {
         const combined = `${name} ${message} ${stack}`.toLowerCase();
         
         // Check context patterns
-        for(const [context, pattern] of this.contextPatterns) {'
+        for(const [context, pattern] of this.contextPatterns) {
             '';
             if (pattern.test(combined)') {
         }
@@ -265,7 +264,7 @@ export class UtilsErrorAnalyzer {
             }
         }
         ';
-        // Fallback context determination based on error name''
+        // Fallback context determination based on error name
         if (name.includes('Canvas'') || name.includes('WebGL')') { ''
             return 'CANVAS_ERROR'; }
         }'
@@ -294,7 +293,7 @@ export class UtilsErrorAnalyzer {
         const { name, message, context } = errorInfo;
         
         // Check critical patterns first
-        for(const pattern of this.criticalPatterns) {'
+        for(const pattern of this.criticalPatterns) {
             '';
             if (pattern.test(message)') {'
         }'
@@ -307,7 +306,7 @@ export class UtilsErrorAnalyzer {
         }
         
         // Check high severity patterns
-        for(const pattern of this.highSeverityPatterns) {'
+        for(const pattern of this.highSeverityPatterns) {
             '';
             if (pattern.test(message)') {'
         }'
@@ -315,7 +314,7 @@ export class UtilsErrorAnalyzer {
             }
         }
         ';
-        // Context-based severity determination''
+        // Context-based severity determination
         switch(context') {'
             '';
             case 'CANVAS_ERROR':'';
@@ -332,7 +331,7 @@ export class UtilsErrorAnalyzer {
             case 'PERFORMANCE_WARNING':'';
             case 'BROWSER_COMPATIBILITY':'';
                 return 'MEDIUM';'
-            ';
+            ';'
         }'
             default: return 'LOW'; }
         }
@@ -345,7 +344,7 @@ export class UtilsErrorAnalyzer {
      */''
     private extractErrorMetadata(error: any'): ErrorMetadata {
         const metadata: ErrorMetadata = {}'
-        // Browser environment metadata''
+        // Browser environment metadata
         if(this.mainController.isBrowser && typeof window !== 'undefined') {
             metadata.userAgent = navigator.userAgent;
             metadata.url = window.location.href;
@@ -357,8 +356,8 @@ export class UtilsErrorAnalyzer {
             // Performance information
             if (performance && performance.now) { metadata.performanceNow = performance.now(); }
             }
-            ';
-            // Memory information (if available);''
+            ;
+            // Memory information (if available);
             if(performance && performance.memory') {
                 metadata.memory = {
                     used: performance.memory.usedJSHeapSize,
@@ -369,21 +368,21 @@ export class UtilsErrorAnalyzer {
             }
         }
         ';
-        // Node.js environment metadata''
+        // Node.js environment metadata
         if(this.mainController.isNode && typeof process !== 'undefined') {
             metadata.nodeVersion = process.version;
             metadata.platform = process.platform;
             metadata.arch = process.arch;
             metadata.pid = process.pid;
-            ';
+            ';'
             if (process.memoryUsage) {''
-                metadata.memory = process.memoryUsage('')';
+                metadata.memory = process.memoryUsage()';
         if (typeof window !== 'undefined' && window.gameEngine) {
             const gameEngine = window.gameEngine;
             
             metadata.gameState = {
                 scene: gameEngine.currentScene? .constructor.name, : undefined;
-                fps: gameEngine.performanceOptimizer? .getCurrentFPS(), : undefined;
+                fps: gameEngine.performanceOptimizer? .getCurrentFPS(), : undefined
         }
                 memoryUsage: gameEngine.memoryManager? .getUsage(); }
             };
@@ -398,8 +397,8 @@ export class UtilsErrorAnalyzer {
                 },
             }
         }
-        ';
-        // Extract additional properties from error object''
+        ;
+        // Extract additional properties from error object
         for (const [key, value] of Object.entries(error)') { ''
             if (!['name', 'message', 'stack'].includes(key) && value !== undefined) {
                 metadata[key] = value; }
@@ -442,12 +441,12 @@ export class UtilsErrorAnalyzer {
         const recentErrors = errors.slice(-10);
         if(recentErrors.length > 1) {
             const contexts = recentErrors.map(e => e.context);
-            const uniqueContexts = [...new Set(contexts)];'
+            const uniqueContexts = [...new Set(contexts)];
             '';
             if (uniqueContexts.length < contexts.length') {'
                 patterns.correlations.push({''
                     type: 'context_clustering',')';
-                    description: 'Multiple errors in same context within short timeframe',);
+                    description: 'Multiple errors in same context within short timeframe',)
         }
                     contexts: uniqueContexts); }
             }
@@ -481,7 +480,7 @@ export class UtilsErrorAnalyzer {
             },
             technical: { classification: this.classifyError(errorInfo),
                 rootCause: this.identifyRootCause(errorInfo),
-                affectedSystems: this.identifyAffectedSystems(errorInfo); }
+                affectedSystems: this.identifyAffectedSystems(errorInfo) }
             },
             timestamp: new Date().toISOString(),
         };
@@ -527,7 +526,7 @@ export class UtilsErrorAnalyzer {
         if (severity === 'CRITICAL'') factors.push('critical_severity'');''
         if (errorInfo.context === 'CANVAS_ERROR'') factors.push('rendering_failure'');''
         if (errorInfo.context === 'SECURITY_ERROR'') factors.push('security_issue');
-        ';
+        ';'
         const similar = this.findSimilarErrors(errorInfo);''
         if (similar.length > 5') factors.push('recurring_issue');'
         '';
@@ -609,7 +608,7 @@ export class UtilsErrorAnalyzer {
         }
                 break; }
         }
-        ';
+        ';'
         const similar = this.findSimilarErrors(errorInfo);''
         if(similar.length > 3') {'
             '';
@@ -678,11 +677,11 @@ export class UtilsErrorAnalyzer {
     private isRecoverable(errorInfo: ErrorInfo'): boolean { ''
         const nonRecoverableContexts = ['SECURITY_ERROR', 'SYNTAX_ERROR'];''
         const recoverableContexts = ['AUDIO_ERROR', 'NETWORK_ERROR', 'PERFORMANCE_WARNING'];
-        ';
+        ';'
         if(nonRecoverableContexts.includes(errorInfo.context) return false;''
         if (recoverableContexts.includes(errorInfo.context)') return true;
         ';
-        // Check by error name''
+        // Check by error name
         const nonRecoverableNames = ['SyntaxError', 'SecurityError'];
         if(nonRecoverableNames.includes(errorInfo.name) return false;
         
@@ -695,7 +694,7 @@ export class UtilsErrorAnalyzer {
      * @returns Potential root cause
      */'
     private identifyRootCause(errorInfo: ErrorInfo): string { ''
-        const message = errorInfo.message.toLowerCase('')';
+        const message = errorInfo.message.toLowerCase()';
         if (message.includes('undefined'') || message.includes('null')') {''
             return 'uninitialized_variable'; }
         }'
@@ -726,7 +725,7 @@ export class UtilsErrorAnalyzer {
      */
     private identifyAffectedSystems(errorInfo: ErrorInfo): string[] { const systems: string[] = [],'
         const context = errorInfo.context;''
-        const message = errorInfo.message.toLowerCase('')';
+        const message = errorInfo.message.toLowerCase()';
         if (context === 'CANVAS_ERROR' || message.includes('canvas')') {''
             systems.push('rendering_system''); }
         }'
@@ -763,7 +762,7 @@ export class UtilsErrorAnalyzer {
         }
         
         if(config.contextPatterns) {
-        ';
+        ';'
             '';
             for (const [context, pattern] of Object.entries(config.contextPatterns)') {'
         
@@ -808,7 +807,7 @@ export class UtilsErrorAnalyzer {
      * Cleanup analyzer resources
      */'
     destroy(): void { this.contextPatterns.clear();''
-        this.severityRules.clear('')';
+        this.severityRules.clear()';
         console.log('[ErrorAnalyzer] Analyzer destroyed''); }'
     }''
 }

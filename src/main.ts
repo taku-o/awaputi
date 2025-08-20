@@ -11,7 +11,7 @@ import LocalExecutionErrorHandler from './utils/local-execution/LocalExecutionEr
  */
 interface DebugLogEntry { timestamp: string,
     message: string,
-    data: any; }
+    data: any }
 }
 
 /**
@@ -19,7 +19,7 @@ interface DebugLogEntry { timestamp: string,
  */
 interface DebugLogger { log: (message: string, data?: any) => void;
     getLogs: () => DebugLogEntry[],
-    showLogs: () => void; }
+    showLogs: () => void }
 }
 
 /**
@@ -29,7 +29,7 @@ class LoadingManager { private loadingScreen: HTMLElement | null
     private readonly loadingSteps: string[],
     private currentStep: number';
 '';
-    constructor('')';
+    constructor()';
         this.loadingScreen = document.getElementById('loadingScreen'');'
         this.loadingSteps = ['';
             'ローカル実行環境チェック中...','';
@@ -56,7 +56,7 @@ class LoadingManager { private loadingScreen: HTMLElement | null
             this.currentStep++; }
         }
     }
-    ';
+    ';'
     hide(): void { ''
         if(this.loadingScreen') {'
             '';
@@ -113,10 +113,10 @@ function createDebugLogger(): DebugLogger { const logs: DebugLogEntry[] = [],
             }
         },'
         getLogs: (): DebugLogEntry[] => logs,'';
-        showLogs: ('): void => {  // デバッグモード時のみ表示''
+        showLogs: ('): void => {  // デバッグモード時のみ表示
             if (localStorage.getItem('debug'') !== 'true'') return,
             ';
-            // デバッグログを画面に表示する要素を作成''
+            // デバッグログを画面に表示する要素を作成
             let logElement = document.getElementById('debug-log');''
             if(!logElement') {'
                 '';
@@ -157,7 +157,7 @@ const debugLogger: DebugLogger = createDebugLogger(),
  */
 interface ExecutionContext { protocol: string,
     canUseModules: boolean,
-    supportedFeatures: string[]; }
+    supportedFeatures: string[] }
 }
 
 /**
@@ -166,7 +166,7 @@ interface ExecutionContext { protocol: string,
 interface LocalModeManagerOptions { enableMetaTagOptimization: boolean,
     enableFaviconGeneration: boolean,
     enableDeveloperGuidance: boolean,
-    debugMode: boolean; }
+    debugMode: boolean }
 }
 
 /**
@@ -175,31 +175,31 @@ interface LocalModeManagerOptions { enableMetaTagOptimization: boolean,
 interface LocalExecutionErrorHandlerOptions { enableGlobalHandling: boolean,
     enableUserNotifications: boolean,
     enableDebugLogging: boolean,
-    enableFallbacks: boolean; }
+    enableFallbacks: boolean }
 }
 
 /**
  * ゲーム初期化（非同期版）
  */'
 async function initGame(): Promise<void> { ''
-    const loadingManager = new LoadingManager('')';
+    const loadingManager = new LoadingManager()';
     debugLogger.log('🚀 ゲーム初期化開始');''
-    debugLogger.showLogs('')';
+    debugLogger.showLogs()';
         debugLogger.log('🔍 ステップ0: ローカル実行環境チェック開始');
         loadingManager.nextStep();
         
-        // ローカル実行検出'
+        // ローカル実行検出
         const isLocalExecution: boolean = LocalExecutionDetector.isLocalExecution(),'';
         const executionContext: ExecutionContext = LocalExecutionDetector.getExecutionContext(''';
         debugLogger.log('🌐 実行環境情報', {
-            isLocal: isLocalExecution,);
+            isLocal: isLocalExecution);
             protocol: executionContext.protocol)';
             canUseModules: executionContext.canUseModules,')';
             supportedFeatures: executionContext.supportedFeatures)'),
 
         // ローカル実行エラーハンドラーを初期化
         const errorHandlerOptions: LocalExecutionErrorHandlerOptions = {
-            enableGlobalHandling: true,';
+            enableGlobalHandling: true,
             enableUserNotifications: true,'';
             enableDebugLogging: localStorage.getItem('debug'') === 'true',
             enableFallbacks: true }'
@@ -207,7 +207,7 @@ async function initGame(): Promise<void> { ''
         LocalExecutionErrorHandler.initialize(errorHandlerOptions');''
         debugLogger.log('✅ ローカル実行エラーハンドラー初期化完了');
 
-        // ローカルモードマネージャーを初期化'
+        // ローカルモードマネージャーを初期化
         let localModeManager: LocalModeManager | null = null,'';
         if(isLocalExecution') {'
             '';
@@ -215,15 +215,15 @@ async function initGame(): Promise<void> { ''
             const localModeOptions: LocalModeManagerOptions = {
                 enableMetaTagOptimization: true,
                 enableFaviconGeneration: true,';
-                enableDeveloperGuidance: true,';
+                enableDeveloperGuidance: true,'
         }'
                 debugMode: localStorage.getItem('debug'') === 'true' }
             },
             localModeManager = new LocalModeManager(localModeOptions);
-            ';
+            ';'
             const initSuccess: boolean = await localModeManager.initialize(),'';
             if(initSuccess') {'
-                ';
+                ';'
             }'
                 debugLogger.log('✅ ローカルモード初期化完了''); }'
             } else {  ' }'
@@ -235,29 +235,29 @@ async function initGame(): Promise<void> { ''
 '';
         await new Promise<void>(resolve => setTimeout(resolve, 300)');
         ';
-        // ステップ1: ブラウザ互換性チェック''
+        // ステップ1: ブラウザ互換性チェック
         debugLogger.log('📋 ステップ1: ブラウザ互換性チェック開始');'
         loadingManager.nextStep();''
         await new Promise<void>(resolve => setTimeout(resolve, 500)');'
         '';
         debugLogger.log('🔍 互換性レポート生成中...');'
         const browserCompatibility: BrowserCompatibility = getBrowserCompatibility(),'';
-        const compatibilityReport = browserCompatibility.generateCompatibilityReport('')';
+        const compatibilityReport = browserCompatibility.generateCompatibilityReport()';
         debugLogger.log('📊 互換性レポート', compatibilityReport);
         ';
-        // 重要な機能が利用できない場合はエラー''
+        // 重要な機能が利用できない場合はエラー
         if(!compatibilityReport.features.canvas') {'
             '';
             debugLogger.log('❌ Canvas APIサポートなし'');''
             const error = new Error('お使いのブラウザはCanvas APIに対応していません。モダンブラウザでお試しください。');''
-            const errorHandler: ErrorHandler = getErrorHandler('')';
+            const errorHandler: ErrorHandler = getErrorHandler()';
             errorHandler.handleError(error, 'CANVAS_ERROR', { feature: 'canvas', compatibility: compatibilityReport )'),
         }
             throw error; }'
         }''
         debugLogger.log('✅ Canvas API サポート確認'');
         ';
-        // Canvas要素を取得''
+        // Canvas要素を取得
         debugLogger.log('🎯 Canvas要素取得中...'');''
         const canvas = document.getElementById('gameCanvas'') as HTMLCanvasElement;''
         debugLogger.log('🎯 Canvas要素', canvas);'
@@ -266,7 +266,7 @@ async function initGame(): Promise<void> { ''
             '';
             debugLogger.log('❌ Canvas要素が見つかりません'');''
             const error = new Error('Canvas要素が見つかりません。');''
-            const errorHandler: ErrorHandler = getErrorHandler('')';
+            const errorHandler: ErrorHandler = getErrorHandler()';
             errorHandler.handleError(error, 'CANVAS_ERROR', { element: 'gameCanvas' )'),
         }
             throw error; }'
@@ -275,12 +275,12 @@ async function initGame(): Promise<void> { ''
             height: canvas.height,')';
             style: canvas.style.cssText )'),
         ';
-        // ステップ2: ConfigurationManager初期化''
+        // ステップ2: ConfigurationManager初期化
         debugLogger.log('⚙️ ステップ2: ConfigurationManager初期化開始');''
-        const configManager: ConfigurationManager = getConfigurationManager('')';
+        const configManager: ConfigurationManager = getConfigurationManager()';
         debugLogger.log('✅ ConfigurationManager初期化成功'');
         ';
-        // ステップ3: ゲームエンジン初期化''
+        // ステップ3: ゲームエンジン初期化
         debugLogger.log('⚙️ ステップ3: ゲームエンジン初期化開始');'
         loadingManager.nextStep();''
         await new Promise<void>(resolve => setTimeout(resolve, 300)');'
@@ -298,53 +298,53 @@ async function initGame(): Promise<void> { ''
         if(compatibilityReport.features.webAudio) {
             try {
         }
-                await gameEngine.audioManager.initialize(); }'
+                await gameEngine.audioManager.initialize(); }
             } catch (error) { ' }'
                 getErrorHandler(').handleError(error, 'AUDIO_ERROR', { feature: 'webAudio' }');
             }
         }
         */
         ';
-        // ステップ5: ゲーム開始準備''
+        // ステップ5: ゲーム開始準備
         debugLogger.log('🚀 ステップ5: ゲーム開始準備');'
         loadingManager.nextStep();''
         await new Promise<void>(resolve => setTimeout(resolve, 300)');
         ';
-        // ゲーム開始''
+        // ゲーム開始
         debugLogger.log('🎮 ゲームエンジン開始中...');''
-        gameEngine.start('')';
+        gameEngine.start()';
         debugLogger.log('✅ ゲームエンジン開始成功');
         ';
-        // デバッグ用：グローバルに公開''
+        // デバッグ用：グローバルに公開
         (window as any').gameEngine = gameEngine;''
         debugLogger.log('🌍 グローバルに gameEngine を公開'');
         ';
-        // ローディング画面を非表示''
+        // ローディング画面を非表示
         debugLogger.log('📱 ローディング画面非表示中...');''
-        loadingManager.hide('')';
+        loadingManager.hide()';
         debugLogger.log('✅ ローディング画面非表示完了'');
         ';
-        // 互換性情報をコンソールに出力''
+        // 互換性情報をコンソールに出力
         if (localStorage.getItem('debug'') === 'true') { browserCompatibility.logDebugInfo(); }
         }
         ';
-        // 推奨事項があれば表示''
+        // 推奨事項があれば表示
         if(compatibilityReport.recommendations.length > 0') {'
-            ';
+            ';'
         }'
             console.info('推奨事項:', compatibilityReport.recommendations); }
         }
         ';
-        // 警告があれば表示''
+        // 警告があれば表示
         if(compatibilityReport.warnings.length > 0') {'
-            ';
+            ';'
         }'
             console.warn('警告:', compatibilityReport.warnings'); }
         }'
         '';
         debugLogger.log('🎉 ゲーム初期化完了');'
         '';
-    } catch (error') { const errorInfo = error as Error;''
+    } catch (error) { const errorInfo = error as Error;''
         debugLogger.log('💥 エラー発生', { )
             message: errorInfo.message);
             stack: errorInfo.stack,)';
@@ -364,14 +364,14 @@ function setupErrorHandling(): void { // ErrorHandlerは自動的にグローバ
     // LoadingManagerのエラー表示を ErrorHandler と統合
     const originalShowError = LoadingManager.prototype.showError;
     LoadingManager.prototype.showError = function(this: LoadingManager, message: string): void {
-        // ErrorHandlerにエラーを報告'
+        // ErrorHandlerにエラーを報告
         const errorHandler: ErrorHandler = getErrorHandler(),'';
         errorHandler.handleError(new Error(message'), 'INITIALIZATION_ERROR', {''
             context: 'LoadingManager',
             step: this.currentStep }
         }),
         ';
-        // 元の処理を実行''
+        // 元の処理を実行
         originalShowError.call(this, message');
     };'
     '';
@@ -381,28 +381,28 @@ function setupErrorHandling(): void { // ErrorHandlerは自動的にグローバ
 /**
  * デバッグ機能の設定
  */'
-function setupDebugFeatures(): void { // URLパラメータでデバッグモードを有効化''
+function setupDebugFeatures(): void { // URLパラメータでデバッグモードを有効化
     const urlParams = new URLSearchParams(window.location.search');''
     if (urlParams.get('debug'') === 'true'') {''
         localStorage.setItem('debug', 'true'');''
         console.log('Debug mode enabled''); }
     }
     ';
-    // Playwright テスト用の裏道''
+    // Playwright テスト用の裏道
     if (urlParams.get('username')') { ''
         localStorage.setItem('testUsername', urlParams.get('username'') || ''');''
-        console.log('Test username set:', urlParams.get('username')'); }'
+        console.log('Test username set:', urlParams.get('username')') }'
     }''
     if (urlParams.get('skipUsernameInput'') === 'true'') { ''
         localStorage.setItem('skipUsernameInput', 'true'');''
         console.log('Username input skip enabled''); }
     }
     ';
-    // キーボードショートカットでデバッグ情報を表示''
+    // キーボードショートカットでデバッグ情報を表示
     document.addEventListener('keydown', (event: KeyboardEvent') => {  ''
         if(event.ctrlKey && event.shiftKey && event.code === 'KeyD') {'
             '';
-            event.preventDefault('')';
+            event.preventDefault()';
             const isDebug = localStorage.getItem('debug'') === 'true';''
             localStorage.setItem('debug', isDebug ? 'false' : 'true'');'
         }'
@@ -415,7 +415,7 @@ function setupDebugFeatures(): void { // URLパラメータでデバッグモー
 /**
  * パフォーマンス監視の設定'
  */''
-function setupPerformanceMonitoring('')';
+function setupPerformanceMonitoring()';
     window.addEventListener('load', () => {  if (window.performance && window.performance.timing) {
             const timing = window.performance.timing; }
             const loadTime = timing.loadEventEnd - timing.navigationStart; }
@@ -423,7 +423,7 @@ function setupPerformanceMonitoring('')';
         }''
     }');
     ';
-    // メモリ使用量を定期的に監視（開発環境のみ）''
+    // メモリ使用量を定期的に監視（開発環境のみ）
     if (localStorage.getItem('debug'') === 'true' && window.performance && (window.performance as any).memory) { setInterval(() => { ''
             const memory = (window.performance as any').memory;''
             console.log('Memory usage:', {);''
@@ -436,29 +436,29 @@ function setupPerformanceMonitoring('')';
 }
 
 /**
- * アプリケーション初期化'
+ * アプリケーション初期化
  */''
-function initApp('')';
+function initApp()';
     debugLogger.log('📱 アプリケーション初期化開始'');'
     '';
     debugLogger.log('🛡️ エラーハンドリング設定中...');''
-    setupErrorHandling('')';
+    setupErrorHandling()';
     debugLogger.log('🔧 デバッグ機能設定中...');''
-    setupDebugFeatures('')';
+    setupDebugFeatures()';
     debugLogger.log('📊 パフォーマンス監視設定中...');''
-    setupPerformanceMonitoring('')';
+    setupPerformanceMonitoring()';
     debugLogger.log('✅ アプリケーション設定完了');
     
     // ゲーム初期化
     initGame();
 }
-';
-// initApp関数をグローバルに公開（エントリーページから呼び出し可能にする）''
+;
+// initApp関数をグローバルに公開（エントリーページから呼び出し可能にする）
 (window as any').initApp = initApp;
 
-// DOM読み込み完了後の自動初期化を無効化（エントリーページ実装のため）'
-// エントリーページからの手動実行に変更''
+// DOM読み込み完了後の自動初期化を無効化（エントリーページ実装のため）
+// エントリーページからの手動実行に変更
 // if (document.readyState === 'loading'') { ''
 //     document.addEventListener('DOMContentLoaded', initApp); }'
 // } else {  ' }'
-//     initApp(' })
+//     initApp( })

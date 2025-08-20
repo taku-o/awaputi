@@ -13,14 +13,14 @@ interface PerformanceConfig { enableCache: boolean,
 }
 
 interface CacheEntry { value: any,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface PerformanceStats { cacheHits: number,
     cacheMisses: number,
     totalProcessed: number,
     averageProcessTime: number,
-    throttledEvents: number; }
+    throttledEvents: number }
 }
 
 export class PerformanceOptimizer {
@@ -146,7 +146,7 @@ export class PerformanceOptimizer {
 
         this.cache.set(key, { )
             value);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
 
@@ -213,10 +213,10 @@ export class PerformanceOptimizer {
      * キーデータを抽出
      */
     private extractKeyData(data: any): any { // データからキャッシュキー生成に必要な部分のみ抽出
-        if (!data) return '';
+        if (!data) return ;
          }
-        const keyData: any = {}'
-        // 重要なフィールドのみ抽出''
+        const keyData: any = {}
+        // 重要なフィールドのみ抽出
         ['id', 'type', 'value', 'score', 'level', 'stage'].forEach(field => {  );
             if (data[field] !== undefined) { }
                 keyData[field] = data[field]; }
@@ -262,7 +262,7 @@ export class PerformanceOptimizer {
     /**
      * スロットリングが必要か判定'
      */''
-    private shouldThrottle(eventType: string'): boolean { // 特定のイベントタイプでスロットリングを適用''
+    private shouldThrottle(eventType: string'): boolean { // 特定のイベントタイプでスロットリングを適用
         const throttledEvents = ['bubblePopped', 'scoreUpdated', 'progressUpdated'];
         return throttledEvents.includes(eventType); }
     }
@@ -270,7 +270,7 @@ export class PerformanceOptimizer {
     /**
      * バッチ処理が必要か判定'
      */''
-    private shouldBatch(eventType: string'): boolean { // 特定のイベントタイプでバッチ処理を適用''
+    private shouldBatch(eventType: string'): boolean { // 特定のイベントタイプでバッチ処理を適用
         const batchedEvents = ['achievementProgress', 'statsUpdate'];
         return batchedEvents.includes(eventType); }
     }
@@ -335,10 +335,10 @@ export class PerformanceOptimizer {
         }
                     this.setCache(cacheKey, result); }
                 }
-                ';
+                ';'
                 this.stats.totalProcessed++;''
-            } catch (error') { ''
-                console.error('Error processing batch item:', error); }
+            } catch (error) { ''
+                console.error('Error processing batch item:', error) }
             }
         }
 
@@ -355,8 +355,8 @@ export class PerformanceOptimizer {
      */
     private updateProcessTime(processTime: number): void { const total = this.stats.totalProcessed;
         const currentAvg = this.stats.averageProcessTime;
-        ';
-        // 移動平均を計算''
+        ;
+        // 移動平均を計算
         this.stats.averageProcessTime = (currentAvg * (total - 1) + processTime') / total; }'
     }''
 }

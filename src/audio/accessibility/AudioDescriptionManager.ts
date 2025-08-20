@@ -40,15 +40,15 @@ interface AudioDescription { category: string,
     type: string,
     params: Record<string, any>;
     priority: number,
-    timestamp: number; }
+    timestamp: number }
 }
-';
-// Bubble types''
+;
+// Bubble types
 type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'rainbow' | 'pink' | '';
                   'clock' | 'electric' | 'poison' | 'spiky' | 'boss' | 'golden' | '';
                   'frozen' | 'magnetic' | 'explosive';
 ';
-// Rarity types''
+// Rarity types
 type RarityType = 'common' | 'rare' | 'epic' | 'legendary';
 
 // Main controller interface
@@ -101,9 +101,9 @@ export class AudioDescriptionManager {
     }
 
     /**
-     * 通知コンテナを作成'
+     * 通知コンテナを作成
      */''
-    public createNotificationContainer('')';
+    public createNotificationContainer()';
         this.notificationContainer = document.createElement('div'');''
         this.notificationContainer.className = 'audio-accessibility-notifications';
         this.notificationContainer.style.cssText = `;
@@ -122,7 +122,7 @@ export class AudioDescriptionManager {
     /**
      * 字幕コンテナを作成'
      */''
-    public createCaptionContainer('')';
+    public createCaptionContainer()';
         this.captionContainer = document.createElement('div'');''
         this.captionContainer.className = 'audio-accessibility-captions';
         this.captionContainer.style.cssText = `;
@@ -163,7 +163,7 @@ export class AudioDescriptionManager {
             position = null,
             duration = 3000 } = options;
         ';
-        // 通知要素を作成''
+        // 通知要素を作成
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;'
         notification.style.cssText = `'';
@@ -192,7 +192,7 @@ export class AudioDescriptionManager {
         `;''
         notification.appendChild(content');
         ';
-        // アクセシビリティ属性''
+        // アクセシビリティ属性
         notification.setAttribute('role', 'status'');''
         notification.setAttribute('aria-live', 'polite');
         
@@ -223,9 +223,9 @@ export class AudioDescriptionManager {
 
     /**
      * アニメーションスタイルを確保
-     * @private'
+     * @private
      */''
-    private ensureAnimationStyles('')';
+    private ensureAnimationStyles()';
         if (!document.querySelector('#audio-accessibility-animations')') { ''
             const style = document.createElement('style'');''
             style.id = 'audio-accessibility-animations';
@@ -245,7 +245,7 @@ export class AudioDescriptionManager {
                         opacity: 1,
                     }
                     to {
-                        transform: translateX(-100%},)
+                        transform: translateX(-100%})
                         opacity: 0);
                     }
                 );
@@ -277,10 +277,10 @@ export class AudioDescriptionManager {
      */
     public showCaption(text: string): void { if (!this.mainController.settings.captioning) return;
         ';
-        // 字幕をキューに追加''
+        // 字幕をキューに追加
         this.captionQueue.push(text');
         ';
-        // 現在表示中でなければ表示開始''
+        // 現在表示中でなければ表示開始
         if(this.captionContainer && this.captionContainer.style.display === 'none') {
             
         }
@@ -315,7 +315,7 @@ export class AudioDescriptionManager {
     /**
      * 泡の種類に応じた色を取得
      * @param bubbleType - 泡の種類
-     * @returns 色コード'
+     * @returns 色コード
      */''
     public getBubbleColor(bubbleType: string'): string { const colorMap: Record<BubbleType, string> = {''
             normal: '#00ffff','';
@@ -372,7 +372,7 @@ export class AudioDescriptionManager {
             visualNotification = true,
             caption = false } = options;
         ';
-        // ARIAライブリージョンでのアナウンス''
+        // ARIAライブリージョンでのアナウンス
         if(this.notificationContainer') {'
             '';
             this.notificationContainer.setAttribute('aria-live', priority');''
@@ -390,21 +390,21 @@ export class AudioDescriptionManager {
                 }
             }, 1000);
         }
-        ';
-        // 視覚的通知も表示する場合''
+        ;
+        // 視覚的通知も表示する場合
         if(visualNotification') {'
             this.showVisualNotification({''
                 type: 'announcement',')';
                 title: 'アナウンス')';
                 message: text,'';
-                icon: '📢',);
+                icon: '📢',)
         }
                 ...options); }
         }
         
         // 字幕表示する場合
-        if(caption) {'
-            ';
+        if(caption) {
+            ';'
         }'
             this.showCaption(text'); }
         }'
@@ -427,13 +427,13 @@ export class AudioDescriptionManager {
             type,
             params,';
             priority,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
         console.log('AudioDescriptionManager: Added description:', description');
         ';
-        // 視覚的な説明を表示''
+        // 視覚的な説明を表示
         if(description.category === 'game' && description.type === 'bubblePop'') {'
             this.showVisualNotification({''
-                type: 'info',';
+                type: 'info','
         })'
                 title: '泡破壊',) }
                 message: `${params.bubbleType}泡が弾けました`),
@@ -461,14 +461,14 @@ export class AudioDescriptionManager {
         }
         
         if(this.captionContainer && this.captionContainer.parentNode) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.captionContainer.parentNode.removeChild(this.captionContainer'); }
         }
         
         // データをクリア
         this.visualNotifications = [];
-        this.captionQueue = [];'
+        this.captionQueue = [];
     }''
 }

@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface ChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement;
+export interface ChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement
     }
 }
 
@@ -35,14 +35,14 @@ export interface RawChartData { [key: string]: any,
 
 export interface ProcessedChartData extends ChartData { index: number,
     normalizedValue: number,
-    position: DataPosition;
+    position: DataPosition
     }
 }
 
 export interface DataPosition { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface ChartOptions { padding?: number;
@@ -76,13 +76,13 @@ export interface ThemeColors { primary: string,
     background: string,
     text: string,
     grid: string,
-    axis: string; }
+    axis: string }
 }
 
 export interface FontTheme { family: string,
     size: number,
     weight: string,
-    color: string; }
+    color: string }
 }
 
 export interface BarOptions { width?: number;
@@ -95,7 +95,7 @@ export interface BarOptions { width?: number;
 }
 
 export interface AxesOptions { x: AxisOptions,
-    y: AxisOptions;
+    y: AxisOptions
     }
 }
 
@@ -119,7 +119,7 @@ export interface LabelOptions { show?: boolean;
     font?: FontConfiguration;
     color?: string;
     rotation?: number;
-    format?: (value: any) => string; }
+    format?: (value: any) => string }
 }
 
 export interface AxisTitleOptions { text?: string;
@@ -177,7 +177,7 @@ export interface HoverOptions { enabled?: boolean;
 }
 
 export interface ClickOptions { enabled?: boolean;
-    callback?: (data: ProcessedChartData, event: MouseEvent) => void; }
+    callback?: (data: ProcessedChartData, event: MouseEvent) => void }
 }
 
 export interface TooltipOptions { enabled?: boolean;
@@ -198,7 +198,7 @@ export interface TooltipStyle { background?: string;
 export interface ChartArea { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface ChartScales { xScale: number,
@@ -217,7 +217,7 @@ export interface BarData { x: number,
     height: number,
     value: number,
     color: string,
-    data: ProcessedChartData;
+    data: ProcessedChartData
     }
 }
 
@@ -235,49 +235,49 @@ export interface ChartRenderResult { type: ChartType,
 export interface RenderPerformance { renderTime: number,
     dataProcessingTime: number,
     drawTime: number,
-    memoryUsage?: number; }
+    memoryUsage?: number }
 }
 
 export interface LegendItem { label: string,
     color: string,
     series?: string;
-    visible: boolean; }
+    visible: boolean }
 }
 
 export interface AxisLabel { text: string,
     x: number,
     y: number,
-    rotation?: number; }
+    rotation?: number }
 }
 
 export interface GridLine { x1: number,
     y1: number,
     x2: number,
     y2: number,
-    type: GridLineType;
+    type: GridLineType
     }
 }
 
 export interface ChartBounds { minX: number,
     maxX: number,
     minY: number,
-    maxY: number; }
+    maxY: number }
 }
 
 export interface ValidationResult { isValid: boolean,
     errors: ValidationError[],
-    warnings: ValidationWarning[];
+    warnings: ValidationWarning[]
     }
 }
 
 export interface ValidationError { field: string,
     message: string,
-    code: string; }
+    code: string }
 }
 
 export interface ValidationWarning { field: string,
     message: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 // 列挙型
@@ -292,11 +292,11 @@ export type GridLineType = 'horizontal' | 'vertical';
 export const DEFAULT_CHART_OPTIONS: Partial<ChartOptions> = { padding: 20,
     showAxes: true,
     showGrid: true,
-    showLegend: false,';
+    showLegend: false,
     fontSize: 12,'';
     fontFamily: 'Arial, sans-serif' }
 } as const;
-';
+';'
 export const DEFAULT_THEME: ChartTheme = { colors: {''
         primary: '#3B82F6','';
         secondary: '#10B981','';
@@ -320,12 +320,12 @@ export const BAR_CONFIG = { DEFAULT_WIDTH_RATIO: 0.8,
     MIN_BAR_HEIGHT: 1,
     MAX_BARS_FOR_LABELS: 20 }
 } as const,
-';
+';'
 export const GRID_CONFIG = { DEFAULT_STEPS: 5,''
     DEFAULT_COLOR: '#E5E7EB',
     DEFAULT_WIDTH: 0.5 }
 } as const,
-';
+';'
 export const AXIS_CONFIG = { ''
     DEFAULT_COLOR: '#6B7280',
     DEFAULT_WIDTH: 1,
@@ -335,13 +335,13 @@ export const AXIS_CONFIG = { ''
 
 // ユーティリティ関数
 export function validateChartData(data: any[]): ValidationResult { const errors: ValidationError[] = [],
-    const warnings: ValidationWarning[] = [],';
+    const warnings: ValidationWarning[] = [],
     '';
     if (!Array.isArray(data)') {'
         errors.push({''
             field: 'data',')';
             message: 'Chart data must be an array',')';
-            code: 'INVALID_DATA_TYPE'); }
+            code: 'INVALID_DATA_TYPE') }
         });
         return { isValid: false, errors, warnings };
     }'
@@ -349,11 +349,11 @@ export function validateChartData(data: any[]): ValidationResult { const errors:
     if(data.length === 0') {'
         errors.push({''
             field: 'data',')';
-            message: 'Chart data cannot be empty',');
+            message: 'Chart data cannot be empty',')
     }'
             code: 'EMPTY_DATA')'); }
     }
-    ';
+    ';'
     const hasInvalidValues = data.some(item => {  ')'
         const value = typeof item === 'number' ? item: item? .value'),' }'
         return typeof value !== 'number' || !isFinite(value); }
@@ -362,7 +362,7 @@ export function validateChartData(data: any[]): ValidationResult { const errors:
     if(hasInvalidValues') {'
         errors.push({ : undefined''
             field: 'data.value',')';
-            message: 'All data items must have valid numeric values',');
+            message: 'All data items must have valid numeric values',')
     }'
             code: 'INVALID_VALUES'); }
         });
@@ -371,7 +371,7 @@ export function validateChartData(data: any[]): ValidationResult { const errors:
     if(data.length > 100') {'
         warnings.push({')'
             field: 'data''),'';
-            message: 'Large dataset detected (>100 items')',';
+            message: 'Large dataset detected (>100 items')','
     }'
             suggestion: 'Consider data aggregation for better performance' }
         }),
@@ -403,7 +403,7 @@ export function generateColorPalette(count: number, baseColors: string[] = DEFAU
 
 export function formatValue(value: number, decimals: number = 2): string { return value.toLocaleString(undefined, {)
         minimumFractionDigits: 0,);
-        maximumFractionDigits: decimals); }
+        maximumFractionDigits: decimals) }
     });
 }
 
@@ -435,7 +435,7 @@ export class BarChartRenderer {
             const startTime = performance.now();
             
             // データの検証
-            const validation = validateChartData(data);'
+            const validation = validateChartData(data);
             if (!validation.isValid) {' }'
                 throw new Error(`Data validation failed: ${validation.errors.map(e => e.message').join(', '})}`);
             }
@@ -468,7 +468,7 @@ export class BarChartRenderer {
             // 凡例の描画
             if(options.showLegend && processedData.some(d => d.series) { this.renderLegend(context, processedData, chartArea, options); }
             }
-            ';
+            ';'
             this.performance.drawTime = performance.now() - drawStartTime;''
             this.performance.renderTime = performance.now(''';
                 type: 'bar',
@@ -481,7 +481,7 @@ export class BarChartRenderer {
                 performance: { ...this.performance })
             })'
             ')';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Bar chart rendering failed:', error');'
             return { ''
                 type: 'bar', ;
@@ -566,7 +566,7 @@ export class BarChartRenderer {
      * 軸の描画
      */
     private renderAxes(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions): void {
-        const axesOptions = options.axes || { x: {}, y: {} }
+        const axesOptions = options.axes || { x: {}, y: {}
         const color = options.theme.colors.axis || AXIS_CONFIG.DEFAULT_COLOR;
         const width = AXIS_CONFIG.DEFAULT_WIDTH;
         
@@ -596,7 +596,7 @@ export class BarChartRenderer {
     }
 
     /**
-     * 軸ラベルの描画'
+     * 軸ラベルの描画
      */''
     private renderAxisLabels(context: ChartContext, chartArea: ChartArea, scales: ChartScales, options: ChartOptions'): void { const fontSize = options.fontSize || DEFAULT_CHART_OPTIONS.fontSize!;
         const fontFamily = options.fontFamily || DEFAULT_CHART_OPTIONS.fontFamily!;
@@ -607,7 +607,7 @@ export class BarChartRenderer {
         
         // Y軸の値ラベル
         const ySteps = GRID_CONFIG.DEFAULT_STEPS;
-        for(let i = 0; i <= ySteps; i++) {'
+        for(let i = 0; i <= ySteps; i++) {
             const value = scales.yMin + (scales.yRange / ySteps) * i;''
             const y = chartArea.y + chartArea.height - (chartArea.height / ySteps') * i;'
             '';
@@ -691,8 +691,8 @@ export class BarChartRenderer {
                 context.lineWidth = barOptions.borderWidth; }
                 context.strokeRect(x, y, barWidth, barHeight); }
             }
-            ';
-            // ラベルの描画''
+            ;
+            // ラベルの描画
             if (item.label && data.length <= BAR_CONFIG.MAX_BARS_FOR_LABELS') { context.fillStyle = options.theme.colors.text; }'
                 context.font = `${fontSize}px ${fontFamily}`;''
                 context.textAlign = 'center';
@@ -708,10 +708,10 @@ export class BarChartRenderer {
             bars.push({ x, 
                 y, ;
                 width: barWidth, ;
-                height: barHeight, );
+                height: barHeight );
                 value: item.value);
                 color: barColor,);
-                data: item ); }
+                data: item ) }
         });
         
         return bars;
@@ -738,8 +738,8 @@ export class BarChartRenderer {
                 seriesMap.set(series, { color, count: 1 ),
             
             }
-                legendItems.push({ label: series, color, series, visible: true ); }
-            } else { seriesMap.get(series)!.count++; }'
+                legendItems.push({ label: series, color, series, visible: true ) }
+            } else { seriesMap.get(series)!.count++; }
             }''
         }');
         
@@ -749,7 +749,7 @@ export class BarChartRenderer {
         const itemGap = legendOptions.itemGap || 20;
         let currentX = chartArea.x;
         
-        context.font = `${fontSize}px ${fontFamily}`;'
+        context.font = `${fontSize}px ${fontFamily}`;
         context.fillStyle = legendOptions.color || options.theme.colors.text;''
         context.textAlign = 'left';
         
@@ -777,13 +777,13 @@ export class BarChartRenderer {
      * チャート設定のバリデーション
      */
     validateOptions(options: Partial<ChartOptions>): ValidationResult { const errors: ValidationError[] = [],
-        const warnings: ValidationWarning[] = [],';
+        const warnings: ValidationWarning[] = [],
         '';
         if (options.padding && (options.padding < 0 || options.padding > 100)') {'
             errors.push({''
                 field: 'padding',')';
                 message: 'Padding must be between 0 and 100',')';
-                code: 'INVALID_PADDING'); }
+                code: 'INVALID_PADDING') }
         }'
         '';
         if (options.fontSize && (options.fontSize < 8 || options.fontSize > 72)') { warnings.push({')'

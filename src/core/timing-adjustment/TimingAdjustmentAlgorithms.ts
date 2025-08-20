@@ -17,15 +17,15 @@ import type { TimingAdjustmentManager,
 import type { TimerManager,
     ActiveTimer,
     PausedTimer,
-    TimerType,';
+    TimerType,;
     TimerPriority' }'
 } from './TimingFeedbackSystem.js';
 
 // 型定義
 export interface AlgorithmTimingAdjustmentManager extends TimingAdjustmentManager { timers: ExtendedTimerManager,
-    emitEvent: (eventName: string, data: any) => void,';
+    emitEvent: (eventName: string, data: any) => void,
     showTimeWarning: (timerId: string) => void,'';
-    showExtensionFeedback: (timerId: string, remainingTime: number') => void; }
+    showExtensionFeedback: (timerId: string, remainingTime: number') => void }
 }
 
 export interface ExtendedTimerManager extends TimerManager { extensions: Map<string, ExtensionInfo>,
@@ -35,7 +35,7 @@ export interface ExtendedTimerManager extends TimerManager { extensions: Map<str
 export interface ExtensionInfo { count: number,
     totalExtension: number,
     lastExtension: number,
-    requestedBy?: ExtensionRequestor;
+    requestedBy?: ExtensionRequestor
     }
 }
 
@@ -80,7 +80,7 @@ export interface GameEntity { id: string,
 export interface TimerResult { id: string,
     originalDuration: number,
     adjustedDuration: number,
-    created: boolean; }
+    created: boolean }
 }
 
 export interface RemainingTimeInfo { remaining: number,
@@ -92,7 +92,7 @@ export interface RemainingTimeInfo { remaining: number,
 
 export interface PauseInfo { pausedAt: number,
     reason: PauseReason,
-    triggeredBy?: string; }
+    triggeredBy?: string }
 }
 
 export interface AlgorithmStatistics { activeTimers: number,
@@ -103,35 +103,35 @@ export interface AlgorithmStatistics { activeTimers: number,
     adjustmentMultiplier: number,
     timerTypes: Record<string, number>,
     averageExtensionCount: number,
-    optimization?: OptimizationStats;
+    optimization?: OptimizationStats
     }
 }
 
 export interface OptimizationStats { lastOptimization: number,
     timersRemoved: number,
     timersOptimized: number,
-    performanceGain: number; }
+    performanceGain: number }
 }
 
 export interface TimerExtensionEvent { timerId: string,
     extensionAmount: number,
     newDuration: number,
-    requestedBy: ExtensionRequestor;
+    requestedBy: ExtensionRequestor
     }
 }
 
 export interface ProfileChangeEvent { profile: ProfileType,
     settings: TimingProfile,
-    previousProfile?: ProfileType;
+    previousProfile?: ProfileType
     }
 }
 
 export interface AdjustmentLevel { multiplier: number,
     name: string,
-    description?: string; }
+    description?: string }
 }
 ';
-// 列挙型''
+// 列挙型
 export type EntityType = 'bubble' | 'powerup' | 'obstacle' | 'particle' | 'ui';''
 export type PauseReason = 'manual' | 'auto' | 'game_pause' | 'window_blur' | 'performance' | 'user';''
 export type ExtensionRequestor = 'user' | 'auto' | 'system' | 'accessibility' | 'emergency';''
@@ -145,8 +145,8 @@ export const AUTO_PAUSE_CLEANUP_TIME = 3600000; // 1時間 = 3600000ms
 export const MAX_EXTENSION_COUNT = 5;
 export const TIMER_OPTIMIZATION_INTERVAL = 60000; // 1分間隔で最適化
 export const PERFORMANCE_CHECK_INTERVAL = 30000; // 30秒間隔で性能チェック
-';
-// 型ガード''
+;
+// 型ガード
 export function isValidTimerConfig(config: any'): config is TimerConfig { return config &&''
            typeof config.originalDuration === 'number' &&'';
            typeof config.adjustedDuration === 'number' &&'';
@@ -205,7 +205,7 @@ export class TimingAdjustmentAlgorithms {
         timersRemoved: 0,
         timersOptimized: 0,
         performanceGain: 0 }
-    },'
+    },
 '';
     constructor(timingAdjustmentManager: AlgorithmTimingAdjustmentManager') {
         this.manager = timingAdjustmentManager;
@@ -215,7 +215,7 @@ export class TimingAdjustmentAlgorithms {
         this.timers = timingAdjustmentManager.timers;
         this.adaptiveLearning = timingAdjustmentManager.adaptiveLearning;'
         ';
-    }
+    }'
     }'
         console.log('[TimingAdjustmentAlgorithms] Component initialized'); }
     }
@@ -232,17 +232,17 @@ export class TimingAdjustmentAlgorithms {
         this.state.currentProfile = profileName as ProfileType;
         const profile = this.config.profiles[profileName];
         ';
-        // 現在のタイマーに調整を適用''
-        this.applyAdjustmentsToActiveTimers('')';
+        // 現在のタイマーに調整を適用
+        this.applyAdjustmentsToActiveTimers()';
             localStorage.setItem('timingAdjustmentProfile', profileName);''
-        } catch (error') { ''
-            console.warn('[TimingAdjustmentAlgorithms] Failed to save profile to localStorage:', error'); }
+        } catch (error) { ''
+            console.warn('[TimingAdjustmentAlgorithms] Failed to save profile to localStorage:', error') }
         }
         
         // イベントを発火
         const eventData: ProfileChangeEvent = { profile: profileName as ProfileType,
             settings: profile,
-            previousProfile }'
+            previousProfile }
         };''
         this.manager.emitEvent('profileChanged', eventData);'
         '';
@@ -304,10 +304,10 @@ export class TimingAdjustmentAlgorithms {
             
             // タイマーを登録
             this.registerTimer(`bubble_${bubble.id)`, { : undefined
-                originalDuration: originalLifetime,';
+                originalDuration: originalLifetime,
                 adjustedDuration: bubble.maxAge,'';
-                startTime: Date.now('')';
-                type: 'bubble');
+                startTime: Date.now()';
+                type: 'bubble')
         }
                 entity: bubble) }
             }),
@@ -386,7 +386,7 @@ export class TimingAdjustmentAlgorithms {
         if(timer) {
             timer.warnings = timer.warnings || [];
             timer.warnings.push({);
-                triggeredAt: Date.now() + warningThreshold }'
+                triggeredAt: Date.now() + warningThreshold }
                 acknowledged: false' }'
             }'),
         }
@@ -422,7 +422,7 @@ export class TimingAdjustmentAlgorithms {
                 count: timer.extensionCount,);
                 totalExtension: timer.extensionCount * extensionAmount),
                 lastExtension: Date.now(),
-        }'
+        }
                 requestedBy' }'
             }');
         }
@@ -434,7 +434,7 @@ export class TimingAdjustmentAlgorithms {
         const eventData: TimerExtensionEvent = { timerId,
             extensionAmount,
             newDuration: timer.adjustedDuration,
-            requestedBy }'
+            requestedBy }
         };''
         this.manager.emitEvent('timerExtended', eventData);
         
@@ -458,14 +458,14 @@ export class TimingAdjustmentAlgorithms {
         }
                 mostUrgentTimer = timerId; }
             }
-        }'
+        }
         '';
         if(mostUrgentTimer') {'
             '';
             const success = this.extendTimer(mostUrgentTimer, 'user');
             if (success) {'
-                // フィードバックを表示''
-                this.manager.showExtensionFeedback(mostUrgentTimer, shortestRemaining');
+                // フィードバックを表示
+                this.manager.showExtensionFeedback(mostUrgentTimer, shortestRemaining);
         }
                 return mostUrgentTimer; }
             }
@@ -500,7 +500,7 @@ export class TimingAdjustmentAlgorithms {
         
         // 統計を更新
         if (pausedCount > 0) { this.adaptiveLearning.data.pauseFrequency++; }
-        }'
+        }
         '';
         console.log(`[TimingAdjustmentAlgorithms] ${pausedCount}個のタイマーを一時停止 (理由: ${reason)`'});
         return pausedCount;
@@ -591,9 +591,9 @@ export class TimingAdjustmentAlgorithms {
         
             // グレース期間内の場合、自動延長を実行
             const scheduleTime = Math.max(0, remaining - 1000); // 1秒前に延長
-            ';
+            ';'
             setTimeout(() => { '
-        
+        '
         }'
                 if (this.timers.active.has(timerId)') {' }'
                     this.extendTimer(timerId, 'auto'); }
@@ -678,12 +678,12 @@ export class TimingAdjustmentAlgorithms {
             }
             
             // 長時間停止しているタイマーの最適化
-            if(this.timers.paused.has(timerId) {'
+            if(this.timers.paused.has(timerId) {
                 '';
                 const pauseInfo = this.timers.paused.get(timerId') as PauseInfo;
                 const pauseDuration = currentTime - pauseInfo.pausedAt;
                 ';
-                // 1時間以上停止している自動停止タイマーを削除''
+                // 1時間以上停止している自動停止タイマーを削除
                 if (pauseDuration > AUTO_PAUSE_CLEANUP_TIME && pauseInfo.reason !== 'user') {
                     this.unregisterTimer(timerId);
                     removedTimers.push(timerId);
@@ -698,7 +698,7 @@ export class TimingAdjustmentAlgorithms {
         this.optimizationStats = { lastOptimization: currentTime,
             timersRemoved: removedTimers.length,
             timersOptimized: optimizedCount,
-            performanceGain: this.calculatePerformanceGain(optimizedCount); }
+            performanceGain: this.calculatePerformanceGain(optimizedCount) }
         };
         
         this.lastOptimization = currentTime;
@@ -799,7 +799,7 @@ export class TimingAdjustmentAlgorithms {
         for(const [timerId, timer] of this.timers.active) {
 
             const elapsed = currentTime - timer.startTime - timer.pausedTime;
-            const remaining = Math.max(0, timer.adjustedDuration - elapsed);'
+            const remaining = Math.max(0, timer.adjustedDuration - elapsed);
             '';
             if (remaining <= threshold && remaining > 0') {
                 urgentTimers.push({)
@@ -810,7 +810,7 @@ export class TimingAdjustmentAlgorithms {
             }
         }
 ';
-        // 優先度と残り時間でソート''
+        // 優先度と残り時間でソート
         return urgentTimers.sort((a, b') => { ' }'
             const priorityOrder = { 'critical': 4, 'high': 3, 'normal': 2, 'low': 1 };
             const aPriority = priorityOrder[a.priority] || 2;
@@ -818,8 +818,8 @@ export class TimingAdjustmentAlgorithms {
             
             if (aPriority !== bPriority) { return bPriority - aPriority; // 高い優先度から }
             }
-            ';
-            return a.remaining - b.remaining; // 残り時間の短い順''
+            ;
+            return a.remaining - b.remaining; // 残り時間の短い順
         }');
     }
 
@@ -879,9 +879,9 @@ export class TimingAdjustmentAlgorithms {
         this.timers.paused.clear();
         
         if(hasTimerExtensions(this.timers) {
-        ';
+        ';'
             this.timers.extensions.clear();''
-            this.timers.warnings.clear('');
+            this.timers.warnings.clear();
         }'
         console.log('[TimingAdjustmentAlgorithms] Component destroyed''); }'
     }''

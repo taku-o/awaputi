@@ -16,11 +16,11 @@ import BrowserCompatibilityManager from './BrowserCompatibilityManager.js';
 interface FaviconInfo { rel: string,
     type?: string;
     href: string,
-    sizes?: string; }
+    sizes?: string }
 }
 
 interface MetaTagInfo { total: number,
-    byType: Record<string, number>; }
+    byType: Record<string, number> }
     problematicTags: Array<{ name: string; content: string }>,
     localExecutionTags: Array<{ name: string; content: string }>;
 }
@@ -30,42 +30,42 @@ interface BrowserInfo { name: string,
     isSupported: boolean,
     supportedFeatures: string[],
     restrictions: string[],
-    fallbacksRequired: string[]; }
+    fallbacksRequired: string[] }
 }
 
 class MetaTagOptimizer { /**
-     * ローカル実行用にメタタグを最適化'
+     * ローカル実行用にメタタグを最適化
      */''
-    static optimizeForLocalExecution('')';
+    static optimizeForLocalExecution()';
         console.log('MetaTagOptimizer: Optimizing meta tags for local execution'),
         
         this.removeProblematicMetaTags();
         this.addLocalExecutionMetaTags();'
         this.optimizeContentSecurityPolicy();''
-        this.addBrowserSpecificOptimizations('')';
+        this.addBrowserSpecificOptimizations()';
         console.log('MetaTagOptimizer: Meta tag optimization completed'), }
     }
 
     /**
      * ブラウザ固有の最適化を追加
      */'
-    static addBrowserSpecificOptimizations(): void { try {''
-            const browserInfo: BrowserInfo = BrowserCompatibilityManager.getBrowserInfo('')';
+    static addBrowserSpecificOptimizations(): void { try {'
+            const browserInfo: BrowserInfo = BrowserCompatibilityManager.getBrowserInfo()';
             if(browserInfo.name === 'safari') {'
                 '';
-                this._addSafariSpecificMetas('')';
+                this._addSafariSpecificMetas()';
             else if (browserInfo.name === 'firefox') {''
-                this._addFirefoxSpecificMetas('')';
+                this._addFirefoxSpecificMetas()';
             else if (browserInfo.name === 'ie') {
             }
                 this._addIESpecificMetas(); }
             }
             
             // 互換性情報をメタタグとして記録
-            this._addCompatibilityInfoMeta(browserInfo);'
+            this._addCompatibilityInfoMeta(browserInfo);
             '';
-        } catch (error') { ''
-            console.warn('MetaTagOptimizer: Browser-specific optimization failed', error); }
+        } catch (error) { ''
+            console.warn('MetaTagOptimizer: Browser-specific optimization failed', error) }
         }
     }
 
@@ -88,12 +88,12 @@ class MetaTagOptimizer { /**
     }
 
     /**
-     * ローカル実行用のメタタグを追加'
+     * ローカル実行用のメタタグを追加
      */''
-    static addLocalExecutionMetaTags('')';
+    static addLocalExecutionMetaTags()';
         this._addOrUpdateMetaTag('name', 'local-execution-mode', 'active'');
         ';
-        // ローカル実行時の推奨事項''
+        // ローカル実行時の推奨事項
         this._addOrUpdateMetaTag('name', 'local-execution-note'')'';
             'This game is running in local file mode. For best experience, use a development server.');
         
@@ -105,12 +105,12 @@ class MetaTagOptimizer { /**
     }
 
     /**
-     * Content-Security-Policy を緩和'
+     * Content-Security-Policy を緩和
      */''
-    static optimizeContentSecurityPolicy('')';
+    static optimizeContentSecurityPolicy()';
         this._removeMetaTagByHttpEquiv('Content-Security-Policy'');
         
-        // ローカル実行用の緩和されたCSP'
+        // ローカル実行用の緩和されたCSP
         const localCSP: string = ['';
             "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:","";
             "script-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob:","";
@@ -130,7 +130,7 @@ class MetaTagOptimizer { /**
      * X-Frame-Options タグを削除
      * @private'
      */''
-    static _removeXFrameOptionsTag('')';
+    static _removeXFrameOptionsTag()';
         const xFrameOptionsTags = document.querySelectorAll('meta[http-equiv="X-Frame-Options"]');''
         xFrameOptionsTags.forEach(tag => {  ');''
             console.log('MetaTagOptimizer: Removing X-Frame-Options meta tag') }
@@ -178,7 +178,7 @@ class MetaTagOptimizer { /**
         }"
             // 既存のタグを更新" }"
             existingTag.setAttribute('content', content'});'
-        } else {  // 新しいタグを作成''
+        } else {  // 新しいタグを作成
             const metaTag = document.createElement('meta');''
             metaTag.setAttribute(attributeName, attributeValue');''
             metaTag.setAttribute('content', content);
@@ -190,7 +190,7 @@ class MetaTagOptimizer { /**
 
     /**
      * ファビコンタグを最適化
-     * @private'
+     * @private
      */''
     static _optimizeFaviconTags(''';
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico', sizes: '16x16 32x32 48x48' },''
@@ -218,19 +218,19 @@ class MetaTagOptimizer { /**
             const linkTag = document.createElement('link'');''
             linkTag.setAttribute('rel', faviconInfo.rel');''
             linkTag.setAttribute('href', faviconInfo.href);'
-            ';
+            ';'
         }'
             if (faviconInfo.type') {' }'
                 linkTag.setAttribute('type', faviconInfo.type});
             }'
             '';
             if(faviconInfo.sizes') {'
-                ';
+                ';'
             }'
                 linkTag.setAttribute('sizes', faviconInfo.sizes'); }
             }
             ';
-            // ファイルが存在しない場合のエラーハンドリング''
+            // ファイルが存在しない場合のエラーハンドリング
             linkTag.addEventListener('error', () => {  }
                 console.warn(`MetaTagOptimizer: Favicon not found: ${faviconInfo.href}`);
                 // ファイルが見つからない場合はタグを削除
@@ -243,13 +243,13 @@ class MetaTagOptimizer { /**
 
     /**
      * viewport タグを最適化
-     * @private'
+     * @private
      */''
-    static _optimizeViewportTag('')';
+    static _optimizeViewportTag()';
         const viewportTag = document.querySelector('meta[name="viewport"]');'
         '';
         if(!viewportTag') {'
-            // viewport タグが存在しない場合は追加''
+            // viewport タグが存在しない場合は追加
             this._addOrUpdateMetaTag('name', 'viewport'')';
         }'
                 'width=device-width, initial-scale=1.0, user-scalable=yes'); }
@@ -260,7 +260,7 @@ class MetaTagOptimizer { /**
      * 現在のメタタグ状況を取得（デバッグ用）
      * @returns {MetaTagInfo} メタタグ情報'
      */''
-    static getMetaTagInfo('')';
+    static getMetaTagInfo()';
         const allMetaTags = Array.from(document.querySelectorAll('meta');
         const metaTagInfo: MetaTagInfo = { total: allMetaTags.length }
             byType: {}
@@ -272,19 +272,19 @@ class MetaTagOptimizer { /**
             const name = tag.getAttribute('name'') || tag.getAttribute('http-equiv'') || 'unknown';''
             const content = tag.getAttribute('content'') || '';
             ';
-            // タイプ別集計''
+            // タイプ別集計
             if (!metaTagInfo.byType[name]') { }
                 metaTagInfo.byType[name] = 0; }
             }
             metaTagInfo.byType[name]++;
 ';
-            // 問題のあるタグをチェック''
+            // 問題のあるタグをチェック
             if(name === 'X-Frame-Options' || ')';
                 (name === 'Content-Security-Policy' && content.includes('strict')) { ''
                 metaTagInfo.problematicTags.push({ name, content )'); }
             }
 ';
-            // ローカル実行用タグをチェック''
+            // ローカル実行用タグをチェック
             if (name.includes('local-execution') { metaTagInfo.localExecutionTags.push({ name, content ); }
             }
         });
@@ -296,11 +296,11 @@ class MetaTagOptimizer { /**
      * Safari固有のメタタグ最適化
      * @private'
      */''
-    static _addSafariSpecificMetas('')';
+    static _addSafariSpecificMetas()';
         this._addOrUpdateMetaTag('name', 'local-execution-safari-private-browsing'')'';
             'local-storage-fallback-enabled'');
             ';
-        // Safari の Canvas 制限対応''
+        // Safari の Canvas 制限対応
         this._addOrUpdateMetaTag('name', 'local-execution-safari-canvas'')'';
             'fallback-enabled');
     }
@@ -309,7 +309,7 @@ class MetaTagOptimizer { /**
      * Firefox固有のメタタグ最適化
      * @private'
      */''
-    static _addFirefoxSpecificMetas('')';
+    static _addFirefoxSpecificMetas()';
         if(window.location && window.location.protocol === 'file:'') {'
             '';
             this._addOrUpdateMetaTag('name', 'local-execution-firefox-storage'')';
@@ -322,11 +322,11 @@ class MetaTagOptimizer { /**
      * Internet Explorer固有のメタタグ最適化
      * @private'
      */''
-    static _addIESpecificMetas('')';
+    static _addIESpecificMetas()';
         this._addOrUpdateMetaTag('name', 'local-execution-ie-compatibility'')'';
             'legacy-fallbacks-enabled'');
             ';
-        // IE の X-UA-Compatible 設定''
+        // IE の X-UA-Compatible 設定
         this._addOrUpdateMetaTag('http-equiv', 'X-UA-Compatible', 'IE=edge');
     }
 
@@ -343,7 +343,7 @@ class MetaTagOptimizer { /**
             browserInfo.supportedFeatures.join(',');'
             '';
         if(browserInfo.restrictions && browserInfo.restrictions.length > 0') {'
-            ';
+            ';'
         }'
             this._addOrUpdateMetaTag('name', 'local-execution-restrictions'');' }'
                 browserInfo.restrictions.join(',')});
@@ -353,7 +353,7 @@ class MetaTagOptimizer { /**
     /**
      * 最適化状況をリセット（テスト用）'
      */''
-    static reset('')';
+    static reset()';
         const localTags = document.querySelectorAll('meta[name^="local-execution"]');''
         localTags.forEach(tag => tag.remove()');'
         '';

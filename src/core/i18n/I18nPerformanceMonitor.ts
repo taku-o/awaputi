@@ -10,33 +10,33 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 // 型定義
 export interface PerformanceMeasurement { duration: number,
     timestamp: number,
-    success: boolean; }
+    success: boolean }
 }
 
 export interface TranslationMeasurement { id: string,
     startTime: number,
     key: string,
-    language: string; }
+    language: string }
 }
 
 export interface LanguageSwitchResult { result: any,
-    duration: number; }
+    duration: number }
 }
 
 export interface RenderingResult { result: any,
-    duration: number; }
+    duration: number }
 }
 
 export interface MemoryInfo { used: number,
     total: number,
     limit: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface NetworkInfo { effectiveType: string,
     downlink: number,
     rtt: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface PerformanceMetrics { translationTimes: Map<string, PerformanceMeasurement[]>,
@@ -52,19 +52,19 @@ export interface PerformanceThresholds { translationTime: number,
     renderingTime: number,
     memoryGrowth: number,
     cacheHitRate: number,
-    networkTimeout: number; }
+    networkTimeout: number }
 }
 
 export interface PerformanceAlert { type: string,
     details: any,
     timestamp: number,
-    severity: AlertSeverity;
+    severity: AlertSeverity
     }
 }
 
 export interface AlertCategories { performance: PerformanceAlert[],
     memory: PerformanceAlert[],
-    network: PerformanceAlert[];
+    network: PerformanceAlert[]
     }
 }
 
@@ -82,38 +82,38 @@ export interface PerformanceStatistics { startTime: number,
 export interface AutoOptimizationConfig { enabled: boolean,
     adaptiveThresholds: boolean,
     memoryCleanup: boolean,
-    cacheOptimization: boolean; }
+    cacheOptimization: boolean }
 }
 
 export interface TranslationPerformanceAnalysis { totalTranslations: number,
     averageTime: number,
     slowTranslations: number,
     fastestLanguage: LanguagePerformance | null,
-    slowestLanguage: LanguagePerformance | null; }
+    slowestLanguage: LanguagePerformance | null }
 }
 
 export interface LanguagePerformance { language: string,
-    averageTime: number; }
+    averageTime: number }
 }
 
 export interface LanguageSwitchPerformanceAnalysis { totalSwitches: number,
     averageTime: number,
     slowSwitches: number,
-    commonSwitchPatterns: SwitchPattern[];
+    commonSwitchPatterns: SwitchPattern[]
     }
 }
 
 export interface SwitchPattern { pattern: string,
     count: number,
-    percentage: number; }
+    percentage: number }
 }
 
 export interface RenderingPerformanceAnalysis { totalRenders: number,
     averageTime: number,
     averageFPS: number,
-    droppedFrames: number; }
+    droppedFrames: number }
 }
-';
+';'
 export interface MemoryTrendAnalysis { ''
     trend: 'increasing' | 'decreasing' | 'insufficient_data',
     changeRate?: number;
@@ -126,14 +126,14 @@ export interface PerformanceAnalysis { translationPerformance: TranslationPerfor
     languageSwitchPerformance: LanguageSwitchPerformanceAnalysis,
     renderingPerformance: RenderingPerformanceAnalysis,
     memoryTrends: MemoryTrendAnalysis,
-    recommendations: PerformanceRecommendation[];
+    recommendations: PerformanceRecommendation[]
     }
 }
 
 export interface PerformanceRecommendation { type: RecommendationType,
     severity: AlertSeverity,
     message: string,
-    action: OptimizationAction;
+    action: OptimizationAction
     }
 }
 
@@ -143,12 +143,12 @@ export interface PerformanceReport { timestamp: number,
     analysis: PerformanceAnalysis,
     alerts: AlertCategories,
     thresholds: PerformanceThresholds,
-    autoOptimization: AutoOptimizationConfig;
+    autoOptimization: AutoOptimizationConfig
     }
 }
 
 export interface LanguageStats { totalTime: number,
-    count: number; }
+    count: number }
 }
 
 export interface PerformanceIssueDetails { key?: string;
@@ -169,7 +169,7 @@ export interface PerformanceIssueDetails { key?: string;
 
 export interface NetworkConnection { effectiveType: string,
     downlink: number,
-    rtt: number; }
+    rtt: number }
 }
 
 // Navigator型拡張
@@ -177,7 +177,7 @@ declare global { interface Navigator {
         connection?: NetworkConnection;
     }
     }
-    ';
+    ';'
     interface Window { ''
         gc?: (') => void; }
     }
@@ -185,7 +185,7 @@ declare global { interface Navigator {
     interface Performance { memory?: {
             usedJSHeapSize: number,
             totalJSHeapSize: number,
-            jsHeapSizeLimit: number; }
+            jsHeapSizeLimit: number }
         };
     }
 }'
@@ -218,7 +218,7 @@ export class I18nPerformanceMonitor {
             languageSwitchTimes: new Map<string, PerformanceMeasurement[]>(), // 言語切り替え時間;
             renderingTimes: new Map<string, PerformanceMeasurement[]>(),      // レンダリング時間;
             memoryUsage: new Map<number, MemoryInfo>(),         // メモリ使用量;
-            cachePerformance: new Map<string, any>(),    // キャッシュ性能;
+            cachePerformance: new Map<string, any>(),    // キャッシュ性能
     }
     }
             networkPerformance: new Map<number, NetworkInfo>()   // ネットワーク性能 }
@@ -260,9 +260,9 @@ export class I18nPerformanceMonitor {
     }
     
     /**
-     * 監視開始'
+     * 監視開始
      */''
-    private startMonitoring('')';
+    private startMonitoring()';
         console.log('I18n Performance Monitor started');
         
         // 定期的な統計収集
@@ -313,12 +313,12 @@ export class I18nPerformanceMonitor {
         
         // 統計更新
         this.statistics.totalTranslations++;
-        ';
-        // 閾値チェック''
+        ;
+        // 閾値チェック
         if(duration > this.thresholds.translationTime') {'
             '';
             this.recordPerformanceIssue('translation', {
-                key: measurement.key,);
+                key: measurement.key);
                 language: measurement.language);
                 duration,);
         }
@@ -359,12 +359,12 @@ export class I18nPerformanceMonitor {
                 
                 // 統計更新
                 this.statistics.totalLanguageSwitches++;
-                ';
-                // 閾値チェック''
+                ;
+                // 閾値チェック
                 if(duration > this.thresholds.languageSwitchTime') {'
                     '';
                     this.recordPerformanceIssue('languageSwitch', {
-                        from: fromLanguage,);
+                        from: fromLanguage);
                         to: toLanguage);
                         duration,);
                 }
@@ -393,9 +393,9 @@ export class I18nPerformanceMonitor {
     async measureRenderingPerformance<T>(renderCallback: () => Promise<T>): Promise<RenderingResult> { return new Promise(async (resolve, reject) => { 
             const startTime = performance.now();
             
-            try {'
+            try {
                 const result = await renderCallback();''
-                const endTime = performance.now('')';
+                const endTime = performance.now()';
                 const renderKey = 'ui_update';)
                 if(!this.metrics.renderingTimes.has(renderKey) { }
                     this.metrics.renderingTimes.set(renderKey, []); }
@@ -409,8 +409,8 @@ export class I18nPerformanceMonitor {
                 
                 // 統計更新
                 this.statistics.totalRenders++;
-                ';
-                // 60FPS チェック''
+                ;
+                // 60FPS チェック
                 if(duration > this.thresholds.renderingTime') {'
                     '';
                     this.recordPerformanceIssue('rendering', {)
@@ -423,7 +423,7 @@ export class I18nPerformanceMonitor {
                 
                 resolve({ result, duration );'
                 ' }'
-            } catch (error') { ''
+            } catch (error) { ''
                 this.recordPerformanceIssue('renderingError', {);
                     error: (error as Error).message }
                 }),
@@ -474,13 +474,13 @@ export class I18nPerformanceMonitor {
         if(memoryHistory.length > 1) {
         
             const previousMemory = memoryHistory[memoryHistory.length - 2].used;
-            const memoryGrowth = ((currentMemory - previousMemory) / previousMemory) * 100;'
+            const memoryGrowth = ((currentMemory - previousMemory) / previousMemory) * 100;
             '';
             if (memoryGrowth > this.thresholds.memoryGrowth') {''
                 this.recordPerformanceIssue('memoryGrowth', {
-                    current: currentMemory,);
+                    current: currentMemory);
                     previous: previousMemory);
-                    growth: memoryGrowth,);
+                    growth: memoryGrowth,)
         }
                     threshold: this.thresholds.memoryGrowth); }
             }
@@ -496,17 +496,17 @@ export class I18nPerformanceMonitor {
                 effectiveType: connection.effectiveType,
                 downlink: connection.downlink,
                 rtt: connection.rtt,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };'
             '';
             this.metrics.networkPerformance.set(Date.now(), networkInfo');
             ';
-            // ネットワーク品質の評価''
+            // ネットワーク品質の評価
             if(connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g'') {'
                 '';
                 this.recordPerformanceIssue('slowNetwork', {)
                     effectiveType: connection.effectiveType);
-                    downlink: connection.downlink,);
+                    downlink: connection.downlink,)
             }
                     rtt: connection.rtt); }
             }
@@ -543,7 +543,7 @@ export class I18nPerformanceMonitor {
         
         let totalTime = 0;
         let totalCount = 0;
-        const languageAverages = new Map<string, LanguageStats>();'
+        const languageAverages = new Map<string, LanguageStats>();
         '';
         for(const [key, measurements] of this.metrics.translationTimes') {'
             '';
@@ -562,7 +562,7 @@ export class I18nPerformanceMonitor {
             // 言語別平均の更新
             if(!languageAverages.has(language) {
         }
-                languageAverages.set(language, { totalTime: 0, count: 0 ); }
+                languageAverages.set(language, { totalTime: 0, count: 0 ) }
             }
             const langStats = languageAverages.get(language)!;
             langStats.totalTime += avgTime * validMeasurements.length;
@@ -655,9 +655,9 @@ export class I18nPerformanceMonitor {
     }
     
     /**
-     * レンダリング性能の分析'
+     * レンダリング性能の分析
      */''
-    private analyzeRenderingPerformance('')';
+    private analyzeRenderingPerformance()';
         const renderMeasurements = this.metrics.renderingTimes.get('ui_update') || [];
         const validMeasurements = renderMeasurements.filter(m => m.success);
         
@@ -686,7 +686,7 @@ export class I18nPerformanceMonitor {
         '';
         const recent = memoryData.slice(-10'); // 最新10データポイント
         const initial = recent[0].used;
-        const final = recent[recent.length - 1].used;'
+        const final = recent[recent.length - 1].used;
         '';
         const trend = final > initial ? 'increasing' : 'decreasing';
         const changeRate = ((final - initial) / initial) * 100;
@@ -704,42 +704,42 @@ export class I18nPerformanceMonitor {
      */
     private generateRecommendations(analysis: PerformanceAnalysis): PerformanceRecommendation[] { const recommendations: PerformanceRecommendation[] = [],
         ';
-        // 翻訳性能の推奨事項''
+        // 翻訳性能の推奨事項
         if(analysis.translationPerformance.averageTime > this.thresholds.translationTime') {'
             recommendations.push({''
                 type: 'translation','';
                 severity: 'medium',')';
-                message: 'Translation performance is below threshold. Consider caching frequently used translations.',');
+                message: 'Translation performance is below threshold. Consider caching frequently used translations.',')
         }'
                 action: 'enable_translation_cache'); }
         }
         ';
-        // 言語切り替え性能の推奨事項''
+        // 言語切り替え性能の推奨事項
         if(analysis.languageSwitchPerformance.averageTime > this.thresholds.languageSwitchTime') {'
             recommendations.push({''
                 type: 'language_switch','';
                 severity: 'high',')';
-                message: 'Language switching is slow. Consider preloading common languages.',');
+                message: 'Language switching is slow. Consider preloading common languages.',')
         }'
                 action: 'enable_language_preload'); }
         }
         ';
-        // レンダリング性能の推奨事項''
+        // レンダリング性能の推奨事項
         if(analysis.renderingPerformance.averageFPS < 60') {'
             recommendations.push({''
                 type: 'rendering','';
                 severity: 'high',')';
-                message: 'Rendering performance is below 60 FPS. Optimize UI updates.',');
+                message: 'Rendering performance is below 60 FPS. Optimize UI updates.',')
         }'
                 action: 'optimize_rendering')'); }
         }
         ';
-        // メモリ使用量の推奨事項''
+        // メモリ使用量の推奨事項
         if(analysis.memoryTrends.trend === 'increasing' && analysis.memoryTrends.changeRate && analysis.memoryTrends.changeRate > 10') {'
             recommendations.push({''
                 type: 'memory','';
                 severity: 'medium',')';
-                message: 'Memory usage is increasing. Consider garbage collection.',');
+                message: 'Memory usage is increasing. Consider garbage collection.',')
         }'
                 action: 'memory_cleanup'); }
         }
@@ -768,17 +768,17 @@ export class I18nPerformanceMonitor {
     /**
      * 自動最適化の判定'
      */''
-    private shouldAutoOptimize(recommendation: PerformanceRecommendation'): boolean { // 高い重要度のもののみ自動実行''
+    private shouldAutoOptimize(recommendation: PerformanceRecommendation'): boolean { // 高い重要度のもののみ自動実行
         if (recommendation.severity !== 'high'') return false;
         ';
-        // メモリクリーンアップは自動実行''
+        // メモリクリーンアップは自動実行
         if(recommendation.action === 'memory_cleanup' && this.autoOptimization.memoryCleanup') {
             
         }
             return true; }
         }
         ';
-        // キャッシュ最適化は自動実行''
+        // キャッシュ最適化は自動実行
         if (recommendation.action === 'enable_translation_cache' && this.autoOptimization.cacheOptimization) { return true; }
         }
         
@@ -789,12 +789,12 @@ export class I18nPerformanceMonitor {
      * 最適化の実行
      */
     private executeOptimization(recommendation: PerformanceRecommendation): void { console.log(`Executing auto-optimization: ${recommendation.action)`),
-        ';
-        try {''
+        ';'
+        try {'
             switch(recommendation.action') {'
                 '';
                 case 'memory_cleanup':'';
-                    this.performMemoryCleanup('')';
+                    this.performMemoryCleanup()';
                 case 'enable_translation_cache':);
                     this.optimizeTranslationCache();
                     break;
@@ -829,7 +829,7 @@ export class I18nPerformanceMonitor {
                 for (const [key, value] of metricMap) {
                     if(Array.isArray(value) {
                         // 配列データの場合、古いエントリを削除
-                        const recentEntries = value.filter(entry => )';
+                        const recentEntries = value.filter(entry => );
                             !entry.timestamp || entry.timestamp > oneHourAgo);'
         
         }'
@@ -845,7 +845,7 @@ export class I18nPerformanceMonitor {
     /**
      * 翻訳キャッシュの最適化'
      */''
-    private optimizeTranslationCache('')';
+    private optimizeTranslationCache()';
         console.log('Translation cache optimization completed');
     }
     
@@ -856,20 +856,20 @@ export class I18nPerformanceMonitor {
             type,
             details,
             timestamp: Date.now(),
-            severity: this.calculateSeverity(type, details); }
+            severity: this.calculateSeverity(type, details) }
         };
         
         this.alerts.performance.push(issue);
         this.statistics.performanceIssues++;
         
         // アラートの最大数制限
-        if(this.alerts.performance.length > 100) {'
-            ';
+        if(this.alerts.performance.length > 100) {
+            ';'
         }'
             this.alerts.performance = this.alerts.performance.slice(-50'); }
         }
         ';
-        // 重要な問題はコンソールに出力''
+        // 重要な問題はコンソールに出力
         if(issue.severity === 'high') {
             
         }
@@ -940,8 +940,8 @@ export class I18nPerformanceMonitor {
                 }
             }
         }
-        ';
-        // 手動設定の適用''
+        ;
+        // 手動設定の適用
         Object.assign(this.thresholds, newThresholds');'
         '';
         console.log('Performance thresholds updated:', this.thresholds);
@@ -952,7 +952,7 @@ export class I18nPerformanceMonitor {
      */'
     updateConfiguration(config: Partial<AutoOptimizationConfig>): void { ''
         Object.assign(this.autoOptimization, config');''
-        console.log('Performance monitor configuration updated:', config); }
+        console.log('Performance monitor configuration updated:', config) }
     }
     
     /**
@@ -991,7 +991,7 @@ export class I18nPerformanceMonitor {
         }
         
         if(this.networkMonitoringInterval) {
-        ';
+        ';'
             '';
             clearInterval(this.networkMonitoringInterval');
         
@@ -1008,7 +1008,7 @@ export class I18nPerformanceMonitor {
     cleanup(): void { this.stopMonitoring();
         
         // データのクリア
-        for(const metricMap of Object.values(this.metrics) {'
-            ';
+        for(const metricMap of Object.values(this.metrics) {
+            ';'
         }'
             metricMap.clear(') }

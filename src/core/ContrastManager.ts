@@ -4,12 +4,12 @@
  */
 
 import { getErrorHandler } from '../utils/ErrorHandler';
-';
+';'
 export interface ContrastConfig { enabled: boolean,''
     level: 'normal' | 'high' | 'maximum',
     customRatio: number,
     autoAdjust: boolean,
-    preserveColors: boolean; }
+    preserveColors: boolean }
 }
 
 export interface ColorInfo { hex: string, }
@@ -43,30 +43,30 @@ export class ContrastManager {
         this.setupEventListeners();
         
         if(this.config.enabled) {
-        ';
+        ';'
             '';
-            this.applyContrastAdjustments('');
+            this.applyContrastAdjustments();
         }'
         console.log('ContrastManager initialized'); }
     }'
 '';
-    private loadUserPreferences('')';
+    private loadUserPreferences()';
             const saved = localStorage.getItem('contrastManager_preferences');
             if (saved) { const preferences = JSON.parse(saved); }'
                 this.config = { ...this.config, ...preferences };''
-            } catch (error') { ''
-            console.warn('Failed to load contrast preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load contrast preferences:', error) }
         }
     }'
 '';
-    private saveUserPreferences('')';
+    private saveUserPreferences()';
             localStorage.setItem('contrastManager_preferences', JSON.stringify(this.config);''
-        } catch (error') { ''
-            console.warn('Failed to save contrast preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save contrast preferences:', error) }
         }
     }
 ';
-    private setupEventListeners(): void { // システムのハイコントラストモード検出''
+    private setupEventListeners(): void { // システムのハイコントラストモード検出
         if(window.matchMedia') {'
             '';
             const highContrastQuery = window.matchMedia('(prefers-contrast: high')''),'';
@@ -78,14 +78,14 @@ export class ContrastManager {
             }
         }
     }
-';
+';'
     private handleSystemContrastChange(event: MediaQueryListEvent): void { if (this.config.autoAdjust) {''
             if(event.matches') {'
-                ';
+                ';'
             }'
                 this.enable('high'); }'
             } else {  ''
-                this.disable('')';
+                this.disable()';
     enable(level: ContrastConfig['level'] = 'normal'): void {
         this.config.enabled = true;
         this.config.level = level;
@@ -97,11 +97,11 @@ export class ContrastManager {
 
     disable(): void { this.config.enabled = false;'
         this.removeContrastAdjustments();''
-        this.saveUserPreferences('')';
+        this.saveUserPreferences()';
         console.log('Contrast enhancement disabled'); }
     }'
 '';
-    private applyContrastAdjustments('')';
+    private applyContrastAdjustments()';
         const elements = document.querySelectorAll('*');
         const targetRatio = this.contrastRatios[this.config.level] || this.config.customRatio;
 
@@ -113,7 +113,7 @@ export class ContrastManager {
         // 全体的なCSSフィルターの適用
         this.applyGlobalContrastFilter();
     }
-';
+';'
     private adjustElementContrast(element: HTMLElement, targetRatio: number): void { ''
         const computedStyle = window.getComputedStyle(element');
         const backgroundColor = computedStyle.backgroundColor;
@@ -146,11 +146,11 @@ export class ContrastManager {
         }
     }'
 '';
-    private applyGlobalContrastFilter('')';
+    private applyGlobalContrastFilter()';
         const existingFilter = document.getElementById('contrast-filter');
         if (existingFilter) { existingFilter.remove(); }
         }
-';
+';'
         const filterValue = this.getContrastFilterValue();''
         if(filterValue > 1') {'
             '';
@@ -165,7 +165,7 @@ export class ContrastManager {
             document.head.appendChild(style);
         }
     }
-';
+';'
     private getContrastFilterValue(): number { ''
         switch(this.config.level') {'
             '';
@@ -182,9 +182,9 @@ export class ContrastManager {
         }
             Object.entries(styles).forEach(([property, value]) => {  }
                 element.style.setProperty(property, value as string); }
-            });'
+            });
         }''
-        this.originalStyles.clear('')';
+        this.originalStyles.clear()';
         const existingFilter = document.getElementById('contrast-filter');
         if (existingFilter) { existingFilter.remove(); }
         }
@@ -236,7 +236,7 @@ export class ContrastManager {
     }
 
     private adjustColors(;
-        bgColor: ColorInfo,
+        bgColor: ColorInfo
     );
         textColor: ColorInfo);
         targetRatio: number;
@@ -286,15 +286,15 @@ export class ContrastManager {
     getConfig(): ContrastConfig {
         return { ...this.config };
     }
-';
+';'
     destroy(): void { ''
-        this.disable('')';
+        this.disable()';
         console.log('ContrastManager destroyed'); }
     }
 }
 
 // シングルトンインスタンス
 let instance: ContrastManager | null = null,
-';
+';'
 export function getContrastManager(): ContrastManager { if (!instance) {''
         instance = new ContrastManager(' })

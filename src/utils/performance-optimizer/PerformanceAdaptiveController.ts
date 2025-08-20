@@ -25,33 +25,33 @@ interface ThresholdSettings { memoryPressure: {
     },
     performance: { degradationRisk: number,
         moderateRisk: number,
-        improvementThreshold: number; }
+        improvementThreshold: number }
     };
 }
 
 interface OptimizationStats { optimizationCount: number,
     lastOptimization: OptimizationRecord | null,
     adjustmentHistory: OptimizationRecord[],
-    memoryPressureLevel: number; }
+    memoryPressureLevel: number }
 }
 
 interface OptimizationRecord { level: PerformanceLevel,
     time: number,
     reason: string,
     type: OptimizationType,
-    timestamp?: number; }
+    timestamp?: number }
 }
 
 interface QualitySettings { render: QualityLevel,
     particle: QualityLevel,
     effect: QualityLevel,
-    audio: QualityLevel;
+    audio: QualityLevel
     }
 }
 
 interface AntiJitterSettings { cooldownPeriod: number,
     lastAdjustment: number,
-    minimumStabilityPeriod: number; }
+    minimumStabilityPeriod: number }
 }
 
 interface AdaptiveOptimizationResult { optimized: boolean,
@@ -79,22 +79,22 @@ interface PerformancePrediction { memoryRisk: number,
     degradationRisk: number,
     nextFrameStability: number,
     overallRisk: number,
-    recommendations?: string[]; }
+    recommendations?: string[] }
 }
 
 interface ControllerSettings { performanceLevel: PerformanceLevel,
     adaptiveMode: boolean,
     qualitySettings: QualitySettings,
-    optimizationStats: OptimizationStats;
+    optimizationStats: OptimizationStats
     }
 }
-';
+';'
 interface ErrorHandler { ''
-    logError(message: string, error: any'): void; }
+    logError(message: string, error: any'): void }
 }
 
 interface PerformanceConfig { // 設定の型定義（必要に応じて追加） }
-}'
+}
 '';
 type PerformanceLevel = 'high' | 'medium' | 'low';''
 type QualityLevel = 'high' | 'medium' | 'low' | 'minimal' | 'off';''
@@ -129,7 +129,7 @@ export class PerformanceAdaptiveController {
             memoryPressureLevel: 0 }
         },
         
-        // 品質設定'
+        // 品質設定
         this.qualitySettings = { ''
             render: 'high','';
             particle: 'high','';
@@ -162,13 +162,13 @@ export class PerformanceAdaptiveController {
      * @param metrics - パフォーマンスメトリクス
      * @returns 最適化結果
      */
-    performAdaptiveOptimization(metrics: PerformanceMetrics = { ): AdaptiveOptimizationResult {'
-        try {''
+    performAdaptiveOptimization(metrics: PerformanceMetrics = { ): AdaptiveOptimizationResult {
+        try {'
             if (!this.adaptiveMode') {' }'
                 return { optimized: false, reason: 'Adaptive mode disabled' }
             }
             ';
-            // アンチジッターチェック''
+            // アンチジッターチェック
             if (this.isInCooldownPeriod()') { ' }'
                 return { optimized: false, reason: 'In cooldown period' }
             }
@@ -179,23 +179,23 @@ export class PerformanceAdaptiveController {
             let reason = '';
             );
             // メモリ圧迫チェック)
-            if(memoryPressure > this.thresholds.memoryPressure.critical) {'
+            if(memoryPressure > this.thresholds.memoryPressure.critical) {
                 '';
                 this.applyEmergencyOptimization('';
             }'
                 reason = 'Critical memory pressure'; }
             })
-            // パフォーマンス低下チェック)'
+            // パフォーマンス低下チェック)
             else if (stabilityScore < 0.3) { ''
                 this.degradePerformance(''';
                 reason = 'Low stability score'; }
             })
-            // 中程度の問題チェック)'
+            // 中程度の問題チェック)
             else if (stabilityScore < 0.6 || memoryPressure > this.thresholds.memoryPressure.high) { ''
                 this.applyModerateOptimization(''';
                 reason = 'Moderate performance issues'; }
             })
-            // パフォーマンス向上チェック)'
+            // パフォーマンス向上チェック)
             else if (stabilityScore > 0.8 && memoryPressure < this.thresholds.memoryPressure.low) { const improved = this.considerPerformanceImprovement();''
                 if(improved') {'
                     optimizationApplied = true;'
@@ -218,7 +218,7 @@ export class PerformanceAdaptiveController {
                 stabilityScore }
             };'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to perform adaptive optimization', error); }
             return { optimized: false, error: true }
         }
@@ -229,45 +229,45 @@ export class PerformanceAdaptiveController {
      * @param prediction - パフォーマンス予測結果
      * @returns 最適化結果'
      */''
-    performProactiveOptimization(prediction: PerformancePrediction'): ProactiveOptimizationResult { try {''
+    performProactiveOptimization(prediction: PerformancePrediction'): ProactiveOptimizationResult { try {'
             console.log('[AdaptiveController] Performing proactive optimization based on predictions');
             
             let optimizationApplied = false;
             const actions: string[] = [],
             
             // メモリ問題の予測対応
-            if(prediction.memoryRisk > 0.7) {'
+            if(prediction.memoryRisk > 0.7) {
                 '';
-                this.applyProactiveMemoryCleanup('')';
+                this.applyProactiveMemoryCleanup()';
                 actions.push('Proactive memory cleanup');
             }
                 optimizationApplied = true; }
             }
             
             // パフォーマンス低下予測対応
-            if(prediction.degradationRisk > this.thresholds.performance.degradationRisk) {'
+            if(prediction.degradationRisk > this.thresholds.performance.degradationRisk) {
                 '';
-                this.degradePerformance('')';
+                this.degradePerformance()';
                 actions.push('Aggressive quality reduction');
             }
                 optimizationApplied = true; }'
             } else if (prediction.degradationRisk > this.thresholds.performance.moderateRisk) { ''
-                this.applyModerateOptimization('')';
+                this.applyModerateOptimization()';
                 actions.push('Moderate quality adjustment');
                 optimizationApplied = true; }
             }
             
             // フレーム安定性予測対応
-            if(prediction.nextFrameStability < 0.4) {'
+            if(prediction.nextFrameStability < 0.4) {
                 '';
-                this.applyFrameStabilizationMeasures('')';
+                this.applyFrameStabilizationMeasures()';
                 actions.push('Frame stabilization measures');
             }
                 optimizationApplied = true; }
             }'
             '';
             if(optimizationApplied') {'
-                ';
+                ';'
             }'
                 this.recordOptimization(actions.join(', ''), 'proactive', Date.now(); }
             }
@@ -278,7 +278,7 @@ export class PerformanceAdaptiveController {
                 prediction: prediction.overallRisk }
             },'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to perform proactive optimization', error'); }
             return { optimized: false, error: true }
         }
@@ -289,7 +289,7 @@ export class PerformanceAdaptiveController {
      * @param level - パフォーマンスレベル ('high', 'medium', 'low')
      * @returns 設定成功フラグ'
      */''
-    setPerformanceLevel(level: PerformanceLevel'): boolean { try {''
+    setPerformanceLevel(level: PerformanceLevel'): boolean { try {'
             const validLevels: PerformanceLevel[] = ['high', 'medium', 'low'];
             if(!validLevels.includes(level) { }
                 throw new Error(`Invalid performance level: ${level)`});
@@ -303,9 +303,9 @@ export class PerformanceAdaptiveController {
             
             console.log(`[AdaptiveController] Performance level changed: ${previousLevel} -> ${level)`});
             
-            return true;'
+            return true;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to set performance level', error);
             return false; }
         }
@@ -314,9 +314,9 @@ export class PerformanceAdaptiveController {
     /**
      * パフォーマンスを低下させる（品質を下げる）'
      */''
-    degradePerformance('')';
+    degradePerformance()';
             if (currentLevel === 'high'') {'
-        ';
+        ';'
     }'
                 this.setPerformanceLevel('medium'');' }'
             } else if (currentLevel === 'medium'') { ''
@@ -326,7 +326,7 @@ export class PerformanceAdaptiveController {
             '';
             console.log('[AdaptiveController] Performance degraded due to poor metrics');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to degrade performance', error); }
         }
     }
@@ -334,9 +334,9 @@ export class PerformanceAdaptiveController {
     /**
      * パフォーマンスを向上させる（品質を上げる）'
      */''
-    improvePerformance('')';
+    improvePerformance()';
             if (currentLevel === 'low'') {'
-        ';
+        ';'
     }'
                 this.setPerformanceLevel('medium'');' }'
             } else if (currentLevel === 'medium'') { ''
@@ -346,7 +346,7 @@ export class PerformanceAdaptiveController {
             '';
             console.log('[AdaptiveController] Performance improved due to good metrics');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to improve performance', error); }
         }
     }
@@ -379,9 +379,9 @@ export class PerformanceAdaptiveController {
             }
             
             this.antiJitter.lastAdjustment = currentTime;
-            console.log(`[AdaptiveController] Anti-jitter measures applied for level ${jitterLevel)`});'
+            console.log(`[AdaptiveController] Anti-jitter measures applied for level ${jitterLevel)`});
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to apply anti-jitter measures', error); }
         }
     }
@@ -389,21 +389,21 @@ export class PerformanceAdaptiveController {
     /**
      * 緊急最適化を適用'
      */''
-    applyEmergencyOptimization('')';
+    applyEmergencyOptimization()';
             this.setPerformanceLevel('low'');
             ';
-            // 追加の緊急対策''
+            // 追加の緊急対策
             this.qualitySettings.particle = 'off';''
             this.qualitySettings.effect = 'minimal';
             ';
-            // 強制ガベージコレクション''
+            // 強制ガベージコレクション
             if(window.gc && typeof window.gc === 'function') {'
                 '';
-                window.gc('')';
+                window.gc()';
             console.log('[AdaptiveController] Emergency optimization applied');
             }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to apply emergency optimization', error); }
         }
     }
@@ -411,23 +411,23 @@ export class PerformanceAdaptiveController {
     /**
      * 中程度の最適化を適用'
      */''
-    applyModerateOptimization('')';
+    applyModerateOptimization()';
             if (this.performanceLevel === 'high'') {'
-        ';
+        ';'
     }'
                 this.setPerformanceLevel('medium''); }
             }
             ';
-            // パーティクル品質を下げる''
+            // パーティクル品質を下げる
             if(this.qualitySettings.particle === 'high'') {'
-                ';
+                ';'
             }'
                 this.qualitySettings.particle = 'medium'; }
             }'
             '';
             console.log('[AdaptiveController] Moderate optimization applied');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to apply moderate optimization', error); }
         }
     }
@@ -435,10 +435,10 @@ export class PerformanceAdaptiveController {
     /**
      * 積極的メモリクリーンアップを実行'
      */''
-    applyProactiveMemoryCleanup('')';
+    applyProactiveMemoryCleanup()';
             if (window.gc && typeof window.gc === 'function') {'
         '';
-                window.gc('')';
+                window.gc()';
             if (this.qualitySettings.particle !== 'low'') {'
     }'
                 this.qualitySettings.particle = 'low'; }
@@ -446,7 +446,7 @@ export class PerformanceAdaptiveController {
             '';
             console.log('[AdaptiveController] Proactive memory cleanup executed');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to apply proactive memory cleanup', error); }
         }
     }
@@ -454,23 +454,23 @@ export class PerformanceAdaptiveController {
     /**
      * フレーム安定化対策を適用'
      */''
-    applyFrameStabilizationMeasures('')';
+    applyFrameStabilizationMeasures()';
             if (this.qualitySettings.render !== 'low'') {'
-        ';
+        ';'
     }'
                 this.qualitySettings.render = 'medium'; }
             }
             ';
-            // エフェクト品質を下げる''
+            // エフェクト品質を下げる
             if(this.qualitySettings.effect !== 'low'') {'
-                ';
+                ';'
             }'
                 this.qualitySettings.effect = 'medium'; }
             }'
             '';
             console.log('[AdaptiveController] Frame stabilization measures applied');'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to apply frame stabilization measures', error); }
         }
     }
@@ -480,7 +480,7 @@ export class PerformanceAdaptiveController {
      * @returns 向上が適用されたかどうか
      */
     considerPerformanceImprovement(): boolean { try {
-            // 十分な安定期間があったかチェック'
+            // 十分な安定期間があったかチェック
             const currentTime = Date.now();''
             if(currentTime - this.antiJitter.lastAdjustment < this.antiJitter.minimumStabilityPeriod') {
                 
@@ -488,7 +488,7 @@ export class PerformanceAdaptiveController {
                 return false; }
             }
             ';
-            // 現在のレベルで向上可能かチェック''
+            // 現在のレベルで向上可能かチェック
             if(this.performanceLevel === 'low' || this.performanceLevel === 'medium') {
                 this.improvePerformance();
             }
@@ -497,7 +497,7 @@ export class PerformanceAdaptiveController {
             
             return false;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to consider performance improvement', error);
             return false; }
         }
@@ -521,9 +521,9 @@ export class PerformanceAdaptiveController {
             // 圧迫レベルを更新
             this.updateMemoryPressureLevel(pressure);
             
-            return pressure;'
+            return pressure;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.logError('Failed to calculate memory pressure', error);
             return 0; }
         }
@@ -544,9 +544,9 @@ export class PerformanceAdaptiveController {
                 this.optimizationStats.memoryPressureLevel = 5; // Critical }
             } else if (pressure > thresholds.high) { this.optimizationStats.memoryPressureLevel = 4; // High }
             } else if (pressure > thresholds.moderate) { this.optimizationStats.memoryPressureLevel = 3; // Moderate }
-            } else if (pressure > thresholds.low) { this.optimizationStats.memoryPressureLevel = 2; // Low }'
+            } else if (pressure > thresholds.low) { this.optimizationStats.memoryPressureLevel = 2; // Low }
             } else { this.optimizationStats.memoryPressureLevel = 1; // Minimal' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.logError('Failed to update memory pressure level', error); }
         }
     }
@@ -555,14 +555,14 @@ export class PerformanceAdaptiveController {
      * 品質設定を更新
      * @param level - パフォーマンスレベル
      */'
-    updateQualitySettings(level: PerformanceLevel): void { try {''
+    updateQualitySettings(level: PerformanceLevel): void { try {'
             switch(level') {'
                 '';
                 case 'high':';
                     this.qualitySettings = {''
                         render: 'high','';
                         particle: 'high','';
-                        effect: 'high',';
+                        effect: 'high','
             }'
                         audio: 'high' }
                     },'
@@ -583,7 +583,7 @@ export class PerformanceAdaptiveController {
                         audio: 'low' }
                     },'
                     break;''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.logError('Failed to update quality settings', error); }
         }
     }
@@ -612,7 +612,7 @@ export class PerformanceAdaptiveController {
             };
             
             // 履歴に追加
-            this.optimizationStats.adjustmentHistory.push({ timestamp,)
+            this.optimizationStats.adjustmentHistory.push({ timestamp)
                 level: this.performanceLevel);
                 reason,);
                 type);
@@ -620,9 +620,9 @@ export class PerformanceAdaptiveController {
             // 履歴制限（最新100件）
             if(this.optimizationStats.adjustmentHistory.length > 100) {
                 
-            }'
+            }
                 this.optimizationStats.adjustmentHistory.shift();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.logError('Failed to record optimization', error); }
         }
     }
@@ -639,14 +639,14 @@ export class PerformanceAdaptiveController {
     /**
      * 中程度安定化を適用'
      */''
-    applyModerateStabilization('')';
+    applyModerateStabilization()';
         if (this.qualitySettings.particle === 'high'') {'
-        ';
+        ';'
     }'
             this.qualitySettings.particle = 'medium'; }'
         }''
         if(this.qualitySettings.effect === 'high'') {'
-            ';
+            ';'
         }'
             this.qualitySettings.effect = 'medium'; }
         }
@@ -661,7 +661,7 @@ export class PerformanceAdaptiveController {
 
     /**
      * 適応モードを設定
-     * @param enabled - 適応モード有効フラグ'
+     * @param enabled - 適応モード有効フラグ
      */''
     setAdaptiveMode(enabled: boolean'): void { this.adaptiveMode = enabled;' }'
         console.log(`[AdaptiveController] Adaptive mode ${enabled ? 'enabled' : 'disabled')`});

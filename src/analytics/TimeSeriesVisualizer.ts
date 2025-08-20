@@ -36,14 +36,14 @@ export class TimeSeriesVisualizer {
                     },
                     zoom: { zoom: {
                             wheel: {
-                                enabled: true; }
+                                enabled: true }
                             },
                             pinch: { enabled: true }'
                             },''
                             mode: 'x',
                         },'
                         pan: { enabled: true,''
-                            mode: 'x'; }
+                            mode: 'x' }
                         }
                     }
                 },
@@ -64,7 +64,7 @@ export class TimeSeriesVisualizer {
             }
         },
         
-        // データセット色設定'
+        // データセット色設定
         this.colors = { ''
             score: '#4F46E5','';
             accuracy: '#10B981','';
@@ -88,7 +88,7 @@ export class TimeSeriesVisualizer {
      */
     createSingleMetricChart(canvas, timeSeriesData, metric, options: any = {}) {
         
-    }'
+    }
         const {' }'
             title = `${this.getMetricDisplayName(metric'})}の推移`,
             showTrend = true,';
@@ -99,9 +99,9 @@ export class TimeSeriesVisualizer {
         // データ準備
         const labels = timeSeriesData.map(d => d.period);
         const values = timeSeriesData.map(d => this.getMetricValue(d, metric);
-        ';
+        ';'
         const datasets = [{ ''
-            label: this.getMetricDisplayName(metric'),];
+            label: this.getMetricDisplayName(metric')];
             data: values,]';
             borderColor: this.colors[metric] || this.colors.score,'';
             backgroundColor: this.colors[metric] + '20' || this.colors.score + '20',
@@ -110,7 +110,7 @@ export class TimeSeriesVisualizer {
         }],
 
         // トレンドライン追加
-        if(showTrend && values.length > 2) {'
+        if(showTrend && values.length > 2) {
             '';
             const trendData = this.calculateTrendLine(values');'
             datasets.push({''
@@ -118,9 +118,9 @@ export class TimeSeriesVisualizer {
                 data: trendData,';
                 borderColor: this.colors.trend,'';
                 backgroundColor: 'transparent',
-                borderDash: [5, 5],);
+                borderDash: [5, 5]);
                 fill: false);
-                pointRadius: 0,);
+                pointRadius: 0,)
         }
                 tension: 0); }
         }
@@ -128,7 +128,7 @@ export class TimeSeriesVisualizer {
         // 季節調整済みデータ追加
         if(showSeasonalAdjusted && timeSeriesData[0].seasonallyAdjusted !== undefined) {
             const adjustedValues = timeSeriesData.map(d => d.seasonallyAdjusted);
-        }'
+        }
             datasets.push({);' }'
                 label: `${this.getMetricDisplayName(metric})} (季節調整済み')`,'
                 data: adjustedValues,'';
@@ -139,7 +139,7 @@ export class TimeSeriesVisualizer {
                 tension: 0.4'';
             }'),
         }
-';
+';'
         const config = { ''
             type: 'line',
             data: {
@@ -188,14 +188,14 @@ export class TimeSeriesVisualizer {
 
             datasets.push({ );
                 label: this.getMetricDisplayName(metric),
-                data: values,';
+                data: values,
                 borderColor: this.colors[metric] || this.generateRandomColor(),'';
                 backgroundColor: (this.colors[metric] || this.generateRandomColor()') + '20',
                 fill: false,
                 tension: 0.4 }'
             });''
         }');
-';
+';'
         const config = { ''
             type: 'line',
             data: {
@@ -244,17 +244,17 @@ export class TimeSeriesVisualizer {
         const { timeSeriesData, trend } = trendAnalysis;'
         const labels = timeSeriesData.map(d => d.period);''
         const values = timeSeriesData.map(d => d.averageScore');
-';
+';'
         const datasets = [{ ''
             label: 'スコア',
             data: values,';
             borderColor: this.colors.score,'';
             backgroundColor: this.colors.score + '20',
-            fill: false,];
+            fill: false];
             tension: 0.4 }]
         }],
 ';
-        // トレンドライン''
+        // トレンドライン
         if(trend && trend.direction !== 'stable') {
             const trendData = this.calculateTrendLine(values);
         }'
@@ -270,7 +270,7 @@ export class TimeSeriesVisualizer {
             }'),
         }
 ';
-        // 信頼区間（安定トレンドの場合は表示しない）''
+        // 信頼区間（安定トレンドの場合は表示しない）
         if(showConfidenceInterval && trend && trend.direction !== 'stable') {'
             const confidenceData = this.calculateConfidenceInterval(values);''
             datasets.push({');''
@@ -298,7 +298,7 @@ export class TimeSeriesVisualizer {
         if(showAnomalies && this.trendAnalyzer) {
             const anomalies = this.trendAnalyzer.detectAnomalies(timeSeriesData);
             if (anomalies.length > 0) {
-                const anomalyData = new Array(values.length).fill(null);'
+                const anomalyData = new Array(values.length).fill(null);
                 anomalies.forEach(anomaly => { ')'
                     anomalyData[anomaly.index] = anomaly.value)');'
                 datasets.push({''
@@ -306,23 +306,23 @@ export class TimeSeriesVisualizer {
                     data: anomalyData,'';
                     borderColor: '#EF4444','';
                     backgroundColor: '#EF4444',')';
-                    type: 'scatter');
+                    type: 'scatter')
         }
                     pointRadius: 8,) }
                     pointHoverRadius: 10); }
                 });
             }
         }
-';
+';'
         let titleText = `トレンド分析結果`;''
         if(trend') {'
-            ';
+            ';'
         }'
             titleText += ` - ${trend.direction === 'increasing' ? '上昇' : ' }'
                            trend.direction === 'decreasing' ? '下降' : '安定'}傾向`;''
             titleText += ` (信頼度: ${(trend.confidence * 100).toFixed(1})}%')`;
         }
-';
+';'
         const config = { ''
             type: 'line',
             data: {
@@ -358,7 +358,7 @@ export class TimeSeriesVisualizer {
             showControls = true,
             enableZoom = true,
             enableAnnotations = true } = options;
-';
+';'
         const chart = this.createSingleMetricChart(canvas, timeSeriesData, defaultMetric, { ')'
             title: 'パフォーマンス ダッシュボード');
             showTrend: true,);
@@ -399,7 +399,7 @@ export class TimeSeriesVisualizer {
     /**
      * 指標の表示名を取得
      * @param {string} metric - 指標名
-     * @returns {string} 表示名'
+     * @returns {string} 表示名
      */''
     getMetricDisplayName(metric') {'
         const displayNames = {''
@@ -407,7 +407,7 @@ export class TimeSeriesVisualizer {
             accuracy: '精度','';
             playTime: 'プレイ時間','';
             combo: '最大コンボ','';
-            completionRate: '完了率',';
+            completionRate: '完了率','
     }'
             sessionCount: 'セッション数' }
         },
@@ -474,7 +474,7 @@ export class TimeSeriesVisualizer {
 
     /**
      * ランダム色を生成
-     * @returns {string} HEX色コード'
+     * @returns {string} HEX色コード
      */''
     generateRandomColor(''';
         const colors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#06B6D4'];)
@@ -506,7 +506,7 @@ export class TimeSeriesVisualizer {
         // 最高値・最低値のマーク
         const values = timeSeriesData.map(d => d.averageScore || 0);
         const maxIndex = values.indexOf(Math.max(...values);
-        const minIndex = values.indexOf(Math.min(...values);'
+        const minIndex = values.indexOf(Math.min(...values);
         '';
         if (maxIndex !== -1') {'
             annotations.push({''
@@ -516,7 +516,7 @@ export class TimeSeriesVisualizer {
                 backgroundColor: '#10B981',
                 radius: 8,';
                 label: {')'
-                    content: '最高値');
+                    content: '最高値')
     }
                     enabled: true) }
                 }),
@@ -530,7 +530,7 @@ export class TimeSeriesVisualizer {
                 backgroundColor: '#EF4444',
                 radius: 8,';
                 label: {')'
-                    content: '最低値');
+                    content: '最低値')
         }
                     enabled: true) }
                 }),
@@ -600,7 +600,7 @@ export class TimeSeriesVisualizer {
      * @param {string} chartId - チャートID
      * @returns {Object} チャート設定
      */
-    exportChartConfig(chartId) {'
+    exportChartConfig(chartId) {
         const chart = this.activeCharts.get(chartId);''
         if (chart') {
             return { type: chart.config.type }
@@ -633,7 +633,7 @@ export class TimeSeriesVisualizer {
             d.period)]';
             ...normalizedMetrics.map(m => this.getMetricValue(d, m)']';
         ]');
-        ';
+        ';'
         const csvContent = [headers, ...rows]'';
             .map(row => row.join(',')')'';
             .join('\n'');

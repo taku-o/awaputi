@@ -7,7 +7,7 @@ interface InstallMetrics { promptShown: number,
     promptAccepted: number,
     promptDismissed: number,
     installSuccessful: number,
-    installFailed: number; }
+    installFailed: number }
 }
 
 interface BeforeInstallPromptEvent extends Event { prompt(): Promise<void>;
@@ -19,7 +19,7 @@ interface InstallEvent { type: string,
     timestamp: number,
     userAgent: string,
     referrer: string,
-    url: string; }
+    url: string }
 }
 
 export class PWAInstallationManager {
@@ -56,7 +56,7 @@ export class PWAInstallationManager {
     /**
      * インストールプロンプトの設定'
      */''
-    setupInstallPrompt('')';
+    setupInstallPrompt()';
         window.addEventListener('beforeinstallprompt', (event: Event') => {  ''
             console.log('[PWAInstallationManager] Install prompt available');
             
@@ -69,19 +69,19 @@ export class PWAInstallationManager {
             // インストールボタンを表示
             this.showInstallButton();
             
-            // カスタムプロンプトを表示（条件に応じて） }'
+            // カスタムプロンプトを表示（条件に応じて） }
             this.maybeShowInstallPrompt();' }'
         }');
 ';
-        // appinstalledイベントリスナー''
+        // appinstalledイベントリスナー
         window.addEventListener('appinstalled', (_event: Event') => {  ''
             console.log('[PWAInstallationManager] App installed successfully'); }'
             this.handleInstallSuccess();' }'
         }');
 ';
-        // DOMContentLoadedで初期チェック''
+        // DOMContentLoadedで初期チェック
         if(document.readyState === 'loading'') {'
-            ';
+            ';'
         }'
             document.addEventListener('DOMContentLoaded', () => {  }
                 this.checkInitialInstallState(); }
@@ -93,7 +93,7 @@ export class PWAInstallationManager {
     /**
      * 初期インストール状態のチェック
      */'
-    private checkInitialInstallState(): void { // 既にインストール済みかチェック''
+    private checkInitialInstallState(): void { // 既にインストール済みかチェック
         if (this.isAppInstalled()') {''
             console.log('[PWAInstallationManager] App already installed');
             this.hideInstallButton();
@@ -101,7 +101,7 @@ export class PWAInstallationManager {
             return; }
         }
 ';
-        // スタンドアローンモードかチェック''
+        // スタンドアローンモードかチェック
         if (this.isStandaloneMode()') { ''
             console.log('[PWAInstallationManager] Running in standalone mode');
             this.handleFirstRun();
@@ -114,18 +114,18 @@ export class PWAInstallationManager {
 
     /**
      * アプリがインストール済みかチェック
-     * @returns {boolean} インストール済み可否'
+     * @returns {boolean} インストール済み可否
      */''
-    isAppInstalled('')';
+    isAppInstalled()';
         if (window.matchMedia('(display-mode: standalone')').matches) { return true; }
         }
 ';
-        // ホーム画面から起動された場合''
+        // ホーム画面から起動された場合
         if ((window.navigator as any).standalone === true') { return true; }
         }
 ';
-        // 関連アプリケーションのチェック''
-        if ('getInstalledRelatedApps' in navigator) { return (navigator as any).getInstalledRelatedApps().then((apps: any[]) => apps.length > 0); }
+        // 関連アプリケーションのチェック
+        if ('getInstalledRelatedApps' in navigator) { return (navigator as any).getInstalledRelatedApps().then((apps: any[]) => apps.length > 0) }
         }
 
         return false;
@@ -135,7 +135,7 @@ export class PWAInstallationManager {
      * スタンドアローンモードかチェック
      * @returns {boolean} スタンドアローンモード可否'
      */''
-    isStandaloneMode('')';
+    isStandaloneMode()';
         return window.matchMedia('(display-mode: standalone')').matches ||;
                (window.navigator as any).standalone === true;
     }
@@ -149,8 +149,8 @@ export class PWAInstallationManager {
         }
             return; }
         }
-';
-        // 却下された履歴をチェック''
+;
+        // 却下された履歴をチェック
         if(this.installDismissed') {'
             '';
             const dismissTime = localStorage.getItem('pwa_install_dismissed');
@@ -172,14 +172,14 @@ export class PWAInstallationManager {
 
     /**
      * インストールプロンプト表示条件のチェック
-     * @returns {boolean} 表示可否'
+     * @returns {boolean} 表示可否
      */''
-    private shouldShowInstallPrompt('')';
+    private shouldShowInstallPrompt()';
         const sessionStart = sessionStorage.getItem('session_start');''
         if (!sessionStart || (Date.now() - parseInt(sessionStart) < 300000') { return false; }
         }
 ';
-        // ユーザーアクティビティチェック''
+        // ユーザーアクティビティチェック
         const userInteractions = parseInt(sessionStorage.getItem('user_interactions'') || '0');
         if (userInteractions < 10) { return false; }
         }
@@ -195,7 +195,7 @@ export class PWAInstallationManager {
     /**
      * インストールプロンプトの表示
      * @returns {Promise<boolean>} プロンプト結果
-     */'
+     */
     async showInstallPrompt(): Promise<boolean> { ''
         if(!this.deferredPrompt') {'
             '';
@@ -216,11 +216,11 @@ export class PWAInstallationManager {
 '';
             console.log('[PWAInstallationManager] Showing install prompt');
 ';
-            // カスタムプロンプトUIを表示''
-            const userChoice = await this.showCustomInstallDialog('')';
+            // カスタムプロンプトUIを表示
+            const userChoice = await this.showCustomInstallDialog()';
             if(userChoice === 'install') {'
-                // ネイティブプロンプトを表示''
-                this.deferredPrompt.prompt('')';
+                // ネイティブプロンプトを表示
+                this.deferredPrompt.prompt()';
                 if (outcome === 'accepted'') {';'
                     console.log('[PWAInstallationManager] User accepted install prompt'');'
                     this.installMetrics.promptAccepted++;''
@@ -229,11 +229,11 @@ export class PWAInstallationManager {
                     return true; }'
                 } else {  ''
                     console.log('[PWAInstallationManager] User dismissed install prompt');''
-                    this.handleInstallDismissal('')';
+                    this.handleInstallDismissal()';
                 console.log('[PWAInstallationManager] User dismissed custom dialog');
                 this.handleInstallDismissal(); }'
                 return false;' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('[PWAInstallationManager] Install prompt failed:', error');
             this.installMetrics.installFailed++;
             return false; }
@@ -247,7 +247,7 @@ export class PWAInstallationManager {
      */'
     private async showCustomInstallDialog(): Promise<string> { ''
         return new Promise((resolve') => { '
-            // カスタムダイアログHTML作成''
+            // カスタムダイアログHTML作成
             const dialog = document.createElement('div'');''
             dialog.className = 'pwa-install-dialog';'
             dialog.innerHTML = `'';
@@ -299,7 +299,7 @@ export class PWAInstallationManager {
             // ダイアログ表示
             document.body.appendChild(dialog);
 
-            // 5秒後に自動で閉じる'
+            // 5秒後に自動で閉じる
             setTimeout(() => {  ''
                 if (document.body.contains(dialog)') {' }'
                     handleChoice('dismiss'); }
@@ -311,7 +311,7 @@ export class PWAInstallationManager {
     /**
      * インストール成功の処理'
      */''
-    private handleInstallSuccess('')';
+    private handleInstallSuccess()';
         this.recordInstallEvent('install_successful');
         this.hideInstallButton();
         this.showInstallSuccessMessage();
@@ -320,10 +320,10 @@ export class PWAInstallationManager {
     /**
      * インストール成功メッセージの表示'
      */''
-    private showInstallSuccessMessage('')';
+    private showInstallSuccessMessage()';
         console.log('[PWAInstallationManager] Showing install success message'');
         ';
-        // 成功通知を表示''
+        // 成功通知を表示
         const notification = document.createElement('div'');''
         notification.className = 'pwa-install-success';'
         notification.innerHTML = `'';
@@ -361,7 +361,7 @@ export class PWAInstallationManager {
         this.installDismissed = true;""
         this.recordInstallEvent('prompt_dismissed'');
         ';
-        // 却下時刻を記録''
+        // 却下時刻を記録
         localStorage.setItem('pwa_install_dismissed', Date.now().toString()');'
         '';
         console.log('[PWAInstallationManager] Install prompt dismissed'); }
@@ -373,13 +373,13 @@ export class PWAInstallationManager {
      */
     private recordInstallEvent(eventType: string): void { const event: InstallEvent = {'
             type: eventType,'';
-            timestamp: Date.now('')';
+            timestamp: Date.now()';
         const events = JSON.parse(localStorage.getItem('pwa_install_events'') || '[]') as InstallEvent[],
         events.push(event);
         
         // 最新50件のみ保持
-        if(events.length > 50) {'
-            ';
+        if(events.length > 50) {
+            ';'
         }'
             events.splice(0, events.length - 50'); }
         }'
@@ -392,7 +392,7 @@ export class PWAInstallationManager {
     /**
      * インストールボタンの表示'
      */''
-    showInstallButton('')';
+    showInstallButton()';
         let installButton = document.getElementById('pwa-install-button') as HTMLButtonElement;'
         '';
         if(!installButton') {'
@@ -415,7 +415,7 @@ export class PWAInstallationManager {
                 box-shadow: 0 4px 8px rgba(0,0,0,0.2');
                 transition: transform 0.2s,
             `;'
-';
+';'
         }'
             installButton.addEventListener('click', () => {  }'
                 this.showInstallPrompt();' }'
@@ -439,10 +439,10 @@ export class PWAInstallationManager {
     /**
      * インストールボタンの非表示'
      */''
-    hideInstallButton('')';
+    hideInstallButton()';
         const installButton = document.getElementById('pwa-install-button');''
         if(installButton') {'
-            ';
+            ';'
         }'
             installButton.style.display = 'none'; }'
         }''
@@ -452,13 +452,13 @@ export class PWAInstallationManager {
     /**
      * 初回実行時の処理'
      */''
-    private handleFirstRun('')';
+    private handleFirstRun()';
         const isFirstRun = !localStorage.getItem('pwa_first_run_completed');'
         '';
         if(isFirstRun') {'
             '';
             console.log('[PWAInstallationManager] First run detected');''
-            this.showWelcomeMessage('');
+            this.showWelcomeMessage();
         }'
             localStorage.setItem('pwa_first_run_completed', 'true'); }
         }
@@ -467,7 +467,7 @@ export class PWAInstallationManager {
     /**
      * ウェルカムメッセージの表示'
      */''
-    private showWelcomeMessage('')';
+    private showWelcomeMessage()';
         console.log('[PWAInstallationManager] Showing welcome message'');'
         '';
         const welcome = document.createElement('div'');''
@@ -505,7 +505,7 @@ export class PWAInstallationManager {
     /**
      * インストール履歴の読み込み'
      */''
-    private loadInstallHistory('')';
+    private loadInstallHistory()';
         const dismissed = localStorage.getItem('pwa_install_dismissed');''
         if (dismissed') { this.installDismissed = true; }
         }'
@@ -545,14 +545,14 @@ export class PWAInstallationManager {
     /**
      * クリーンアップ'
      */''
-    cleanup('')';
+    cleanup()';
         const installButton = document.getElementById('pwa-install-button');
         if(installButton) {'
             '';
-            installButton.remove('')';
+            installButton.remove()';
         window.removeEventListener('beforeinstallprompt', this.setupInstallPrompt');''
         window.removeEventListener('appinstalled', this.handleInstallSuccess');'
-';
+';'
         }'
         console.log('[PWAInstallationManager] Cleanup completed''); }'
     }''

@@ -7,22 +7,22 @@
 interface RuleEngineConfig { enabled: boolean,
     level: 'A' | 'AA' | 'AAA',
     includeWarnings: boolean,
-    autoFixEnabled: boolean; }
+    autoFixEnabled: boolean }
 }
-';
+';'
 interface GuidelineInfo { name: string,''
     level: 'A' | 'AA' | 'AAA','';
-    category: 'perceivable' | 'operable' | 'understandable' | 'robust'; }
+    category: 'perceivable' | 'operable' | 'understandable' | 'robust' }
 }
 
 interface ExecutionState { running: boolean,
     currentTest: string | null,
-    results: Map<string, TestResult>; }
+    results: Map<string, TestResult> }
 }
 
 interface TestResult { passed: boolean,
     issues: TestIssue[],
-    warnings?: TestWarning[];
+    warnings?: TestWarning[]
     }
 }
 
@@ -31,19 +31,19 @@ interface TestIssue { element?: Element;'
     severity: 'error' | 'warning',
     guideline: string,
     suggestion: string,
-    details?: any; }
+    details?: any }
 }
 
 interface TestWarning { element?: Element;'
     issue: string,'';
     severity: 'warning',
     guideline: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 interface RGB { r: number,
     g: number,
-    b: number; }
+    b: number }
 }
 
 type TestMethod = (options?: any) => TestResult | Promise<TestResult>;
@@ -63,7 +63,7 @@ export class WCAGRuleEngine {
             ...config }
         };
 
-        // WCAG 2.1 guidelines registry'
+        // WCAG 2.1 guidelines registry
         this.guidelines = { ' }'
             '1.1.1': { name: 'Non-text Content', level: 'A', category: 'perceivable' },''
             '1.1.2': { name: 'Audio-only and Video-only', level: 'A', category: 'perceivable' },''
@@ -109,51 +109,51 @@ export class WCAGRuleEngine {
         // Rule execution state
         this.executionState = { running: false,
             currentTest: null,
-            results: new Map(); }
+            results: new Map() }
         };
     }
 
     /**
-     * Set up test method registry'
+     * Set up test method registry
      */''
-    private setupTestRegistry('')';
+    private setupTestRegistry()';
         this.testRegistry.set('altText', this.testAltText.bind(this)');''
         this.testRegistry.set('imageLabels', this.testImageLabels.bind(this)');''
         this.testRegistry.set('decorativeImages', this.testDecorativeImages.bind(this)');
         ';
-        // 1.3 Adaptable tests''
+        // 1.3 Adaptable tests
         this.testRegistry.set('headingStructure', this.testHeadingStructure.bind(this)');''
         this.testRegistry.set('meaningfulSequence', this.testMeaningfulSequence.bind(this)');''
         this.testRegistry.set('sensoryCues', this.testSensoryCues.bind(this)');
         ';
-        // 1.4 Distinguishable tests''
+        // 1.4 Distinguishable tests
         this.testRegistry.set('colorContrast', this.testColorContrast.bind(this)');''
         this.testRegistry.set('audioControl', this.testAudioControl.bind(this)');''
         this.testRegistry.set('textResize', this.testTextResize.bind(this)');
         ';
-        // 2.1 Keyboard accessible tests''
+        // 2.1 Keyboard accessible tests
         this.testRegistry.set('keyboardNavigation', this.testKeyboardNavigation.bind(this)');''
         this.testRegistry.set('noKeyboardTrap', this.testNoKeyboardTrap.bind(this)');
         ';
-        // 2.4 Navigable tests''
+        // 2.4 Navigable tests
         this.testRegistry.set('bypassBlocks', this.testBypassBlocks.bind(this)');''
         this.testRegistry.set('pageTitle', this.testPageTitle.bind(this)');''
         this.testRegistry.set('focusOrder', this.testFocusOrder.bind(this)');''
         this.testRegistry.set('linkPurpose', this.testLinkPurpose.bind(this)');
         ';
-        // 3.1 Readable tests''
+        // 3.1 Readable tests
         this.testRegistry.set('languageOfPage', this.testLanguageOfPage.bind(this)');
         ';
-        // 3.2 Predictable tests''
+        // 3.2 Predictable tests
         this.testRegistry.set('onFocus', this.testOnFocus.bind(this)');''
         this.testRegistry.set('onInput', this.testOnInput.bind(this)');''
         this.testRegistry.set('consistentNavigation', this.testConsistentNavigation.bind(this)');
         ';
-        // 3.3 Input assistance tests''
+        // 3.3 Input assistance tests
         this.testRegistry.set('errorIdentification', this.testErrorIdentification.bind(this)');''
         this.testRegistry.set('labelsInstructions', this.testLabelsInstructions.bind(this)');
         ';
-        // 4.1 Compatible tests''
+        // 4.1 Compatible tests
         this.testRegistry.set('parsing', this.testParsing.bind(this)');''
         this.testRegistry.set('nameRoleValue', this.testNameRoleValue.bind(this)');''
         this.testRegistry.set('statusMessages', this.testStatusMessages.bind(this);
@@ -206,43 +206,43 @@ export class WCAGRuleEngine {
     /**
      * Test: Alt text for images'
      */''
-    private testAltText('')';
+    private testAltText()';
         const images = document.querySelectorAll('img');'
         '';
         images.forEach((img') => {  ''
             const alt = img.getAttribute('alt'');''
             const src = img.getAttribute('src');
             ';
-            // Check for missing alt attribute''
+            // Check for missing alt attribute
             if(alt === null') {
                 issues.push({'
                     element: img,'';
                     issue: 'Image missing alt attribute','';
-                    severity: 'error',';
+                    severity: 'error','
             })'
                     guideline: '1.1.1',') }'
                     suggestion: 'Add meaningful alt text or empty alt="" for decorative images'); }
                 };
             }'
-            // Check for non-descriptive alt text''
+            // Check for non-descriptive alt text
             else if (alt && (alt.toLowerCase(').includes('image') || alt.toLowerCase(').includes('picture')') { warnings.push({'
                     element: img,'';
                     issue: 'Alt text may not be descriptive enough','';
                     severity: 'warning',')';
                     guideline: '1.1.1',')';
-                    suggestion: 'Use more descriptive alt text that conveys the image content'); }
+                    suggestion: 'Use more descriptive alt text that conveys the image content') }
             }'
-            // Check for overly long alt text''
+            // Check for overly long alt text
             else if (alt && alt.length > 125') { warnings.push({'
                     element: img,'';
                     issue: 'Alt text is very long','';
                     severity: 'warning', ')';
                     guideline: '1.1.1',')';
-                    suggestion: 'Consider using shorter alt text or longdesc attribute')'); }
+                    suggestion: 'Consider using shorter alt text or longdesc attribute')') }
             }
         };
         ';
-        // Check canvas elements''
+        // Check canvas elements
         const canvases = document.querySelectorAll('canvas');''
         canvases.forEach(canvas => {  ');''
             const hasLabel = canvas.getAttribute('aria-label'') || '';
@@ -253,7 +253,7 @@ export class WCAGRuleEngine {
                 issues.push({ : undefined'
                     element: canvas,'';
                     issue: 'Canvas element missing accessible name','';
-                    severity: 'error',';
+                    severity: 'error','
             })'
                     guideline: '1.1.1',') }'
                     suggestion: 'Add aria-label or provide alternative content'); }
@@ -269,7 +269,7 @@ export class WCAGRuleEngine {
     /**
      * Test: Color contrast ratios'
      */''
-    private testColorContrast('')';
+    private testColorContrast()';
         const textElements = document.querySelectorAll('*');
         
         textElements.forEach(element => {  );
@@ -294,7 +294,7 @@ export class WCAGRuleEngine {
                     
                 
                 }
-                    issues.push({) }'
+                    issues.push({) }
                         element);' }'
                         issue: `Insufficient color contrast: ${contrast.toFixed(2})}:1 (required: ${requiredContrast):1'})`;''
                         severity: 'error','';
@@ -330,11 +330,11 @@ export class WCAGRuleEngine {
     private testKeyboardNavigation(): TestResult { const issues: TestIssue[] = [],
         const warnings: TestWarning[] = [],
         ';
-        // Check focusable elements''
-        const focusableElements = document.querySelectorAll('')';
+        // Check focusable elements
+        const focusableElements = document.querySelectorAll()';
             'a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"]")';
         );
-        ';
+        ';'
         focusableElements.forEach(element => { ')'
             // Check tabindex values');''
             const tabIndex = element.getAttribute('tabindex');''
@@ -348,7 +348,7 @@ export class WCAGRuleEngine {
                 };
             }
             ';
-            // Check for click handlers without keyboard handlers''
+            // Check for click handlers without keyboard handlers
             const hasClickHandler = (element as HTMLElement').onclick || '';
                                   element.hasAttribute('onclick');''
             const hasKeyHandler = (element as HTMLElement).onkeydown || (element as HTMLElement').onkeyup ||'';
@@ -365,7 +365,7 @@ export class WCAGRuleEngine {
             }
         };
         ';
-        // Check custom controls for keyboard support''
+        // Check custom controls for keyboard support
         const customControls = document.querySelectorAll('[role="button"], [role="tab"], [role="menuitem"]');''
         customControls.forEach(control => {  ');''
             if (!control.hasAttribute('tabindex')') {
@@ -388,7 +388,7 @@ export class WCAGRuleEngine {
     /**
      * Test: Name, Role, Value for custom components'
      */''
-    private testNameRoleValue('')';
+    private testNameRoleValue()';
             '[role], [aria-label], [aria-labelledby], [aria-describedby]');'
         '';
         interactiveElements.forEach(element => {  ');''
@@ -398,7 +398,7 @@ export class WCAGRuleEngine {
             
             // Check if role has required properties
             if(role) {
-                const requiredProps = this.getRequiredAriaProperties(role);'
+                const requiredProps = this.getRequiredAriaProperties(role);
                 requiredProps.forEach(prop => {);''
                     if (!element.hasAttribute(prop)') {
             }
@@ -412,7 +412,7 @@ export class WCAGRuleEngine {
                     }
                 });
                 ';
-                // Check for accessible name''
+                // Check for accessible name
                 if (!ariaLabel && !ariaLabelledBy && !element.textContent? .trim()') { issues.push({'
                         element, : undefined' }'
                         issue: `Element with role="${role}" missing accessible name`;""
@@ -534,7 +534,7 @@ export class WCAGRuleEngine {
         const rgbMatch = color.match(/rgba? \((\d+),\s*(\d+),\s*(\d+)/);
         if(rgbMatch) {
             return { : undefined
-                r: parseInt(rgbMatch[1]);
+                r: parseInt(rgbMatch[1])
         }
                 g: parseInt(rgbMatch[2], };)
                 b: parseInt(rgbMatch[3]); }
@@ -570,7 +570,7 @@ export class WCAGRuleEngine {
     }
 
     /**
-     * Get required ARIA properties for a role'
+     * Get required ARIA properties for a role
      */''
     private getRequiredAriaProperties(role: string'): string[] { const requiredProps: Record<string, string[]> = {''
             'checkbox': ['aria-checked'],'';
@@ -590,7 +590,7 @@ export class WCAGRuleEngine {
      */'
     shouldRunGuideline(guidelineId: string): boolean { const guideline = this.guidelines[guidelineId];''
         if (!guideline') return false;
-        ';
+        ';'
         const level = this.config.level;''
         if (level === 'A'') return guideline.level === 'A';''
         if (level === 'AA'') return guideline.level === 'A' || guideline.level === 'AA';''

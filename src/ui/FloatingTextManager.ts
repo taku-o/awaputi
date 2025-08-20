@@ -44,7 +44,7 @@ export interface FloatingText { id: number,
     shadow: boolean,
     outline: boolean,
     outlineColor: string,
-    easing: string; }
+    easing: string }
 }
 
 export interface AnimationConfig { color: string,
@@ -126,10 +126,10 @@ export class FloatingTextManager {
         return this.addText(x, y, text, { color: color,'
             fontSize: 24,'';
             fontWeight: 'bold',
-            velocityY: -80,);
+            velocityY: -80);
             duration: 1500);
             scaleAnimation: true,);
-            shadow: true); }
+            shadow: true) }
     }
     
     /**
@@ -156,10 +156,10 @@ export class FloatingTextManager {
             color: '#44FF44',';
             fontSize: 26,'';
             fontWeight: 'bold',
-            velocityY: -70,);
+            velocityY: -70);
             duration: 1800);
             pulseAnimation: true,);
-            shadow: true); }
+            shadow: true) }
     }
     
     /**
@@ -225,11 +225,11 @@ export class FloatingTextManager {
         },
         
         const config = configs[type] || configs.normal;
-        ';
+        ';'
         return this.addText(x, y, effect, { ...config,')'
             fontWeight: 'bold');
             outline: true,);
-            shadow: true); }
+            shadow: true) }
     }
     
     /**
@@ -242,7 +242,7 @@ export class FloatingTextManager {
                 velocityY: -70,
                 duration: 2000,
                 pulseAnimation: true }
-            },'
+            },
             explosive: { ''
                 color: '#FF4500',
                 fontSize: 32,
@@ -262,10 +262,10 @@ export class FloatingTextManager {
         },
         
         const config = animations[animationType] || animations.gentle;
-        ';
+        ';'
         return this.addText(x, y, text, { ...config,')'
             fontWeight: 'bold',);
-            shadow: true); }
+            shadow: true) }
     }
     
     /**
@@ -326,13 +326,13 @@ export class FloatingTextManager {
         }
         
         // パルスアニメーション
-        if(text.pulseAnimation) {'
+        if(text.pulseAnimation) {
             const pulse = Math.sin(time * 8) * 0.3 + 1;'
         }'
             text.scale = (text.scale || 1') * pulse; }
         }
         ';
-        // 虹色アニメーション（特殊）''
+        // 虹色アニメーション（特殊）
         if (text.color === '#FF0000' && text.pulseAnimation) { const hue = (time * 100) % 360; }
             text.color = `hsl(${hue), 100%, 50%})`;
         }
@@ -352,18 +352,18 @@ export class FloatingTextManager {
             if (text.scale !== 1) { }
                 context.scale(text.scale, text.scale); }
             }
-            if(text.rotation !== 0) {'
-                ';
+            if(text.rotation !== 0) {
+                ';'
             }'
                 context.rotate(text.rotation'); }
             }
             
-            // フォント設定'
+            // フォント設定
             context.font = `${text.fontWeight} ${text.fontSize}px ${text.fontFamily}`;''
             context.textAlign = 'center';''
             context.textBaseline = 'middle';
             ';
-            // 影を描画''
+            // 影を描画
             if(text.shadow') {'
                 '';
                 context.shadowColor = 'rgba(0, 0, 0, 0.8')';
@@ -411,7 +411,7 @@ export class FloatingTextManager {
      * 画面上のテキストを取得
      */
     public getTextsInArea(x: number, y: number, width: number, height: number): FloatingText[] { return this.texts.filter(text => )
-            text.x >= x && text.x <= x + width &&)';
+            text.x >= x && text.x <= x + width &&);
             text.y >= y && text.y <= y + height)'';
         '); }'
     }''

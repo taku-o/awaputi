@@ -45,13 +45,13 @@ export class ExportManager {"
             defaultFormat: 'json',
             includeMetadata: true,
             anonymizeData: true,
-            maxExportSize: 50 * 1024 * 1024, // 50MB;
+            maxExportSize: 50 * 1024 * 1024, // 50MB
     }
     }
             compressionThreshold: 1024 * 1024 // 1MB }
         },
         
-        // サポートされるデータタイプ'
+        // サポートされるデータタイプ
         this.supportedDataTypes = new Set(['';
             'sessionData','';
             'bubbleInteractions','';
@@ -74,11 +74,11 @@ export class ExportManager {"
     }
     
     /**
-     * ExportManagerの初期化'
+     * ExportManagerの初期化
      */''
-    initialize('')';
+    initialize()';
             console.log('Analytics ExportManager initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ExportManager initialization error:', error');
             throw error; }
         }
@@ -99,7 +99,7 @@ export class ExportManager {"
                 dataTypes: 'all',
                 format: this.config.defaultFormat, }
                 filters: {},
-                includeMetadata: this.config.includeMetadata,);
+                includeMetadata: this.config.includeMetadata);
                 anonymize: this.config.anonymizeData);
                 ...options;
             };
@@ -117,11 +117,11 @@ export class ExportManager {"
             
             // データの変換
             const convertedData = await this.convertDataFormat(processedData, exportOptions.format);
-            ';
-            // メタデータの作成''
+            ;
+            // メタデータの作成
             const metadata = this.createExportMetadata(exportOptions, processedData');
             
-            // エクスポートデータの構築'
+            // エクスポートデータの構築
             const exportData = { ''
                 version: '1.0.0',
                 timestamp: new Date().toISOString(),
@@ -158,7 +158,7 @@ export class ExportManager {"
                 filename: this.generateFilename(exportOptions.dataTypes, exportOptions.format), };
                 metadata }
             };
-            ';
+            ';'
         } catch (error) { const duration = performance.now() - startTime;''
             this.updateExportStats(false, 0, duration');'
             '';
@@ -201,10 +201,10 @@ export class ExportManager {"
                 }
             }
             
-            return collectedData;'
+            return collectedData;
             '';
-        } catch (error') { ''
-            console.error('Data collection error:', error); }
+        } catch (error) { ''
+            console.error('Data collection error:', error) }
             throw new Error(`Failed to collect analytics data: ${error.message}`);
         }
     }
@@ -215,10 +215,10 @@ export class ExportManager {"
      * @param {string} format - 変換先形式
      * @returns {Promise<any>} 変換されたデータ
      */'
-    async convertDataFormat(data, format) { try {''
+    async convertDataFormat(data, format) { try {'
             switch (format.toLowerCase()') {''
                 case 'json':;
-                    return data; // JSONはそのまま'
+                    return data; // JSONはそのまま
                 '';
                 case 'csv':'';
                     return this.convertToCSV(data');'
@@ -228,7 +228,7 @@ export class ExportManager {"
                 
                 default: }'
                     throw new Error(`Unsupported format: ${format)`});''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Data format conversion error:', error);
             throw error; }
         }
@@ -251,16 +251,16 @@ export class ExportManager {"
             
             // データタイプヘッダー
             csvContent += `\n# ${dataType.toUpperCase(})}\n`;
-            ';
-            // ヘッダー行''
+            ;
+            // ヘッダー行
             const headers = Object.keys(records[0]');''
             csvContent += headers.join(','') + '\n';
             
             // データ行
             for(const record of records) {
                 const values = headers.map(header => { 
-                    const value = record[header];)'
-                    ');
+                    const value = record[header];)
+                    ');'
             }'
                     // CSVエスケープ処理');' }'
                     if (typeof value === 'string' && (value.includes(','') || value.includes('"'') || value.includes('\n')') {' }'
@@ -292,7 +292,7 @@ export class ExportManager {"
             xmlContent += `  <${dataType}>\n`;
             
             if(Array.isArray(records) {
-            ';
+            ';'
                 '';
                 for (const record of records') {''
                     xmlContent += '    <record>\n';'
@@ -352,7 +352,7 @@ export class ExportManager {"
         // 各データタイプのレコード数を計算
         for(const [dataType, records] of Object.entries(data) { recordCounts[dataType] = Array.isArray(records) ? records.length: 1, }
         }
-        ';
+        ';'
         return { ' }'
             exportId: `export_${Date.now(})}_${Math.random().toString(36).substr(2, 9'})}`,''
             exportedBy: 'AnalyticsExportManager',
@@ -448,18 +448,18 @@ export class ExportManager {"
      * @param {Array} data - フィルター対象データ
      * @param {Object} filters - フィルター条件
      * @param {string} dataType - データタイプ
-     * @returns {Array} フィルター済みデータ'
+     * @returns {Array} フィルター済みデータ
      */''
     applyFilters(data, filters, dataType') {
         let filteredData = [...data];
         ';
-        // カスタムフィルター関数の適用''
+        // カスタムフィルター関数の適用
         if (filters.customFilter && typeof filters.customFilter === 'function') {
     }
             filteredData = filteredData.filter(filters.customFilter); }
         }
         ';
-        // ソート''
+        // ソート
         if(filters.sortBy') {'
             const sortField = filters.sortBy;''
             const sortOrder = filters.sortOrder === 'desc' ? -1 : 1;
@@ -498,7 +498,7 @@ export class ExportManager {"
      * @param {string} format - ファイル形式
      * @returns {string} ファイル名
      */
-    generateFilename(dataTypes, format) {'
+    generateFilename(dataTypes, format) {
         '';
         const timestamp = new Date().toISOString().slice(0, 19').replace(/[T:-]/g, '');''
         const typeStr = Array.isArray(dataTypes') ? dataTypes.join('-') : dataTypes;
@@ -516,7 +516,7 @@ export class ExportManager {"
     getFileExtension(format') {'
         const extensions = {''
             json: 'json','';
-            csv: 'csv',';
+            csv: 'csv','
     }'
             xml: 'xml' }
         },'
@@ -565,7 +565,7 @@ export class ExportManager {"
     
     /**
      * サポートされる形式の取得
-     * @returns {Array} サポートされる形式の一覧'
+     * @returns {Array} サポートされる形式の一覧
      */''
     getSupportedFormats(''';
         return ['json', 'csv', 'xml'];
@@ -596,7 +596,7 @@ export class ExportManager {"
      */
     destroy() {'
         '';
-        this.supportedDataTypes.clear('');
+        this.supportedDataTypes.clear();
     }'
         console.log('Analytics ExportManager destroyed''); }'
     }''

@@ -23,7 +23,7 @@ interface StorageAdapter { set(key: string, value: any): Promise<void>,
 interface StorageConfig { retryAttempts: number,
     retryDelay: number,
     compressionThreshold: number,
-    maxStorageSize: number; }
+    maxStorageSize: number }
 }
 export class DataStorage {
     private adapters: Map<string, StorageAdapter>;
@@ -32,7 +32,7 @@ export class DataStorage {
     private currentAdapter: StorageAdapter | null;
     private config: StorageConfig;
     constructor() {
-';
+';'
         '';
         this.adapters = new Map(''';
         this.primaryAdapter = 'localStorage';''
@@ -43,7 +43,7 @@ export class DataStorage {
         this.config = {
             retryAttempts: 3,
             retryDelay: 100,
-            compressionThreshold: 1024, // 1KB以上で圧縮を検討;
+            compressionThreshold: 1024, // 1KB以上で圧縮を検討
     }
     }
             maxStorageSize: 10 * 1024 * 1024 // 10MB制限 })
@@ -52,25 +52,25 @@ export class DataStorage {
     }
     
     /**
-     * ストレージアダプターの初期化'
+     * ストレージアダプターの初期化
      */''
-    async initialize('')';
+    async initialize()';
             this.adapters.set('localStorage', new LocalStorageAdapter();
             
-            // IndexedDBAdapter'
+            // IndexedDBAdapter
             try { const indexedDBAdapter = new IndexedDBAdapter();''
-                await indexedDBAdapter.initialize('');'
+                await indexedDBAdapter.initialize();'
                 this.adapters.set('indexedDB', indexedDBAdapter);' }'
-            } catch (error') { ''
-                console.warn('IndexedDB not available:', error); }
+            } catch (error) { ''
+                console.warn('IndexedDB not available:', error) }
             }
             
             // 利用可能なアダプターの確認
             await this.selectAdapter();
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'STORAGE_INITIALIZATION_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -90,17 +90,17 @@ export class DataStorage {
             }
             
             // フォールバックアダプターの試行
-            const fallback = this.adapters.get(this.fallbackAdapter);'
+            const fallback = this.adapters.get(this.fallbackAdapter);
             if(fallback && await this.testAdapter(fallback) { this.currentAdapter = fallback;' }'
                 console.log(`DataStorage: Using ${this.fallbackAdapter) as fallback adapter`'});
                 return;
             }'
             '';
             throw new Error('No storage adapter available');
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'ADAPTER_SELECTION_ERROR', {')'
-                operation: 'selectAdapter'); }
+                operation: 'selectAdapter') }
             });
         }
     }
@@ -108,7 +108,7 @@ export class DataStorage {
     /**
      * アダプターのテスト'
      */''
-    async testAdapter(adapter') { try {''
+    async testAdapter(adapter') { try {'
             const testKey = '_dataStorageTest'; }
             const testData = { test: true, timestamp: Date.now() }
             await adapter.set(testKey, testData);
@@ -149,7 +149,7 @@ export class DataStorage {
     /**
      * データの読み込み
      */
-    async load(key, options = { ) {'
+    async load(key, options = { ) {
         return await this.withRetry(async () => { ''
             if (!this.currentAdapter') {' };'
                 throw new Error('No storage adapter available'); }
@@ -168,7 +168,7 @@ export class DataStorage {
     /**
      * データの削除
      */
-    async remove(key, options = { ) {'
+    async remove(key, options = { ) {
         return await this.withRetry(async () => { ''
             if (!this.currentAdapter') {' };'
                 throw new Error('No storage adapter available'); }
@@ -181,9 +181,9 @@ export class DataStorage {
     /**
      * すべてのキーの取得
      */'
-    async keys() { try {''
+    async keys() { try {'
             if(!this.currentAdapter') {'
-                ';
+                ';'
             }'
                 throw new Error('No storage adapter available'); }
             }
@@ -191,7 +191,7 @@ export class DataStorage {
             return await this.currentAdapter.keys();'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'STORAGE_KEYS_ERROR', {')'
-                operation: 'keys'); }
+                operation: 'keys') }
             });
             return [];
         }
@@ -200,7 +200,7 @@ export class DataStorage {
     /**
      * ストレージサイズの取得
      */'
-    async getStorageSize() { try {''
+    async getStorageSize() { try {'
             if(!this.currentAdapter') {
                 
             }
@@ -227,10 +227,10 @@ export class DataStorage {
             }
             
             return totalSize;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'STORAGE_SIZE_ERROR', {')'
-                operation: 'getStorageSize'); }
+                operation: 'getStorageSize') }
             });
             return 0;
         }
@@ -242,7 +242,7 @@ export class DataStorage {
     async preprocessData(data, options) { try { }
             let processedData = { ...data };
             
-            // タイムスタンプの追加'
+            // タイムスタンプの追加
             processedData._metadata = { ''
                 timestamp: Date.now(''';
                 version: '1.0.0' })
@@ -256,10 +256,10 @@ export class DataStorage {
             }
             
             return processedData;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'DATA_PREPROCESSING_ERROR', {')'
-                operation: 'preprocessData'); }
+                operation: 'preprocessData') }
             });
             return data;
         }
@@ -271,9 +271,9 @@ export class DataStorage {
     async postprocessData(data, options) { try {
             // メタデータの確認
             if(data._metadata) {
-                // バージョンチェック等'
+                // バージョンチェック等
                 const age = Date.now() - data._metadata.timestamp;''
-                if (age > 30 * 24 * 60 * 60 * 1000') { // 30日以上古い'
+                if (age > 30 * 24 * 60 * 60 * 1000') { // 30日以上古い
             }'
                     console.warn('Loading old data:', { age ); }
                 }
@@ -287,10 +287,10 @@ export class DataStorage {
             const { _metadata, _compressed, ...cleanData } = data;
             
             return cleanData;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'DATA_POSTPROCESSING_ERROR', {')'
-                operation: 'postprocessData'); }
+                operation: 'postprocessData') }
             });
             return data;
         }
@@ -303,17 +303,17 @@ export class DataStorage {
             const retrievedData = await this.currentAdapter.get(key);'
             '';
             if(!retrievedData') {'
-                ';
+                ';'
             }'
                 throw new Error('Data verification failed: No data retrieved'); }
             }
             
             // 基本的な整合性チェック
             const originalStr = JSON.stringify(originalData);
-            const retrievedStr = JSON.stringify(retrievedData);'
+            const retrievedStr = JSON.stringify(retrievedData);
             '';
             if(originalStr !== retrievedStr') {'
-                ';
+                ';'
             }'
                 throw new Error('Data verification failed: Data mismatch'); }'
             } catch (error) { ''
@@ -357,11 +357,11 @@ export class DataStorage {
             } catch (error) { lastError = error;
                 
                 if(attempt < this.config.retryAttempts - 1) {
-                ';
+                ';'
                     '';
                     await new Promise(resolve => setTimeout(resolve, this.config.retryDelay * (attempt + 1)');
                     ';
-                    // アダプターの再選択を試行''
+                    // アダプターの再選択を試行
                     if(error.message.includes('storage adapter') {
                 
                 }
@@ -378,7 +378,7 @@ export class DataStorage {
      * リソースの解放
      */
     destroy() {'
-        try {''
+        try {'
             this.adapters.forEach(adapter => { ');'
     }'
                 if (typeof adapter.destroy === 'function') { }
@@ -388,10 +388,10 @@ export class DataStorage {
             
             this.adapters.clear();
             this.currentAdapter = null;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'STORAGE_DESTROY_ERROR', {')'
-                operation: 'destroy'); }
+                operation: 'destroy') }
             });
         }
     }
@@ -412,9 +412,9 @@ class LocalStorageAdapter { ''
     }
     }'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             if(error.name === 'QuotaExceededError'') {'
-                ';
+                ';'
             }'
                 throw new Error('LocalStorage quota exceeded'); }
             }
@@ -425,7 +425,7 @@ class LocalStorageAdapter { ''
     async get(key) { try {
             const data = localStorage.getItem(this.prefix + key);'
             return data ? JSON.parse(data) : null;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('LocalStorage get error:', error);
             return null; }
         }
@@ -480,9 +480,7 @@ class IndexedDBAdapter { ''
             const request = indexedDB.open(this.dbName, this.version);
             
             request.onerror = () => reject(request.error);
-            request.onsuccess = () => {
-    }
-    }
+            request.onsuccess = () => {}
                 this.db = request.result; }
                 resolve(); }
             };
@@ -494,7 +492,7 @@ class IndexedDBAdapter { ''
             };
         });
     }
-    ';
+    ';'
     async set(key, data) { ''
         return new Promise((resolve, reject') => { ''
             const transaction = this.db.transaction([this.storeName], 'readwrite');
@@ -505,7 +503,7 @@ class IndexedDBAdapter { ''
             request.onsuccess = () => resolve(true); }
         });
     }
-    ';
+    ';'
     async get(key) { ''
         return new Promise((resolve, reject') => { ''
             const transaction = this.db.transaction([this.storeName], 'readonly');
@@ -516,7 +514,7 @@ class IndexedDBAdapter { ''
             request.onsuccess = () => resolve(request.result || null); }
         });
     }
-    ';
+    ';'
     async remove(key) { ''
         return new Promise((resolve, reject') => { ''
             const transaction = this.db.transaction([this.storeName], 'readwrite');
@@ -527,7 +525,7 @@ class IndexedDBAdapter { ''
             request.onsuccess = () => resolve(true); }
         });
     }
-    ';
+    ';'
     async keys() { ''
         return new Promise((resolve, reject') => { ''
             const transaction = this.db.transaction([this.storeName], 'readonly');
@@ -560,7 +558,7 @@ class IndexedDBAdapter { ''
     }
     
     destroy() {
-    ';
+    ';'
         if (this.db) {'
     
     }'

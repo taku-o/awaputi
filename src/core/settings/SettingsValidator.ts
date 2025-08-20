@@ -24,7 +24,7 @@ export interface ValidationRules { [key: string]: ValidationRule,
 export interface ValidationResult { isValid: boolean,
     errors?: string[];
     sanitizedValue: any,
-    warning?: string | null; }
+    warning?: string | null }
 }
 
 export interface MultipleValidationResult { isValid: boolean,
@@ -57,7 +57,7 @@ export interface AccessibilitySettings { highContrast: boolean,
     reducedMotion: boolean,
     largeText: boolean,
     screenReader: boolean,
-    colorBlindSupport: boolean; }
+    colorBlindSupport: boolean }
 }
 
 export interface ValidationStats { totalRules: number,
@@ -65,7 +65,7 @@ export interface ValidationStats { totalRules: number,
     supportedTypes: string[],
     supportedLanguages: string[],
     supportedQualities: string[],
-    validationFeatures: string[]; }
+    validationFeatures: string[] }
 }
 
 // 列挙型
@@ -85,7 +85,7 @@ export class SettingsValidator {
         
         // 検証ルール
     }
-    }'
+    }
         this.validationRules = {' }'
             masterVolume: { type: 'number', min: 0, max: 1 },''
             sfxVolume: { type: 'number', min: 0, max: 1 },''
@@ -142,7 +142,7 @@ export class SettingsValidator {
      * @param value 設定値
      * @returns 検証結果'
      */''
-    validateSetting(key: string, value: any'): ValidationResult { try {''
+    validateSetting(key: string, value: any'): ValidationResult { try {'
             const topLevelKey = key.split('.')[0];
             const rule = this.validationRules[topLevelKey];
             
@@ -171,12 +171,12 @@ export class SettingsValidator {
         let sanitizedValue = value;
 
         // 型チェック
-        if(rule.type && !this._checkType(value, rule.type as ExpectedType) { }'
+        if(rule.type && !this._checkType(value, rule.type as ExpectedType) { }
             errors.push(`Expected ${rule.type}, got ${ typeof value)`);' }'
             sanitizedValue = this._getDefaultForType(rule.type as ExpectedType'});
         }
 ';
-        // 数値の範囲チェック''
+        // 数値の範囲チェック
         if (rule.type === 'number' && typeof value === 'number') { if (rule.min !== undefined && value < rule.min) { }
                 errors.push(`Value ${value} is below minimum ${rule.min)`});
                 sanitizedValue = rule.min;
@@ -187,20 +187,20 @@ export class SettingsValidator {
             }
         }
 ';
-        // 文字列の長さチェック''
+        // 文字列の長さチェック
         if (rule.type === 'string' && typeof value === 'string') { if (rule.maxLength !== undefined && value.length > rule.maxLength) { }
                 errors.push(`String length ${value.length} exceeds maximum ${ rule.maxLength)`); }
                 sanitizedValue = value.substring(0, rule.maxLength});
             }
         }
 
-        // 列挙値チェック'
+        // 列挙値チェック
         if(rule.enum && !rule.enum.includes(value) { ' }'
             errors.push(`Value ${value') is not in allowed values: ${rule.enum.join(', '})}`');
             sanitizedValue = rule.enum[0];
         }
 ';
-        // カスタムバリデーター''
+        // カスタムバリデーター
         if(rule.validator && typeof rule.validator === 'function') {
             try {
         }
@@ -213,7 +213,7 @@ export class SettingsValidator {
             }
         }
 ';
-        // オブジェクトのプロパティ検証''
+        // オブジェクトのプロパティ検証
         if(rule.type === 'object' && rule.properties && typeof value === 'object' && value !== null) {
             
         }
@@ -322,7 +322,7 @@ export class SettingsValidator {
         if(!settingsObject || typeof settingsObject !== 'object'') {'
             return { isValid: false,''
                 errors: ['Settings object must be a valid object'],'';
-                sanitizedSettings: this.settingsManager.getDefaultSettings('')';
+                sanitizedSettings: this.settingsManager.getDefaultSettings()';
         const requiredFields = ['masterVolume', 'sfxVolume', 'bgmVolume', 'language'];)
         for (const field of requiredFields) {
         }
@@ -351,7 +351,7 @@ export class SettingsValidator {
     /**
      * ConfigurationManager用の検証ルールを取得
      * @param category カテゴリ
-     * @returns 検証ルール'
+     * @returns 検証ルール
      */''
     getValidationRulesForCategory(category: string'): Record<string, ValidationRule> { const categoryMappings: Record<string, Record<string, ValidationRule>> = {
             audio: {
@@ -362,11 +362,11 @@ export class SettingsValidator {
             },'
             ui: { language: { ''
                     type: 'string', '';
-                    validator: (value: any') => ['ja', 'en'].includes(value'); }
+                    validator: (value: any') => ['ja', 'en'].includes(value') }
                 },'
                 quality: { ''
                     type: 'string', '';
-                    validator: (value: any') => ['low', 'medium', 'high', 'auto'].includes(value'); }'
+                    validator: (value: any') => ['low', 'medium', 'high', 'auto'].includes(value') }'
                 },''
                 showFPS: { type: 'boolean' },''
                 showDebugInfo: { type: 'boolean' },''
@@ -375,8 +375,7 @@ export class SettingsValidator {
             },
             accessibility: this.validationRules.accessibility.properties || {},
             controls: this.validationRules.controls.properties || {},
-            social: this.validationRules.social.properties || {}
-        },
+            social: this.validationRules.social.properties || {},
 
         return categoryMappings[category] || {};
     }
@@ -393,7 +392,7 @@ export class SettingsValidator {
             },
         }'
 '';
-        const cleanKey = key.trim('')';
+        const cleanKey = key.trim()';
         const parts = cleanKey.split('.');'
         '';
         if (parts.length === 0 || parts.some(part => !part)') { return { isValid: false,' };'
@@ -445,7 +444,7 @@ export class SettingsValidator {
 
     /**
      * 品質設定の検証
-     * @param quality 品質設定
+     * @param quality 品質設定'
      * @returns 検証結果'
      */''
     validateQuality(quality: string'): ValidationResult { ''
@@ -475,7 +474,7 @@ export class SettingsValidator {
 
     /**
      * アクセシビリティ設定の検証
-     * @param accessibility アクセシビリティ設定
+     * @param accessibility アクセシビリティ設定'
      * @returns 検証結果'
      */''
     validateAccessibility(accessibility: any'): AccessibilityValidationResult { ''
@@ -503,7 +502,7 @@ export class SettingsValidator {
         const booleanFields: (keyof AccessibilitySettings')[] = ['highContrast', 'reducedMotion', 'largeText', 'screenReader', 'colorBlindSupport'];
 
         for(const field of booleanFields) {
-';
+';'
             '';
             if (field in accessibility') {''
                 if (typeof accessibility[field] === 'boolean') {

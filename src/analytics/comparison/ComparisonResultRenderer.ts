@@ -13,7 +13,7 @@ export class ComparisonResultRenderer {
                 declined: '#F44336','';
                 stable: '#9E9E9E','';
                 excellent: '#FFD700','';
-                average: '#2196F3',';
+                average: '#2196F3','
     }
     }'
                 needsImprovement: '#FF9800' }
@@ -52,7 +52,7 @@ export class ComparisonResultRenderer {
 
         let totalImprovements = 0;
         let totalDeclines = 0;
-';
+';'
         availableComparisons.forEach(comparison => {  totalImprovements += comparison.improvements || 0;')'
             totalDeclines += comparison.declines || 0)');'
 '';
@@ -86,7 +86,7 @@ export class ComparisonResultRenderer {
 '';
         let overallPerformance = 'average';''
         if(above_average > below_average') {'
-            ';
+            ';'
         }'
             overallPerformance = 'excellent';' }'
         } else if (below_average > above_average') { ''
@@ -139,7 +139,7 @@ export class ComparisonResultRenderer {
 '';
         let overallTrend = 'stable';''
         if(totalImprovements > totalDeclines') {'
-            ';
+            ';'
         }'
             overallTrend = 'improving';' }'
         } else if (totalDeclines > totalImprovements') { ''
@@ -175,16 +175,16 @@ export class ComparisonResultRenderer {
             Object.entries(comparison.metrics || {}).forEach(([metricName, metric]') => {  ''
                 if (metric.trend === 'improved' && Math.abs(metric.changePercent) > 10) {
                     analysis.strengths.push({
-                        metric: metricName,);
+                        metric: metricName);
                         period: period);
                         improvement: metric.changePercent,) }'
                         value: metric.current),' }'
                     }');''
                 } else if (metric.trend === 'declined' && Math.abs(metric.changePercent) > 10) { analysis.weaknesses.push({
-                        metric: metricName,);
+                        metric: metricName);
                         period: period);
                         decline: metric.changePercent,);
-                        value: metric.current); }
+                        value: metric.current) }
                 }
             });
         });
@@ -211,26 +211,26 @@ export class ComparisonResultRenderer {
         Object.entries(comparison.metrics || {}).forEach(([metricName, metric]') => {  ''
             if(metric.performance === 'above_average') {
                 analysis.strengths.push({
-                    metric: metricName,);
-                    percentileRank: metric.percentileRank);
+                    metric: metricName);
+                    percentileRank: metric.percentileRank)
             }
                     value: metric.current,) }'
                     difference: metric.differencePercent),' }'
                 }');''
             } else if (metric.performance === 'below_average') { analysis.improvements.push({
                     metric: metricName,
-                    percentileRank: metric.percentileRank,);
+                    percentileRank: metric.percentileRank);
                     value: metric.current);
                     difference: metric.differencePercent,);
-                    targetValue: metric.benchmark.median); }
+                    targetValue: metric.benchmark.median) }
             }
         });
 
         // インサイトの生成
-        if(analysis.improvements.length > 0) {'
+        if(analysis.improvements.length > 0) {
             const worstMetric = analysis.improvements'';
                 .sort((a, b) => a.percentileRank - b.percentileRank')[0];
-            ';
+            ';'
             analysis.insights.push({'
         }'
                 type: 'improvement_priority', })
@@ -241,7 +241,7 @@ export class ComparisonResultRenderer {
         if(analysis.strengths.length > 0') {'
             analysis.insights.push({''
                 type: 'leverage_strength',')';
-                message: '強みを活かしてさらなる成長を目指しましょう',);
+                message: '強みを活かしてさらなる成長を目指しましょう',)
         }
                 metrics: analysis.strengths); }
         }
@@ -286,9 +286,9 @@ export class ComparisonResultRenderer {
             categoryData.totalImprovements += stageData.comparison.improvements || 0;
             categoryData.totalDeclines += stageData.comparison.declines || 0;
 ';
-            // パフォーマンス別分類''
+            // パフォーマンス別分類
             if(performance.grade === 'A' || performance.grade === 'B') {'
-                ';
+                ';'
             }'
                 details.excellentStages.push(stageId');' }'
             } else if (stageData.comparison.overallTrend === 'improving') { ''
@@ -330,7 +330,7 @@ export class ComparisonResultRenderer {
             recommendations.push({''
                 type: 'focus_weak_stages',')';
                 priority: 'high')';
-                stages: weakStages,');
+                stages: weakStages,')
         }'
                 message: '以下のステージに重点的に取り組むことをお勧めします'); }
         }'
@@ -339,7 +339,7 @@ export class ComparisonResultRenderer {
             recommendations.push({''
                 type: 'maintain_momentum',')';
                 priority: 'medium')';
-                stages: improvingStages,');
+                stages: improvingStages,')
         }'
                 message: '改善が見られるステージでの練習を継続しましょう'); }
         }
@@ -431,7 +431,7 @@ export class ComparisonResultRenderer {
         let grade = 'F';'
         '';
         if(averageScore >= 90') {'
-            ';
+            ';'
         }'
             grade = 'A';' }'
         } else if (averageScore >= 80') { ''
@@ -462,17 +462,17 @@ export class ComparisonResultRenderer {
             strengths.push('高い完了率'); }'
         }''
         if(stageData.averageAccuracy >= 0.85') {'
-            ';
+            ';'
         }'
             strengths.push('優れた精度'); }'
         }''
         if(stageData.consistencyScore >= 0.7') {'
-            ';
+            ';'
         }'
             strengths.push('安定したパフォーマンス'); }'
         }''
         if(stageData.averageAttemptsToComplete <= 3') {'
-            ';
+            ';'
         }'
             strengths.push('効率的なクリア'); }
         }
@@ -493,17 +493,17 @@ export class ComparisonResultRenderer {
             weaknesses.push('低い完了率'); }'
         }''
         if(stageData.averageAccuracy < 0.7') {'
-            ';
+            ';'
         }'
             weaknesses.push('精度の改善が必要'); }'
         }''
         if(stageData.consistencyScore < 0.4') {'
-            ';
+            ';'
         }'
             weaknesses.push('パフォーマンスが不安定'); }'
         }''
         if(stageData.averageAttemptsToComplete > 10') {'
-            ';
+            ';'
         }'
             weaknesses.push('クリアまでの試行回数が多い'); }
         }
@@ -555,7 +555,7 @@ export class ComparisonResultRenderer {
         return weaknesses.map(weakness => ({)
             metric: weakness.metric,)';
             currentValue: weakness.value),'';
-            improvementPotential: Math.abs(weakness.decline'),';
+            improvementPotential: Math.abs(weakness.decline'),'
     }'
             priority: weakness.decline < -20 ? 'high' : 'medium'' }'
         }'),'

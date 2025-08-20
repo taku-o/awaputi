@@ -6,7 +6,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 interface BubbleEffectConfig { baseParticleCount: number,
     colors: string[],
     specialEffects: string[],
-    priority: number; }
+    priority: number }
 }
 
 /**
@@ -52,7 +52,7 @@ interface Particle { x: number,
 /**
  * Quality settings interface
  */
-interface QualitySettings { complexityLevel: number; }
+interface QualitySettings { complexityLevel: number }
 }
 
 /**
@@ -80,7 +80,7 @@ export class BubbleEffectRenderer {
         
         // バブルタイプ別の基本設定
         this.bubbleEffectConfigs = {
-            normal: {'
+            normal: {
                 baseParticleCount: 15,'';
                 colors: ['#4A90E2', '#7ED321', '#50E3C2', '#A8E6CF', '#C7CEEA'],'';
                 specialEffects: ['sparkle', 'ripple'],
@@ -153,10 +153,10 @@ export class BubbleEffectRenderer {
             
             // バブルタイプ別の個別処理
             this.createTypeSpecificEffect(x, y, bubbleType, bubbleSize, options);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'BUBBLE_EFFECT_ERROR', {')'
-                context: 'BubbleEffectRenderer.createAdvancedBubbleEffect'); }
+                context: 'BubbleEffectRenderer.createAdvancedBubbleEffect') }
             });
         }
     }
@@ -231,15 +231,15 @@ export class BubbleEffectRenderer {
         const qualitySettings = this.particleManager.getCurrentQualitySettings();
         
         if(qualitySettings.complexityLevel >= 3) {
-        ';
-            // 高品質: 多様なタイプを使用''
+        ;
+            // 高品質: 多様なタイプを使用
             if (ratio < 0.3') return 'glow_circle';''
             if (ratio < 0.6') return 'advanced_circle';''
             if (ratio < 0.8') return 'trail_particle';'
         
         }'
             return 'star'; }'
-        } else if (qualitySettings.complexityLevel >= 2) { // 中品質: 基本的な拡張タイプ''
+        } else if (qualitySettings.complexityLevel >= 2) { // 中品質: 基本的な拡張タイプ
             if (ratio < 0.5') return 'advanced_circle';''
             return 'circle'; }'
         } else {  // 低品質: 基本タイプのみ' }'
@@ -324,11 +324,11 @@ export class BubbleEffectRenderer {
             particle.y = y + Math.sin(angle) * distance;
             particle.vx = (Math.random() - 0.5) * 40;'
             particle.vy = (Math.random() - 0.5) * 40 - 20;''
-            particle.size = 1 + Math.random('')';
+            particle.size = 1 + Math.random()';
             particle.color = '#FFFFFF';)
             particle.life = 1000 + Math.random() * 500;'
             particle.maxLife = particle.life;''
-            particle.alpha = 0.8 + Math.random('')';
+            particle.alpha = 0.8 + Math.random()';
             particle.type = 'star';)
             particle.pulseSpeed = 8 + Math.random() * 4;
             
@@ -348,7 +348,7 @@ export class BubbleEffectRenderer {
     createRippleEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { const rippleCount = this.particleManager.adjustParticleCount(3);
         
         for(let i = 0; i < rippleCount; i++) {
-        ';
+        ';'
             '';
             const particle = this.particleManager.getParticleFromPool(''';
             particle.type = 'ripple';
@@ -383,7 +383,7 @@ export class BubbleEffectRenderer {
             particle.alpha = 0.8;
             particle.gravity = 80;'
             particle.friction = 0.95;''
-            particle.bounce = 0.4 + Math.random('')';
+            particle.bounce = 0.4 + Math.random()';
             particle.type = 'hexagon';)
             particle.rotationSpeed = (Math.random() - 0.5) * 20;
             
@@ -397,63 +397,63 @@ export class BubbleEffectRenderer {
      * ダスト効果（未実装）
      */
     createDustEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createDebrisEffect(x, y, bubbleSize, config); }
+        this.createDebrisEffect(x, y, bubbleSize, config) }
     }
     
     /**
      * 火花効果（未実装）
      */
     createSparksEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createElectricArcsEffect(x, y, bubbleSize, config); }
+        this.createElectricArcsEffect(x, y, bubbleSize, config) }
     }
     
     /**
      * 金属片効果（未実装）
      */
     createMetalShardsEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createDebrisEffect(x, y, bubbleSize, config); }
+        this.createDebrisEffect(x, y, bubbleSize, config) }
     }
     
     /**
      * プリズム効果（未実装）
      */
     createPrismaticEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createSparkleEffect(x, y, bubbleSize, config); }
+        this.createSparkleEffect(x, y, bubbleSize, config) }
     }
     
     /**
      * ブリリアンス効果（未実装）
      */
     createBrillianceEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createSparkleEffect(x, y, bubbleSize, config); }
+        this.createSparkleEffect(x, y, bubbleSize, config) }
     }
     
     /**
      * カラーバースト効果（未実装）
      */
     createColorBurstEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createRainbowSpiral(x, y, bubbleSize); }
+        this.createRainbowSpiral(x, y, bubbleSize) }
     }
     
     /**
      * 魔法の輝き効果（未実装）
      */
     createMagicalSparklesEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createSparkleEffect(x, y, bubbleSize, config); }
+        this.createSparkleEffect(x, y, bubbleSize, config) }
     }
     
     /**
      * 稲妻効果（未実装）
      */
     createLightningEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createElectricArcsEffect(x, y, bubbleSize, config); }
+        this.createElectricArcsEffect(x, y, bubbleSize, config) }
     }
     
     /**
      * 衝撃波効果（未実装）
      */
     createShockwaveEffect(x: number, y: number, bubbleSize: number, config: BubbleEffectConfig): void { // TODO: 将来実装予定
-        this.createRippleEffect(x, y, bubbleSize, config); }
+        this.createRippleEffect(x, y, bubbleSize, config) }
     }
     
     /**
@@ -475,7 +475,7 @@ export class BubbleEffectRenderer {
             particle.x = x;
             particle.y = y;
             particle.vx = Math.cos(angle) * 150;
-            particle.vy = Math.sin(angle) * 150;'
+            particle.vy = Math.sin(angle) * 150;
             particle.size = 2;''
             particle.color = Math.random(') > 0.5 ? '#FFFF00' : '#00FFFF';''
             particle.life = 300 + Math.random(''';
@@ -566,7 +566,7 @@ export class BubbleEffectRenderer {
             particle.y = y + Math.sin(angle) * bubbleSize * 0.3;
             particle.vx = Math.cos(angle) * 80;'
             particle.vy = Math.sin(angle) * 80;''
-            particle.size = 1 + Math.random('')';
+            particle.size = 1 + Math.random()';
             particle.color = ['#FFFFFF', '#E6E6FA', '#F0F8FF'][Math.floor(Math.random() * 3')];
             particle.life = 1200;
             particle.maxLife = particle.life;
@@ -601,7 +601,7 @@ export class BubbleEffectRenderer {
             
             particle.x = x + Math.cos(angle) * radius;
             particle.y = y + Math.sin(angle) * radius;
-            particle.vx = Math.cos(angle + Math.PI / 2) * 60;'
+            particle.vx = Math.cos(angle + Math.PI / 2) * 60;
             particle.vy = Math.sin(angle + Math.PI / 2) * 60;''
             particle.size = 2 + Math.random(''';
             particle.type = 'star';
@@ -616,14 +616,14 @@ export class BubbleEffectRenderer {
      * 電気パルス効果（未実装）
      */
     createElectricPulse(x: number, y: number, bubbleSize: number): void { // TODO: 将来実装予定
-        this.createElectricArcsEffect(x, y, bubbleSize, this.bubbleEffectConfigs.electric); }
+        this.createElectricArcsEffect(x, y, bubbleSize, this.bubbleEffectConfigs.electric) }
     }
     
     /**
      * ボス死亡効果（未実装）
      */
     createBossDeathEffect(x: number, y: number, bubbleSize: number): void { // TODO: 将来実装予定
-        this.createMassiveExplosionEffect(x, y, bubbleSize, this.bubbleEffectConfigs.boss); }
+        this.createMassiveExplosionEffect(x, y, bubbleSize, this.bubbleEffectConfigs.boss) }
     }
     
     /**
@@ -647,11 +647,11 @@ export class BubbleEffectRenderer {
             particle.y = y;
             particle.vx = Math.cos(angle) * speed;
             particle.vy = Math.sin(angle) * speed;
-            particle.size = 2 + Math.random() * 2;'
+            particle.size = 2 + Math.random() * 2;
             particle.color = config.colors[Math.floor(Math.random() * config.colors.length)];''
             particle.life = 600 + Math.random(''';
             particle.type = 'circle';)'
-            ');
+            ');'
         }'
             this.particleManager.particles.push(particle'); }
         }'

@@ -3,7 +3,7 @@ import { getEffectsConfig } from '../config/EffectsConfig.js';''
 import { getErrorHandler } from '../utils/ErrorHandler.js';''
 import { AccessibilityEffectIntegrator } from './accessibility/AccessibilityEffectIntegrator.js';
 ';
-// サブコンポーネントのインポート''
+// サブコンポーネントのインポート
 import { EffectTransitionRenderer } from './enhanced-effect-manager/EffectTransitionRenderer.js';''
 import { LightingSystemRenderer } from './enhanced-effect-manager/LightingSystemRenderer.js';''
 import { ReflectionRenderer } from './enhanced-effect-manager/ReflectionRenderer.js';''
@@ -32,7 +32,7 @@ interface TransitionOptions { easing?: string;
 interface ShadowObject { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface LightSource { x: number,
@@ -40,13 +40,13 @@ interface LightSource { x: number,
     intensity: number,
     color: string,
     radius: number,
-    type: string; }
+    type: string }
 }
 
 interface ReflectionObject { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface BackgroundEffectOptions { intensity?: number;
@@ -60,7 +60,7 @@ interface RenderSettings { enableLighting: boolean,
     enableReflections: boolean,
     enablePostProcessing: boolean,
     quality: string,
-    optimization: boolean; }
+    optimization: boolean }
 }
 
 interface EnhancedTransform { scale: number,
@@ -72,13 +72,13 @@ interface TransitionEffect { id: string,
     type: string,
     duration: number,
     startTime: number,
-    options: TransitionOptions;
+    options: TransitionOptions
     }
 }
 
 interface Shadow { id: string,
     object: ShadowObject,
-    lightSource: LightSource;
+    lightSource: LightSource
     }
 }
 
@@ -86,7 +86,7 @@ interface Reflection { id: string,
     object: ReflectionObject,
     surfaceY: number,
     intensity: number,
-    distortion: number; }
+    distortion: number }
 }
 
 interface WaterRipple { id: string,
@@ -96,23 +96,23 @@ interface WaterRipple { id: string,
     speed: number,
     intensity: number,
     currentRadius: number,
-    startTime: number; }
+    startTime: number }
 }
 
 interface BackgroundEffect { id: string,
     type: string,
-    options: BackgroundEffectOptions;
+    options: BackgroundEffectOptions
     }
 }
 
 interface PerformanceMetrics { renderTime: number,
     effectCount: number,
-    fps: number; }
+    fps: number }
 }
 
 interface CurrentSettings { renderSettings: RenderSettings,
     effectCount: number,
-    quality: string; }
+    quality: string }
 }
 
 /**
@@ -147,9 +147,9 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
         
         this.accessibilityIntegrator = null;
         this.accessibilityEnabled = false;
-        ';
+        ';'
         this._initializeRenderers();''
-        this._initializeAccessibility('');
+        this._initializeAccessibility();
     }
     }'
         console.log('[EnhancedEffectManager] Main Controller Pattern初期化完了'); }
@@ -167,8 +167,8 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             '';
             console.log('[EnhancedEffectManager] レンダリングコンポーネントを初期化しました'); }'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'EnhancedEffectManager._initializeRenderers'); }
+            getErrorHandler()';
+                context: 'EnhancedEffectManager._initializeRenderers') }
             });
         }
     }
@@ -176,11 +176,11 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     /**
      * アクセシビリティ統合の初期化'
      */''
-    private _initializeAccessibility('')';
+    private _initializeAccessibility()';
             console.log('[EnhancedEffectManager] アクセシビリティ統合を準備しました');'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'EnhancedEffectManager._initializeAccessibility'); }
+            getErrorHandler()';
+                context: 'EnhancedEffectManager._initializeAccessibility') }
             });
         }
     }
@@ -188,7 +188,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     // ========================================
     // 公開API - API Managerにデリゲート
     // ========================================
-    ';
+    ';'
     public addTransitionEffect(type: string, duration: number, options: TransitionOptions = { ): string {''
         return this.apiManager.addTransitionEffect(type, duration, options'); }
     }'
@@ -202,7 +202,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     }'
     '';
     public addZoomTransition(duration: number, zoomType: string = 'in', center: { x: number; y: number ) | null = null): string {''
-        return this.apiManager.addZoomTransition(duration, zoomType, center'); }
+        return this.apiManager.addZoomTransition(duration, zoomType, center') }
     }'
     '';
     public addWipeTransition(duration: number, pattern: string = 'horizontal', direction: string = 'left'): string { return this.apiManager.addWipeTransition(duration, pattern, direction); }
@@ -220,7 +220,7 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     
     public addReflectionEffect(reflectionObject: ReflectionObject, surfaceY: number, intensity: number = 0.8, distortion: number = 0.1): string { return this.effectController.addReflectionEffect(reflectionObject, surfaceY, intensity, distortion); }
     }
-    ';
+    ';'
     public addWaterRipple(x: number, y: number, maxRadius: number = 50, speed: number = 2, intensity: number = 1.0): string { ''
         return this.effectController.addWaterRipple(x, y, maxRadius, speed, intensity'); }
     }'
@@ -290,10 +290,10 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             // パフォーマンスメトリクス更新
             const renderTime = Date.now() - startTime;
             this.effectController.updatePerformanceMetrics(renderTime);
-             }'
+             }
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'EnhancedEffectManager.render'); }
+            getErrorHandler()';
+                context: 'EnhancedEffectManager.render') }
             });
         }
     }
@@ -330,10 +330,10 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
             });
             
             // ポストプロセッシング
-            if (this.apiManager.renderSettings.enablePostProcessing) { this.postProcessingRenderer.renderPostProcessingEffects(context, this.apiManager.enhancedTransform, this.apiManager.renderSettings); }'
+            if (this.apiManager.renderSettings.enablePostProcessing) { this.postProcessingRenderer.renderPostProcessingEffects(context, this.apiManager.enhancedTransform, this.apiManager.renderSettings); }
             } catch (error) { ''
-            getErrorHandler('')';
-                context: 'EnhancedEffectManager._renderEnhancedEffects'); }
+            getErrorHandler()';
+                context: 'EnhancedEffectManager._renderEnhancedEffects') }
             });
         }
     }
@@ -344,17 +344,17 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     
     public enableAccessibilitySupport(enabled: boolean, options: AccessibilityOptions = { ): void {
         try {
-            if(enabled && !this.accessibilityIntegrator) {'
-                ';
+            if(enabled && !this.accessibilityIntegrator) {
+                ';'
             }'
                 this.accessibilityIntegrator = new AccessibilityEffectIntegrator(this.canvas, options'); }
             }
-            ';
+            ';'
             this.accessibilityEnabled = enabled;''
             console.log(`[EnhancedEffectManager] アクセシビリティサポート: ${enabled ? '有効' : '無効')`});'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'EnhancedEffectManager.enableAccessibilitySupport'); }
+            getErrorHandler()';
+                context: 'EnhancedEffectManager.enableAccessibilitySupport') }
             });
         }
     }
@@ -368,10 +368,10 @@ export class EnhancedEffectManager extends EffectManager { private effectControl
     
     public getPerformanceMetrics(): PerformanceMetrics { return this.apiManager.getPerformanceMetrics(); }
     }
-    ';
-    // Issue #106対応: テスト互換性メソッド''
+    ;
+    // Issue #106対応: テスト互換性メソッド
     public setGradientProfiles(profiles: any'): void { ''
         console.log('[EnhancedEffectManager] Gradient profiles設定:', profiles');
-        // 実装はテスト互換性のため }'
+        // 実装はテスト互換性のため }
     }''
 }

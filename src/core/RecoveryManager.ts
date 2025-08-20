@@ -52,15 +52,15 @@ export class RecoveryManager {'
      * RecoveryManagerの初期化
      */
     initialize() {
-        try {'
-            // 復旧戦略の登録''
-            this.registerRecoveryStrategies('')';
+        try {
+            // 復旧戦略の登録
+            this.registerRecoveryStrategies()';
             console.log('RecoveryManager initialized');
     }
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RECOVERY_MANAGER_INITIALIZATION_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -68,19 +68,19 @@ export class RecoveryManager {'
     /**
      * 復旧戦略の登録'
      */''
-    registerRecoveryStrategies('')';
+    registerRecoveryStrategies()';
         this.recoveryStrategies.set('auto', new AutoRecoveryStrategy(this)');
         ';
-        // バックアップからの復旧戦略''
+        // バックアップからの復旧戦略
         this.recoveryStrategies.set('backup', new BackupRecoveryStrategy(this)');
         ';
-        // 部分復旧戦略''
+        // 部分復旧戦略
         this.recoveryStrategies.set('partial', new PartialRecoveryStrategy(this)');
         ';
-        // ファクトリーリセット戦略''
+        // ファクトリーリセット戦略
         this.recoveryStrategies.set('factory', new FactoryResetStrategy(this)');
         ';
-        // 手動復旧戦略''
+        // 手動復旧戦略
         this.recoveryStrategies.set('manual', new ManualRecoveryStrategy(this);
     }
     
@@ -93,9 +93,9 @@ export class RecoveryManager {'
             // データの取得（未提供の場合）
             if(!data) {
                 try {
-            }'
+            }
                     data = await this.storage.load(dataType);' }'
-                } catch (error') { issues.push({''
+                } catch (error) { issues.push({''
                         type: 'STORAGE_ERROR','';
                         severity: 'HIGH', })
                         message: `Failed to load ${dataType}: ${error.message}`;)
@@ -105,10 +105,10 @@ export class RecoveryManager {'
                 }
             }
             ';
-            // データが存在しない場合''
+            // データが存在しない場合
             if(!data') {'
                 issues.push({''
-                    type: 'MISSING_DATA',';
+                    type: 'MISSING_DATA','
             }'
                     severity: 'HIGH', })
                     message: `No data found for ${dataType}`,)
@@ -118,11 +118,11 @@ export class RecoveryManager {'
             
             // データ検証（ValidationManagerが利用可能な場合）
             if(this.validation) {
-                const validationResult = await this.validation.validate(dataType, data);'
+                const validationResult = await this.validation.validate(dataType, data);
                 '';
                 if (!validationResult.isValid') {'
                     issues.push({''
-                        type: 'VALIDATION_ERROR',';
+                        type: 'VALIDATION_ERROR','
             }'
                         severity: 'HIGH', })
                         message: `Validation failed for ${dataType}`)
@@ -135,7 +135,7 @@ export class RecoveryManager {'
             const structuralIssues = await this.checkStructuralIntegrity(dataType, data);
             issues.push(...structuralIssues);
             
-            // 論理的整合性チェック'
+            // 論理的整合性チェック
             const logicalIssues = await this.checkLogicalIntegrity(dataType, data);''
             issues.push(...logicalIssues');'
             '';
@@ -146,7 +146,7 @@ export class RecoveryManager {'
                 dataType, };
                 timestamp: Date.now(); }
             };
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CORRUPTION_DETECTION_ERROR', {')'
                 operation: 'detectCorruption',)';
@@ -157,7 +157,7 @@ export class RecoveryManager {'
                 issues: [{''
                     type: 'DETECTION_ERROR',' };'
                     severity: 'HIGH', }
-                    message: `Corruption detection failed: ${error.message}`,]
+                    message: `Corruption detection failed: ${error.message}`]
                     error];
                 }]
             };
@@ -171,9 +171,9 @@ export class RecoveryManager {'
         
         try {
             // JSON構造チェック
-            try {'
+            try {
                 JSON.stringify(data);' }'
-            } catch (error') { issues.push({''
+            } catch (error) { issues.push({''
                     type: 'INVALID_JSON','';
                     severity: 'HIGH',')';
                     message: 'Data contains circular references or invalid JSON structure',);
@@ -181,17 +181,17 @@ export class RecoveryManager {'
                 });
             }
             ';
-            // データタイプ固有の構造チェック''
+            // データタイプ固有の構造チェック
             switch(dataType') {'
                 '';
                 case 'playerData':'';
                     if (typeof data !== 'object' || data === null') {'
                         issues.push({''
                             type: 'INVALID_STRUCTURE',')';
-                            severity: 'HIGH',');
+                            severity: 'HIGH',')
             }'
                             message: 'PlayerData must be an object')'); }'
-                    } else {  // 必須フィールドのチェック''
+                    } else {  // 必須フィールドのチェック
                         const requiredFields = ['username', 'currentHP', 'maxHP', 'ap', 'tap'];
                         for(const field of requiredFields) {'
                             '';
@@ -211,7 +211,7 @@ export class RecoveryManager {'
                     if(typeof data !== 'object' || data === null') {'
                         issues.push({''
                             type: 'INVALID_STRUCTURE',')';
-                            severity: 'HIGH',');
+                            severity: 'HIGH',')
                     }'
                             message: 'Settings must be an object')'); }
                     }
@@ -221,12 +221,12 @@ export class RecoveryManager {'
                     if(typeof data !== 'object' || data === null') {'
                         issues.push({''
                             type: 'INVALID_STRUCTURE',')';
-                            severity: 'HIGH',');
+                            severity: 'HIGH',')
                     }'
                             message: 'Statistics must be an object'); }
                     }'
                     break;''
-            } catch (error') { issues.push({''
+            } catch (error) { issues.push({''
                 type: 'STRUCTURE_CHECK_ERROR','';
                 severity: 'MEDIUM', })
                 message: `Structure check failed: ${error.message}`;)
@@ -241,52 +241,52 @@ export class RecoveryManager {'
      * 論理的整合性チェック
      */
     async checkLogicalIntegrity(dataType, data) { const issues = [];
-        ';
-        try {''
+        ';'
+        try {'
             switch(dataType') {'
                 '';
                 case 'playerData':';
-                    // HP整合性''
+                    // HP整合性
                     if (data.currentHP > data.maxHP') {'
                         issues.push({''
                             type: 'LOGICAL_ERROR','';
                             severity: 'MEDIUM',')';
                             message: 'Current HP exceeds max HP');
-                            currentHP: data.currentHP,);
+                            currentHP: data.currentHP,)
             }
                             maxHP: data.maxHP); }
                     }
                     ';
-                    // 負の値チェック''
+                    // 負の値チェック
                     if(data.currentHP < 0 || data.maxHP < 0 || data.ap < 0 || data.tap < 0') {'
                         issues.push({''
                             type: 'INVALID_VALUE',')';
-                            severity: 'HIGH',');
+                            severity: 'HIGH',')
                     }'
                             message: 'Negative values detected in player data'); }
                     }
                     ';
-                    // 極端な値のチェック''
+                    // 極端な値のチェック
                     if(data.ap > 999999999 || data.tap > 999999999') {'
                         issues.push({''
                             type: 'SUSPICIOUS_VALUE',')';
-                            severity: 'MEDIUM',');
+                            severity: 'MEDIUM',')
                     }'
                             message: 'Unusually high AP/TAP values detected')'); }
                     }
                     break;'
                     '';
                 case 'statistics':';
-                    // 統計の論理チェック''
+                    // 統計の論理チェック
                     if(data.totalPlayTime < 0 || data.totalGamesPlayed < 0') {'
                         issues.push({''
                             type: 'INVALID_STATISTICS',')';
-                            severity: 'HIGH',');
+                            severity: 'HIGH',')
                     }'
                             message: 'Negative statistics values detected'); }
                     }'
                     break;''
-            } catch (error') { issues.push({''
+            } catch (error) { issues.push({''
                 type: 'LOGICAL_CHECK_ERROR','';
                 severity: 'MEDIUM', })
                 message: `Logical check failed: ${error.message}`;)'
@@ -301,9 +301,9 @@ export class RecoveryManager {'
      * 自動復旧の実行'
      */''
     async recover(strategy = 'auto', options = { ) {'
-        try {''
+        try {'
             if(this.isRecoveryInProgress') {'
-                ';
+                ';'
             }'
                 throw new Error('Recovery already in progress'); }
             }
@@ -353,7 +353,7 @@ export class RecoveryManager {'
                 duration, };
                 strategy }
             };
-            ';
+            ';'
         } catch (error) { this.updateStatistics(false, 0, strategy);''
             getErrorHandler(').handleError(error, 'RECOVERY_ERROR', {')'
                 operation: 'recover');
@@ -417,28 +417,28 @@ export class RecoveryManager {'
             const corruptionReport = await this.detectCorruption(dataType);
             
             // バックアップの確認
-            const backupList = await this.backup.getBackupList();'
+            const backupList = await this.backup.getBackupList();
             const availableBackups = backupList.filter(backup => ')';
                 backup.exists && ')'';
                 (backup.dataType === dataType || backup.dataType === 'all');
             );
             ';
-            // 自動復旧オプション''
+            // 自動復旧オプション
             if(this.config.autoRecoveryEnabled && !corruptionReport.corrupted') {'
                 options.push({''
                     strategy: 'auto','';
                     name: '自動復旧','';
                     description: '軽微な問題を自動的に修正します','';
                     risk: 'LOW',')';
-                    estimatedTime: '< 1秒',);
+                    estimatedTime: '< 1秒',)
             }
                     recommended: true); }
             }
             
             // バックアップからの復旧オプション
-            if(availableBackups.length > 0) {'
+            if(availableBackups.length > 0) {
                 '';
-                for (const backup of availableBackups.slice(0, 3)') { // 最新3件'
+                for (const backup of availableBackups.slice(0, 3)') { // 最新3件
                     options.push({')
             }'
                         strategy: 'backup'),' }'
@@ -452,16 +452,16 @@ export class RecoveryManager {'
                 }
             }
             ';
-            // 部分復旧オプション''
+            // 部分復旧オプション
             if (corruptionReport.issues.some(issue => issue.severity === 'MEDIUM')') { options.push({''
                     strategy: 'partial','';
                     name: '部分復旧','';
                     description: '破損していない部分のみを保持し、問題のある部分をリセットします',')';
                     risk: 'MEDIUM',')';
-                    estimatedTime: '< 3秒')'); }
+                    estimatedTime: '< 3秒')') }
             }
             
-            // ファクトリーリセットオプション'
+            // ファクトリーリセットオプション
             options.push({ ''
                 strategy: 'factory','';
                 name: 'ファクトリーリセット','';
@@ -476,7 +476,7 @@ export class RecoveryManager {'
                 options, };
                 recommendedOption: options.find(opt => opt.recommended) || options[0] }
             },
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RECOVERY_OPTIONS_ERROR', {')'
                 operation: 'getRecoveryOptions',);
@@ -503,7 +503,7 @@ export class RecoveryManager {'
             }
             
             return await recoveryStrategy.preview(dataType, options);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RECOVERY_PREVIEW_ERROR', {')'
                 operation: 'previewRecovery');
@@ -537,7 +537,7 @@ export class RecoveryManager {'
             if (success) {
                 this.statistics.successfulRecoveries++;
                 
-                // 平均時間の更新'
+                // 平均時間の更新
                 const totalTime = this.statistics.averageRecoveryTime * (this.statistics.successfulRecoveries - 1) + duration;''
                 this.statistics.averageRecoveryTime = Math.round(totalTime / this.statistics.successfulRecoveries');'
                 '';
@@ -555,8 +555,8 @@ export class RecoveryManager {'
                 duration }
             };'
             '';
-        } catch (error') { ''
-            console.error('Recovery statistics update error:', error); }
+        } catch (error) { ''
+            console.error('Recovery statistics update error:', error) }
         }
     }
     
@@ -587,13 +587,13 @@ export class RecoveryManager {'
         try {
             this.isRecoveryInProgress = false;'
             this.currentRecoverySession = null;''
-            this.recoveryStrategies.clear('')';
+            this.recoveryStrategies.clear()';
             console.log('RecoveryManager destroyed');
     }
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RECOVERY_MANAGER_DESTROY_ERROR', {')'
-                operation: 'destroy'); }
+                operation: 'destroy') }
             });
         }
     }
@@ -607,7 +607,7 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
     }'
     '';
     async execute(options = { )') {'
-        try {''
+        try {'
             const dataType = options.dataType || 'playerData';
             const data = await this.recoveryManager.storage.load(dataType);'
             '';
@@ -617,10 +617,10 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
             
             // 軽微な修正の実行
             const fixedData = this.applyAutoFixes(dataType, data);
-            ';
-            // 修正されたデータの保存''
+            ;
+            // 修正されたデータの保存
             await this.recoveryManager.storage.save(dataType, fixedData');
-            ';
+            ';'
             return { success: true,''
                 message: 'Auto recovery completed', };
                 fixesApplied: fixedData._autoFixes || [] }
@@ -630,10 +630,10 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
             return { success: false, error: error.message }
         }
     }
-    ';
+    ';'
     async preview(dataType, options = {}) { const data = await this.recoveryManager.storage.load(dataType);''
         const fixes = this.identifyAutoFixes(dataType, data');
-        ';
+        ';'
         return { ''
             strategy: 'auto',
             dataType,';
@@ -649,14 +649,14 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
         const fixes = [];'
         '';
         if(dataType === 'playerData') {'
-            // HP整合性の修正''
+            // HP整合性の修正
             if (fixedData.currentHP > fixedData.maxHP') {'
                 fixedData.currentHP = fixedData.maxHP;'
         }'
                 fixes.push('Fixed currentHP > maxHP'); }
             }
             ';
-            // 負の値の修正''
+            // 負の値の修正
             if(fixedData.currentHP < 0') {'
                 fixedData.currentHP = 0;'
             }'
@@ -689,7 +689,7 @@ class AutoRecoveryStrategy { constructor(recoveryManager) {
                 fixes.push('HP値の整合性を修正'); }'
             }''
             if(data.currentHP < 0 || data.ap < 0 || data.tap < 0') {'
-                ';
+                ';'
             }'
                 fixes.push('負の値を修正'); }
             }
@@ -707,12 +707,12 @@ class BackupRecoveryStrategy { constructor(recoveryManager) {
     }
     
     async execute(options = { ) {
-        try {'
+        try {
             const backupId = options.backupId;''
             if (!backupId') {' }'
                 return { success: false, error: 'Backup ID required' }
             }
-            ';
+            ';'
             const backupData = await this.recoveryManager.backup.getBackup(backupId);''
             if (!backupData') { ' }'
                 return { success: false, error: 'Backup not found' }
@@ -720,7 +720,7 @@ class BackupRecoveryStrategy { constructor(recoveryManager) {
             '';
             const dataType = options.dataType || 'all';
             ';
-            // バックアップからデータを復元''
+            // バックアップからデータを復元
             if(dataType === 'all') {
                 for(const [key, value] of Object.entries(backupData.data) {
             }
@@ -731,7 +731,7 @@ class BackupRecoveryStrategy { constructor(recoveryManager) {
             } else {  }
                 return { success: false, error: `Data type ${dataType} not found in backup` }
             }
-            ';
+            ';'
             return { success: true,''
                 message: 'Backup recovery completed',';
                 backupId,' };'
@@ -742,10 +742,10 @@ class BackupRecoveryStrategy { constructor(recoveryManager) {
             return { success: false, error: error.message }
         }
     }
-    ';
+    ';'
     async preview(dataType, options = {}) { const backupId = options.backupId;''
         const backupData = await this.recoveryManager.backup.getBackup(backupId');
-        ';
+        ';'
         return { ''
             strategy: 'backup',
             dataType,
@@ -765,7 +765,7 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
     }'
     '';
     async execute(options = { )') {'
-        try {''
+        try {'
             const dataType = options.dataType || 'playerData';
             const data = await this.recoveryManager.storage.load(dataType);'
             '';
@@ -775,10 +775,10 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
             
             // 破損していない部分を特定して保持
             const recoveredData = this.extractValidParts(dataType, data);
-            ';
-            // 復旧されたデータを保存''
+            ;
+            // 復旧されたデータを保存
             await this.recoveryManager.storage.save(dataType, recoveredData');
-            ';
+            ';'
             return { success: true,''
                 message: 'Partial recovery completed', };
                 recoveredFields: Object.keys(recoveredData); }
@@ -788,10 +788,10 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
             return { success: false, error: error.message }
         }
     }
-    ';
+    ';'
     async preview(dataType, options = {}) { const data = await this.recoveryManager.storage.load(dataType);''
         const validParts = this.identifyValidParts(dataType, data');
-        ';
+        ';'
         return { ''
             strategy: 'partial',
             dataType,';
@@ -850,7 +850,7 @@ class PartialRecoveryStrategy { constructor(recoveryManager) {
     }
     
     isValidValue(key, value) {
-    ';
+    ';'
         '';
         switch (key') {''
             case 'currentHP':'';
@@ -882,11 +882,11 @@ class FactoryResetStrategy { constructor(recoveryManager) {
     }'
     '';
     async execute(options = { )') {'
-        try {''
+        try {'
             const dataType = options.dataType || 'all';'
             '';
             if(dataType === 'all') {
-                // すべてのデータを初期化'
+                // すべてのデータを初期化
                 const keys = await this.recoveryManager.storage.keys();''
                 for (const key of keys') {''
                     if (!key.startsWith('backup_'') && key !== 'backupHistory') {
@@ -897,7 +897,7 @@ class FactoryResetStrategy { constructor(recoveryManager) {
             } else {  ' }'
                 await this.recoveryManager.storage.remove(dataType'); }
             }
-            ';
+            ';'
             return { success: true,''
                 message: 'Factory reset completed',' };'
                 resetDataTypes: dataType === 'all' ? 'all' : [dataType] }
@@ -933,9 +933,9 @@ class ManualRecoveryStrategy { constructor(recoveryManager) {
                 return { success: false, error: 'Data type and recovery data required' }
             }
             ';
-            // 手動で提供されたデータを保存''
+            // 手動で提供されたデータを保存
             await this.recoveryManager.storage.save(dataType, recoveryData');
-            ';
+            ';'
             return { success: true,''
                 message: 'Manual recovery completed', };
                 dataType }

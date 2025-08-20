@@ -11,12 +11,12 @@ import { TestDataVisualizer } from './test-result-visualizer/TestDataVisualizer.
 interface TestSupportTools { // Define the interface based on usage }
 }
 
-interface TestResult { id: string,'
+interface TestResult { id: string,
     name: string,'';
     status: 'passed' | 'failed' | 'skipped',
     duration: number,
     error?: Error;
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface TestSummary { total: number,
@@ -24,7 +24,7 @@ interface TestSummary { total: number,
     failed: number,
     skipped: number,
     duration: number,
-    coverage?: number; }
+    coverage?: number }
 }
 
 export class TestResultVisualizer {
@@ -41,9 +41,9 @@ export class TestResultVisualizer {
         
         // Initialize sub-components using dependency injection
         this.chartGenerator = new TestChartGenerator(this);
-        this.dataVisualizer = new TestDataVisualizer(this);'
+        this.dataVisualizer = new TestDataVisualizer(this);
         '';
-        this.initialize('');
+        this.initialize();
     }
     }'
         console.log('[TestResultVisualizer] Initialized with Main Controller Pattern'); }
@@ -53,7 +53,7 @@ export class TestResultVisualizer {
         this.setupEventHandlers(); }
     }'
 '';
-    private createContainer('')';
+    private createContainer()';
         this.container = document.createElement('div'');''
         this.container.id = 'test-result-visualizer';''
         this.container.className = 'test-result-visualizer';
@@ -202,7 +202,7 @@ export class TestResultVisualizer {
         clearBtn?.addEventListener('click', () => this.clearHistory()');''
         closeBtn?.addEventListener('click', () => this.hide()');
 ';
-        // Tab buttons''
+        // Tab buttons
         const tabButtons = this.container.querySelectorAll('.tab-button');''
         tabButtons.forEach(button => { ');''
             button.addEventListener('click', (e') => {'
@@ -224,7 +224,7 @@ export class TestResultVisualizer {
             this.refreshResults(); }
         }
     }
-';
+';'
     public hide(): void { ''
         if(this.container') {'
             '';
@@ -239,11 +239,11 @@ export class TestResultVisualizer {
         } else { this.show(); }
         }
     }
-';
+';'
     private switchTab(tabName: string): void { ''
         if (!this.container') return;
 ';
-        // Update tab buttons''
+        // Update tab buttons
         const tabButtons = this.container.querySelectorAll('.tab-button');''
         tabButtons.forEach(btn => { ');''
             btn.classList.remove('active');''
@@ -260,7 +260,7 @@ export class TestResultVisualizer {
             (activeButton as HTMLElement').style.color = 'white'; }
         }
 ';
-        // Update tab panels''
+        // Update tab panels
         const tabPanels = this.container.querySelectorAll('.tab-panel');'
         tabPanels.forEach(panel => {  )' }'
             (panel as HTMLElement').style.display = 'none'; }
@@ -268,7 +268,7 @@ export class TestResultVisualizer {
 
         const activePanel = this.container.querySelector(`#tab-${tabName}`);
         if(activePanel) {'
-            ';
+            ';'
         }'
             (activePanel as HTMLElement').style.display = 'block'; }
         }
@@ -276,7 +276,7 @@ export class TestResultVisualizer {
         // Load tab-specific content
         this.loadTabContent(tabName);
     }
-';
+';'
     private loadTabContent(tabName: string): void { ''
         switch(tabName') {'
             '';
@@ -287,7 +287,7 @@ export class TestResultVisualizer {
             case 'trends':'';
                 this.loadTrendsContent(''';
             case 'details':'';
-                this.loadDetailsContent('')';
+                this.loadDetailsContent()';
             case 'coverage':);
                 this.loadCoverageContent();
         }
@@ -315,9 +315,9 @@ export class TestResultVisualizer {
         this.dataVisualizer.renderCoverageDetails(); }
     }
 
-    private refreshResults(): void { // Get latest test results from testSupportTools'
-        // this.currentTestResults = this.testSupportTools.getLatestResults();''
-        this.updateSummaryDisplay('')';
+    private refreshResults(): void { // Get latest test results from testSupportTools
+        // this.currentTestResults = this.testSupportTools.getLatestResults();
+        this.updateSummaryDisplay()';
         this.loadTabContent('summary'); }
     }
 
@@ -325,7 +325,7 @@ export class TestResultVisualizer {
 '';
         const summary = this.calculateSummary(this.currentTestResults');
         ';
-        // Update summary metrics''
+        // Update summary metrics
         this.updateElement('total-tests', summary.total.toString()');''
         this.updateElement('passed-tests', summary.passed.toString()');''
         this.updateElement('failed-tests', summary.failed.toString()');''
@@ -352,7 +352,7 @@ export class TestResultVisualizer {
         const data = {
             results: this.currentTestResults,
             summary: this.calculateSummary(this.currentTestResults),
-            exportedAt: new Date().toISOString(); }
+            exportedAt: new Date().toISOString() }
         };'
 '';
         const blob = new Blob([JSON.stringify(data, null, 2')], { type: 'application/json' });''
@@ -372,7 +372,7 @@ export class TestResultVisualizer {
     public updateResults(results: TestResult[]): void { this.currentTestResults = results;
         if(this.isVisible) {'
             '';
-            this.updateSummaryDisplay('');
+            this.updateSummaryDisplay();
         }'
             this.loadTabContent('summary'); }
         }

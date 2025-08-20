@@ -5,11 +5,11 @@
 
 // 型定義
 interface ScaledPosition { x: number,
-    y: number; }
+    y: number }
 }
 
 interface ScaledSize { width: number,
-    height: number; }
+    height: number }
 }
 
 interface CanvasInfo { scaleFactor?: number;
@@ -20,12 +20,12 @@ interface CanvasInfo { scaleFactor?: number;
     actualHeight: number,
     pixelRatio: number,
     baseWidth: number,
-    baseHeight: number; }
+    baseHeight: number }
 }
 
 interface ResponsiveCanvasManager { getScaledCoordinates?(baseX: number, baseY: number): ScaledPosition,
     getScaledSize?(baseWidth: number, baseHeight: number): ScaledSize,
-    getCanvasInfo?(): CanvasInfo;
+    getCanvasInfo?(): CanvasInfo
     }
 }
 
@@ -104,7 +104,7 @@ export class ScaledCoordinateManager {
             }
             
             return result;
-        } catch (error) { console.warn('ScaledCoordinateManager: Position conversion failed, using base coordinates', error); }
+        } catch (error) { console.warn('ScaledCoordinateManager: Position conversion failed, using base coordinates', error) }
             return { x: baseX, y: baseY }
         }
     }
@@ -140,10 +140,10 @@ export class ScaledCoordinateManager {
             // 結果をキャッシュに保存（サイズ制限を考慮）
             if (this.sizeCache.size < this.cacheMaxSize) { this.sizeCache.set(cacheKey, result); }
             }
-            ';
+            ';'
             return result;''
-        } catch (error') { ''
-            console.warn('ScaledCoordinateManager: Size conversion failed, using base size', error); }
+        } catch (error) { ''
+            console.warn('ScaledCoordinateManager: Size conversion failed, using base size', error) }
             return { width: baseWidth, height: baseHeight }
         }
     }
@@ -167,9 +167,9 @@ export class ScaledCoordinateManager {
                 actualHeight: this.baseHeight,
                 pixelRatio: window.devicePixelRatio || 1,
                 baseWidth: this.baseWidth, };
-                baseHeight: this.baseHeight }'
+                baseHeight: this.baseHeight }
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledCoordinateManager: Canvas info retrieval failed, using defaults', error);
             return { scaleFactor: 1,
                 displayWidth: this.baseWidth,
@@ -189,10 +189,10 @@ export class ScaledCoordinateManager {
      * @param scaledY - スケーリング済みY座標
      * @returns ベース座標
      */
-    getBasePosition(scaledX: number, scaledY: number): ScaledPosition { try {'
+    getBasePosition(scaledX: number, scaledY: number): ScaledPosition { try {
             const scaleFactor = this.getScaleFactor();''
             if(scaleFactor === 0') {'
-                ';
+                ';'
             }'
                 console.warn('ScaledCoordinateManager: Scale factor is 0, using original coordinates'); }
                 return { x: scaledX, y: scaledY }
@@ -201,8 +201,8 @@ export class ScaledCoordinateManager {
             return { x: scaledX / scaleFactor, };
                 y: scaledY / scaleFactor }'
             };''
-        } catch (error') { ''
-            console.warn('ScaledCoordinateManager: Base position conversion failed, using original coordinates', error); }
+        } catch (error) { ''
+            console.warn('ScaledCoordinateManager: Base position conversion failed, using original coordinates', error) }
             return { x: scaledX, y: scaledY }
         }
     }
@@ -248,11 +248,11 @@ export class ScaledCoordinateManager {
      * 現在のスケール係数を取得
      * @returns スケール係数
      */'
-    getScaleFactor(): number { try {''
+    getScaleFactor(): number { try {'
             const canvasInfo = this.getCanvasInfo(''';
             // ResponsiveCanvasManagerは'scale'プロパティを使用するので、それを優先)'
             return canvasInfo.scale || canvasInfo.scaleFactor || 1;') }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledCoordinateManager: Scale factor retrieval failed, using 1.0', error);
             return 1; }
         }
@@ -279,24 +279,24 @@ export class ScaledCoordinateManager {
             
             // 登録されたコールバックを実行
             this.scaleChangeCallbacks.forEach(callback => { )
-                try {); }'
+                try {); }
                     callback();' }'
-                } catch (error') { ''
-                    console.warn('ScaledCoordinateManager: Scale change callback failed', error); }
+                } catch (error) { ''
+                    console.warn('ScaledCoordinateManager: Scale change callback failed', error) }
                 }'
             });''
-        } catch (error') { ''
-            console.warn('ScaledCoordinateManager: Scale update failed', error); }
+        } catch (error) { ''
+            console.warn('ScaledCoordinateManager: Scale update failed', error) }
         }
     }
     
     /**
      * イベントリスナーをセットアップ
      */'
-    private setupEventListeners(): void { // ResponsiveCanvasManagerのイベントにフック''
-        if(this.responsiveCanvasManager') {
-            // ResponsiveCanvasManagerが既にリサイズイベントを処理しているので'
-            // ここでは追加のイベント処理のみ行う'
+    private setupEventListeners(): void { // ResponsiveCanvasManagerのイベントにフック
+        if(this.responsiveCanvasManager) {
+            // ResponsiveCanvasManagerが既にリサイズイベントを処理しているので
+            // ここでは追加のイベント処理のみ行う
         }'
             window.addEventListener('orientationchange', () => {  }
                 setTimeout(() => this.updateScale(), 100); }

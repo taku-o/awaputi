@@ -1,10 +1,10 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 // インターフェース定義
-interface RTLLanguageInfo { name: string,'
+interface RTLLanguageInfo { name: string,
     script: string,'';
     direction: 'rtl' | 'ltr',
-    family: string; }
+    family: string }
 }
 
 interface BidiControlCharacters { LRM: string;  // Left-to-Right Mark
@@ -25,9 +25,9 @@ interface RTLSettings { fontFamily: string,
     lineHeight: string,
     textAlign: string,
     wordSpacing: string,
-    letterSpacing: string; }
+    letterSpacing: string }
 }
-';
+';'
 interface TextDirectionResult { ''
     direction: 'rtl' | 'ltr',
     confidence: number,
@@ -35,7 +35,7 @@ interface TextDirectionResult { ''
         rtlChars: number,
         ltrChars: number,
         neutralChars: number,
-        rtlRatio?: number; }
+        rtlRatio?: number }
     };
 }
 
@@ -45,7 +45,7 @@ interface BidiTextSegment { text: string,'
 }
 
 interface BidiTextResult { text: string,
-    hasRTL: boolean; }
+    hasRTL: boolean }
 }
 
 interface RTLCSSOptions { includeLayout?: boolean;
@@ -65,13 +65,13 @@ interface RTLLanguageData { code: string,
     name: string,';
     script: string,'';
     direction: 'rtl' | 'ltr',
-    family: string; }
+    family: string }
 }
 
 interface RTLStats { supportedRTLLanguages: number,
     rtlCharacterRanges: number,
     bidiControlChars: number,
-    languageFamilies: string[]; }
+    languageFamilies: string[] }
 }
 
 /**
@@ -83,28 +83,28 @@ export class RTLLanguageDetector {
     private bidiControlChars: BidiControlCharacters;
     private rtlSettings: Map<string, RTLSettings>;'
 '';
-    constructor('')';
+    constructor()';
             ['ar', { name: 'Arabic', script: 'Arab', direction: 'rtl', family: 'arabic' ')],' }'
             ['ar-SA', { name: 'Arabic (Saudi Arabia')', script: 'Arab', direction: 'rtl', family: 'arabic' }],''
             ['ar-EG', { name: 'Arabic (Egypt')', script: 'Arab', direction: 'rtl', family: 'arabic' }],''
             ['ar-AE', { name: 'Arabic (UAE')', script: 'Arab', direction: 'rtl', family: 'arabic' }],''
             ['ar-MA', { name: 'Arabic (Morocco')', script: 'Arab', direction: 'rtl', family: 'arabic' }],
             ';
-            // ヘブライ語''
+            // ヘブライ語
             ['he', { name: 'Hebrew', script: 'Hebr', direction: 'rtl', family: 'hebrew' }],''
             ['he-IL', { name: 'Hebrew (Israel')', script: 'Hebr', direction: 'rtl', family: 'hebrew' }],
             ';
-            // ペルシャ語（ファルシ語）''
+            // ペルシャ語（ファルシ語）
             ['fa', { name: 'Persian', script: 'Arab', direction: 'rtl', family: 'persian' }],''
             ['fa-IR', { name: 'Persian (Iran')', script: 'Arab', direction: 'rtl', family: 'persian' }],''
             ['fa-AF', { name: 'Persian (Afghanistan')', script: 'Arab', direction: 'rtl', family: 'persian' }],
             ';
-            // ウルドゥー語''
+            // ウルドゥー語
             ['ur', { name: 'Urdu', script: 'Arab', direction: 'rtl', family: 'urdu' }],''
             ['ur-PK', { name: 'Urdu (Pakistan')', script: 'Arab', direction: 'rtl', family: 'urdu' }],''
             ['ur-IN', { name: 'Urdu (India')', script: 'Arab', direction: 'rtl', family: 'urdu' }],
             ';
-            // その他のRTL言語''
+            // その他のRTL言語
             ['ku', { name: 'Kurdish', script: 'Arab', direction: 'rtl', family: 'kurdish' }],''
             ['ps', { name: 'Pashto', script: 'Arab', direction: 'rtl', family: 'pashto' }],''
             ['sd', { name: 'Sindhi', script: 'Arab', direction: 'rtl', family: 'sindhi' }],''
@@ -127,22 +127,22 @@ export class RTLLanguageDetector {
             [0xFE70, 0xFEFF]  // Arabic Presentation Forms-B;
         ];
         
-        // 双方向テキスト制御文字'
+        // 双方向テキスト制御文字
         this.bidiControlChars = { ''
-            LRM: '\u200E', // Left-to-Right Mark'';
-            RLM: '\u200F', // Right-to-Left Mark'';
-            LRE: '\u202A', // Left-to-Right Embedding'';
-            RLE: '\u202B', // Right-to-Left Embedding'';
-            PDF: '\u202C', // Pop Directional Formatting'';
-            LRO: '\u202D', // Left-to-Right Override'';
-            RLO: '\u202E', // Right-to-Left Override'';
-            LRI: '\u2066', // Left-to-Right Isolate'';
-            RLI: '\u2067', // Right-to-Left Isolate'';
-            FSI: '\u2068', // First Strong Isolate'';
+            LRM: '\u200E', // Left-to-Right Mark;
+            RLM: '\u200F', // Right-to-Left Mark;
+            LRE: '\u202A', // Left-to-Right Embedding;
+            RLE: '\u202B', // Right-to-Left Embedding;
+            PDF: '\u202C', // Pop Directional Formatting;
+            LRO: '\u202D', // Left-to-Right Override;
+            RLO: '\u202E', // Right-to-Left Override;
+            LRI: '\u2066', // Left-to-Right Isolate;
+            RLI: '\u2067', // Right-to-Left Isolate;
+            FSI: '\u2068', // First Strong Isolate;
             PDI: '\u2069'  // Pop Directional Isolate }
         },
         
-        // RTL言語特有の設定'
+        // RTL言語特有の設定
         this.rtlSettings = new Map(['';
             ['ar', { ''
                 fontFamily: 'Arial, "Arabic UI", "Tahoma", sans-serif','';
@@ -178,12 +178,12 @@ export class RTLLanguageDetector {
      */
     isRTLLanguage(language: string): boolean { if (!language) return false;
         ';
-        // 完全一致チェック''
+        // 完全一致チェック
         if (this.rtlLanguages.has(language)') {
             return true; }
         }
         ';
-        // 言語コードの主要部分をチェック（例: ar-SA → ar）''
+        // 言語コードの主要部分をチェック（例: ar-SA → ar）
         const primaryLanguage = language.split('-')[0];
         return this.rtlLanguages.has(primaryLanguage);
     }
@@ -239,15 +239,15 @@ export class RTLLanguageDetector {
             else { neutralCharCount++; }
             }
         }
-        ';
+        ';'
         const totalDirectionalChars = rtlCharCount + ltrCharCount;''
         if (totalDirectionalChars === 0') { ' }'
             return { direction: 'ltr', confidence: 0, details: { rtlChars: 0, ltrChars: 0, neutralChars: neutralCharCount } }
         }
-        ';
+        ';'
         const rtlRatio = rtlCharCount / totalDirectionalChars;''
         const confidence = Math.abs(rtlRatio - 0.5') * 2; // 0.5から離れるほど信頼度が高い
-        ';
+        ';'
         return { ''
             direction: rtlRatio > 0.5 ? 'rtl' : 'ltr',
             confidence: confidence,
@@ -297,8 +297,7 @@ export class RTLLanguageDetector {
             includeLayout = true,
             includeTypography = true,
             includeSpacing = true }
-            customProperties = {}
-        } = options;'
+            customProperties = {} = options;'
         '';
         if (!this.isRTLLanguage(language)') { ' }'
             return { css: '', isRTL: false }
@@ -307,7 +306,7 @@ export class RTLLanguageDetector {
         const settings = this.rtlSettings.get(language.split('-')[0]') || this.rtlSettings.get('ar');
         const css: string[] = [],
         ';
-        // 基本方向設定''
+        // 基本方向設定
         if(includeLayout') {'
             '';
             css.push('direction: rtl;'');'
@@ -317,10 +316,10 @@ export class RTLLanguageDetector {
         
         // タイポグラフィ設定
         if(includeTypography && settings) {
-            css.push(`font-family: ${settings.fontFamily);`);'
+            css.push(`font-family: ${settings.fontFamily);`);
             css.push(`font-size: ${settings.fontSize);`);''
             css.push(`line-height: ${settings.lineHeight);`');'
-            ';
+            ';'
         }'
             if (settings.wordSpacing !== 'normal') {' }'
                 css.push(`word-spacing: ${settings.wordSpacing);`'});'
@@ -332,7 +331,7 @@ export class RTLLanguageDetector {
             }
         }
         ';
-        // 間隔設定''
+        // 間隔設定
         if(includeSpacing') {'
             '';
             css.push('margin-right: 0;'');''
@@ -343,10 +342,10 @@ export class RTLLanguageDetector {
         }
         
         // カスタムプロパティ
-        Object.entries(customProperties).forEach(([property, value]) => {  }'
+        Object.entries(customProperties).forEach(([property, value]) => {  }
             css.push(`${property}: ${value};`);''
         }');
-        ';
+        ';'
         return { ''
             css: css.join(' '),
             isRTL: true,
@@ -363,18 +362,18 @@ export class RTLLanguageDetector {
             
         }
             return false; }
-        }
-        ';
-        try { ''
+        }'
+        ';'
+        try {'
             const rtlCSS = this.generateRTLCSS(language, options');
             ';
-            // CSS プロパティを適用''
+            // CSS プロパティを適用
             element.style.direction = 'rtl';''
             element.style.textAlign = 'right';''
             element.setAttribute('dir', 'rtl'');''
             element.setAttribute('lang', language);
             ';
-            // 追加のスタイル適用''
+            // 追加のスタイル適用
             if(rtlCSS.settings') {
                 element.style.fontFamily = rtlCSS.settings.fontFamily;
                 element.style.fontSize = rtlCSS.settings.fontSize;
@@ -382,16 +381,16 @@ export class RTLLanguageDetector {
                 element.style.lineHeight = rtlCSS.settings.lineHeight; }
             }
             ';
-            // RTLクラスを追加''
+            // RTLクラスを追加
             element.classList.add('rtl-content'');''
             element.classList.add(`rtl-${language.split('-'})[0]}`);
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'RTL_APPLICATION_ERROR', {)
                 element: element.tagName,);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -405,7 +404,7 @@ export class RTLLanguageDetector {
             return; }
         }
         ';
-        // 入力方向設定''
+        // 入力方向設定
         inputElement.style.direction = 'rtl';''
         inputElement.style.textAlign = 'right';''
         inputElement.setAttribute('dir', 'rtl');
@@ -414,8 +413,8 @@ export class RTLLanguageDetector {
         const handleInput = (event: Event): void => {  const target = event.target as HTMLInputElement | HTMLTextAreaElement;
             const text = target.value;
             const direction = this.detectTextDirection(text);
-            ';
-            // 動的方向調整''
+            ;
+            // 動的方向調整
             if(direction.confidence > 0.7') {
                 
             }'
@@ -427,7 +426,7 @@ export class RTLLanguageDetector {
         inputElement.addEventListener('input', handleInput');''
         inputElement.addEventListener('paste', handleInput);
         ';
-        // クリーンアップ関数を返す''
+        // クリーンアップ関数を返す
         return (') => {  ''
             inputElement.removeEventListener('input', handleInput');' }'
             inputElement.removeEventListener('paste', handleInput); }
@@ -471,11 +470,11 @@ export class RTLLanguageDetector {
     
     /**
      * RTL言語情報を取得
-     */'
+     */
     getRTLLanguageInfo(language: string): RTLLanguageInfo | null { const info = this.rtlLanguages.get(language);''
         if (info') return info;
         ';
-        // 主要言語コードで再検索''
+        // 主要言語コードで再検索
         const primaryLanguage = language.split('-')[0];
         return this.rtlLanguages.get(primaryLanguage) || null; }
     }
@@ -524,6 +523,6 @@ let rtlLanguageDetectorInstance: RTLLanguageDetector | null = null,
 
 /**
  * RTLLanguageDetectorのシングルトンインスタンスを取得
- */'
+ */
 export function getRTLLanguageDetector(): RTLLanguageDetector { if (!rtlLanguageDetectorInstance) {''
         rtlLanguageDetectorInstance = new RTLLanguageDetector(' })

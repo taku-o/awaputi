@@ -8,20 +8,20 @@ import path from 'path';
 
 // Type definitions
 interface ClassDefinition { name: string,
-    file: string,';
+    file: string,
     line: number,'';
     type: 'export class' | 'class',
-    relativeFile: string; }
+    relativeFile: string }
 }
 
 interface DuplicateFile { fileName: string,
     count: number,
-    paths: string[]; }
+    paths: string[] }
 }
 
 interface DuplicateClass { className: string,
     count: number,
-    locations: ClassDefinition[];
+    locations: ClassDefinition[]
     }
 }
 
@@ -30,7 +30,7 @@ interface ImpactAnalysis { scope: string,'
     maintenance_difficulty: 'low' | 'medium' | 'high','';
     testing_complexity?: 'low' | 'medium' | 'high'; }
 }
-';
+';'
 interface Conflict { ''
     type: 'class' | 'file',
     name: string,
@@ -39,7 +39,7 @@ interface Conflict { ''
     paths?: string[];''
     priority: 'low' | 'medium' | 'high','';
     riskLevel: 'low' | 'medium' | 'high',
-    impactAnalysis: ImpactAnalysis;
+    impactAnalysis: ImpactAnalysis
     }
 }
 
@@ -55,7 +55,7 @@ interface ConflictReport { analysis_date: string,
     },
     conflicts: Conflict[],
     summary: { most_critical: string[],
-        recommendations: string[]; }
+        recommendations: string[] }
     };
 }
 
@@ -82,7 +82,7 @@ export class DuplicationAnalyzer {
     async analyzeFiles(): Promise<void> { this.files = await this.scanDirectory(this.sourceDir);'
         '';
         for(const filePath of this.files') {'
-            try {''
+            try {'
                 const content = await fs.readFile(filePath, 'utf8');
                 const classes = this.extractClassDefinitions(filePath, content);
         }
@@ -131,7 +131,7 @@ export class DuplicationAnalyzer {
                 file: filePath,')';
                 line: lineNumber'),'';
                 type: match[0].includes('export'') ? 'export class' : 'class',
-                relativeFile: path.relative(process.cwd(), filePath); }
+                relativeFile: path.relative(process.cwd(), filePath) }
             });
         }
 
@@ -202,7 +202,7 @@ export class DuplicationAnalyzer {
      */
     identifyConflicts(): Conflict[] { const conflicts: Conflict[] = [],
 ';
-        // クラス名重複の競合分析''
+        // クラス名重複の競合分析
         for(const duplicate of this.duplicateClasses') {'
             const conflict: Conflict = {''
                 type: 'class',
@@ -217,7 +217,7 @@ export class DuplicationAnalyzer {
             conflicts.push(conflict);
         }
 ';
-        // ファイル名重複の競合分析''
+        // ファイル名重複の競合分析
         for(const duplicate of this.duplicateFiles') {'
             const conflict: Conflict = {''
                 type: 'file',
@@ -228,7 +228,7 @@ export class DuplicationAnalyzer {
                 riskLevel: 'low',';
                 impactAnalysis: {''
                     scope: 'file_organization','';
-                    potential_conflicts: 'import_confusion',';
+                    potential_conflicts: 'import_confusion','
         }'
                     maintenance_difficulty: 'medium' }
                 }
@@ -251,13 +251,13 @@ export class DuplicationAnalyzer {
     /**
      * リスクレベルを計算'
      */''
-    private calculateRiskLevel(duplicate: DuplicateClass'): 'low' | 'medium' | 'high' { // 重要なシステムクラスの判定''
+    private calculateRiskLevel(duplicate: DuplicateClass'): 'low' | 'medium' | 'high' { // 重要なシステムクラスの判定
         const criticalClasses = ['DialogManager', 'PerformanceMonitor', 'ErrorReporter'];''
         if (criticalClasses.includes(duplicate.className)') {''
             return 'high'; }
         }
         ';
-        // UIコンポーネントは中リスク''
+        // UIコンポーネントは中リスク
         const uiClasses = ['BaseDialog', 'ChartRenderer'];''
         if (uiClasses.includes(duplicate.className)') { ''
             return 'medium'; }
@@ -272,7 +272,7 @@ export class DuplicationAnalyzer {
     private analyzeImpact(duplicate: DuplicateClass): ImpactAnalysis { const locations = duplicate.locations;
         const directories = locations.map(loc => path.dirname(loc.file);
         const uniqueDirs = [...new Set(directories)];
-';
+';'
         return { ''
             scope: this.determineScope(uniqueDirs'),'';
             potential_conflicts: 'namespace_collision','';
@@ -300,7 +300,7 @@ export class DuplicationAnalyzer {
      * 競合レポートを生成
      */
     generateConflictReport(): ConflictReport { const conflicts = this.identifyConflicts();
-        ';
+        ';'
         return { ''
             analysis_date: new Date().toISOString(').split('T'')[0],'';
             project: 'awaputi',

@@ -12,6 +12,6 @@ export class MockDataManager {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

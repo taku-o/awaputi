@@ -12,14 +12,14 @@ interface RenderingConfig { enabled: boolean,
     viewportCullingEnabled: boolean,
     layerCachingEnabled: boolean,
     targetFPS: number,
-    maxRenderTime: number,';
+    maxRenderTime: number,
     performanceThreshold: number,'';
     optimizationLevel: 'conservative' | 'balanced' | 'aggressive',
     adaptiveOptimization: boolean,
     debugMode: boolean,
     showDirtyRegions: boolean,
     showCulledObjects: boolean,
-    showLayerComposition: boolean; }
+    showLayerComposition: boolean }
 }
 
 interface RenderObject { x: number,
@@ -37,7 +37,7 @@ interface Camera { x: number,
     y: number,
     zoom: number,
     offsetX: number,
-    offsetY: number; }
+    offsetY: number }
 }
 
 interface RenderResult { success: boolean,
@@ -53,18 +53,18 @@ interface DirtyRegion { x: number,
     y: number,
     width: number,
     height: number,
-    full?: boolean; }
+    full?: boolean }
 }
 
 interface LayerRenderResult { layersRendered: number,
     objectsRendered: number,
-    dirtyRegionsProcessed: number; }
+    dirtyRegionsProcessed: number }
 }
 
 interface ObjectBounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface Layer { name: string,
@@ -106,7 +106,7 @@ interface SpatialOptimizer { enabled: boolean,
     },
     occlusionCulling: { enabled: boolean,
         occluders: Set<any>,
-        occlusionQueries: Map<string, any>; }
+        occlusionQueries: Map<string, any> }
     };
 }
 
@@ -123,7 +123,7 @@ interface OptimizerStats { dirtyRegions: any,
     performance: any,
     pipeline: {
         stageTimings: Record<string, number>;
-        currentStage: string; }
+        currentStage: string }
     };
 }
 
@@ -156,7 +156,7 @@ export class AdvancedRenderingOptimizer {
     // Spatial optimization
     private spatialOptimizer: SpatialOptimizer;
     constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
-    ';
+    ';'
         this.errorHandler = getErrorHandler();''
         this.configManager = getConfigurationManager(''';
             optimizationLevel: 'balanced', // 'conservative', 'balanced', 'aggressive';
@@ -173,7 +173,7 @@ export class AdvancedRenderingOptimizer {
         })
         // Initialize component managers
         this.dirtyRegionManager = new BasicDirtyRegionManager();
-        this.viewportCuller = new BasicViewportCuller(canvas);'
+        this.viewportCuller = new BasicViewportCuller(canvas);
         this.layerManager = new BasicLayerManager(canvas);''
         this.performanceMonitor = new RenderingPerformanceMonitor(''';
                 'prepare', 'cull', 'sort', 'batch', 'render', 'compose'';
@@ -182,7 +182,7 @@ export class AdvancedRenderingOptimizer {
             
             // Batching system
             batching: { enabled: true,
-                batchSize: 100,);
+                batchSize: 100);
                 currentBatch: []);
                 batchBuffer: new Map<string, any>(),
                 textureAtlasing: true }
@@ -203,11 +203,11 @@ export class AdvancedRenderingOptimizer {
         },
         
         // Spatial optimization
-        this.spatialOptimizer = { enabled: true,'
+        this.spatialOptimizer = { enabled: true,
             quadTree: null,'';
             spatialHash: new Map<string, any>('),
             
-            // Spatial partitioning'
+            // Spatial partitioning
             partitioning: {''
                 method: 'quadtree', // 'grid', 'quadtree', 'octree';
                 maxDepth: 8,
@@ -218,11 +218,11 @@ export class AdvancedRenderingOptimizer {
             // Occlusion culling
             occlusionCulling: { enabled: false, // Advanced feature
                 occluders: new Set<any>(),
-                occlusionQueries: new Map<string, any>(); }
+                occlusionQueries: new Map<string, any>() }
             }
-        };'
+        };
         '';
-        this.initializeRenderingOptimizer('')';
+        this.initializeRenderingOptimizer()';
         console.log('[AdvancedRenderingOptimizer] Advanced rendering optimization system initialized');
     }
     
@@ -243,12 +243,12 @@ export class AdvancedRenderingOptimizer {
     }
     
     /**
-     * Initialize spatial data structures'
+     * Initialize spatial data structures
      */''
-    private initializeSpatialStructures('')';
+    private initializeSpatialStructures()';
         if(this.spatialOptimizer.partitioning.method === 'quadtree') {'
             '';
-            this.initializeQuadTree('');
+            this.initializeQuadTree();
         }'
         console.log('[AdvancedRenderingOptimizer] Spatial structures initialized'); }
     }
@@ -261,7 +261,7 @@ export class AdvancedRenderingOptimizer {
         
         this.spatialOptimizer.quadTree = new QuadTree({
             x: viewport.x - margin,
-            y: viewport.y - margin,);
+            y: viewport.y - margin);
             width: viewport.width + margin * 2);
             height: viewport.height + margin * 2;
         ), this.spatialOptimizer.partitioning.maxObjectsPerNode, this.spatialOptimizer.partitioning.maxDepth); }
@@ -277,27 +277,27 @@ export class AdvancedRenderingOptimizer {
             // 1. Prepare rendering data')'
             const preparedObjects = this.prepareRenderingData(renderObjects, camera');
             ';
-            // 2. Perform viewport culling''
+            // 2. Perform viewport culling
             this.renderingPipeline.currentStage = 'cull';''
             const visibleObjects = this.viewportCuller.performViewportCulling(preparedObjects');
             ';
-            // 3. Calculate dirty regions''
+            // 3. Calculate dirty regions
             this.renderingPipeline.currentStage = 'sort';''
             const dirtyRegions = this.dirtyRegionManager.calculateDirtyRegions(visibleObjects');
             ';
-            // 4. Optimize layer composition''
+            // 4. Optimize layer composition
             this.renderingPipeline.currentStage = 'batch';''
             const layerBatches = this.layerManager.optimizeLayerComposition(visibleObjects');
             ';
-            // 5. Execute optimized rendering''
+            // 5. Execute optimized rendering
             this.renderingPipeline.currentStage = 'render';''
             const renderResult = this.executeOptimizedRendering(layerBatches, dirtyRegions');
             ';
-            // 6. Final composition''
+            // 6. Final composition
             this.renderingPipeline.currentStage = 'compose';
             this.performFinalComposition(renderResult);
             
-            // Update performance metrics'
+            // Update performance metrics
             const totalTime = performance.now() - startTime;''
             this.performanceMonitor.updateRenderingPerformance(totalTime, renderObjects.length');'
             '';
@@ -311,7 +311,7 @@ export class AdvancedRenderingOptimizer {
                 performanceGain: this.performanceMonitor.calculatePerformanceGain(); }
             };'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'ADVANCED_RENDERING_ERROR', {')'
                 context: 'AdvancedRenderingOptimizer.optimizeRendering'),' }'
             }');'
@@ -354,7 +354,7 @@ export class AdvancedRenderingOptimizer {
                 return (a.layer || 0) - (b.layer || 0); }
             }
             if (a.zIndex !== b.zIndex) { return (a.zIndex || 0) - (b.zIndex || 0); }
-            }'
+            }
             return (a.renderPriority || 0) - (b.renderPriority || 0);''
         }');'
         '';
@@ -380,7 +380,7 @@ export class AdvancedRenderingOptimizer {
     }
     
     /**
-     * Get material priority for batching'
+     * Get material priority for batching
      */''
     private getMaterialPriority(material?: string'): number { const priorities: Record<string, number> = {''
             'default': 0,'';
@@ -413,9 +413,9 @@ export class AdvancedRenderingOptimizer {
             
             this.renderLayer(layer, objects, dirtyRegions);
         }
-        ';
-        // Apply post-processing effects''
-        this.applyPostProcessingEffects('')';
+        ;
+        // Apply post-processing effects
+        this.applyPostProcessingEffects()';
         this.renderingPipeline.stageTimings.set('render', performance.now() - stageStart);
         
         return { layersRendered: Array.from(layerBatches.keys().length,
@@ -497,8 +497,8 @@ export class AdvancedRenderingOptimizer {
      * Perform final composition
      */
     private performFinalComposition(renderResult: LayerRenderResult): void { const stageStart = performance.now();
-        ';
-        // Apply any final composition effects''
+        ;
+        // Apply any final composition effects
         // (This is where post-processing would happen')'
         ;''
         this.renderingPipeline.stageTimings.set('compose', performance.now() - stageStart); }
@@ -516,7 +516,7 @@ export class AdvancedRenderingOptimizer {
     }
     
     /**
-     * Debug render dirty regions'
+     * Debug render dirty regions
      */''
     private debugRenderDirtyRegions(''';
         this.ctx.strokeStyle = 'red';
@@ -529,14 +529,14 @@ export class AdvancedRenderingOptimizer {
     /**
      * Setup event listeners'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         if (typeof ResizeObserver !== 'undefined') { const resizeObserver = new ResizeObserver(() => {  }
                 this.handleCanvasResize(); }'
             });''
             resizeObserver.observe(this.canvas');
         }
         ';
-        // Handle visibility change''
+        // Handle visibility change
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.pauseOptimizations(); }
             } else { this.resumeOptimizations(); }
@@ -645,11 +645,11 @@ export class AdvancedRenderingOptimizer {
 // グローバルインスタンス（遅延初期化）
 let _advancedRenderingOptimizer: AdvancedRenderingOptimizer | null = null,
 
-export function getAdvancedRenderingOptimizer(canvas?: HTMLCanvasElement, context?: CanvasRenderingContext2D): AdvancedRenderingOptimizer | null { if (!_advancedRenderingOptimizer && canvas && context) {'
-        try {''
+export function getAdvancedRenderingOptimizer(canvas?: HTMLCanvasElement, context?: CanvasRenderingContext2D): AdvancedRenderingOptimizer | null { if (!_advancedRenderingOptimizer && canvas && context) {
+        try {'
             _advancedRenderingOptimizer = new AdvancedRenderingOptimizer(canvas, context');''
             console.log('[AdvancedRenderingOptimizer] グローバルインスタンスを作成しました');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[AdvancedRenderingOptimizer] インスタンス作成エラー:', error);
             // フォールバック: 基本的なインスタンスを作成
             _advancedRenderingOptimizer = new AdvancedRenderingOptimizer(canvas, context); }
@@ -665,14 +665,14 @@ export function reinitializeAdvancedRenderingOptimizer(canvas: HTMLCanvasElement
         if(_advancedRenderingOptimizer) {
             
         }
-            _advancedRenderingOptimizer.destroy(); }'
+            _advancedRenderingOptimizer.destroy(); }
         }''
         _advancedRenderingOptimizer = new AdvancedRenderingOptimizer(canvas, context');''
         console.log('[AdvancedRenderingOptimizer] 再初期化完了');''
-    } catch (error') { ''
+    } catch (error) { ''
         console.error('[AdvancedRenderingOptimizer] 再初期化エラー:', error'); }
     }
 }
 ';
-// 後方互換性のため''
+// 後方互換性のため
 export const advancedRenderingOptimizer = getAdvancedRenderingOptimizer;

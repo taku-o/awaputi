@@ -2,37 +2,37 @@ import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 // 型定義
 export interface ValidationRule { id: string,
-    name: string,';
+    name: string,
     description: string,'';
     severity: 'error' | 'warning',';
     enabled: boolean,'';
-    check: (key: string, translation: string, sourceLanguage: string, targetLanguage: string') => Promise<ValidationResult> | ValidationResult; };
+    check: (key: string, translation: string, sourceLanguage: string, targetLanguage: string') => Promise<ValidationResult> | ValidationResult };
 }
 export interface ValidationResult { passed: boolean,
     message: string,
-    suggestion?: string; };
+    suggestion?: string };
 }
 export interface QualityThresholds { excellent: number,
     good: number,
     acceptable: number,
-    poor: number; };
+    poor: number };
 }
 export interface QualityStats { totalChecks: number,
     passedChecks: number,
     failedChecks: number,
-    warnings: number; };
+    warnings: number };
 }
 export interface ValidationIssue { rule: string,
     name: string,
     message: string,';
     suggestion?: string;''
-    severity: 'error' | 'warning'; };
+    severity: 'error' | 'warning' };
 }
 export interface ItemValidationResult { key: string,
     translation: string,
     errors: ValidationIssue[],
     warnings: ValidationIssue[],
-    passed: ValidationIssue[];
+    passed: ValidationIssue[]
     };
 }
 export interface TranslationValidationResults { language: string,
@@ -44,7 +44,7 @@ export interface TranslationValidationResults { language: string,
     warnings: ValidationIssue[],
     passed: ValidationIssue[],
     qualityScore: number,
-    qualityGrade: string; };
+    qualityGrade: string };
 }
 export interface QualityReport { summary: {
         language: string,
@@ -53,23 +53,23 @@ export interface QualityReport { summary: {
         qualityScore: number,
         qualityGrade: string,
         errorCount: number,
-        warningCount: number ;
+        warningCount: number 
 }
     },
     details: { errors: ValidationIssue[],
         warnings: ValidationIssue[],
-        passed: ValidationIssue[] ;
+        passed: ValidationIssue[] 
 }
     },
     recommendations: Recommendation[],
     timestamp: string;
 }
-';
+';'
 export interface Recommendation { ''
     priority: 'high' | 'medium' | 'low',
     type: string,
     message: string,
-    action: string; };
+    action: string };
 }
 export interface QualitySettings { qualityThresholds?: Partial<QualityThresholds>;
     rules?: Array<{;
@@ -80,10 +80,10 @@ export interface QualitySettings { qualityThresholds?: Partial<QualityThresholds
 }
 
 export interface CulturalRules { inappropriate: string[],
-    suggestions: string[]; };
+    suggestions: string[] };
 }
 export interface LengthTolerance { min: number,
-    max: number; };
+    max: number };
 }
 /**
  * 翻訳品質管理クラス - 翻訳データの品質検証とレポート生成
@@ -98,22 +98,22 @@ export class QualityChecker {
         this.qualityThresholds = {
             excellent: 90,
             good: 75,
-            acceptable: 60;
+            acceptable: 60
 };
 }
             poor: 40 ;
 }
         },
         ';
-        // デフォルト検証ルールを初期化''
-        this.initializeDefaultRules('')';
+        // デフォルト検証ルールを初期化
+        this.initializeDefaultRules()';
         console.log('QualityChecker initialized');
     }
     
     /**
      * デフォルト検証ルールを初期化'
      */''
-    private initializeDefaultRules('')';
+    private initializeDefaultRules()';
         this.addValidationRule('parameterConsistency', { ')'
             name: 'パラメータ整合性チェック''),'';
             description: '翻訳文中のパラメータ（{param')）が原文と一致するかチェック',''
@@ -121,7 +121,7 @@ export class QualityChecker {
             check: this.checkParameterConsistency.bind(this),' }'
         }');
         ';
-        // 翻訳長制限チェック''
+        // 翻訳長制限チェック
         this.addValidationRule('lengthValidation', { ''
             name: '翻訳長制限チェック',')';
             description: '翻訳文の長さが適切な範囲内かチェック',')';
@@ -129,7 +129,7 @@ export class QualityChecker {
             check: this.checkLengthValidation.bind(this),' }'
         }');
         ';
-        // フォーマット検証''
+        // フォーマット検証
         this.addValidationRule('formatValidation', { ''
             name: 'フォーマット検証',')';
             description: 'HTML要素、マークダウン記法等のフォーマットが保持されているかチェック',')';
@@ -137,7 +137,7 @@ export class QualityChecker {
             check: this.checkFormatValidation.bind(this),' }'
         }');
         ';
-        // 文化的適切性チェック''
+        // 文化的適切性チェック
         this.addValidationRule('culturalAppropriateness', { ''
             name: '文化的適切性チェック',')';
             description: '文化的に不適切な表現や誤解を招く表現がないかチェック',')';
@@ -145,7 +145,7 @@ export class QualityChecker {
             check: this.checkCulturalAppropriateness.bind(this),' }'
         }');
         ';
-        // 空文字・未翻訳チェック''
+        // 空文字・未翻訳チェック
         this.addValidationRule('completenessCheck', { ''
             name: '翻訳完成度チェック',')';
             description: '空文字や未翻訳の項目がないかチェック',')';
@@ -153,7 +153,7 @@ export class QualityChecker {
             check: this.checkCompleteness.bind(this),' }'
         }');
         ';
-        // 一貫性チェック''
+        // 一貫性チェック
         this.addValidationRule('consistencyCheck', { ''
             name: '翻訳一貫性チェック',')';
             description: '同じ原文に対する翻訳が一貫しているかチェック',')';
@@ -167,7 +167,7 @@ export class QualityChecker {
      */''
     addValidationRule(id: string, rule: Omit<ValidationRule, 'id' | 'enabled'>'): void { ''
         if(!rule.name || !rule.check || typeof rule.check !== 'function'') {'
-            ';
+            ';'
         }'
             throw new Error('Invalid validation rule format''); };
 }
@@ -176,7 +176,7 @@ export class QualityChecker {
             description: rule.description || '',')';
             severity: rule.severity || 'warning');
             enabled: true,);
-            check: rule.check); }
+            check: rule.check) }
         });
         
         console.log(`Validation rule added: ${id)`});
@@ -230,14 +230,13 @@ export class QualityChecker {
             this.updateQualityStats(validationResults);
             
             return validationResults;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'QUALITY_CHECKER_ERROR', {')'
                 operation: 'validateTranslations',);
-                targetLanguage: targetLanguage); }
+                targetLanguage: targetLanguage) }
             });
-            throw error;
-        };
+            throw error; }
 }
     /**
      * 個別翻訳項目を検証
@@ -247,7 +246,7 @@ export class QualityChecker {
             translation: translation,
             errors: [],
             warnings: [],
-            passed: [] ;
+            passed: [] 
 }
         },
         
@@ -260,13 +259,13 @@ export class QualityChecker {
                     
                     if (ruleResult.passed) {
                         result.passed.push({)
-                            rule: ruleId);
+                            rule: ruleId)
             }
-                            name: rule.name, }'
+                            name: rule.name, }
                             message: ruleResult.message || `✓ ${rule.name}に合格`,')'
                             severity: rule.severity)'),
                     } else {  const issue: ValidationIssue = {
-                            rule: ruleId;
+                            rule: ruleId
 }
                             name: rule.name, }'
                             message: ruleResult.message || `${rule.name}に問題があります`,''
@@ -275,17 +274,17 @@ export class QualityChecker {
                         },'
                         '';
                         if (rule.severity === 'error') { result.errors.push(issue); }
-                        } else { result.warnings.push(issue); };
+                        } else { result.warnings.push(issue); }
 }
                     } catch (ruleError) {
                     console.warn(`Error in validation rule ${ruleId}:`, ruleError);
-                    result.warnings.push({ rule: ruleId,)'
+                    result.warnings.push({ rule: ruleId)'
                         name: rule.name),' }'
                         message: `検証ルール実行エラー: ${(ruleError as Error'}).message}`,''
                         severity: 'warning';
                     }),'
                 }''
-            } catch (error') { result.errors.push({')'
+            } catch (error) { result.errors.push({')'
                 rule: 'system',')';
                 name: 'システムエラー'),' }'
                 message: `検証中にエラーが発生しました: ${(error as Error'}).message}`,''
@@ -300,7 +299,7 @@ export class QualityChecker {
      * パラメータ整合性チェック
      */
     private checkParameterConsistency(key: string, translation: string, sourceLanguage: string, targetLanguage: string): ValidationResult { // 基準となる日本語翻訳を取得（実際の実装では翻訳データベースから取得）
-        const sourceText = this.getSourceText(key, sourceLanguage);'
+        const sourceText = this.getSourceText(key, sourceLanguage);
         '';
         if(!sourceText') {'
             return { passed: false,'
@@ -314,16 +313,16 @@ export class QualityChecker {
         // パラメータを抽出（{param}, {{param}}, %sなど）
         const sourceParams = this.extractParameters(sourceText);
         const translationParams = this.extractParameters(translation);
-        ';
-        // パラメータ数の比較''
+        ;
+        // パラメータ数の比較
         if (sourceParams.length !== translationParams.length') { return {  };
                 passed: false, }'
                 message: `パラメータ数が一致しません（元: ${sourceParams.length}, 翻訳: ${translationParams.length}）`,''
                 suggestion: `パラメータ: ${sourceParams.join(', '})} を含めてください`
             };
         }
-        
-        // パラメータ名の比較'
+        '
+        // パラメータ名の比較
         const missingParams = sourceParams.filter(param => !translationParams.includes(param);''
         if (missingParams.length > 0') { return {  };'
                 passed: false,' }'
@@ -331,7 +330,7 @@ export class QualityChecker {
                 suggestion: `パラメータ ${missingParams.join(', ''})} を翻訳に含めてください`
             };
         }
-        ';
+        ';'
         return { passed: true,' };'
             message: 'パラメータが正しく含まれています' ;
 }
@@ -349,11 +348,11 @@ export class QualityChecker {
         const sourceLength = sourceText.length;
         const translationLength = translation.length;
         
-        // 言語別の長さ許容率'
+        // 言語別の長さ許容率
         const lengthTolerances: Record<string, LengthTolerance> = { ' }'
-            'en': { min: 0.7, max: 1.5 },    // 英語: 70%-150%''
-            'zh-CN': { min: 0.5, max: 1.2 }, // 中国語簡体字: 50%-120%''
-            'zh-TW': { min: 0.5, max: 1.2 }, // 中国語繁体字: 50%-120%''
+            'en': { min: 0.7, max: 1.5 },    // 英語: 70%-150%
+            'zh-CN': { min: 0.5, max: 1.2 }, // 中国語簡体字: 50%-120%
+            'zh-TW': { min: 0.5, max: 1.2 }, // 中国語繁体字: 50%-120%
             'ko': { min: 0.8, max: 1.4 }     // 韓国語: 80%-140%
         };
         
@@ -361,7 +360,7 @@ export class QualityChecker {
         const minLength = sourceLength * tolerance.min;
         const maxLength = sourceLength * tolerance.max;
         
-        if (translationLength < minLength) { return {  };'
+        if (translationLength < minLength) { return {  };
                 passed: false,' }'
                 message: `翻訳が短すぎます（${translationLength}文字, 最小: ${Math.round(minLength'})}文字）`,''
                 suggestion: '翻訳が完全か確認してください';
@@ -390,7 +389,7 @@ export class QualityChecker {
 }
         // HTMLタグの検証
         const sourceHtmlTags = this.extractHtmlTags(sourceText);
-        const translationHtmlTags = this.extractHtmlTags(translation);'
+        const translationHtmlTags = this.extractHtmlTags(translation);
         '';
         if (sourceHtmlTags.length !== translationHtmlTags.length') { return { passed: false,' };'
                 message: 'HTMLタグの数が一致しません',' }'
@@ -401,14 +400,14 @@ export class QualityChecker {
         // マークダウン記法の検証
         const sourceMarkdown = this.extractMarkdownElements(sourceText);
         const translationMarkdown = this.extractMarkdownElements(translation);
-        ';
+        ';'
         const markdownMismatch = sourceMarkdown.filter(md => !translationMarkdown.includes(md);''
         if (markdownMismatch.length > 0') { return { passed: false,' };'
                 message: 'マークダウン記法が不足しています',' }'
                 suggestion: `必要な記法: ${markdownMismatch.join(', ''})}`
             };
         }
-        ';
+        ';'
         return { passed: true,' };'
             message: 'フォーマットが正しく保持されています' ;
 }
@@ -418,7 +417,7 @@ export class QualityChecker {
     /**
      * 文化的適切性チェック'
      */''
-    private checkCulturalAppropriateness(key: string, translation: string, sourceLanguage: string, targetLanguage: string'): ValidationResult { // 言語別の文化的配慮事項'
+    private checkCulturalAppropriateness(key: string, translation: string, sourceLanguage: string, targetLanguage: string'): ValidationResult { // 言語別の文化的配慮事項
         const culturalRules: Record<string, CulturalRules> = {''
             'en': {''
                 inappropriate: ['jap', 'oriental'],'';
@@ -437,7 +436,7 @@ export class QualityChecker {
                 suggestions: ['Use respectful language', 'Avoid discriminatory terms'] };
 }
         };
-        ';
+        ';'
         const rules = culturalRules[targetLanguage];''
         if (!rules') { ' }'
             return { passed: true, message: '文化的配慮の検証ルールが定義されていません' };
@@ -453,7 +452,7 @@ export class QualityChecker {
                 suggestion: rules.suggestions.join('. ''),
             };
         }
-        ';
+        ';'
         return { passed: true,' };'
             message: '文化的に適切な表現です' ;
 }
@@ -472,7 +471,7 @@ export class QualityChecker {
             },
         }
         ';
-        // 未翻訳マーカーのチェック''
+        // 未翻訳マーカーのチェック
         const untranslatedMarkers = ['TODO', 'FIXME', '[未翻訳]', '[TODO]', 'NOT_TRANSLATED'];
         const hasUntranslatedMarker = untranslatedMarkers.some(marker => );
             translation.includes(marker);'
@@ -486,7 +485,7 @@ export class QualityChecker {
             },
         }
         
-        // 原文がそのまま含まれているかチェック（簡単な判定）'
+        // 原文がそのまま含まれているかチェック（簡単な判定）
         const sourceText = this.getSourceText(key, sourceLanguage);''
         if (sourceText && sourceText.length > 10 && translation.includes(sourceText)') { return { passed: false,''
                 message: '原文がそのまま含まれている可能性があります',' };'
@@ -494,7 +493,7 @@ export class QualityChecker {
 }
             },
         }
-        ';
+        ';'
         return { passed: true,' };'
             message: '翻訳が完成しています' ;
 }
@@ -506,8 +505,8 @@ export class QualityChecker {
      */''
     private checkConsistency(key: string, translation: string, sourceLanguage: string, targetLanguage: string'): ValidationResult { // 実際の実装では翻訳メモリやデータベースを使用して一貫性をチェック
         // ここでは基本的な一貫性チェックのみ実装
-        ';
-        // 大文字小文字の一貫性（英語の場合）''
+        ;
+        // 大文字小文字の一貫性（英語の場合）
         if(targetLanguage === 'en') {
             const sentences = translation.split(/[.!? ]+/);
             let inconsistentCapitalization = false;
@@ -522,7 +521,7 @@ export class QualityChecker {
             '';
             if(inconsistentCapitalization') {
                 return { : undefined'
-                    passed: false,';
+                    passed: false,'
             }'
                     message: '文の始まりの大文字化が一貫していません',' };'
                     suggestion: '各文の始まりを大文字にしてください' ;
@@ -532,11 +531,11 @@ export class QualityChecker {
 }
         // 句読点の一貫性チェック
         const sourceText = this.getSourceText(key, sourceLanguage);
-        if(sourceText) {'
+        if(sourceText) {
             const sourcePunctuation = this.extractPunctuation(sourceText);''
             const translationPunctuation = this.extractPunctuation(translation');
             ';
-            // 基本的な句読点の一貫性チェック''
+            // 基本的な句読点の一貫性チェック
             if (sourcePunctuation.endsWith('.'') && !translationPunctuation.endsWith('.')') {'
                 return { passed: false,'
         }'
@@ -546,7 +545,7 @@ export class QualityChecker {
                 },
             };
 }
-        ';
+        ';'
         return { passed: true,' };'
             message: '翻訳の一貫性に問題ありません' ;
 }
@@ -563,7 +562,7 @@ export class QualityChecker {
             const fullKey = prefix ? `${prefix}.${key}` : key;'
             '';
             if(typeof value === 'object' && value !== null && !Array.isArray(value) {'
-                ';
+                ';'
             }'
                 Object.assign(flattened, this.flattenTranslations(value, fullKey)');' }'
             } else if (typeof value === 'string') { flattened[fullKey] = value; };
@@ -626,7 +625,7 @@ export class QualityChecker {
     }
     
     /**
-     * 句読点を抽出'
+     * 句読点を抽出
      */''
     private extractPunctuation(text: string'): string { ''
         return text.replace(/[^.!? 。！？]/g, ''); };
@@ -635,7 +634,7 @@ export class QualityChecker {
      * 元の翻訳文を取得（モック実装）'
      */ : undefined''
     private getSourceText(key: string, sourceLanguage: string'): string | null { // 実際の実装では翻訳データベースやファイルから取得
-        // ここではモック実装'
+        // ここではモック実装
         const mockTranslations: Record<string, string> = {''
             'common.ok': 'OK','';
             'common.cancel': 'キャンセル','';
@@ -667,7 +666,7 @@ export class QualityChecker {
 }
     /**
      * 品質グレードを取得
-     */'
+     */
     private getQualityGrade(score: number): string { ''
         if (score >= this.qualityThresholds.excellent') return 'excellent';''
         if (score >= this.qualityThresholds.good') return 'good';''
@@ -686,7 +685,7 @@ export class QualityChecker {
         
         }
             this.qualityStats.passedChecks++; }
-        } else { this.qualityStats.failedChecks++; };
+        } else { this.qualityStats.failedChecks++; }
 }
         this.qualityStats.warnings += results.warnings.length;
     }
@@ -702,12 +701,12 @@ export class QualityChecker {
                 qualityScore: results.qualityScore,
                 qualityGrade: results.qualityGrade,
                 errorCount: results.errors.length,
-                warningCount: results.warnings.length ;
+                warningCount: results.warnings.length 
 }
             },
             details: { errors: results.errors,
                 warnings: results.warnings,
-                passed: results.passed ;
+                passed: results.passed 
 }
             },
             recommendations: this.generateRecommendations(results),
@@ -724,7 +723,7 @@ export class QualityChecker {
         '';
         if(results.errors.length > 0') {'
             recommendations.push({''
-                priority: 'high',';
+                priority: 'high','
         }'
                 type: 'error_fix', })'
                 message: `${results.errors.length}個のエラーを修正してください`,')'
@@ -733,7 +732,7 @@ export class QualityChecker {
         '';
         if(results.warnings.length > 5') {'
             recommendations.push({''
-                priority: 'medium',';
+                priority: 'medium','
         }'
                 type: 'warning_review', })'
                 message: `警告が多すぎます（${results.warnings.length}個）`,')'
@@ -744,7 +743,7 @@ export class QualityChecker {
             recommendations.push({''
                 priority: 'high','';
                 type: 'quality_improvement',')';
-                message: '品質スコアが低すぎます',');
+                message: '品質スコアが低すぎます',')
         }'
                 action: '翻訳品質の見直しが必要です'); };
 }
@@ -791,6 +790,6 @@ let qualityCheckerInstance: QualityChecker | null = null,
 
 /**
  * QualityCheckerのシングルトンインスタンスを取得
- */'
+ */
 export function getQualityChecker(): QualityChecker { if (!qualityCheckerInstance) {''
         qualityCheckerInstance = new QualityChecker(' })

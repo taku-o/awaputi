@@ -6,7 +6,7 @@ import type { ShareContentGenerator } from '../core/ShareContentGenerator';''
 import type { LocalizationManager } from '../core/LocalizationManager';
 // Mock interfaces
 interface MockLocalizationManager extends Partial<LocalizationManager> { getCurrentLanguage: jest.Mock,
-    translate: jest.Mock; }
+    translate: jest.Mock }
 }
 interface ShareData { type?: string;
     score?: number;
@@ -37,21 +37,21 @@ interface GeneratedMessage { message: string,
         isCustom?: boolean;
         isRare?: boolean;
         optimized?: boolean; }
-    };'
+    };
 }''
 describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareContentGenerator,
     let mockLocalizationManager: MockLocalizationManager,
     beforeEach(async () => {
-        // LocalizationManagerのモック'
+        // LocalizationManagerのモック
         mockLocalizationManager = {''
             getCurrentLanguage: jest.fn(').mockReturnValue('ja'),' }'
             translate: jest.fn().mockImplementation((key: string) => key'); }
         };
         ';
-        // Navigatorのモック''
+        // Navigatorのモック
         Object.defineProperty(navigator, 'language', { writable: true,')'
             value: 'ja-JP')'),';
-        // Windowのモック''
+        // Windowのモック
         Object.defineProperty(window, 'location', {'
             value: {''
                 origin: 'https://test.example.com','';
@@ -73,7 +73,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         test('テンプレートが適切に初期化される', () => {  expect(shareContentGenerator.templates.score).toBeDefined();
             expect(shareContentGenerator.templates.achievement).toBeDefined();
             expect(shareContentGenerator.templates.challenge).toBeDefined();'
-            // 日本語テンプレートの確認''
+            // 日本語テンプレートの確認
             expect(shareContentGenerator.templates.score.twitter.ja').toContain('{score')');' }'
             expect(shareContentGenerator.templates.achievement.facebook.ja').toContain('実績');' }'
         }');''
@@ -219,7 +219,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             const result = shareContentGenerator.optimizeForPlatform(longMessage, 'twitter');
             expect(result.length).toBeLessThanOrEqual(280);
             // ハッシュタグ数制限の確認
-            const hashtags = result.match(/#\w+/g) || []; }'
+            const hashtags = result.match(/#\w+/g) || []; }
             expect(hashtags.length).toBeLessThanOrEqual(2);' }'
         }');''
         test('Facebook向け最適化が動作する', (') => {  ''
@@ -247,7 +247,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
         test('現在の言語が取得される', () => {  const language = shareContentGenerator.getCurrentLanguage();''
             expect(language').toBe('ja');
             // LocalizationManagerが無い場合のフォールバック
-            shareContentGenerator.localizationManager = null as any;'
+            shareContentGenerator.localizationManager = null as any;
             const fallbackLanguage = shareContentGenerator.getCurrentLanguage();' }'
             expect(fallbackLanguage').toBe('ja'); // navigator.languageからの抽出' }'
         }');''
@@ -275,7 +275,7 @@ describe('ShareContentGenerator', () => {  let shareContentGenerator: ShareConte
             
             const stats = shareContentGenerator.getStats();
             expect(stats.generated).toBe(2);
-            expect(stats.errors).toBe(1);'
+            expect(stats.errors).toBe(1);
             expect(stats.successRate).toBe(50);''
         }');''
         test('統計がリセットされる', () => {  shareContentGenerator.stats.generated = 10;

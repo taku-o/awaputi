@@ -17,7 +17,7 @@ interface PlayerData { playerName: string,
             autoShare: boolean,
             shareHighScores: boolean,
             shareAchievements: boolean,
-            privacy: string; }
+            privacy: string }
         };
     };
 }
@@ -25,7 +25,7 @@ interface MockPlayerData { data: PlayerData,
     getPlayerName(): string;
     getTotalAP(): number;
     getHighScore(stage: string): number, }
-    getAllHighScores(): { [key: string]: number }'
+    getAllHighScores(): { [key: string]: number }
     updateHighScore(stage: string, score: number): boolean,'';
     getSettings('): PlayerData['settings'];''
     updateSettings(settings: Partial<PlayerData['settings']>): void,
@@ -36,7 +36,7 @@ interface SessionData { score: number,
     playTime: number,
     combo: number,
     accuracy: number,
-    timestamp?: number; }
+    timestamp?: number }
 }
 interface StatisticsData {
     sessions: Array<SessionData & { timestamp: number }>,
@@ -50,7 +50,7 @@ interface StatisticsData {
     stageStats: { [key: string]: {
             played: number,
             won: number,
-            averageScore: number; }
+            averageScore: number }
         };
     };
 }
@@ -81,7 +81,7 @@ interface AchievementProgress { total: number,
     categories: {
         [key: string]: {
             total: number,
-            unlocked: number; }
+            unlocked: number }
         };
     };
 }
@@ -97,7 +97,7 @@ interface SocialSystemsAchievementManager { achievements: Map<string, Achievemen
 interface GameData { score: number,
     combo: number,
     accuracy: number,
-    stage: string; }
+    stage: string }
 }
 interface SocialSharingManager { shareContentGenerator: {
         generateScoreMessage(shareData: any, platform: string): Promise<string>,
@@ -118,33 +118,33 @@ interface SocialSharingManager { shareContentGenerator: {
 interface ShareSuggestion { shouldSuggestShare: boolean,
     reason: string,
     shareData: {
-        score: number; }
+        score: number }
     };
 }
 interface AchievementShareData { type: string,
-    shouldHighlight: boolean; }
+    shouldHighlight: boolean }
 }
 interface ProgressVisualization { overall: {
         percentage: number }
     },
     categories: { [key: string]: {
-            unlocked: number; }
+            unlocked: number }
         };
     };
     rarityBreakdown: { rare: {
-            unlocked: number; }
+            unlocked: number }
         };
     };
 }
 interface MockLocalStorage { getItem: jest.Mock<(key: string) => string | null>,
     setItem: jest.Mock<(key: string, value: string) => void>;
     removeItem: jest.Mock<(key: string) => void>,
-    clear: jest.Mock<() => void>; }
+    clear: jest.Mock<() => void> }
 }
 interface MockNavigator { share: jest.Mock<() => Promise<void>>,
-    userAgent: string; }
+    userAgent: string }
 }
-// 既存システムのモック'
+// 既存システムのモック
 class MockPlayerData implements MockPlayerData { data: PlayerData,''
     constructor(''';
             playerName: 'TestPlayer',
@@ -184,7 +184,7 @@ class MockPlayerData implements MockPlayerData { data: PlayerData,''
     }''
     updateSettings(settings: Partial<PlayerData['settings']>): void { Object.assign(this.data.settings, settings); }'
     }''
-    save('')';
+    save()';
         localStorage.setItem('playerData', JSON.stringify(this.data);
     }
 }
@@ -226,7 +226,7 @@ class SocialSystemsMockStatisticsManager implements SocialSystemsStatisticsManag
     }
     recordGameSession(sessionData: SessionData): void { this.stats.sessions.push({)
             ...sessionData);
-        timestamp: Date.now(); }
+        timestamp: Date.now() }
         });
         this.updateAggregateStats(sessionData);
     }
@@ -273,7 +273,7 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
                 name: 'パーフェクト','';
                 description: '100%の精度でラウンドを完了',
                 unlocked: false,
-                progress: 0,);
+                progress: 0);
                 target: 1)';
                 rare: true,']';
                 category: 'skill' }]
@@ -308,7 +308,7 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
     }''
     checkAndUnlockAchievements(gameData: GameData'): Achievement[] { const newlyUnlocked: Achievement[] = [],
         ';
-        // コンボマスター実績のチェック''
+        // コンボマスター実績のチェック
         const comboMaster = this.achievements.get('combo_master');
         if(comboMaster && !comboMaster.unlocked && gameData.combo >= 30) {
             comboMaster.unlocked = true;'
@@ -316,7 +316,7 @@ class SocialSystemsMockAchievementManager implements SocialSystemsAchievementMan
         }'
             newlyUnlocked.push(comboMaster'); }
         }'
-        // パーフェクト実績のチェック''
+        // パーフェクト実績のチェック
         const perfectAccuracy = this.achievements.get('perfect_accuracy');
         if(perfectAccuracy && !perfectAccuracy.unlocked && gameData.accuracy >= 1.0) {
             perfectAccuracy.unlocked = true;'
@@ -335,9 +335,9 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
     beforeAll(async () => {
         // DOM環境をセットアップ
         (global as any).document = document;
-        (global as any).window = window;'
+        (global as any).window = window;
         (global as any).navigator = {''
-            share: jest.fn('') }'
+            share: jest.fn() }'
             userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64') AppleWebKit/537.36' }
         } as MockNavigator;
     });
@@ -348,11 +348,11 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
         // LocalStorageモック
         (global as any).localStorage = {
             getItem: jest.fn(),
-            setItem: jest.fn(),';
+            setItem: jest.fn(),
             removeItem: jest.fn(),' }'
         clear: jest.fn()'); }
         } as MockLocalStorage;'
-        // SocialSharingManagerを動的にインポート''
+        // SocialSharingManagerを動的にインポート
         const module = await import('../../core/SocialSharingManager.js'');
         SocialSharingManagerClass = module.SocialSharingManager;'
         const mockGameEngine = { ''
@@ -361,7 +361,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             getCurrentScene: () => null;
         },
         socialManager = new SocialSharingManagerClass(;
-            mockGameEngine,);
+            mockGameEngine);
             mockStatisticsManager);
             mockAchievementManager;
         ) as SocialSharingManager;
@@ -405,7 +405,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
     describe('StatisticsManager連携', (') => {  ''
         test('統計データがリーダーボードに正しく統合される', async (') => {
             // 新しいゲームセッションを記録
-            const sessionData: SessionData = {'
+            const sessionData: SessionData = {
                 score: 42000,'';
                 stage: 'normal',
                 playTime: 300000,
@@ -414,13 +414,13 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             },
             mockStatisticsManager.recordGameSession(sessionData);
             // リーダーボードに反映されることを確認
-            await socialManager.leaderboardManager.updateScore({ score: sessionData.score,)
+            await socialManager.leaderboardManager.updateScore({ score: sessionData.score)
                 stage: sessionData.stage),
                 timestamp: Date.now(),
                 metadata: {
                     combo: sessionData.combo,
                     accuracy: sessionData.accuracy,
-                    playTime: sessionData.playTime }'
+                    playTime: sessionData.playTime }
                 }';'
             }');''
             const rankings = await socialManager.leaderboardManager.getRanking('weekly');
@@ -438,9 +438,9 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             expect(shareSuggestion.reason').toBe('personal_best_combo');''
         }');''
         test('長期プレイ統計の共有コンテンツ生成', async () => {  const milestoneData = {
-                totalGames: 200, // マイルストーン達成';
+                totalGames: 200, // マイルストーン達成;
                 totalPlayTime: 200000,'';
-        averageScore: mockStatisticsManager.getAverageScore('')';
+        averageScore: mockStatisticsManager.getAverageScore()';
                 .generateMilestoneMessage(milestoneData, 'twitter');''
             expect(milestoneMessage').toContain('200');''
             expect(milestoneMessage').toContain('ゲーム'); }'
@@ -451,7 +451,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
         test('実績解除時の自動共有提案', async (') => {
             const gameData: GameData = {
                 score: 35000,
-                combo: 30, // コンボマスター実績を解除';
+                combo: 30, // コンボマスター実績を解除;
                 accuracy: 0.88,' }'
                 stage: 'normal' }
             },
@@ -460,20 +460,20 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             expect(unlockedAchievements.length).toBe(1);''
             expect(unlockedAchievements[0].id').toBe('combo_master');
             // ソーシャル機能との連携確認
-            const shareData = await socialManager.generateAchievementShareData();'
+            const shareData = await socialManager.generateAchievementShareData();
                 unlockedAchievements[0]);''
             expect(shareData.type').toBe('achievement');'
-            expect(shareData.shouldHighlight).toBe(true); // rare achievement''
+            expect(shareData.shouldHighlight).toBe(true); // rare achievement
         }');''
         test('実績進捗の視覚化データ生成', async () => {  const progressData = await socialManager.getAchievementProgressVisualization();
             expect(progressData.overall.percentage).toBe(50); // 2/4 achievements unlocked
             expect(progressData.categories.score.unlocked).toBe(1);
-            expect(progressData.categories.skill.unlocked).toBe(0); }'
+            expect(progressData.categories.skill.unlocked).toBe(0); }
             expect(progressData.rarityBreakdown.rare.unlocked).toBe(1);' }'
         }');''
         test('実績コンテンツの共有メッセージ生成', async (') => {  ''
             const achievement = mockAchievementManager.achievements.get('high_scorer'')!;
-            ';
+            ';'
             const shareMessage = await socialManager.shareContentGenerator';'
                 .generateAchievementMessage(achievement, 'facebook');''
             expect(shareMessage').toContain('ハイスコアラー');''
@@ -489,7 +489,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
                 playTime: 420000,
                 combo: 22,';
                 accuracy: 0.91,'';
-        timestamp: Date.now('')';
+        timestamp: Date.now()';
             const isNewHighScore = mockPlayerData.updateHighScore('hard', gameResult.score);
             // StatisticsManagerへのセッション記録
             mockStatisticsManager.recordGameSession(gameResult);
@@ -502,13 +502,13 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
                 stage: gameResult.stage,
                 timestamp: gameResult.timestamp,
                 metadata: {
-                    combo: gameResult.combo,);
+                    combo: gameResult.combo);
                     accuracy: gameResult.accuracy) }
                     playTime: gameResult.playTime) }
                 }),
-            // 各システムのデータ整合性確認;'
+            // 各システムのデータ整合性確認;
             expect(isNewHighScore).toBe(true);''
-            expect(mockStatisticsManager.getTotalGames().toBe(151'); // +1'
+            expect(mockStatisticsManager.getTotalGames().toBe(151'); // +1
             '';
             const leaderboard = await socialManager.leaderboardManager.getRanking('allTime');'
             expect(leaderboard[0].score).toBe(55000);''
@@ -516,7 +516,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
         test('データ競合時の解決メカニズム', async (') => {  // 同時に複数のスコア更新を試行
             const scores = [48000, 52000, 49000];
             const updatePromises = scores.map(score => ;
-                socialManager.leaderboardManager.updateScore({)'
+                socialManager.leaderboardManager.updateScore({)
                     score,')';
                     stage: 'normal'), }
                     timestamp: Date.now(), }
@@ -526,7 +526,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             await Promise.all(updatePromises');''
             const rankings = await socialManager.leaderboardManager.getRanking('allTime');
             // 最高スコアが正しく保持されていることを確認
-            expect(rankings[0].score).toBe(52000);'
+            expect(rankings[0].score).toBe(52000);
             expect(rankings.length).toBe(3);''
         }');'
     }''
@@ -534,7 +534,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
         test('大量の統計データ処理パフォーマンス', async () => {
             const startTime = performance.now();
             // 100セッション分のデータを処理
-            for(let i = 0; i < 100; i++) {'
+            for(let i = 0; i < 100; i++) {
                 const sessionData: SessionData = {''
                     score: Math.floor(Math.random() * 100000'),'';
                     stage: ['normal', 'hard', 'expert'][i % 3],
@@ -544,7 +544,7 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
         accuracy: Math.random(); }
                 };
                 mockStatisticsManager.recordGameSession(sessionData);
-                await socialManager.leaderboardManager.updateScore({ score: sessionData.score,)
+                await socialManager.leaderboardManager.updateScore({ score: sessionData.score)
                     stage: sessionData.stage),
                     timestamp: Date.now() - (i * 1000),
                     metadata: sessionData }
@@ -552,12 +552,12 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             };
             const endTime = performance.now();
             const processingTime = endTime - startTime;
-            // 処理時間が1秒以内であることを確認'
+            // 処理時間が1秒以内であることを確認
             expect(processingTime).toBeLessThan(1000);''
         }');''
         test('メモリリーク防止の確認', async () => {  const initialMemory = (performance as any).memory ? (performance as any).memory.usedJSHeapSize: 0,
             // 多数の共有操作を実行
-            for(let i = 0; i < 50; i++) {'
+            for(let i = 0; i < 50; i++) {
                 await socialManager.shareContentGenerator.generateScoreMessage({);'
             }'
                     score: Math.floor(Math.random() * 100000'),' }'
@@ -572,6 +572,6 @@ describe('SocialSystemsIntegration', () => {  let mockPlayerData: MockPlayerData
             const memoryIncrease = finalMemory - initialMemory;
             // メモリ増加量が5MB以下であることを確認
             expect(memoryIncrease).toBeLessThan(5 * 1024 * 1024);
-        });'
+        });
     }''
 }');

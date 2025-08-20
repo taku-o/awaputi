@@ -25,13 +25,13 @@ export interface GameEngine { performanceOptimizer?: PerformanceOptimizer;
     refreshAllScenes?(): void; }
 }
 
-export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void; }
+export interface ErrorHandler { handleError(error: Error, errorType: string, context?: any): void }
 }
 
 export interface PerformanceOptimizer { setQualityLevel(quality: QualityLevel): void, }
 }
 
-export interface ConfigurationManager { notifyUpdate(key: string, value: any): void; }
+export interface ConfigurationManager { notifyUpdate(key: string, value: any): void }
 }
 
 export interface LocalizationManager { setLanguage(language: string): Promise<void>,
@@ -51,16 +51,16 @@ export interface ParticleManager { updateConfiguration(config: ParticleConfigura
 }
 
 export interface AnimationSettings { enabled: boolean,
-    globalSpeed: number; }
+    globalSpeed: number }
 }
 
-export interface ParticleConfiguration { quality: number; }
+export interface ParticleConfiguration { quality: number }
 }
 
 export interface UpdateStats { qualityChanges: number,
     languageChanges: number,
     scaleChanges: number,
-    lastUpdateTime: number; }
+    lastUpdateTime: number }
 }
 
 export interface UICurrentSettings { quality: QualityLevel,
@@ -68,15 +68,15 @@ export interface UICurrentSettings { quality: QualityLevel,
     uiScale: number,
     highContrast: boolean,
     reducedMotion: boolean,
-    largeText: boolean; }
+    largeText: boolean }
 }
 
 export interface UIStatsResult { updateStats: UpdateStats,
-    currentSettings: UICurrentSettings;
+    currentSettings: UICurrentSettings
     }
 }
 
-export interface UIComponent { onSettingChange?(setting: string, newValue: any, oldValue: any): void; }
+export interface UIComponent { onSettingChange?(setting: string, newValue: any, oldValue: any): void }
 }
 
 export interface ListenerOptions { id?: string;
@@ -112,7 +112,7 @@ export class SettingsUIController {
     }
     }
             lastUpdateTime: 0 }
-        },'
+        },
         '';
         console.log('[SettingsUIController] Component initialized'');
     }
@@ -128,10 +128,10 @@ export class SettingsUIController {
             if (this.gameEngine && this.gameEngine.performanceOptimizer) { }
                 this.gameEngine.performanceOptimizer.setQualityLevel(quality});
             }
-            ';
-            // パフォーマンス最適化システムに通知''
+            ;
+            // パフォーマンス最適化システムに通知
             if(this.gameEngine && this.gameEngine.configurationManager') {'
-                ';
+                ';'
             }'
                 this.gameEngine.configurationManager.notifyUpdate('performance.quality', quality); }
             }
@@ -139,9 +139,9 @@ export class SettingsUIController {
             // 統計更新
             this.updateStats.qualityChanges++;
             this.updateStats.lastUpdateTime = Date.now();
-            ';
+            ';'
             console.log(`[SettingsUIController] Quality change applied successfully: ${quality)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_QUALITY_CHANGE_ERROR', {)'
                 quality,')';
                 component: 'SettingsUIController'),' }'
@@ -169,12 +169,12 @@ export class SettingsUIController {
             // 統計更新
             this.updateStats.languageChanges++;
             this.updateStats.lastUpdateTime = Date.now();
-            ';
+            ';'
             console.log(`[SettingsUIController] Language change handled successfully: ${language)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_LANGUAGE_CHANGE_ERROR', {)'
                 language,')';
-                component: 'SettingsUIController'); }
+                component: 'SettingsUIController') }
             });
             throw error;
         }
@@ -187,7 +187,7 @@ export class SettingsUIController {
     applyHighContrastMode(enabled: boolean): void { try {
             console.log(`[SettingsUIController] Applying high contrast mode: ${enabled)`),
             ';
-            // CSS クラスの追加/削除''
+            // CSS クラスの追加/削除
             if (enabled') {' }'
                 document.body.classList.add('high-contrast''});'
             } else {  ' }'
@@ -197,12 +197,12 @@ export class SettingsUIController {
             // ゲームエンジンに通知
             if (this.gameEngine && this.gameEngine.accessibilityManager) { this.gameEngine.accessibilityManager.setHighContrast(enabled); }
             }
-            ';
+            ';'
             console.log(`[SettingsUIController] High contrast mode applied: ${enabled)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_HIGH_CONTRAST_ERROR', {)'
                 enabled,')';
-                component: 'SettingsUIController'); }
+                component: 'SettingsUIController') }
             });
         }
     }
@@ -211,10 +211,10 @@ export class SettingsUIController {
      * モーション軽減モードを適用
      * @param enabled モーション軽減モード有効/無効
      */'
-    applyReducedMotionMode(enabled: boolean): void { try {''
+    applyReducedMotionMode(enabled: boolean): void { try {'
             console.log(`[SettingsUIController] Applying reduced motion mode: ${enabled)`'),
             
-            // CSS プロパティの設定'
+            // CSS プロパティの設定
             document.documentElement.style.setProperty(')';
                 '--animation-duration'');''
                 enabled ? '0ms' : 'var(--default-animation-duration')';
@@ -227,8 +227,8 @@ export class SettingsUIController {
                     enabled: !enabled,  // When reduced motion is enabled, disable animations) }
                     globalSpeed: enabled ? 0.5 : 1.0  // Reduce animation speed when reduced motion is enabled)}),
             }
-            ';
-            // パーティクルシステムに通知''
+            ;
+            // パーティクルシステムに通知
             if(this.gameEngine && this.gameEngine.particleManager') {'
                 this.gameEngine.particleManager.updateConfiguration({')
             }'
@@ -239,7 +239,7 @@ export class SettingsUIController {
         } catch (error") { ""
             this.errorHandler.handleError(error as Error, 'SETTINGS_REDUCED_MOTION_ERROR', {)'
                 enabled,')';
-                component: 'SettingsUIController'); }
+                component: 'SettingsUIController') }
             });
         }
     }
@@ -251,18 +251,18 @@ export class SettingsUIController {
     applyLargeTextMode(enabled: boolean): void { try {
             console.log(`[SettingsUIController] Applying large text mode: ${enabled)`),
             ';
-            // CSS クラスの追加/削除''
+            // CSS クラスの追加/削除
             if (enabled') {' }'
                 document.body.classList.add('large-text''});'
             } else {  ' }'
                 document.body.classList.remove('large-text'); }
             }
-            ';
+            ';'
             console.log(`[SettingsUIController] Large text mode applied: ${enabled)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_LARGE_TEXT_ERROR', {)'
                 enabled,')';
-                component: 'SettingsUIController'); }
+                component: 'SettingsUIController') }
             });
         }
     }
@@ -271,21 +271,21 @@ export class SettingsUIController {
      * UIスケールを適用
      * @param scale UIスケール値 (0.5-2.0)
      */'
-    applyUIScale(scale: number): void { try {''
+    applyUIScale(scale: number): void { try {'
             console.log(`[SettingsUIController] Applying UI scale: ${scale)`'),
             ';
-            // CSS カスタムプロパティに設定''
+            // CSS カスタムプロパティに設定
             document.documentElement.style.setProperty('--ui-scale', scale.toString();
             
             // 統計更新
             this.updateStats.scaleChanges++;
             this.updateStats.lastUpdateTime = Date.now();
-             }'
+             }
             console.log(`[SettingsUIController] UI scale applied: ${scale)`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_UI_SCALE_ERROR', {)'
                 scale,')';
-                component: 'SettingsUIController'); }
+                component: 'SettingsUIController') }
             });
         }
     }
@@ -332,12 +332,12 @@ export class SettingsUIController {
                 default: }
                     console.log(`[SettingsUIController] No specific handler for setting: ${key)`}),'
                     break;''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_APPLY_CHANGE_ERROR', {
-                key,);
+                key);
                 newValue)';
                 oldValue,')';
-                component: 'SettingsUIController'); }
+                component: 'SettingsUIController') }
             });
         }
     }
@@ -345,56 +345,56 @@ export class SettingsUIController {
     /**
      * 全てのUI設定を適用'
      */''
-    applyAllUISettings('')';
+    applyAllUISettings()';
             console.log('[SettingsUIController] Applying all UI settings'');
             ';
-            // 現在の設定値を取得して適用''
+            // 現在の設定値を取得して適用
             const quality = this.configManager.get('ui.quality');
             if(quality) {'
-                ';
+                ';'
             }'
                 this.applyQualityChange(quality'); }
             }'
             '';
             const language = this.configManager.get('ui.language');
             if(language) {'
-                ';
+                ';'
             }'
                 this.handleLanguageChange(language'); }
             }'
             '';
             const highContrast = this.configManager.get('accessibility.highContrast');
             if(highContrast !== undefined) {'
-                ';
+                ';'
             }'
                 this.applyHighContrastMode(highContrast'); }
             }'
             '';
             const reducedMotion = this.configManager.get('accessibility.reducedMotion');
             if(reducedMotion !== undefined) {'
-                ';
+                ';'
             }'
                 this.applyReducedMotionMode(reducedMotion'); }
             }'
             '';
             const largeText = this.configManager.get('accessibility.largeText');
             if(largeText !== undefined) {'
-                ';
+                ';'
             }'
                 this.applyLargeTextMode(largeText'); }
             }'
             '';
             const uiScale = this.configManager.get('ui.uiScale');
             if(uiScale !== undefined) {'
-                ';
+                ';'
             }'
                 this.applyUIScale(uiScale'); }
             }'
             '';
             console.log('[SettingsUIController] All UI settings applied successfully');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'SETTINGS_APPLY_ALL_UI_ERROR', {')'
-                component: 'SettingsUIController'); }
+                component: 'SettingsUIController') }
             });
         }
     }
@@ -412,7 +412,7 @@ export class SettingsUIController {
         // 設定変更リスナーを追加
         for(const setting of watchedSettings) {
             this.settingsManager.addListener(setting, (newValue, oldValue) => { 
-        }'
+        }
                 if (component.onSettingChange) {' }'
                     component.onSettingChange(setting, newValue, oldValue'); }
                 }
@@ -441,9 +441,9 @@ export class SettingsUIController {
     
     /**
      * UI統計情報を取得
-     * @returns UI設定統計'
+     * @returns UI設定統計
      */''
-    getUIStats('')';
+    getUIStats()';
                 quality: this.configManager.get('ui.quality''),'';
                 language: this.configManager.get('ui.language''),'';
                 uiScale: this.configManager.get('ui.uiScale''),'';
@@ -457,7 +457,7 @@ export class SettingsUIController {
     /**
      * リセット（統計情報をクリア）'
      */''
-    reset('')';
+    reset()';
         console.log('[SettingsUIController] Statistics reset'');'
     }''
 }

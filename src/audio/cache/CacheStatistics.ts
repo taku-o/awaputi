@@ -14,30 +14,30 @@ export interface OperationCounts { gets: number,
     sets: number,
     deletes: number,
     evictions: number,
-    cleanups: number; };
+    cleanups: number };
 }
 /**
  * Category statistics interface
  */
 export interface CategoryStats { count: number,
     totalSize: number,
-    hitRate: number; };
+    hitRate: number };
 }
 /**
  * Time series data point interfaces
  */
 export interface HitRateDataPoint { timestamp: number,
-    hitRate: number; };
+    hitRate: number };
 }
 export interface MemoryUsageDataPoint { timestamp: number,
     usage: number,
-    ratio: number; };
+    ratio: number };
 }
 export interface LoadTimeDataPoint { timestamp: number,
-    avgLoadTime: number; };
+    avgLoadTime: number };
 }
 export interface RequestCountDataPoint { timestamp: number,
-    requests: number; };
+    requests: number };
 }
 /**
  * Time series data interface
@@ -45,7 +45,7 @@ export interface RequestCountDataPoint { timestamp: number,
 export interface TimeSeriesData { hitRates: HitRateDataPoint[],
     memoryUsage: MemoryUsageDataPoint[],
     loadTimes: LoadTimeDataPoint[],
-    requestCounts: RequestCountDataPoint[];
+    requestCounts: RequestCountDataPoint[]
     };
 }
 /**
@@ -60,7 +60,7 @@ export interface Statistics { totalRequests: number,
     categoryStats: {
         audioBuffers: CategoryStats,
         metadata: CategoryStats,
-        chunks: CategoryStats;
+        chunks: CategoryStats
     }
     };
 }
@@ -83,7 +83,7 @@ export interface PerformanceSnapshot { timestamp: number,
         totalMisses: number,
         totalEvictions: number,
         totalMemoryUsage: number,
-        memoryEfficiency: number; }
+        memoryEfficiency: number }
     };
 }
 
@@ -94,11 +94,11 @@ export interface TrendAnalysis { ''
     status: 'success' | 'insufficient_data' | 'error',
     period?: {;
         start: number,
-        end: number; }
+        end: number }
     };
     trends?: { hitRate: TrendInfo,
         memoryUsage: TrendInfo,
-        loadTime: TrendInfo;
+        loadTime: TrendInfo
     }
     };
 }
@@ -108,14 +108,14 @@ export interface TrendAnalysis { ''
  */
 export interface TrendInfo { start: number,'
     end: number,'';
-    change: 'improving' | 'stable' | 'degrading'; };
+    change: 'improving' | 'stable' | 'degrading' };
 }
 /**
  * Recommendation interface
  */'
 export interface Recommendation { type: string,''
     priority: 'high' | 'medium' | 'low',
-    message: string; };
+    message: string };
 }
 /**
  * Statistics summary interface
@@ -124,18 +124,18 @@ export interface StatisticsSummary { overview: {
         totalRequests: number,
         hitRatio: number,
         averageLoadTime: number,
-        memoryEfficiency: number ;
+        memoryEfficiency: number 
 }
     },
     operations: OperationCounts,
     categories: { audioBuffers: CategoryStats,
         metadata: CategoryStats,
-        chunks: CategoryStats ;
+        chunks: CategoryStats 
 }
     },'
     performance: { ''
         trends: Partial<TrendAnalysis['trends']>,
-        recommendations: Recommendation[] ;
+        recommendations: Recommendation[] 
 }
     },
     lastUpdated: number;
@@ -154,7 +154,7 @@ interface MainController { audioBufferCache: {
     };
     memoryManager?: { getCurrentMemoryUsage(): any;
         performanceStats: {
-            cleanupOperations: number; }
+            cleanupOperations: number }
         };
     };
     dataLoader?: { getLoaderStats(): any; }
@@ -167,7 +167,7 @@ export class CacheStatistics {
     private readonly statsConfig = {
         maxHistorySize: 1000,
         aggregationInterval: 60000, // 1分;
-        enableDetailedTracking: true ;
+        enableDetailedTracking: true 
 }
     },
     
@@ -176,7 +176,7 @@ export class CacheStatistics {
     // パフォーマンス監視
     private performanceMonitor: { intervalId: NodeJS.Timeout | null
         lastAggregation: number,
-        snapshots: PerformanceSnapshot[];
+        snapshots: PerformanceSnapshot[]
     }
     };
 
@@ -194,7 +194,7 @@ export class CacheStatistics {
                 gets: 0,
                 sets: 0,
                 deletes: 0,
-                evictions: 0;
+                evictions: 0
 };
 }
                 cleanups: 0 ;
@@ -203,7 +203,7 @@ export class CacheStatistics {
             timeSeriesData: { hitRates: [],
                 memoryUsage: [],
                 loadTimes: [],
-                requestCounts: [] ;
+                requestCounts: [] 
 }
             },
             categoryStats: {
@@ -216,7 +216,7 @@ export class CacheStatistics {
         // パフォーマンス監視
         this.performanceMonitor = { intervalId: null,
             lastAggregation: Date.now(),
-            snapshots: [] ;
+            snapshots: [] 
 }
         },
         
@@ -232,7 +232,7 @@ export class CacheStatistics {
             }
                 clearInterval(this.performanceMonitor.intervalId); };
 }
-            this.performanceMonitor.intervalId = setInterval(() => {  this.collectPerformanceSnapshot(); }'
+            this.performanceMonitor.intervalId = setInterval(() => {  this.collectPerformanceSnapshot(); }
                 this.aggregateStatistics();' }'
             }, this.statsConfig.aggregationInterval');'
             '';
@@ -240,7 +240,7 @@ export class CacheStatistics {
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'startPerformanceMonitoring',')';
-                component: 'CacheStatistics'); }
+                component: 'CacheStatistics') }
             });
         };
 }
@@ -272,18 +272,18 @@ export class CacheStatistics {
                     totalMisses: audioBufferStats.misses + metadataStats.misses + chunkStats.misses,
                     totalEvictions: audioBufferStats.evictions + metadataStats.evictions + chunkStats.evictions,
                     totalMemoryUsage: memoryUsage.total || 0,
-                    memoryEfficiency: this.calculateMemoryEfficiency(memoryUsage); };
+                    memoryEfficiency: this.calculateMemoryEfficiency(memoryUsage) };
 }
             };
             
             this.performanceMonitor.snapshots.push(snapshot);
             
             // 履歴サイズ制限
-            if (this.performanceMonitor.snapshots.length > this.statsConfig.maxHistorySize) { this.performanceMonitor.snapshots.shift(); }'
+            if (this.performanceMonitor.snapshots.length > this.statsConfig.maxHistorySize) { this.performanceMonitor.snapshots.shift(); }
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'collectPerformanceSnapshot',')';
-                component: 'CacheStatistics'); }
+                component: 'CacheStatistics') }
             });
         };
 }
@@ -308,11 +308,11 @@ export class CacheStatistics {
             this.updateCategoryStatistics(latestSnapshot);
             
             this.performanceMonitor.lastAggregation = Date.now();
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'aggregateStatistics',')';
-                component: 'CacheStatistics'); }
+                component: 'CacheStatistics') }
             });
         };
 }
@@ -335,7 +335,7 @@ export class CacheStatistics {
             sets: this.estimateSetOperations(snapshot),
             deletes: this.estimateDeleteOperations(snapshot),
             evictions: overall.totalEvictions,
-            cleanups: this.mainController.memoryManager? .performanceStats.cleanupOperations || 0 ;
+            cleanups: this.mainController.memoryManager? .performanceStats.cleanupOperations || 0 
 }
         },
     }
@@ -384,21 +384,21 @@ export class CacheStatistics {
         this.statistics.categoryStats.audioBuffers = {
             count: snapshot.audioBuffer.entryCount,
             totalSize: snapshot.audioBuffer.currentSize,
-            hitRate: snapshot.audioBuffer.hitRate ;
+            hitRate: snapshot.audioBuffer.hitRate 
 }
         },
         
         // メタデータ統計
         this.statistics.categoryStats.metadata = { count: snapshot.metadata.entryCount,
             totalSize: snapshot.metadata.currentSize,
-            hitRate: snapshot.metadata.hitRate ;
+            hitRate: snapshot.metadata.hitRate 
 }
         },
         
         // チャンク統計
         this.statistics.categoryStats.chunks = { count: snapshot.chunk.entryCount,
             totalSize: snapshot.chunk.currentSize,
-            hitRate: snapshot.chunk.hitRate ;
+            hitRate: snapshot.chunk.hitRate 
 }
         },
     }
@@ -449,14 +449,14 @@ export class CacheStatistics {
         try {
             const cutoffTime = Date.now() - timeRangeMs;
             const recentSnapshots = this.performanceMonitor.snapshots.filter();
-                snapshot => snapshot.timestamp >= cutoffTime);'
+                snapshot => snapshot.timestamp >= cutoffTime);
             '';
             if (recentSnapshots.length < 2') {' }'
                 return { status: 'insufficient_data' };
 }
             const first = recentSnapshots[0];
             const last = recentSnapshots[recentSnapshots.length - 1];
-            ';
+            ';'
             return { ' };'
                 status: 'success';
 }
@@ -464,15 +464,15 @@ export class CacheStatistics {
                 trends: { hitRate: {'
                         start: first.overall.totalHits / (first.overall.totalHits + first.overall.totalMisses),'';
                         end: last.overall.totalHits / (last.overall.totalHits + last.overall.totalMisses'),'';
-                        change: this.calculateTrendDirection('hitRate', recentSnapshots'); }
+                        change: this.calculateTrendDirection('hitRate', recentSnapshots') }
                     },
                     memoryUsage: { start: first.memory.total || 0,'
                         end: last.memory.total || 0,'';
-                        change: this.calculateTrendDirection('memoryUsage', recentSnapshots'); }
+                        change: this.calculateTrendDirection('memoryUsage', recentSnapshots') }
                     },
                     loadTime: { start: first.loader.averageLoadTime || 0,'
                         end: last.loader.averageLoadTime || 0,'';
-                        change: this.calculateTrendDirection('loadTime', recentSnapshots); };
+                        change: this.calculateTrendDirection('loadTime', recentSnapshots) };
 }
                 }
             };'
@@ -496,12 +496,12 @@ export class CacheStatistics {
         snapshots: PerformanceSnapshot[]'';
     '): 'improving' | 'stable' | 'degrading' { ''
         if(snapshots.length < 3') {'
-            ';
+            ';'
         }'
             return 'stable', };
 }
         let values: number[] = [],
-        ';
+        ';'
         snapshots.forEach(snapshot => {  );''
             switch(metric') {'
                 '';
@@ -530,10 +530,10 @@ export class CacheStatistics {
         const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
         
         // しきい値で判定
-        const threshold = Math.abs(sumY / n) * 0.1; // 平均値の10%'
+        const threshold = Math.abs(sumY / n) * 0.1; // 平均値の10%
         '';
         if(slope > threshold') {'
-            ';
+            ';'
         }'
             return metric === 'hitRate' ? 'improving' : 'degrading';' }'
         } else if (slope < -threshold') { ''
@@ -576,7 +576,7 @@ export class CacheStatistics {
         if(this.statistics.hitRatio < 0.7') {'
             recommendations.push({''
                 type: 'hit_ratio',')';
-                priority: 'high',');
+                priority: 'high',')
         }'
                 message: 'Cache hit ratio is low. Consider increasing cache size or reviewing access patterns.'); }
         }'
@@ -584,7 +584,7 @@ export class CacheStatistics {
         if(this.statistics.memoryEfficiency < 0.5') {'
             recommendations.push({''
                 type: 'memory_efficiency',')';
-                priority: 'medium',');
+                priority: 'medium',')
         }'
                 message: 'Memory efficiency is low. Consider optimizing cache eviction policies.')'); }
         }'
@@ -592,7 +592,7 @@ export class CacheStatistics {
         if(trends.trends? .loadTime?.change === 'degrading'') {'
             recommendations.push({ : undefined''
                 type: 'load_time',')';
-                priority: 'high',');
+                priority: 'high',')
         }'
                 message: 'Load times are increasing. Check for performance bottlenecks.')'); }
         }'
@@ -600,7 +600,7 @@ export class CacheStatistics {
         if(trends.trends? .memoryUsage?.change === 'degrading'') {'
             recommendations.push({ : undefined''
                 type: 'memory_usage',')';
-                priority: 'medium',');
+                priority: 'medium',')
         }'
                 message: 'Memory usage is growing. Consider more aggressive cleanup policies.')'); };
 }
@@ -616,9 +616,9 @@ export class CacheStatistics {
             const data = {
                 summary: this.generateSummary(),
                 timeSeriesData: this.statistics.timeSeriesData,
-                rawSnapshots: this.performanceMonitor.snapshots.slice(-100) // 最新100件 ;
+                rawSnapshots: this.performanceMonitor.snapshots.slice(-100) // 最新100件 
 }
-            },'
+            },
             '';
             switch(format') {'
                 '';
@@ -636,7 +636,7 @@ export class CacheStatistics {
             getErrorHandler(').handleError(error, 'AUDIO_CACHE_ERROR', {')'
                 operation: 'exportStatistics')';
                 format,')';
-                component: 'CacheStatistics'); }
+                component: 'CacheStatistics') }
             });
             return null;
         };
@@ -651,7 +651,7 @@ export class CacheStatistics {
         const rows = [headers.join(',')];
         
         const maxLength = Math.max(;
-            data.timeSeriesData.hitRates.length,);
+            data.timeSeriesData.hitRates.length);
             data.timeSeriesData.memoryUsage.length);
             data.timeSeriesData.loadTimes.length,);
             data.timeSeriesData.requestCounts.length);'
@@ -685,7 +685,7 @@ export class CacheStatistics {
             this.statistics.timeSeriesData = { hitRates: [],
                 memoryUsage: [],
                 loadTimes: [],
-                requestCounts: [] ;
+                requestCounts: [] 
 }
             },'
             '';

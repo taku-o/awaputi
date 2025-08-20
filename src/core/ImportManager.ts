@@ -58,15 +58,15 @@ export class ImportManager {
         try {
             // インポート検証ルールの登録
             this.registerImportValidators();
-            ';
-            // 競合解決ストラテジーの登録''
-            this.registerConflictResolvers('')';
+            ;
+            // 競合解決ストラテジーの登録
+            this.registerConflictResolvers()';
             console.log('ImportManager initialized');
     }
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'IMPORT_MANAGER_INITIALIZATION_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -74,32 +74,32 @@ export class ImportManager {
     /**
      * インポート検証ルールの登録'
      */''
-    registerImportValidators('')';
+    registerImportValidators()';
         this.importValidators.set('format', new FormatValidator(this)');
         ';
-        // バージョン検証''
+        // バージョン検証
         this.importValidators.set('version', new VersionValidator(this)');
         ';
-        // 整合性検証''
+        // 整合性検証
         this.importValidators.set('integrity', new IntegrityValidator(this)');
         ';
-        // サイズ検証''
+        // サイズ検証
         this.importValidators.set('size', new SizeValidator(this);
     }
     
     /**
      * 競合解決ストラテジーの登録'
      */''
-    registerConflictResolvers('')';
+    registerConflictResolvers()';
         this.conflictResolvers.set('merge', new MergeResolver(this)');
         ';
-        // 上書き解決''
+        // 上書き解決
         this.conflictResolvers.set('overwrite', new OverwriteResolver(this)');
         ';
-        // 選択的解決''
+        // 選択的解決
         this.conflictResolvers.set('selective', new SelectiveResolver(this)');
         ';
-        // 保持解決''
+        // 保持解決
         this.conflictResolvers.set('keep', new KeepResolver(this)');
     }
     
@@ -111,13 +111,13 @@ export class ImportManager {
             this.statistics.totalImports++;
             const startTime = performance.now();
             
-            // インポートデータの初期検証'
+            // インポートデータの初期検証
             const validationResult = await this.validateImportData(importData);''
             if (!validationResult.isValid') {' }'
                 throw new Error(`Import validation failed: ${validationResult.errors.join(', '})}`);
-            }
+            }'
             ';
-            // バックアップの作成（設定されている場合）''
+            // バックアップの作成（設定されている場合）
             if(this.config.createBackupBeforeImport && this.backup') {'
                 '';
                 const backupResult = await this.backup.createBackup('all', {')'
@@ -158,7 +158,7 @@ export class ImportManager {
                 conflictResolution, };
                 validationResult }
             };
-            ';
+            ';'
         } catch (error) { this.updateStatistics(false, 0, false);''
             getErrorHandler(').handleError(error, 'IMPORT_ERROR', {')'
                 operation: 'importData');
@@ -205,10 +205,10 @@ export class ImportManager {
                 warnings, };
                 validationResults }
             };
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'IMPORT_VALIDATION_ERROR', {')'
-                operation: 'validateImportData'); }
+                operation: 'validateImportData') }
             });
             
             return { isValid: false, }
@@ -236,7 +236,7 @@ export class ImportManager {
                         const dataConflicts = this.compareData(dataType, existingData, newData);
                         if (dataConflicts.length > 0) {
                             conflicts.push({
-                                dataType,);
+                                dataType);
                                 existingData);
                                 newData,);
             }
@@ -248,10 +248,10 @@ export class ImportManager {
             }
             
             return conflicts;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CONFLICT_DETECTION_ERROR', {')'
-                operation: 'detectConflicts'); }
+                operation: 'detectConflicts') }
             });
             
             return [];
@@ -263,8 +263,8 @@ export class ImportManager {
      */
     compareData(dataType, existingData, newData) {
         const conflicts = [];
-        ';
-        try {''
+        ';'
+        try {'
             switch (dataType') {''
                 case 'playerData':'';
                     conflicts.push(...this.comparePlayerData(existingData, newData)');
@@ -281,7 +281,7 @@ export class ImportManager {
                 default:;
     }'
                     conflicts.push(...this.compareGeneric(existingData, newData);' }'
-            } catch (error') { conflicts.push({''
+            } catch (error) { conflicts.push({''
                 type: 'COMPARISON_ERROR',')';
                 field: 'unknown',) }
                 message: `Error comparing ${dataType}: ${error.message}`),
@@ -297,25 +297,25 @@ export class ImportManager {
     comparePlayerData(existing, imported') {
         const conflicts = [];
         ';
-        // 重要なフィールドの競合チェック''
+        // 重要なフィールドの競合チェック
         const criticalFields = ['ap', 'tap', 'maxHP', 'unlockedStages', 'ownedItems'];
-        ';
+        ';'
         for (const field of criticalFields) {''
             if (field in existing && field in imported') {''
                 if (field === 'unlockedStages' || field === 'ownedItems') {'
-                    // 配列の比較''
+                    // 配列の比較
                     if (JSON.stringify(existing[field]) !== JSON.stringify(imported[field])') {'
                         conflicts.push({''
                             type: 'ARRAY_CONFLICT',
-                            field,);
-                            existing: existing[field]);
+                            field);
+                            existing: existing[field])
     }
                             imported: imported[field],) }
                             message: `Different ${field} arrays`),'
                     }''
                 } else if (existing[field] !== imported[field]') { conflicts.push({''
                         type: 'VALUE_CONFLICT',
-                        field,);
+                        field);
                         existing: existing[field]);
                         imported: imported[field],) }
                         message: `Different ${field} values`),
@@ -325,13 +325,13 @@ export class ImportManager {
         
         // ハイスコアの比較
         if(existing.highScores && imported.highScores) {
-            for(const stage of Object.keys(imported.highScores) {'
+            for(const stage of Object.keys(imported.highScores) {
                 if (stage in existing.highScores) {''
                     if (existing.highScores[stage] !== imported.highScores[stage]') {'
                         conflicts.push({'
         }'
                             type: 'SCORE_CONFLICT', }
-                            field: `highScores.${stage}`,)
+                            field: `highScores.${stage}`)
                             existing: existing.highScores[stage]);
                             imported: imported.highScores[stage],);
                             message: `Different high score for ${stage}`),
@@ -348,13 +348,13 @@ export class ImportManager {
      */
     compareSettings(existing, imported) {
         const conflicts = [];
-        ';
+        ';'
         for(const [key, value] of Object.entries(imported) {''
             if (key in existing && existing[key] !== value') {'
                 conflicts.push({''
                     type: 'SETTING_CONFLICT',
-                    field: key,);
-                    existing: existing[key]);
+                    field: key);
+                    existing: existing[key])
     }
                     imported: value,) }
                     message: `Different setting value for ${key}`),
@@ -370,7 +370,7 @@ export class ImportManager {
     compareStatistics(existing, imported') {
         const conflicts = [];
         ';
-        // 統計は通常、より大きい値を保持したい''
+        // 統計は通常、より大きい値を保持したい
         const numericFields = ['totalPlayTime', 'totalGamesPlayed', 'totalBubblesPopped'];
         
         for (const field of numericFields) {'
@@ -378,8 +378,8 @@ export class ImportManager {
                 if (existing[field] !== imported[field]') {'
                     conflicts.push({''
                         type: 'STATISTIC_CONFLICT',
-                        field,);
-                        existing: existing[field]);
+                        field);
+                        existing: existing[field])
     }
                         imported: imported[field], }'
                         message: `Different ${field} values`,')'
@@ -403,7 +403,7 @@ export class ImportManager {
         if (existingStr !== importedStr') {'
             conflicts.push({''
                 type: 'DATA_CONFLICT','';
-                field: 'entire_object',);
+                field: 'entire_object');
                 existing)';
                 imported,');
     }'
@@ -424,7 +424,7 @@ export class ImportManager {
             }
             
             return await resolver.resolve(importData, conflicts, options);
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CONFLICT_RESOLUTION_ERROR', {')'
                 operation: 'resolveConflicts',);
@@ -457,25 +457,25 @@ export class ImportManager {
                         if (!validationResult.isValid) {
                             if (this.config.allowPartialImport) {
                                 hasPartialImport = true;
-                                results.push({)'
+                                results.push({)
                                     dataType,');
             }'
                                     success: false'),' }'
                                     error: `Validation failed: ${validationResult.errors.join(', '})}`,
                                     skipped: true;
-                                }),
+                                }),'
                                 continue;'
                             } else { ' }'
                                 throw new Error(`Final validation failed for ${dataType'): ${validationResult.errors.join(', '})}`);
                             }
                         }
-                    }
+                    }'
                     ';
-                    // データの保存''
+                    // データの保存
                     await this.storage.save(dataType, data');
                     results.push({ dataType)'
                         success: true,')';
-                        message: 'Import successful');
+                        message: 'Import successful')
                      }
                 } catch (error) { hasErrors = true;
                     
@@ -484,7 +484,7 @@ export class ImportManager {
                         hasPartialImport = true;
                         results.push({)
                             dataType);
-                            success: false,);
+                            success: false,)
                     }
                             error: error.message); }
                         });
@@ -499,7 +499,7 @@ export class ImportManager {
                 importedDataTypes: results.filter(r = > r.success).map(r => r.dataType) };
                 failedDataTypes: results.filter(r => !r.success).map(r => r.dataType); }
             };
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'IMPORT_EXECUTION_ERROR', {')'
                 operation: 'executeImport'),' }'
@@ -542,10 +542,10 @@ export class ImportManager {
                 conflictResolution, };
                 warnings: this.generateImportWarnings(importData, conflicts); }
             };
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'IMPORT_PREVIEW_ERROR', {')'
-                operation: 'previewImport'); }
+                operation: 'previewImport') }
             });
             
             return { isValid: false, };
@@ -561,13 +561,13 @@ export class ImportManager {
         const warnings = [];
         
         // 大量の競合がある場合
-    }'
+    }
         if (conflicts.length > 10) {' }'
             warnings.push(`大量の競合が検出されました (${conflicts.length)件)`'});
         }
         
         // 重要なデータの競合
-        const criticalConflicts = conflicts.filter(c => ';
+        const criticalConflicts = conflicts.filter(c => ';'
             c.conflicts.some(conflict => ')';
                 conflict.field === 'ap' || ')';
                 conflict.field === 'tap' || ');''
@@ -575,12 +575,12 @@ export class ImportManager {
         );'
         '';
         if(criticalConflicts.length > 0') {'
-            ';
+            ';'
         }'
             warnings.push('重要なデータ（AP、TAP、ハイスコア）に競合があります'); }
         }
         ';
-        // バージョンの不一致''
+        // バージョンの不一致
         if(importData.header && importData.header.gameVersion') {'
             '';
             const currentVersion = window.GAME_VERSION || '1.0.0';
@@ -616,10 +616,10 @@ export class ImportManager {
                 success,
                 partial,
                 duration }
-            };'
+            };
             '';
-        } catch (error') { ''
-            console.error('Import statistics update error:', error); }
+        } catch (error) { ''
+            console.error('Import statistics update error:', error) }
         }
     }
     
@@ -646,15 +646,15 @@ export class ImportManager {
      * リソースの解放
      */
     destroy() {
-        try {'
+        try {
             this.importValidators.clear();''
-            this.conflictResolvers.clear('')';
+            this.conflictResolvers.clear()';
             console.log('ImportManager destroyed');
     }
              }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'IMPORT_MANAGER_DESTROY_ERROR', {')'
-                operation: 'destroy'); }
+                operation: 'destroy') }
             });
         }
     }
@@ -664,24 +664,24 @@ export class ImportManager {
  * 形式検証器
  */
 class FormatValidator { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }'
     '';
     async validate(importData') { const errors = [];
         const warnings = [];
         
-        try {'
-            // 基本構造の確認''
+        try {
+            // 基本構造の確認
             if(typeof importData !== 'object' || importData === null') {'
-                ';
+                ';'
             }'
                 errors.push('Import data must be an object'); }
                 return { isValid: false, errors, warnings };
             }
             ';
-            // BubblePopSave形式の確認''
+            // BubblePopSave形式の確認
             if(importData.header') {'
-                ';
+                ';'
             }'
                 if (importData.header.format !== 'BubblePopSave') {' }'
                     warnings.push(`Unknown format: ${importData.header.format)`'});
@@ -690,9 +690,9 @@ class FormatValidator { constructor(importManager: any) {
                 warnings.push('No header information found'); }
             }
             ';
-            // ユーザーデータの確認''
+            // ユーザーデータの確認
             if(!importData.userData && !importData.playerData') {'
-                ';
+                ';'
             }'
                 errors.push('No user data found in import'); }
             } catch (error) {
@@ -710,13 +710,13 @@ class FormatValidator { constructor(importManager: any) {
  * バージョン検証器
  */
 class VersionValidator { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }
     
     async validate(importData) { const errors = [];
         const warnings = [];
-        ';
-        try {''
+        ';'
+        try {'
             if(importData.header && importData.header.gameVersion') {'
                 '';
                 const currentVersion = window.GAME_VERSION || '1.0.0';
@@ -724,11 +724,11 @@ class VersionValidator { constructor(importManager: any) {
                 
                 // バージョン互換性のチェック
                 if (this.importManager.config.strictVersionCheck) {
-            }'
+            }
                     if (importVersion !== currentVersion) {' }'
                         errors.push(`Version mismatch: ${importVersion} ≠ ${currentVersion)`'});
                     }'
-                } else {  // 緩い互換性チェック''
+                } else {  // 緩い互換性チェック
                     const importMajor = parseInt(importVersion.split('.')[0]');''
                     const currentMajor = parseInt(currentVersion.split('.')[0]);
                      }
@@ -753,16 +753,16 @@ class VersionValidator { constructor(importManager: any) {
  * 整合性検証器
  */
 class IntegrityValidator { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }
     
     async validate(importData) { const errors = [];
         const warnings = [];
         
-        try {'
-            // チェックサムの検証（ある場合）''
+        try {
+            // チェックサムの検証（ある場合）
             if(importData.metadata && importData.metadata.checksum') {'
-                // チェックサム検証の実装'
+                // チェックサム検証の実装
             }'
                 warnings.push('Checksum validation not implemented'); }
             }
@@ -775,7 +775,7 @@ class IntegrityValidator { constructor(importManager: any) {
                 if (this.importManager.validation) {
                     const validationResult = await this.importManager.validation.validate(dataType, data);
             
-            }'
+            }
                     if (!validationResult.isValid) {' }'
                         errors.push(`Invalid ${dataType'): ${validationResult.errors.join(', '})}`);
                     }
@@ -795,7 +795,7 @@ class IntegrityValidator { constructor(importManager: any) {
  * サイズ検証器
  */
 class SizeValidator { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }
     
     async validate(importData) { const errors = [];
@@ -825,7 +825,7 @@ class SizeValidator { constructor(importManager: any) {
  * マージ解決器
  */
 class MergeResolver { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }
     
     async resolve(importData, conflicts, options = { ) {
@@ -835,7 +835,7 @@ class MergeResolver { constructor(importManager: any) {
         for(const conflict of conflicts) {
         
             const mergedData = await this.mergeData(;
-                conflict.dataType, );
+                conflict.dataType );
                 conflict.existingData);
                 conflict.newData,);
                 conflict.conflicts);
@@ -859,9 +859,9 @@ class MergeResolver { constructor(importManager: any) {
                 actions.push({)
                     dataType: conflict.dataType,);
                     field: c.field),
-                    action: this.getMergeAction(c,);
+                    action: this.getMergeAction(c);
                     existing: c.existing);
-                    imported: c.imported,);
+                    imported: c.imported,)
         }'
                     result: this.getMergeResult(c),' }'
                 }');
@@ -923,14 +923,14 @@ class MergeResolver { constructor(importManager: any) {
     
     mergeSettings(existing, imported, conflicts) { // 設定は新しい値を優先 }
         return { ...existing, ...imported };
-    }'
+    }
     '';
     mergeStatistics(existing, imported, conflicts') {
         
     }
         const merged = { ...existing };
         ';
-        // 数値統計は大きい方を採用''
+        // 数値統計は大きい方を採用
         const numericFields = ['totalPlayTime', 'totalGamesPlayed', 'totalBubblesPopped'];
         for(const field of numericFields) {
             if (imported[field] > existing[field]) {
@@ -943,7 +943,7 @@ class MergeResolver { constructor(importManager: any) {
     }
     
     getMergeAction(conflict) {
-    ';
+    ';'
         '';
         switch (conflict.type') {''
             case 'VALUE_CONFLICT':'';
@@ -959,7 +959,7 @@ class MergeResolver { constructor(importManager: any) {
     }
     
     getMergeResult(conflict) {
-    ';
+    ';'
         '';
         switch (conflict.type') {''
             case 'VALUE_CONFLICT':'';
@@ -977,13 +977,13 @@ class MergeResolver { constructor(importManager: any) {
  * 上書き解決器
  */
 class OverwriteResolver { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }
     
     async resolve(importData, conflicts, options = { ) {
         // インポートデータで全て上書き
         return importData; }
-    }'
+    }
     '';
     async preview(importData, conflicts') { const actions = conflicts.map(conflict => ({'
             dataType: conflict.dataType,')';
@@ -998,7 +998,7 @@ class OverwriteResolver { constructor(importManager: any) {
  * 保持解決器
  */
 class KeepResolver { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }
     
     async resolve(importData, conflicts, options = { ) {
@@ -1015,7 +1015,7 @@ class KeepResolver { constructor(importManager: any) {
         }
         
         return resolvedData;
-    }'
+    }
     '';
     async preview(importData, conflicts') { const actions = conflicts.map(conflict => ({'
             dataType: conflict.dataType,')';
@@ -1030,7 +1030,7 @@ class KeepResolver { constructor(importManager: any) {
  * 選択的解決器
  */
 class SelectiveResolver { constructor(importManager: any) {
-        this.importManager = importManager; }
+        this.importManager = importManager }
     }
     
     async resolve(importData, conflicts, options = { ) { }
@@ -1042,8 +1042,8 @@ class SelectiveResolver { constructor(importManager: any) {
             const selection = selections[conflict.dataType];'
             '';
             if (selection === 'import') {'
-                // インポートデータを使用''
-                if (resolvedData.userData') {
+                // インポートデータを使用
+                if (resolvedData.userData) {
         }
                     resolvedData.userData[conflict.dataType] = conflict.newData; }
                 } else { resolvedData[conflict.dataType] = conflict.newData; }'
@@ -1057,7 +1057,7 @@ class SelectiveResolver { constructor(importManager: any) {
                 }
             } else {  // デフォルトはマージ
                 const merged = await new MergeResolver(this.importManager).mergeData(;
-                    conflict.dataType,);
+                    conflict.dataType);
                     conflict.existingData);
                     conflict.newData,);
                     conflict.conflicts);
@@ -1070,7 +1070,7 @@ class SelectiveResolver { constructor(importManager: any) {
         }
         
         return resolvedData;
-    }'
+    }
     '';
     async preview(importData, conflicts') { const actions = conflicts.map(conflict => ({'
             dataType: conflict.dataType,')';

@@ -28,7 +28,7 @@ export interface SearchResult extends SearchDocument { relevanceScore: number,
 export interface FieldWeights { title: number,
     content: number,
     searchKeywords: number,
-    category: number; }
+    category: number }
 }
 
 export interface SearchStats { totalSearches: number,
@@ -38,7 +38,7 @@ export interface SearchStats { totalSearches: number,
 }
 
 export interface CachedSearchResult { result: SearchResult[],
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface PerformanceStats { totalSearches: number,
@@ -53,7 +53,7 @@ export interface PerformanceStats { totalSearches: number,
 export interface SearchHistoryData { popularQueries: [string, number][], }
 }
 
-export interface RelatedContent extends SearchDocument { similarity: number; }
+export interface RelatedContent extends SearchDocument { similarity: number }
 }
 
 export class SearchEngine {
@@ -91,7 +91,7 @@ export class SearchEngine {
         this.searchStats = { totalSearches: 0,
             cacheHits: 0,
             averageSearchTime: 0,
-            popularQueries: new Map<string, number>(); }
+            popularQueries: new Map<string, number>() }
         };
         
         // ストップワード（検索対象外の単語）
@@ -102,7 +102,7 @@ export class SearchEngine {
             'that', 'the', 'to', 'was', 'were', 'will', 'with'']';
         ]');
         
-        // 類義語辞書'
+        // 類義語辞書
         this.synonyms = new Map<string, string[]>([']';
             ['bubble', ['泡', 'バブル', 'ふうせん']],'';
             ['click', ['クリック', 'タップ', '選択']],'';
@@ -148,7 +148,7 @@ export class SearchEngine {
     /**
      * 単一ドキュメントのインデックス作成
      * @param document - ドキュメント
-     */'
+     */
     indexDocument(document: SearchDocument): void { ''
         if(!document.id') {'
             '';
@@ -161,7 +161,7 @@ export class SearchEngine {
         this.documentStore.set(document.id, document);
         
         // 各フィールドを解析してインデックス作成
-        for(const [field, weight] of Object.entries(this.fieldWeights) {'
+        for(const [field, weight] of Object.entries(this.fieldWeights) {
             const text = document[field];''
             if (text') {''
                 const tokens = this.tokenize(typeof text === 'string' ? text: JSON.stringify(text),
@@ -206,9 +206,9 @@ export class SearchEngine {
             // 統計更新
             this.updateSearchStats(normalizedQuery, performance.now() - startTime);
             
-            return results;'
+            return results;
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Search error:', error);
             return []; }
         }
@@ -291,7 +291,7 @@ export class SearchEngine {
         let score = 0;
         
         // フィールドごとの重み付きスコア
-        for(const [field, weight] of Object.entries(this.fieldWeights) {'
+        for(const [field, weight] of Object.entries(this.fieldWeights) {
             const text = document[field];''
             if (text') {''
                 const fieldScore = this.calculateFieldScore(token, typeof text === 'string' ? text : JSON.stringify(text), weight);
@@ -309,9 +309,9 @@ export class SearchEngine {
     /**
      * フィールドスコア計算
      * @private
-     */'
+     */
     private calculateFieldScore(token: string, text: string, weight: number): number { ''
-        const lowerText = text.toLowerCase('')';
+        const lowerText = text.toLowerCase()';
         const occurrences = (lowerText.match(new RegExp(token, 'g') || []).length;
         
         if (occurrences === 0) return 0;
@@ -414,7 +414,7 @@ export class SearchEngine {
      * @private
      */
     private generateHighlights(document: SearchDocument, query: string): Record<string, string> { const tokens = this.tokenize(query); }
-        const highlights: Record<string, string> = {};'
+        const highlights: Record<string, string> = {};
         '';
         for (const [field, weight] of Object.entries(this.fieldWeights)') { const text = document[field];''
             if(text && typeof text === 'string') {
@@ -510,9 +510,9 @@ export class SearchEngine {
      * @private
      */
     private tokenize(text: string): string[] { if (!text) return [];
-        ';
+        ';'
         return text'';
-            .toLowerCase('')';
+            .toLowerCase()';
             .replace(/[^\w\s]/g, ' ') // 記号を除去;
             .split(/\s+/);
             .filter(token => token.length > 1 && !this.stopWords.has(token); }
@@ -591,7 +591,7 @@ export class SearchEngine {
         
         this.searchCache.set(key, { )
             result: result),
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
@@ -629,15 +629,15 @@ export class SearchEngine {
     
     /**
      * 検索履歴読み込み
-     * @private'
+     * @private
      */''
-    private loadSearchHistory('')';
+    private loadSearchHistory()';
             const stored = localStorage.getItem('search_history');
             if(stored) {
                 const data: SearchHistoryData = JSON.parse(stored) }'
                 this.searchStats.popularQueries = new Map<string, number>(data.popularQueries || []);' }'
-            } catch (error') { ''
-            console.warn('Failed to load search history:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load search history:', error) }
         }
     }
     
@@ -645,13 +645,13 @@ export class SearchEngine {
      * 検索履歴保存
      * @private
      */
-    private saveSearchHistory(): void { try {'
+    private saveSearchHistory(): void { try {
             const data: SearchHistoryData = {''
-                popularQueries: Array.from(this.searchStats.popularQueries.entries()'); }'
+                popularQueries: Array.from(this.searchStats.popularQueries.entries()') }'
             };''
             localStorage.setItem('search_history', JSON.stringify(data);''
-        } catch (error') { ''
-            console.warn('Failed to save search history:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save search history:', error) }
         }
     }
     
@@ -660,7 +660,7 @@ export class SearchEngine {
      */
     optimizeIndex(): void { // 使用頻度の低いトークンを削除
         const minFrequency = 2;
-        for(const [token, docIds] of this.textIndex) {'
+        for(const [token, docIds] of this.textIndex) {
             if (docIds.length < minFrequency) {'
         }'
                 this.textIndex.delete(token'); }
@@ -698,7 +698,7 @@ export class SearchEngine {
             totalSearches: 0,
             cacheHits: 0,';
             averageSearchTime: 0,'';
-            popularQueries: new Map<string, number>('); }
+            popularQueries: new Map<string, number>(') }
         };'
     }''
 }

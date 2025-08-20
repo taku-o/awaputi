@@ -13,14 +13,14 @@ interface CompressorConfig { threshold: number,
     knee: number,
     ratio: number,
     attack: number,
-    release: number; }
+    release: number }
 }
 
 /**
  * リバーブ設定インターフェース
  */
 interface ReverbConfig { duration: number,
-    decay: number; }
+    decay: number }
 }
 
 /**
@@ -46,7 +46,7 @@ interface ContextStatus { isInitialized: boolean,'
         bgm: number }
     },
     effects: { compression: boolean,
-        reverb: boolean; }
+        reverb: boolean }
     };
 }
 
@@ -112,18 +112,18 @@ export class AudioContextManager {
      * @returns 初期化成功フラグ
      */
     async initializeAudioContext(): Promise<boolean> { try {
-            // Web Audio API対応確認'
+            // Web Audio API対応確認
             const AudioContextConstructor = (window as any).AudioContext || (window as any).webkitAudioContext;''
             if(!AudioContextConstructor') {'
-                ';
+                ';'
             }'
                 throw new Error('Web Audio API is not supported'); }
             }
             ';
-            // AudioContext作成''
-            this.audioContext = new AudioContextConstructor('')';
+            // AudioContext作成
+            this.audioContext = new AudioContextConstructor()';
             if(this.audioContext.state === 'suspended'') {'
-                ';
+                ';'
             }'
                 console.warn('AudioContext is suspended, will need user interaction to resume'); }
             }
@@ -133,19 +133,19 @@ export class AudioContextManager {
             
             // オーディオグラフの構築
             this.setupAudioGraph();
-            ';
-            // リバーブエフェクトの初期化''
-            await this.initializeReverb('');'
+            ;
+            // リバーブエフェクトの初期化
+            await this.initializeReverb();'
             console.log('AudioContextManager initialized successfully');
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ''
                 component: 'AudioContextManager',')';
                 operation: 'initializeAudioContext',);
                 userAgent: navigator.userAgent),
-                audioContextSupport: !!((window as any).AudioContext || (window as any).webkitAudioContext); }
+                audioContextSupport: !!((window as any).AudioContext || (window as any).webkitAudioContext) }
             });
             this.isEnabled = false;
             return false;
@@ -157,7 +157,7 @@ export class AudioContextManager {
      */'
     private createAudioNodes(): void { ''
         if(!this.audioContext') {'
-            ';
+            ';'
         }'
             throw new Error('AudioContext not initialized'); }
         }
@@ -229,10 +229,10 @@ export class AudioContextManager {
 
     /**
      * オーディオグラフの構築
-     */'
+     */
     private setupAudioGraph(): void { ''
         if(!this.masterGainNode || !this.compressor || !this.sfxGainNode || !this.bgmGainNode') {'
-            ';
+            ';'
         }'
             throw new Error('Audio nodes not created'); }
         }
@@ -257,7 +257,7 @@ export class AudioContextManager {
             
             this.reverbConvolver = this.audioContext.createConvolver();
             this.reverbBuffer = this.createReverbBuffer(;
-                2, );
+                2 );
                 this.audioContext.sampleRate * reverbConfig.duration);
                 this.audioContext.sampleRate,);
                 reverbConfig.decay);
@@ -267,11 +267,11 @@ export class AudioContextManager {
             if(this.isReverbEnabled() {
                 
             }
-                this.reverbConvolver.connect(this.compressor!); }'
+                this.reverbConvolver.connect(this.compressor!); }
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'AudioContextManager',')';
-                operation: 'initializeReverb'); }
+                operation: 'initializeReverb') }
             });
             // リバーブなしで続行
         }
@@ -284,10 +284,10 @@ export class AudioContextManager {
      * @param sampleRate - サンプルレート
      * @param decay - 減衰率
      * @returns リバーブバッファ
-     */'
+     */
     private createReverbBuffer(channels: number, length: number, sampleRate: number, decay: number): AudioBuffer { ''
         if(!this.audioContext') {'
-            ';
+            ';'
         }'
             throw new Error('AudioContext not initialized'); }
         }
@@ -317,8 +317,8 @@ export class AudioContextManager {
             this.compressor.disconnect();
             this.compressor.connect(this.masterGainNode);'
             this.setupCompressor();' }'
-        } catch (error') { ''
-            console.warn('Failed to reconnect compressor:', error); }
+        } catch (error) { ''
+            console.warn('Failed to reconnect compressor:', error) }
         }
     }
 
@@ -331,8 +331,8 @@ export class AudioContextManager {
             this.compressor.disconnect();
             this.compressor.connect(this.masterGainNode);'
             this.compressor.threshold.value = -100; // 実質的に無効化' }'
-        } catch (error') { ''
-            console.warn('Failed to bypass compressor:', error); }
+        } catch (error) { ''
+            console.warn('Failed to bypass compressor:', error) }
         }
     }
 
@@ -344,8 +344,8 @@ export class AudioContextManager {
         try {
             this.reverbConvolver.disconnect();'
             this.reverbConvolver.connect(this.compressor);' }'
-        } catch (error') { ''
-            console.warn('Failed to reconnect reverb:', error); }
+        } catch (error) { ''
+            console.warn('Failed to reconnect reverb:', error) }
         }
     }
 
@@ -354,24 +354,24 @@ export class AudioContextManager {
      */
     bypassReverb(): void { if (!this.reverbConvolver) return;
         
-        try {'
+        try {
             this.reverbConvolver.disconnect();' }'
-        } catch (error') { ''
-            console.warn('Failed to bypass reverb:', error); }
+        } catch (error) { ''
+            console.warn('Failed to bypass reverb:', error) }
         }
     }
 
     /**
      * AudioContextを再開'
      */''
-    async resumeAudioContext('')';
+    async resumeAudioContext()';
         if(this.audioContext && this.audioContext.state === 'suspended') {'
-            try {''
-                await this.audioContext.resume('');
+            try {'
+                await this.audioContext.resume();
         }'
                 console.log('AudioContext resumed');' }'
-            } catch (error') { ''
-                console.warn('Failed to resume AudioContext:', error'); }
+            } catch (error) { ''
+                console.warn('Failed to resume AudioContext:', error') }
             }
         }
     }
@@ -442,19 +442,19 @@ export class AudioContextManager {
 
     /**
      * AudioContextの状態取得
-     * @returns コンテキスト状態'
+     * @returns コンテキスト状態
      */ : undefined''
     getContextStatus(''';
             contextState: this.audioContext ? this.audioContext.state : 'not-created',
-            sampleRate: this.audioContext ? this.audioContext.sampleRate : 0,);
+            sampleRate: this.audioContext ? this.audioContext.sampleRate : 0);
             currentTime: this.audioContext ? this.audioContext.currentTime : 0)';
             volumes: { ''
                 master: this.getGainNodeVolume('master',')';
                 sfx: this.getGainNodeVolume('sfx',')';
-                bgm: this.getGainNodeVolume('bgm'); }
+                bgm: this.getGainNodeVolume('bgm') }
             },
-            effects: { compression: this.isCompressionEnabled(,)
-                reverb: this.isReverbEnabled(); }
+            effects: { compression: this.isCompressionEnabled()
+                reverb: this.isReverbEnabled() }
             }
         };
     }
@@ -509,10 +509,10 @@ export class AudioContextManager {
                 this.audioContext = null; }
             }
             
-            this.isInitialized = false;'
+            this.isInitialized = false;
             '';
-        } catch (error') { ''
-            console.warn('Error disposing AudioContextManager:', error); }
+        } catch (error) { ''
+            console.warn('Error disposing AudioContextManager:', error) }
         }
     }
 
@@ -554,6 +554,6 @@ export function getAudioContextManager(): AudioContextManager { if (!audioContex
  * @returns 新しいシングルトンインスタンス
  */
 export function reinitializeAudioContextManager(): AudioContextManager { if (audioContextManagerInstance) {
-        audioContextManagerInstance.dispose(); }'
+        audioContextManagerInstance.dispose(); }
     }''
     audioContextManagerInstance = new AudioContextManager(');

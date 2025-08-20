@@ -7,7 +7,7 @@ interface Console { commands?: Map<string, CommandData>; }
 }
 
 interface CommandData { description: string,
-    hidden?: boolean; }
+    hidden?: boolean }
 }
 
 interface GameEngine { // Game engine interface }
@@ -16,20 +16,20 @@ interface GameEngine { // Game engine interface }
 interface AutocompleteSettings { maxSuggestions: number,
     fuzzyMatch: boolean,
     contextAware: boolean,
-    learningEnabled: boolean; }
+    learningEnabled: boolean }
 }
 
 interface Suggestion { text: string,
     type: 'command' | 'recent' | 'popular',
     description: string,
     score: number,
-    usage: number; }
+    usage: number }
 }
 
 interface ExecutionHistoryEntry { command: string,
     args: any[],
     success: boolean,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export class EnhancedAutocompleteEngine {
@@ -60,7 +60,7 @@ export class EnhancedAutocompleteEngine {
     }
 
     /**
-     * 自動補完候補を取得'
+     * 自動補完候補を取得
      */''
     public getSuggestions(partial: string, cursorPosition: number | null = null'): Suggestion[] { ''
         if(!partial || typeof partial !== 'string') {
@@ -95,7 +95,7 @@ export class EnhancedAutocompleteEngine {
         if (!this.console.commands) return matches;
         
         for(const [command, data] of this.console.commands) {
-        ';
+        ';'
             '';
             if (command.startsWith(input) && !data.hidden') {
                 matches.push({'
@@ -121,7 +121,7 @@ export class EnhancedAutocompleteEngine {
         if (!this.console.commands) return matches;
         
         for(const [command, data] of this.console.commands) {
-        ';
+        ';'
             '';
             if (!command.startsWith(input) && !data.hidden && command.includes(input)') {
                 matches.push({'
@@ -150,7 +150,7 @@ export class EnhancedAutocompleteEngine {
                 type: 'recent' as const,'';
                 description: 'Recently used',
                 score: 1000 - index * 10);
-                usage: this.getUsageCount(entry.command); }
+                usage: this.getUsageCount(entry.command) }
             });
         
         return this.deduplicateAndSort(recentCommands);
@@ -210,7 +210,7 @@ export class EnhancedAutocompleteEngine {
             command);
             args,);
             success);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         // 履歴サイズ制限
@@ -226,6 +226,6 @@ export class EnhancedAutocompleteEngine {
 
     /**
      * リソースの解放
-     */'
+     */
     public destroy(): void { ''
         this.usageStats.clear(') }

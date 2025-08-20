@@ -6,7 +6,7 @@ import { ReferenceResult } from './ReferenceChecker.js';
 interface ScanSummary { totalFiles: number,
     totalSize: string,
     fileTypes: number,
-    timestamp: string; }
+    timestamp: string }
 }
 
 interface FilesByType { [fileType: string]: FileInfo[],
@@ -14,12 +14,12 @@ interface FilesByType { [fileType: string]: FileInfo[],
 }'
 '';
 interface FormattedFileInfo extends Omit<FileInfo, 'fileSize'> { fileSize: string,
-    relativePath: string; }
+    relativePath: string }
 }
 
 export interface ScanReport { summary: ScanSummary,
     filesByType: FilesByType,
-    files: FormattedFileInfo[];
+    files: FormattedFileInfo[]
     }
 }
 
@@ -29,11 +29,11 @@ interface ReferenceSummary { totalFiles: number,
     totalReferences: number,
     totalImportReferences: number,
     totalStringReferences: number,
-    timestamp: string; }
+    timestamp: string }
 }
 
 export interface ReferenceReport { summary: ReferenceSummary,
-    results: ReferenceResult[];
+    results: ReferenceResult[]
     }
 }
 
@@ -42,7 +42,7 @@ interface SafetySummary { totalFiles: number,
     unsafeToDelete: number,
     totalWarnings: number,
     totalErrors: number,
-    timestamp: string; }
+    timestamp: string }
 }
 
 interface SafetyFileResult { isSafeToDelete: boolean,
@@ -52,7 +52,7 @@ interface SafetyFileResult { isSafeToDelete: boolean,
 export interface SafetyReport { summary: SafetySummary,
     safeFiles: SafetyFileResult[],
     unsafeFiles: SafetyFileResult[],
-    allResults: SafetyFileResult[];
+    allResults: SafetyFileResult[]
     }
 }
 
@@ -60,20 +60,20 @@ interface DeletionSummary { totalFiles: number,
     successfulDeletions: number,
     failedDeletions: number,
     totalSizeDeleted: string,
-    timestamp: string; }
+    timestamp: string }
 }
 
 interface DeletionResult { deleted: boolean,
     verified: boolean,
     backupRecord?: {
-        fileSize?: number; }
+        fileSize?: number }
     };
 }
 
 export interface DeletionReport { summary: DeletionSummary,
     successful: DeletionResult[],
     failed: DeletionResult[],
-    allResults: DeletionResult[];
+    allResults: DeletionResult[]
     }
 }
 
@@ -96,36 +96,36 @@ interface SummaryDetails { operation: string,
     deletion: { attemptedDeletions: number,
         successfulDeletions: number,
         failedDeletions: number,
-        totalSizeDeleted: string; }
+        totalSizeDeleted: string }
     } | null;
 }
-';
+';'
 interface Recommendation { ''
     type: 'warning' | 'error' | 'success' | 'info',
-    message: string; }
+    message: string }
 }
 
 export interface SummaryReport { summary: SummaryDetails,
     recommendations: Recommendation[],
-    nextSteps: string[]; }
+    nextSteps: string[] }
 }
 
 interface SaveResult { saved: boolean,
     filePath: string | null,
     fileName: string,
-    error: string | null; }
+    error: string | null }
 }
 
 interface AllResults { scanReport: ScanReport,
     referenceReport: ReferenceReport,
     safetyReport: SafetyReport,
-    deletionReport: DeletionReport | null; }
+    deletionReport: DeletionReport | null }
 }
 
 export class ReportGenerator {
     private reportsDirectory: string;
     constructor() {
-';
+';'
         '';
         this.reportsDirectory = path.join(process.cwd('), '.cleanup-reports');
 
@@ -134,13 +134,13 @@ export class ReportGenerator {
         this.ensureReportsDirectory(); }
     }
 
-    private async ensureReportsDirectory(): Promise<void> { try {'
+    private async ensureReportsDirectory(): Promise<void> { try {
             await fs.promises.mkdir(this.reportsDirectory, { recursive: true ),' }'
-        } catch (error') { ';'
-            console.error('Error creating reports directory:', error); }
+        } catch (error) { ';'
+            console.error('Error creating reports directory:', error) }
         }
     }
-';
+';'
     formatBytes(bytes: number): string { ''
         if (bytes === 0') return '0 Bytes';'
         const k = 1024;''
@@ -168,7 +168,7 @@ export class ReportGenerator {
             files: scannedFiles.map(file => ({ )
                 ...file),
                 fileSize: this.formatBytes(file.fileSize),
-                relativePath: path.relative(process.cwd(), file.filePath); }
+                relativePath: path.relative(process.cwd(), file.filePath) }
             });
         };
     }
@@ -198,7 +198,7 @@ export class ReportGenerator {
             unsafeToDelete: safetyResults.unsafeToDelete,
             totalWarnings: safetyResults.totalWarnings,
             totalErrors: safetyResults.totalErrors,
-            timestamp: new Date().toISOString(); }
+            timestamp: new Date().toISOString() }
         };
 
         const safeFiles = safetyResults.results.filter((r: SafetyFileResult) => r.isSafeToDelete);
@@ -232,12 +232,12 @@ export class ReportGenerator {
             successful,
             failed,
             allResults: deletionResults.results;
-        },
+        },'
     }'
 '';
     generateSummaryReport(allResults: AllResults'): SummaryReport {
         const { scanReport, referenceReport, safetyReport, deletionReport } = allResults;
-        ';
+        ';'
         const summary: SummaryDetails = { ''
             operation: 'File Cleanup',
             timestamp: new Date().toISOString(),
@@ -307,13 +307,13 @@ export class ReportGenerator {
         const { safetyReport, deletionReport } = allResults;'
 '';
         if(safetyReport.summary.unsafeToDelete > 0') {'
-            ';
+            ';'
         }'
             nextSteps.push('Review unsafe files and manually decide on deletion'); }
         }'
 '';
         if(deletionReport && deletionReport.summary.failedDeletions > 0') {'
-            ';
+            ';'
         }'
             nextSteps.push('Investigate failed deletions and retry if appropriate''); }
         }'
@@ -324,7 +324,7 @@ export class ReportGenerator {
         return nextSteps;
     }
 
-    async saveReport(report: any, fileName: string): Promise<SaveResult> { try {'
+    async saveReport(report: any, fileName: string): Promise<SaveResult> { try {
             await this.ensureReportsDirectory();''
             const timestamp = new Date().toISOString(').replace(/[:.]/g, '-'); }
             const fullFileName = `${timestamp}_${fileName}.json`;
@@ -337,7 +337,7 @@ export class ReportGenerator {
                 fileName: fullFileName, };
                 error: null }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return { saved: false,
                 filePath: null, };
@@ -351,7 +351,7 @@ export class ReportGenerator {
         const { summary, recommendations, nextSteps } = summaryReport;'
 '';
         lines.push('# File Cleanup Summary Report'');''
-        lines.push('');'
+        lines.push();'
         lines.push(`**Operation: ** ${ summary.operation)`),''
         lines.push(`**Timestamp: ** ${summary.timestamp)`'),''
         lines.push(''');'
@@ -368,7 +368,7 @@ export class ReportGenerator {
             lines.push(`- **Space Freed:** ${summary.deletion.totalSizeDeleted)`'});
         }'
         '';
-        lines.push('');'
+        lines.push();'
 '';
         if(recommendations.length > 0') {'
             '';
@@ -378,7 +378,7 @@ export class ReportGenerator {
                 const icon = rec.type === 'warning' ? '⚠️' : rec.type === 'error' ? '❌' : rec.type === 'success' ? '✅' : 'ℹ️'); }'
                 lines.push(`${icon} ${rec.message)`});''
             }');''
-            lines.push('');
+            lines.push();
         }'
 '';
         if(nextSteps.length > 0') {'
@@ -394,7 +394,7 @@ export class ReportGenerator {
         return lines.join('\n');
     }
 
-    async saveTextReport(textReport: string, fileName: string): Promise<SaveResult> { try {'
+    async saveTextReport(textReport: string, fileName: string): Promise<SaveResult> { try {
             await this.ensureReportsDirectory();''
             const timestamp = new Date().toISOString(').replace(/[:.]/g, '-'); }
             const fullFileName = `${timestamp}_${fileName}.md`;
@@ -407,7 +407,7 @@ export class ReportGenerator {
                 fileName: fullFileName, };
                 error: null }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             const errorMessage = error instanceof Error ? error.message: 'Unknown error',
             return { saved: false,
                 filePath: null, };
@@ -416,7 +416,7 @@ export class ReportGenerator {
             },
         }
     }
-';
+';'
     logToConsole(summaryReport: SummaryReport): void { ''
         this.generateTextSummary(summaryReport).then(textSummary => { ');''
             console.log('\n' + '='.repeat(60);''

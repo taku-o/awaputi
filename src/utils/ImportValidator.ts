@@ -12,80 +12,80 @@ interface ValidationRules { requireFromClause: boolean,
     enforceConsistentQuotes: boolean,
     validateFileExtensions: boolean,
     checkMissingFiles: boolean,
-    maxLineLength: number; }
+    maxLineLength: number }
 }
 
 interface ValidationError { type: string,
     line: number,
     message: string,
-    code: string; }
+    code: string }
 }
 
 interface ValidationWarning { type: string,
     line: number,
     message: string,
-    code: string; }
+    code: string }
 }
 
 interface ValidationSuggestion { type: string,
     line: number,
     message: string,
-    code: string; }
+    code: string }
 }
 
 interface ValidationResult { filePath: string | null,
     isValid: boolean,
     errors: ValidationError[],
     warnings: ValidationWarning[],
-    suggestions: ValidationSuggestion[];
+    suggestions: ValidationSuggestion[]
     }
 }
 
 interface LineValidationResult { errors: ValidationError[],
     warnings: ValidationWarning[],
-    suggestions: ValidationSuggestion[];
+    suggestions: ValidationSuggestion[]
     }
 }
 
 interface PathValidationResult { errors: ValidationError[],
     warnings: ValidationWarning[],
-    suggestions: ValidationSuggestion[];
+    suggestions: ValidationSuggestion[]
     }
 }
 
 interface GlobalValidationResult { errors: ValidationError[],
     warnings: ValidationWarning[],
-    suggestions: ValidationSuggestion[];
+    suggestions: ValidationSuggestion[]
     }
 }
 
 interface BraceIssue { type: string,
     message: string,
-    code: string; }
+    code: string }
 }
 
 interface QuoteIssue { type: string,
     message: string,
-    code: string; }
+    code: string }
 }
 
 interface ImportInfo { line: number,
     path: string,
     isNodeModule: boolean,
-    isRelative: boolean; }
+    isRelative: boolean }
 }
 
 interface ImportOrderAnalysis { imports: ImportInfo[],
-    hasIssues: boolean; }
+    hasIssues: boolean }
 }
 
 interface DuplicateImport { line: number,
     path: string,
-    previousLine: number; }
+    previousLine: number }
 }
 
 interface UnusedImport { line: number,
-    name: string; }
+    name: string }
 }
 
 interface ValidationSummary { totalFiles: number,
@@ -96,7 +96,7 @@ interface ValidationSummary { totalFiles: number,
     totalWarnings: number,
     totalSuggestions: number,
     errorTypes: Record<string, number>;
-    warningTypes: Record<string, number>; }
+    warningTypes: Record<string, number> }
 }
 
 export class ImportValidator {
@@ -119,12 +119,12 @@ export class ImportValidator {
     }
 
     /**
-     * ファイルのインポート構文を包括的に検証'
+     * ファイルのインポート構文を包括的に検証
      */''
-    async validateFile(filePath: string'): Promise<ValidationResult> { try {''
+    async validateFile(filePath: string'): Promise<ValidationResult> { try {'
             const content = await fs.readFile(filePath, 'utf8');'
             return this.validateContent(content, filePath);' }'
-        } catch (error') { return { filePath,
+        } catch (error) { return { filePath,
                 isValid: false,';
                 errors: [{' };'
                     type: 'file_read_error',' }'
@@ -186,8 +186,8 @@ export class ImportValidator {
         },
 
         const trimmedLine = line.trim();
-';
-        // 1. 基本構文チェック''
+;
+        // 1. 基本構文チェック
         if(this.validationRules.requireFromClause') {'
             '';
             if (trimmedLine.startsWith('import '') && '';
@@ -196,7 +196,7 @@ export class ImportValidator {
                 result.errors.push({')'
                     type: 'missing_from_clause')';
                     line: lineNumber,'';
-                    message: 'Import statement missing "from" clause',');
+                    message: 'Import statement missing "from" clause',')
         }'
                     code: 'MISSING_FROM'); }
             }
@@ -227,11 +227,11 @@ export class ImportValidator {
         result.errors.push(...pathValidation.errors);
         result.warnings.push(...pathValidation.warnings);
         result.suggestions.push(...pathValidation.suggestions);
-';
-        // 5. 行の長さチェック''
+;
+        // 5. 行の長さチェック
         if(this.validationRules.maxLineLength && line.length > this.validationRules.maxLineLength') {'
             result.warnings.push({')'
-                type: 'long_line',);
+                type: 'long_line',)
         }'
                 line: lineNumber),' }'
                 message: `Line length (${line.length) exceeds recommended maximum (${this.validationRules.maxLineLength)'})`,''
@@ -263,7 +263,7 @@ export class ImportValidator {
                 const resolvedPath = this.resolveRelativePath(importPath, currentFilePath);
                 
                 // ファイル存在チェック
-                if(this.validationRules.checkMissingFiles) {'
+                if(this.validationRules.checkMissingFiles) {
                     this.checkFileExists(resolvedPath).then(exists => { );''
                         if (!exists') {'
                             result.errors.push({'
@@ -279,11 +279,11 @@ export class ImportValidator {
                 }
             }
 
-            // パスの正規化チェック'
+            // パスの正規化チェック
             const normalizedPath = this.normalizePath(importPath);''
             if(normalizedPath !== importPath') {'
                 result.suggestions.push({')'
-                    type: 'path_normalization');
+                    type: 'path_normalization')
             }
                     line: lineNumber, }'
                     message: `Consider normalizing path: ${importPath} → ${normalizedPath}`,')'
@@ -291,14 +291,14 @@ export class ImportValidator {
             }
         }
 ';
-        // ファイル拡張子チェック''
+        // ファイル拡張子チェック
         if(this.validationRules.validateFileExtensions') {'
             '';
             if (importPath.includes('.js'') && !importPath.endsWith('.js')') {'
                 result.warnings.push({')'
                     type: 'suspicious_extension')';
                     line: lineNumber,'';
-                    message: 'File extension in the middle of path may cause issues',');
+                    message: 'File extension in the middle of path may cause issues',')
         }'
                     code: 'SUSPICIOUS_EXTENSION'); }
             }
@@ -316,33 +316,33 @@ export class ImportValidator {
             suggestions: [] }
         },
 
-        // インポート文の順序チェック'
+        // インポート文の順序チェック
         const importOrder = this.analyzeImportOrder(content);''
         if(importOrder.hasIssues') {'
             result.warnings.push({')'
                 type: 'import_order')';
                 line: 0,'';
-                message: 'Consider organizing imports: node modules → relative imports',');
+                message: 'Consider organizing imports: node modules → relative imports',')
         }'
                 code: 'IMPORT_ORDER'); }
         }
 
-        // 重複インポートの検出'
+        // 重複インポートの検出
         const duplicates = this.findDuplicateImports(content);''
         for(const duplicate of duplicates') {'
             result.warnings.push({')'
-                type: 'duplicate_import');
+                type: 'duplicate_import')
         }
                 line: duplicate.line, }'
                 message: `Duplicate import detected: ${duplicate.path}`,')'
                 code: 'DUPLICATE_IMPORT'),
         }
 
-        // 未使用インポートの検出（簡易版）'
+        // 未使用インポートの検出（簡易版）
         const unusedImports = this.findUnusedImports(content);''
         for(const unused of unusedImports') {'
             result.warnings.push({')'
-                type: 'unused_import');
+                type: 'unused_import')
         }
                 line: unused.line, }'
                 message: `Possibly unused import: ${unused.name}`,')'
@@ -356,10 +356,10 @@ export class ImportValidator {
      * インポート行かどうかを判定
      */'
     isImportLine(line: string): boolean { ''
-        const trimmedLine = line.trim('')';
+        const trimmedLine = line.trim()';
         return trimmedLine.startsWith('import '') || '';
-               trimmedLine.includes(' import('') ||'';
-               trimmedLine.includes('require('')';
+               trimmedLine.includes(' import() ||'';
+               trimmedLine.includes('require()';
     isSideEffectImport(line: string'): boolean {''
         return /^import\s*['"`][^'"`]+['"`]\s*;? \s*$/.test(line.trim(); }
     }
@@ -380,13 +380,13 @@ export class ImportValidator {
         if(braceCount > 0') {'
             issues.push({''
                 type: 'unclosed_brace',')';
-                message: 'Unclosed brace in import statement',');
+                message: 'Unclosed brace in import statement',')
         }'
                 code: 'UNCLOSED_BRACE');' }'
         } else if (braceCount < 0') { issues.push({''
                 type: 'extra_closing_brace',')';
                 message: 'Extra closing brace in import statement',')';
-                code: 'EXTRA_BRACE'); }
+                code: 'EXTRA_BRACE') }
         }
 
         return issues;
@@ -404,7 +404,7 @@ export class ImportValidator {
         if(singleQuotes > 0 && doubleQuotes > 0") {"
             issues.push({""
                 type: 'mixed_quotes',')';
-                message: 'Mixed quote styles in import statement',');
+                message: 'Mixed quote styles in import statement',')
         }'
                 code: 'MIXED_QUOTES'); }
         }
@@ -419,7 +419,7 @@ export class ImportValidator {
         const lines = content.split('\n');
         
         for(let i = 0; i < lines.length; i++) {
-        ';
+        ';'
             const line = lines[i];''
             if (this.isImportLine(line)') {''
                 const pathMatch = line.match(/from\s*['"`]([^'"`]+")['"`]/") || "";
@@ -428,7 +428,7 @@ export class ImportValidator {
                     imports.push({)"
                         line: i + 1,")";
                         path: pathMatch[1]"),"";
-                        isNodeModule: !pathMatch[1].startsWith('./'') && !pathMatch[1].startsWith('../''),';
+                        isNodeModule: !pathMatch[1].startsWith('./'') && !pathMatch[1].startsWith('../''),'
         }'
                         isRelative: pathMatch[1].startsWith('./'') || pathMatch[1].startsWith('../'); }
                     });
@@ -458,14 +458,14 @@ export class ImportValidator {
 
     /**
      * 重複インポートを検出
-     */'
+     */
     findDuplicateImports(content: string): DuplicateImport[] { ''
         const imports = new Map<string, number>(');'
         const duplicates: DuplicateImport[] = [],'';
         const lines = content.split('\n');
         
         for(let i = 0; i < lines.length; i++) {
-        ';
+        ';'
             const line = lines[i];''
             if (this.isImportLine(line)') {''
                 const pathMatch = line.match(/from\s*['"`]([^'"`]+")['"`]/") || "";
@@ -501,7 +501,7 @@ export class ImportValidator {
             if(this.isImportLine(line) {
         
         }
-                // 名前付きインポートから名前を抽出 }'
+                // 名前付きインポートから名前を抽出 }
                 const namedMatch = line.match(/import\s*\{\s*([^)]+)\s*\}/);''
                 if(namedMatch') {'
                     '';
@@ -510,7 +510,7 @@ export class ImportValidator {
                         const cleanName = name.split(' as ')[0].trim();
                         if(!this.isNameUsedInContent(cleanName, content, i) {
                             unused.push({)
-                                line: i + 1,);
+                                line: i + 1,)
                 }
                                 name: cleanName); }
                         }
@@ -523,7 +523,7 @@ export class ImportValidator {
                     const name = defaultMatch[1];
                     if(!this.isNameUsedInContent(name, content, i) {
                         unused.push({)
-                            line: i + 1,);
+                            line: i + 1,)
                 }
                             name: name); }
                     }
@@ -562,8 +562,8 @@ export class ImportValidator {
      */
     resolveRelativePath(relativePath: string, currentFilePath: string): string { const currentDir = path.dirname(currentFilePath);
         let resolved = path.resolve(currentDir, relativePath);
-        ';
-        // .js拡張子を追加（必要な場合）''
+        ;
+        // .js拡張子を追加（必要な場合）
         if (!path.extname(resolved)') {''
             resolved += '.js'; }
         }
@@ -607,8 +607,7 @@ export class ImportValidator {
             totalWarnings: 0,
             totalSuggestions: 0, }
             errorTypes: {},
-            warningTypes: {}
-        },
+            warningTypes: {},
 
         for(const result of results) {
 
@@ -634,7 +633,7 @@ export class ImportValidator {
             
                 summary.filesWithWarnings++;
                 summary.totalWarnings += result.warnings.length;
-                ';
+                ';'
                 for (const warning of result.warnings) {'
             
             }'

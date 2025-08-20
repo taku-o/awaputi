@@ -41,7 +41,7 @@ export interface ErrorReport { id: string,
     occurrenceCount: number,
     firstSeen: number,
     lastSeen: number,
-    resolved: boolean; }
+    resolved: boolean }
 }
 
 export interface ErrorGroup { id: string,
@@ -49,7 +49,7 @@ export interface ErrorGroup { id: string,
     errors: ErrorReport[],
     totalCount: number,';
     lastOccurrence: number,'';
-    severity: 'low' | 'medium' | 'high' | 'critical'; }
+    severity: 'low' | 'medium' | 'high' | 'critical' }
 }
 
 export class ErrorTrackingSystem {
@@ -92,19 +92,19 @@ export class ErrorTrackingSystem {
     /**
      * 初期化
      */
-    private initialize(): void { try {'
-            this.setupGlobalErrorHandlers();''
-            this.loadStoredErrors('')';
+    private initialize(): void { try {
+            this.setupGlobalErrorHandlers();
+            this.loadStoredErrors()';
             console.log('ErrorTrackingSystem initialized');' }'
-        } catch (error') { ''
-            console.error('Failed to initialize ErrorTrackingSystem:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize ErrorTrackingSystem:', error) }
         }
     }
 
     /**
      * グローバルエラーハンドラーの設定
      */
-    private setupGlobalErrorHandlers(): void { // JavaScript エラーハンドラー'
+    private setupGlobalErrorHandlers(): void { // JavaScript エラーハンドラー
         this.originalErrorHandler = window.onerror;''
         window.onerror = (message, source, line, column, error') => { '
             this.captureError({')'
@@ -123,7 +123,7 @@ export class ErrorTrackingSystem {
             return false;
         };
 
-        // Promise rejection ハンドラー'
+        // Promise rejection ハンドラー
         this.originalUnhandledRejectionHandler = window.onunhandledrejection;''
         window.onunhandledrejection = (event') => {  this.captureError({' }'
                 type: 'unhandled', })
@@ -141,8 +141,8 @@ export class ErrorTrackingSystem {
     /**
      * エラーの捕捉と記録
      */
-    async captureError(errorData: Partial<ErrorReport>): Promise<string> { try {'
-            const errorId = this.generateErrorId();''
+    async captureError(errorData: Partial<ErrorReport>): Promise<string> { try {
+            const errorId = this.generateErrorId();
             const context = await this.captureContext(''';
                 type: errorData.type || 'custom','';
                 message: errorData.message || 'Unknown error',
@@ -177,15 +177,15 @@ export class ErrorTrackingSystem {
             this.saveErrorToStorage(errorReport);
 
             // 自動レポート
-            if(this.options.enableAutoReporting) {'
-                ';
+            if(this.options.enableAutoReporting) {
+                ';'
             }'
                 await this.reportError(errorReport'); }
             }'
 '';
             console.error('Error captured:', errorReport);'
             return errorId;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to capture error:', error');''
             return ''; }
         }
@@ -223,10 +223,10 @@ export class ErrorTrackingSystem {
             // パフォーマンス指標
             context.performanceMetrics = this.capturePerformanceMetrics();
 
-            // スクリーンショット（オプション）'
+            // スクリーンショット（オプション）
             if (this.options.enableScreenshot) { context.screenshot = await this.captureScreenshot();' }'
-            } catch (error') { ''
-            console.error('Failed to capture full context:', error); }
+            } catch (error) { ''
+            console.error('Failed to capture full context:', error) }
         }
 
         return context;
@@ -238,12 +238,12 @@ export class ErrorTrackingSystem {
     private async captureGameState(): Promise<any> { try {
             // タイムアウト付きでゲーム状態を取得
             return await Promise.race([);
-                this.getGameStateFromGlobalObjects(),';
+                this.getGameStateFromGlobalObjects(),;
                 new Promise((_, reject) => '';
                     setTimeout((') => reject(new Error('Timeout'), this.options.contextCaptureTimeout)];
                 )]';
             ]);' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             return { error: 'Failed to capture game state' }
         }
     }
@@ -259,7 +259,7 @@ export class ErrorTrackingSystem {
                 const obj = (window as any')[objName];''
                 if (obj && typeof obj === 'object') { }'
                     gameState[objName] = this.extractSafeProperties(obj, this.options.maxContextDepth);' }'
-                } catch (error') { ' }'
+                } catch (error) { ' }'
                 gameState[objName] = { error: 'Failed to extract' }
             }
         });
@@ -282,14 +282,14 @@ export class ErrorTrackingSystem {
         let propertyCount = 0;
 
         for(const key in obj) {
-';
+';'
             '';
             if (propertyCount >= maxProperties') break;
 
             try {
                 const value = obj[key];
                 ';
-                // 関数やDOM要素は除外''
+                // 関数やDOM要素は除外
                 if (typeof value === 'function' || value instanceof Element') {
 
         }
@@ -299,9 +299,9 @@ export class ErrorTrackingSystem {
                 if (typeof value === 'object' && value !== null) { result[key] = this.extractSafeProperties(value, depth - 1); }
                 } else { result[key] = value; }
                 }
-';
+';'
                 propertyCount++;''
-            } catch (error') { ''
+            } catch (error) { ''
                 result[key] = '[Error extracting value]'; }
             }
         }
@@ -322,11 +322,11 @@ export class ErrorTrackingSystem {
                         const value = localStorage.getItem(key);
                 }'
                         storage[key] = value;' }'
-                    } catch (error') { ''
+                    } catch (error) { ''
                         storage[key] = '[Error reading value]'; }
                     }'
                 }''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             return { error: 'LocalStorage access denied' }
         }
 
@@ -346,11 +346,11 @@ export class ErrorTrackingSystem {
                         const value = sessionStorage.getItem(key);
                 }'
                         storage[key] = value;' }'
-                    } catch (error') { ''
+                    } catch (error) { ''
                         storage[key] = '[Error reading value]'; }
                     }'
                 }''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             return { error: 'SessionStorage access denied' }
         }
 
@@ -360,7 +360,7 @@ export class ErrorTrackingSystem {
     /**
      * パフォーマンス指標の取得'
      */''
-    private capturePerformanceMetrics('')';
+    private capturePerformanceMetrics()';
             if('performance' in window') {'
                 '';
                 const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
@@ -381,7 +381,7 @@ export class ErrorTrackingSystem {
                         downlink: (navigator as any).connection.downlink }
                     } : null'
                 };''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             return { error: 'Performance metrics not available' }
         }
 
@@ -391,7 +391,7 @@ export class ErrorTrackingSystem {
     /**
      * First Paint 時間の取得'
      */''
-    private getFirstPaintTime('')';
+    private getFirstPaintTime()';
             const paintEntries = performance.getEntriesByType('paint'');''
             const firstPaint = paintEntries.find(entry => entry.name === 'first-paint');
             return firstPaint ? firstPaint.startTime: null } catch (error) { return null; }
@@ -401,8 +401,8 @@ export class ErrorTrackingSystem {
     /**
      * スクリーンショットの取得
      */
-    private async captureScreenshot(): Promise<string | null> { try {'
-            // html2canvas などのライブラリが利用可能な場合''
+    private async captureScreenshot(): Promise<string | null> { try {
+            // html2canvas などのライブラリが利用可能な場合
             if (typeof (window as any').html2canvas === 'function') {
                 const canvas = await (window as any).html2canvas(document.body, {);
                     width: Math.min(window.innerWidth, 1200),
@@ -410,8 +410,8 @@ export class ErrorTrackingSystem {
                     useCORS: true' }'
                 }');''
                 return canvas.toDataURL('image/jpeg', 0.5);''
-            } catch (error') { ''
-            console.error('Screenshot capture failed:', error); }
+            } catch (error) { ''
+            console.error('Screenshot capture failed:', error) }
         }
 
         return null;
@@ -510,15 +510,15 @@ export class ErrorTrackingSystem {
             errors.push(error);
             
             // 最大数を超えた場合は古いものを削除
-            if(errors.length > this.options.maxErrors) {'
-                ';
+            if(errors.length > this.options.maxErrors) {
+                ';'
             }'
                 errors.splice(0, errors.length - this.options.maxErrors'); }
             }'
             '';
             localStorage.setItem('errorTrackingData', JSON.stringify(errors);''
-        } catch (error') { ''
-            console.error('Failed to save error to storage:', error); }
+        } catch (error) { ''
+            console.error('Failed to save error to storage:', error) }
         }
     }
 
@@ -534,15 +534,15 @@ export class ErrorTrackingSystem {
                 }
             });'
             this.errorCount = errors.length;''
-        } catch (error') { ''
-            console.error('Failed to load stored errors:', error); }
+        } catch (error) { ''
+            console.error('Failed to load stored errors:', error) }
         }
     }
 
     /**
      * ストレージからエラーデータを取得'
      */''
-    private getStoredErrors('')';
+    private getStoredErrors()';
             const data = localStorage.getItem('errorTrackingData');
             return data ? JSON.parse(data) : [];
         } catch (error) { return []; }
@@ -552,11 +552,11 @@ export class ErrorTrackingSystem {
     /**
      * エラーレポート送信'
      */''
-    private async reportError(error: ErrorReport'): Promise<boolean> { try {'
-            // ここで実際のレポート送信ロジックを実装''
+    private async reportError(error: ErrorReport'): Promise<boolean> { try {
+            // ここで実際のレポート送信ロジックを実装
             console.log('Auto-reporting error:', error);'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to report error:', error);
             return false; }
         }
@@ -647,10 +647,10 @@ export class ErrorTrackingSystem {
      * エラーデータのクリア
      */'
     clearErrors(): void { this.errors.clear();''
-        this.errorGroups.clear('')';
+        this.errorGroups.clear()';
             localStorage.removeItem('errorTrackingData');' }'
-        } catch (error') { ''
-            console.error('Failed to clear error storage:', error); }
+        } catch (error) { ''
+            console.error('Failed to clear error storage:', error) }
         }
     }
 
@@ -665,9 +665,9 @@ export class ErrorTrackingSystem {
         }
         
         if (this.originalUnhandledRejectionHandler) { window.onunhandledrejection = this.originalUnhandledRejectionHandler; }
-        }'
+        }
 '';
-        this.clearErrors('')';
+        this.clearErrors()';
         console.log('ErrorTrackingSystem destroyed'');'
     }''
 }

@@ -7,19 +7,19 @@ import { jest } from '@jest/globals';
 
 // TypeScript向けのグローバル型拡張
 declare global { interface Window {
-        testUtils: TestUtils;
+        testUtils: TestUtils
     }
     }
     
     var testUtils: TestUtils,
     var HTMLCanvasElement: { prototype: HTMLCanvasElement,
-        new(): HTMLCanvasElement;
+        new(): HTMLCanvasElement
     }
     };
     var Image: { new(): MockImage;
     }
     };
-    var File: { new(bits: any[], name: string, options?: FilePropertyBag): File;
+    var File: { new(bits: any[], name: string, options?: FilePropertyBag): File
     }
     };
     var FileReader: { new(): MockFileReader;
@@ -78,7 +78,7 @@ interface MockImage { onload: (() => void) | null,
     width: number,
     height: number,
     src: string,
-    _src?: string; }
+    _src?: string }
 }
 
 interface MockFileReader { onload: ((event: any) => void) | null,
@@ -87,7 +87,7 @@ interface MockFileReader { onload: ((event: any) => void) | null,
     result: string | null,
     readyState: number,
     readAsDataURL: (file: File) => void,
-    readAsText: (file: File) => void; }
+    readAsText: (file: File) => void }
 }
 
 interface MockBlob { size: number,
@@ -96,23 +96,23 @@ interface MockBlob { size: number,
     slice: (start?: number, end?: number, contentType?: string) => MockBlob;
     stream: () => ReadableStream,
     text: () => Promise<string>,
-    arrayBuffer: () => Promise<ArrayBuffer>; }
+    arrayBuffer: () => Promise<ArrayBuffer> }
 }
 
 interface MockURL { createObjectURL: jest.Mock<string>,
-    revokeObjectURL: jest.Mock; }
+    revokeObjectURL: jest.Mock }
 }
 
 interface MockResizeObserver { callback: ResizeObserverCallback,
     observe: () => void,
     unobserve: () => void,
-    disconnect: () => void; }
+    disconnect: () => void }
 }
 
 interface MockIntersectionObserver { callback: IntersectionObserverCallback,
     observe: () => void,
     unobserve: () => void,
-    disconnect: () => void; }
+    disconnect: () => void }
 }
 
 interface MockStorage { getItem: jest.Mock<string | null>,
@@ -120,24 +120,24 @@ interface MockStorage { getItem: jest.Mock<string | null>,
     removeItem: jest.Mock,
     clear: jest.Mock,
     length: number,
-    key: jest.Mock<string | null>; }
+    key: jest.Mock<string | null> }
 }
 
 interface MockIndexedDB { open: jest.Mock,
-    deleteDatabase: jest.Mock; }
+    deleteDatabase: jest.Mock }
 }
 
-interface TestUtils { waitForElement: (selector: string, timeout?: number) => Promise<Element>;'
+interface TestUtils { waitForElement: (selector: string, timeout?: number) => Promise<Element>;
     fireEvent: (element: Element, eventType: string, eventData?: any) => Event;''
-    waitFor: (conditionFn: () => boolean, timeout?: number') => Promise<void>; }
+    waitFor: (conditionFn: () => boolean, timeout?: number') => Promise<void> }
 }
 ';
-// DOM環境の強化''
+// DOM環境の強化
 import { TextEncoder, TextDecoder } from 'util';
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 ';
-// Canvas API モック''
+// Canvas API モック
 global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string'): MockCanvasRenderingContext2D | null => {  ''
     if(contextType === '2d') {
         return { // 描画メソッド
@@ -166,7 +166,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string'): 
             restore: jest.fn(),
             translate: jest.fn(),
             rotate: jest.fn(),
-            scale: jest.fn(),';
+            scale: jest.fn(),
             transform: jest.fn(),'';
             setTransform: jest.fn(''';
             fillStyle: '#000000','';
@@ -190,7 +190,7 @@ global.HTMLCanvasElement.prototype.getContext = jest.fn((contextType: string'): 
         };
     }
     return null;
-});'
+});
 '';
 global.HTMLCanvasElement.prototype.toDataURL = jest.fn((') => '';
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=='
@@ -211,18 +211,15 @@ global.Image = class MockImageClass implements MockImage { onload: (() => void) 
     constructor() {
     
         // src設定時の非同期読み込みをシミュレート
-        setTimeout(() => { 
-    
-    }
-    }
+        setTimeout(() => {}
             if (this.onload) { }
                 this.onload(); }
             }
         }, 0);
     }
     
-    set src(value: string) { this._src = value;'
-        // 非同期でonloadを呼び出し''
+    set src(value: string) { this._src = value;
+        // 非同期でonloadを呼び出し
         setTimeout((') => { ''
             if (this.onload && typeof this.onload === 'function') { }
                 this.onload(); }
@@ -239,8 +236,8 @@ global.Image = class MockImageClass implements MockImage { onload: (() => void) 
 global.File = class MockFileClass { bits: any[],
     name: string,
     type: string,
-    size: number,);
-    lastModified: number)';
+    size: number);
+    lastModified: number);
     '';
     constructor(bits: any[], name: string, options: FilePropertyBag = {)') {
         this.bits = bits;'
@@ -257,10 +254,10 @@ global.FileReader = class MockFileReaderClass implements MockFileReader { onload
     result: string | null = null,
     readyState = 0; // EMPTY
     
-    readAsDataURL(file: File): void {'
-        this.readyState = 1; // LOADING''
+    readAsDataURL(file: File): void {
+        this.readyState = 1; // LOADING
         setTimeout((') => { '
-            this.readyState = 2; // DONE''
+            this.readyState = 2; // DONE
             this.result = 'data:image/png;base64,test'; }
             if (this.onload) { }
                 this.onload({ target: this });
@@ -268,9 +265,9 @@ global.FileReader = class MockFileReaderClass implements MockFileReader { onload
         }, 10);
     }
     ';
-    readAsText(file: File): void { this.readyState = 1; // LOADING''
+    readAsText(file: File): void { this.readyState = 1; // LOADING
         setTimeout((') => { '
-            this.readyState = 2; // DONE''
+            this.readyState = 2; // DONE
             this.result = 'test content'; }
             if (this.onload) { }
                 this.onload({ target: this });
@@ -285,7 +282,7 @@ global.Blob = class MockBlobClass implements MockBlob { size: number,
     parts: any[],
     
     constructor(parts: any[] = [], options: BlobPropertyBag = {) {
-    ';
+    ';'
         '';
         this.size = parts.reduce((size, part) => size + part.length, 0');''
         this.type = options.type || '';
@@ -308,8 +305,8 @@ global.Blob = class MockBlobClass implements MockBlob { size: number,
         });
     }'
     '';
-    text('')';
-        return Promise.resolve(this.parts.join('');
+    text()';
+        return Promise.resolve(this.parts.join();
     }
     
     arrayBuffer(): Promise<ArrayBuffer>;
@@ -317,10 +314,10 @@ global.Blob = class MockBlobClass implements MockBlob { size: number,
     }
 } as any;
 
-// URL API モック'
+// URL API モック
 global.URL = { ''
     createObjectURL: jest.fn<string>((') => 'blob:http://localhost/test'),'';
-    revokeObjectURL: jest.fn('')';
+    revokeObjectURL: jest.fn()';
 Object.defineProperty(global.navigator, 'share', {);
     value: jest.fn().mockResolvedValue(undefined),';
     writable: true' }'
@@ -348,26 +345,26 @@ Object.defineProperty(global.navigator, 'languages', {')'
     value: ['ja-JP', 'ja', 'en-US', 'en'],')';
     writable: true)'),
 ';
-// Clipboard API モック''
+// Clipboard API モック
 Object.defineProperty(global.navigator, 'clipboard', {)
     value: {),'
         writeText: jest.fn().mockResolvedValue(undefined),'';
         readText: jest.fn(').mockResolvedValue('test text'),
         write: jest.fn().mockResolvedValue(undefined),
-        read: jest.fn().mockResolvedValue([]); }
+        read: jest.fn().mockResolvedValue([]) }
     },'
     writable: true'';
 }'),
 ';
-// Permissions API モック''
+// Permissions API モック
 Object.defineProperty(global.navigator, 'permissions', { )'
     value: {),''
-        query: jest.fn(').mockResolvedValue({ state: 'granted' ); }
+        query: jest.fn(').mockResolvedValue({ state: 'granted' ) }
     },'
     writable: true'';
 }'),
 ';
-// Performance API 強化''
+// Performance API 強化
 Object.defineProperty(global.performance, 'now', { );
     value: jest.fn(() => Date.now(),';
     writable: true' }'
@@ -404,7 +401,7 @@ Object.defineProperty(global.performance, 'clearMeasures', { );
 }'),'
 '';
 Object.defineProperty(global.performance, 'memory', { value: {
-        usedJSHeapSize: 10000000,);
+        usedJSHeapSize: 10000000);
         totalJSHeapSize: 50000000);
         jsHeapSizeLimit: 2000000000 }
     },)
@@ -413,7 +410,7 @@ Object.defineProperty(global.performance, 'memory', { value: {
 // ResizeObserver モック
 global.ResizeObserver = class MockResizeObserverClass implements MockResizeObserver { callback: ResizeObserverCallback,
     constructor(callback: ResizeObserverCallback) {
-        this.callback = callback; }
+        this.callback = callback }
     }
     
     observe(): void { // 非同期でコールバックを呼び出し
@@ -426,13 +423,12 @@ global.ResizeObserver = class MockResizeObserverClass implements MockResizeObser
     }
     
     unobserve(): void {}
-    disconnect(): void {}
-} as any;
+    disconnect(): void {} as any;
 
 // IntersectionObserver モック
 global.IntersectionObserver = class MockIntersectionObserverClass implements MockIntersectionObserver { callback: IntersectionObserverCallback,
     constructor(callback: IntersectionObserverCallback) {
-        this.callback = callback; }
+        this.callback = callback }
     }
     
     observe(): void { setTimeout(() => { 
@@ -445,8 +441,7 @@ global.IntersectionObserver = class MockIntersectionObserverClass implements Moc
     }
     
     unobserve(): void {}
-    disconnect(): void {}
-} as any;
+    disconnect(): void {} as any;
 
 // LocalStorage モック
 const localStorageMock = (() => {  }
@@ -506,7 +501,7 @@ global.window.open = jest.fn();
 global.window.close = jest.fn();
 global.window.focus = jest.fn();
 
-// CSS モック'
+// CSS モック
 global.getComputedStyle = jest.fn(() => ({ ''
     getPropertyValue: jest.fn((') => '''),'';
     width: '100px','';
@@ -525,16 +520,16 @@ global.Element.prototype.animate = jest.fn(() => ({ play: jest.fn(),
     cancel: jest.fn(),
     finish: jest.fn(),
     addEventListener: jest.fn(),
-    removeEventListener: jest.fn(); }
+    removeEventListener: jest.fn() }
 } as Animation);
 
 // Fetch API モック
 global.fetch = jest.fn(() =>;
-    Promise.resolve({ ok: true,)
-        status: 200),';
+    Promise.resolve({ ok: true)
+        status: 200),
         json: () => Promise.resolve({),''
-        text: (') => Promise.resolve(''),
-        blob: () => Promise.resolve(new Blob(); }
+        text: (') => Promise.resolve(),
+        blob: () => Promise.resolve(new Blob() }
     } as Response)
 );
 
@@ -545,11 +540,11 @@ global.console = { ...originalConsole,
     warn: jest.fn(),
     error: jest.fn(),
     info: jest.fn(),
-    debug: jest.fn(); }
+    debug: jest.fn() }
 };
-';
-// テスト後のクリーンアップ''
-afterEach((') => {  // DOM をクリーンアップ''
+;
+// テスト後のクリーンアップ
+afterEach((') => {  // DOM をクリーンアップ
     document.body.innerHTML = '';''
     document.head.innerHTML = '';
     
@@ -561,11 +556,11 @@ afterEach((') => {  // DOM をクリーンアップ''
 });
 
 // テストスイート終了後のクリーンアップ
-afterAll(() => {  // グローバルなリソースをクリーンアップ }'
+afterAll(() => {  // グローバルなリソースをクリーンアップ }
     global.console = originalConsole;' }'
 }');
 ';
-// エラーハンドリング''
+// エラーハンドリング
 process.on('unhandledRejection', (reason, promise') => {  ' }'
     console.error('統合テストで未処理のPromise拒否:', promise, 'reason:', reason); }
 });
@@ -612,7 +607,7 @@ global.testUtils = { // DOM要素の存在確認
                     } catch (error) { reject(error); }
                 }
             };
-            ';
+            ';'
             checkCondition();''
         }');'
     }''

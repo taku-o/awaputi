@@ -7,7 +7,7 @@
 interface HistorySettings { maxHistoryEntries: number,
     maxParticipationEntries: number,
     retentionDays: number,
-    enableDetailedTracking: boolean; }
+    enableDetailedTracking: boolean }
 }
 
 interface Statistics { totalEventsParticipated: number,
@@ -15,7 +15,7 @@ interface Statistics { totalEventsParticipated: number,
     favoriteEventType: string | null,
     averageScore: number,
     bestRank: number | null,
-    streakCount: number; }
+    streakCount: number }
 }
 
 interface HistoryEntry { id: string,
@@ -42,7 +42,7 @@ interface ParticipationData { eventId: string,
     bestRank: number | null,
     lastParticipation: number,
     averageScore: number,
-    totalScore: number; }
+    totalScore: number }
 }
 
 interface EventResults { score: number,
@@ -59,7 +59,7 @@ interface RankingData { currentRank: number,
     previousRank: number,
     improvement: number,
     totalParticipants: number,
-    percentile: number; }
+    percentile: number }
 }
 
 interface Event { id: string,
@@ -92,26 +92,26 @@ interface EventTypeStats { [key: string]: number, }
 interface MonthlyStats { [key: string]: {
         count: number,
         totalScore: number,
-        averageScore: number; }
+        averageScore: number }
     };
 }
 
 interface CategoryStats { [key: string]: {
         count: number,
-        points: number; }
+        points: number }
     };
 }
 
 interface AchievementStats { totalAchievements: number,
     totalPoints: number,
-    categories: CategoryStats;
+    categories: CategoryStats
     }
 }
 
 interface PersonalBests { [eventId: string]: {
         bestScore: number,
         bestRank: number | null,
-        completionCount: number; }
+        completionCount: number }
     };
 }
 
@@ -120,7 +120,7 @@ interface DetailedStatistics { general: Statistics,
     monthly: MonthlyStats,
     achievements: AchievementStats,
     recentActivity: HistoryEntry[],
-    personalBests: PersonalBests;
+    personalBests: PersonalBests
     }
 }
 
@@ -129,7 +129,7 @@ interface ExportData { eventHistory: HistoryEntry[],
     achievementHistory: HistoryEntry[],
     rankingHistory: HistoryEntry[],
     statistics: Statistics,
-    exportDate: number; }
+    exportDate: number }
 }
 
 export class EventHistoryManager {
@@ -174,9 +174,9 @@ export class EventHistoryManager {
     }
     
     /**
-     * 履歴データを読み込み'
+     * 履歴データを読み込み
      */''
-    loadHistoryData('')';
+    loadHistoryData()';
             const savedHistory = localStorage.getItem('gameEventHistory'');''
             const savedParticipation = localStorage.getItem('gameEventParticipation'');''
             const savedStatistics = localStorage.getItem('gameEventStatistics');
@@ -195,26 +195,26 @@ export class EventHistoryManager {
             if (savedStatistics) { Object.assign(this.statistics, JSON.parse(savedStatistics); }
             }
             ';
-            // 古いデータをクリーンアップ''
-            this.cleanupOldHistory('')';
+            // 古いデータをクリーンアップ
+            this.cleanupOldHistory()';
             console.log('Event history data loaded');''
-        } catch (error') { ''
-            console.error('Failed to load event history data:', error); }
+        } catch (error) { ''
+            console.error('Failed to load event history data:', error) }
         }
     }
     
     /**
      * 履歴データを保存'
      */''
-    saveHistoryData('')';
+    saveHistoryData()';
             localStorage.setItem('gameEventHistory', JSON.stringify(this.eventHistory)');''
             localStorage.setItem('gameEventParticipation');''
                 JSON.stringify(Array.from(this.participationHistory.entries())');''
             localStorage.setItem('gameEventStatistics', JSON.stringify(this.statistics)');'
             '';
             console.log('Event history data saved');''
-        } catch (error') { ''
-            console.error('Failed to save event history data:', error); }
+        } catch (error) { ''
+            console.error('Failed to save event history data:', error) }
         }
     }
     
@@ -224,7 +224,7 @@ export class EventHistoryManager {
     recordEventStart(event: Event): void { const historyEntry: HistoryEntry = {''
             id: this.generateHistoryId(''';
             type: 'event_start',
-            eventId: event.id,);
+            eventId: event.id);
             eventName: event.name);
             eventType: event.type,);
             timestamp: Date.now(),
@@ -248,7 +248,7 @@ export class EventHistoryManager {
     recordEventCompletion(event: Event, results: EventResults): void { const historyEntry: HistoryEntry = {''
             id: this.generateHistoryId(''';
             type: 'event_completion',
-            eventId: event.id,);
+            eventId: event.id);
             eventName: event.name);
             eventType: event.type,);
             timestamp: Date.now(),
@@ -258,8 +258,7 @@ export class EventHistoryManager {
                 rank: results.rank,
                 completionTime: results.completionTime,
                 achievements: results.achievements || [], }
-                rewards: results.rewards || {}
-            },
+                rewards: results.rewards || {},
             details: { difficulty: results.difficulty,
                 participantCount: results.participantCount,
                 personalBest: results.personalBest || false }
@@ -278,7 +277,7 @@ export class EventHistoryManager {
      */'
     recordAchievementUnlock(achievement: Achievement, eventContext?: any): void { const historyEntry: HistoryEntry = {''
             id: this.generateHistoryId(''';
-            type: 'achievement_unlock',);
+            type: 'achievement_unlock');
             achievementId: achievement.id);
             achievementName: achievement.name,);
             timestamp: Date.now(),
@@ -301,7 +300,7 @@ export class EventHistoryManager {
      * ランキング更新を記録
      */'
     recordRankingUpdate(eventId: string, rankingData: RankingData): void { const historyEntry: HistoryEntry = {''
-            id: this.generateHistoryId('')';
+            id: this.generateHistoryId()';
             type: 'ranking_update');
             eventId: eventId,);
             timestamp: Date.now(),
@@ -355,14 +354,14 @@ export class EventHistoryManager {
                 averageScore: 0,
                 totalScore: 0 }
             }),
-        }'
+        }
         '';
         const participation = this.participationHistory.get(eventId')!;'
         '';
         if(status === 'started') {'
             participation.participationCount++;'
         }'
-            participation.lastParticipation = Date.now('') }'
+            participation.lastParticipation = Date.now() }'
         } else if (status === 'completed' && results) { participation.completionCount++;
             participation.totalScore += results.score;
             participation.averageScore = participation.totalScore / participation.completionCount;
@@ -403,17 +402,17 @@ export class EventHistoryManager {
             .reduce((a, b) => eventTypeCount[a] > eventTypeCount[b] ? a: b),
         
         // 連続参加記録を更新
-        this.updateStreakCount(); }
+        this.updateStreakCount() }
     }
     
     /**
      * イベントタイプ別参加回数を取得
      */
-    private getEventTypeParticipationCount(): EventTypeStats {'
+    private getEventTypeParticipationCount(): EventTypeStats {
         const counts: EventTypeStats = {}''
         this.eventHistory.forEach(entry => {  ');''
             if(entry.type === 'event_completion'') {'
-                ';
+                ';'
             }'
                 const eventType = entry.eventType || 'unknown'; }
                 counts[eventType] = (counts[eventType] || 0) + 1; }
@@ -426,7 +425,7 @@ export class EventHistoryManager {
     /**
      * 連続参加記録を更新
      */'
-    private updateStreakCount(): void { // 過去7日間の参加状況をチェック''
+    private updateStreakCount(): void { // 過去7日間の参加状況をチェック
         const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000');'
         const recentParticipations = this.eventHistory.filter(entry => ')';
             entry.type === 'event_start' && entry.timestamp > sevenDaysAgo);
@@ -478,13 +477,13 @@ export class EventHistoryManager {
         }
         
         if(filter.endDate) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             history = history.filter(entry => entry.timestamp <= filter.endDate'); }
         }
         ';
-        // ソート''
+        // ソート
         if(filter.sortBy === 'timestamp') {'
             '';
             history.sort((a, b') => filter.sortOrder === 'asc' ?   : undefined;
@@ -535,7 +534,7 @@ export class EventHistoryManager {
     /**
      * 月別参加統計を取得
      */
-    private getMonthlyParticipationStats(): MonthlyStats {'
+    private getMonthlyParticipationStats(): MonthlyStats {
         const stats: MonthlyStats = {}''
         this.eventHistory.forEach(entry => {  ');''
             if (entry.type === 'event_completion') { }
@@ -665,11 +664,11 @@ export class EventHistoryManager {
             if (data.statistics) { this.statistics = data.statistics; }
             }'
             '';
-            this.saveHistoryData('')';
+            this.saveHistoryData()';
             console.log('History data imported successfully');
-            ';
+            ';'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to import history data:', error);
             return false; }
         }
@@ -678,7 +677,7 @@ export class EventHistoryManager {
     /**
      * 履歴データを読み込み（EventStageManager対応）'
      */''
-    load('')';
+    load()';
             const savedHistoryData = localStorage.getItem('eventHistoryData');
             if(savedHistoryData) {
                 const data = JSON.parse(savedHistoryData);
@@ -706,7 +705,7 @@ export class EventHistoryManager {
                 console.log('[EventHistoryManager] 履歴データを読み込みました'');'
             } else {  ' }'
                 console.log('[EventHistoryManager] 保存されたデータがありません、デフォルト設定を使用');' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('[EventHistoryManager] データ読み込みエラー:', error);
             // エラーの場合は初期状態にリセット
             this.eventHistory = [];
@@ -718,9 +717,9 @@ export class EventHistoryManager {
 
     /**
      * リソースクリーンアップ
-     */'
+     */
     dispose(): void { ''
-        this.saveHistoryData('')';
+        this.saveHistoryData()';
         console.log('EventHistoryManager disposed''); }'
     }''
 }

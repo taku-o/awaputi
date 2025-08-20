@@ -5,15 +5,15 @@
 
 interface ValidationResult { isValid: boolean,
     errors: string[],
-    warnings: string[]; }
+    warnings: string[] }
 }
 
 interface ValidationRule { field: string,
     type: 'required' | 'type' | 'range' | 'format' | 'custom',
     constraint: any,
-    message: string; }
+    message: string }
 }
-';
+';'
 export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         { field: 'id', type: 'required', constraint: null, message: 'ID is required' },''
         { field: 'x', type: 'type', constraint: 'number', message: 'X must be a number' },''
@@ -21,14 +21,14 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         { field: 'radius', type: 'range', constraint: { min: 5, max: 50 }, message: 'Radius must be between 5 and 50' },']'
         { field: 'color', type: 'required', constraint: null, message: 'Color is required' }]
     ];
-';
+';'
     private gameStateRules: ValidationRule[] = ['';
         { field: 'id', type: 'required', constraint: null, message: 'ID is required' },''
         { field: 'level', type: 'range', constraint: { min: 1, max: 100 }, message: 'Level must be between 1 and 100' },''
         { field: 'score', type: 'type', constraint: 'number', message: 'Score must be a number' },']'
         { field: 'lives', type: 'range', constraint: { min: 0, max: 10 }, message: 'Lives must be between 0 and 10' }]
     ];
-';
+';'
     private userRules: ValidationRule[] = ['';
         { field: 'id', type: 'required', constraint: null, message: 'ID is required' },''
         { field: 'username', type: 'required', constraint: null, message: 'Username is required' },''
@@ -78,7 +78,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 '';
                 case 'type':;
                     if(value !== undefined && typeof value !== rule.constraint) {'
-                        ';
+                        ';'
                     }'
                         errors.push(rule.message'); }
                     }
@@ -90,7 +90,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
                     }
                         const { min, max } = rule.constraint;
                         if(value < min || value > max) {'
-                            ';
+                            ';'
                         }'
                             errors.push(rule.message'); }
                         }
@@ -99,7 +99,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 '';
                 case 'format':'';
                     if(typeof value === 'string' && !rule.constraint.test(value) {'
-                        ';
+                        ';'
                     }'
                         errors.push(rule.message'); }
                     }
@@ -137,7 +137,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
     private validateStructureRecursive(;
         data: any,
         structure: any,
-        path: string,);
+        path: string);
         errors: string[]);
         warnings: string[]';
     ): void { ''
@@ -160,7 +160,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
 
                 this.validateStructureRecursive(;
                     data[key],
-                    structure[key],);
+                    structure[key]);
                     currentPath);
                     errors,);
                     warnings);
@@ -188,7 +188,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         } else {  // Primitive type validation
             const expectedType = typeof structure;
             const actualType = typeof data;
-             }'
+             }
             if (actualType !== expectedType) {' }'
                 errors.push(`Type mismatch at ${path}: expected ${expectedType}, got ${actualType)`'});
             }
@@ -215,7 +215,7 @@ export class MockDataValidator { private bubbleRules: ValidationRule[] = [' }'
         validCount: number,
         invalidCount: number,
         totalErrors: number,
-        totalWarnings: number; }
+        totalWarnings: number }
     } { return { totalValidated: results.length,
             validCount: results.filter(r => r.isValid).length,
             invalidCount: results.filter(r => !r.isValid).length,';

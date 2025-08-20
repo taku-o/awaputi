@@ -10,7 +10,7 @@ export interface CacheEntry { value: string,
     ttl: number | null,
     accessCount: number,
     language: string,
-    originalKey: string; }
+    originalKey: string }
 }
 
 export interface CacheStats { size: number,
@@ -20,28 +20,28 @@ export interface CacheStats { size: number,
     evictionCount: number,
     hitRate: number,
     totalRequests: number,
-    memoryUsage: MemoryUsage;
+    memoryUsage: MemoryUsage
     }
 }
 
 export interface MemoryUsage { bytes: number,
     kb: number,
-    mb: number; }
+    mb: number }
 }
 
 export interface LanguageStats { count: number,
-    totalAccess: number; }
+    totalAccess: number }
 }
 
 export interface KeyPatternStats { count: number,
-    totalAccess: number; }
+    totalAccess: number }
 }
 
 export interface CacheEntryInfo { key: string,
     originalKey: string,
     language: string,
     age: number,
-    accessCount: number; }
+    accessCount: number }
 }
 
 export interface DetailedCacheInfo { stats: CacheStats,
@@ -49,7 +49,7 @@ export interface DetailedCacheInfo { stats: CacheStats,
     keyPatterns: Record<string, KeyPatternStats>,
     accessOrder: string[],
     oldestEntries: CacheEntryInfo[],
-    mostAccessedEntries: CacheEntryInfo[];
+    mostAccessedEntries: CacheEntryInfo[]
     }
 }
 
@@ -79,9 +79,9 @@ export class TranslationCache {
         this.missCount = 0;
         this.evictionCount = 0;
         
-        // キャッシュクリーンアップのタイマー'
+        // キャッシュクリーンアップのタイマー
         this.cleanupInterval = null;''
-        this.startPeriodicCleanup('')';
+        this.startPeriodicCleanup()';
     get(key: string, language: string = 'ja'): string | null {
         try {
             const cacheKey = this.generateCacheKey(key, language);
@@ -106,7 +106,7 @@ export class TranslationCache {
             }
             
             this.missCount++;
-            return null;'
+            return null;
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
                 operation: 'get');
@@ -142,12 +142,12 @@ export class TranslationCache {
             this.cache.set(cacheKey, cacheEntry);
             this.updateAccessOrder(cacheKey);
             
-            return true;'
+            return true;
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
                 operation: 'set');
                 key: key,);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -208,7 +208,7 @@ export class TranslationCache {
         
         const lruKey = this.accessOrder.shift()!;
         this.cache.delete(lruKey);
-        this.evictionCount++;'
+        this.evictionCount++;
         '';
         console.log(`Cache eviction: ${lruKey)`'});
     }
@@ -233,7 +233,7 @@ export class TranslationCache {
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
                 operation: 'delete');
                 key: key,);
-                language: language); }
+                language: language) }
             });
             return false;
         }
@@ -267,7 +267,7 @@ export class TranslationCache {
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
                 operation: 'clearLanguage',);
-                language: language); }
+                language: language) }
             });
             return 0;
         }
@@ -286,7 +286,7 @@ export class TranslationCache {
             return size;'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
-                operation: 'clear'); }
+                operation: 'clear') }
             });
             return 0;
         }
@@ -295,9 +295,9 @@ export class TranslationCache {
     /**
      * キャッシュサイズを変更
      */'
-    resize(newSize: number): boolean { try {''
+    resize(newSize: number): boolean { try {'
             if(newSize < 1') {'
-                ';
+                ';'
             }'
                 throw new Error('Cache size must be at least 1'); }
             }
@@ -309,11 +309,11 @@ export class TranslationCache {
             }
             
             console.log(`Cache resized to: ${newSize)`});
-            return true;'
+            return true;
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
                 operation: 'resize',);
-                newSize: newSize); }
+                newSize: newSize) }
             });
             return false;
         }
@@ -344,8 +344,8 @@ export class TranslationCache {
         for (const [key, entry] of this.cache.entries()') {
             // キーのサイズ
             totalSize += key.length * 2; // UTF-16文字として計算
-            ';
-            // 値のサイズ''
+            ;
+            // 値のサイズ
             if(typeof entry.value === 'string') {
                 
             }
@@ -421,10 +421,10 @@ export class TranslationCache {
                 console.log(`Cleaned up ${expiredKeys.length) expired cache entries`});
             }
             
-            return expiredKeys.length;'
+            return expiredKeys.length;
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_CACHE_ERROR', {')'
-                operation: 'cleanupExpiredEntries'); }
+                operation: 'cleanupExpiredEntries') }
             });
             return 0;
         }
@@ -442,15 +442,15 @@ export class TranslationCache {
             if(!languages.has(entry.language) {
         
         }
-                languages.set(entry.language, { count: 0, totalAccess: 0 ); }'
+                languages.set(entry.language, { count: 0, totalAccess: 0 ) }
             }''
             const langStats = languages.get(entry.language')!;
             langStats.count++;
             langStats.totalAccess += entry.accessCount;
             ';
-            // キーパターン統計''
+            // キーパターン統計
             const keyPrefix = entry.originalKey.split('.')[0];
-            if(!keyPatterns.has(keyPrefix) { keyPatterns.set(keyPrefix, { count: 0, totalAccess: 0 ); }
+            if(!keyPatterns.has(keyPrefix) { keyPatterns.set(keyPrefix, { count: 0, totalAccess: 0 ) }
             }
             const patternStats = keyPatterns.get(keyPrefix)!;
             patternStats.count++;
@@ -493,7 +493,7 @@ export class TranslationCache {
             key,
             originalKey: entry.originalKey,
             language: entry.language,
-            accessCount: entry.accessCount)';
+            accessCount: entry.accessCount);
             age: Date.now() - entry.timestamp' }'
         }'),
     }

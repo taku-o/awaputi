@@ -16,7 +16,7 @@ interface GameEngine { sceneManager?: any;
 }
 
 interface SEOMonitor { startMonitoring(config: any): void,
-    stopMonitoring(): void; }
+    stopMonitoring(): void }
 }
 
 export class GameEngineInitializer {
@@ -24,7 +24,7 @@ export class GameEngineInitializer {
     private seoMonitor: SEOMonitor | null;
     constructor(gameEngine: GameEngine) {
     
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine
     
     }
     }
@@ -32,9 +32,9 @@ export class GameEngineInitializer {
     }
     
     /**
-     * ブラウザ互換性のチェック'
+     * ブラウザ互換性のチェック
      */''
-    checkBrowserCompatibility('')';
+    checkBrowserCompatibility()';
             canvas: !!document.createElement('canvas').getContext,'';
             audio: !!window.AudioContext || !!(window as any').webkitAudioContext,
             requestAnimationFrame: !!window.requestAnimationFrame,';
@@ -47,7 +47,7 @@ export class GameEngineInitializer {
             .map(([feature]) => feature);'
         '';
         if(unsupportedFeatures.length > 0') {'
-            ';
+            ';'
         }'
             console.warn('[GameEngineInitializer] Unsupported features:', unsupportedFeatures'); }
         }'
@@ -73,7 +73,7 @@ export class GameEngineInitializer {
                 { GameScene },
                 { ShopScene },
                 { UserInfoScene },
-                { SettingsScene },]'
+                { SettingsScene }]
                 { HelpScene }']'
             ] = await Promise.all([');''
                 import('../../scenes/MainMenuScene.js''),'';
@@ -85,7 +85,7 @@ export class GameEngineInitializer {
                 import('../../scenes/HelpScene.js')']';
             ]');
             ';
-            // シーンを登録''
+            // シーンを登録
             this.gameEngine.sceneManager.addScene('menu', new MainMenuScene(this.gameEngine)');''
             this.gameEngine.sceneManager.addScene('stageSelect', new StageSelectScene(this.gameEngine)');''
             this.gameEngine.sceneManager.addScene('game', new GameScene(this.gameEngine)');''
@@ -95,7 +95,7 @@ export class GameEngineInitializer {
             this.gameEngine.sceneManager.addScene('help', new HelpScene(this.gameEngine)');'
             '';
             console.log('[GameEngineInitializer] All scenes initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[GameEngineInitializer] Failed to initialize scenes:', error);
             throw error; }
         }
@@ -105,11 +105,11 @@ export class GameEngineInitializer {
      * ソーシャル機能の初期化
      */
     initializeSocialFeatures(): void { if (this.gameEngine.socialSharingManager? .initialize) {'
-            try {''
-                this.gameEngine.socialSharingManager.initialize('')';
+            try {'
+                this.gameEngine.socialSharingManager.initialize()';
                 console.log('[GameEngineInitializer] Social features initialized');' }'
-            } catch (error') { : undefined''
-                console.warn('[GameEngineInitializer] Failed to initialize social features:', error); }
+            } catch (error) { : undefined''
+                console.warn('[GameEngineInitializer] Failed to initialize social features:', error) }
             }
         }
     }
@@ -118,11 +118,11 @@ export class GameEngineInitializer {
      * オーディオシステムの初期化
      */
     async initializeAudioSystem(): Promise<void> { if (this.gameEngine.audioManager? .initialize) {'
-            try {''
-                await this.gameEngine.audioManager.initialize('');'
+            try {'
+                await this.gameEngine.audioManager.initialize();'
                 console.log('[GameEngineInitializer] Audio system initialized');' }'
-            } catch (error') { : undefined''
-                console.warn('[GameEngineInitializer] Failed to initialize audio system:', error); }
+            } catch (error) { : undefined''
+                console.warn('[GameEngineInitializer] Failed to initialize audio system:', error) }
             }
         }
     }
@@ -131,13 +131,13 @@ export class GameEngineInitializer {
      * SEOシステムとの統合機能を設定
      */
     // @ts-ignore - 将来の実装で使用予定
-    private __setupSEOIntegration(): void { try {'
-            // SEOシステムが利用可能な場合のみ統合''
+    private __setupSEOIntegration(): void { try {
+            // SEOシステムが利用可能な場合のみ統合
             if ((window as any).seoMetaManager && (window as any).structuredDataEngine') {'
-                // 将来的にSEOMonitorを実装する場合はここで初期化''
+                // 将来的にSEOMonitorを実装する場合はここで初期化
                 console.log('[GameEngineInitializer] SEO integration setup completed');' }'
-            } catch (error') { ''
-            console.warn('[GameEngineInitializer] SEO integration not available:', error); }
+            } catch (error) { ''
+            console.warn('[GameEngineInitializer] SEO integration not available:', error) }
         }
     }
     
@@ -145,7 +145,7 @@ export class GameEngineInitializer {
      * リソースの破棄
      */'
     destroy(): void { if (this.seoMonitor? .stopMonitoring) {''
-            this.seoMonitor.stopMonitoring('')';
+            this.seoMonitor.stopMonitoring()';
         console.log('[GameEngineInitializer] Destroyed''); }
     }
 }'

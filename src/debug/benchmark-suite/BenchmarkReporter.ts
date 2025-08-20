@@ -12,6 +12,6 @@ export class BenchmarkReporter {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

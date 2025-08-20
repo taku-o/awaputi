@@ -14,7 +14,7 @@ interface StateManagerConfig { enabled: boolean,
     trackFocusHistory: boolean,
     validateTabOrder: boolean,
     monitorContainment: boolean,
-    maxHistoryLength: number; }
+    maxHistoryLength: number }
 }
 
 interface FocusTracking { enabled: boolean,
@@ -22,7 +22,7 @@ interface FocusTracking { enabled: boolean,
     currentElement: Element | null,
     lastFocusTime: number,
     focusStack: Element[],
-    trapAttempts: number; }
+    trapAttempts: number }
 }
 
 interface FocusEvent { element: Element,
@@ -31,12 +31,12 @@ interface FocusEvent { element: Element,
     tagName: string,
     id: string | null,
     className: string | null,
-    role: string | null; }
+    role: string | null }
 }
 
 interface TabOrderData { elements: TabElement[],
     issues: TabOrderIssue[],
-    lastValidation: number | null; }
+    lastValidation: number | null }
 }
 
 interface TabElement { element: Element,
@@ -44,11 +44,11 @@ interface TabElement { element: Element,
     tabIndex: string | null,
     computedTabIndex: number,
     isVisible: boolean,
-    rect: DOMRect;
+    rect: DOMRect
     }
 }
 
-interface TabOrderIssue { element?: Element;'
+interface TabOrderIssue { element?: Element;
     type: string,'';
     severity: 'error' | 'warning',
     message: string,
@@ -58,14 +58,14 @@ interface TabOrderIssue { element?: Element;'
 
 interface ContainmentState { activeContainers: Set<Element>,
     containerStack: Element[],
-    escapeAttempts: number; }
+    escapeAttempts: number }
 }
 
 interface NavigationStats { totalFocusChanges: number,
     tabNavigations: number,
     focusRestorations: number,
     containmentViolations: number,
-    sessionStart: number; }
+    sessionStart: number }
 }
 
 interface TabOrderValidationResult { passed: boolean,
@@ -75,44 +75,44 @@ interface TabOrderValidationResult { passed: boolean,
         totalElements: number,
         visibleElements: number,
         elementsWithTabIndex: number,
-        positiveTabIndex: number; }
+        positiveTabIndex: number }
     };
 }
 
 interface ContainmentResult { element: Element,
     passed: boolean,
     details: any,
-    focusableElements: Element[];
+    focusableElements: Element[]
     }
 }
 
 interface ContainmentTestResults { passed: boolean,
     issues: TabOrderIssue[],
     warnings: TabOrderIssue[],
-    containers: ContainmentResult[];
+    containers: ContainmentResult[]
     }
 }
 
 interface RestorationTestResult { element: Element,
     passed: boolean,
-    details: any; }
+    details: any }
 }
 
 interface RestorationTestResults { passed: boolean,
     issues: TabOrderIssue[],
-    restorationTests: RestorationTestResult[];
+    restorationTests: RestorationTestResult[]
     }
 }
 
 interface FocusInfo { element: Element | null,
     lastFocusTime: number,
-    activeElement: Element | null; }
+    activeElement: Element | null }
 }
 
 interface TabOrderInfo { elements: TabElement[],
     issues: TabOrderIssue[],
     lastValidation: number | null,
-    isValid: boolean; }
+    isValid: boolean }
 }
 
 interface NavigationStatsInfo { totalFocusChanges: number,
@@ -122,11 +122,11 @@ interface NavigationStatsInfo { totalFocusChanges: number,
     sessionStart: number,
     focusHistoryLength: number,
     currentFocus: string,
-    activeContainers: number; }
+    activeContainers: number }
 }
 
 interface SimulationResult { success: boolean,
-    activeElement?: Element | null; }
+    activeElement?: Element | null }
 }
 
 export class NavigationStateManager {
@@ -173,9 +173,9 @@ export class NavigationStateManager {
         // ナビゲーション統計
         this.stats = { totalFocusChanges: 0,
             tabNavigations: 0,
-            focusRestorations: 0,';
+            focusRestorations: 0,
             containmentViolations: 0,'';
-            sessionStart: Date.now('')';
+            sessionStart: Date.now()';
         console.log('NavigationStateManager initialized'), }
     }
     
@@ -188,7 +188,7 @@ export class NavigationStateManager {
         try {
             this.focusTracking.enabled = true;
             ';
-            // フォーカスイベントリスナー''
+            // フォーカスイベントリスナー
             document.addEventListener('focus', (event) => { ''
                 if (event.target') {' }'
                     this.handleFocusChange(event.target as Element, 'focus'); }'
@@ -202,10 +202,10 @@ export class NavigationStateManager {
             }, true');'
             '';
             console.log('Focus tracking started');
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'FOCUS_TRACKING_START_ERROR', {')'
-                component: 'NavigationStateManager'); }
+                component: 'NavigationStateManager') }
             });
         }
     }
@@ -214,9 +214,9 @@ export class NavigationStateManager {
      * フォーカス変更の処理
      */
     private handleFocusChange(element: Element, type: string): void { if (!this.config.trackFocusHistory) return;
-        ';
-        try {''
-            const now = Date.now('')';
+        ';'
+        try {'
+            const now = Date.now()';
             if(type === 'focus'') {
                 this.focusTracking.currentElement = element;
                 this.focusTracking.lastFocusTime = now;
@@ -229,7 +229,7 @@ export class NavigationStateManager {
                 type,
                 timestamp: now,
                 tagName: element.tagName,
-                id: element.id || null,';
+                id: element.id || null,
                 className: element.className || null,'';
                 role: element.getAttribute('role') || null }
             },
@@ -237,9 +237,9 @@ export class NavigationStateManager {
             this.focusTracking.history.push(focusEvent);
             
             // 履歴長制限
-            if(this.focusTracking.history.length > this.config.maxHistoryLength) {'
+            if(this.focusTracking.history.length > this.config.maxHistoryLength) {
                 '';
-                this.focusTracking.history.shift('')';
+                this.focusTracking.history.shift()';
             if (type === 'focus') {
             }
                 this.checkFocusContainment(element); }'
@@ -247,7 +247,7 @@ export class NavigationStateManager {
             getErrorHandler(').handleError(error, 'FOCUS_CHANGE_HANDLING_ERROR', {')'
                 component: 'NavigationStateManager');
                 type,);
-                element: element.tagName); }
+                element: element.tagName) }
             });
         }
     }
@@ -261,7 +261,7 @@ export class NavigationStateManager {
             const tabOrderIssues: TabOrderIssue[] = [],
             const tabOrder: TabElement[] = [],
             ';
-            // 各要素のタブインデックスを記録''
+            // 各要素のタブインデックスを記録
             focusableElements.forEach((element, index') => { ''
                 const tabIndex = element.getAttribute('tabindex');
                 const computedTabIndex = (element as HTMLElement).tabIndex;
@@ -278,7 +278,7 @@ export class NavigationStateManager {
                 
                 tabOrder.push(tabData);
                 ';
-                // 正のtabindexの検出''
+                // 正のtabindexの検出
                 if (tabIndex && parseInt(tabIndex) > 0') { tabOrderIssues.push({'
                         element,'';
                         type: 'positive-tabindex','';
@@ -286,13 +286,13 @@ export class NavigationStateManager {
                         message: `Positive tabindex found: ${tabIndex}`,')'
                         suggestion: 'Use tabindex = "0" or rely on natural tab order') }
                 ';
-                // 非表示要素のフォーカス可能チェック''
+                // 非表示要素のフォーカス可能チェック
                 if(!isVisible && computedTabIndex >= 0') {
                     tabOrderIssues.push({'
                         element,'';
                         type: 'hidden-focusable','';
                         severity: 'error',')';
-                        message: 'Hidden element is focusable',');
+                        message: 'Hidden element is focusable',')
                 }'
                         suggestion: 'Add tabindex="-1" to hidden focusable elements'); }
                 }
@@ -303,9 +303,9 @@ export class NavigationStateManager {
             tabOrderIssues.push(...logicalOrderIssues);
             
             // 結果の保存
-            this.tabOrderData = { elements: tabOrder,'
+            this.tabOrderData = { elements: tabOrder,
                 issues: tabOrderIssues,'';
-                lastValidation: Date.now('')';
+                lastValidation: Date.now()';
                 passed: tabOrderIssues.filter(issue => issue.severity === 'error').length === 0,
                 issues: tabOrderIssues,
                 tabOrder,
@@ -316,7 +316,7 @@ export class NavigationStateManager {
                     positiveTabIndex: tabOrder.filter(t => t.tabIndex && parseInt(t.tabIndex) > 0).length }
                 }
             },
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'TAB_ORDER_VALIDATION_ERROR', {')'
                 component: 'NavigationStateManager'),' }'
@@ -343,18 +343,18 @@ export class NavigationStateManager {
                 const next = tabOrder[i + 1];
                 
                 // DOM内での位置関係をチェック
-                const position = current.element.compareDocumentPosition(next.element);'
+                const position = current.element.compareDocumentPosition(next.element);
                 '';
                 if (position & Node.DOCUMENT_POSITION_PRECEDING') {
                     // 次の要素が前にある場合（順序が逆）
-                    issues.push({'
+                    issues.push({
                         element: current.element,'';
                         type: 'tab-order-mismatch','';
                         severity: 'warning','';
                         message: 'Tab order does not follow DOM order','';
                         suggestion: 'Consider reordering elements in DOM or using tabindex carefully',
                         details: {)
-                            currentElement: current.element.tagName);
+                            currentElement: current.element.tagName)
             }
                             nextElement: next.element.tagName) }
                         }),
@@ -366,9 +366,9 @@ export class NavigationStateManager {
                     if (visualOrderIssue) {
                 }
                         issues.push(visualOrderIssue); }
-                    }'
+                    }
                 }''
-            } catch (error') { issues.push({')'
+            } catch (error) { issues.push({')'
                 type: 'logical-order-check-error',')';
                 severity: 'warning'), }
                 message: `Logical tab order check failed: ${(error as Error}).message}`
@@ -390,21 +390,21 @@ export class NavigationStateManager {
             const isNewRow = Math.abs(currentRect.top - nextRect.top) > verticalThreshold;
             
             if(!isNewRow) {
-            ';
-                // 同じ行で右から左に移動している場合''
+            ;
+                // 同じ行で右から左に移動している場合
                 if (currentRect.left > nextRect.left + 10') {'
                     return { element: current.element,''
                         type: 'visual-tab-order-issue','';
-                        severity: 'warning',';
+                        severity: 'warning','
             }'
                         message: 'Tab order may not follow visual layout (right to left')',' };'
                         suggestion: 'Review tab order to match visual layout' }
                     },
                 }'
-            } else {  // 新しい行で上から下ではない場合''
+            } else {  // 新しい行で上から下ではない場合
                 if(currentRect.top > nextRect.top + verticalThreshold') {'
                     return { element: current.element,''
-                        type: 'visual-tab-order-issue',';
+                        type: 'visual-tab-order-issue','
                 }'
                         severity: 'warning',' }'
                         message: 'Tab order may not follow visual layout (bottom to top')',' };'
@@ -418,9 +418,9 @@ export class NavigationStateManager {
     }
     
     /**
-     * フォーカス包含テスト'
+     * フォーカス包含テスト
      */''
-    async testFocusContainment('')';
+    async testFocusContainment()';
             const modals = document.querySelectorAll('[role="dialog"], [role="alertdialog"], .modal, .dialog');
             
             for(const modal of modals) {
@@ -436,14 +436,14 @@ export class NavigationStateManager {
                             type: 'focus-containment-failure','';
                             severity: 'error','';
                             message: 'Modal does not properly contain focus',')';
-                            suggestion: 'Implement focus trapping for modal dialogs',');
+                            suggestion: 'Implement focus trapping for modal dialogs',')
             }'
                             details: containmentResult.details)'); }
                     }
                 }
             }
             ';
-            // その他のフォーカス包含要素''
+            // その他のフォーカス包含要素
             const containers = document.querySelectorAll('[data-focus-trap], [aria-modal="true"]');
             for(const container of containers) {
                 if(this.isElementVisible(container) {
@@ -456,12 +456,12 @@ export class NavigationStateManager {
                             element: container,'';
                             type: 'focus-containment-failure','';
                             severity: 'error',')';
-                            message: 'Container does not properly contain focus',');
+                            message: 'Container does not properly contain focus',')
             }'
                             suggestion: 'Implement proper focus management for container'); }
                     }'
                 }''
-            } catch (error') { results.passed = false;'
+            } catch (error) { results.passed = false;'
             results.issues.push({')'
                 type: 'containment-test-error',')';
                 severity: 'error'), }
@@ -481,9 +481,9 @@ export class NavigationStateManager {
             details: {},
             focusableElements: [];
         },
-        ';
-        try { ''
-            const focusableInModal = modal.querySelectorAll('')';
+        ';'
+        try {'
+            const focusableInModal = modal.querySelectorAll()';
                 'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"]")';
             );
             
@@ -539,9 +539,9 @@ export class NavigationStateManager {
     }
     
     /**
-     * フォーカス復元テスト'
+     * フォーカス復元テスト
      */''
-    async testFocusRestoration('')';
+    async testFocusRestoration()';
             const triggers = document.querySelectorAll('[data-toggle], [aria-haspopup="true"]');
             
             for(const trigger of triggers) {
@@ -556,12 +556,12 @@ export class NavigationStateManager {
                             element: trigger,'';
                             type: 'focus-restoration-failure','';
                             severity: 'error',')';
-                            message: 'Focus not properly restored after interaction',');
+                            message: 'Focus not properly restored after interaction',')
             }'
                             suggestion: 'Store and restore focus when closing modal/popup'); }
                     }'
                 }''
-            } catch (error') { results.passed = false;'
+            } catch (error) { results.passed = false;'
             results.issues.push({')'
                 type: 'restoration-test-error',')';
                 severity: 'error'), }
@@ -578,8 +578,7 @@ export class NavigationStateManager {
     private async testElementFocusRestoration(trigger: Element, initialFocus: Element | null): Promise<RestorationTestResult> { const result: RestorationTestResult = {
             element: trigger,
             passed: true, }
-            details: {}
-        },
+            details: {},
         
         try { // トリガー要素にフォーカス
             (trigger as HTMLElement).focus();
@@ -618,22 +617,22 @@ export class NavigationStateManager {
      */ : undefined
     private checkFocusContainment(element: Element): void { try {
             // アクティブなフォーカス包含コンテナを確認
-            for(const container of this.containmentState.activeContainers) {'
+            for(const container of this.containmentState.activeContainers) {
                 '';
                 if (!container.contains(element)') {
                     // フォーカスが包含コンテナの外に出た
                     this.stats.containmentViolations++;
-                    this.containmentState.escapeAttempts++;'
+                    this.containmentState.escapeAttempts++;
                     '';
                     console.warn('Focus escaped from containment container:', {)
-                        container: container.tagName,);
+                        container: container.tagName,)
             }
                         element: element.tagName); }
                 }'
             } catch (error) { ''
             getErrorHandler(').handleError(error, 'FOCUS_CONTAINMENT_CHECK_ERROR', {')'
                 component: 'NavigationStateManager',);
-                element: element.tagName); }
+                element: element.tagName) }
             });
         }
     }
@@ -641,7 +640,7 @@ export class NavigationStateManager {
     // ユーティリティメソッド
     
     /**
-     * フォーカス可能要素の取得'
+     * フォーカス可能要素の取得
      */''
     private getFocusableElements(''';
             'a[href]',')';
@@ -665,7 +664,7 @@ export class NavigationStateManager {
         });
     }
     
-    /**
+    /**'
      * 要素の可視性判定'
      */''
     private isElementVisible(element: Element'): boolean { const htmlElement = element as HTMLElement;''
@@ -687,7 +686,7 @@ export class NavigationStateManager {
     private async simulateTab(element: Element'): Promise<SimulationResult> { ''
         const tabEvent = new KeyboardEvent('keydown', {''
             key: 'Tab',
-            keyCode: 9,);
+            keyCode: 9);
             bubbles: true);
             cancelable: true;
         ),
@@ -705,7 +704,7 @@ export class NavigationStateManager {
         const shiftTabEvent = new KeyboardEvent('keydown', {''
             key: 'Tab',
             keyCode: 9,
-            shiftKey: true,);
+            shiftKey: true);
             bubbles: true);
             cancelable: true;
         ),
@@ -722,7 +721,7 @@ export class NavigationStateManager {
     private async simulateActivation(element: Element'): Promise<SimulationResult> { ''
         const enterEvent = new KeyboardEvent('keydown', {''
             key: 'Enter',
-            keyCode: 13,);
+            keyCode: 13);
             bubbles: true);
             cancelable: true;
         ),
@@ -739,7 +738,7 @@ export class NavigationStateManager {
     private async simulateEscape(''';
         const escapeEvent = new KeyboardEvent('keydown', { ''
             key: 'Escape',
-            keyCode: 27,);
+            keyCode: 27);
             bubbles: true);
             cancelable: true;
         ),
@@ -777,7 +776,7 @@ export class NavigationStateManager {
     }
     
     /**
-     * ナビゲーション統計の取得'
+     * ナビゲーション統計の取得
      */''
     getNavigationStats(''';
             currentFocus: this.focusTracking.currentElement? .tagName || 'none', : undefined;
@@ -790,7 +789,7 @@ export class NavigationStateManager {
      */'
     addFocusContainer(container: Element): void { this.containmentState.activeContainers.add(container);''
         this.containmentState.containerStack.push(container');''
-        console.log('Focus container added:', container.tagName); }
+        console.log('Focus container added:', container.tagName) }
     }
     
     /**
@@ -799,7 +798,7 @@ export class NavigationStateManager {
     removeFocusContainer(container: Element): void { this.containmentState.activeContainers.delete(container);
         const index = this.containmentState.containerStack.indexOf(container);
         if(index > -1) {'
-            ';
+            ';'
         }'
             this.containmentState.containerStack.splice(index, 1'); }'
         }''
@@ -843,18 +842,18 @@ export class NavigationStateManager {
             tabNavigations: 0,
             focusRestorations: 0,';
             containmentViolations: 0,'';
-            sessionStart: Date.now('')';
+            sessionStart: Date.now()';
         console.log('NavigationStateManager state reset'), }
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying NavigationStateManager...');
-        ';
+        ';'
         this.focusTracking.enabled = false;''
-        this.reset('')';
+        this.reset()';
         console.log('NavigationStateManager destroyed'');'
     }''
 }

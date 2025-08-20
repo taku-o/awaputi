@@ -5,20 +5,20 @@
 
 import { ScenesBaseDialog, DialogData, GameEngine, EventBus, GameState, AccessibilitySettings } from './ScenesBaseDialog.js';
 
-// Type definitions for dialog management'
+// Type definitions for dialog management
 export interface DialogClass { ''
-    new (gameEngine: GameEngine, eventBus: EventBus, state: GameState'): ScenesBaseDialog;
+    new (gameEngine: GameEngine, eventBus: EventBus, state: GameState'): ScenesBaseDialog
     }
 }
 
 export interface DialogStackItem { type: string,
-    data: DialogData;
+    data: DialogData
     }
 }
 
 export interface DialogInfo { type: string,
     data: DialogData,
-    DialogClass: DialogClass;
+    DialogClass: DialogClass
     }
 }
 
@@ -28,18 +28,18 @@ export interface LayoutConfig { minWidth: number,
     maxHeight: number,
     padding: number,
     buttonHeight: number,
-    buttonSpacing: number; }
+    buttonSpacing: number }
 }
 
 export interface AnimationConfig { fadeInDuration: number,
     fadeOutDuration: number,
     scaleInDuration: number,
-    enabled: boolean; }
+    enabled: boolean }
 }
 
 export interface AnimationState { isAnimating: boolean,'
     startTime: number,'';
-    type: 'fade-in' | 'fade-out' | 'scale-in' | null; }
+    type: 'fade-in' | 'fade-out' | 'scale-in' | null }
 }
 
 export interface DialogLayout { x: number,
@@ -52,7 +52,7 @@ export interface DialogLayout { x: number,
     contentHeight: number,
     buttonY: number,
     buttonWidth: number,
-    buttonHeight: number; }
+    buttonHeight: number }
 }
 
 export class ScenesDialogManager {
@@ -75,8 +75,8 @@ export class ScenesDialogManager {
         this.gameEngine = gameEngine;
         this.eventBus = eventBus;
         this.state = state;
-        ';
-        // ダイアログレジストリ''
+        ;
+        // ダイアログレジストリ
         this.dialogs = new Map('';
     }
     }'
@@ -102,8 +102,8 @@ export class ScenesDialogManager {
      * @returns ダイアログの結果
      */
     async showDialog(type: string, options: DialogData = { ): Promise<unknown> {
-        try {'
-            // ダイアログクラスが登録されているかチェック''
+        try {
+            // ダイアログクラスが登録されているかチェック
             if (!this.dialogs.has(type)') {' }'
                 throw new Error(`Dialog type '${type')' is not registered`});
             }
@@ -122,8 +122,8 @@ export class ScenesDialogManager {
             
             // ダイアログの初期化
             await dialog.initialize(options);
-            ';
-            // 状態を更新''
+            ;
+            // 状態を更新
             if(this.state.set') {'
                 '';
                 this.state.set('showingDialog', type, false');'
@@ -131,14 +131,14 @@ export class ScenesDialogManager {
                 this.state.set('dialogData', dialog.getData(), false); }
             }
             ';
-            // アニメーション開始''
+            // アニメーション開始
             if(this.animation.enabled') {'
-                ';
+                ';'
             }'
                 this.startAnimation('fade-in''); }
             }
             ';
-            // イベント通知''
+            // イベント通知
             this.eventBus.emit('dialog-opened', { type, options );
             
             // ダイアログの結果を待機
@@ -148,9 +148,9 @@ export class ScenesDialogManager {
                 };
                 
                 dialog.onError = (error) => { this.closeDialog().then(() => reject(error).catch(reject); }
-                };'
+                };
             });''
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('showDialog', error as Error);
             throw error; }
         }
@@ -169,7 +169,7 @@ export class ScenesDialogManager {
             
             const currentType = this.state.showingDialog;
             ';
-            // アニメーション開始''
+            // アニメーション開始
             if(this.animation.enabled') {'
                 '';
                 this.startAnimation('fade-out');
@@ -177,7 +177,7 @@ export class ScenesDialogManager {
                 await this.waitForAnimation(); }
             }
             ';
-            // 状態をクリア''
+            // 状態をクリア
             if(this.state.set') {'
                 '';
                 this.state.set('showingDialog', null, false');'
@@ -186,7 +186,7 @@ export class ScenesDialogManager {
             }
             
             // スタックから前のダイアログを復元
-            if(this.dialogStack.length > 0) {'
+            if(this.dialogStack.length > 0) {
                 const previousDialog = this.dialogStack.pop()!;''
                 if (this.state.set') {''
                     this.state.set('showingDialog', previousDialog.type, false');'
@@ -195,9 +195,9 @@ export class ScenesDialogManager {
                 }
             }
             ';
-            // イベント通知''
+            // イベント通知
             this.eventBus.emit('dialog-closed', { type: currentType ),' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('closeDialog', error as Error); }
         }
     }
@@ -250,9 +250,9 @@ export class ScenesDialogManager {
             // ダイアログ本体の描画
             this.renderDialogContent(context, layout, currentDialog);
             
-            // アニメーション処理'
+            // アニメーション処理
             this.updateAnimation(context, layout);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('render', error as Error);
             this.renderErrorDialog(context); }
         }
@@ -294,9 +294,9 @@ export class ScenesDialogManager {
     /**
      * 背景オーバーレイを描画
      * @param context - Canvas描画コンテキスト
-     * @param layout - レイアウト情報'
+     * @param layout - レイアウト情報
      */''
-    private renderOverlay(context: CanvasRenderingContext2D, layout: DialogLayout'): void { // 背景をダークオーバーレイで覆う''
+    private renderOverlay(context: CanvasRenderingContext2D, layout: DialogLayout'): void { // 背景をダークオーバーレイで覆う
         context.fillStyle = 'rgba(0, 0, 0, 0.5')';''
         context.fillRect(0, 0, context.canvas.width, context.canvas.height');
         
@@ -304,7 +304,7 @@ export class ScenesDialogManager {
         const cornerRadius = 8; }
         const { x, y, width, height } = layout;
         
-        // アクセシビリティ設定に応じた色調整'
+        // アクセシビリティ設定に応じた色調整
         const backgroundColor = this.state.accessibilitySettings? .highContrast '';
             ? '#FFFFFF'  : undefined'';
             : '#F8F9FA';
@@ -335,11 +335,11 @@ export class ScenesDialogManager {
     /**
      * エラーダイアログを描画
      * @param context - Canvas描画コンテキスト
-     */'
+     */
     private renderErrorDialog(context: CanvasRenderingContext2D): void { ''
         const layout = this.calculateDialogLayout(context.canvas');
         ';
-        // エラー背景''
+        // エラー背景
         context.fillStyle = '#FF6B6B';'
         this.roundRect(context, layout.x, layout.y, layout.width, layout.height, 8);''
         context.fill(''';
@@ -384,9 +384,9 @@ export class ScenesDialogManager {
             // ダイアログ内のクリック処理
             const DialogClass = currentDialog.DialogClass;
             const dialogInstance = new DialogClass(this.gameEngine, this.eventBus, this.state);
-            ';
+            ';'
             return dialogInstance.handleClick(x, y, layout);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('handleClick', error as Error);
             return false; }
         }
@@ -402,7 +402,7 @@ export class ScenesDialogManager {
             return false; }
         }
         ';
-        try { // Escapeキーでダイアログを閉じる''
+        try { // Escapeキーでダイアログを閉じる
             if(event.key === 'Escape') {
                 this.closeDialog();
             }
@@ -416,9 +416,9 @@ export class ScenesDialogManager {
             // ダイアログ固有のキーボード処理
             const DialogClass = currentDialog.DialogClass;
             const dialogInstance = new DialogClass(this.gameEngine, this.eventBus, this.state);
-            ';
+            ';'
             return dialogInstance.handleKeyboard(event);''
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('handleKeyboard', error as Error');
             return false; }
         }
@@ -447,7 +447,7 @@ export class ScenesDialogManager {
             return; }
         }'
         '';
-        const elapsed = performance.now('')';
+        const elapsed = performance.now()';
         const durationKey = (this.animationState.type!.replace('-', ''') + 'Duration') as keyof AnimationConfig;
         const duration = this.animation[durationKey] as number;
         const progress = Math.min(elapsed / duration, 1);
@@ -464,7 +464,7 @@ export class ScenesDialogManager {
      * アニメーション効果を適用
      * @param context - Canvas描画コンテキスト
      * @param layout - レイアウト情報
-     * @param progress - アニメーション進行度(0-1)'
+     * @param progress - アニメーション進行度(0-1)
      */''
     private applyAnimationEffect(context: CanvasRenderingContext2D, layout: DialogLayout, progress: number'): void {
         const { type } = this.animationState;'
@@ -513,7 +513,7 @@ export class ScenesDialogManager {
         context: CanvasRenderingContext2D,
         x: number, ;
         y: number, ;
-        width: number, );
+        width: number );
         height: number);
         radius: number;
     ): void { context.beginPath(),
@@ -532,7 +532,7 @@ export class ScenesDialogManager {
     /**
      * イベントリスナーをセットアップ
      */'
-    private setupEventListeners(): void { // 状態変更の監視''
+    private setupEventListeners(): void { // 状態変更の監視
         if(this.state.onChange') {'
             '';
             this.state.onChange('accessibilitySettings', (newSettings) => { 
@@ -542,11 +542,11 @@ export class ScenesDialogManager {
             }');
         }
         ';
-        // エラーイベントの監視''
+        // エラーイベントの監視
         this.eventBus.on('component-error', (error') => {  }'
             const errorData = error as { component: string; error: Error }''
             if(errorData.component === 'dialog'') {'
-                ';
+                ';'
             }'
                 this.handleError('component-error', errorData.error); }
             }
@@ -561,13 +561,13 @@ export class ScenesDialogManager {
     private handleError(operation: string, error: Error): void { ''
         console.error(`DialogManager ${operation) error:`, error');
         ';
-        // エラーイベントを発火''
+        // エラーイベントを発火
         this.eventBus.emit('component-error', {')'
             component: 'DialogManager')';
             operation,')';
             error)');
         ';
-        // 重大なエラーの場合はダイアログを強制終了''
+        // 重大なエラーの場合はダイアログを強制終了
         if(operation === 'render' || operation === 'showDialog') {'
             '';
             if (this.state.set') {'

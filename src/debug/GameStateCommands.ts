@@ -5,7 +5,7 @@ import { CommandHistoryManager } from './state/CommandHistoryManager.js';''
 import { UndoOperationManager } from './state/UndoOperationManager.js';''
 import { getErrorHandler } from '../utils/ErrorHandler.js';
 
-interface ErrorHandler { handleError: (error: Error, context: string) => void; }
+interface ErrorHandler { handleError: (error: Error, context: string) => void }
 }
 
 interface GameEngine { scoreManager?: ScoreManager;
@@ -26,7 +26,7 @@ interface ScoreManager { getScore?: () => number;
 }
 
 interface BubbleManager { getActiveBubbleCount?: () => number;
-    spawnBubble?: (type: string) => void; }
+    spawnBubble?: (type: string) => void }
 }
 
 interface PlayerData { getName?: () => string;
@@ -39,14 +39,14 @@ interface PlayerData { getName?: () => string;
 interface StageManager { // Stage manager interface }
 }
 
-interface DebugConsole { registerCommand: (name: string, config: CommandConfig) => void; }
+interface DebugConsole { registerCommand: (name: string, config: CommandConfig) => void }
 }
 
 interface CommandConfig { description: string,
     usage: string,
     category: string,
     execute: (args: string[]) => string,
-    getCompletions?: () => string[]; }
+    getCompletions?: () => string[] }
 }
 
 interface GameState { timestamp: number,
@@ -55,9 +55,9 @@ interface GameState { timestamp: number,
     currentScene: string | null,
     score?: {
         current: number,
-        combo: number; }
+        combo: number }
     };
-    bubbles?: { count: number; }
+    bubbles?: { count: number }
     };
 }
 
@@ -65,23 +65,23 @@ interface PlayerDataSnapshot { name: string,
     level: number,
     ap: number,
     tap: number,
-    highScore: number; }
+    highScore: number }
 }
 
 interface BackupData { id: string,
     timestamp: number,
-    data: PlayerDataSnapshot | null; }
+    data: PlayerDataSnapshot | null }
 }
 
 interface ComponentWithInitialize { initialize?: () => Promise<void> | void; }
 }
-';
+';'
 interface ComponentWithCleanup { ''
     cleanup?: (') => void; }
 }
 
 interface ExecutionStatistics { [key: string]: any,
-    undo?: any; }
+    undo?: any }
 }
 
 interface UndoRedoStatistics { [key: string]: any, }
@@ -93,13 +93,13 @@ interface SafetySettings { [key: string]: any, }
 interface ExecutionState { lastCommand: any,
     commandHistory: any[],
     undoStack: any[],
-    maxUndoSize: number; }
+    maxUndoSize: number }
 }
 
 interface SafetyChecks { confirmDestructive: boolean,
     preventDataLoss: boolean,
     validateInputs: boolean,
-    logAllChanges: boolean; }
+    logAllChanges: boolean }
 }'
 '';
 type TestScenario = 'stress' | 'memory' | 'performance' | 'bubbles' | 'scoring';
@@ -132,9 +132,9 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     public async initialize(): Promise<void> { if (this.initialized) {
             return; }
         }
-';
-        try { ''
-            this.setupErrorHandler('')';
+';'
+        try {'
+            this.setupErrorHandler()';
             this.components.set('stateManipulation', new StateManipulationCommands(this) as any');''
             this.components.set('safetyValidator', new SafetyValidator(this) as any');''
             this.components.set('historyManager', new CommandHistoryManager(this) as any');''
@@ -146,11 +146,11 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
             }
                     await component.initialize(); }
                 }
-            }'
+            }
 '';
-            this.registerCommands('')';
+            this.registerCommands()';
             console.log('[GameStateCommands] Game state commands initialized');''
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('Failed to initialize GameStateCommands', error as Error);
             throw error; }
         }
@@ -159,9 +159,9 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     /**
      * エラーハンドラ設定
      */
-    private setupErrorHandler(): void { try {'
+    private setupErrorHandler(): void { try {
             this.errorHandler = getErrorHandler();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('[GameStateCommands] ErrorHandler not available:', (error as Error).message);
             this.errorHandler = { }
                 handleError: (error: Error, context: string) => console.error(`[${context}]`, error);
@@ -172,28 +172,28 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     /**
      * 状態操作コンポーネントを取得'
      */''
-    public getStateManipulation('')';
+    public getStateManipulation()';
         return this.components.get('stateManipulation');
     }
 
     /**
      * 安全性検証コンポーネントを取得'
      */''
-    public getSafetyValidator('')';
+    public getSafetyValidator()';
         return this.components.get('safetyValidator');
     }
 
     /**
      * 履歴管理コンポーネントを取得'
      */''
-    public getHistoryManager('')';
+    public getHistoryManager()';
         return this.components.get('historyManager');
     }
 
     /**
      * アンドゥ管理コンポーネントを取得'
      */''
-    public getUndoManager('')';
+    public getUndoManager()';
         return this.components.get('undoManager');
     }
 
@@ -236,7 +236,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
     }
 
     /**
-     * 統合コマンド登録'
+     * 統合コマンド登録
      */''
     private registerIntegratedCommands(''';
         this.console.registerCommand('run-test', { ''
@@ -256,14 +256,14 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
             getCompletions: (') => ['stress', 'memory', 'performance', 'bubbles', 'scoring']'';
         }');
 ';
-        // ゲーム状態ダンプ''
+        // ゲーム状態ダンプ
         this.console.registerCommand('dump-state', { ''
             description: 'Dump current game state',')';
             usage: 'dump-state [--json]',')';
             category: 'debug'),
             execute: (args: string[]) => { '
-                try {''
-                    const state = this.captureGameState('')';
+                try {'
+                    const state = this.captureGameState()';
                     if(args.includes('--json') { }
                         return JSON.stringify(state, null, 2); }
                     } else { return this.formatGameState(state); }
@@ -326,7 +326,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      */
     public capturePlayerData(): PlayerDataSnapshot | null { const playerData = this.getPlayerData();
         if (!playerData) return null;
-        ';
+        ';'
         return { ''
             name: playerData.getName ? playerData.getName(') : '',
             level: playerData.getLevel ? playerData.getLevel() : 1,
@@ -347,7 +347,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
                 }'
                 '';
                 for(let i = 0; i < 100; i++') {'
-                    ';
+                    ';'
                 }'
                     bubbleManager.spawnBubble('normal''); }'
                 }''
@@ -394,7 +394,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      * ゲーム状態フォーマット'
      */''
     public formatGameState(state: GameState'): string { const lines: string[] = [],''
-        lines.push('=== Game State ==='); }
+        lines.push('=== Game State ===') }
         lines.push(`Timestamp: ${new Date(state.timestamp).toLocaleTimeString(})}`);'
         lines.push(`Running: ${ state.running)`),''
         lines.push(`Paused: ${state.paused)`'),''
@@ -408,7 +408,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
             lines.push(`Score: ${state.score.current)`), }
             lines.push(`Combo: ${state.score.combo)`});
         }
-        ';
+        ';'
         if (state.bubbles) { ' }'
             lines.push(`Bubbles: ${state.bubbles.count)`'});
         }'
@@ -421,15 +421,15 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      */
     public createPlayerDataBackup(): BackupData { const backup: BackupData = { }
             id: `backup_${Date.now(})}`,
-            timestamp: Date.now(,);
+            timestamp: Date.now();
             data: this.capturePlayerData(),
         };
         
         // LocalStorageに保存
-        try {'
-            localStorage.setItem(`player_backup_${backup.id)`, JSON.stringify(backup)});''
-        } catch (error') { ''
-            console.warn('Failed to save backup to localStorage:', error); }
+        try {
+            localStorage.setItem(`player_backup_${backup.id)`, JSON.stringify(backup)});
+        } catch (error) { ''
+            console.warn('Failed to save backup to localStorage:', error) }
         }
         
         return backup;
@@ -464,7 +464,7 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
      */
     public updateSafetySettings(settings: SafetySettings): void { const safetyValidator = this.getSafetyValidator();
         if(safetyValidator) {'
-            ';
+            ';'
         }'
             safetyValidator.updateSafetySettings(settings'); }'
         }''
@@ -503,11 +503,11 @@ export class GameStateCommands extends BaseComponent { private gameEngine?: Game
             }
                     component.cleanup(); }
                 }
-            }'
+            }
             '';
-            this.components.clear('')';
+            this.components.clear()';
             console.log('[GameStateCommands] Destroyed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('Error during destroy', error as Error); }
         }
     }

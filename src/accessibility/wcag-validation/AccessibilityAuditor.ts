@@ -9,31 +9,31 @@ interface AuditorConfig { enabled: boolean,
     quickAuditTests: string[],
     autoAudit: boolean,
     auditInterval: number,
-    issueThreshold: IssueThreshold;
+    issueThreshold: IssueThreshold
     }
 }
 
 interface IssueThreshold { critical: number,
     high: number,
     medium: number,
-    low: number; }
+    low: number }
 }
 
 interface AuditState { running: boolean,
     lastAudit: number | null,
     currentCategory: string | null,
     results: Map<number, AuditResults>;
-    history: AuditResults[];
+    history: AuditResults[]
     }
 }
 
 interface GuidelineDefinition { name: string,
-    tests: string[]; }
+    tests: string[] }
 }
 
 interface CategoryDefinition { name: string,
     description: string,
-    guidelines: Record<string, GuidelineDefinition>; }
+    guidelines: Record<string, GuidelineDefinition> }
 }
 
 interface AuditSummary { totalIssues: number,
@@ -41,18 +41,18 @@ interface AuditSummary { totalIssues: number,
     highIssues: number,
     mediumIssues: number,
     lowIssues: number,
-    overallScore: number; }
+    overallScore: number }
 }
 
 interface AuditRecommendation { priority: 'critical' | 'high' | 'medium' | 'low',
     message: string,
-    action: string; }
+    action: string }
 }
 
 interface AuditResults { timestamp: number,
     categories: Record<string, CategoryResult>;
     summary: AuditSummary,
-    recommendations: AuditRecommendation[];
+    recommendations: AuditRecommendation[]
     }
 }
 
@@ -64,7 +64,7 @@ interface CategoryResult { id: string,
     warnings: any[],
     score: number,
     passed: number,
-    failed: number; }
+    failed: number }
 }
 
 interface GuidelineResult { id: string,
@@ -73,7 +73,7 @@ interface GuidelineResult { id: string,
     issues: ClassifiedIssue[],
     warnings: any[],
     passed: number,
-    failed: number; }
+    failed: number }
 }
 
 interface TestResult { passed: boolean,
@@ -86,16 +86,16 @@ interface Issue { element?: Element;
     issue: string,'';
     severity?: 'critical' | 'high' | 'medium' | 'low'; }
 }
-';
+';'
 interface ClassifiedIssue extends Issue { ''
     severity: 'critical' | 'high' | 'medium' | 'low',
-    classification: IssueClassification;
+    classification: IssueClassification
     }
 }
 
 interface IssueClassification { category: string,
     impact: string,
-    effort: string; }
+    effort: string }
 }
 
 interface QuickAuditResult { timestamp: number,
@@ -103,11 +103,11 @@ interface QuickAuditResult { timestamp: number,
     warnings: any[],
     passed: number,
     failed: number,
-    tests: Record<string, TestResult>; }
+    tests: Record<string, TestResult> }
 }
 
 // Minimal interface for WCAGRuleEngine
-interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<TestResult>;
+interface WCAGRuleEngine { runTest(testName: string, options?: any): Promise<TestResult>
     }
 }
 
@@ -117,7 +117,7 @@ export class AccessibilityAuditor {
     private categories: Record<string, CategoryDefinition>;
     private issueClassifier: Record<string, string[]>;
     private auditTimer: number | null;
-    private ruleEngine: WCAGRuleEngine | null';
+    private ruleEngine: WCAGRuleEngine | null;
 '';
     constructor(config: Partial<AuditorConfig> = {)') {
         this.config = {'
@@ -137,7 +137,7 @@ export class AccessibilityAuditor {
 
         // Audit state management
         this.auditState = { running: false,
-            lastAudit: null,';
+            lastAudit: null,
             currentCategory: null,'';
             results: new Map(''';
                 name: 'Perceivable','';
@@ -178,7 +178,7 @@ export class AccessibilityAuditor {
             }
         };
 
-        // Issue classification system'
+        // Issue classification system
         this.issueClassifier = { ''
             critical: ['missing-alt', 'keyboard-trap', 'no-accessible-name'],'';
             high: ['low-contrast', 'missing-keyboard-handler', 'invalid-aria'],'';
@@ -207,7 +207,7 @@ export class AccessibilityAuditor {
 
     /**
      * Run full accessibility audit
-     */'
+     */
     async runFullAudit(options: any = { ): Promise<AuditResults | null> {''
         if(this.auditState.running') {'
             '';
@@ -271,12 +271,11 @@ export class AccessibilityAuditor {
             warnings: [],
             passed: 0,
             failed: 0, }
-            tests: {}
-        },
+            tests: {},
 
         for(const testName of this.config.quickAuditTests) {
-';
-            try {''
+';'
+            try {'
                 if (!this.ruleEngine') {''
                     console.error('AccessibilityAuditor: Rule engine not initialized'),
 
@@ -360,8 +359,8 @@ export class AccessibilityAuditor {
         },
 
         // Run each test in the guideline
-        for(const testName of guideline.tests) {'
-            try {''
+        for(const testName of guideline.tests) {
+            try {'
                 if (!this.ruleEngine') {''
                     console.error('AccessibilityAuditor: Rule engine not initialized'),
         }
@@ -407,12 +406,12 @@ export class AccessibilityAuditor {
     }
 
     /**
-     * Determine issue severity'
+     * Determine issue severity
      */''
     private determineSeverity(issue: Issue'): 'critical' | 'high' | 'medium' | 'low' { const issueType = this.getIssueType(issue);
         
         for(const [severity, types] of Object.entries(this.issueClassifier) {
-        ';
+        ';'
             '';
             if (types.includes(issueType)') {'
         
@@ -426,9 +425,9 @@ export class AccessibilityAuditor {
 
     /**
      * Get issue type identifier
-     */'
+     */
     private getIssueType(issue: Issue): string { ''
-        const issueText = issue.issue.toLowerCase('')';
+        const issueText = issue.issue.toLowerCase()';
         if (issueText.includes('missing alt')') return 'missing-alt';''
         if (issueText.includes('keyboard trap')') return 'keyboard-trap';''
         if (issueText.includes('no accessible name')') return 'no-accessible-name';''
@@ -493,7 +492,7 @@ export class AccessibilityAuditor {
      * Update audit summary
      */
     private updateAuditSummary(summary: AuditSummary, categoryResult: CategoryResult): void { summary.totalIssues += categoryResult.issues.length;
-        ';
+        ';'
         categoryResult.issues.forEach(issue => { );''
             switch(issue.severity') {'
                 '';
@@ -536,17 +535,17 @@ export class AccessibilityAuditor {
      */
     private generateRecommendations(auditResults: AuditResults): AuditRecommendation[] { const recommendations: AuditRecommendation[] = [],
         ';
-        // Critical issues recommendations''
+        // Critical issues recommendations
         if(auditResults.summary.criticalIssues > 0') {'
             recommendations.push({''
                 priority: 'critical',')';
-                message: 'Address critical accessibility issues immediately',');
+                message: 'Address critical accessibility issues immediately',')
         }'
                 action: 'Fix all issues blocking functionality for users with disabilities'); }
         }
         
         // Category-specific recommendations
-        for(const [categoryId, category] of Object.entries(auditResults.categories) {'
+        for(const [categoryId, category] of Object.entries(auditResults.categories) {
             '';
             if (category.score < 80') {'
                 recommendations.push({')
@@ -558,11 +557,11 @@ export class AccessibilityAuditor {
             }
         }
         ';
-        // General recommendations''
+        // General recommendations
         if(auditResults.summary.overallScore < 90') {'
             recommendations.push({''
                 priority: 'medium',')';
-                message: 'Schedule regular accessibility audits',');
+                message: 'Schedule regular accessibility audits',')
         }'
                 action: 'Set up automated testing and manual reviews'); }
         }
@@ -637,6 +636,6 @@ export class AccessibilityAuditor {
 
     /**
      * Destroy and cleanup
-     */'
+     */
     destroy(): void { this.stopAutoAudit();''
         this.auditState.results.clear(') }

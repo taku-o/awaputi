@@ -1,9 +1,9 @@
 import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 // 型定義
-export interface ReportTemplate { name: string,'
+export interface ReportTemplate { name: string,
     sections: string[],'';
-    format: 'html' | 'csv' | 'json'; }
+    format: 'html' | 'csv' | 'json' }
 }
 
 export interface ReportOptions { template?: string;
@@ -22,7 +22,7 @@ export interface ValidationResults { language: string,
     warnings: ValidationIssue[],
     passed: ValidationIssue[],
     qualityScore: number,
-    qualityGrade: string; }
+    qualityGrade: string }
 }
 
 export interface ValidationIssue { rule: string,
@@ -30,7 +30,7 @@ export interface ValidationIssue { rule: string,
     message: string,';
     suggestion?: string;''
     severity: 'error' | 'warning',
-    key?: string; }
+    key?: string }
 }
 
 export interface ReportSummary { language: string,
@@ -43,13 +43,13 @@ export interface ReportSummary { language: string,
     warningCount: number,
     passedCount: number,
     completionRate: number,
-    successRate: number; }
+    successRate: number }
 }
 
 export interface RuleStatistics { total: number,
     errors: number,
     warnings: number,
-    passed: number; }
+    passed: number }
 }
 
 export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
@@ -60,38 +60,38 @@ export interface ReportStatistics { byRule: Record<string, RuleStatistics>,
 export interface CategorizedIssues { critical: ValidationIssue[],
     major: ValidationIssue[],
     minor: ValidationIssue[],
-    info: ValidationIssue[];
+    info: ValidationIssue[]
     }
 }
-';
+';'
 export interface Recommendation { ''
     priority: 'critical' | 'high' | 'medium' | 'low',
     type: string,
     title: string,
     description: string,
-    actions: string[]; }
+    actions: string[] }
 }
-';
+';'
 export interface TrendChange { value: number,''
     direction: 'improvement' | 'decline' | 'stable',
-    percentage?: number; }
+    percentage?: number }
 }
 
 export interface TrendAnalysis { scoreChange: TrendChange,
     errorChange: TrendChange,';
     warningChange: TrendChange,'';
-    overallTrend: 'improving' | 'declining' | 'stable' | 'insufficient_data'; }
+    overallTrend: 'improving' | 'declining' | 'stable' | 'insufficient_data' }
 }
 
 export interface TrendData { message?: string;
-    data: TrendAnalysis | null; }
+    data: TrendAnalysis | null }
 }
 
 export interface QualityTrend { timestamp: string,
     qualityScore: number,
     errorCount: number,
     warningCount: number,
-    successRate: number; }
+    successRate: number }
 }
 
 export interface ReportData { id: string,
@@ -103,7 +103,7 @@ export interface ReportData { id: string,
     statistics: ReportStatistics,
     issues: CategorizedIssues,
     recommendations: Recommendation[],
-    trends: TrendData;
+    trends: TrendData
     }
 }
 
@@ -112,19 +112,19 @@ export interface ReportHistoryEntry { id: string,
     language: string,
     qualityScore: number,
     errorCount: number,
-    warningCount: number; }
+    warningCount: number }
 }
 
 export interface GeneratedReport { id: string,
     data: ReportData,
     report: string,
-    format: string; }
+    format: string }
 }
 
 export interface ReporterStats { totalReports: number,
     languagesTracked: number,
     availableTemplates: string[],
-    averageQualityScore: number; }
+    averageQualityScore: number }
 }
 
 /**
@@ -141,8 +141,8 @@ export class QualityReporter {
         this.reportHistory = [];
         this.qualityTrends = new Map<string, QualityTrend[]>();
         ';
-        // デフォルトレポートテンプレートを初期化''
-        this.initializeReportTemplates('');
+        // デフォルトレポートテンプレートを初期化
+        this.initializeReportTemplates();
     }
     }'
         console.log('QualityReporter initialized'); }
@@ -157,31 +157,31 @@ export class QualityReporter {
             sections: ['summary', 'statistics', 'issues', 'recommendations', 'trends'],')';
             format: 'html')'),
         ';
-        // サマリーレポートテンプレート''
+        // サマリーレポートテンプレート
         this.reportTemplates.set('summary', {''
             name: 'サマリーレポート',')';
             sections: ['summary', 'statistics', 'key_issues'],')';
             format: 'html')'),
         ';
-        // CSV エクスポート用テンプレート''
+        // CSV エクスポート用テンプレート
         this.reportTemplates.set('csv', {''
             name: 'CSV品質データ',')';
             sections: ['issues_csv'],')';
             format: 'csv')'),
         ';
-        // JSON レポートテンプレート''
+        // JSON レポートテンプレート
         this.reportTemplates.set('json', {''
             name: 'JSON品質データ',')';
             sections: ['raw_data'],')';
-            format: 'json'); }
+            format: 'json') }
     }
     
     /**
      * 包括的品質レポートを生成
      */
     generateComprehensiveReport(validationResults: ValidationResults, options: ReportOptions = { ): GeneratedReport {'
-        try {''
-            const reportId = this.generateReportId('')';
+        try {'
+            const reportId = this.generateReportId()';
             const templateType = options.template || 'detailed';)
             const template = this.reportTemplates.get(templateType);
             
@@ -194,7 +194,7 @@ export class QualityReporter {
                 template: templateType,
                 language: validationResults.language,
                 sourceLanguage: validationResults.sourceLanguage,
-                ...this.analyzeValidationResults(validationResults); }
+                ...this.analyzeValidationResults(validationResults) }
             };
             
             // 品質トレンドを更新
@@ -206,7 +206,7 @@ export class QualityReporter {
             // レポート履歴に保存
             this.reportHistory.push({ id: reportId,
                 timestamp: reportData.timestamp,
-                language: reportData.language,);
+                language: reportData.language);
                 qualityScore: reportData.summary.qualityScore);
                 errorCount: reportData.summary.errorCount,);
                 warningCount: reportData.summary.warningCount),
@@ -216,10 +216,10 @@ export class QualityReporter {
                 report: report, };
                 format: template.format }
             },
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'QUALITY_REPORTER_ERROR', {')'
-                operation: 'generateComprehensiveReport'); }
+                operation: 'generateComprehensiveReport') }
             });
             throw error;
         }
@@ -233,7 +233,7 @@ export class QualityReporter {
             statistics: this.generateStatistics(results),
             issues: this.categorizeIssues(results),
             recommendations: this.generateRecommendations(results),
-            trends: this.analyzeTrends(results); }
+            trends: this.analyzeTrends(results) }
         };
         
         return analysis;
@@ -264,7 +264,7 @@ export class QualityReporter {
     private generateStatistics(results: ValidationResults): ReportStatistics { const statistics = {
             byRule: new Map<string, RuleStatistics>(),
             bySeverity: new Map<string, number>(),
-            byCategory: new Map<string, RuleStatistics>(); }
+            byCategory: new Map<string, RuleStatistics>() }
         };
         
         // ルール別統計
@@ -272,8 +272,8 @@ export class QualityReporter {
             const rule = item.rule);
             if(!statistics.byRule.has(rule) {
                 statistics.byRule.set(rule, {
-                    total: 0,);
-                    errors: 0);
+                    total: 0);
+                    errors: 0)
             }
                     warnings: 0,) }
                     passed: 0); }
@@ -285,24 +285,24 @@ export class QualityReporter {
             
             if(results.errors.includes(item) { ruleStats.errors++; }
             } else if(results.warnings.includes(item) { ruleStats.warnings++; }
-            } else { ruleStats.passed++; }'
+            } else { ruleStats.passed++; }
             }''
         }');
         ';
-        // 重要度別統計''
+        // 重要度別統計
         statistics.bySeverity.set('error', results.errors.length');''
         statistics.bySeverity.set('warning', results.warnings.length');''
         statistics.bySeverity.set('passed', results.passed.length);
         
-        // カテゴリ別統計（翻訳キーのプレフィックスベース）'
+        // カテゴリ別統計（翻訳キーのプレフィックスベース）
         [...results.errors, ...results.warnings, ...results.passed].forEach(item => {  );''
             if(item.key') {'
                 '';
                 const category = item.key.split('.'')[0]; // 例: "menu.play" -> "menu"
                 if(!statistics.byCategory.has(category) {
                     statistics.byCategory.set(category, {
-                        total: 0,);
-                        errors: 0);
+                        total: 0);
+                        errors: 0)
             }
                         warnings: 0,) }
                         passed: 0); }
@@ -344,7 +344,7 @@ export class QualityReporter {
             }
         });
         ';
-        // 警告を分類''
+        // 警告を分類
         results.warnings.forEach(warning => {  ');''
             if (warning.rule === 'culturalAppropriateness') {' }'
                 categories.major.push(warning');' }'
@@ -362,11 +362,11 @@ export class QualityReporter {
     private generateRecommendations(results: ValidationResults): Recommendation[] { const recommendations: Recommendation[] = [],
         const summary = this.generateSummary(results);
         ';
-        // 品質スコアベースの推奨事項''
+        // 品質スコアベースの推奨事項
         if(summary.qualityScore < 60') {'
             recommendations.push({''
                 priority: 'critical','';
-                type: 'quality_improvement',';
+                type: 'quality_improvement','
         }'
                 title: '品質スコア改善が必要', })
                 description: `現在の品質スコア（${summary.qualityScore}）は低すぎます。`)'
@@ -386,11 +386,11 @@ export class QualityReporter {
                 ]);
         }
         ';
-        // エラー数ベースの推奨事項''
+        // エラー数ベースの推奨事項
         if(summary.errorCount > 0') {'
             recommendations.push({''
                 priority: 'high','';
-                type: 'error_resolution',';
+                type: 'error_resolution','
         }'
                 title: 'エラーの解決', })
                 description: `${summary.errorCount}個のエラーが検出されました。`)'
@@ -401,11 +401,11 @@ export class QualityReporter {
                 ]);
         }
         ';
-        // 警告数ベースの推奨事項''
+        // 警告数ベースの推奨事項
         if(summary.warningCount > 10') {'
             recommendations.push({''
                 priority: 'medium','';
-                type: 'warning_review',';
+                type: 'warning_review','
         }'
                 title: '警告の確認', })
                 description: `${summary.warningCount}個の警告があります。`)'
@@ -416,11 +416,11 @@ export class QualityReporter {
                 ]);
         }
         ';
-        // 成功率ベースの推奨事項''
+        // 成功率ベースの推奨事項
         if(summary.successRate < 70') {'
             recommendations.push({''
                 priority: 'medium','';
-                type: 'success_rate_improvement',';
+                type: 'success_rate_improvement','
         }'
                 title: '合格率の向上', })
                 description: `現在の合格率（${summary.successRate}%）を改善しましょう。`)'
@@ -510,7 +510,7 @@ export class QualityReporter {
         
         const trends = this.qualityTrends.get(language)!;
         trends.push({ timestamp: reportData.timestamp,
-            qualityScore: reportData.summary.qualityScore,);
+            qualityScore: reportData.summary.qualityScore);
             errorCount: reportData.summary.errorCount);
             warningCount: reportData.summary.warningCount,);
             successRate: reportData.summary.successRate),
@@ -525,7 +525,7 @@ export class QualityReporter {
     
     /**
      * レポートをレンダリング
-     */'
+     */
     private renderReport(reportData: ReportData, template: ReportTemplate): string { ''
         switch(template.format') {'
             '';
@@ -546,7 +546,7 @@ export class QualityReporter {
      */''
     private renderHtmlReport(reportData: ReportData, template: ReportTemplate'): string { const sections: string[] = [],
         
-        // ヘッダー'
+        // ヘッダー
         sections.push(`'';
             <div class="report-header">)";
                 <h1>翻訳品質レポート</h1>")";
@@ -558,37 +558,37 @@ export class QualityReporter {
             </div>'';
         `');
         ';
-        // サマリーセクション''
+        // サマリーセクション
         if(template.sections.includes('summary') {'
-            ';
+            ';'
         }'
             sections.push(this.renderSummarySection(reportData.summary)'); }
         }
         ';
-        // 統計セクション''
+        // 統計セクション
         if(template.sections.includes('statistics') {'
-            ';
+            ';'
         }'
             sections.push(this.renderStatisticsSection(reportData.statistics)'); }
         }
         ';
-        // 問題セクション''
+        // 問題セクション
         if(template.sections.includes('issues') {'
-            ';
+            ';'
         }'
             sections.push(this.renderIssuesSection(reportData.issues)'); }
         }
         ';
-        // 推奨事項セクション''
+        // 推奨事項セクション
         if(template.sections.includes('recommendations') {'
-            ';
+            ';'
         }'
             sections.push(this.renderRecommendationsSection(reportData.recommendations)'); }
         }
         ';
-        // トレンドセクション''
+        // トレンドセクション
         if(template.sections.includes('trends') {'
-            ';
+            ';'
         }'
             sections.push(this.renderTrendsSection(reportData.trends)'); }
         }
@@ -616,7 +616,7 @@ export class QualityReporter {
      */'
     private renderSummarySection(summary: ReportSummary): string { ''
         const qualityColor = this.getQualityColor(summary.qualityScore');
-        ';
+        ';'
         return `'';
             <section class="summary-section">";
                 <h2>📊 品質サマリー</h2>"";
@@ -705,7 +705,7 @@ export class QualityReporter {
                                     <span class="success-text">合格: ${stats.passed}</span>
                                 </div>";
                             </div>"";
-                        `").join('')}
+                        `").join()}
                     </div>;
                 </div>;
             </section>;
@@ -725,21 +725,21 @@ export class QualityReporter {
                         ${issues.critical.map(issue => this.renderIssueItem(issue, 'critical')').join('''})}'
                     </div> : undefined'';
                 ` : ''}
-                ';
+                ';'
                 ${ issues.major.length > 0 ? `''
                     <div class="issue-category major">" }"
                         <h3>🟠 主要な問題 (${issues.major.length}件")</h3>""
                         ${issues.major.map(issue => this.renderIssueItem(issue, 'major')').join('''})}'
                     </div> : undefined'';
                 ` : ''}
-                ';
+                ';'
                 ${ issues.minor.length > 0 ? `''
                     <div class="issue-category minor">" }"
                         <h3>🟡 軽微な問題 (${issues.minor.length}件")</h3>""
                         ${issues.minor.map(issue => this.renderIssueItem(issue, 'minor')').join('''})}'
                     </div> : undefined'';
                 ` : ''}
-                ';
+                ';'
                 ${ issues.info.length > 0 ? `''
                     <div class="issue-category info">" }"
                         <h3>ℹ️ 情報 (${issues.info.length}件")</h3>""
@@ -798,7 +798,7 @@ export class QualityReporter {
                             </ul>;
                         </div>';
                     </div>'';
-                `').join('')}
+                `').join()}
             </section>;
         `;
     }
@@ -861,7 +861,7 @@ export class QualityReporter {
         
         // エラーと警告を追加
         [...reportData.issues.critical, ...reportData.issues.major, ...reportData.issues.minor, ...reportData.issues.info];
-            .forEach(issue => {  }'
+            .forEach(issue => {  }
                 rows.push([' }'
                     `"${issue.key || ''}"`,""
                     `"${issue.rule || ''}"`,")"
@@ -885,7 +885,7 @@ export class QualityReporter {
      */''
     private getReportCSS(''';
             body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background: #f5f5f5, })
-            .report-container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+            .report-container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1) }
             .report-header { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #eee, }
             .report-header h1 { color: #333; margin: 0, }
             .report-meta { margin-top: 10px; color: #666, }
@@ -948,7 +948,7 @@ export class QualityReporter {
     private generateReportId(): string {
         return `report_${Date.now(})}_${Math.random().toString(36).substr(2, 9})}`;
     }
-    ';
+    ';'
     private getQualityColor(score: number): string { ''
         if (score >= 90') return '#27ae60';''
         if (score >= 75') return '#f39c12';''
@@ -1044,6 +1044,6 @@ let qualityReporterInstance: QualityReporter | null = null,
 
 /**
  * QualityReporterのシングルトンインスタンスを取得
- */'
+ */
 export function getQualityReporter(): QualityReporter { if (!qualityReporterInstance) {''
         qualityReporterInstance = new QualityReporter(' })

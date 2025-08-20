@@ -8,18 +8,18 @@ interface ThresholdValues { min?: number;
     target: number,
     max?: number;
     critical: number,
-    warning: number; }
+    warning: number }
 }
 
 interface ThresholdConfig { adaptiveThresholds: boolean,
     staticThresholds: Map<string, ThresholdValues>;
     dynamicThresholds: Map<string, ThresholdValues>;
     violationSensitivity: number,
-    adaptationRate: number; }
+    adaptationRate: number }
 }
 
 interface BaselinePoint { timestamp: number,
-    value: number; }
+    value: number }
 }
 
 interface BaselineStats { count: number,
@@ -32,7 +32,7 @@ interface BaselineStats { count: number,
     p75: number,
     p95: number,
     p90?: number;
-    updated: number; }
+    updated: number }
 }
 
 interface ThresholdViolation { timestamp: number,
@@ -41,21 +41,21 @@ interface ThresholdViolation { timestamp: number,
     thresholds: ThresholdValues,
     type: 'critical_low' | 'warning_low' | 'critical_high' | 'warning_high','';
     severity: 'critical' | 'warning' | 'high' | 'medium' | 'low',
-    deviation: number; }
+    deviation: number }
 }
 
 interface ViolationStats { total: number,
     recent: number,
     by_severity: Record<string, number>;
     by_metric: Record<string, number>;
-    rate_per_minute: number; }
+    rate_per_minute: number }
 }
 
 interface ExportedData { timestamp: number,
     config: ThresholdConfig,
     baselineStats: Record<string, BaselineStats>;
     violations: ThresholdViolation[],
-    violationCounters: Record<string, number>; }
+    violationCounters: Record<string, number> }
 }
 
 interface ImportData { config?: Partial<ThresholdConfig>;
@@ -64,7 +64,7 @@ interface ImportData { config?: Partial<ThresholdConfig>;
     violationCounters?: Record<string, number>; }
 }
 
-interface MainController { errorHandler: any; }
+interface MainController { errorHandler: any }
 }
 
 export class PerformanceThresholdManager {
@@ -99,9 +99,9 @@ export class PerformanceThresholdManager {
         
         // Baseline management
         this.baselineHistory = new Map();
-        this.baselineStats = new Map();'
+        this.baselineStats = new Map();
         '';
-        this.initializeDefaultThresholds('')';
+        this.initializeDefaultThresholds()';
         console.log('[PerformanceThresholdManager] Threshold management component initialized');
     }
     
@@ -110,7 +110,7 @@ export class PerformanceThresholdManager {
      */''
     private initializeDefaultThresholds(''';
         this.thresholdConfig.staticThresholds.set('fps', { min: 30,
-            target: 60,);
+            target: 60);
             max: 120)';
             critical: 15,')';
             warning: 45)'),';
@@ -118,14 +118,14 @@ export class PerformanceThresholdManager {
         this.thresholdConfig.staticThresholds.set('frame_time', {
             min: 8,      // ~120 FPS;
             target: 16.67, // 60 FPS;
-            max: 33.33,   // 30 FPS)';
+            max: 33.33,   // 30 FPS);
             critical: 66.67, // 15 FPS')';
             warning: 22.22   // 45 FPS)'),';
         '';
         this.thresholdConfig.staticThresholds.set('memory_used', {
             min: 50,     // MB;
             target: 200,  // MB;
-            max: 1000,   // MB)';
+            max: 1000,   // MB);
             critical: 2000, // MB')';
             warning: 800    // MB)'),';
         '';
@@ -147,7 +147,7 @@ export class PerformanceThresholdManager {
     /**
      * Update baseline and thresholds
      * @param metricId - Metric identifier
-     * @param value - Current metric value'
+     * @param value - Current metric value
      */''
     updateBaseline(metricId: string, value: number'): void { ''
         if(typeof value !== 'number' || !isFinite(value) return;
@@ -193,7 +193,7 @@ export class PerformanceThresholdManager {
             p75: this.calculatePercentile(values, 75),
             p90: this.calculatePercentile(values, 90),
             p95: this.calculatePercentile(values, 95),
-            updated: Date.now(); }
+            updated: Date.now() }
         };
         
         this.baselineStats.set(metricId, stats);
@@ -215,7 +215,7 @@ export class PerformanceThresholdManager {
         const adaptationRate = this.thresholdConfig.adaptationRate;
         
         // Calculate adaptive thresholds based on metric type
-        let newThresholds: Partial<ThresholdValues>,';
+        let newThresholds: Partial<ThresholdValues>,
         '';
         switch(metricId') {'
             '';
@@ -236,7 +236,7 @@ export class PerformanceThresholdManager {
                 newThresholds = this.calculateGenericThresholds(stats, staticThresholds); }
         }
         ';
-        // Apply exponential smoothing to threshold updates''
+        // Apply exponential smoothing to threshold updates
         for (const [key, newValue] of Object.entries(newThresholds)') { ''
             if(dynamicThresholds[key as keyof ThresholdValues] !== undefined && typeof newValue === 'number') {
                 
@@ -315,7 +315,7 @@ export class PerformanceThresholdManager {
      * @param metricId - Metric identifier
      * @param value - Current value
      * @returns Violation info or null
-     */'
+     */
     checkThresholdViolation(metricId: string, value: number): ThresholdViolation | null { ''
         const thresholds = this.thresholdConfig.dynamicThresholds.get(metricId');''
         if (!thresholds || typeof value !== 'number'') return null;'
@@ -323,7 +323,7 @@ export class PerformanceThresholdManager {
         let violationType: ThresholdViolation['type'] | null = null,'';
         let violationSeverity: ThresholdViolation['severity'] = 'low',
         ';
-        // Check for violations based on metric type''
+        // Check for violations based on metric type
         switch(metricId') {'
             '';
             case 'fps':'';
@@ -392,7 +392,7 @@ export class PerformanceThresholdManager {
             case 'memory_used':'';
             case 'network_latency':;
                 referenceValue = value > thresholds.critical ? thresholds.critical: thresholds.warning,
-                return (value - referenceValue) / referenceValue;
+                return (value - referenceValue) / referenceValue
                 
         }
             default: return 0; }
@@ -470,9 +470,9 @@ export class PerformanceThresholdManager {
     
     /**
      * Reset violation history
-     */'
+     */
     resetViolations(): void { this.violations = [];''
-        this.violationCounters.clear('')';
+        this.violationCounters.clear()';
         console.log('[PerformanceThresholdManager] Violation history reset'); }
     }
     
@@ -516,8 +516,8 @@ export class PerformanceThresholdManager {
             }
             
             if(data.violationCounters) {
-            ';
-                ';
+            ';'
+                ';'
             }'
                 this.violationCounters = new Map(Object.entries(data.violationCounters)'); }
             }'
@@ -525,7 +525,7 @@ export class PerformanceThresholdManager {
             console.log('[PerformanceThresholdManager] Data imported successfully');
             return true;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PerformanceThresholdManager] Import failed:', error);
             return false; }
         }
@@ -558,9 +558,9 @@ export class PerformanceThresholdManager {
     destroy(): void { this.violations = [];
         this.violationCounters.clear();
         this.baselineHistory.clear();
-        this.baselineStats.clear();'
+        this.baselineStats.clear();
         this.thresholdConfig.staticThresholds.clear();''
-        this.thresholdConfig.dynamicThresholds.clear('')';
+        this.thresholdConfig.dynamicThresholds.clear()';
         console.log('[PerformanceThresholdManager] Threshold manager destroyed''); }'
     }''
 }

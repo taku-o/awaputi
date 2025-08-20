@@ -15,7 +15,7 @@ interface CurrentFileIntegrity { currentFileValid: boolean,
     syntaxValid: boolean,
     functionallyEquivalent: boolean,
     passed: boolean,
-    error?: string; }
+    error?: string }
 }
 
 interface ReferenceValidation { importReferences: number,
@@ -37,14 +37,14 @@ interface BuildDependencies { inPackageJson: boolean,
 }
 
 interface LastCommitInfo { hash: string,
-    message: string; }
+    message: string }
 }
 
 interface GitStatus { isTracked: boolean,
     hasUncommittedChanges: boolean,
     lastCommitInfo: LastCommitInfo | null,
     passed: boolean,
-    error?: string; }
+    error?: string }
 }
 
 interface SafetyChecks { basicValidation?: BasicValidation;
@@ -56,12 +56,12 @@ interface SafetyChecks { basicValidation?: BasicValidation;
 }
 
 interface SafetyWarning { level: string,
-    message: string; }
+    message: string }
 }
 
 interface SafetyRecommendation { type: string,
     message: string,
-    priority?: string; }
+    priority?: string }
 }
 
 interface SafetyVerification { filePath: string,
@@ -70,32 +70,32 @@ interface SafetyVerification { filePath: string,
     overallSafety: boolean,
     warnings: SafetyWarning[],
     recommendations: SafetyRecommendation[],
-    error?: string; }
+    error?: string }
 }
 
 interface SafetySummary { totalFiles: number,
     safeFiles: number,
     unsafeFiles: number,
-    errorFiles: number; }
+    errorFiles: number }
 }
 
 interface SafetyBreakdown { basicValidation: number,
     currentFileIntegrity: number,
     referenceValidation: number,
     buildDependencies: number,
-    gitStatus: number; }
+    gitStatus: number }
 }
 
 interface OverallRecommendation { action: string,
     message: string,
-    priority: string; }
+    priority: string }
 }
 
 interface SafetyReport { summary: SafetySummary,
     safetyBreakdown: SafetyBreakdown,
     files: SafetyVerification[],
     overallRecommendation: OverallRecommendation,
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 /**
@@ -145,7 +145,7 @@ export class SafetyVerifier {
             verification.overallSafety = this.calculateOverallSafety(verification.checks);
             verification.warnings = this.collectWarnings(verification.checks);
             verification.recommendations = this.generateRecommendations(verification.checks);
-             }'
+             }
         } catch (error) { ''
             verification.error = (error as Error').message;
             verification.overallSafety = false;'
@@ -203,7 +203,7 @@ export class SafetyVerifier {
             functionallyEquivalent: false,
             passed: false }
         },
-';
+';'
         try { const currentFilePath = this.getCurrentFilePath(filePath);''
             if(!currentFilePath') {'
                 '';
@@ -212,18 +212,18 @@ export class SafetyVerifier {
                 return integrity; }
             }
 ';
-            // 現在ファイルの存在と読み取り可能性確認''
+            // 現在ファイルの存在と読み取り可能性確認
             const currentContent = await fs.readFile(currentFilePath, 'utf8'');
             integrity.currentFileValid = true;
 ';
-            // 基本的な構文検証（JavaScriptファイルの場合）''
+            // 基本的な構文検証（JavaScriptファイルの場合）
             if(currentFilePath.endsWith('.js') { integrity.syntaxValid = await this.validateJavaScriptSyntax(currentContent); }
             } else { integrity.syntaxValid = true; // JS以外は構文チェックスキップ }
             }
 
             // 機能的同等性の基本確認
             integrity.functionallyEquivalent = await this.checkFunctionalEquivalence(;
-                filePath, );
+                filePath );
                 currentFilePath);
 
             integrity.passed = integrity.currentFileValid && ;
@@ -276,7 +276,7 @@ export class SafetyVerifier {
     }
 
     /**
-     * ビルド依存関係の確認'
+     * ビルド依存関係の確認
      */''
     private async checkBuildDependencies(filePath: string'): Promise<BuildDependencies> { const dependencies: BuildDependencies = {
             inPackageJson: false,
@@ -286,15 +286,15 @@ export class SafetyVerifier {
             passed: true }
         },
 ';
-        try { // package.jsonでの参照確認''
+        try { // package.jsonでの参照確認
             const packageJsonPath = './package.json';'
-            try {''
+            try {'
                 const packageContent = await fs.readFile(packageJsonPath, 'utf8');''
                 dependencies.inPackageJson = packageContent.includes(filePath'); }
             } catch { // package.json読み取りエラーは無視 }
             }
 
-            // その他の設定ファイルでの参照確認'
+            // その他の設定ファイルでの参照確認
             const configFiles = ['';
                 './tsconfig.json','';
                 './webpack.config.js','';
@@ -303,7 +303,7 @@ export class SafetyVerifier {
             ];'
 '';
             for(const configFile of configFiles') {'
-                try {''
+                try {'
                     const configContent = await fs.readFile(configFile, 'utf8');
                     if(configContent.includes(filePath) {
                         dependencies.inOtherConfigs = true;
@@ -328,7 +328,7 @@ export class SafetyVerifier {
     }
 
     /**
-     * Git状態の確認'
+     * Git状態の確認
      */''
     private async checkGitStatus(filePath: string'): Promise<GitStatus> { const gitStatus: GitStatus = {
             isTracked: false,
@@ -336,14 +336,14 @@ export class SafetyVerifier {
             lastCommitInfo: null,
             passed: true }
         },
-';
-        try { ' }'
+';'
+        try { }'
             const { exec } = await import('child_process'');''
             const { promisify } = await import('util');''
             const execAsync = promisify(exec');
 
-            // ファイルがGit追跡されているか確認'
-            try { ' }'
+            // ファイルがGit追跡されているか確認
+            try { }'
                 await execAsync(`git ls-files --error-unmatch "${filePath")"`});
                 gitStatus.isTracked = true;
             } catch { gitStatus.isTracked = false; }
@@ -405,23 +405,23 @@ export class SafetyVerifier {
 
         // 参照検証警告
         if(checks.referenceValidation && checks.referenceValidation.referenceReport) {
-            const refWarnings = checks.referenceValidation.referenceReport.safetyAssessment.warnings;
+            const refWarnings = checks.referenceValidation.referenceReport.safetyAssessment.warnings
         }
             warnings.push(...refWarnings); }
         }
-';
-        // ビルド依存関係警告''
+;
+        // ビルド依存関係警告
         if(checks.buildDependencies && !checks.buildDependencies.passed') {'
             warnings.push({')'
-                level: 'medium',');
+                level: 'medium',')
         }'
                 message: 'ビルド設定ファイルで参照されている可能性があります'); }
         }
 ';
-        // Git状態警告''
+        // Git状態警告
         if(checks.gitStatus && checks.gitStatus.hasUncommittedChanges') {'
             warnings.push({')'
-                level: 'low',');
+                level: 'low',')
         }'
                 message: '未コミットの変更があります'); }
         }
@@ -438,7 +438,7 @@ export class SafetyVerifier {
             recommendations.push({''
                 type: 'safe_deletion',')';
                 message: '安全に削除できます',')';
-                priority: 'high')'); }'
+                priority: 'high')') }'
         } else {  recommendations.push({''
                 type: 'manual_review',')';
                 message: '手動確認が必要です',') }'
@@ -462,7 +462,7 @@ export class SafetyVerifier {
             /_backup\./,
             /_original\./,
             /\.old$/,
-            /\.backup$/,];
+            /\.backup$/];
             /\.orig$/];
         ];
 
@@ -470,7 +470,7 @@ export class SafetyVerifier {
     }
 
     /**
-     * 対応する現在ファイルのパスを取得'
+     * 対応する現在ファイルのパスを取得
      */''
     private getCurrentFilePath(backupFilePath: string'): string | null { const mapping: Record<string, string> = {''
             'src/utils/TestConfigurationGenerator_old.js': 'src/utils/TestConfigurationGenerator.js','';
@@ -486,11 +486,11 @@ export class SafetyVerifier {
     /**
      * JavaScript構文の検証
      */'
-    private async validateJavaScriptSyntax(content: string): Promise<boolean> { try {''
+    private async validateJavaScriptSyntax(content: string): Promise<boolean> { try {'
             new Function(content');
             return true; }
-        } catch { // ES6モジュール構文などで失敗する場合があるが、'
-            // 基本的な構文エラーでなければOKとする''
+        } catch { // ES6モジュール構文などで失敗する場合があるが、
+            // 基本的な構文エラーでなければOKとする
             return !content.includes('SyntaxError'); }
         }
     }
@@ -498,7 +498,7 @@ export class SafetyVerifier {
     /**
      * 機能的同等性の確認'
      */''
-    private async checkFunctionalEquivalence(backupFilePath: string, currentFilePath: string'): Promise<boolean> { try {''
+    private async checkFunctionalEquivalence(backupFilePath: string, currentFilePath: string'): Promise<boolean> { try {'
             const backupContent = await fs.readFile(backupFilePath, 'utf8'');''
             const currentContent = await fs.readFile(currentFilePath, 'utf8');
 
@@ -537,11 +537,11 @@ export class SafetyVerifier {
      * 全体的な推奨事項の生成
      */
     private generateOverallRecommendation(verificationResults: SafetyVerification[]): OverallRecommendation { const safeFiles = verificationResults.filter(r => r.overallSafety);
-        const unsafeFiles = verificationResults.filter(r => !r.overallSafety);'
+        const unsafeFiles = verificationResults.filter(r => !r.overallSafety);
 '';
         if(unsafeFiles.length === 0') {'
             return { ''
-                action: 'proceed_with_deletion',';
+                action: 'proceed_with_deletion','
         }'
                 message: '全てのファイルが安全に削除できます',' };'
                 priority: 'high' }'

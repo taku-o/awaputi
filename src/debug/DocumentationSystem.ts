@@ -9,14 +9,14 @@ interface DocumentationItem { id: string,
     category: string,
     content: string,
     keywords: string[],
-    lastUpdated: number; }
+    lastUpdated: number }
 }
 
 interface SearchResult { docId: string,
     title: string,
     score: number,
     matches: string[],
-    excerpt: string; }
+    excerpt: string }
 }
 
 interface SearchOptions { limit?: number; }
@@ -25,17 +25,17 @@ interface SearchOptions { limit?: number; }
 interface ContextualHelpResult { context: string,
     suggestedDocs: string[],
     currentDoc?: string;
-    tips: string[]; }
+    tips: string[] }
 }
 
 interface ContextInfo { docId: string,
     doc: DocumentationItem,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface TokenInfo { docId: string,
     title: string,
-    frequency: number; }
+    frequency: number }
 }
 
 export class DocumentationSystem {
@@ -130,7 +130,7 @@ export class DocumentationSystem {
                     <li><code>game.resume()</code> - ゲームを再開</li>;
                     <li><code>game.setScore(1000)</code> - スコアを設定</li>';
                     <li><code>game.addBubbles(10)</code> - バブルを追加</li>'';
-                    <li><code>game.clearBubbles('')';
+                    <li><code>game.clearBubbles()';
                     <li><code>config.get('audio.volume'')</code> - 設定値を取得</li>'';
                     <li><code>config.set('audio.volume', 0.5)</code> - 設定値を変更</li>;
                     <li><code>config.reset()</code> - 設定をリセット</li>;
@@ -372,7 +372,7 @@ export class DocumentationSystem {
             `,')';
             keywords: ['best practices', 'guidelines', 'tips', 'recommendations'])');
 ';
-        // API リファレンス''
+        // API リファレンス
         this.registerDocumentation('api-reference', {''
             title: 'API Reference',')';
             category: 'reference');
@@ -385,11 +385,11 @@ class EnhancedDebugInterface {)
     registerPanel(name: string, panel: Panel): void;
     switchPanel(name: string): void;
     closePanel(): void;
-    // ショートカット'
+    // ショートカット
     registerShortcut(key: string, handler: Function): void'';
     unregisterShortcut(key: string'): void;
     ';
-    // レイアウト''
+    // レイアウト
     setLayout(layout: 'docked' | 'floating' | 'fullscreen'): void;
     toggleVisibility(): void }
 }
@@ -428,7 +428,7 @@ class TestSupportTools { // テスト実行
     // モックデータ
     generateMockData(type: string, count: number): any[];
     createScenario(name: string): Scenario;
-    // 分析'
+    // 分析
     analyzeResults(results: TestResults): Analysis'';
     generateReport(''';
             keywords: ['api', 'reference', 'documentation', 'methods', 'classes']' })'
@@ -438,16 +438,16 @@ class TestSupportTools { // テスト実行
     registerDocumentation(id: string, doc: Omit<DocumentationItem, 'id' | 'lastUpdated'>): void { const fullDoc: DocumentationItem = {
             id: id,
             ...doc,
-            lastUpdated: Date.now(); }
+            lastUpdated: Date.now() }
         };
         
         this.docs.set(id, fullDoc);
         
         // 検索エンジンにインデックス
         this.searchEngine.indexDocument(id, fullDoc);
-    }'
+    }
 '';
-    createHelpPanel('')';
+    createHelpPanel()';
         this.helpPanel = document.createElement('div'');''
         this.helpPanel.id = 'debug-help-panel';''
         this.helpPanel.className = 'debug-help-panel';
@@ -549,15 +549,15 @@ class TestSupportTools { // テスト実行
                 }
                 
                 .help-main p { margin: 8px 0,
-                    color: #ddd; }
+                    color: #ddd }
                 }
                 
                 .help-main ul, .help-main ol { margin: 8px 0,
                     padding-left: 25px,
-                    color: #ddd; }
+                    color: #ddd }
                 }
                 
-                .help-main li { margin: 4px 0; }
+                .help-main li { margin: 4px 0 }
                 }
                 
                 .help-main code { background: #333,
@@ -572,7 +572,7 @@ class TestSupportTools { // テスト実行
                     border-radius: 6px,
                     overflow-x: auto,
                     margin: 10px 0,
-                    border: 1px solid #444; }
+                    border: 1px solid #444 }
                 }
                 
                 .help-main kbd { background: #444,
@@ -584,34 +584,34 @@ class TestSupportTools { // テスト実行
                     box-shadow: 0 2px 0 #222, }
                 }
                 
-                .category-item:hover, .doc-link:hover { background: #555 !important; }
+                .category-item:hover, .doc-link:hover { background: #555 !important }
                 }
                 
                 .category-item.active { background: #444 !important,
-                    color: #00ff88; }
+                    color: #00ff88 }
                 }
                 
-                ::-webkit-scrollbar { width: 8px; }
+                ::-webkit-scrollbar { width: 8px }
                 }
                 
-                ::-webkit-scrollbar-track { background: #222; }
+                ::-webkit-scrollbar-track { background: #222 }
                 }
                 
                 ::-webkit-scrollbar-thumb { background: #555,
                     border-radius: 4px, }
                 }
                 
-                ::-webkit-scrollbar-thumb:hover { background: #666; }
+                ::-webkit-scrollbar-thumb:hover { background: #666 }
                 }
             </style>;
         `;
     }'
 '';
-    setupEventHandlers('')';
+    setupEventHandlers()';
         document.getElementById('close-help'')? .addEventListener('click', () => { this.hide();' }'
         }');
 ';
-        // カテゴリ選択''
+        // カテゴリ選択
         document.getElementById('help-categories'')?.addEventListener('click', (e) => {  ''
             const item = (e.target as HTMLElement').closest('.category-item') as HTMLElement;
             if (item) { }
@@ -619,7 +619,7 @@ class TestSupportTools { // テスト実行
             }''
         }');
 ';
-        // ドキュメントリンク''
+        // ドキュメントリンク
         document.addEventListener('click', (e) => {  ''
             const docLink = (e.target as HTMLElement').closest('.doc-link') as HTMLElement;
             if(docLink) {
@@ -631,7 +631,7 @@ class TestSupportTools { // テスト実行
             }''
         }');
 ';
-        // 検索''
+        // 検索
         const searchInput = document.getElementById('help-search-input'') as HTMLInputElement;''
         searchInput?.addEventListener('input', (e) => { this.handleSearch((e.target as HTMLInputElement).value);' }'
         }');'
@@ -642,7 +642,7 @@ class TestSupportTools { // テスト実行
             }''
         }');
 ';
-        // キーボードショートカット''
+        // キーボードショートカット
         document.addEventListener('keydown', (e') => {  ''
             if(e.key === 'F1' || (e.ctrlKey && e.key === 'h') {
                 
@@ -661,7 +661,7 @@ class TestSupportTools { // テスト実行
             this.showDocument('overview'); // デフォルトでOverviewを表示 }
         }
     }
-';
+';'
     hide(): void { this.isVisible = false;''
         if(this.helpPanel') {'
             '';
@@ -677,7 +677,7 @@ class TestSupportTools { // テスト実行
         }
     }'
 '';
-    selectCategory(category: string'): void { // カテゴリボタンの状態更新''
+    selectCategory(category: string'): void { // カテゴリボタンの状態更新
         document.querySelectorAll('.category-item').forEach(item => { ');''
             item.classList.remove('active');' }'
             (item as HTMLElement').style.background = '';' }'
@@ -693,13 +693,13 @@ class TestSupportTools { // テスト実行
 
         // ドキュメント一覧を表示
         this.showCategoryDocuments(category);
-    }'
+    }
 '';
     showCategoryDocuments(category: string'): void { ''
         const docs = category === 'all' ?   : undefined';
             Array.from(this.docs.values() :'';
             Array.from(this.docs.values().filter(doc => doc.category === category');
-';
+';'
         const content = `' }'
             <h3>Documents in ${category === 'all' ? 'All Categories' : category}</h3>''
             <div class="doc-list">";
@@ -708,7 +708,7 @@ class TestSupportTools { // テスト実行
                          onclick="window.debugDocs.showDocument('${doc.id')''})">""
                         <h4 style="margin: 0 0 5px 0; color: #00ff88;">${doc.title}</h4>""
                         <p style="margin: 0; color: #ccc; font-size: 13px;">""
-                            Category: ${doc.category} | Keywords: ${doc.keywords.join(', '})}
+                            Category: ${doc.category} | Keywords: ${doc.keywords.join(', '})}'
                         </p>';
                     </div>'';
                 `').join(''')}
@@ -719,7 +719,7 @@ class TestSupportTools { // テスト実行
         if (helpArticle) { helpArticle.innerHTML = content; }
         }
     }
-';
+';'
     showDocument(docId: string): void { const doc = this.docs.get(docId);''
         if(!doc') {'
             '';
@@ -743,14 +743,14 @@ class TestSupportTools { // テスト実行
 
         const results = this.searchEngine.search(query);
         this.showSearchResults(results);
-    }'
+    }
 '';
     showSearchResults(results: SearchResult[]'): void { ''
         const resultsDiv = document.getElementById('search-results');
         if (!resultsDiv) return;'
         '';
         if(results.length === 0') {'
-            ';
+            ';'
         }'
             resultsDiv.innerHTML = '<div style="padding: 10px; color: #ccc;">No results found</div>'; }'
         } else {  resultsDiv.innerHTML = results.map(result => `') }'
@@ -766,10 +766,10 @@ class TestSupportTools { // テスト実行
         resultsDiv.style.display = 'block';
     }'
 '';
-    hideSearchResults('')';
+    hideSearchResults()';
         const resultsDiv = document.getElementById('search-results');''
         if(resultsDiv') {'
-            ';
+            ';'
         }'
             resultsDiv.style.display = 'none'; }
         }
@@ -855,7 +855,7 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
             
             const tokenIndex = this.index.get(token)!;
             const existing = tokenIndex.get(docId);
-            tokenIndex.set(docId, { docId: docId,)
+            tokenIndex.set(docId, { docId: docId)
                 title: doc.title),
                 frequency: (existing? .frequency || 0) + 1 }
             }),
@@ -870,9 +870,9 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         // 再インデックス
         this.indexDocument(docId, doc);
     }
-';
+';'
     tokenize(text: string): string[] { return text''
-            .toLowerCase('')';
+            .toLowerCase()';
             .replace(/[^\w\s\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf]/g, ' ');
             .split(/\s+/);
             .filter(token => token.length > 1 && !this.stopWords.has(token); }
@@ -883,14 +883,14 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         const results = new Map<string, SearchResult>();
 
         queryTokens.forEach(token => { );
-            const tokenIndex = this.index.get(token);
+            const tokenIndex = this.index.get(token);'
             if(tokenIndex) {'
                 tokenIndex.forEach((docInfo, docId) => {''
                     if (!results.has(docId)') {
                         results.set(docId, {
                             docId: docId,
-                            title: docInfo.title,);
-                            score: 0);
+                            title: docInfo.title);
+                            score: 0)
             }'
                             matches: [],') }'
                             excerpt: ''); }
@@ -904,12 +904,12 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
             }
 
             // 部分一致検索
-            this.index.forEach((tokenIndex, indexToken) => {  if(indexToken.includes(token) {'
+            this.index.forEach((tokenIndex, indexToken) => {  if(indexToken.includes(token) {
                     tokenIndex.forEach((docInfo, docId) => {''
                         if (!results.has(docId)') {
                             results.set(docId, {
                                 docId: docId,
-                                title: docInfo.title,);
+                                title: docInfo.title);
                                 score: 0)';
                                 matches: [],') }'
                                 excerpt: ''); }
@@ -935,9 +935,9 @@ class DocumentationSearchEngine { private index: Map<string, Map<string, TokenIn
         });
 
         return sortedResults;
-    }'
+    }
 '';
-    generateExcerpt(docId: string, queryTokens: string[]'): string { // 簡単な抜粋生成（実際の実装ではより洗練された方法を使用）''
+    generateExcerpt(docId: string, queryTokens: string[]'): string { // 簡単な抜粋生成（実際の実装ではより洗練された方法を使用）
         return 'Relevant documentation about ' + queryTokens.join(', '); }
     }
 
@@ -959,7 +959,7 @@ class ContextualHelpProvider { private currentContext: ContextInfo | null
 
     }
     }
-        this.setupContextMappings(); }
+        this.setupContextMappings(); }'
     }'
 '';
     setupContextMappings(''';
@@ -997,7 +997,7 @@ class ContextualHelpProvider { private currentContext: ContextInfo | null
     updateContext(docId: string, doc: DocumentationItem): void { this.currentContext = {
             docId: docId,
             doc: doc,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
     }
 
@@ -1048,6 +1048,6 @@ class ContextualHelpProvider { private currentContext: ContextInfo | null
     }
 }
 
-// グローバルアクセス用（デバッグ目的）'
+// グローバルアクセス用（デバッグ目的）
 (window as any).DocumentationSystem = DocumentationSystem;''
 (window as any').debugDocs = null; // インスタンスは後で設定

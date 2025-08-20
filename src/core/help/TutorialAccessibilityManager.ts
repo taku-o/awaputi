@@ -20,7 +20,7 @@ export interface AccessibilityConfig { enabled: boolean,
     keyboardNavigation: boolean,
     focusIndicators: boolean,
     reducedMotion: boolean,
-    audioDescriptions: boolean; }
+    audioDescriptions: boolean }
 }
 
 export interface TutorialAccessibilitySettings { highContrast: boolean,
@@ -28,7 +28,7 @@ export interface TutorialAccessibilitySettings { highContrast: boolean,
     screenReaderMode: boolean,
     reducedMotion: boolean,
     keyboardNavigation: boolean,
-    focusIndicators: boolean; }
+    focusIndicators: boolean }
 }
 
 export interface TutorialConfig { defaultTimeout?: number;
@@ -57,7 +57,7 @@ export interface SimplifiedValidation { strict?: boolean;
 
 export type TutorialValidation = Function | SimplifiedValidation | any;
 
-export interface AccessibilityManagerEvent { detail: Partial<AccessibilityConfig>;
+export interface AccessibilityManagerEvent { detail: Partial<AccessibilityConfig>
     }
 }
 
@@ -68,17 +68,17 @@ export interface AccessibilitySystemPrefs { highContrast?: boolean;
 }
 
 export interface AccessibilityEventData { config: AccessibilityConfig,
-    source: string; }
+    source: string }
 }
 
-export interface ScreenReaderAnnouncementData { message: string; }
+export interface ScreenReaderAnnouncementData { message: string }
 }
 
 // AccessibilityManager インターフェース
 export interface AccessibilityManager { getConfiguration(): AccessibilitySystemPrefs | null;
     addEventListener(event: string, handler: (event: AccessibilityManagerEvent) => void): void;
     removeEventListener(event: string, handler: (event: AccessibilityManagerEvent) => void): void;
-    emit(event: string, data: AccessibilityEventData | ScreenReaderAnnouncementData): void; }
+    emit(event: string, data: AccessibilityEventData | ScreenReaderAnnouncementData): void }
 }
 
 // TutorialOverlay インターフェース
@@ -132,8 +132,8 @@ export class TutorialAccessibilityManager {
             // AccessibilityManagerから設定を取得
             if(this.accessibilityManager) {
                 const systemPrefs = this.accessibilityManager.getConfiguration();
-                ';
-                // システム設定に基づいてデフォルト値を更新''
+                ;
+                // システム設定に基づいてデフォルト値を更新
                 if (systemPrefs') {
                     this.config.highContrast = systemPrefs.highContrast || false;
                     this.config.largeText = systemPrefs.largeText || false;
@@ -142,7 +142,7 @@ export class TutorialAccessibilityManager {
                     this.config.reducedMotion = systemPrefs.reducedMotion || false; }
                 }
                 ';
-                // AccessibilityManagerのイベントリスナーを設定''
+                // AccessibilityManagerのイベントリスナーを設定
                 this.accessibilityManager.addEventListener('settingsChanged', this.boundSettingsHandler');
             }'
             '';
@@ -159,11 +159,11 @@ export class TutorialAccessibilityManager {
     updateConfig(accessibilityConfig: Partial<AccessibilityConfig>): AccessibilityConfig { try { }
             this.config = { ...this.config, ...accessibilityConfig };
             ';
-            // AccessibilityManagerと連携''
+            // AccessibilityManagerと連携
             if(this.accessibilityManager') {'
                 '';
                 this.accessibilityManager.emit('tutorialAccessibilityUpdated', {)'
-                    config: this.config,');
+                    config: this.config,')
             }'
                     source: 'TutorialAccessibilityManager')'); }
             }'
@@ -190,7 +190,7 @@ export class TutorialAccessibilityManager {
             tutorialOverlay.updateAccessibilitySettings({
                 highContrast: this.config.highContrast,
                 largeText: this.config.largeText,
-                screenReaderMode: this.config.screenReaderMode,);
+                screenReaderMode: this.config.screenReaderMode);
                 reducedMotion: this.config.reducedMotion);
                 keyboardNavigation: this.config.keyboardNavigation,);
                 focusIndicators: this.config.focusIndicators),
@@ -208,7 +208,7 @@ export class TutorialAccessibilityManager {
             }
             
             return updatedConfig;
-            ';
+            ';'
         } catch (error) { ' }'
             this.loggingSystem.log(`アクセシビリティ適用エラー: ${(error as Error'}).message}`, 'error', 'TutorialAccessibilityManager');
             return tutorialConfig;
@@ -232,7 +232,7 @@ export class TutorialAccessibilityManager {
                     content: this.simplifyStepContent(step.content),
                     // 複雑な検証を簡略化
                     validation: step.validation ? this.simplifyValidation(step.validation) : null,
-                    // より長いタイムアウト'
+                    // より長いタイムアウト
                     timeout: (step.timeout || 30000) * 1.5' }'
                 }'),
             };'
@@ -253,12 +253,12 @@ export class TutorialAccessibilityManager {
     private simplifyStepContent(content: string'): string { ''
         if (!content || typeof content !== 'string'') return content;
         
-        try {'
-            // 長い文章を短縮''
+        try {
+            // 長い文章を短縮
             const sentences = content.split('。').filter(s => s.trim();
             if (sentences.length <= 2) return content;
             ';
-            // 最初の1-2文のみ使用''
+            // 最初の1-2文のみ使用
             const simplified = sentences.slice(0, 2').join('。'') + '。';
             return simplified; }
         } catch (error) { return content; // エラー時は元の内容を返す }
@@ -268,14 +268,14 @@ export class TutorialAccessibilityManager {
     /**
      * 検証を簡略化
      * @param validation - 元の検証
-     * @returns 簡略化された検証'
+     * @returns 簡略化された検証
      */''
-    private simplifyValidation(validation: TutorialValidation'): TutorialValidation { // 複雑な検証を簡単な検証に置き換え''
+    private simplifyValidation(validation: TutorialValidation'): TutorialValidation { // 複雑な検証を簡単な検証に置き換え
         if(typeof validation === 'function') {'
-            ';
+            ';'
         }'
             return (') => true; // 常に成功とする }
-        }'
+        }
         '';
         if (validation && typeof validation === 'object'') { ' }'
             return { ...validation, strict: false, tolerance: 'high' } as SimplifiedValidation;
@@ -296,7 +296,7 @@ export class TutorialAccessibilityManager {
             if(this.config.screenReaderMode) {
                 
             }
-                this.announceSettingsChange(newSettings); }'
+                this.announceSettingsChange(newSettings); }
             } catch (error) { ' }'
             this.loggingSystem.log(`設定変更処理エラー: ${(error as Error'}).message}`, 'error', 'TutorialAccessibilityManager');
         }
@@ -310,19 +310,19 @@ export class TutorialAccessibilityManager {
             const changes: string[] = [],';
             '';
             if(settings.highContrast !== undefined') {'
-                ';
+                ';'
             }'
                 changes.push(settings.highContrast ? '高コントラストモードが有効になりました' : '高コントラストモードが無効になりました'); }
             }'
             '';
             if(settings.largeText !== undefined') {'
-                ';
+                ';'
             }'
                 changes.push(settings.largeText ? '大きな文字表示が有効になりました' : '大きな文字表示が無効になりました'); }
             }'
             '';
             if(settings.simplifiedMode !== undefined') {'
-                ';
+                ';'
             }'
                 changes.push(settings.simplifiedMode ? '簡素化モードが有効になりました' : '簡素化モードが無効になりました'); }
             }'
@@ -331,7 +331,7 @@ export class TutorialAccessibilityManager {
                 '';
                 const announcement = changes.join('。'');'
             }'
-                this.accessibilityManager.emit('announceToScreenReader', { message: announcement ); }'
+                this.accessibilityManager.emit('announceToScreenReader', { message: announcement ) }'
             } catch (error) { ' }'
             this.loggingSystem.log(`音声アナウンスエラー: ${(error as Error'}).message}`, 'error', 'TutorialAccessibilityManager');
         }
@@ -447,13 +447,13 @@ export class TutorialAccessibilityManager {
     /**
      * アクセシビリティ設定を有効化
      */
-    enable(): void { this.updateConfig({ enabled: true ); }
+    enable(): void { this.updateConfig({ enabled: true ) }
     }
     
     /**
      * アクセシビリティ設定を無効化
      */
-    disable(): void { this.updateConfig({ enabled: false ); }
+    disable(): void { this.updateConfig({ enabled: false ) }
     }
     
     /**
@@ -480,17 +480,17 @@ export class TutorialAccessibilityManager {
     /**
      * アクセシビリティ設定をリセット'
      */''
-    reset('')';
+    reset()';
         this.loggingSystem.log('アクセシビリティ設定がリセットされました', 'info', 'TutorialAccessibilityManager');
     }
     
     /**
      * リソースをクリーンアップ
      */
-    destroy(): void { try {'
-            // イベントリスナーの削除''
+    destroy(): void { try {
+            // イベントリスナーの削除
             if(this.accessibilityManager') {'
-                ';
+                ';'
             }'
                 this.accessibilityManager.removeEventListener('settingsChanged', this.boundSettingsHandler'); }
             }'
@@ -530,7 +530,7 @@ export function reinitializeTutorialAccessibilityManager(;
     accessibilityManager?: AccessibilityManager | null);
     loggingSystem?: LoggingSystem | null;
 ): TutorialAccessibilityManager { if (tutorialAccessibilityManagerInstance) {
-        tutorialAccessibilityManagerInstance.destroy(); }'
+        tutorialAccessibilityManagerInstance.destroy(); }
     }''
     tutorialAccessibilityManagerInstance = new TutorialAccessibilityManager(accessibilityManager, loggingSystem');
     return tutorialAccessibilityManagerInstance;

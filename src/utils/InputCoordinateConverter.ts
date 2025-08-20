@@ -5,13 +5,13 @@
 
 // 型定義
 interface Point { x: number,
-    y: number; }
+    y: number }
 }
 
 interface BaseRect { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface ConvertedCoordinates { x: number,
@@ -21,7 +21,7 @@ interface ConvertedCoordinates { x: number,
     scaledX?: number;
     scaledY?: number;
     touchIndex?: number;
-    originalEvent: Event;
+    originalEvent: Event
     }
 }
 
@@ -35,23 +35,23 @@ interface ScaledEvent { type: string,
     originalEvent: Event,
     timestamp: number,
     preventDefault: () => void,
-    stopPropagation: () => void; }
+    stopPropagation: () => void }
 }
 
 interface ValidationResult { valid: boolean,
-    clampedPoint: Point;
+    clampedPoint: Point
     }
 }
 
 interface ScaledCoordinateManager { getCanvasInfo(): any;
     getScaleFactor(): number;
-    validateCoordinates(x: number, y: number): boolean; }
+    validateCoordinates(x: number, y: number): boolean }
 }
 
 export class InputCoordinateConverter {
     private scaledCoordinateManager: ScaledCoordinateManager;
     constructor(scaledCoordinateManager: ScaledCoordinateManager) {
-        this.scaledCoordinateManager = scaledCoordinateManager; }
+        this.scaledCoordinateManager = scaledCoordinateManager }
     }
     
     /**
@@ -84,8 +84,8 @@ export class InputCoordinateConverter {
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const baseX = canvasX / scaleFactor;
             const baseY = canvasY / scaleFactor;
-            ';
-            // 座標の妥当性を検証''
+            ;
+            // 座標の妥当性を検証
             if (!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)') { ''
                 console.warn('InputCoordinateConverter: Invalid converted mouse coordinates', { baseX, baseY );
                 return { x: event.clientX,
@@ -102,7 +102,7 @@ export class InputCoordinateConverter {
                 scaledY: baseY * scaleFactor, };
                 originalEvent: event }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('InputCoordinateConverter: Mouse event conversion failed', error);
             return { x: event.clientX,
                 y: event.clientY, };
@@ -131,7 +131,7 @@ export class InputCoordinateConverter {
                 },
             }
             
-            // タッチポイントを取得'
+            // タッチポイントを取得
             const touches = event.touches || event.changedTouches;''
             if(!touches || touchIndex >= touches.length') {'
                 '';
@@ -155,8 +155,8 @@ export class InputCoordinateConverter {
             const scaleFactor = this.scaledCoordinateManager.getScaleFactor();
             const baseX = canvasX / scaleFactor;
             const baseY = canvasY / scaleFactor;
-            ';
-            // 座標の妥当性を検証''
+            ;
+            // 座標の妥当性を検証
             if (!this.scaledCoordinateManager.validateCoordinates(baseX, baseY)') { ''
                 console.warn('InputCoordinateConverter: Invalid converted touch coordinates', { baseX, baseY );
                 return { x: 0,
@@ -174,7 +174,7 @@ export class InputCoordinateConverter {
                 touchIndex: touchIndex, };
                 originalEvent: event }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('InputCoordinateConverter: Touch event conversion failed', error);
             return { x: 0,
                 y: 0, };
@@ -200,7 +200,7 @@ export class InputCoordinateConverter {
                    point.x <= baseRect.x + baseRect.width &&;
                    point.y >= baseRect.y &&';
                    point.y <= baseRect.y + baseRect.height;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('InputCoordinateConverter: Rectangle hit test failed', error);
             return false; }
         }
@@ -223,9 +223,9 @@ export class InputCoordinateConverter {
             const dx = point.x - baseCenter.x;
             const dy = point.y - baseCenter.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
-            ';
+            ';'
             return distance <= baseRadius;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('InputCoordinateConverter: Circle hit test failed', error);
             return false; }
         }
@@ -254,7 +254,7 @@ export class InputCoordinateConverter {
                 preventDefault: () => originalEvent.preventDefault(), };
                 stopPropagation: () => originalEvent.stopPropagation(); }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('InputCoordinateConverter: Scaled event creation failed', error);
             return { type: originalEvent.type,
                 x: 0,
@@ -286,7 +286,7 @@ export class InputCoordinateConverter {
                 valid: valid, }
                 clampedPoint: { x: clampedX, y: clampedY }'
             };''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('InputCoordinateConverter: Coordinate validation failed', error);
             return {  };
                 valid: false, }
@@ -314,9 +314,9 @@ export class InputCoordinateConverter {
             }
                 convertedTouches.push(convertedTouch); }
             }
-            ';
+            ';'
             return convertedTouches;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('InputCoordinateConverter: Multi-touch conversion failed', error);
             return []; }
         }
@@ -329,7 +329,7 @@ export class InputCoordinateConverter {
      */
     getDebugInfo(event) {'
         const canvasInfo = this.scaledCoordinateManager.getCanvasInfo();''
-        const scaleFactor = this.scaledCoordinateManager.getScaleFactor('')';
+        const scaleFactor = this.scaledCoordinateManager.getScaleFactor()';
         if(event.type.includes('touch') {
     }
             convertedCoords = this.convertTouchEvent(event); }

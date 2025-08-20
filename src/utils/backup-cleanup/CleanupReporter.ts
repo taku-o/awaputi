@@ -4,13 +4,13 @@ import path from 'path';
 // Type definitions
 interface SizeAnalysisData { bytes: number,
     wordCount: number,
-    analyzeFailed?: boolean; }
+    analyzeFailed?: boolean }
 }
 
 interface GitHistoryData { hash: string,
     message: string,
     author: string,
-    date: string; }
+    date: string }
 }
 
 interface InvestigationResult { filePath: string,
@@ -26,35 +26,35 @@ interface InvestigationOverview { totalFilesInvestigated: number,
     filesFound: number,
     filesMissing: number,
     currentFilesExist: number,
-    investigationErrors: number; }
+    investigationErrors: number }
 }
 
 interface SizeAnalysisSummary { totalBytes: number,
     totalWords: number,
     averageFileSize: number,
     largestFile: FileSize | null,
-    smallestFile: FileSize | null; }
+    smallestFile: FileSize | null }
 }
 
 interface FileSize { file: string,
     size: number,
-    words: number; }
+    words: number }
 }
 
 interface GitHistorySummary { filesWithHistory: number,
     filesWithoutHistory: number,
-    commonCommitPatterns: CommitPattern[];
+    commonCommitPatterns: CommitPattern[]
     }
 }
 
 interface CommitPattern { pattern: string,
-    count: number; }
+    count: number }
 }
 
 interface Recommendation { type: string,
     priority: string,
     message: string,
-    files?: string[]; }
+    files?: string[] }
 }
 
 interface InvestigationSummary { overview: InvestigationOverview,
@@ -62,20 +62,20 @@ interface InvestigationSummary { overview: InvestigationOverview,
     fileDetails: InvestigationResult[],
     gitHistory: GitHistorySummary,
     recommendations: Recommendation[],
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 interface DeletionSummaryData { totalFiles: number,
     attempted: number,
     succeeded: number,
     failed: number,
-    skipped: number; }
+    skipped: number }
 }
 
 interface DeletionTiming { startTime: string,
     endTime: string,
     duration: number,
-    averageTimePerFile: number; }
+    averageTimePerFile: number }
 }
 
 interface BackupRecord { backupCreated: boolean,
@@ -84,13 +84,13 @@ interface BackupRecord { backupCreated: boolean,
         wordCount: number }
     },
     gitInfo: { hasHistory: boolean,
-        lastCommit: GitHistoryData;
+        lastCommit: GitHistoryData
     }
     };
 }
 
 interface TestResult { passed: boolean,
-    details?: string; }
+    details?: string }
 }
 
 interface DeletionDetail { status: string,
@@ -105,7 +105,7 @@ interface DeletionResults { summary: DeletionSummaryData,
     endTime: string,
     duration: number,
     deletions: DeletionDetail[],
-    errors: Error[];
+    errors: Error[]
     }
 }
 
@@ -114,20 +114,20 @@ interface DeletionOverview { totalFilesProcessed: number,
     filesSucceeded: number,
     filesFailed: number,
     filesSkipped: number,
-    successRate: number; }
+    successRate: number }
 }
 
 interface SizeReductionData { bytesFreed: number,
     wordsRemoved: number,
-    estimatedDiskSavings: string; }
+    estimatedDiskSavings: string }
 }
 
 interface BackupInfo { backupsCreated: number,
-    recoveryPossible: number; }
+    recoveryPossible: number }
 }
 
 interface TestResults { postDeletionTestsPassed: number,
-    postDeletionTestsFailed: number; }
+    postDeletionTestsFailed: number }
 }
 
 interface DeletionSummary { overview: DeletionOverview,
@@ -137,72 +137,72 @@ interface DeletionSummary { overview: DeletionOverview,
     sizeReduction: SizeReductionData,
     backupInfo: BackupInfo,
     testResults: TestResults,
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 interface FileSizeData { bytes: number,
-    words: number; }
+    words: number }
 }
 
-interface BeforeAfterSizes { files: FileSizeData[];
+interface BeforeAfterSizes { files: FileSizeData[]
     }
 }
 
 interface SizeReductionStats { totalBytes: number,
     totalWords: number,
-    fileCount: number; }
+    fileCount: number }
 }
 
 interface ReductionMetrics { bytesFreed: number,
     wordsRemoved: number,
     filesRemoved: number,
-    percentageReduction: number; }
+    percentageReduction: number }
 }
 
 interface ImpactAssessment { repositorySizeReduction: string,
     searchPerformanceImprovement: string,
-    maintenanceBenefits: string[]; }
+    maintenanceBenefits: string[] }
 }
 
 interface SizeReduction { beforeDeletion: SizeReductionStats,
     afterDeletion: SizeReductionStats,
     reduction: ReductionMetrics,
     impact: ImpactAssessment,
-    calculatedAt?: string; }
+    calculatedAt?: string }
 }
 
 interface RecoveryOverview { totalDeletedFiles: number,
     recoverableFiles: number,
-    manualRecoveryRequired: number; }
+    manualRecoveryRequired: number }
 }
 
 interface RecoveryMethod { filePath: string,
     type: string,
     instructions: string[],
-    confidence: string; }
+    confidence: string }
 }
 
 interface RecoveryMethods { gitHistory: RecoveryMethod[],
     backup: RecoveryMethod[],
-    manual: RecoveryMethod[];
+    manual: RecoveryMethod[]
     }
 }
 
 interface RecoveryStep { step: number,
     title: string,
     description: string,
-    commands: string[]; }
+    commands: string[] }
 }
 
 interface EmergencyProcedure { scenario: string,
-    procedure: string[]; }
+    procedure: string[] }
 }
 
 interface RecoveryInstructions { overview: RecoveryOverview,
     recoveryMethods: RecoveryMethods,
     stepByStepInstructions: RecoveryStep[],
     emergencyProcedures: EmergencyProcedure[],
-    generatedAt: string; }
+    generatedAt: string }
 }
 
 interface ExecutiveSummary { projectName: string,
@@ -210,23 +210,23 @@ interface ExecutiveSummary { projectName: string,
     operationType: string,
     operationDate: string,
     overallStatus: string,
-    keyMetrics: Record<string, any>; }
+    keyMetrics: Record<string, any> }
 }
 
 interface FinalRecommendations { immediate: string[],
     future: string[],
-    bestPractices: string[]; }
+    bestPractices: string[] }
 }
 
 interface Conclusion { operationSuccessful: boolean,
     risksIdentified: string[],
     benefitsAchieved: string[],
-    nextSteps: string[]; }
+    nextSteps: string[] }
 }
 
 interface Appendices { detailedLogs: any[],
     technicalDetails: Record<string, any>;
-    references: string[]; }
+    references: string[] }
 }
 
 interface AllResults { investigationSummary?: InvestigationSummary;
@@ -248,7 +248,7 @@ interface FinalReport { executiveSummary: ExecutiveSummary,
     conclusion: Conclusion,
     appendices: Appendices,
     generatedAt: string,
-    reportVersion: string; }
+    reportVersion: string }
 }
 
 /**
@@ -338,7 +338,7 @@ export class CleanupReporter {
     }
 
     /**
-     * 削除作業サマリーの生成'
+     * 削除作業サマリーの生成
      */''
     async generateDeletionSummary(deletionResults: DeletionResults'): Promise<DeletionSummary> { const summary: DeletionSummary = {
             overview: {
@@ -379,13 +379,13 @@ export class CleanupReporter {
 
         // 平均処理時間
         if(deletionResults.summary.totalFiles > 0 && deletionResults.duration) {
-            summary.timing.averageTimePerFile = Math.round()';
+            summary.timing.averageTimePerFile = Math.round();
                 deletionResults.duration / deletionResults.summary.totalFiles)';
         }'
             '); }
-        }
+        }'
 ';
-        // サイズ削減計算''
+        // サイズ削減計算
         const successfulDeletions = deletionResults.deletions.filter(d => d.status === 'deleted');
         for(const deletion of successfulDeletions) {
             if (deletion.backupRecord && deletion.backupRecord.fileInfo) {
@@ -413,7 +413,7 @@ export class CleanupReporter {
     }
 
     /**
-     * サイズ削減効果の計算'
+     * サイズ削減効果の計算
      */''
     async calculateSizeReduction(beforeSizes: BeforeAfterSizes, afterSizes: BeforeAfterSizes'): Promise<SizeReduction> { const reduction: SizeReduction = {
             beforeDeletion: {
@@ -471,10 +471,10 @@ export class CleanupReporter {
         }
 
         // 影響評価
-        reduction.impact.repositorySizeReduction = this.formatBytes(reduction.reduction.bytesFreed);'
+        reduction.impact.repositorySizeReduction = this.formatBytes(reduction.reduction.bytesFreed);
         '';
         if(reduction.reduction.filesRemoved >= 5') {'
-            ';
+            ';'
         }'
             reduction.impact.searchPerformanceImprovement = 'High';' }'
         } else if (reduction.reduction.filesRemoved >= 3') { ''
@@ -484,7 +484,7 @@ export class CleanupReporter {
         }
 
         // メンテナンス効果
-        reduction.impact.maintenanceBenefits = [`${reduction.reduction.filesRemoved}個の不要ファイルを削除`,'
+        reduction.impact.maintenanceBenefits = [`${reduction.reduction.filesRemoved}個の不要ファイルを削除`,
             `${reduction.impact.repositorySizeReduction}のディスク容量節約`,''
             'IDE検索結果の整理',']';
             'プロジェクト構造の簡素化'];
@@ -544,7 +544,7 @@ export class CleanupReporter {
     }
 
     /**
-     * 最終レポートの生成'
+     * 最終レポートの生成
      */''
     async generateFinalReport(allResults: AllResults'): Promise<FinalReport> { const report: FinalReport = {'
             executiveSummary: {''
@@ -553,8 +553,7 @@ export class CleanupReporter {
                 operationType: 'Backup File Cleanup','';
                 operationDate: new Date().toISOString(''';
                 overallStatus: 'Unknown', }
-                keyMetrics: {}
-            },
+                keyMetrics: {},
             investigationSummary: allResults.investigationSummary,
             deletionSummary: allResults.deletionSummary,
             integrityValidation: allResults.integrityValidation,
@@ -624,9 +623,9 @@ export class CleanupReporter {
     }
 
     /**
-     * コミットメッセージからパターンを抽出'
+     * コミットメッセージからパターンを抽出
      */''
-    extractCommitPattern(message: string'): string { // Task番号やフェーズ情報を抽出''
+    extractCommitPattern(message: string'): string { // Task番号やフェーズ情報を抽出
         if (message.includes('Task')') {''
             return 'Task-related';' }'
         } else if (message.includes('分割'') || message.includes('split')') { ''
@@ -679,7 +678,7 @@ export class CleanupReporter {
      */'
     formatBytes(bytes: number): string { ''
         if (bytes === 0') return '0 Bytes';
-';
+';'
         const k = 1024;''
         const sizes = ['Bytes', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);'
@@ -687,7 +686,7 @@ export class CleanupReporter {
         return parseFloat((bytes / Math.pow(k, i).toFixed(2)') + ' ' + sizes[i]; }
     }
 
-    /**
+    /**'
      * 復旧方法の決定'
      */''
     determineRecoveryMethod(deletedFile: DeletionDetail'): RecoveryMethod { const method: RecoveryMethod = {'
@@ -716,7 +715,7 @@ export class CleanupReporter {
 "";
         if(method.type === 'manual') {
             method.instructions = [`対応する現在ファイルから手動で復旧を検討`,
-                `プロジェクトの最新バックアップから復元`,];
+                `プロジェクトの最新バックアップから復元`];
                 `必要に応じて再実装`];
         }
             ]; }
@@ -754,7 +753,7 @@ export class CleanupReporter {
             steps.push({'
                 step: steps.length + 1,'';
                 title: '手動復旧',')';
-                description: '手動での復旧が必要なファイルの対処',');
+                description: '手動での復旧が必要なファイルの対処',')
         }'
                 commands: ['# 各ファイルの状況に応じて手動で対処してください']); }
         }
@@ -800,7 +799,7 @@ export class CleanupReporter {
      */'
     determineOverallStatus(allResults: AllResults): string { ''
         if(allResults.deletionSummary && allResults.deletionSummary.overview.successRate === 100') {'
-            ';
+            ';'
         }'
             return 'Success';' }'
         } else if (allResults.deletionSummary && allResults.deletionSummary.overview.successRate >= 80') { ''
@@ -836,7 +835,7 @@ export class CleanupReporter {
         }'
 '';
         if(allResults.integrityValidation && allResults.integrityValidation.summary') {'
-            ';
+            ';'
         }'
             metrics.integrityStatus = allResults.integrityValidation.summary.overallIntegrity ? 'Intact' : 'Issues Found'; }
         }
@@ -853,24 +852,24 @@ export class CleanupReporter {
             bestPractices: [] }
         },
 ';
-        // 即座に対応すべき事項''
+        // 即座に対応すべき事項
         if(allResults.integrityValidation && !allResults.integrityValidation.summary.overallIntegrity') {'
-            ';
+            ';'
         }'
             recommendations.immediate.push('システム整合性の問題を修正する'); }
         }'
 '';
         if(allResults.deletionSummary && allResults.deletionSummary.errors.length > 0') {'
-            ';
+            ';'
         }'
             recommendations.immediate.push('削除エラーの原因を調査し解決する''); }
         }
 ';
-        // 将来の改善案''
+        // 将来の改善案
         recommendations.future.push('定期的なバックアップファイルクリーンアップの自動化'');''
         recommendations.future.push('ファイルサイズ監視システムの導入'');
 
-        // ベストプラクティス'
+        // ベストプラクティス
         recommendations.bestPractices = ['';
             'ファイル分割時は不要なバックアップを即座に削除','';
             'Git履歴に依存した復旧戦略の確立','';
@@ -891,20 +890,20 @@ export class CleanupReporter {
             nextSteps: [] }
         },
 ';
-        // リスクの特定''
+        // リスクの特定
         if(allResults.integrityValidation && !allResults.integrityValidation.summary.overallIntegrity') {'
-            ';
+            ';'
         }'
             conclusion.risksIdentified.push('システム整合性の問題'); }
         }'
 '';
         if(allResults.deletionSummary && allResults.deletionSummary.overview.successRate < 100') {'
-            ';
+            ';'
         }'
             conclusion.risksIdentified.push('一部ファイルの削除失敗'); }
         }
 
-        // 達成された利益'
+        // 達成された利益
         if (allResults.sizeReduction) { conclusion.benefitsAchieved.push(`${allResults.sizeReduction.impact.repositorySizeReduction)のディスク容量節約`);' }'
             conclusion.benefitsAchieved.push(`${allResults.sizeReduction.reduction.filesRemoved)個の不要ファイル削除`'});
         }'
@@ -912,7 +911,7 @@ export class CleanupReporter {
         conclusion.benefitsAchieved.push('プロジェクト構造の整理'');''
         conclusion.benefitsAchieved.push('MCPツールの動作安定化');
 ';
-        // 次のステップ''
+        // 次のステップ
         if(conclusion.operationSuccessful') {'
             conclusion.nextSteps = ['';
                 'file-size-report.jsonの更新','';
@@ -933,15 +932,15 @@ export class CleanupReporter {
     /**
      * レポートをファイルに保存'
      */''
-    async saveReportToFile(report: FinalReport, filename: string'): Promise<void> { try {''
+    async saveReportToFile(report: FinalReport, filename: string'): Promise<void> { try {'
             const reportsDir = '.kiro/reports';
             
             // レポートディレクトリを作成
             try {
-                await fs.mkdir(reportsDir, { recursive: true ); }
+                await fs.mkdir(reportsDir, { recursive: true ) }
             } catch (error) { // ディレクトリ作成エラーは無視 }
             }
-;'
+;
             const filePath = path.join(reportsDir, filename);''
             await fs.writeFile(filePath, JSON.stringify(report, null, 2'), 'utf8');
             

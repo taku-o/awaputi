@@ -71,9 +71,9 @@ export class AudioSubsystemCoordinator {
 
     /**
      * サブシステムの初期化
-     * @returns {Promise<boolean>} 初期化成功フラグ'
+     * @returns {Promise<boolean>} 初期化成功フラグ
      */''
-    async initializeSubsystems('')';
+    async initializeSubsystems()';
             console.log('Initializing audio subsystems...');
             
             // BGMシステムの初期化
@@ -87,15 +87,15 @@ export class AudioSubsystemCoordinator {
             
             // 音響視覚化システムの初期化
             await this.initializeAudioVisualizer();
-            ';
-            // アクセシビリティ支援システムの初期化''
-            await this.initializeAccessibilitySupport('');'
+            ;
+            // アクセシビリティ支援システムの初期化
+            await this.initializeAccessibilitySupport();'
             console.log('Audio subsystems initialization completed');
-            ';
+            ';'
         } catch (error) { this.performanceMetrics.errors++;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {')'
                 component: 'AudioSubsystemCoordinator',')';
-                operation: 'initializeSubsystems'); }
+                operation: 'initializeSubsystems') }
             });
             throw error;
         }
@@ -104,7 +104,7 @@ export class AudioSubsystemCoordinator {
     /**
      * BGMシステムの初期化'
      */''
-    async initializeBGMSystem('')';
+    async initializeBGMSystem()';
             const { BGMSystem } = await import('./BGMSystem.js');
             this.bgmSystem = new BGMSystem(this.audioManager);
             this.subsystemStates.bgm.initialized = true;
@@ -112,16 +112,16 @@ export class AudioSubsystemCoordinator {
         } catch (error) { this.subsystemStates.bgm.error = error;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'bgmSystem',')';
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
             // BGMなしで続行
         }
     }
 
     /**
-     * 効果音システムの初期化'
+     * 効果音システムの初期化
      */''
-    async initializeSoundEffectSystem('')';
+    async initializeSoundEffectSystem()';
             const { SoundEffectSystem } = await import('./SoundEffectSystem.js');
             this.soundEffectSystem = new SoundEffectSystem(this.audioManager);
             this.subsystemStates.sfx.initialized = true;
@@ -129,16 +129,16 @@ export class AudioSubsystemCoordinator {
         } catch (error) { this.subsystemStates.sfx.error = error;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'soundEffectSystem',')';
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
             // 効果音システムなしで続行
         }
     }
 
     /**
-     * 音響制御システムの初期化'
+     * 音響制御システムの初期化
      */''
-    async initializeAudioController('')';
+    async initializeAudioController()';
             const { AudioController } = await import('./AudioController.js');
             this.audioController = new AudioController(this.audioManager);
             this.subsystemStates.controller.initialized = true;
@@ -146,19 +146,19 @@ export class AudioSubsystemCoordinator {
         } catch (error) { this.subsystemStates.controller.error = error;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'audioController',')';
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
             // 音響制御システムなしで続行
         }
     }
 
     /**
-     * 音響視覚化システムの初期化'
+     * 音響視覚化システムの初期化
      */''
-    async initializeAudioVisualizer('')';
+    async initializeAudioVisualizer()';
             const { AudioVisualizer } = await import('./AudioVisualizer.js');
             ';
-            // AudioManagerが利用可能かチェック''
+            // AudioManagerが利用可能かチェック
             if(!this.audioManager') {'
                 '';
                 console.warn('[AudioSubsystemCoordinator] AudioManager not available for AudioVisualizer'');'
@@ -170,7 +170,7 @@ export class AudioSubsystemCoordinator {
             '';
             this.audioVisualizer = new AudioVisualizer(this.audioManager');
             ';
-            // 初期化後の確認''
+            // 初期化後の確認
             if(this.audioVisualizer && typeof this.audioVisualizer.render === 'function'') {
                 this.subsystemStates.visualizer.initialized = true;'
                 this.subsystemStates.visualizer.error = null;'
@@ -178,7 +178,7 @@ export class AudioSubsystemCoordinator {
                 console.log('[AudioSubsystemCoordinator] AudioVisualizer initialized successfully''); }'
             } else {  ' }'
                 throw new Error('AudioVisualizer initialization failed - render method not available');' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('[AudioSubsystemCoordinator] AudioVisualizer initialization failed:', error);
             this.audioVisualizer = null;
             this.subsystemStates.visualizer.initialized = false;'
@@ -191,9 +191,9 @@ export class AudioSubsystemCoordinator {
     }
 
     /**
-     * アクセシビリティ支援システムの初期化'
+     * アクセシビリティ支援システムの初期化
      */''
-    async initializeAccessibilitySupport('')';
+    async initializeAccessibilitySupport()';
             const { MainAudioAccessibilitySupport } = await import('./AudioAccessibilitySupport.js');
             this.accessibilitySupport = new MainAudioAccessibilitySupport(this.audioManager);
             this.subsystemStates.accessibility.initialized = true;
@@ -201,7 +201,7 @@ export class AudioSubsystemCoordinator {
         } catch (error) { this.subsystemStates.accessibility.error = error;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ')'
                 component: 'accessibilitySupport',')';
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
             // アクセシビリティ支援システムなしで続行
         }
@@ -213,8 +213,8 @@ export class AudioSubsystemCoordinator {
      * @param {Object} options - シーンオプション
      * @returns {Promise<boolean>} 処理成功フラグ
      */
-    async onSceneChange(sceneName: string, options: any = {}): Promise<boolean> {'
-        try {''
+    async onSceneChange(sceneName: string, options: any = {}): Promise<boolean> {
+        try {'
             if(this.sceneTransitionInProgress') {'
                 '';
                 console.warn('Scene transition already in progress');
@@ -227,35 +227,35 @@ export class AudioSubsystemCoordinator {
             
             console.log(`Audio scene transition: ${this.currentScene} -> ${ sceneName)`);
             ';
-            // BGMシステムのシーン変更''
+            // BGMシステムのシーン変更
             if (this.bgmSystem && this.subsystemStates.bgm.initialized') {' }'
                 await this.delegateToBGMSystem('onSceneChange', [sceneName, options]});
             }
             ';
-            // 効果音システムのシーン変更''
+            // 効果音システムのシーン変更
             if(this.soundEffectSystem && this.subsystemStates.sfx.initialized') {'
-                ';
+                ';'
             }'
                 await this.delegateToSoundEffectSystem('onSceneChange', [sceneName, options]); }
             }
             ';
-            // 音響制御システムのシーン変更''
+            // 音響制御システムのシーン変更
             if(this.audioController && this.subsystemStates.controller.initialized') {'
-                ';
+                ';'
             }'
                 await this.delegateToController('onSceneChange', [sceneName, options]); }
             }
             ';
-            // 音響視覚化システムのシーン変更''
+            // 音響視覚化システムのシーン変更
             if(this.audioVisualizer && this.subsystemStates.visualizer.initialized') {'
-                ';
+                ';'
             }'
                 await this.delegateToVisualizer('onSceneChange', [sceneName, options]); }
             }
             ';
-            // アクセシビリティ支援システムのシーン変更''
+            // アクセシビリティ支援システムのシーン変更
             if(this.accessibilitySupport && this.subsystemStates.accessibility.initialized') {'
-                ';
+                ';'
             }'
                 await this.delegateToAccessibilitySupport('onSceneChange', [sceneName, options]); }
             }
@@ -283,7 +283,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */'
-    delegateToBGMSystem(method: string, args: any[] = []): any { try {''
+    delegateToBGMSystem(method: string, args: any[] = []): any { try {'
             if(!this.bgmSystem || !this.subsystemStates.bgm.initialized') {'
                 '';
                 console.warn('BGMSystem is not available'');
@@ -298,7 +298,7 @@ export class AudioSubsystemCoordinator {
             
             this.performanceMetrics.delegatedCalls++;
             return this.bgmSystem[method](...args);
-            ';
+            ';'
         } catch (error) { this.performanceMetrics.errors++;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioSubsystemCoordinator',')';
@@ -316,7 +316,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */'
-    delegateToSoundEffectSystem(method: string, args: any[] = []): any { try {''
+    delegateToSoundEffectSystem(method: string, args: any[] = []): any { try {'
             if(!this.soundEffectSystem || !this.subsystemStates.sfx.initialized') {'
                 '';
                 console.warn('SoundEffectSystem is not available'');
@@ -331,7 +331,7 @@ export class AudioSubsystemCoordinator {
             
             this.performanceMetrics.delegatedCalls++;
             return this.soundEffectSystem[method](...args);
-            ';
+            ';'
         } catch (error) { this.performanceMetrics.errors++;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioSubsystemCoordinator',')';
@@ -349,7 +349,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */'
-    delegateToController(method: string, args: any[] = []): any { try {''
+    delegateToController(method: string, args: any[] = []): any { try {'
             if(!this.audioController || !this.subsystemStates.controller.initialized') {'
                 '';
                 console.warn('AudioController is not available'');
@@ -364,7 +364,7 @@ export class AudioSubsystemCoordinator {
             
             this.performanceMetrics.delegatedCalls++;
             return this.audioController[method](...args);
-            ';
+            ';'
         } catch (error) { this.performanceMetrics.errors++;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioSubsystemCoordinator',')';
@@ -382,8 +382,8 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */
-    delegateToVisualizer(method: string, args: any[] = []): any { try {'
-            // より厳密な初期化チェック''
+    delegateToVisualizer(method: string, args: any[] = []): any { try {
+            // より厳密な初期化チェック
             if(!this.audioVisualizer') {'
                 '';
                 console.warn('[AudioSubsystemCoordinator] AudioVisualizer instance not available');
@@ -398,7 +398,7 @@ export class AudioSubsystemCoordinator {
                 return null; }
             }
             ';
-            // メソッドの存在確認''
+            // メソッドの存在確認
             if (!this.audioVisualizer[method] || typeof this.audioVisualizer[method] !== 'function'') { ' }'
                 console.warn(`[AudioSubsystemCoordinator] AudioVisualizer method '${method}' not found or not a function`);
                 return null;
@@ -410,15 +410,15 @@ export class AudioSubsystemCoordinator {
             const result = this.audioVisualizer[method](...args);
             return result;
             
-        } catch (error) { this.performanceMetrics.errors++; }'
+        } catch (error) { this.performanceMetrics.errors++; }
             console.error(`[AudioSubsystemCoordinator] Error calling AudioVisualizer.${method}:`, error);''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { ''
                 component: 'AudioSubsystemCoordinator','';
                 operation: 'delegateToVisualizer',
-                method,);
+                method);
                 args);
                 visualizerAvailable: !!this.audioVisualizer,);
-                visualizerInitialized: this.subsystemStates.visualizer.initialized); }
+                visualizerInitialized: this.subsystemStates.visualizer.initialized) }
             });
             return null;
         }
@@ -430,7 +430,7 @@ export class AudioSubsystemCoordinator {
      * @param {Array} args - 引数
      * @returns {*} 実行結果
      */'
-    delegateToAccessibilitySupport(method: string, args: any[] = []): any { try {''
+    delegateToAccessibilitySupport(method: string, args: any[] = []): any { try {'
             if(!this.accessibilitySupport || !this.subsystemStates.accessibility.initialized') {'
                 '';
                 console.warn('AudioAccessibilitySupport is not available'');
@@ -445,7 +445,7 @@ export class AudioSubsystemCoordinator {
             
             this.performanceMetrics.delegatedCalls++;
             return this.accessibilitySupport[method](...args);
-            ';
+            ';'
         } catch (error) { this.performanceMetrics.errors++;''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', {''
                 component: 'AudioSubsystemCoordinator',')';
@@ -498,8 +498,8 @@ export class AudioSubsystemCoordinator {
     async reinitializeSubsystem(subsystemName: string): Promise<boolean> { try {
             // 既存サブシステムを破棄
             await this.disposeSubsystem(subsystemName);
-            ';
-            // サブシステム再初期化''
+            ;
+            // サブシステム再初期化
             switch(subsystemName') {'
                 '';
                 case 'bgm':'';
@@ -509,7 +509,7 @@ export class AudioSubsystemCoordinator {
                 case 'controller':'';
                     await this.initializeAudioController(''';
                 case 'visualizer':'';
-                    await this.initializeAudioVisualizer('')';
+                    await this.initializeAudioVisualizer()';
                 case 'accessibility':);
                     await this.initializeAccessibilitySupport();
                     break;
@@ -519,7 +519,7 @@ export class AudioSubsystemCoordinator {
             }
             
             return this.subsystemStates[subsystemName]? .initialized || false;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'AUDIO_ERROR', { : undefined''
                 component: 'AudioSubsystemCoordinator',')';
@@ -534,21 +534,21 @@ export class AudioSubsystemCoordinator {
      * 個別サブシステム破棄
      * @param {string} subsystemName - サブシステム名
      */'
-    async disposeSubsystem(subsystemName: string): Promise<void> { try {''
+    async disposeSubsystem(subsystemName: string): Promise<void> { try {'
             switch(subsystemName') {'
                 '';
                 case 'bgm':';
                     if (this.bgmSystem) {''
-                        this.bgmSystem.dispose('')';
+                        this.bgmSystem.dispose()';
                 case 'sfx':)';
                     if (this.soundEffectSystem) {''
-                        this.soundEffectSystem.dispose('')';
+                        this.soundEffectSystem.dispose()';
                 case 'controller':)';
                     if (this.audioController) {''
-                        this.audioController.dispose('')';
+                        this.audioController.dispose()';
                 case 'visualizer':)';
                     if (this.audioVisualizer) {''
-                        this.audioVisualizer.dispose('')';
+                        this.audioVisualizer.dispose()';
                 case 'accessibility':);
                     if (this.accessibilitySupport) {
                         this.accessibilitySupport.dispose();
@@ -565,7 +565,7 @@ export class AudioSubsystemCoordinator {
     /**
      * 全サブシステム破棄'
      */''
-    disposeSubsystems('')';
+    disposeSubsystems()';
         console.log('Disposing audio subsystems...');
         
         // BGMシステムを破棄
@@ -651,6 +651,6 @@ export function getAudioSubsystemCoordinator(): AudioSubsystemCoordinator { if (
  * @returns {AudioSubsystemCoordinator} 新しいシングルトンインスタンス
  */
 export function reinitializeAudioSubsystemCoordinator(): AudioSubsystemCoordinator { if (audioSubsystemCoordinatorInstance) {
-        audioSubsystemCoordinatorInstance.dispose(); }'
+        audioSubsystemCoordinatorInstance.dispose(); }
     }''
     audioSubsystemCoordinatorInstance = new AudioSubsystemCoordinator(');

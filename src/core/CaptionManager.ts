@@ -10,11 +10,11 @@ interface AccessibilityManager { gameEngine?: GameEngine;
 }
 
 interface GameEngine { audioManager?: AudioManager;
-    addEventListener?: (event: string, handler: (event: any) => void) => void; }
+    addEventListener?: (event: string, handler: (event: any) => void) => void }
 }
 
 interface AudioManager { playSound?: (soundId: string, options?: PlaySoundOptions) => any;
-    playMusic?: (musicId: string, options?: PlayMusicOptions) => any; }
+    playMusic?: (musicId: string, options?: PlayMusicOptions) => any }
 }
 
 interface PlaySoundOptions { volume?: number;
@@ -58,18 +58,18 @@ interface CaptionConfig { enabled: boolean,
     animation: { fadeIn: number,
         fadeOut: number,
         slideIn: boolean,
-        bounce: boolean; }
+        bounce: boolean }
     };
 }
 
 interface SoundDescription { text: string,
     category: string,
-    duration: string; }
+    duration: string }
 }
 
 interface MusicDescription { text: string,
     mood: string,
-    tempo: string; }
+    tempo: string }
 }
 
 interface CaptionStats { captionsDisplayed: number,
@@ -77,7 +77,7 @@ interface CaptionStats { captionsDisplayed: number,
     averageDisplayTime: number,
     totalDisplayTime: number,
     userInteractions: number,
-    sessionStart: number; }
+    sessionStart: number }
 }
 
 interface UserPreferences { enabled: boolean,
@@ -93,7 +93,7 @@ interface UserPreferences { enabled: boolean,
     hideDelay: number,
     customDescriptions: Map<string, string>;
     languagePreference: string,
-    verbosityLevel: string; }
+    verbosityLevel: string }
 }
 
 interface LanguageConfig { soundPrefix: string,
@@ -102,7 +102,7 @@ interface LanguageConfig { soundPrefix: string,
         game: string,
         ui: string,
         special: string,
-        ambient: string; }
+        ambient: string }
     };
 }
 
@@ -110,13 +110,13 @@ interface CaptionData { element: HTMLElement,
     startTime: number,
     duration: number,
     description: SoundDescription,
-    options: any; }
+    options: any }
 }
 
 interface AudioEvent { soundId: string,
     category: string,
     volume: number,
-    duration: number; }
+    duration: number }
 }
 
 interface GameEvent { bubble?: any;
@@ -129,7 +129,7 @@ interface GameEvent { bubble?: any;
 
 interface AccessibilityEvent extends Event { detail: {
         component: string,
-        config: any; }
+        config: any }
     };
 }
 
@@ -151,7 +151,7 @@ interface CaptionReport { timestamp: string,
     },
     userPreferences: UserPreferences,
     performance: { averageDisplayTime: number,
-        maxConcurrentCaptions: number; }
+        maxConcurrentCaptions: number }
     };
 }
 
@@ -174,7 +174,7 @@ export class CaptionManager {
     private currentStyle: string;
     private stats: CaptionStats;
     private userPreferences: UserPreferences;
-    private languageSupport: Map<string, LanguageConfig>;'
+    private languageSupport: Map<string, LanguageConfig>;
     '';
     constructor(audioAccessibilityManager: AudioAccessibilityManager') {
         this.audioAccessibilityManager = audioAccessibilityManager;
@@ -193,11 +193,11 @@ export class CaptionManager {
             captionDuration: {
                 short: 2000,   // 短い音響効果;
                 medium: 4000,  // 中程度の音;
-                long: 6000,    // 長い音楽やナレーション;
+                long: 6000,    // 長い音楽やナレーション
     }
     }
                 persistent: -1 // 手動で消去するまで表示 }
-            },'
+            },
             positioning: { ''
                 default: 'bottom-center','';
                 alternatives: ['top-center', 'bottom-left', 'bottom-right', 'center'] }
@@ -225,7 +225,7 @@ export class CaptionManager {
         },
         
         // 音響効果の説明マッピング
-        this.soundDescriptions = new Map<string, SoundDescription>([';
+        this.soundDescriptions = new Map<string, SoundDescription>([;
             // ゲーム音響効果']'
             ['bubblePop', { text: '泡がポップする音', category: 'game', duration: 'short' }],''
             ['bubbleBurst', { text: '泡が破裂する音', category: 'game', duration: 'short' }],''
@@ -236,7 +236,7 @@ export class CaptionManager {
             ['gameOver', { text: 'ゲームオーバー音', category: 'game', duration: 'long' }],''
             ['victory', { text: '勝利音', category: 'game', duration: 'long' }],
             ';
-            // UI音響効果''
+            // UI音響効果
             ['click', { text: 'クリック音', category: 'ui', duration: 'short' }],''
             ['hover', { text: 'ホバー音', category: 'ui', duration: 'short' }],''
             ['menuOpen', { text: 'メニューオープン音', category: 'ui', duration: 'short' }],''
@@ -245,20 +245,20 @@ export class CaptionManager {
             ['warning', { text: '警告音', category: 'ui', duration: 'medium' }],''
             ['error', { text: 'エラー音', category: 'ui', duration: 'medium' }],
             ';
-            // 特殊効果音''
+            // 特殊効果音
             ['electric', { text: '電気的な音', category: 'special', duration: 'medium' }],''
             ['explosion', { text: '爆発音', category: 'special', duration: 'medium' }],''
             ['freeze', { text: '凍結音', category: 'special', duration: 'medium' }],''
             ['magnetic', { text: '磁力音', category: 'special', duration: 'medium' }],''
             ['teleport', { text: 'テレポート音', category: 'special', duration: 'medium' }])'
-            // 環境音''
+            // 環境音
             ['backgroundMusic', { text: 'BGM再生中', category: 'ambient', duration: 'persistent' }],''
             ['ambientSound', { text: '環境音', category: 'ambient', duration: 'persistent' }],''
             ['wind', { text: '風の音', category: 'ambient', duration: 'long' }],''
             ['water', { text: '水の音', category: 'ambient', duration: 'long' }]''
         ]');
         
-        // 音楽説明マッピング'
+        // 音楽説明マッピング
         this.musicDescriptions = new Map<string, MusicDescription>([']';
             ['menuTheme', { text: '♪ メニューテーマ', mood: 'calm', tempo: 'moderate' }],''
             ['gameTheme', { text: '♪ ゲームテーマ', mood: 'energetic', tempo: 'fast' }],''
@@ -267,7 +267,7 @@ export class CaptionManager {
             ['gameOverTheme', { text: '♪ ゲームオーバーテーマ', mood: 'sad', tempo: 'slow' }]
         ]);
         ';
-        // キャプション表示管理''
+        // キャプション表示管理
         this.activeCaptions = new Map(''';
         this.currentStyle = 'default';
         
@@ -275,9 +275,9 @@ export class CaptionManager {
         this.stats = { captionsDisplayed: 0)
             captionsByCategory: new Map(),
             averageDisplayTime: 0,
-            totalDisplayTime: 0,';
+            totalDisplayTime: 0,
             userInteractions: 0,'';
-            sessionStart: Date.now('')';
+            sessionStart: Date.now()';
             position: 'bottom-center')';
             fontSize: 16,'';
             fontFamily: 'Arial','';
@@ -293,7 +293,7 @@ export class CaptionManager {
             verbosityLevel: 'normal' // 'minimal', 'normal', 'detailed' }
         };
         
-        // 言語サポート'
+        // 言語サポート
         this.languageSupport = new Map<string, LanguageConfig>(['';
             ['ja', { ''
                 soundPrefix: '♪ ','';
@@ -333,13 +333,13 @@ export class CaptionManager {
             
             // 動的スタイルシートの作成
             this.createDynamicStyleSheet();
-            ';
-            // イベントリスナーの設定''
-            this.setupEventListeners('')';
+            ;
+            // イベントリスナーの設定
+            this.setupEventListeners()';
             console.log('CaptionManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'CAPTION_MANAGER_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -347,7 +347,7 @@ export class CaptionManager {
     /**
      * ユーザー設定の読み込み'
      */''
-    private loadUserPreferences('')';
+    private loadUserPreferences()';
             const saved = localStorage.getItem('captionManager_preferences');
             if(saved) {
                 const preferences = JSON.parse(saved);
@@ -360,10 +360,10 @@ export class CaptionManager {
                 }
                 
                 // 設定を適用
-                this.config.enabled = this.userPreferences.enabled;'
+                this.config.enabled = this.userPreferences.enabled;
                 this.updateStyleFromPreferences();''
-            } catch (error') { ''
-            console.warn('Failed to load caption manager preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load caption manager preferences:', error) }
         }
     }
     
@@ -373,20 +373,20 @@ export class CaptionManager {
     private saveUserPreferences(): void { try {
             const preferences = {'
                 ...this.userPreferences,'';
-                customDescriptions: Array.from(this.userPreferences.customDescriptions.entries()'); }
+                customDescriptions: Array.from(this.userPreferences.customDescriptions.entries()') }
             };'
             '';
             localStorage.setItem('captionManager_preferences');'
                 JSON.stringify(preferences);''
-        } catch (error') { ''
-            console.warn('Failed to save caption manager preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save caption manager preferences:', error) }
         }
     }
     
     /**
      * キャプションコンテナの作成'
      */''
-    private createCaptionContainer('')';
+    private createCaptionContainer()';
         this.captionContainer = document.createElement('div'');''
         this.captionContainer.id = 'caption-container';''
         this.captionContainer.className = 'caption-container';''
@@ -402,7 +402,7 @@ export class CaptionManager {
     
     /**
      * コンテナ位置の更新
-     */'
+     */
     private updateContainerPosition(): void { ''
         if (!this.captionContainer') return;
         
@@ -421,7 +421,7 @@ export class CaptionManager {
                 positionStyles = {'
                     ...positionStyles,'';
                     top: '20px','';
-                    left: '50%',';
+                    left: '50%','
         }'
                     transform: 'translateX(-50%')' }
                 },'
@@ -461,7 +461,7 @@ export class CaptionManager {
     /**
      * 動的スタイルシートの作成'
      */''
-    private createDynamicStyleSheet('')';
+    private createDynamicStyleSheet()';
         this.dynamicStyleSheet = document.createElement('style'');''
         this.dynamicStyleSheet.id = 'caption-manager-styles';
         this.updateStyleSheet();
@@ -504,11 +504,11 @@ export class CaptionManager {
                 transform: translateY(20px})
                 transition: all 0.3s ease);
             .caption-item.visible { opacity: 1,
-                transform: translateY(0); }
+                transform: translateY(0) }
             }
             
             .caption-item.fade-out { opacity: 0,
-                transform: translateY(-20px); }
+                transform: translateY(-20px) }
             }
             
             /* カテゴリ別スタイル */
@@ -522,7 +522,7 @@ export class CaptionManager {
             }
             
             .caption-ambient { border-left: 4px solid #95a5a6,
-                opacity: 0.8; }
+                opacity: 0.8 }
             }
             
             .caption-music { border-left: 4px solid #9b59b6, }
@@ -542,28 +542,28 @@ export class CaptionManager {
             /* アニメーション */
             @keyframes slideInFromBottom { from {
                     opacity: 0,
-                    transform: translateY(100%); }
+                    transform: translateY(100%) }
                 }
                 to { opacity: 1,
-                    transform: translateY(0); }
+                    transform: translateY(0) }
                 }
             }
             
             @keyframes fadeInBounce { 0% {
                     opacity: 0,
-                    transform: scale(0.3) translateY(20px); }
+                    transform: scale(0.3) translateY(20px) }
                 }
-                50% { transform: scale(1.05) translateY(-5px); }
+                50% { transform: scale(1.05) translateY(-5px) }
                 }
                 100% { opacity: 1,
-                    transform: scale(1) translateY(0); }
+                    transform: scale(1) translateY(0) }
                 }
             }
             
-            .caption-item.slide-in { animation: slideInFromBottom 0.3s ease-out; }
+            .caption-item.slide-in { animation: slideInFromBottom 0.3s ease-out }
             }
             
-            .caption-item.bounce-in { animation: fadeInBounce 0.5s ease-out; }
+            .caption-item.bounce-in { animation: fadeInBounce 0.5s ease-out }
             }
             
             /* レスポンシブ対応 */
@@ -573,7 +573,7 @@ export class CaptionManager {
                 }
                 
                 .caption-item { padding: 10px 14px,
-                    margin: 3px 0; }
+                    margin: 3px 0 }
                 }
             }
             
@@ -583,7 +583,7 @@ export class CaptionManager {
                 }
                 
                 .caption-item { padding: 8px 12px,
-                    margin: 2px 0; }
+                    margin: 2px 0 }
                 }
             }
             
@@ -600,10 +600,10 @@ export class CaptionManager {
             }
             
             .reduced-motion .caption-item { transition: opacity 0.1s ease,
-                animation: none !important; }
+                animation: none !important }
             }
             
-            .reduced-motion .caption-item.visible { transform: none; }
+            .reduced-motion .caption-item.visible { transform: none }
             }
         `;
     }
@@ -621,15 +621,15 @@ export class CaptionManager {
     /**
      * イベントリスナーの設定
      */'
-    private setupEventListeners(): void { // ゲームオーディオイベントの監視''
+    private setupEventListeners(): void { // ゲームオーディオイベントの監視
         if(this.gameEngine') {'
-            // 音響効果イベント'
+            // 音響効果イベント
         }'
             this.gameEngine.addEventListener?.('audioPlayed', (event: AudioEvent) => {  }'
                 this.handleAudioEvent(event);' }'
             }');
             ';
-            // 特定のゲームイベント''
+            // 特定のゲームイベント
             this.gameEngine.addEventListener?.('bubblePopped', (event: GameEvent') => { ' }'
                 this.displayCaption('bubblePop', { bubble: event.bubble });''
             }');'
@@ -660,15 +660,15 @@ export class CaptionManager {
         }
         
         // AudioManager との連携
-        if(this.gameEngine? .audioManager) {'
+        if(this.gameEngine? .audioManager) {
             '';
-            this.setupAudioManagerIntegration('')';
+            this.setupAudioManagerIntegration()';
         document.addEventListener('keydown', (event: KeyboardEvent) => { '
             if (event.ctrlKey && event.shiftKey) {''
                 switch (event.key') {''
                     case 'C':';
                         event.preventDefault();''
-                        this.toggle('')';
+                        this.toggle()';
                     case 'X':);
                         event.preventDefault();
         }
@@ -678,7 +678,7 @@ export class CaptionManager {
             }''
         }');
         ';
-        // 設定変更の監視''
+        // 設定変更の監視
         document.addEventListener('accessibilitySettingsChanged', (event: AccessibilityEvent') => {  ''
             if (event.detail.component === 'captions') { }
                 this.applyConfig(event.detail.config); }
@@ -697,8 +697,8 @@ export class CaptionManager {
         }
             const originalPlaySound = audioManager.playSound.bind(audioManager); }
             audioManager.playSound = (soundId: string, options: PlaySoundOptions = {}) => {  const result = originalPlaySound(soundId, options);
-                ';
-                // キャプション表示''
+                ;
+                // キャプション表示
                 if(this.config.enabled') {
                     this.displayCaption(soundId, {
                 })'
@@ -738,13 +738,13 @@ export class CaptionManager {
         this.displayCaption(soundId, { category)
             volume,);
             duration);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
     }
     
     /**
      * キャプション表示判定
-     */'
+     */
     private shouldShowCaption(category: string): boolean { ''
         switch(category') {'
             '';
@@ -794,11 +794,11 @@ export class CaptionManager {
      */
     private displayMusicCaption(musicId: string, options: any = { ): void {
         const musicDescription = this.musicDescriptions.get(musicId);
-        if (!musicDescription) return;'
+        if (!musicDescription) return;
         '';
         const language = this.languageSupport.get(this.userPreferences.languagePreference')!; }
         const text = `${language.musicPrefix}${musicDescription.text}`;
-        ';
+        ';'
         const description: SoundDescription = { text,''
             category: 'music',
             duration: musicDescription.tempo }
@@ -819,7 +819,7 @@ export class CaptionManager {
         if(!description') {
             // デフォルト説明の生成
         }
-            return { }'
+            return { }
                 text: `音: ${soundId}`,''
                 category: options.category || 'game','';
                 duration: 'short';
@@ -838,12 +838,12 @@ export class CaptionManager {
         switch(level') {'
             '';
             case 'minimal':';
-                // 最小限の情報のみ''
+                // 最小限の情報のみ
                 text = text.split('（'')[0]; // 括弧内の詳細を削除
-                break;'
+                break;
                 '';
             case 'detailed':';
-                // 詳細な情報を追加''
+                // 詳細な情報を追加
                 if (options.volume && options.volume !== 1.0') {'
         }'
                     const volumeDesc = options.volume > 1.0 ? '大音量で' : '小音量で'; }
@@ -877,8 +877,8 @@ export class CaptionManager {
         }
                    this.config.captionDuration.medium; }
         }
-        ';
-        // カテゴリベースのデフォルト''
+        ;
+        // カテゴリベースのデフォルト
         switch(category') {'
             '';
             case 'ui':';
@@ -904,27 +904,27 @@ export class CaptionManager {
         captionElement.setAttribute('role', 'status'');''
         captionElement.setAttribute('aria-label', `Audio caption: ${ description.text)`'),
         ';
-        // 冗長性レベルクラスの追加''
+        // 冗長性レベルクラスの追加
         if (this.userPreferences.verbosityLevel !== 'normal') { }
             captionElement.classList.add(`caption-${this.userPreferences.verbosityLevel)`});
         }
         ';
-        // アニメーション設定''
+        // アニメーション設定
         if(this.config.animation.slideIn') {'
-            ';
+            ';'
         }'
             captionElement.classList.add('slide-in'); }'
         }''
         if(this.config.animation.bounce') {'
-            ';
+            ';'
         }'
             captionElement.classList.add('bounce-in'); }
         }
         
         // キャプションコンテナに追加
         this.captionContainer.appendChild(captionElement);
-        ';
-        // 表示アニメーション''
+        ;
+        // 表示アニメーション
         setTimeout((') => {  ' }'
             captionElement.classList.add('visible'); }
         }, 50);
@@ -969,10 +969,10 @@ export class CaptionManager {
     
     /**
      * キャプションの非表示
-     */'
+     */
     private hideCaption(captionId: number): void { const captionData = this.activeCaptions.get(captionId);''
         if (!captionData') return;
-        ';
+        ';'
         const element = captionData.element;''
         element.classList.add('fade-out');
         
@@ -1018,15 +1018,15 @@ export class CaptionManager {
      * キャプションマネージャーの有効化
      */
     enable(): void { this.config.enabled = true;
-        this.userPreferences.enabled = true;'
+        this.userPreferences.enabled = true;
         '';
         if(this.captionContainer') {'
-            ';
+            ';'
         }'
             this.captionContainer.style.display = 'flex'; }
         }'
         '';
-        this.saveUserPreferences('')';
+        this.saveUserPreferences()';
         console.log('Caption manager enabled');
     }
     
@@ -1037,15 +1037,15 @@ export class CaptionManager {
         this.userPreferences.enabled = false;
         
         // すべてのアクティブキャプションをクリア
-        this.clearAllCaptions();'
+        this.clearAllCaptions();
         '';
         if(this.captionContainer') {'
-            ';
+            ';'
         }'
             this.captionContainer.style.display = 'none'; }
         }'
         '';
-        this.saveUserPreferences('')';
+        this.saveUserPreferences()';
         console.log('Caption manager disabled');
     }
     
@@ -1169,7 +1169,7 @@ export class CaptionManager {
      */
     applyConfig(config: any): void { if (config.audio? .captions) {'
             Object.assign(this.config, config.audio.captions);''
-            this.updateStyleFromPreferences('')';
+            this.updateStyleFromPreferences()';
         console.log('CaptionManager configuration applied'); }
     }
     
@@ -1193,7 +1193,7 @@ export class CaptionManager {
             },
             userPreferences: this.userPreferences,
             performance: { averageDisplayTime: this.stats.averageDisplayTime,
-                maxConcurrentCaptions: Math.max(...Array.from(this.stats.captionsByCategory.values()); }
+                maxConcurrentCaptions: Math.max(...Array.from(this.stats.captionsByCategory.values()) }
             }
         };
     }
@@ -1204,14 +1204,14 @@ export class CaptionManager {
     setEnabled(enabled: boolean): void { if (enabled) {
             this.enable(); }'
         } else {  ' }'
-            this.disable('') }'
+            this.disable() }'
         console.log(`CaptionManager ${enabled ? 'enabled' : 'disabled')`});
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying CaptionManager...');
         
         // キャプションマネージャーを無効化
@@ -1231,9 +1231,9 @@ export class CaptionManager {
         // データのクリア
         this.activeCaptions.clear();
         this.captionQueue.length = 0;
-        this.soundDescriptions.clear();'
+        this.soundDescriptions.clear();
         this.musicDescriptions.clear();''
-        this.languageSupport.clear('')';
+        this.languageSupport.clear()';
         console.log('CaptionManager destroyed'');'
     }''
 }

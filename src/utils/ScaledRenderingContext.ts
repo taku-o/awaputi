@@ -5,7 +5,7 @@
 
 // 型定義
 interface StateInfo { timestamp: number,
-    scaleFactor: number; }
+    scaleFactor: number }
 }
 
 interface ScaledCoordinateManager {
@@ -56,7 +56,7 @@ export class ScaledRenderingContext {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);'
             this.context.fillRect(scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledRenderingContext: fillRect failed, using fallback', error);
             this.context.fillRect(baseX, baseY, baseWidth, baseHeight); }
         }
@@ -73,7 +73,7 @@ export class ScaledRenderingContext {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             const scaledSize = this.scaledCoordinateManager.getScaledSize(baseWidth, baseHeight);'
             this.context.strokeRect(scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledRenderingContext: strokeRect failed, using fallback', error);
             this.context.strokeRect(baseX, baseY, baseWidth, baseHeight); }
         }
@@ -97,7 +97,7 @@ export class ScaledRenderingContext {
             }
                 this.context.drawImage(image, scaledPosition.x, scaledPosition.y, scaledSize.width, scaledSize.height); }'
             } else { this.context.drawImage(image, scaledPosition.x, scaledPosition.y);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.warn('ScaledRenderingContext: drawImage failed, using fallback', error);
             if(baseWidth !== null && baseHeight !== null) {
                 
@@ -122,10 +122,10 @@ export class ScaledRenderingContext {
             const minFontSize = 8;
             const maxFontSize = 72;
             const clampedFontSize = Math.max(minFontSize, Math.min(maxFontSize, scaledFontSize);
-             }'
+             }
             this.context.font = `${clampedFontSize}px ${fontFamily}`;''
-        } catch (error') { ''
-            console.warn('ScaledRenderingContext: setScaledFont failed, using fallback', error); }
+        } catch (error) { ''
+            console.warn('ScaledRenderingContext: setScaledFont failed, using fallback', error) }
             this.context.font = `${baseFontSize}px ${fontFamily}`;
         }
     }
@@ -142,9 +142,9 @@ export class ScaledRenderingContext {
             const minWidth = 0.5;
             const maxWidth = 20;
             const clampedWidth = Math.max(minWidth, Math.min(maxWidth, scaledWidth);
-            ';
+            ';'
             this.context.lineWidth = clampedWidth;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledRenderingContext: setScaledLineWidth failed, using fallback', error);
             this.context.lineWidth = baseWidth; }
         }
@@ -159,10 +159,10 @@ export class ScaledRenderingContext {
             // 追加の状態情報を保存
             this.stateStack.push({);
                 timestamp: Date.now(),
-                scaleFactor: this.scaledCoordinateManager.getScaleFactor(); }'
+                scaleFactor: this.scaledCoordinateManager.getScaleFactor() }
             });''
-        } catch (error') { ''
-            console.warn('ScaledRenderingContext: save failed', error); }
+        } catch (error) { ''
+            console.warn('ScaledRenderingContext: save failed', error) }
         }
     }
     
@@ -175,10 +175,10 @@ export class ScaledRenderingContext {
             // 状態スタックからポップ
             if(this.stateStack.length > 0) {
                 
-            }'
+            }
                 this.stateStack.pop();' }'
-            } catch (error') { ''
-            console.warn('ScaledRenderingContext: restore failed', error); }
+            } catch (error) { ''
+            console.warn('ScaledRenderingContext: restore failed', error) }
         }
     }
     
@@ -194,9 +194,9 @@ export class ScaledRenderingContext {
      * @param property - プロパティ名
      * @param value - 設定値
      */
-    setProperty(property: string, value: any): void { try {'
+    setProperty(property: string, value: any): void { try {
             (this.context as any)[property] = value;' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             console.warn(`ScaledRenderingContext: Setting property '${property}' failed`, error);
         }
     }
@@ -206,9 +206,9 @@ export class ScaledRenderingContext {
      * @param property - プロパティ名
      * @returns プロパティ値
      */
-    getProperty(property: string): any { try {'
+    getProperty(property: string): any { try {
             return (this.context as any)[property];' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             console.warn(`ScaledRenderingContext: Getting property '${property}' failed`, error);
             return undefined;
         }
@@ -226,7 +226,7 @@ export class ScaledRenderingContext {
     moveTo(baseX: number, baseY: number): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);'
             this.context.moveTo(scaledPosition.x, scaledPosition.y);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledRenderingContext: moveTo failed, using fallback', error);
             this.context.moveTo(baseX, baseY); }
         }
@@ -240,7 +240,7 @@ export class ScaledRenderingContext {
     lineTo(baseX: number, baseY: number): void { try {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);'
             this.context.lineTo(scaledPosition.x, scaledPosition.y);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledRenderingContext: lineTo failed, using fallback', error);
             this.context.lineTo(baseX, baseY); }
         }
@@ -259,7 +259,7 @@ export class ScaledRenderingContext {
             const scaledPosition = this.scaledCoordinateManager.getScaledPosition(baseX, baseY);
             const scaledSize = this.scaledCoordinateManager.getScaledSize(baseRadius, baseRadius);'
             this.context.arc(scaledPosition.x, scaledPosition.y, scaledSize.width, startAngle, endAngle, counterclockwise);' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('ScaledRenderingContext: arc failed, using fallback', error);
             this.context.arc(baseX, baseY, baseRadius, startAngle, endAngle, counterclockwise); }
         }
@@ -274,6 +274,6 @@ export class ScaledRenderingContext {
     /**
      * 現在のスケール情報を取得（デバッグ用）
      * @returns スケール情報
-     */'
+     */
     getScaleInfo(): any { ''
         return this.scaledCoordinateManager.getDebugInfo(') }

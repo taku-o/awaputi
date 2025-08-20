@@ -8,7 +8,7 @@ interface DebugInterface { isVisible: boolean,
     toggle(): void;
     hide(): void;
     switchPanel(panel: string): void,
-    showSettings(): void; }
+    showSettings(): void }
 }
 
 interface ShortcutOptions { description?: string;
@@ -26,14 +26,14 @@ interface ShortcutOptions { description?: string;
 interface ShortcutStatistics { registered: number,
     lastExecuted: number | null,
     executionCount: number,
-    averageExecutionTime: number; }
+    averageExecutionTime: number }
 }
 
 interface ShortcutData { original: string,
     normalized: string,
     callback: ShortcutCallback,
     options: Required<ShortcutOptions>,
-    statistics: ShortcutStatistics;
+    statistics: ShortcutStatistics
     }
 }
 
@@ -44,7 +44,7 @@ interface Settings { caseSensitive: boolean,
     enableChords: boolean,
     maxChordLength: number,
     enableContexts: boolean,
-    saveCustomizations: boolean; }
+    saveCustomizations: boolean }
 }
 
 interface Statistics { totalExecuted: number,
@@ -53,11 +53,11 @@ interface Statistics { totalExecuted: number,
     sequencesCompleted: number,
     chordsExecuted: number,
     contextSwitches: number,
-    customizations: number; }
+    customizations: number }
 }
 
 interface ShortcutInfo { shortcut: string,
-    data: ShortcutData;
+    data: ShortcutData
     }
 }
 
@@ -104,12 +104,12 @@ export class DebugKeyboardShortcutManager {
         this.debugInterface = debugInterface;
         
         // ショートカット管理
-        this.shortcuts = new Map<string, ShortcutData>();'
+        this.shortcuts = new Map<string, ShortcutData>();
         this.shortcutGroups = new Map<string, Set<string>>();''
         this.contexts = new Map<string, Set<string>>(');''
         this.activeContext = 'global';
         ';
-        // 競合管理''
+        // 競合管理
         this.conflicts = new Map<string, ShortcutData[]>(');''
         this.conflictResolutionStrategy = 'warn';
         
@@ -151,8 +151,8 @@ export class DebugKeyboardShortcutManager {
         // イベントハンドラーの初期化
         this.keydownHandler = (event: KeyboardEvent) => { this.execute(event); }
         };
-';
-        this.focusHandler = (event: FocusEvent) => {  // デバッグインターフェースにフォーカスがある場合のみ有効''
+;
+        this.focusHandler = (event: FocusEvent) => {  // デバッグインターフェースにフォーカスがある場合のみ有効
             if (this.debugInterface.isVisible') {' }'
                 document.addEventListener('keydown', this.keydownHandler, true); }
             }
@@ -312,17 +312,17 @@ export class DebugKeyboardShortcutManager {
      * @returns ショートカット文字列
      */
     buildShortcutString(event: KeyboardEvent): string { const parts: string[] = [],
-        ';
-        // 修飾キーの処理''
+        ;
+        // 修飾キーの処理
         if (event.ctrlKey') parts.push('ctrl');''
         if (event.altKey') parts.push('alt');''
         if (event.shiftKey') parts.push('shift');''
         if (event.metaKey') parts.push('meta');
         ';
-        // 主要キーの処理''
+        // 主要キーの処理
         const key = this.normalizeKey(event.key, event.code');''
         if(key && !['Control', 'Alt', 'Shift', 'Meta'].includes(event.key) {'
-            ';
+            ';'
         }'
             parts.push(key'); }
         }'
@@ -336,7 +336,7 @@ export class DebugKeyboardShortcutManager {
      * @param code - キーコード
      * @returns 正規化されたキー名'
      */''
-    normalizeKey(key: string, code: string'): string { // 特殊キーのマッピング'
+    normalizeKey(key: string, code: string'): string { // 特殊キーのマッピング
         const specialKeys: Record<string, string> = {''
             ' ': 'space','';
             'Enter': 'enter','';
@@ -359,9 +359,9 @@ export class DebugKeyboardShortcutManager {
         }
 
         // 数字とアルファベットの処理
-        if(key.length === 1) {'
+        if(key.length === 1) {
             '';
-            return this.settings.caseSensitive ? key: key.toLowerCase('')';
+            return this.settings.caseSensitive ? key: key.toLowerCase()';
         if (key.startsWith('F') && /^F\d+$/.test(key) {
         }
             return key.toLowerCase(); }
@@ -376,7 +376,7 @@ export class DebugKeyboardShortcutManager {
      * @returns 正規化されたショートカット
      */'
     normalizeShortcut(shortcut: string): string { return shortcut''
-            .toLowerCase('')';
+            .toLowerCase()';
             .replace(/\s+/g, ''')'';
             .split('+');
             .map(part => part.trim()';
@@ -401,7 +401,7 @@ export class DebugKeyboardShortcutManager {
             return false; }
         }
 ';
-        // シーケンスの場合''
+        // シーケンスの場合
         if (this.isSequence(shortcut)') { ''
             const sequences = shortcut.split('>').map(s => s.trim();
             return sequences.every(seq => this.validateSingleShortcut(seq); }
@@ -418,12 +418,12 @@ export class DebugKeyboardShortcutManager {
     validateSingleShortcut(shortcut: string): boolean { ''
         const parts = shortcut.toLowerCase(').split('+').map(p => p.trim();
         ';
-        // 空のパートがないかチェック''
+        // 空のパートがないかチェック
         if (parts.some(part => part.length === 0)') {
             return false; }
         }
 ';
-        // 修飾キーのみでないかチェック''
+        // 修飾キーのみでないかチェック
         const modifiers = ['ctrl', 'alt', 'shift', 'meta'];
         const hasNonModifier = parts.some(part => !modifiers.includes(part);
         
@@ -457,7 +457,7 @@ export class DebugKeyboardShortcutManager {
         const contextShortcuts = this.contexts.get(this.activeContext) || new Set<string>();
         
         for(const normalized of contextShortcuts) {
-        ';
+        ';'
             const shortcut = this.shortcuts.get(normalized);''
             if (shortcut && shortcut.options.enabled && normalized === shortcutString') {
         
@@ -466,7 +466,7 @@ export class DebugKeyboardShortcutManager {
             }
         }
 ';
-        // グローバルコンテキストから検索（アクティブコンテキストがグローバルでない場合）''
+        // グローバルコンテキストから検索（アクティブコンテキストがグローバルでない場合）
         if(this.activeContext !== 'global'') {'
             '';
             const globalShortcuts = this.contexts.get('global') || new Set<string>();
@@ -530,9 +530,9 @@ export class DebugKeyboardShortcutManager {
                 console.log(`Shortcut executed: ${shortcutString) (${executionTime.toFixed(2})}ms)`);
             }
 
-            return result !== false;'
+            return result !== false;
 '';
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             console.error(`Error executing shortcut '${shortcutString}':`, error);
             return false;
         }
@@ -573,7 +573,7 @@ export class DebugKeyboardShortcutManager {
      * @param event - キーボードイベント
      * @param shortcutString - ショートカット文字列
      * @returns 処理したかどうか
-     */'
+     */
     handleSequence(event: KeyboardEvent, shortcutString: string): boolean { ''
         this.currentSequence.push(shortcutString');'
 '';
@@ -612,7 +612,7 @@ export class DebugKeyboardShortcutManager {
      * シーケンス開始の検索
      * @param partial - 部分的なシーケンス
      * @returns 開始マッチがあるかどうか
-     */'
+     */
     findSequenceStart(partial: string): boolean { ''
         for(const [normalized] of this.shortcuts') {'
             '';
@@ -639,7 +639,7 @@ export class DebugKeyboardShortcutManager {
         }'
 '';
         if(this.debug && this.currentSequence.length > 0') {'
-            ';
+            ';'
         }'
             console.log('Sequence reset'); }
         }
@@ -690,7 +690,7 @@ export class DebugKeyboardShortcutManager {
             return true; }
         } else if (newShortcut.options.priority === existing.options.priority) { // 同じ優先度の場合、両方を保持してコンテキストで分ける
             const combinedCallback: ShortcutCallback = (event, shortcutString, shortcut) => { 
-                existing.callback(event, shortcutString, shortcut); }
+                existing.callback(event, shortcutString, shortcut) }
                 newShortcut.callback(event, shortcutString, shortcut); }
             };
             
@@ -744,7 +744,7 @@ export class DebugKeyboardShortcutManager {
      * @param normalized - 正規化されたショートカット
      */
     removeFromContext(context: string, normalized: string): void { const contextSet = this.contexts.get(context);
-        if(contextSet) {'
+        if(contextSet) {
             '';
             contextSet.delete(normalized');''
             if (contextSet.size === 0 && context !== 'global') {
@@ -771,9 +771,9 @@ export class DebugKeyboardShortcutManager {
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         if (document.readyState === 'loading'') {'
-        ';
+        ';'
     }'
             document.addEventListener('DOMContentLoaded', () => {  }
                 this.setupDocumentListeners(); }
@@ -785,14 +785,14 @@ export class DebugKeyboardShortcutManager {
     /**
      * ドキュメントレベルのイベントリスナー設定'
      */''
-    setupDocumentListeners('')';
+    setupDocumentListeners()';
         document.addEventListener('keydown', this.keydownHandler, true);
     }
 
     /**
      * デフォルトショートカットの登録'
      */''
-    registerDefaultShortcuts('')';
+    registerDefaultShortcuts()';
         this.register('ctrl+shift+d', () => {  ''
             this.debugInterface.toggle(''';
             description: 'Toggle Debug Interface',')';
@@ -800,7 +800,7 @@ export class DebugKeyboardShortcutManager {
             priority: 100') }'
         }'),
 ';
-        // パネル切り替え''
+        // パネル切り替え
         this.register('ctrl+shift+o', (') => {  ' }'
             this.debugInterface.switchPanel('overview''); }'
         }, { ''
@@ -836,16 +836,16 @@ export class DebugKeyboardShortcutManager {
             group: 'panels'' }'
         }'),
 ';
-        // 汎用制御''
+        // 汎用制御
         this.register('escape', () => {  if (this.debugInterface.isVisible) {''
                 this.debugInterface.hide(''';
             description: 'Hide Debug Interface',' })'
             group: 'interface'') }'
         }'),
 ';
-        // シーケンス例''
+        // シーケンス例
         this.register('ctrl+d>ctrl+s', () => {  ''
-            this.debugInterface.showSettings('')';
+            this.debugInterface.showSettings()';
             description: 'Show Debug Settings (Sequence')',' }'
             group: 'advanced' }
         }),
@@ -854,7 +854,7 @@ export class DebugKeyboardShortcutManager {
     /**
      * コンテキストの設定'
      */''
-    setupContexts('')';
+    setupContexts()';
         this.contexts.set('global', new Set<string>()');''
         this.contexts.set('console', new Set<string>()');''
         this.contexts.set('performance', new Set<string>()');''
@@ -866,8 +866,8 @@ export class DebugKeyboardShortcutManager {
      */'
     loadCustomizations(): void { ''
         if (!this.settings.saveCustomizations') return;
-';
-        try {''
+';'
+        try {'
             const saved = localStorage.getItem('debug-shortcuts-customizations');
             if(saved) {
                 const customizations: Record<string, Customization> = JSON.parse(saved);
@@ -880,10 +880,10 @@ export class DebugKeyboardShortcutManager {
                         this.register(data.replacement, data.callback, data.options); }
                     }
                 }
-                ';
+                ';'
                 this.statistics.customizations = Object.keys(customizations).length;''
-            } catch (error') { ''
-            console.warn('Failed to load shortcut customizations:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load shortcut customizations:', error) }
         }
     }
 
@@ -895,10 +895,10 @@ export class DebugKeyboardShortcutManager {
 
         try { }
             const customizations: Record<string, Customization> = {};'
-            // カスタマイゼーション情報を保存''
+            // カスタマイゼーション情報を保存
             localStorage.setItem('debug-shortcuts-customizations', JSON.stringify(customizations);''
-        } catch (error') { ''
-            console.warn('Failed to save shortcut customizations:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save shortcut customizations:', error) }
         }
     }
 
@@ -908,7 +908,7 @@ export class DebugKeyboardShortcutManager {
      * 有効/無効の切り替え
      * @param enabled - 有効かどうか
      */
-    setEnabled(enabled: boolean): void { this.enabled = enabled;'
+    setEnabled(enabled: boolean): void { this.enabled = enabled;
         '';
         if (this.debug') {' }'
             console.log(`Keyboard shortcuts ${enabled ? 'enabled' : 'disabled')`});
@@ -1026,13 +1026,13 @@ export class DebugKeyboardShortcutManager {
      * クリーンアップ
      */
     destroy(): void { // タイマーのクリア
-        if(this.sequenceTimer) {'
-            ';
+        if(this.sequenceTimer) {
+            ';'
         }'
             clearTimeout(this.sequenceTimer'); }
         }
 ';
-        // イベントリスナーの削除''
+        // イベントリスナーの削除
         document.removeEventListener('keydown', this.keydownHandler, true);
 
         // カスタマイゼーションの保存
@@ -1040,12 +1040,12 @@ export class DebugKeyboardShortcutManager {
 
         // データのクリア
         this.shortcuts.clear();
-        this.shortcutGroups.clear();'
+        this.shortcutGroups.clear();
         this.contexts.clear();''
-        this.conflicts.clear('')';
+        this.conflicts.clear()';
         console.log('KeyboardShortcutManager destroyed'');
     }
 }
 ';
-// デフォルトエクスポート''
+// デフォルトエクスポート
 export default DebugKeyboardShortcutManager;

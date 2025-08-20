@@ -8,36 +8,36 @@
 import { seoLogger } from '../SEOLogger.js';''
 import { seoErrorHandler } from '../SEOErrorHandler.js';
 
-interface MainController { baseUrl: string; }
+interface MainController { baseUrl: string }
 }
 
 interface TestResult { name: string,
     passed: boolean,
-    message: string; }
+    message: string }
 }
 
 interface ValidationResults { category: string,
     tests: TestResult[],
     passed: number,
     failed: number,
-    warnings: number; }
+    warnings: number }
 }
 
 interface CoreWebVitalsResults extends ValidationResults { vitals: {
         LCP: number,
         FID: number,
         CLS: number,
-        timestamp: string; }
+        timestamp: string }
     };
 }
 
 interface ImageInfo { src: string,
-    alt: string; }
+    alt: string }
 }
 
 interface HeadingStructure { isValid: boolean,
     levels: number[],
-    issues: string[]; }
+    issues: string[] }
 }
 
 export class PerformanceValidator {
@@ -45,7 +45,7 @@ export class PerformanceValidator {
     private baseUrl: string;
     constructor(mainController: MainController) {
 
-        this.mainController = mainController;
+        this.mainController = mainController
 
     }
     }
@@ -64,7 +64,7 @@ export class PerformanceValidator {
                 warnings: 0;
             },
             
-            // WebP対応の確認'
+            // WebP対応の確認
             const webpTest: TestResult = { ''
                 name: 'WebP support detection',';
                 passed: false,'';
@@ -83,13 +83,13 @@ export class PerformanceValidator {
             '';
             results.tests.push(webpTest');
             
-            // キャッシュヘッダーの確認'
+            // キャッシュヘッダーの確認
             const cacheTest: TestResult = { ''
                 name: 'Cache headers validation',';
                 passed: false,'';
                 message: '' }
             },
-            ';
+            ';'
             const cacheHeaders = this._generateTestCacheHeaders();''
             if (cacheHeaders && Object.keys(cacheHeaders).length > 0') { cacheTest.passed = true;''
                 cacheTest.message = '✅ Cache headers properly configured';
@@ -115,9 +115,9 @@ export class PerformanceValidator {
             } else { results.warnings++; }
             }
             
-            return results;'
+            return results;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'validatePerformanceOptimization'); }
         }
     }
@@ -134,7 +134,7 @@ export class PerformanceValidator {
                 warnings: 0;
             },
             
-            // alt属性の確認'
+            // alt属性の確認
             const altTest: TestResult = { ''
                 name: 'Image alt attributes',';
                 passed: false,'';
@@ -154,13 +154,13 @@ export class PerformanceValidator {
             '';
             results.tests.push(altTest');
             
-            // 見出し構造の確認'
+            // 見出し構造の確認
             const headingTest: TestResult = { ''
                 name: 'Heading structure',';
                 passed: false,'';
                 message: '' }
             },
-            ';
+            ';'
             const headingStructure = await this._analyzeHeadingStructure();''
             if(headingStructure.isValid') {'
                 headingTest.passed = true;''
@@ -188,9 +188,9 @@ export class PerformanceValidator {
             } else { results.warnings++; }
             }
             
-            return results;'
+            return results;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'validateAccessibilityCompliance'); }
         }
     }
@@ -202,13 +202,13 @@ export class PerformanceValidator {
     async trackCoreWebVitals(): Promise<CoreWebVitalsResults> { try {
             const vitals = {
                 LCP: 0, // Largest Contentful Paint;
-                FID: 0, // First Input Delay';
-                CLS: 0, // Cumulative Layout Shift'';
-                timestamp: new Date().toISOString('')';
+                FID: 0, // First Input Delay;
+                CLS: 0, // Cumulative Layout Shift;
+                timestamp: new Date().toISOString()';
             if(typeof window !== 'undefined' && 'performance' in window) {
                 // Performance Observer APIを使用してCore Web Vitalsを測定
                 // 実際の実装では web-vitals ライブラリを使用することを推奨
-                vitals.LCP = this._measureLCP(),';
+                vitals.LCP = this._measureLCP(),;
                 vitals.FID = this._measureFID();''
                 vitals.CLS = this._measureCLS(''';
                 category: 'Core Web Vitals',
@@ -219,7 +219,7 @@ export class PerformanceValidator {
             }
                 vitals: vitals })
             })
-            // LCP検証'
+            // LCP検証
             const lcpTest: TestResult = { ')'
                 name: 'Largest Contentful Paint (LCP')',
                 passed: vitals.LCP <= 2500,
@@ -230,7 +230,7 @@ export class PerformanceValidator {
             results.tests.push(lcpTest');
             lcpTest.passed ? results.passed++ : results.warnings++;
             
-            // FID検証'
+            // FID検証
             const fidTest: TestResult = { ''
                 name: 'First Input Delay (FID')',
                 passed: vitals.FID <= 100,
@@ -241,7 +241,7 @@ export class PerformanceValidator {
             results.tests.push(fidTest');
             fidTest.passed ? results.passed++ : results.warnings++;
             
-            // CLS検証'
+            // CLS検証
             const clsTest: TestResult = { ''
                 name: 'Cumulative Layout Shift (CLS')',
                 passed: vitals.CLS <= 0.1,
@@ -255,7 +255,7 @@ export class PerformanceValidator {
             seoLogger.performance('Core Web Vitals tracked', 0, vitals);
             return results;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'trackCoreWebVitals'); }
         }
     }
@@ -272,7 +272,7 @@ export class PerformanceValidator {
                 warnings: 0;
             },
             
-            // サイトマップの存在確認'
+            // サイトマップの存在確認
             const sitemapTest: TestResult = { ''
                 name: 'Sitemap accessibility',';
                 passed: false,'';
@@ -293,7 +293,7 @@ export class PerformanceValidator {
             
             return results;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'validateSitemap'); }
         }
     }
@@ -310,7 +310,7 @@ export class PerformanceValidator {
                 warnings: 0;
             },
             
-            // robots.txtの存在確認'
+            // robots.txtの存在確認
             const robotsTest: TestResult = { ''
                 name: 'Robots.txt accessibility',';
                 passed: false,'';
@@ -331,7 +331,7 @@ export class PerformanceValidator {
             
             return results;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error, 'validateRobotsTxt'); }
         }
     }
@@ -340,7 +340,7 @@ export class PerformanceValidator {
     
     /**
      * 画像の抽出
-     * @private'
+     * @private
      */''
     private async _extractImages(''';
             { src: '/assets/images/game-screenshot.png', alt: 'ゲームスクリーンショット' },''
@@ -352,14 +352,14 @@ export class PerformanceValidator {
      * WebP対応の確認
      * @private'
      */''
-    private async _checkWebPSupport('')';
+    private async _checkWebPSupport()';
         if (typeof window === 'undefined') return false;
         
         return new Promise((resolve) => {  const webP = new Image();'
             webP.onload = webP.onerror = () => {' }'
                 resolve(webP.height === 2'); }'
             };''
-            webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+            webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA;
         };
     }
     
@@ -433,22 +433,22 @@ export class PerformanceValidator {
     
     /**
      * 圧縮設定の検証
-     * @private'
+     * @private
      */''
     private async _validateCompressionSettings(''';
             name: 'Compression settings validation',';
             passed: false,'';
             message: '');
         })
-        try { // 実際の実装では response headers をチェック'
-            const compressionEnabled = true; // モック''
+        try { // 実際の実装では response headers をチェック
+            const compressionEnabled = true; // モック
             if(compressionEnabled') {'
                 test.passed = true;'
             }'
                 test.message = '✅ Compression enabled (gzip/brotli')'; }'
             } else {  ' }'
                 test.message = '⚠️ Compression not detected';' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             test.message = `⚠️ Could not verify compression: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
@@ -471,9 +471,9 @@ export class PerformanceValidator {
             }
                 test.passed = true; }
                 test.message = `✅ Resources well optimized (${optimizationScore.toFixed(1})}%)`;
-            } else {  }'
+            } else {  }
                 test.message = `⚠️ Resources could be better optimized (${optimizationScore.toFixed(1})}%)`;''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             test.message = `⚠️ Resource optimization check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
@@ -489,15 +489,15 @@ export class PerformanceValidator {
             passed: false,'';
             message: '');
         })
-        try { // Tab index, focus management などをチェック'
-            const navScore = Math.random() * 100; // モック''
+        try { // Tab index, focus management などをチェック
+            const navScore = Math.random() * 100; // モック
             if(navScore > 85') {'
                 test.passed = true;'
             }'
                 test.message = '✅ Keyboard navigation properly implemented'; }'
             } else {  ' }'
                 test.message = '⚠️ Keyboard navigation could be improved';' }'
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             test.message = `⚠️ Keyboard navigation check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         
@@ -520,9 +520,9 @@ export class PerformanceValidator {
             }
                 test.passed = true; }
                 test.message = `✅ Color contrast meets WCAG AA standards (${contrastRatio.toFixed(2})}:1)`;
-            } else {  }'
+            } else {  }
                 test.message = `⚠️ Color contrast below WCAG AA standards (${contrastRatio.toFixed(2})}:1)`;''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             test.message = `⚠️ Color contrast check failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
         }
         

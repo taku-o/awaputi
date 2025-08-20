@@ -3,29 +3,29 @@ import { BaseComponent } from '../../debug/BaseComponent.js';
 // Type definitions
 interface ValidationRule { required: string[],
     optional?: string[];
-    validators: Record<string, (value: any) => ValidationResult>; };
+    validators: Record<string, (value: any) => ValidationResult> };
 }
 interface ValidationResult { valid: boolean,
-    message?: string; };
+    message?: string };
 }
 interface CategoryStats { passed: number,
     failed: number,
-    issues: string[]; };
+    issues: string[] };
 }
 interface ValidationCategories { critical: CategoryStats,
     important: CategoryStats,
-    optional: CategoryStats;
+    optional: CategoryStats
     };
 }
 interface BaseValidation { valid: boolean,
     issues: string[],
     warnings: string[],
-    categories: ValidationCategories;
+    categories: ValidationCategories
     };
 }
 interface ConfigurationValidation extends BaseValidation { bubbleTypesCount: number,
     sourceFiles: string[],
-    validatedAt: number; };
+    validatedAt: number };
 }
 interface BubbleType { health?: number;
     score?: number;
@@ -46,14 +46,14 @@ interface Expectations { metadata?: Metadata;
     };
 }
 interface ValidationHistoryEntry { timestamp: number,
-    validation: ConfigurationValidation;
+    validation: ConfigurationValidation
     };
 }
 interface ValidationStatistics { totalValidations: number,
     successfulValidations: number,
     successRate: number,
     recentValidations: number,
-    averageIssuesPerValidation: number; };
+    averageIssuesPerValidation: number };
 }
 interface MainController { [key: string]: any, };
 }
@@ -66,8 +66,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     private validationCategories: {
         critical: string[],
         important: string[],
-        optional: string[]; }
-    };'
+        optional: string[] }
+    };
 '';
     constructor(mainController: MainController') {'
         '';
@@ -93,26 +93,26 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                 score: (value') => this.validateNonNegativeNumber(value, 'score'),'';
                 size: (value') => this.validatePositiveNumber(value, 'size'),'';
                 maxAge: (value') => this.validatePositiveNumber(value, 'maxAge'),
-                effects: (value) => this.validateEffects(value); }'
+                effects: (value) => this.validateEffects(value) }'
             }''
         }');
 ';
-        // GameBalance検証ルール''
+        // GameBalance検証ルール
         this.validationRules.set('gameBalance', { ')'
             required: ['baseScores', 'bubbles'],);
             validators: {),
                 baseScores: (value) => this.validateBaseScores(value),
-                bubbles: (value) => this.validateBubblesConfig(value); }'
+                bubbles: (value) => this.validateBubblesConfig(value) }'
             }''
         }');
 ';
-        // メタデータ検証ルール''
+        // メタデータ検証ルール
         this.validationRules.set('metadata', { ')'
             required: ['extractedAt', 'sourceFiles', 'generatorVersion'],);
             validators: {),
                 extractedAt: (value) => this.validateTimestamp(value),
                 sourceFiles: (value) => this.validateSourceFiles(value),
-                generatorVersion: (value) => this.validateVersion(value); };
+                generatorVersion: (value) => this.validateVersion(value) };
 }
         });
     }
@@ -139,7 +139,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                 warnings: [],
                 bubbleTypesCount: 0,';
                 sourceFiles: [],'';
-                validatedAt: Date.now('')';
+                validatedAt: Date.now()';
             if(!expectations || typeof expectations !== 'object'') {'
                 validation.valid = false;''
                 validation.issues.push('Invalid expectations object');
@@ -147,7 +147,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                 return validation; };
 }
             // メタデータ検証
-            if(expectations.metadata) {'
+            if(expectations.metadata) {
                 const metadataValidation = this.validateMetadata(expectations.metadata);''
                 this.mergeValidationResults(validation, metadataValidation');
             }
@@ -157,7 +157,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
 }
             // バブルタイプ検証
             if(expectations.bubbleTypes) {
-                const bubbleTypesValidation = this.validateBubbleTypes(expectations.bubbleTypes);'
+                const bubbleTypesValidation = this.validateBubbleTypes(expectations.bubbleTypes);
                 this.mergeValidationResults(validation, bubbleTypesValidation);'
             }'
                 validation.bubbleTypesCount = Object.keys(expectations.bubbleTypes').length; }'
@@ -165,7 +165,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                 validation.warnings.push('Missing bubble types configuration'); };
 }
             // GameBalance検証
-            if(expectations.gameBalance) {'
+            if(expectations.gameBalance) {
                 const gameBalanceValidation = this.validateGameBalance(expectations.gameBalance);'
             }'
                 this.mergeValidationResults(validation, gameBalanceValidation'); }'
@@ -179,9 +179,9 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             // 検証履歴に追加
             this.addValidationHistory(validation);
 
-            return validation;'
+            return validation;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             this._handleError('configuration sync validation', error);
             return {  };
                 valid: false;
@@ -208,7 +208,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true,
             issues: [],
             warnings: [],
-            categories: { ;
+            categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] },
                 important: { passed: 0, failed: 0, issues: [] },
@@ -236,7 +236,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true,
             issues: [],
             warnings: [],
-            categories: { ;
+            categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] },
                 important: { passed: 0, failed: 0, issues: [] },
@@ -257,7 +257,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
         if (!rules) return validation;
         
         // 必須プロパティの検証
-        for(const prop of rules.required) {'
+        for(const prop of rules.required) {
             if ((config as any)[prop] === undefined || (config as any)[prop] === null) {'
         }'
                 const category = this.getCategoryForProperty(prop');' }'
@@ -277,7 +277,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                 const validator = rules.validators[prop];
                 if(validator) {
                     const propValidation = validator((config as any)[prop]);
-                }'
+                }
                     if (!propValidation.valid) {' }'
                         const category = this.getCategoryForProperty(prop'); }
                         const message = `${bubbleType}: ${propValidation.message}`;'
@@ -310,7 +310,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                         validation.warnings.push(`${bubbleType}: ${propValidation.message)`});
                         validation.categories.optional.failed++;
                         validation.categories.optional.issues.push(`${bubbleType}: ${propValidation.message)`});
-                    } else { validation.categories.optional.passed++; };
+                    } else { validation.categories.optional.passed++; }
 }
                 };
 }
@@ -322,13 +322,13 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     /**
      * GameBalance設定を検証
      * @param gameBalance - GameBalance設定
-     * @returns 検証結果'
+     * @returns 検証結果
      */''
     private validateGameBalance(gameBalance: GameBalance'): BaseValidation { const validation: BaseValidation = {
             valid: true,
             issues: [],
             warnings: [],
-            categories: { ;
+            categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] },
                 important: { passed: 0, failed: 0, issues: [] },
@@ -340,7 +340,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
         if (!rules) return validation;
 
         for(const prop of rules.required) {
-';
+';'
             '';
             if (!(gameBalance as any)[prop]') {
 
@@ -356,7 +356,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                         validation.valid = false; }
                         validation.issues.push(`GameBalance: ${propValidation.message)`});
                         validation.categories.critical.failed++;
-                    } else { validation.categories.critical.passed++; };
+                    } else { validation.categories.critical.passed++; }
 }
                 };
 }
@@ -374,7 +374,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true,
             issues: [],
             warnings: [],
-            categories: { ;
+            categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] },
                 important: { passed: 0, failed: 0, issues: [] },
@@ -386,8 +386,8 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
         if (!rules) return validation;
 
         for(const prop of rules.required) {
-';
-            ';
+';'
+            ';'
         }'
             if (!(metadata as any)[prop]') {' }'
                 validation.warnings.push(`Metadata: Missing property '${prop')'`});
@@ -400,7 +400,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
                     if (!propValidation.valid) { }
                         validation.warnings.push(`Metadata: ${propValidation.message)`});
                         validation.categories.important.failed++;
-                    } else { validation.categories.important.passed++; };
+                    } else { validation.categories.important.passed++; }
 }
                 };
 }
@@ -418,7 +418,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             valid: true,
             issues: [],
             warnings: [],
-            categories: { ;
+            categories: { 
 }
                 critical: { passed: 0, failed: 0, issues: [] },
                 important: { passed: 0, failed: 0, issues: [] },
@@ -434,12 +434,12 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
 
             // 不一致のチェック
             const missingInGameBalance = bubbleTypeNames.filter(name => !gameBalanceBubbles.includes(name);
-            const missingInBaseScores = bubbleTypeNames.filter(name => !baseScoreBubbles.includes(name);'
-';
+            const missingInBaseScores = bubbleTypeNames.filter(name => !baseScoreBubbles.includes(name);
+';'
         }'
             if (missingInGameBalance.length > 0') {' }'
                 validation.warnings.push(`Bubble types missing in GameBalance.bubbles: ${missingInGameBalance.join(', '})}`);
-                validation.categories.important.failed++;
+                validation.categories.important.failed++;'
             }'
 '';
             if (missingInBaseScores.length > 0') { ' }'
@@ -500,7 +500,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
             return { valid: false, message: 'effects must be an object' };
 }
         ';
-        // エフェクトの各プロパティを検証''
+        // エフェクトの各プロパティを検証
         for (const [key, val] of Object.entries(value)') { ''
             if (typeof val !== 'number') { }
                 return { valid: false, message: `effects.${key} must be a number` };
@@ -575,7 +575,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
         }'
         '';
         for(const file of value') {'
-            ';
+            ';'
         }'
             if (typeof file !== 'string'') {' }'
                 return { valid: false, message: 'all sourceFiles must be strings' };
@@ -593,7 +593,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
         if (typeof value !== 'string'') {' }'
             return { valid: false, message: 'version must be a string' };
 }
-        // セマンティックバージョニングの簡単なチェック'
+        // セマンティックバージョニングの簡単なチェック
         const semverRegex = /^\d+\.\d+\.\d+/;''
         if (!semverRegex.test(value)') { ' }'
             return { valid: false, message: 'version should follow semantic versioning (e.g., 1.0.0')' };
@@ -607,7 +607,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      * プロパティのカテゴリを取得
      * @param property - プロパティ名
      * @returns カテゴリ名
-     */'
+     */
     private getCategoryForProperty(property: string): string { for(const [category, properties] of Object.entries(this.validationCategories) {''
             if (properties.includes(property)') {
                 return category; }
@@ -646,7 +646,7 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
      * @param validation - 検証結果
      */
     private addValidationHistory(validation: ConfigurationValidation): void { this.validationHistory.push({);
-            timestamp: Date.now();
+            timestamp: Date.now()
 }
             validation: { ...validation ;
 }
@@ -677,6 +677,6 @@ export class ConfigurationValidator extends BaseComponent { private validationRu
     /**
      * クリーンアップ
      */
-    cleanup(): void { this.validationHistory = [];'
+    cleanup(): void { this.validationHistory = [];
         this.validationCache.clear();''
         super.cleanup(') }

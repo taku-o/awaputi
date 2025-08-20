@@ -6,7 +6,7 @@ type ErrorHandler = ReturnType<typeof getErrorHandler>;
 // Export interfaces
 export interface QualitySettings { countMultiplier: number,
     sizeMultiplier: number,
-    complexityLevel: number; }
+    complexityLevel: number }
 }
 
 export interface QualityLevels { low: QualitySettings,
@@ -23,7 +23,7 @@ export interface OptimizationSettings { batchRendering: boolean,
     interpolation: boolean,
     easingEnabled: boolean,
     colorPalettes: string[],
-    physicsEnhancements: boolean; }
+    physicsEnhancements: boolean }
 }
 
 export interface ColorPalettes { default: string[],
@@ -33,7 +33,7 @@ export interface ColorPalettes { default: string[],
     fire: string[],
     ocean: string[],
     [key: string]: string[], }
-}'
+}
 '';
 export type QualityLevel = 'low' | 'medium' | 'high' | 'ultra';''
 export type PaletteName = 'default' | 'warm' | 'cool' | 'nature' | 'fire' | 'ocean';''
@@ -53,7 +53,7 @@ export class ParticleQualityManager {
     private optimizationSettings: OptimizationSettings;
     // 色パレット
     private readonly colorPalettes: ColorPalettes,
-    constructor() {'
+    constructor() {
         '';
         this.errorHandler = getErrorHandler(''';
         this.currentQualityLevel = 'high';
@@ -70,7 +70,7 @@ export class ParticleQualityManager {
     }
             physicsEnhancements: false })
         })
-        // 色パレット'
+        // 色パレット
         this.colorPalettes = { ''
             default: ['#ffffff', '#ffff00', '#ff00ff', '#00ffff'],'';
             warm: ['#ff6b35', '#f7931e', '#ffd23f', '#fff95b'],'';
@@ -97,8 +97,8 @@ export class ParticleQualityManager {
             } else {  }
                 console.warn(`[ParticleQualityManager] 無効な品質レベル: ${level)`});'
                 return this.qualitySettings.high;''
-            } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.setQualityLevel'); }
+            } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.setQualityLevel') }
             });
             return this.qualitySettings.high;
         }
@@ -122,8 +122,8 @@ export class ParticleQualityManager {
     adjustParticleCount(baseCount: number): number { try {
             const settings = this.qualitySettings[this.currentQualityLevel];'
             return Math.floor(baseCount * settings.countMultiplier);' }'
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.adjustParticleCount'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.adjustParticleCount') }
             });
             return baseCount;
         }
@@ -135,8 +135,8 @@ export class ParticleQualityManager {
     adjustParticleSize(baseSize: number): number { try {
             const settings = this.qualitySettings[this.currentQualityLevel];'
             return baseSize * settings.sizeMultiplier;' }'
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.adjustParticleSize'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.adjustParticleSize') }
             });
             return baseSize;
         }
@@ -148,38 +148,38 @@ export class ParticleQualityManager {
     getComplexityLevel(): number { try {
             const settings = this.qualitySettings[this.currentQualityLevel];'
             return settings.complexityLevel;' }'
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.getComplexityLevel'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.getComplexityLevel') }
             });
             return 2; // デフォルト値
         }
     }
     
     /**
-     * バッチレンダリングを有効化'
+     * バッチレンダリングを有効化
      */''
-    enableBatchRendering('')';
+    enableBatchRendering()';
         console.log('[ParticleQualityManager] バッチレンダリングを有効化しました');
     }
     
     /**
      * アグレッシブカリングを有効化'
      */''
-    enableAggressiveCulling('')';
+    enableAggressiveCulling()';
         console.log('[ParticleQualityManager] アグレッシブカリングを有効化しました');
     }
     
     /**
      * アグレッシブカリングを無効化'
      */''
-    disableAggressiveCulling('')';
+    disableAggressiveCulling()';
         console.log('[ParticleQualityManager] アグレッシブカリングを無効化しました');
     }
     
     /**
      * スムース遷移を有効化'
      */''
-    enableSmoothTransitions('')';
+    enableSmoothTransitions()';
         console.log('[ParticleQualityManager] スムース遷移を有効化しました');
     }
     
@@ -195,8 +195,8 @@ export class ParticleQualityManager {
             } else {  }
                 console.warn(`[ParticleQualityManager] 未知の色パレット: ${paletteName)`});'
                 this.optimizationSettings.colorPalettes = this.colorPalettes.default;''
-            } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.setColorPalettes'); }
+            } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.setColorPalettes') }
             });
         }
     }
@@ -204,11 +204,11 @@ export class ParticleQualityManager {
     /**
      * 物理演算強化を設定'
      */''
-    setPhysicsEnhancements(enabled: boolean'): void { try {'
+    setPhysicsEnhancements(enabled: boolean'): void { try {
             this.optimizationSettings.physicsEnhancements = enabled;' }'
             console.log(`[ParticleQualityManager] 物理演算強化: ${enabled ? '有効' : '無効')`});''
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.setPhysicsEnhancements'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.setPhysicsEnhancements') }
             });
         }
     }
@@ -223,7 +223,7 @@ export class ParticleQualityManager {
     /**
      * 品質に基づいてパーティクル効果を決定
      */'
-    shouldUseAdvancedEffect(effectType: EffectType): boolean { try {''
+    shouldUseAdvancedEffect(effectType: EffectType): boolean { try {'
             const complexityLevel = this.getComplexityLevel(''';
                 'basic': 1,'';
                 'glow': 2,'';
@@ -233,8 +233,8 @@ export class ParticleQualityManager {
             };)
             )';
             return complexityLevel >= (effectComplexity[effectType] || 1);''
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.shouldUseAdvancedEffect'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.shouldUseAdvancedEffect') }
             });
             return false;
         }
@@ -243,9 +243,9 @@ export class ParticleQualityManager {
     /**
      * フレームレートに基づく動的品質調整
      */'
-    adjustQualityBasedOnPerformance(currentFPS: number, targetFPS: number = 60): boolean { try {''
+    adjustQualityBasedOnPerformance(currentFPS: number, targetFPS: number = 60): boolean { try {'
             if(currentFPS < targetFPS * 0.8') {'
-                // パフォーマンスが低下している場合、品質を下げる''
+                // パフォーマンスが低下している場合、品質を下げる
                 const currentLevels: QualityLevel[] = ['ultra', 'high', 'medium', 'low'];
                 const currentIndex = currentLevels.indexOf(this.currentQualityLevel);
                 
@@ -256,7 +256,7 @@ export class ParticleQualityManager {
                     console.log(`[ParticleQualityManager] パフォーマンス低下により品質を${newLevel)に調整`});
                     return true;'
                 }''
-            } else if (currentFPS > targetFPS * 1.1') { // パフォーマンスに余裕がある場合、品質を上げる''
+            } else if (currentFPS > targetFPS * 1.1') { // パフォーマンスに余裕がある場合、品質を上げる
                 const currentLevels: QualityLevel[] = ['low', 'medium', 'high', 'ultra'];
                 const currentIndex = currentLevels.indexOf(this.currentQualityLevel);
                 
@@ -270,10 +270,10 @@ export class ParticleQualityManager {
                     return true;
                 }
             }
-            ';
+            ';'
             return false;''
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
-                context: 'ParticleQualityManager.adjustQualityBasedOnPerformance'); }
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
+                context: 'ParticleQualityManager.adjustQualityBasedOnPerformance') }
             });
             return false;
         }
@@ -288,9 +288,9 @@ export class ParticleQualityManager {
                 sizeMultiplier: settings.sizeMultiplier || 1.0,
                 complexityLevel: settings.complexityLevel || 2 }
             },
-            ';
+            ';'
             console.log(`[ParticleQualityManager] カスタム品質設定「${name)」を登録しました`});''
-        } catch (error') { this.errorHandler.handleError(error as Error, {')'
+        } catch (error) { this.errorHandler.handleError(error as Error, {')'
                 context: 'ParticleQualityManager.registerCustomQualitySettings'),' }'
             }');
         }'

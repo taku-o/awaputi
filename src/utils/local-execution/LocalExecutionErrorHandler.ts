@@ -26,15 +26,15 @@ interface ErrorPattern { [key: string]: RegExp[],
     }
 }
 
-interface ErrorAnalysis { category: string,'
+interface ErrorAnalysis { category: string,
     message: string,'';
     severity: 'low' | 'medium' | 'high',
-    recoverable: boolean; }
+    recoverable: boolean }
 }
 
 interface BrowserInfo { name: string,
     version: number,
-    isSupported: boolean; }
+    isSupported: boolean }
 }
 
 interface CompatibilityInfo { browser: BrowserInfo,
@@ -50,46 +50,46 @@ interface CompatibilityErrorInfo { category: string,
     browserInfo: BrowserInfo,
     supportInfo: Record<string, any>;
     userMessage: string,
-    fallbackAvailable: boolean; }
+    fallbackAvailable: boolean }
 }
 
 interface SecurityErrorInfo { category: string,
     policy: string,
     userMessage: string,
-    canOptimize: boolean; }
+    canOptimize: boolean }
 }
 
 interface FallbackContent { title: string,
     message: string,
-    action: string; }
+    action: string }
 }
 
 interface DebugInfo { isInitialized: boolean,
     config: ErrorHandlerConfig,
     errorCategories: Record<string, string>;
-    handledGuidanceTypes: string[]; }
+    handledGuidanceTypes: string[] }
 }
-';
+';'
 interface ErrorCategory { name: string,''
     severity: 'LOW' | 'MEDIUM' | 'HIGH',
     recoverable: boolean,
-    userNotification: boolean; }
+    userNotification: boolean }
 }
 
 interface UserMessage { title: string,
     message: string,
     action: string,
-    showTechnicalDetails: boolean; }
+    showTechnicalDetails: boolean }
 }
 
-interface LocalExecutionConfig { errorCategories: Record<string, ErrorCategory>; }
+interface LocalExecutionConfig { errorCategories: Record<string, ErrorCategory> }
 }
 
-interface MessageConfig { userMessages: Record<string, UserMessage>; }
+interface MessageConfig { userMessages: Record<string, UserMessage> }
 }
 
 // Window extensions for fallback functionality
-declare global { interface Window {'
+declare global { interface Window {
         FaviconGenerator?: {''
             generateMissingFavicons(''';
         CORS: 'cors','';
@@ -104,28 +104,28 @@ declare global { interface Window {'
      */
     static readonly ERROR_PATTERNS: ErrorPattern = { [this.ERROR_CATEGORIES.CORS]: [/cross.origin/i,
             /cors/i,
-            /not allowed by access-control-allow-origin/i,];
+            /not allowed by access-control-allow-origin/i];
             /blocked by cors policy/i];
         ],
         [this.ERROR_CATEGORIES.MODULE_LOADING]: [/failed to load module/i,
             /cannot import.*module/i,
             /module not found/i,
-            /import.*is not defined/i,];
+            /import.*is not defined/i];
             /es6.*module/i];
         ],
         [this.ERROR_CATEGORIES.RESOURCE_LOADING]: [/failed to load resource/i,
             /404.*not found/i,
-            /net::err_file_not_found/i,];
+            /net::err_file_not_found/i];
             /favicon.*404/i];
         ],
         [this.ERROR_CATEGORIES.BROWSER_COMPATIBILITY]: [/not supported/i,
             /is not a function/i,
-            /unsupported.*api/i,];
+            /unsupported.*api/i];
             /canvas.*not supported/i];
         ],
         [this.ERROR_CATEGORIES.SECURITY_POLICY]: [/content security policy/i,
             /csp/i,
-            /x-frame-options/i,];
+            /x-frame-options/i];
             /refused to.*frame/i];
         ] }
     };
@@ -171,9 +171,9 @@ declare global { interface Window {'
         }
 
         if(this.config.enableGlobalHandling) {
-';
+';'
             '';
-            this._setupGlobalErrorHandlers('');
+            this._setupGlobalErrorHandlers();
         }'
         this._log('LocalExecutionErrorHandler initialized with main ErrorHandler integration'); }
     }
@@ -186,7 +186,7 @@ declare global { interface Window {'
 '';
         const errorInfo = this._analyzeError(error');
         ';
-        // 既存のErrorHandlerシステムにも報告''
+        // 既存のErrorHandlerシステムにも報告
         this._reportToMainErrorHandler(error, 'LOCAL_EXECUTION_RESOURCE', { )
             resource);
             category: errorInfo.category,);
@@ -213,7 +213,7 @@ declare global { interface Window {'
     }
 
     /**
-     * ブラウザ互換性エラーを処理'
+     * ブラウザ互換性エラーを処理
      */''
     static handleCompatibilityError(error: Error | string, feature: string'): CompatibilityErrorInfo { ''
         this._log('Handling compatibility error:', error, feature);
@@ -225,13 +225,13 @@ declare global { interface Window {'
             category: this.ERROR_CATEGORIES.BROWSER_COMPATIBILITY,
             feature,
             browserInfo: compatibility.browser, }
-            supportInfo: compatibility[feature] || {}'
+            supportInfo: compatibility[feature] || {}
             userMessage: this._generateCompatibilityMessage(feature),'';
             fallbackAvailable: this._checkFallbackAvailability(feature, compatibility');
         };
 ';
-        // 既存のErrorHandlerシステムにも報告''
-        this._reportToMainErrorHandler(error, 'LOCAL_EXECUTION_COMPATIBILITY', { feature, )
+        // 既存のErrorHandlerシステムにも報告
+        this._reportToMainErrorHandler(error, 'LOCAL_EXECUTION_COMPATIBILITY', { feature )
             browserInfo: errorInfo.browserInfo);
             fallbackAvailable: errorInfo.fallbackAvailable,);
             localExecution: true),
@@ -253,9 +253,9 @@ declare global { interface Window {'
     /**
      * ブラウザ互換性情報を取得
      */
-    private static _getBrowserCompatibilityInfo(): CompatibilityInfo { try {'
+    private static _getBrowserCompatibilityInfo(): CompatibilityInfo { try {
             return BrowserCompatibilityManager.getComprehensiveSupport();' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this._log('Failed to get browser compatibility info:', error');'
             return {' }'
                 browser: { name: 'unknown', version: 0, isSupported: false },
@@ -276,10 +276,10 @@ declare global { interface Window {'
             category: this.ERROR_CATEGORIES.SECURITY_POLICY,
             policy,';
             userMessage: this._generateSecurityMessage(policy,')';
-            canOptimize: this._canOptimizePolicy(policy'); }
+            canOptimize: this._canOptimizePolicy(policy') }
         };
 ';
-        // 既存のErrorHandlerシステムにも報告''
+        // 既存のErrorHandlerシステムにも報告
         this._reportToMainErrorHandler(error, 'LOCAL_EXECUTION_SECURITY', { policy)
             canOptimize: errorInfo.canOptimize,);
             localExecution: true),
@@ -297,7 +297,7 @@ declare global { interface Window {'
     }
 
     /**
-     * フォールバックコンテンツを表示'
+     * フォールバックコンテンツを表示
      */''
     static showFallbackContent(errorType: string'): void { ''
         this._log('Showing fallback content for error type:', errorType);
@@ -332,7 +332,7 @@ declare global { interface Window {'
                 }
             }
         }
-';
+';'
         return { ''
             category: 'unknown',';
             message: errorMessage,'';
@@ -344,15 +344,15 @@ declare global { interface Window {'
     /**
      * グローバルエラーハンドラーを設定'
      */''
-    private static _setupGlobalErrorHandlers('')';
+    private static _setupGlobalErrorHandlers()';
         window.addEventListener('error', (event: ErrorEvent) => { this._handleGlobalError(event);' }'
         }');
 ';
-        // Promise 拒否''
+        // Promise 拒否
         window.addEventListener('unhandledrejection', (event: PromiseRejectionEvent) => { this._handleUnhandledRejection(event);' }'
         }');
 ';
-        // リソース読み込みエラー''
+        // リソース読み込みエラー
         document.addEventListener('error', (event: Event) => {  if (event.target !== window) { }
                 this._handleResourceLoadError(event); }'
             }''
@@ -384,7 +384,7 @@ declare global { interface Window {'
     private static _handleResourceLoadingError(error: Error | string, resource: string'): void { ''
         this._log('Resource loading error:', error, resource');
 ';
-        // ファビコンエラーは静かに処理''
+        // ファビコンエラーは静かに処理
         if(resource && resource.includes('favicon') {
             this._handleFaviconError(resource);
         }
@@ -397,19 +397,19 @@ declare global { interface Window {'
     }
 
     /**
-     * 汎用リソースエラーを処理'
+     * 汎用リソースエラーを処理
      */''
     private static _handleGenericResourceError(error: Error | string, resource: string'): void { ''
         this._log('Generic resource error:', error, resource);
         ';
-        // 詳細なログ記録''
+        // 詳細なログ記録
         if(this.config.enableDebugLogging') {'
             '';
             console.error('LocalExecutionErrorHandler: Resource error details', {)
                 error,);
                 resource);
-                timestamp: new Date().toISOString(,);
-                userAgent: navigator.userAgent);
+                timestamp: new Date().toISOString();
+                userAgent: navigator.userAgent)
         }
                 location: window.location.href) }
             }),
@@ -423,7 +423,7 @@ declare global { interface Window {'
         const errorInfo = this._analyzeError(error');'
 '';
         if(errorInfo.category !== 'unknown'') {'
-            ';
+            ';'
         }'
             this.handleResourceError(error, 'global'); }
         }
@@ -483,10 +483,10 @@ declare global { interface Window {'
             // FaviconGenerator が利用可能な場合は自動生成を試行
             if(window.FaviconGenerator) {
                 
-            }'
+            }
                 window.FaviconGenerator.generateMissingFavicons();' }'
-            } catch (error') { // 生成に失敗しても静かに無視''
-            this._log('Favicon generation fallback failed:', error); }
+            } catch (error) { // 生成に失敗しても静かに無視
+            this._log('Favicon generation fallback failed:', error) }
         }
     }
 
@@ -500,14 +500,14 @@ declare global { interface Window {'
             return; }
         }
 ';
-        // CSS ファイルの場合''
+        // CSS ファイルの場合
         if(resource.includes('.css') {'
-            ';
+            ';'
         }'
             this._fallbackToInlineCSS(resource'); }
         }
         ';
-        // JavaScript ファイルの場合''
+        // JavaScript ファイルの場合
         else if(resource.includes('.js') { this._fallbackToAlternativeJS(resource); }
         }
         
@@ -517,7 +517,7 @@ declare global { interface Window {'
     }
 
     /**
-     * 互換性メッセージを生成'
+     * 互換性メッセージを生成
      */''
     private static _generateCompatibilityMessage(feature: string'): string { const messages: Record<string, string> = {''
             canvas: 'Canvas API is not supported. Some visual features may not work.','';
@@ -560,7 +560,7 @@ declare global { interface Window {'
      * エラーが復旧可能かチェック
      */
     private static _isRecoverable(category: string): boolean { const recoverableCategories = [this.ERROR_CATEGORIES.RESOURCE_LOADING,
-            this.ERROR_CATEGORIES.SECURITY_POLICY,];
+            this.ERROR_CATEGORIES.SECURITY_POLICY];
             this.ERROR_CATEGORIES.BROWSER_COMPATIBILITY];
         ];
 
@@ -572,7 +572,7 @@ declare global { interface Window {'
      */
     private static _isCriticalResource(resource: string): boolean { const criticalPatterns = [/main\.(js|css)$/,
             /game\.(js|css)$/,
-            /core\.(js|css)$/,];
+            /core\.(js|css)$/];
             /app\.(js|css)$/];
         ];
 
@@ -588,7 +588,7 @@ declare global { interface Window {'
     /**
      * ガイダンスが既に表示されたかチェック
      */'
-    private static _isGuidanceShown(type: string): boolean { try {' }'
+    private static _isGuidanceShown(type: string): boolean { try { }'
             return sessionStorage.getItem(`guidance_shown_${type)`'}) === 'true';
         } catch { return false; }
         }
@@ -597,14 +597,14 @@ declare global { interface Window {'
     /**
      * ガイダンス表示状態をマーク'
      */''
-    private static _markGuidanceShown(type: string'): void { try {' }'
+    private static _markGuidanceShown(type: string'): void { try { }'
             sessionStorage.setItem(`guidance_shown_${type}`, 'true');
         } catch { // sessionStorage が使用できない場合は無視 }
         }
     }
 
     /**
-     * フォールバックコンテンツを生成'
+     * フォールバックコンテンツを生成
      */''
     private static _generateFallbackContent(errorType: string'): FallbackContent | null { const fallbacks: Record<string, FallbackContent> = {'
             module_loading: {''
@@ -646,9 +646,9 @@ declare global { interface Window {'
     /**
      * 処理済みガイダンスタイプを取得'
      */''
-    private static _getHandledGuidanceTypes('')';
+    private static _getHandledGuidanceTypes()';
             for(const type of ['cors', 'module', 'resource', 'security']) {'
-                ';
+                ';'
             }'
                 if (sessionStorage.getItem(`guidance_shown_${type)`') === 'true') { }
                     types.push(type});
@@ -673,12 +673,12 @@ declare global { interface Window {'
 
             // ローカル実行特有のエラーカテゴリを追加
             this._registerLocalExecutionErrorCategories();
-';
-            // ローカル実行特有のユーザーフレンドリーメッセージを追加''
-            this._registerLocalExecutionUserMessages('')';
+;
+            // ローカル実行特有のユーザーフレンドリーメッセージを追加
+            this._registerLocalExecutionUserMessages()';
             this._log('Successfully integrated with main ErrorHandler system');'
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('LocalExecutionErrorHandler: Failed to integrate with main ErrorHandler:', error);
             // 統合に失敗しても独立して動作 }
         }
@@ -688,7 +688,7 @@ declare global { interface Window {'
      * メインのErrorHandlerにエラーを報告
      */
     private static _reportToMainErrorHandler(;
-        error: Error | string, );
+        error: Error | string );
         context: string);
         metadata: Record<string, any> = { ): void {
         if(!this.config.enableMainErrorHandlerIntegration) {
@@ -696,12 +696,12 @@ declare global { interface Window {'
         }
             return; }
         }
-';
-        try { ''
+';'
+        try {'
             if(this.errorHandlerInstance') {
                 // メインのErrorHandlerに報告
                 this.errorHandlerInstance.handleError(error, context, {)
-                    ...metadata)';
+                    ...metadata);
                     localExecution: true,')';
                     handlerType: 'LocalExecutionErrorHandler'),
             }'
@@ -709,12 +709,12 @@ declare global { interface Window {'
                 }');
             } else {  // StaticメソッドでErrorHandlerを呼び出し
                 ErrorHandler.handleError(error, context, {)
-                    ...metadata)';
+                    ...metadata);
                     localExecution: true,')';
                     handlerType: 'LocalExecutionErrorHandler'), }
                     timestamp: new Date().toISOString(); }'
                 });''
-            } catch (integrationError') { ''
+            } catch (integrationError) { ''
             this._log('Failed to report to main ErrorHandler:', integrationError);
             // メインのErrorHandlerへの報告に失敗しても処理を継続 }
         }
@@ -722,14 +722,14 @@ declare global { interface Window {'
 
     /**
      * ローカル実行特有のエラーカテゴリを登録
-     */'
+     */
     private static _registerLocalExecutionErrorCategories(): void { ''
         if (!this.errorHandlerInstance') return;
 
         try {
             // ErrorHandlerの設定を拡張
             const localExecutionConfig: LocalExecutionConfig = {
-                errorCategories: {'
+                errorCategories: {
                     LOCAL_EXECUTION_CORS: {''
                         name: 'Local Execution CORS Error','';
                         severity: 'HIGH',
@@ -758,10 +758,10 @@ declare global { interface Window {'
             },
 
             // メインのErrorHandlerに設定を適用
-            this.errorHandlerInstance.configure({ localExecution: localExecutionConfig ),'
+            this.errorHandlerInstance.configure({ localExecution: localExecutionConfig ),
 ' }'
-        } catch (error') { ''
-            this._log('Failed to register local execution error categories:', error); }
+        } catch (error) { ''
+            this._log('Failed to register local execution error categories:', error) }
         }
     }
 
@@ -774,7 +774,7 @@ declare global { interface Window {'
         try {
             // ErrorHandlerのユーザーメッセージを拡張
             const messageConfig: MessageConfig = {
-                userMessages: {'
+                userMessages: {
                     LOCAL_EXECUTION_CORS: {''
                         title: 'Local File Restriction','';
                         message: 'This application needs to be run from a development server for full functionality.';''
@@ -803,10 +803,10 @@ declare global { interface Window {'
             },
 
             // メインのErrorHandlerに設定を適用
-            this.errorHandlerInstance.configure({ messages: messageConfig ),'
+            this.errorHandlerInstance.configure({ messages: messageConfig ),
 ' }'
-        } catch (error') { ''
-            this._log('Failed to register local execution user messages:', error); }
+        } catch (error) { ''
+            this._log('Failed to register local execution user messages:', error) }
         }
     }
 
@@ -824,7 +824,7 @@ declare global { interface Window {'
     }
 
     /**
-     * ポリシー最適化が可能かチェック'
+     * ポリシー最適化が可能かチェック
      */''
     private static _canOptimizePolicy(policy: string'): boolean { const optimizablePolices = [''
             'X-Frame-Options',']';
@@ -839,18 +839,18 @@ declare global { interface Window {'
      */''
     private static _optimizeSecurityPolicy(policy: string'): void { ''
         this._log('Optimizing security policy:', policy');
-        ';
-        try {''
+        ';'
+        try {'
             if(policy === 'X-Frame-Options'') {'
-                // X-Frame-Optionsメタタグを削除または変更''
+                // X-Frame-Optionsメタタグを削除または変更
                 const metaTag = document.querySelector('meta[http-equiv="X-Frame-Options"]');'
                 if (metaTag) {''
-                    metaTag.remove('');
+                    metaTag.remove();
             }'
                     this._log('Removed X-Frame-Options meta tag for local execution'); }'
                 }''
-            } catch (error') { ''
-            this._log('Failed to optimize security policy:', error); }
+            } catch (error) { ''
+            this._log('Failed to optimize security policy:', error) }
         }
     }
 
@@ -859,16 +859,16 @@ declare global { interface Window {'
      */''
     private static _enableFeatureFallback(feature: string, compatibility: CompatibilityInfo'): void { ''
         this._log('Enabling feature fallback for:', feature');
-';
-        try {''
+';'
+        try {'
             if(feature === 'canvas' && compatibility.canvas && compatibility.canvas.fallbackMethod) {'
                 '';
-                BrowserCompatibilityManager.implementCanvasFallback('')';
+                BrowserCompatibilityManager.implementCanvasFallback()';
             if (feature === 'localStorage' && compatibility.localStorage && compatibility.localStorage.fallbackMethod) {
             }'
                 BrowserCompatibilityManager.implementLocalStorageFallback();' }'
-            } catch (error') { ''
-            this._log('Failed to enable feature fallback:', error); }
+            } catch (error) { ''
+            this._log('Failed to enable feature fallback:', error) }
         }
     }
 
@@ -876,20 +876,20 @@ declare global { interface Window {'
      * 互換性エラー表示
      */
     private static _showCompatibilityError(errorInfo: CompatibilityErrorInfo): void { DeveloperGuidanceSystem.showBrowserCompatibilityGuidance({
-            feature: errorInfo.feature,);
+            feature: errorInfo.feature);
             browserInfo: errorInfo.browserInfo);
             message: errorInfo.userMessage,);
-            fallbackAvailable: errorInfo.fallbackAvailable); }
+            fallbackAvailable: errorInfo.fallbackAvailable) }
     }
 
     /**
      * セキュリティエラーガイダンス表示'
      */''
     private static _showSecurityErrorGuidance(errorInfo: SecurityErrorInfo'): void { DeveloperGuidanceSystem.showDeveloperServerGuidance({''
-            title: 'Security Policy Adjustment',);
+            title: 'Security Policy Adjustment');
             message: errorInfo.userMessage);
             showTroubleshooting: false,);
-            autoHide: true); }
+            autoHide: true) }
     }
 
     /**
@@ -899,7 +899,7 @@ declare global { interface Window {'
         if (!this._isGuidanceShown('resource')') {'
             DeveloperGuidanceSystem.showDeveloperServerGuidance({''
                 title: 'Critical Resource Loading Error', }
-                message: `Failed to load critical resource: ${resource}`,)
+                message: `Failed to load critical resource: ${resource}`)
                 showCommands: true)';
                 showTroubleshooting: true,')';
                 autoHide: false)'),';
@@ -911,7 +911,7 @@ declare global { interface Window {'
     /**
      * フォールバックコンテンツを表示'
      */''
-    private static _displayFallbackContent(content: FallbackContent'): void { // 簡易的なフォールバック表示''
+    private static _displayFallbackContent(content: FallbackContent'): void { // 簡易的なフォールバック表示
         const fallbackDiv = document.createElement('div'');''
         fallbackDiv.id = 'local-execution-fallback';'
         fallbackDiv.innerHTML = `'';
@@ -962,7 +962,7 @@ declare global { interface Window {'
     // ========== STUB METHODS FOR FALLBACK FUNCTIONALITY ==========
 
     /**
-     * インラインCSSフォールバック'
+     * インラインCSSフォールバック
      */''
     private static _fallbackToInlineCSS(resource: string'): void { ''
         this._log('CSS fallback not implemented:', resource);
@@ -970,7 +970,7 @@ declare global { interface Window {'
     }
 
     /**
-     * 代替JSフォールバック'
+     * 代替JSフォールバック
      */''
     private static _fallbackToAlternativeJS(resource: string'): void { ''
         this._log('JS fallback not implemented:', resource);
@@ -978,12 +978,12 @@ declare global { interface Window {'
     }
 
     /**
-     * プレースホルダー画像フォールバック'
+     * プレースホルダー画像フォールバック
      */''
     private static _fallbackToPlaceholderImage(resource: string'): void { ''
         this._log('Image fallback not implemented:', resource');
         // 実装は必要に応じて追加 }
     }
-}'
+}
 '';
 export default LocalExecutionErrorHandler;

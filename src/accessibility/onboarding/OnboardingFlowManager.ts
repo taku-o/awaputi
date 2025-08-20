@@ -9,7 +9,7 @@ interface FlowManagerConfig { enableAdaptiveFlow: boolean,
     allowStepSkipping: boolean,
     maxStepsPerSession: number,
     adaptiveContentDelivery: boolean,
-    personalizedRecommendations: boolean; }
+    personalizedRecommendations: boolean }
 }
 
 interface FlowState { currentStep: number,
@@ -19,7 +19,7 @@ interface FlowState { currentStep: number,
     sessionStartTime: number | null,
     sessionId: string | null,
     userProfile: UserProfile | null,
-    adaptivePath: number[]; }
+    adaptivePath: number[] }
 }
 
 interface OnboardingStep { id: string,
@@ -28,19 +28,19 @@ interface OnboardingStep { id: string,
     required: boolean,
     estimatedTime: number,
     prerequisites: string[],
-    adaptiveConditions: string[]; }
+    adaptiveConditions: string[] }
 }
 
 interface NavigationHistory { from: number,
     to: number,';
     timestamp: number,'';
-    reason: 'navigation' | 'back_navigation' | 'jump_navigation'; }
+    reason: 'navigation' | 'back_navigation' | 'jump_navigation' }
 }
 
 interface PerformanceMetrics { stepTransitionTimes: number[],
     validationTimes: number[],
     adaptationTimes: number[],
-    totalFlowTime: number; }
+    totalFlowTime: number }
 }
 
 interface UserProfile { disabilities?: string[];
@@ -57,12 +57,12 @@ interface UserProfile { disabilities?: string[];
         [key: string]: any, }
     };
 }
-';
+';'
 interface ContentAdaptations { ''
     contentComplexity: 'simplified' | 'standard' | 'advanced',
     estimatedPace: number,
     recommendedPath: number[],
-    skipConditions: Map<number, boolean>; }
+    skipConditions: Map<number, boolean> }
 }
 
 interface FlowResult { success: boolean,
@@ -72,7 +72,7 @@ interface FlowResult { success: boolean,
     sessionId?: string | null;
     performance?: {
         flowTime: number,
-        stepsCompleted: number; }
+        stepsCompleted: number }
     };
     error?: string;
 }
@@ -96,7 +96,7 @@ interface FlowProgress { currentStepIndex: number,
     totalSteps: number,
     completedCount: number,
     sessionTime: number,
-    estimatedTimeRemaining: number; }
+    estimatedTimeRemaining: number }
 }
 
 interface FlowAnalytics { sessionId: string | null,
@@ -108,7 +108,7 @@ interface FlowAnalytics { sessionId: string | null,
     averageTransitionTime: number,
     navigationHistory: NavigationHistory[],
     performance: PerformanceMetrics,
-    adaptivePath: number[]; }
+    adaptivePath: number[] }
 }
 
 type BranchingRule = (profile: UserProfile) => boolean;
@@ -145,12 +145,12 @@ export class OnboardingFlowManager {
             adaptivePath: [] }
         },
 
-        // Step definitions and flow configuration'
+        // Step definitions and flow configuration
         this.steps = [{ ''
                 id: 'welcome','';
                 title: 'アクセシビリティ設定へようこそ','';
                 type: 'intro',
-                required: true,];
+                required: true];
                 estimatedTime: 30,];
                 prerequisites: [],
                 adaptiveConditions: [] }
@@ -236,7 +236,7 @@ export class OnboardingFlowManager {
 
     /**
      * Initialize the flow manager
-     */'
+     */
     initialize(userProfile: UserProfile | null = null): boolean { ''
         if (this.initialized') return true;'
 '';
@@ -251,12 +251,12 @@ export class OnboardingFlowManager {
         this.setupBranchingRules();
 
         // Generate adaptive path based on user profile
-        if(this.config.enableAdaptiveFlow && userProfile) {'
-            ';
+        if(this.config.enableAdaptiveFlow && userProfile) {
+            ';'
         }'
             this.generateAdaptivePath(userProfile'); }
         }
-';
+';'
         this.initialized = true;''
         console.log('OnboardingFlowManager: Initialized with adaptive flow enabled'),
         return true;
@@ -267,7 +267,7 @@ export class OnboardingFlowManager {
      */'
     async manageOnboardingFlow(startStep: number = 0): Promise<FlowResult> { ''
         if(!this.initialized') {'
-            ';
+            ';'
         }'
             throw new Error('OnboardingFlowManager must be initialized first'); }
         }
@@ -307,9 +307,9 @@ export class OnboardingFlowManager {
                     flowTime, };
                     stepsCompleted: this.flowState.completedSteps.size }
                 })
-            })'
+            })
 ')';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('OnboardingFlowManager: Flow management error:', error);
             return { success: false,
                 error: (error as Error).message, };
@@ -325,7 +325,7 @@ export class OnboardingFlowManager {
         
         try {
             // Validate current step completion
-            const isCurrentStepValid = await this.validateStepCompletion(this.flowState.currentStep);'
+            const isCurrentStepValid = await this.validateStepCompletion(this.flowState.currentStep);
             '';
             if (!isCurrentStepValid && this.getCurrentStep()? .required') {
                 return { : undefined'
@@ -353,7 +353,7 @@ export class OnboardingFlowManager {
                 };
             }
 
-            // Update navigation history'
+            // Update navigation history
             this.navigationHistory.push({ from: this.flowState.currentStep,')'
                 to: nextStep'),';
                 timestamp: Date.now(,')';
@@ -377,11 +377,11 @@ export class OnboardingFlowManager {
             return { success: true,
                 previousStep,
                 currentStep: nextStep, };
-                stepInfo: this.getCurrentStep(,) }
+                stepInfo: this.getCurrentStep() }
                 estimatedTimeRemaining: this.calculateEstimatedTimeRemaining(}),
-            };'
+            };
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('OnboardingFlowManager: Navigation error:', error);
             return { success: false,
                 error: (error as Error).message, };
@@ -406,7 +406,7 @@ export class OnboardingFlowManager {
             const previousStep = this.findPreviousStep();
 
             // Update navigation history
-            this.navigationHistory.push({)'
+            this.navigationHistory.push({)
                 from: this.flowState.currentStep,')';
                 to: previousStep'),';
                 timestamp: Date.now(,')';
@@ -426,9 +426,9 @@ export class OnboardingFlowManager {
                 previousStep: currentStep, };
                 currentStep: previousStep, }
                 stepInfo: this.getCurrentStep(}),
-            };'
+            };
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('OnboardingFlowManager: Back navigation error:', error);
             return { success: false,
                 error: (error as Error).message, };
@@ -452,8 +452,8 @@ export class OnboardingFlowManager {
 
             // Check basic step requirements
             let isValid = true;
-';
-            // Validate step-specific completion criteria''
+;
+            // Validate step-specific completion criteria
             switch(step.type') {'
                 '';
                 case 'intro':'';
@@ -486,9 +486,9 @@ export class OnboardingFlowManager {
             const endTime = performance.now();
             this.performance.validationTimes.push(endTime - startTime);
 
-            return isValid;'
+            return isValid;
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('OnboardingFlowManager: Step validation error:', error);
             return false; }
         }
@@ -509,10 +509,10 @@ export class OnboardingFlowManager {
             const userProfile = this.flowState.userProfile;
 
             // Analyze user needs and preferences
-            const adaptations: ContentAdaptations = { contentComplexity: this.determineContentComplexity(userProfile,)
+            const adaptations: ContentAdaptations = { contentComplexity: this.determineContentComplexity(userProfile)
                 estimatedPace: this.calculateEstimatedPace(userProfile);
-                recommendedPath: this.generateRecommendedPath(userProfile,);
-                skipConditions: this.determineSkipConditions(userProfile); }
+                recommendedPath: this.generateRecommendedPath(userProfile);
+                skipConditions: this.determineSkipConditions(userProfile) }
             };
 
             // Apply content adaptations to steps
@@ -522,14 +522,14 @@ export class OnboardingFlowManager {
             // Update adaptive path
             this.flowState.adaptivePath = adaptations.recommendedPath;
 
-            // Record performance metrics'
+            // Record performance metrics
             const endTime = performance.now();''
             this.performance.adaptationTimes.push(endTime - startTime');'
 '';
             console.log('Adaptive content delivery applied successfully');'
 '';
-        } catch (error') { ''
-            console.error('OnboardingFlowManager: Adaptive content error:', error); }
+        } catch (error) { ''
+            console.error('OnboardingFlowManager: Adaptive content error:', error) }
         }
     }
 
@@ -549,7 +549,7 @@ export class OnboardingFlowManager {
         return { currentStepIndex: this.flowState.currentStep,
             currentStep: currentStep,
             completedSteps: Array.from(this.flowState.completedSteps);
-            skippedSteps: Array.from(this.flowState.skippedSteps,);
+            skippedSteps: Array.from(this.flowState.skippedSteps);
             progress: totalSteps > 0 ? (completedCount / totalSteps) * 100 : 0,
             totalSteps,
             completedCount,
@@ -585,10 +585,10 @@ export class OnboardingFlowManager {
                 console.log(`Skipped step: ${currentStep.id)`});
             }
 
-            return navigationResult;'
+            return navigationResult;
 '';
-        } catch (error') { ''
-            console.error('OnboardingFlowManager: Skip step error:', error); }
+        } catch (error) { ''
+            console.error('OnboardingFlowManager: Skip step error:', error) }
             return { success: false, error: (error as Error).message }
         }
     }
@@ -603,7 +603,7 @@ export class OnboardingFlowManager {
 
         try { // Validate prerequisites
             const step = this.steps[stepIndex];
-            const prerequisitesMet = await this.validatePrerequisites(step.prerequisites);'
+            const prerequisitesMet = await this.validatePrerequisites(step.prerequisites);
 '';
             if(!prerequisitesMet') {'
                 return { success: false, '
@@ -613,7 +613,7 @@ export class OnboardingFlowManager {
                 },
             }
 
-            // Update navigation history'
+            // Update navigation history
             this.navigationHistory.push({ from: this.flowState.currentStep,')'
                 to: stepIndex'),';
                 timestamp: Date.now(,')';
@@ -630,9 +630,9 @@ export class OnboardingFlowManager {
                 previousStep, };
                 currentStep: stepIndex, }
                 stepInfo: this.getCurrentStep(}),
-            };'
+            };
 '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('OnboardingFlowManager: Jump to step error:', error);
             return { success: false, 
                 error: (error as Error).message, };
@@ -647,10 +647,10 @@ export class OnboardingFlowManager {
     resetFlow(): void { this.flowState = {
             currentStep: 0,
             completedSteps: new Set(,
-            skippedSteps: new Set(,);
+            skippedSteps: new Set();
             totalSteps: this.steps.length)';
             sessionStartTime: Date.now(),'';
-            sessionId: this.generateSessionId('')';
+            sessionId: this.generateSessionId()';
         console.log('Onboarding flow reset to beginning'), }
     }
 
@@ -680,9 +680,9 @@ export class OnboardingFlowManager {
     }
 
     private isValidStep(stepIndex: number): boolean { return stepIndex >= 0 && stepIndex < this.steps.length; }
-    }'
+    }
 '';
-    private setupBranchingRules('')';
+    private setupBranchingRules()';
         this.branchingRules.set('needsKeyboardSupport', (profile: UserProfile') => {  ''
             return profile? .disabilities?.includes('motor') ||  }'
                    profile?.preferences?.keyboardOnly === true;' }'
@@ -707,10 +707,10 @@ export class OnboardingFlowManager {
             nextStepRecommendation: await this.determineNextStep(, };
             adaptationsApplied: this.config.adaptiveContentDelivery })
         })
-    }'
+    }
 '';
-    private async determineNextStep('')';
-        // Check if we've reached the end)
+    private async determineNextStep()';
+        // Check if weve reached the end)
         if (currentIndex >= this.steps.length - 1) { return null; }
         }
 
@@ -832,7 +832,7 @@ export class OnboardingFlowManager {
         });
     }
 ';
-    // Adaptive content methods''
+    // Adaptive content methods
     private determineContentComplexity(userProfile: UserProfile'): 'simplified' | 'standard' | 'advanced' { ''
         const experience = userProfile? .experience || 'beginner'; : undefined''
         return experience === 'expert' ? 'advanced' : '';
@@ -884,13 +884,13 @@ export class OnboardingFlowManager {
 
         return skipConditions;
     }
-';
+';'
     private async adaptStepContent(stepIndex: number, adaptations: ContentAdaptations): Promise<void> { const step = this.steps[stepIndex];''
         if (!step') return;
 ';
-        // Apply content complexity adjustments''
+        // Apply content complexity adjustments
         if(adaptations.contentComplexity === 'simplified') {'
-            ';
+            ';'
         }'
             step.estimatedTime = Math.floor(step.estimatedTime * 0.8');' }'
         } else if (adaptations.contentComplexity === 'advanced') { step.estimatedTime = Math.floor(step.estimatedTime * 1.2); }
@@ -926,9 +926,9 @@ export class OnboardingFlowManager {
     /**
      * Destroy and cleanup
      */
-    destroy(): void { this.navigationHistory = [];'
+    destroy(): void { this.navigationHistory = [];
         this.branchingRules.clear();''
-        this.conditionalLogic.clear('')';
+        this.conditionalLogic.clear()';
         console.log('OnboardingFlowManager: Destroyed'') }'
     }''
 }

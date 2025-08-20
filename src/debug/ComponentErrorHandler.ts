@@ -56,7 +56,7 @@ export class ComponentErrorHandler {
      */'
     static attemptRecovery(error: Error, component: string): { status: string; message: string } | null { ' }'
         console.warn(`[${component}] Attempting recovery from ${ error.name)`');
-        ';
+        ';'
         // 基本的な回復処理' }'
         if (error.name === 'NetworkError''}) { ' }'
             return { status: 'offline', message: 'Operating in offline mode' }
@@ -77,14 +77,14 @@ export class ComponentErrorHandler {
     static gracefulDegradation(component: string): any { ''
         console.warn(`[${component)] Providing fallback functionality`');
         
-        // コンポーネントタイプに応じたフォールバック処理'
+        // コンポーネントタイプに応じたフォールバック処理
         const fallbacks: FallbackMap = {' }'
             'MockDataGenerator': (}) => ({}'),''
-            'DebugInterface': () => ({ render: () => {} }'),''
+            'DebugInterface': () => ({ render: () => {}'),''
             'TestSupport': () => ({ execute: () => true }'),''
             'default': () => null;
         };
-        ';
+        ';'
         const fallbackKey = Object.keys(fallbacks).find(key => );''
             component.includes(key)') || 'default';'
         '';

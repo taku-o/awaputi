@@ -19,16 +19,16 @@ export interface TranslationFileData { meta?: TranslationMetadata;
 }
 
 export interface CachedTranslation { data: TranslationFileData,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface PreloadResult { loaded: string[],
-    failed: FailedLoad[];
+    failed: FailedLoad[]
     }
 }
 
 export interface FailedLoad { language: string,
-    error: Error;
+    error: Error
     }
 }
 
@@ -36,7 +36,7 @@ export interface LoaderStats { loadedLanguages: string[],
     translationFiles: string[],
     cache: CacheStats,
     baseURL: string,
-    pendingLoads: string[]; }
+    pendingLoads: string[] }
 }
 
 export interface CacheStats { entries: number,
@@ -59,12 +59,12 @@ export class TranslationLoader {
     private translationFiles: string[];
     constructor() {
 
-        this.loadedTranslations = new Map<string, FlattenedTranslations>();'
+        this.loadedTranslations = new Map<string, FlattenedTranslations>();
         this.loadingPromises = new Map<string, Promise<FlattenedTranslations>>();''
         this.cache = new Map<string, CachedTranslation>(');''
         this.baseURL = '/assets/i18n/';
         
-        // ロード対象ファイル'
+        // ロード対象ファイル
         this.translationFiles = ['';
             'common','';
             'menu', '';
@@ -99,7 +99,7 @@ export class TranslationLoader {
             } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {')'
                 operation: 'loadLanguage',);
-                language: language); }
+                language: language) }
             });
             return {};
         }
@@ -130,7 +130,7 @@ export class TranslationLoader {
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {')'
                 operation: 'preloadLanguages',);
-                languages: languages); }
+                languages: languages) }
             });
             return { loaded: [], 
                 failed: languages.map(lang => ({ )
@@ -156,7 +156,7 @@ export class TranslationLoader {
                         const translationData = data.translations || data;
         
         }
-                         }'
+                         }
                         // ファイルごとに適切にデータを格納' }'
                         // menu.jsonの場合: {"menu": {...}, "shortcuts": {...}}のように格納される
                         for(const [key, value] of Object.entries(translationData) { translations[key] = value; }
@@ -214,7 +214,7 @@ export class TranslationLoader {
             // キャッシュに保存
             this.cache.set(cacheKey, { )
                 data: data),
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             });
             
             return data;
@@ -255,7 +255,7 @@ export class TranslationLoader {
         const flattened: FlattenedTranslations = {}""
         for (const [category, translations] of Object.entries(categorizedTranslations)") { ""
             if(translations && typeof translations === 'object'') {'
-                // 各カテゴリのネストされた構造をフラット化'
+                // 各カテゴリのネストされた構造をフラット化
             }'
                 this._flattenNestedObject(translations, '', flattened); }
             }
@@ -290,12 +290,12 @@ export class TranslationLoader {
             }
             
             const data = await this._loadTranslationFile(language, category);
-            return data ? (data.translations || data) : {};'
+            return data ? (data.translations || data) : {};
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'TRANSLATION_LOADER_ERROR', {')'
                 operation: 'loadCategory');
                 language: language,);
-                category: category); }
+                category: category) }
             });
             return {};
         }
@@ -324,7 +324,7 @@ export class TranslationLoader {
      * キャッシュをクリア
      */'
     clearCache(): void { ''
-        this.cache.clear('')';
+        this.cache.clear()';
         console.log('Translation loader cache cleared'); }
     }
     
@@ -357,7 +357,7 @@ export class TranslationLoader {
     }
     
     /**
-     * ベース URLを設定'
+     * ベース URLを設定
      */''
     setBaseURL(url: string'): void { ''
         this.baseURL = url.endsWith('/'') ? url: url + '/' }
@@ -402,7 +402,7 @@ export class TranslationLoader {
      */
     getStats(): LoaderStats { const cacheStats: CacheStats = {
             entries: this.cache.size }
-            byLanguage: {}
+            byLanguage: {}'
         },'
         '';
         for (const key of this.cache.keys()') { ''
@@ -423,7 +423,7 @@ export class TranslationLoader {
      */''
     async checkFileExists(language: string, filename: string'): Promise<boolean> { try { }'
             const url = `${this.baseURL}${language}/${filename}.json`;''
-            const response = await fetch(url, { method: 'HEAD' ),;
+            const response = await fetch(url, { method: 'HEAD' ),
             return response.ok; }
         } catch (error) { return false; }
         }
@@ -498,7 +498,7 @@ export class TranslationLoader {
      */
     cleanup(): void { this.loadedTranslations.clear();'
         this.loadingPromises.clear();''
-        this.clearCache('')';
+        this.clearCache()';
         console.log('TranslationLoader cleaned up''); }'
     }''
 }

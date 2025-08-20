@@ -28,17 +28,17 @@ interface CoverageData { lines: {
     },
     statements: { total: number,
         covered: number,
-        percentage: number; }
+        percentage: number }
     };
 }
 
 export class TestDataVisualizer {
     private visualizer: any;
     constructor(visualizer: any) {
-        this.visualizer = visualizer; }
+        this.visualizer = visualizer }
     }'
 '';
-    public renderTestDetails('')';
+    public renderTestDetails()';
         const container = this.getContainer('test-details');
         if (!container) return;'
 '';
@@ -89,7 +89,7 @@ export class TestDataVisualizer {
 "";
         const container = this.getContainer('performance-metrics');''
         if (!container') return;
-';
+';'
         container.innerHTML = `'';
             <div class="performance-metrics">";
                 <h3>Performance Metrics</h3>"";
@@ -123,7 +123,7 @@ export class TestDataVisualizer {
         }"
             return '<div class="no-results">No test results available</div>'; }
         }
-';
+';'
         const rows = results.map(result => `')';
             <tr class="test-row ${result.status}">")""
                 <td class="test-name" title="${ result.name")">" }"
@@ -148,7 +148,7 @@ export class TestDataVisualizer {
                 </td>';
             </tr>'';
         `').join(''');
-';
+';'
         return `'';
             <table class="test-table">;
                 <thead>;
@@ -251,7 +251,7 @@ export class TestDataVisualizer {
         const searchFilter = document.getElementById('search-filter') as HTMLInputElement;'
 '';
         if(statusFilter') {'
-            ';
+            ';'
         }'
             statusFilter.addEventListener('change', () => {  }
                 this.filterTests(); }
@@ -259,7 +259,7 @@ export class TestDataVisualizer {
         }'
 '';
         if(searchFilter') {'
-            ';
+            ';'
         }'
             searchFilter.addEventListener('input', () => {  }
                 this.filterTests(); }
@@ -267,16 +267,16 @@ export class TestDataVisualizer {
         }
     }'
 '';
-    private filterTests('')';
+    private filterTests()';
         const statusFilter = (document.getElementById('status-filter') as HTMLSelectElement')? .value;''
-        const searchFilter = (document.getElementById('search-filter') as HTMLInputElement)?.value.toLowerCase('')';
+        const searchFilter = (document.getElementById('search-filter') as HTMLInputElement)?.value.toLowerCase()';
         const rows = document.querySelectorAll('.test-row');'
         rows.forEach(row => {  ')'
             const element = row as HTMLElement'); : undefined''
             const status = element.classList.contains('passed'') ? 'passed' : '';
                           element.classList.contains('failed'') ? 'failed' : 'skipped';''
             const name = element.querySelector('.test-name')? .textContent?.toLowerCase(') || '';
-';
+';'
             const matchesStatus = !statusFilter || status === statusFilter;''
             const matchesSearch = !searchFilter || name.includes(searchFilter');'
  : undefined' }'
@@ -287,7 +287,7 @@ export class TestDataVisualizer {
     private calculatePerformanceMetrics(results: TestResult[]): { totalDuration: number,
         averageDuration: number,
         slowestTest: TestResult | null,
-        fastestTest: TestResult | null; }
+        fastestTest: TestResult | null }
     } { if (!results.length) {
             return { totalDuration: 0,
                 averageDuration: 0,
@@ -326,7 +326,7 @@ export class TestDataVisualizer {
 
     private getContainer(id: string): HTMLElement | null { return document.getElementById(id); }
     }
-';
+';'
     private getStatusIcon(status: string): string { ''
         switch(status') {'
             '';
@@ -336,11 +336,11 @@ export class TestDataVisualizer {
         }'
             default: return '? '; }
         }
-    }
+    }'
  : undefined';
     private truncateText(text: string, maxLength: number): string { ''
         return text.length > maxLength ? text.substring(0, maxLength') + '...' : text; }
     }
-';
+';'
     private formatTimestamp(timestamp: number): string { ''
         return new Date(timestamp).toLocaleTimeString(') }

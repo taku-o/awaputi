@@ -4,12 +4,12 @@
 
 interface DebugInterface { debugPanel?: HTMLElement;
     accessibilityManager?: {
-        announceToScreenReader(message: string, priority: string): void; }
+        announceToScreenReader(message: string, priority: string): void }
     };
 }
 
 interface PerformanceMetric { timestamp: number,
-    value: number; }
+    value: number }
 }
 
 interface OperationCounts { panelSwitches: number,
@@ -21,7 +21,7 @@ interface OperationCounts { panelSwitches: number,
 interface PerformanceThresholds { renderTimeWarning: number,
     renderTimeCritical: number,
     memoryWarning: number,
-    memoryCritical: number; }
+    memoryCritical: number }
 }
 
 interface PerformanceMetrics { renderTime: PerformanceMetric[],
@@ -35,23 +35,23 @@ interface MetricStats { current: number,
     average: number,
     min: number,
     max: number,
-    count: number; }
+    count: number }
 }
 
 interface PerformanceStats { uptime: number,
     monitoringEnabled: boolean,
     operationCounts: OperationCounts,
-    currentMetrics: Record<string, MetricStats>; }
+    currentMetrics: Record<string, MetricStats> }
 }
 
 interface ImpactEvaluation { level: 'minimal' | 'low' | 'moderate' | 'high',
     score: number,
     issues: string[],
-    recommendations: string[]; }
+    recommendations: string[] }
 }
 
 interface OptimizationSuggestions { impact: ImpactEvaluation,
-    suggestions: string[]; }
+    suggestions: string[] }
 }
 
 interface PerformanceReport { timestamp: string,
@@ -59,7 +59,7 @@ interface PerformanceReport { timestamp: string,
     performance: PerformanceStats,
     impact: ImpactEvaluation,
     suggestions: string[],
-    thresholds: PerformanceThresholds;
+    thresholds: PerformanceThresholds
     }
 }
 
@@ -110,9 +110,9 @@ export class DebugPerformanceMonitor {
      */
     startMonitoring(): void { if (this.monitoringEnabled) return;
         
-        this.monitoringEnabled = true;'
+        this.monitoringEnabled = true;
         this.startPerformanceObserver();''
-        this.startMetricsCollection('')';
+        this.startMetricsCollection()';
         console.log('Debug performance monitoring started'); }
     }
 
@@ -120,9 +120,9 @@ export class DebugPerformanceMonitor {
      * 監視を停止
      */
     stopMonitoring(): void { if (!this.monitoringEnabled) return;
-        ';
+        ';'
         this.monitoringEnabled = false;''
-        this.stopPerformanceObserver('')';
+        this.stopPerformanceObserver()';
         console.log('Debug performance monitoring stopped'); }
     }
 
@@ -138,12 +138,12 @@ export class DebugPerformanceMonitor {
                 }
             };
             
-            // 監視する性能測定タイプ'
+            // 監視する性能測定タイプ
             this.performanceObserver.observe({ ')'
-                entryTypes: ['measure', 'navigation', 'paint'] ); }'
+                entryTypes: ['measure', 'navigation', 'paint'] ) }'
             };''
-        } catch (error') { ''
-            console.warn('Performance Observer not supported or failed to start:', error); }
+        } catch (error) { ''
+            console.warn('Performance Observer not supported or failed to start:', error) }
         }
     }
 
@@ -163,7 +163,7 @@ export class DebugPerformanceMonitor {
         if (entry.name.startsWith('debug-')') {''
             this.addMetric('operationTime', entry.duration);
             ';
-            // 閾値チェック''
+            // 閾値チェック
             if (entry.duration > this.thresholds.renderTimeCritical') {' }'
                 this.reportPerformanceIssue('critical', `Slow debug operation: ${entry.name) took ${entry.duration.toFixed(2})}ms`);''
             } else if (entry.duration > this.thresholds.renderTimeWarning') { ' }'
@@ -198,12 +198,12 @@ export class DebugPerformanceMonitor {
     /**
      * 現在のメトリクスを収集
      */
-    private collectCurrentMetrics(): void { // メモリ使用量を測定'
+    private collectCurrentMetrics(): void { // メモリ使用量を測定
         if ((performance as any).memory) {''
             const memoryMB = (performance as any').memory.usedJSHeapSize / 1024 / 1024;''
             this.addMetric('memoryUsage', memoryMB);
             ';
-            // メモリ使用量閾値チェック''
+            // メモリ使用量閾値チェック
             if (memoryMB > this.thresholds.memoryCritical') {' }'
                 this.reportPerformanceIssue('critical', `High memory usage: ${memoryMB.toFixed(1})}MB`);''
             } else if (memoryMB > this.thresholds.memoryWarning') { ' }'
@@ -211,7 +211,7 @@ export class DebugPerformanceMonitor {
             }
         }
         ';
-        // DOM要素数を測定（デバッグパネル内のみ）''
+        // DOM要素数を測定（デバッグパネル内のみ）
         if(this.debugInterface.debugPanel') {'
             '';
             const elementCount = this.debugInterface.debugPanel.querySelectorAll('*'').length;'
@@ -281,7 +281,7 @@ export class DebugPerformanceMonitor {
             }
                 return result.finally(() => this.endMeasure(name) as T; }
             } else {  this.endMeasure(name); }
-                return result; }'
+                return result; }
             } catch (error) { ''
             this.endMeasure(name');
             throw error; }
@@ -295,14 +295,14 @@ export class DebugPerformanceMonitor {
             level,
             message,';
             timestamp: Date.now(),'';
-            uptime: performance.now('')';
+            uptime: performance.now()';
         if (level === 'critical') { }
             console.error(`[Debug Performance Critical] ${message)`}),'
         } else { ' }'
             console.warn(`[Debug Performance Warning] ${message)`'});
         }
         ';
-        // アクセシビリティマネージャーがあればスクリーンリーダーに通知''
+        // アクセシビリティマネージャーがあればスクリーンリーダーに通知
         if(this.debugInterface.accessibilityManager && level === 'critical') {'
             this.debugInterface.accessibilityManager.announceToScreenReader()';
         }'
@@ -318,10 +318,9 @@ export class DebugPerformanceMonitor {
             uptime: performance.now() - this.startTime,
             monitoringEnabled: this.monitoringEnabled, }
             operationCounts: { ...this.metrics.operationCounts },
-            currentMetrics: {}
-        },
+            currentMetrics: {},
         ';
-        // 各メトリクスタイプの統計を計算''
+        // 各メトリクスタイプの統計を計算
         for (const [type, values] of Object.entries(this.metrics)') { ''
             if (type === 'operationCounts') continue;
             
@@ -362,7 +361,7 @@ export class DebugPerformanceMonitor {
             recommendations: [] })
         })
         // メモリ使用量評価)
-        if(stats.currentMetrics.memoryUsage) {'
+        if(stats.currentMetrics.memoryUsage) {
             const memUsage = stats.currentMetrics.memoryUsage.current;''
             if (memUsage > 100') {''
                 impact.level = 'high';
@@ -378,7 +377,7 @@ export class DebugPerformanceMonitor {
         }
         
         // DOM要素数評価
-        if(stats.currentMetrics.domElementCount) {'
+        if(stats.currentMetrics.domElementCount) {
             const elemCount = stats.currentMetrics.domElementCount.current;''
             if (elemCount > 1000') {''
                 impact.level = 'high';'
@@ -392,7 +391,7 @@ export class DebugPerformanceMonitor {
             }
         }
         
-        // 操作頻度評価'
+        // 操作頻度評価
         const totalOperations = Object.values(stats.operationCounts).reduce((a, b) => a + b, 0);''
         if(totalOperations > 1000') {'
             impact.score += 10;'
@@ -435,7 +434,7 @@ export class DebugPerformanceMonitor {
 
     /**
      * メトリクスをクリア
-     */'
+     */
     clearMetrics(): void { ''
         for(const key in this.metrics') {'
             '';

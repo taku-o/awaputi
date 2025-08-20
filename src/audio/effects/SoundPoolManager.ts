@@ -14,7 +14,7 @@ interface AudioSourceWrapper { source: AudioBufferSourceNode | null,
     gainNode: GainNode,
     isInUse: boolean,
     createdAt: number,
-    lastUsed: number; }
+    lastUsed: number }
 }
 
 /**
@@ -22,7 +22,7 @@ interface AudioSourceWrapper { source: AudioBufferSourceNode | null,
  */
 interface SoundVariation { buffer: AudioBuffer,
     playCount: number,
-    weight: number; }
+    weight: number }
 }
 
 /**
@@ -31,14 +31,14 @@ interface SoundVariation { buffer: AudioBuffer,
 interface SoundEntry { buffer: AudioBuffer,
     variations: Map<string, SoundVariation>;
     playCount: number,
-    lastPlayed: number; }
+    lastPlayed: number }
 }
 
 /**
  * カテゴリプールインターフェース
  */
 interface CategoryPool { sounds: Map<string, SoundEntry>;
-    maxSize: number; }
+    maxSize: number }
 }
 
 /**
@@ -48,7 +48,7 @@ interface PoolConfig { maxPoolSize: number,
     maxActiveSources: number,
     poolCleanupInterval: number,
     sourceReuseDelay: number,
-    preloadedSounds: number; }
+    preloadedSounds: number }
 }
 
 /**
@@ -71,7 +71,7 @@ interface PlaybackInstance { sourceWrapper: AudioSourceWrapper,''
     stop: (') => void,
     category: string,
     soundKey: string,
-    startTime: number; }
+    startTime: number }
 }
 
 /**
@@ -79,7 +79,7 @@ interface PlaybackInstance { sourceWrapper: AudioSourceWrapper,''
  */
 interface CategoryStatistics { soundCount: number,
     maxSize: number,
-    totalPlayCount: number; }
+    totalPlayCount: number }
 }
 
 /**
@@ -90,7 +90,7 @@ interface PoolStatistics { activeSources: number,
     poolSize: number,
     maxPoolSize: number,
     categories: Record<string, CategoryStatistics>;
-    availableSources: number; }
+    availableSources: number }
 }
 
 /**
@@ -107,7 +107,7 @@ interface ConfigurationManager { get(category: string): any }
 /**
  * ErrorHandler インターフェース（型定義用）
  */
-interface ErrorHandler { handleError(error: any, context: string): void; }
+interface ErrorHandler { handleError(error: any, context: string): void }
 }
 
 export class SoundPoolManager {
@@ -148,7 +148,7 @@ export class SoundPoolManager {
             maxPoolSize: 100,
             maxActiveSources: 32,
             poolCleanupInterval: 30000, // 30秒;
-            sourceReuseDelay: 100, // 100ms;
+            sourceReuseDelay: 100, // 100ms
     }
     }
             preloadedSounds: 50 }
@@ -173,11 +173,11 @@ export class SoundPoolManager {
     /**
      * プールシステムを初期化
      */
-    private initializePools(): void { try {'
-            this.createSourcePool();''
-            this.setupPoolCleanup('')';
+    private initializePools(): void { try {
+            this.createSourcePool();
+            this.setupPoolCleanup()';
             console.log('[SoundPoolManager] Sound pool manager initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.initializePools'); }
         }
     }
@@ -232,7 +232,7 @@ export class SoundPoolManager {
                 if(soundEntry) {
                     soundEntry.variations.set(variationKey, {)
                         buffer: variation);
-                        playCount: 0,);
+                        playCount: 0,)
                 }
                         weight: 1.0 // 再生重み); }
                     });
@@ -242,9 +242,9 @@ export class SoundPoolManager {
             // バリエーションカウンターを初期化
             this.variationCounters.set(soundKey, 0);
             
-            console.log(`[SoundPoolManager] Added sound to pool: ${category}/${soundKey} with ${variations.length) variations`});'
+            console.log(`[SoundPoolManager] Added sound to pool: ${category}/${soundKey} with ${variations.length) variations`});
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.addToPool'); }
         }
     }
@@ -273,9 +273,9 @@ export class SoundPoolManager {
             soundEntry.playCount++;
             soundEntry.lastPlayed = Date.now();
             
-            return selectedBuffer;'
+            return selectedBuffer;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.getFromPool');
             return null; }
         }
@@ -330,9 +330,9 @@ export class SoundPoolManager {
             
             this.activeSources.add(sourceWrapper);
             
-            return sourceWrapper;'
+            return sourceWrapper;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.getAudioSource');
             return null; }
         }
@@ -349,9 +349,9 @@ export class SoundPoolManager {
                 // 少し待ってから再利用可能にする
             }
                 setTimeout(() => {  }
-                    sourceWrapper.isInUse = false; }'
+                    sourceWrapper.isInUse = false; }
                 }, this.poolConfig.sourceReuseDelay);''
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.returnAudioSource'); }
         }
     }
@@ -372,8 +372,8 @@ export class SoundPoolManager {
     /**
      * サウンドを再生
      */
-    playSound(category: SoundCategory, soundKey: string, options: PlaybackOptions = {}): PlaybackInstance | null { try {'
-            // アクティブソース数をチェック''
+    playSound(category: SoundCategory, soundKey: string, options: PlaybackOptions = {}): PlaybackInstance | null { try {
+            // アクティブソース数をチェック
             if(this.activeSources.size >= this.poolConfig.maxActiveSources') {'
                 '';
                 console.warn('[SoundPoolManager] Maximum active sources reached');
@@ -413,9 +413,9 @@ export class SoundPoolManager {
                 category,
                 soundKey, };
                 startTime }
-            };'
+            };
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.playSound');
             return null; }
         }
@@ -453,7 +453,7 @@ export class SoundPoolManager {
             const currentGain = sourceWrapper.gainNode.gain.value;
             sourceWrapper.gainNode.gain.value = 0;
             sourceWrapper.gainNode.gain.linearRampToValueAtTime(;
-                currentGain, );
+                currentGain );
         }
                 this.audioContext.currentTime + options.fadeIn); }
         }
@@ -522,9 +522,9 @@ export class SoundPoolManager {
                 }
             }
             
-            console.log(`[SoundPoolManager] Pool cleanup completed. Active sources: ${this.activeSources.size}, Pool size: ${this.sourcePool.length)`});'
+            console.log(`[SoundPoolManager] Pool cleanup completed. Active sources: ${this.activeSources.size}, Pool size: ${this.sourcePool.length)`});
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.cleanupPool'); }
         }
     }
@@ -558,7 +558,7 @@ export class SoundPoolManager {
      */'
     updatePoolConfig(newConfig: Partial<PoolConfig>): void { ''
         Object.assign(this.poolConfig, newConfig');''
-        console.log('[SoundPoolManager] Pool configuration updated:', newConfig); }
+        console.log('[SoundPoolManager] Pool configuration updated:', newConfig) }
     }
     
     /**
@@ -597,12 +597,12 @@ export class SoundPoolManager {
             this.variationCounters.clear();
             
             // カテゴリプールをクリア
-            Object.keys(this.categoryPools).forEach(category => {  ); }'
+            Object.keys(this.categoryPools).forEach(category => {  ); }
                 this.categoryPools[category as SoundCategory].sounds.clear();' }'
             }');'
             '';
             console.log('[SoundPoolManager] Sound pool manager disposed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'SoundPoolManager.dispose''); }
         }'
     }''

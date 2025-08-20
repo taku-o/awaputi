@@ -7,7 +7,7 @@ import type { BubbleDragSystem as IBubbleDragSystem,
 
 interface DragHistoryEntry { x: number,
     y: number,
-    time: number; }
+    time: number }
 }
 
 /**
@@ -168,9 +168,9 @@ export class BubbleDragSystem implements IBubbleDragSystem { private draggedBubb
     
     /**
      * ドラッグ軌跡の描画（デバッグ用）
-     */'
+     */
     renderDragTrail(context: CanvasRenderingContext2D, renderQuality: number): void { if (renderQuality > 0.8 && this.isDragging && this.dragHistory.length > 1) {''
-            context.save('')';
+            context.save()';
             context.strokeStyle = 'rgba(255, 255, 0, 0.5')';
             context.lineWidth = 2;
             context.setLineDash([3, 3]);

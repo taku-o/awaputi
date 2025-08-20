@@ -8,17 +8,17 @@ interface PerformanceMetrics { fps: number,
     particleCount: number,
     effectCount: number,
     memoryUsage: number,
-    renderTime: number; }
+    renderTime: number }
 }
 
 interface QualityLevel { readonly LOW: 'low',''
     readonly MEDIUM: 'medium','';
     readonly HIGH: 'high','';
-    readonly ULTRA: 'ultra'; }
+    readonly ULTRA: 'ultra' }
 }'
 '';
 type QualityLevelType = 'low' | 'medium' | 'high' | 'ultra';
-';
+';'
 interface EffectType { ''
     readonly BUBBLE_NORMAL: 'bubble-normal','';
     readonly BUBBLE_RAINBOW: 'bubble-rainbow','';
@@ -29,7 +29,7 @@ interface EffectType { ''
     readonly COMBO_ENHANCED: 'combo-enhanced','';
     readonly COMBO_SPECTACULAR: 'combo-spectacular','';
     readonly SCREEN_FLASH: 'screen-flash','';
-    readonly SCREEN_SHAKE: 'screen-shake'; }
+    readonly SCREEN_SHAKE: 'screen-shake' }
 }'
 '';
 type EffectTypeString = 'bubble-normal' | 'bubble-rainbow' | 'bubble-electric' | 'bubble-spiky' | 'bubble-diamond' | 'combo-basic' | 'combo-enhanced' | 'combo-spectacular' | 'screen-flash' | 'screen-shake';'
@@ -49,17 +49,17 @@ interface GameEngine { canvas?: HTMLCanvasElement;
         createBubbleDestructionEffect(x: number, y: number, type: BubbleEffectType): void,
         createComboEffect(comboValue: number): void,
         setEnabled(enabled: boolean): void,
-        clearAllParticles(): void; }
+        clearAllParticles(): void }
     };
     enhancedEffectManager?: { getActiveEffectCount(): number | null;
         setEffectIntensity(intensity: number): void,
         screenFlash(duration: number, color: string): void,
         screenShake(duration: number, intensity: number): void,
         setEnabled(enabled: boolean): void,
-        clearAllEffects(): void; }
+        clearAllEffects(): void }
     };
     animationManager?: { setEnabled(enabled: boolean): void,
-        clearAllAnimations(): void; }
+        clearAllAnimations(): void }
     };
     seasonalEffectManager?: { setEnabled(enabled: boolean): void, }
     };
@@ -69,12 +69,12 @@ interface GameEngine { canvas?: HTMLCanvasElement;
 }
 
 interface BenchmarkResult { fps: number,
-    duration: number; }
+    duration: number }
 }
 
 interface BenchmarkResults { particleStress: BenchmarkResult,
     effectStress: BenchmarkResult,
-    animationStress: BenchmarkResult;
+    animationStress: BenchmarkResult
     }
 }
 
@@ -96,7 +96,7 @@ interface DebugUIElements { fpsValue: HTMLElement | null,
     toggleSeasonal: HTMLInputElement | null,
     clearEffects: HTMLButtonElement | null,
     benchmarkEffects: HTMLButtonElement | null,
-    closeDebug: HTMLButtonElement | null; }
+    closeDebug: HTMLButtonElement | null }
 }
 
 export class EffectDebugInterface {
@@ -125,7 +125,7 @@ export class EffectDebugInterface {
         this.bindEvents(); }
     }'
 '';
-    private createDebugPanel('')';
+    private createDebugPanel()';
         this.debugPanel = document.createElement('div'');''
         this.debugPanel.id = 'effect-debug-panel';''
         this.debugPanel.className = 'effect-debug-panel';
@@ -145,7 +145,7 @@ export class EffectDebugInterface {
             max-height: 80vh,
             overflow-y: auto,
         `;
-';
+';'
         this.debugPanel.innerHTML = `'';
             <div class="debug-header">"";
                 <h3 style="margin: 0 0 10px 0; color: #00ff00;">Effect Debug Interface</h3>""
@@ -240,13 +240,13 @@ export class EffectDebugInterface {
             this.hide();' }'
         }');
 ';
-        // 品質設定''
+        // 品質設定
         const qualitySelect = document.getElementById('quality-select'') as HTMLSelectElement; : undefined''
         qualitySelect?.addEventListener('change', (e: Event) => {  const target = e.target as HTMLSelectElement; }'
             this.updateQualityLevel(target.value as QualityLevelType);' }'
         }');
 ';
-        // パーティクル倍率''
+        // パーティクル倍率
         const particleMultiplier = document.getElementById('particle-multiplier'') as HTMLInputElement;''
         particleMultiplier?.addEventListener('input', (e: Event) => {  const target = e.target as HTMLInputElement;''
             const value = parseFloat(target.value');''
@@ -257,7 +257,7 @@ export class EffectDebugInterface {
             this.updateParticleMultiplier(value);''
         }');
 ';
-        // エフェクト強度''
+        // エフェクト強度
         const effectIntensity = document.getElementById('effect-intensity'') as HTMLInputElement;''
         effectIntensity?.addEventListener('input', (e: Event) => {  const target = e.target as HTMLInputElement;''
             const value = parseFloat(target.value');''
@@ -268,7 +268,7 @@ export class EffectDebugInterface {
             this.updateEffectIntensity(value);''
         }');
 ';
-        // エフェクトプレビュー''
+        // エフェクトプレビュー
         const triggerPreview = document.getElementById('trigger-preview'') as HTMLButtonElement;''
         triggerPreview? .addEventListener('click', (') => {  ''
             const effectTypeSelect = document.getElementById('preview-effect-type') as HTMLSelectElement;
@@ -278,7 +278,7 @@ export class EffectDebugInterface {
             }''
         }');
 ';
-        // エフェクトトグル''
+        // エフェクトトグル
         const toggleParticles = document.getElementById('toggle-particles'') as HTMLInputElement; : undefined''
         toggleParticles?.addEventListener('change', (e: Event') => {  const target = e.target as HTMLInputElement;' }'
             this.toggleEffectType('particles', target.checked);' }'
@@ -299,7 +299,7 @@ export class EffectDebugInterface {
             this.toggleEffectType('seasonal', target.checked);' }'
         }');
 ';
-        // パフォーマンス制御''
+        // パフォーマンス制御
         const clearEffects = document.getElementById('clear-effects'') as HTMLButtonElement;''
         clearEffects? .addEventListener('click', () => { this.clearAllEffects();' }'
         }');'
@@ -308,7 +308,7 @@ export class EffectDebugInterface {
         benchmarkEffects?.addEventListener('click', () => { this.runBenchmark();' }'
         }');
 ';
-        // キーボードショートカット（Ctrl+Shift+E でトグル） : undefined''
+        // キーボードショートカット（Ctrl+Shift+E でトグル） : undefined
         document.addEventListener('keydown', (e: KeyboardEvent') => {  ''
             if(e.ctrlKey && e.shiftKey && e.key === 'E') {
                 
@@ -318,20 +318,20 @@ export class EffectDebugInterface {
             }
         });
     }
-';
+';'
     public show(): void { this.isVisible = true;''
         if(this.debugPanel') {'
-            ';
+            ';'
         }'
             this.debugPanel.style.display = 'block'; }
         }
         this.startMetricsUpdate();
         this.loadCurrentSettings();
     }
-';
+';'
     public hide(): void { this.isVisible = false;''
         if(this.debugPanel') {'
-            ';
+            ';'
         }'
             this.debugPanel.style.display = 'none'; }
         }
@@ -372,9 +372,9 @@ export class EffectDebugInterface {
 
         // UI更新
         this.updateMetricsDisplay(); }
-    }'
+    }
 '';
-    private updateMetricsDisplay('')';
+    private updateMetricsDisplay()';
             fpsValue: document.getElementById('fps-value''),'';
             particleValue: document.getElementById('particle-value''),'';
             effectValue: document.getElementById('effect-value''),'';
@@ -441,9 +441,9 @@ export class EffectDebugInterface {
  : undefined;
     private loadCurrentSettings(): void { // 現在の設定をUIに反映
         const qualityController = this.gameEngine? .effectQualityController;
-        if(qualityController) {'
+        if(qualityController) {
             '';
-            const currentQuality = qualityController.getCurrentQualityLevel('')';
+            const currentQuality = qualityController.getCurrentQualityLevel()';
             const qualitySelect = document.getElementById('quality-select') as HTMLSelectElement;
             if (qualitySelect) {
         }
@@ -534,14 +534,14 @@ export class EffectDebugInterface {
                 break; : undefined''
             case 'screenEffects':;
                 if(this.gameEngine? .enhancedEffectManager) {'
-                    ';
+                    ';'
                 }'
                     this.gameEngine.enhancedEffectManager.setEnabled(enabled'); }
                 }'
                 break; : undefined''
             case 'animations':;
                 if(this.gameEngine? .animationManager) {'
-                    ';
+                    ';'
                 }'
                     this.gameEngine.animationManager.setEnabled(enabled'); }
                 }'
@@ -562,12 +562,12 @@ export class EffectDebugInterface {
         }
     }'
  : undefined'';
-    private runBenchmark('')';
+    private runBenchmark()';
         console.log('Starting effect benchmark...');
         
         Promise.all([);
             this.benchmarkParticles(),
-            Promise.resolve(this.benchmarkEffects(),]';
+            Promise.resolve(this.benchmarkEffects()]';
             Promise.resolve(this.benchmarkAnimations()']';
         ]).then(([particleStress, effectStress, animationStress]') => {  const benchmarkResults: BenchmarkResults = {
                 particleStress,
@@ -589,10 +589,10 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1})} FPS`);
         // パーティクルストレステスト
         const startTime = performance.now();
         let frameCount = 0;
-        ';
-        // 大量のパーティクル生成''
+        ;
+        // 大量のパーティクル生成
         for(let i = 0; i < 100; i++') {'
-            ';
+            ';'
         }'
             this.triggerBubbleEffect('normal'); }
         }
@@ -611,9 +611,9 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1})} FPS`);
             requestAnimationFrame(measureFrames);
         });
     }
-';
-    private benchmarkEffects(): BenchmarkResult { // スクリーンエフェクトストレステスト''
-        const startTime = performance.now('')';
+;
+    private benchmarkEffects(): BenchmarkResult { // スクリーンエフェクトストレステスト
+        const startTime = performance.now()';
         this.triggerScreenEffect('flash'');''
         this.triggerScreenEffect('shake');
         
@@ -624,10 +624,10 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1})} FPS`);
 
     private benchmarkAnimations(): BenchmarkResult { // アニメーションストレステスト
         const startTime = performance.now();
-        ';
-        // 複数のアニメーションを同時実行''
+        ;
+        // 複数のアニメーションを同時実行
         for(let i = 0; i < 20; i++') {'
-            ';
+            ';'
         }'
             this.triggerComboEffect('spectacular'); }
         }
@@ -646,5 +646,5 @@ Animation Stress: ${benchmarkResults.animationStress.fps.toFixed(1})} FPS`);
     }
 }
 ';
-// グローバルアクセス用（デバッグ目的）''
+// グローバルアクセス用（デバッグ目的）
 (window as any').EffectDebugInterface = EffectDebugInterface; : undefined

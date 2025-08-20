@@ -30,7 +30,7 @@ interface UIState { isVisible: boolean,
     currentView: string,
     selectedItem: number,
     scrollPosition: number,
-    errorMessage: string | null; }
+    errorMessage: string | null }
 }
 
 /**
@@ -38,7 +38,7 @@ interface UIState { isVisible: boolean,
  */
 interface DialogHistoryEntry { type: string,
     data: any,
-    timestamp: number; }
+    timestamp: number }
 }
 
 /**
@@ -47,7 +47,7 @@ interface DialogHistoryEntry { type: string,
 interface DialogState { showingDialog: string | null,
     dialogData: any,
     dialogInput: string,
-    isVisible: boolean; }
+    isVisible: boolean }
 }
 
 /**
@@ -59,7 +59,7 @@ interface OperationHistoryEntry { type: string,
     duration: number,
     startTime: number,
     endTime: number,
-    data: any; }
+    data: any }
 }
 
 /**
@@ -69,7 +69,7 @@ interface OperationState { operationInProgress: boolean,
     operationType: string | null,
     operationProgress: number,
     operationMessage: string,
-    operationDuration: number; }
+    operationDuration: number }
 }
 
 /**
@@ -80,7 +80,7 @@ interface BackupStatus { lastBackup: string | number | Date | null,
     totalSize: number,
     autoBackupEnabled: boolean,
     nextBackup: string | number | Date | null,
-    backupHistory: BackupHistoryEntry[];
+    backupHistory: BackupHistoryEntry[]
     }
 }
 
@@ -115,7 +115,7 @@ export class UIStateManager {
     private errorTimeout: NodeJS.Timeout | null = null;
     // 状態変更コールバック
     private stateChangeCallbacks: StateChangeCallback[] = [];
-';
+';'
     setVisible(visible: boolean): void {''
         if(this.isVisible !== visible') {'
             this.isVisible = visible;'
@@ -126,11 +126,11 @@ export class UIStateManager {
 
     isUIVisible(): boolean { return this.isVisible; }
     }
-';
+';'
     setCurrentView(view: string): void { ''
         if(this.currentView !== view') {
             this.currentView = view;'
-            this.selectedItem = 0; // Reset selection when changing view'
+            this.selectedItem = 0; // Reset selection when changing view
         }'
             this.notifyStateChange('view', { view ); }
         }
@@ -138,7 +138,7 @@ export class UIStateManager {
 
     getCurrentView(): string { return this.currentView; }
     }
-';
+';'
     setSelectedItem(index: number): void { ''
         if(this.selectedItem !== index') {'
             this.selectedItem = index;'
@@ -149,10 +149,10 @@ export class UIStateManager {
 
     getSelectedItem(): number { return this.selectedItem; }
     }
-';
+';'
     setScrollPosition(position: number): void { ''
         this.scrollPosition = Math.max(0, position');''
-        this.notifyStateChange('scroll', { position: this.scrollPosition ); }
+        this.notifyStateChange('scroll', { position: this.scrollPosition ) }
     }
 
     getScrollPosition(): number { return this.scrollPosition; }
@@ -184,7 +184,7 @@ export class UIStateManager {
         this.errorTimeout = setTimeout(() => { this.clearError(); }
         }, duration);
     }
-';
+';'
     clearError(): void { ''
         if(this.errorMessage') {
             
@@ -211,8 +211,8 @@ export class UIStateManager {
     private notifyStateChange(type: string, data: any): void { this.stateChangeCallbacks.forEach(callback => { )
             try {); }'
                 callback(type, data);' }'
-            } catch (error') { ''
-                console.error('State change callback error:', error); }
+            } catch (error) { ''
+                console.error('State change callback error:', error) }
             }
         });
     }
@@ -229,7 +229,7 @@ export class UIStateManager {
         this.currentView = 'overview';
         this.selectedItem = 0;'
         this.scrollPosition = 0;')'
-        this.clearError('')';
+        this.clearError()';
         this.notifyStateChange('reset', { )'); }
     }
 }
@@ -239,7 +239,7 @@ export class UIStateManager {
  * ダイアログ状態管理器 - モーダルダイアログの状態管理
  */
 export class DialogStateManager {'
-    // ダイアログ状態''
+    // ダイアログ状態
     private showingDialog: string | null = null; // null, 'backup', 'export', 'import', 'clear', 'progress' }'
     private dialogData: any = {}''
     private dialogInput: string = '';
@@ -248,7 +248,7 @@ export class DialogStateManager {'
     private dialogHistory: DialogHistoryEntry[] = [];
     private maxHistorySize: number = 10;
     showDialog(type: string, data: any = { ): void {
-        if(this.showingDialog) {'
+        if(this.showingDialog) {
             '';
             this.hideDialog(''';
         this.dialogInput = data.defaultInput || '';
@@ -259,7 +259,7 @@ export class DialogStateManager {'
         '';
         this.notifyDialogChange('show', { type, data ); }
     }
-';
+';'
     hideDialog(): void { ''
         if(this.showingDialog') {
             const previousType = this.showingDialog;
@@ -281,7 +281,7 @@ export class DialogStateManager {'
 '';
     setDialogData(data: any'): void {'
         this.dialogData = { ...this.dialogData, ...data };''
-        this.notifyDialogChange('dataUpdate', { data: this.dialogData ); }
+        this.notifyDialogChange('dataUpdate', { data: this.dialogData ) }
     }
 
     getDialogInput(): string { return this.dialogInput; }
@@ -317,8 +317,8 @@ export class DialogStateManager {'
     private notifyDialogChange(action: string, data: any): void { this.dialogCallbacks.forEach(callback => { )
             try {); }'
                 callback(action, data);' }'
-            } catch (error') { ''
-                console.error('Dialog change callback error:', error); }
+            } catch (error) { ''
+                console.error('Dialog change callback error:', error) }
             }
         });
     }
@@ -329,7 +329,7 @@ export class DialogStateManager {'
             isVisible: this.isDialogVisible(); }
         };
     }
-';
+';'
     reset(): void { ''
         this.hideDialog(''';
     private operationMessage: string = '';
@@ -339,11 +339,11 @@ export class DialogStateManager {'
     private operationHistory: OperationHistoryEntry[] = [];
     private maxHistorySize: number = 50;
     // コールバック
-    private operationCallbacks: OperationChangeCallback[] = [])';
+    private operationCallbacks: OperationChangeCallback[] = []);
 ')';
-    startOperation(type: string, message: string = '', timeout: number = 300000): void { // 5 minutes default''
+    startOperation(type: string, message: string = '', timeout: number = 300000): void { // 5 minutes default
         if(this.operationInProgress') {'
-            ';
+            '
         }'
             this.endOperation('cancelled', 'New operation started'); }
         }
@@ -355,8 +355,8 @@ export class DialogStateManager {'
         this.operationStartTime = Date.now();
         
         // Set timeout for operation
-        if(timeout > 0) {'
-            ';
+        if(timeout > 0) {
+            ';'
         }'
             this.operationTimeout = setTimeout((') => { ' }'
                 this.endOperation('timeout', 'Operation timed out');' }'
@@ -370,7 +370,7 @@ export class DialogStateManager {'
     }'
 '';
     updateOperation(progress: number, message: string = ''): void { if (!this.operationInProgress) return;
-';
+';'
         this.operationProgress = Math.max(0, Math.min(100, progress);''
         if(message') {
             
@@ -379,7 +379,7 @@ export class DialogStateManager {'
         }'
 '';
         this.notifyOperationChange('progress', { progress: this.operationProgress,')'
-            message: this.operationMessage)'); }
+            message: this.operationMessage)') }
     }'
 '';
     endOperation(result: string = 'success', message: string = '', data: any = { ): void {
@@ -389,7 +389,7 @@ export class DialogStateManager {'
         
         // Clear timeout
         if(this.operationTimeout) {
-            clearTimeout(this.operationTimeout);
+            clearTimeout(this.operationTimeout)
         }
             this.operationTimeout = null; }
         }
@@ -398,24 +398,24 @@ export class DialogStateManager {'
         if(this.operationType && this.operationStartTime) {
             this.addOperationToHistory({
                 type: this.operationType,
-                result,);
+                result);
                 message);
                 duration,);
                 startTime: this.operationStartTime),
                 endTime: Date.now(),
-        }'
+        }
                 data' }'
             }');
         }
 
         // Reset state
         this.operationInProgress = false;
-        this.operationType = null;'
+        this.operationType = null;
         this.operationProgress = 0;''
         this.operationMessage = '';
         this.operationStartTime = null;'
 '';
-        this.notifyOperationChange('end', { result,)
+        this.notifyOperationChange('end', { result)
             message);
             duration,);
             data); }
@@ -462,8 +462,8 @@ export class DialogStateManager {'
     private notifyOperationChange(action: string, data: any): void { this.operationCallbacks.forEach(callback => { )
             try {); }'
                 callback(action, data);' }'
-            } catch (error') { ''
-                console.error('Operation change callback error:', error); }
+            } catch (error) { ''
+                console.error('Operation change callback error:', error) }
             }
         });
     }
@@ -475,10 +475,10 @@ export class DialogStateManager {'
             operationDuration: this.getOperationDuration(); }
         };
     }
-';
+';'
     reset(): void { ''
         if(this.operationInProgress') {'
-            ';
+            ';'
         }'
             this.endOperation('cancelled', 'State reset'); }
         }
@@ -510,10 +510,10 @@ export class BackupStatusManager {
     async initialize(dataManager: DataManager): Promise<void> { this.dataManager = dataManager;
         
         try {
-            await this.loadBackupStatus();'
+            await this.loadBackupStatus();
             this.startPeriodicUpdates();' }'
-        } catch (error') { ''
-            console.error('Failed to initialize backup status:', error); }
+        } catch (error) { ''
+            console.error('Failed to initialize backup status:', error) }
         }
     }
 
@@ -523,12 +523,12 @@ export class BackupStatusManager {
             }
                 return; }
             }
-';
-            // Get status from BackupManager''
-            const status = await this.dataManager.backup.getStatus('');'
+;
+            // Get status from BackupManager
+            const status = await this.dataManager.backup.getStatus();'
             this.notifyUpdate('loaded', this.backupStatus);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to load backup status:', error');' }'
             this.notifyUpdate('error', { error: (error as Error).message });
         }
@@ -544,7 +544,7 @@ export class BackupStatusManager {
         '';
         this.notifyUpdate('updated', { previous)
             current: this.backupStatus,);
-            changes: updates); }
+            changes: updates) }
     }
 
     getLastBackupTime(): string | number | Date | null { return this.backupStatus.lastBackup; }
@@ -571,7 +571,7 @@ export class BackupStatusManager {
 
         this.backupStatus.backupHistory.push({ )
             ...backupInfo);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
 
         // Keep only last 20 backups
@@ -581,20 +581,20 @@ export class BackupStatusManager {
         this.updateBackupStatus({ );
             lastBackup: backupInfo.timestamp || Date.now(),
             backupCount: this.backupStatus.backupCount + 1,
-            totalSize: this.backupStatus.totalSize + (backupInfo.size || 0); }
+            totalSize: this.backupStatus.totalSize + (backupInfo.size || 0) }
         });
     }
-';
+';'
     formatBackupSize(bytes: number): string { ''
         if (bytes === 0') return '0 B';
-        ';
+        ';'
         const k = 1024;''
         const sizes = ['B', 'KB', 'MB', 'GB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k);'
         '';
         return parseFloat((bytes / Math.pow(k, i).toFixed(1)') + ' ' + sizes[i]; }
-    }
-';
+    }'
+';'
     formatBackupTime(timestamp: string | number | Date | null): string { ''
         if (!timestamp') return 'Never';
         
@@ -616,7 +616,7 @@ export class BackupStatusManager {
 
     startPeriodicUpdates(interval: number = 30000): void { // 30 seconds
         this.stopPeriodicUpdates();
-        ';
+        ';'
         this.updateInterval = setInterval(() => { ''
             this.loadBackupStatus().catch(error => {');' }'
                 console.error('Periodic backup status update failed:', error); }
@@ -636,11 +636,11 @@ export class BackupStatusManager {
     private notifyUpdate(action: string, data: any): void { this.updateCallbacks.forEach(callback => { )
             try {); }'
                 callback(action, data);' }'
-            } catch (error') { ''
-                console.error('Backup status update callback error:', error); }
+            } catch (error) { ''
+                console.error('Backup status update callback error:', error) }
             }
         });
     }
-';
+';'
     destroy(): void { ''
         this.stopPeriodicUpdates(') }')

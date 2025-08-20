@@ -60,10 +60,10 @@ export class MobileSocialOptimizer {
             this.isInitialized = true;
             console.log('MobileSocialOptimizer initialized successfully', this.deviceInfo);'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to initialize MobileSocialOptimizer:', error);''
             if(this.errorHandler') {'
-                ';
+                ';'
             }'
                 this.errorHandler.handleError('MOBILE_SOCIAL_INIT_FAILED', error); }
             }
@@ -77,7 +77,7 @@ export class MobileSocialOptimizer {
     async detectDeviceCapabilities() { const capabilities = {
             // 基本デバイス情報
             isMobile: /iPhone|iPad|iPod|Android|BlackBerry|Opera Mini|IEMobile/i.test(navigator.userAgent),
-            isTablet: /iPad|Android(? =.*Mobile)/i.test(navigator.userAgent), : undefined';
+            isTablet: /iPad|Android(? =.*Mobile)/i.test(navigator.userAgent), : undefined;
             isIOS: /iPhone|iPad|iPod/i.test(navigator.userAgent),'';
             isAndroid: /Android/i.test(navigator.userAgent'),
             
@@ -85,21 +85,21 @@ export class MobileSocialOptimizer {
             screenWidth: window.screen.width,
             screenHeight: window.screen.height,
             devicePixelRatio: window.devicePixelRatio || 1,
-            ';
-            // タッチ機能''
+            ;
+            // タッチ機能
             touchSupport: 'ontouchstart' in window || navigator.maxTouchPoints > 0,
             multiTouchSupport: navigator.maxTouchPoints > 1,
             ';
-            // ブラウザ機能''
+            // ブラウザ機能
             webShareSupport: 'share' in navigator && typeof navigator.share === 'function','';
             canShare: navigator.canShare ? navigator.canShare.bind(navigator) : (') => false,'';
             clipboardSupport: 'clipboard' in navigator && 'writeText' in navigator.clipboard,
             ';
-            // パフォーマンス情報''
+            // パフォーマンス情報
             connectionType: navigator.connection ? navigator.connection.effectiveType : 'unknown',
             memoryLimit: navigator.deviceMemory || 4, // GB;
-            ';
-            // 追加機能''
+            ;
+            // 追加機能
             vibrationSupport: 'vibrate' in navigator,'';
             orientationSupport: 'orientation' in window || 'onorientationchange' in window,
             fullscreenSupport: document.fullscreenEnabled || document.webkitFullscreenEnabled }
@@ -129,8 +129,8 @@ export class MobileSocialOptimizer {
         }
             this.config.ui.hapticFeedback = capabilities.vibrationSupport; }
         }
-        ';
-        // 低性能デバイス用調整''
+        ;
+        // 低性能デバイス用調整
         if(capabilities.memoryLimit < 2') {
             this.config.performance.reduceAnimations = true;
             this.config.performance.optimizeImages = true;
@@ -138,7 +138,7 @@ export class MobileSocialOptimizer {
             this.config.performance.lazyLoadContent = true; }
         }
         ';
-        // 低速回線用調整''
+        // 低速回線用調整
         if(capabilities.connectionType === '2g' || capabilities.connectionType === 'slow-2g') {
             this.config.performance.optimizeImages = true;
             this.config.performance.lazyLoadContent = true;
@@ -154,18 +154,18 @@ export class MobileSocialOptimizer {
         this.addTouchOptimization('shareButton', { ''
             element: '.share-button',
             config: {
-                minSize: this.config.touch.minTouchTargetSize,);
+                minSize: this.config.touch.minTouchTargetSize);
                 hapticFeedback: this.config.ui.hapticFeedback)';
                 preventDefaultTouch: true,')';
                 longPressAction: 'customizeShare'),
             handlers: {
                 tap: this.handleShareButtonTap.bind(this),
                 longPress: this.handleShareButtonLongPress.bind(this),
-                swipe: this.handleShareButtonSwipe.bind(this); }'
+                swipe: this.handleShareButtonSwipe.bind(this) }'
             }''
         }');
 ';
-        // 共有ダイアログ用タッチハンドラー''
+        // 共有ダイアログ用タッチハンドラー
         this.addTouchOptimization('shareDialog', { ''
             element: '.share-dialog',
             config: {)
@@ -175,11 +175,11 @@ export class MobileSocialOptimizer {
             handlers: {
                 swipeUp: this.handleDialogSwipeUp.bind(this),
                 swipeDown: this.handleDialogSwipeDown.bind(this),
-                drag: this.handleDialogDrag.bind(this); }'
+                drag: this.handleDialogDrag.bind(this) }'
             }''
         }');
 ';
-        // プラットフォーム選択ボタン用タッチハンドラー''
+        // プラットフォーム選択ボタン用タッチハンドラー
         this.addTouchOptimization('platformButton', { ')'
             element: '.platform-button',);
             config: {),
@@ -188,7 +188,7 @@ export class MobileSocialOptimizer {
                 hapticFeedback: true }
             },
             handlers: { tap: this.handlePlatformButtonTap.bind(this),
-                hold: this.handlePlatformButtonHold.bind(this); }
+                hold: this.handlePlatformButtonHold.bind(this) }
             }
         });
     }
@@ -196,11 +196,11 @@ export class MobileSocialOptimizer {
     /**
      * タッチ最適化の追加
      */
-    addTouchOptimization(name, optimization) {'
+    addTouchOptimization(name, optimization) {
         '';
         this.touchOptimizations.set(name, optimization');
-        ';
-        // 要素が存在する場合は即座に適用'
+        ';'
+        // 要素が存在する場合は即座に適用
     }'
         document.addEventListener('DOMContentLoaded', () => {  }
             this.applyTouchOptimization(name, optimization); }
@@ -242,42 +242,42 @@ export class MobileSocialOptimizer {
                 element.style.padding = `${Math.max(0, (config.minSize - Math.min(currentWidth, currentHeight) / 2})}px`;
             }
         }
-';
-        // ハプティックフィードバック対応''
+;
+        // ハプティックフィードバック対応
         if(config.hapticFeedback && this.deviceInfo.vibrationSupport') {'
-            ';
+            ';'
         }'
             element.dataset.hapticFeedback = 'true'; }
         }
 ';
-        // リップル効果''
+        // リップル効果
         if(config.rippleEffect') {'
-            ';
+            ';'
         }'
             element.classList.add('ripple-effect'); }
         }
 ';
-        // タッチイベントハンドラーの設定''
+        // タッチイベントハンドラーの設定
         if(handlers.tap') {'
-            ';
+            ';'
         }'
             this.addTouchHandler(element, 'tap', handlers.tap, config); }
         }'
         '';
         if(handlers.longPress') {'
-            ';
+            ';'
         }'
             this.addTouchHandler(element, 'longPress', handlers.longPress, config); }
         }'
         '';
         if(handlers.swipe') {'
-            ';
+            ';'
         }'
             this.addTouchHandler(element, 'swipe', handlers.swipe, config); }
         }'
         '';
         if(handlers.drag') {'
-            ';
+            ';'
         }'
             this.addTouchHandler(element, 'drag', handlers.drag, config); }
         }
@@ -290,7 +290,7 @@ export class MobileSocialOptimizer {
         let touchStartPos = { x: 0, y: 0 }
         let isDragging = false;
         let longPressTimer = null;
-';
+';'
         const cleanup = () => {  if (longPressTimer) {''
                 clearTimeout(longPressTimer'); }
                 longPressTimer = null; }
@@ -298,19 +298,19 @@ export class MobileSocialOptimizer {
             isDragging = false;
         };
 ';
-        // タッチ開始''
+        // タッチ開始
         element.addEventListener('touchstart', (e) => {  if (config.preventDefaultTouch) { }
                 e.preventDefault(); }
             }'
 '';
-            touchStartTime = Date.now('')';
+            touchStartTime = Date.now()';
             if(element.dataset.hapticFeedback === 'true'') {'
-                ';
+                ';'
             }'
                 this.triggerHapticFeedback('light''); }
             }
 ';
-            // 長押し検出''
+            // 長押し検出
             if (eventType === 'longPress') { longPressTimer = setTimeout(() => { ' }'
                     if (!isDragging') {' }'
                         handler(e, { type: 'longPress', element, duration: Date.now() - touchStartTime });
@@ -319,16 +319,16 @@ export class MobileSocialOptimizer {
             }''
         }, { passive: !config.preventDefaultTouch }');
 ';
-        // タッチ移動''
+        // タッチ移動
         element.addEventListener('touchmove', (e) => {  const touch = e.touches[0];
             const deltaX = touch.clientX - touchStartPos.x;
             const deltaY = touch.clientY - touchStartPos.y;
             const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
             if(distance > 10) {
-';
+';'
                 isDragging = true;''
-                cleanup('')';
+                cleanup()';
             if (eventType === 'drag' && isDragging') {'
                 handler(e, {'
 
@@ -340,13 +340,13 @@ export class MobileSocialOptimizer {
                 )');
             }
 ';
-            // スワイプ検出''
+            // スワイプ検出
             if(eventType === 'swipe' && distance > (config.swipeThreshold || this.config.touch.swipeThreshold) {'
                 '';
                 const direction = this.getSwipeDirection(deltaX, deltaY');'
                 handler(e, {''
                     type: 'swipe',
-                    element,);
+                    element);
                     direction);
             }
                     distance, }
@@ -356,18 +356,18 @@ export class MobileSocialOptimizer {
             }''
         }, { passive: !config.preventDefaultTouch }');
 ';
-        // タッチ終了''
+        // タッチ終了
         element.addEventListener('touchend', (e) => {  ''
-            const touchDuration = Date.now('')';
+            const touchDuration = Date.now()';
             if (eventType === 'tap' && !isDragging && touchDuration < this.config.touch.tapTimeout') {' }'
-                handler(e, { type: 'tap', element, duration: touchDuration ); }
+                handler(e, { type: 'tap', element, duration: touchDuration ) }
             }
-';
+';'
             cleanup();''
         }, { passive: !config.preventDefaultTouch }');
 ';
-        // タッチキャンセル''
-        element.addEventListener('touchcancel', cleanup, { passive: true ); }
+        // タッチキャンセル
+        element.addEventListener('touchcancel', cleanup, { passive: true ) }
     }
 
     /**
@@ -414,17 +414,17 @@ export class MobileSocialOptimizer {
     /**
      * 共有ボタンタップハンドラー'
      */''
-    async handleShareButtonTap(event, data') { try {''
+    async handleShareButtonTap(event, data') { try {'
             this.triggerHapticFeedback('light');
             
             const shareData = this.extractShareDataFromElement(data.element);
             
             // モバイル最適化された共有フローを開始
-            await this.startMobileOptimizedShareFlow(shareData);'
+            await this.startMobileOptimizedShareFlow(shareData);
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.triggerHapticFeedback('error'');''
-            console.error('Share button tap failed:', error); }
+            console.error('Share button tap failed:', error) }
         }
     }
 
@@ -439,16 +439,16 @@ export class MobileSocialOptimizer {
     }
 
     /**
-     * 共有ボタンスワイプハンドラー'
+     * 共有ボタンスワイプハンドラー
      */''
     handleShareButtonSwipe(event, data') {'
-        // 右スワイプで即座にデフォルト共有''
+        // 右スワイプで即座にデフォルト共有
         if (data.direction === 'right'') {''
             this.triggerHapticFeedback('light');'
     }'
             this.quickShare(data.element'); }
         }'
-        // 左スワイプでオプション表示''
+        // 左スワイプでオプション表示
         else if (data.direction === 'left') { this.showShareOptions(data.element); }
         }
     }
@@ -457,7 +457,7 @@ export class MobileSocialOptimizer {
      * ダイアログスワイプハンドラー
      */
     handleDialogSwipeDown(event, data) {'
-        // 下方向スワイプでダイアログを閉じる''
+        // 下方向スワイプでダイアログを閉じる
         if (data.distance > 100') {''
             this.triggerHapticFeedback('light');
     }
@@ -533,13 +533,13 @@ export class MobileSocialOptimizer {
     }
 
     /**
-     * レスポンシブ統合の設定'
+     * レスポンシブ統合の設定
      */''
-    setupResponsiveIntegration('')';
+    setupResponsiveIntegration()';
         window.addEventListener('resize', this.handleOrientationChange.bind(this)');''
         window.addEventListener('orientationchange', this.handleOrientationChange.bind(this);
         ';
-        // ResponsiveCanvasManagerとの連携''
+        // ResponsiveCanvasManagerとの連携
         if(this.responsiveLayoutManager') {'
             '';
             this.responsiveLayoutManager.addResponsiveHandler('social', {);
@@ -556,7 +556,7 @@ export class MobileSocialOptimizer {
     handleOrientationChange() {'
         '';
         setTimeout((') => { '
-            // 共有ダイアログが開いている場合は位置を調整''
+            // 共有ダイアログが開いている場合は位置を調整
             const shareDialog = document.querySelector('.share-dialog'');'
     }'
             if (shareDialog && shareDialog.style.display !== 'none') { }
@@ -579,13 +579,13 @@ export class MobileSocialOptimizer {
     }
 
     /**
-     * モバイル最適化の有効化'
+     * モバイル最適化の有効化
      */''
-    enableMobileOptimizations('')';
+    enableMobileOptimizations()';
         document.body.classList.add('mobile-social-optimized');'
         '';
         if(this.deviceInfo.isIOS') {'
-            ';
+            ';'
         }'
             document.body.classList.add('ios-social-optimized');' }'
         } else if (this.deviceInfo.isAndroid') { ''
@@ -600,9 +600,9 @@ export class MobileSocialOptimizer {
     }
 
     /**
-     * モバイルタッチスタイルの適用'
+     * モバイルタッチスタイルの適用
      */''
-    applyMobileTouchStyles('')';
+    applyMobileTouchStyles()';
         const style = document.createElement('style'');
         style.textContent = `;
             .mobile-social-optimized .share-button {
@@ -624,9 +624,9 @@ export class MobileSocialOptimizer {
             }
             
             .ripple-effect { position: relative,
-                overflow: hidden; }
+                overflow: hidden }
             }
-            ';
+            ';'
             .ripple-effect::after { ''
                 content: '',
                 position: absolute,
@@ -641,7 +641,7 @@ export class MobileSocialOptimizer {
             }
             
             .ripple-effect:active::after { width: 200%,
-                height: 200%; }
+                height: 200% }
             }
         `;
         
@@ -696,10 +696,10 @@ export class MobileSocialOptimizer {
             });
         });
         
-        observer.observe(document.body, { childList: true,)
+        observer.observe(document.body, { childList: true)
             subtree: true),
         
-        return observer; }
+        return observer }
     }
 
     /**
@@ -712,9 +712,9 @@ export class MobileSocialOptimizer {
      * クリーンアップ
      */
     cleanup() {
-        // イベントリスナーの削除'
+        // イベントリスナーの削除
         this.touchOptimizations.clear();''
-        this.gestureHandlers.clear('')';
+        this.gestureHandlers.clear()';
         document.body.classList.remove('mobile-social-optimized', 'ios-social-optimized', 'android-social-optimized'');
         
     }

@@ -20,25 +20,25 @@ interface ValidationContext { configKey?: string;
     [key: string]: any, }
 }
 
-interface ValidationError { rule: string,'
+interface ValidationError { rule: string,
     message: string,'';
     severity: 'low' | 'medium' | 'high' | 'critical',
     category: string,
-    context?: any; }
+    context?: any }
 }
 
 interface ValidationWarning { rule: string,'
     message: string,'';
     severity: 'low' | 'medium' | 'high',
     category: string,
-    context?: any; }
+    context?: any }
 }
 
 interface ValidationSuggestion { rule: string,
     message: string,
     recommendedValue?: any;
     action?: string;
-    category: string; }
+    category: string }
 }
 
 interface ValidationResult { valid: boolean,
@@ -49,7 +49,7 @@ interface ValidationResult { valid: boolean,
     autoFixedValue: any,
     rulesApplied: string[],
     timestamp: number,
-    engineSummary?: any; }
+    engineSummary?: any }
 }
 
 interface ValidationRule { name: string,
@@ -69,12 +69,12 @@ interface RuleFilters { category?: string;
 
 interface BubbleHealthLimits { min: number,
     max: number,
-    default: number; }
+    default: number }
 }
 
 interface ScoreLimits { min: number,
     max: number,
-    default: number; }
+    default: number }
 }
 
 interface ValidationAnalytics { totalValidations: number,
@@ -82,26 +82,26 @@ interface ValidationAnalytics { totalValidations: number,
     errorRate: number,
     warningRate: number,
     mostCommonErrors: string[],
-    averageExecutionTime: number; }
+    averageExecutionTime: number }
 }
 
 interface EngineMetrics { totalExecutions: number,
     averageExecutionTime: number,
     rulesExecuted: number,
-    errorsEncountered: number; }
+    errorsEncountered: number }
 }
 
 interface EngineStatistics { rulesCount: number,
     activeRules: number,
     disabledRules: number,
-    categoryCounts: Record<string, number>; }
+    categoryCounts: Record<string, number> }
 }
 
 interface ExecutionHistoryEntry { timestamp: number,
     ruleCount: number,
     executionTime: number,
     result: ValidationResult,
-    context: ValidationContext;
+    context: ValidationContext
     }
 }
 
@@ -133,13 +133,13 @@ interface SystemHealth { engine: ComponentHealth,
     overall: {
         initialized: boolean,
         totalRules: number,
-        lastSyncTime: number; }
+        lastSyncTime: number }
     };
 }
 
 interface ComponentReferences { engine: ValidationRuleEngine,
     definitions: ValidationRuleDefinitions,
-    processor: ValidationResultProcessor;
+    processor: ValidationResultProcessor
     }
 }
 
@@ -164,10 +164,10 @@ export class BalanceAdjustmentValidationRules {
         // Legacy compatibility properties - delegated to sub-components
         this.ruleCategories = this.ruleDefinitions.ruleCategories;
         this.rules = new Map(); // Will be synced from sub-components
-        ';
-        // Initialize the validation system''
-        this.initialize('');
-    }
+        ;
+        // Initialize the validation system
+        this.initialize();
+    }'
     }'
         console.log('[BalanceAdjustmentValidationRules] Main controller initialized successfully'); }
     }
@@ -181,9 +181,9 @@ export class BalanceAdjustmentValidationRules {
             
             // Sync legacy properties for backward compatibility
             this.syncLegacyProperties();
-             }'
+             }
             console.log(`[BalanceAdjustmentValidationRules] Validation system initialized with ${this.rules.size) rules`});''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_INIT'');''
             console.error('[BalanceAdjustmentValidationRules] Failed to initialize validation system'); }
         }
@@ -213,7 +213,7 @@ export class BalanceAdjustmentValidationRules {
             
             // Process results using the processor
             const processedResult = this.resultProcessor.processResults(;
-                engineResult.results, );
+                engineResult.results );
                 oldValue);
                 newValue, );
                 context);
@@ -221,9 +221,9 @@ export class BalanceAdjustmentValidationRules {
             // Add engine summary to processed result
             processedResult.engineSummary = engineResult.summary;
             
-            return processedResult;'
+            return processedResult;
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'VALIDATION_PROCESS', {)
                 oldValue);
                 newValue,)';
@@ -253,9 +253,9 @@ export class BalanceAdjustmentValidationRules {
      * Add validation rule - delegated to rule definitions
      */
     public addRule(name: string, rule: ValidationRule): void { try {
-            this.ruleDefinitions.addRule(name, rule);'
+            this.ruleDefinitions.addRule(name, rule);
             this.syncLegacyProperties();' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'VALIDATION_RULE_ADD', { name, rule });
         }
     }
@@ -267,7 +267,7 @@ export class BalanceAdjustmentValidationRules {
             const result = this.ruleDefinitions.removeRule(name);
             this.syncLegacyProperties();'
             return result;' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'VALIDATION_RULE_REMOVE', { name });
             return false;
         }
@@ -286,7 +286,7 @@ export class BalanceAdjustmentValidationRules {
             const result = this.ruleDefinitions.setRuleEnabled(ruleName, enabled);
             this.syncLegacyProperties();'
             return result;' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'VALIDATION_RULE_TOGGLE', { ruleName, enabled });
             return false;
         }
@@ -299,7 +299,7 @@ export class BalanceAdjustmentValidationRules {
             const result = this.ruleDefinitions.setCategoryEnabled(category, enabled);
             this.syncLegacyProperties();'
             return result;' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'VALIDATION_CATEGORY_TOGGLE', { category, enabled });
             return 0;
         }
@@ -309,9 +309,9 @@ export class BalanceAdjustmentValidationRules {
      * Get validation rules - delegated to rule definitions
      */
     public getRules(filters: RuleFilters = { ): ValidationRule[] {
-        try {'
+        try {
             return this.ruleDefinitions.getRules(filters);' }'
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             this.errorHandler.handleError(error, 'VALIDATION_GET_RULES', { filters });
             return [];
         }
@@ -436,8 +436,8 @@ export class BalanceAdjustmentValidationRules {
         }
         
         if(config.processor) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.resultProcessor.configure(config.processor'); }
         }'
@@ -449,7 +449,7 @@ export class BalanceAdjustmentValidationRules {
      * Clear all history and metrics
      */'
     public clearHistory(): void { this.ruleEngine.clearHistory();''
-        this.resultProcessor.clearHistory('')';
+        this.resultProcessor.clearHistory()';
         console.log('[BalanceAdjustmentValidationRules] All history cleared'); }
     }
     
@@ -457,7 +457,7 @@ export class BalanceAdjustmentValidationRules {
      * Reset all metrics
      */'
     public resetMetrics(): void { ''
-        this.ruleEngine.resetMetrics('')';
+        this.ruleEngine.resetMetrics()';
         console.log('[BalanceAdjustmentValidationRules] All metrics reset'); }
     }
     
@@ -475,16 +475,16 @@ export class BalanceAdjustmentValidationRules {
      */''
     public getSystemHealth(''';
                 status: 'active','';
-                metrics: this.ruleEngine.getStatistics('')';
+                metrics: this.ruleEngine.getStatistics()';
                 status: 'active')';
                 ruleCount: this.ruleDefinitions.rules.size,'';
-                statistics: this.ruleDefinitions.getStatistics('')';
+                statistics: this.ruleDefinitions.getStatistics()';
                 status: 'active',);
                 analytics: this.resultProcessor.getAnalytics(),
             },
             overall: { initialized: true,
                 totalRules: this.rules.size,
-                lastSyncTime: Date.now(); }
+                lastSyncTime: Date.now() }
             }
         };
     }
@@ -497,11 +497,11 @@ export class BalanceAdjustmentValidationRules {
             this.ruleEngine.destroy();
             this.ruleDefinitions.destroy();
             this.resultProcessor.destroy();
-            ';
-            // Clear legacy properties''
-            this.rules.clear('')';
+            ;
+            // Clear legacy properties
+            this.rules.clear()';
             console.log('[BalanceAdjustmentValidationRules] Main controller destroyed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'VALIDATION_SYSTEM_DESTROY'); }
         }
     }
@@ -512,6 +512,6 @@ let validationRulesInstance: BalanceAdjustmentValidationRules | null = null,
 
 /**
  * Get BalanceAdjustmentValidationRules singleton instance
- */'
+ */
 export function getBalanceAdjustmentValidationRules(): BalanceAdjustmentValidationRules { if (!validationRulesInstance) {''
         validationRulesInstance = new BalanceAdjustmentValidationRules(' })

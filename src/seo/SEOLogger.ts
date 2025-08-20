@@ -11,20 +11,20 @@ type LogLevel = 'info' | 'warn' | 'error' | 'error-detail' | 'performance' | 'va
 interface LogEntry { level: LogLevel,
     message: string,
     data: any,
-    timestamp: number; }
+    timestamp: number }
 }
 
 // 検証データインターフェース
 interface ValidationData { component: string,
     isValid: boolean,
     issues: string[],
-    timestamp: string; }
+    timestamp: string }
 }
 
 // エラーサマリーインターフェース
 interface ErrorSummary { totalErrors: number,
     errorTypes: Record<string, number>;
-    recentErrors: LogEntry[];
+    recentErrors: LogEntry[]
     }
 }
 
@@ -32,7 +32,7 @@ interface ErrorSummary { totalErrors: number,
 interface ComponentHealth { total: number,
     passed: number,
     failed: number,
-    issues: string[]; }
+    issues: string[] }
 }
 
 // ヘルスレポートインターフェース
@@ -70,7 +70,7 @@ export class SEOLogger {
     }
     
     /**
-     * 情報ログ'
+     * 情報ログ
      */''
     info(message: string, data: any = { )'): void {''
         this._log('info', message, data);
@@ -95,7 +95,7 @@ export class SEOLogger {
         this._log('error', message, error);
         console.error(`[SEO Error] ${message)`, error);
         ';
-        // エラー詳細の記録''
+        // エラー詳細の記録
         if(error instanceof Error') {'
             '';
             this._log('error-detail', error.stack || '', {
@@ -109,7 +109,7 @@ export class SEOLogger {
      * パフォーマンスログ'
      */''
     performance(operation: string, duration: number, details: any = { )'): void {' }'
-        this._log('performance', `${operation} completed in ${duration}ms`, { ...details,)
+        this._log('performance', `${operation} completed in ${duration}ms`, { ...details)
             duration);
         
         if (this.debugMode) { }
@@ -124,7 +124,7 @@ export class SEOLogger {
             component,
             isValid,';
             issues,'';
-            timestamp: new Date().toISOString('') }'
+            timestamp: new Date().toISOString() }'
         this._log('validation', `${component} validation: ${ isValid ? 'PASSED' : 'FAILED')`, data);
         
         if (!isValid) { }
@@ -141,7 +141,7 @@ export class SEOLogger {
             level,
             message,
             data,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         
         this.logs.push(logEntry);
@@ -168,12 +168,12 @@ export class SEOLogger {
     }
     
     /**
-     * エラーサマリーの取得'
+     * エラーサマリーの取得
      */''
-    getErrorSummary('')';
+    getErrorSummary()';
         const errors = this.logs.filter(log => log.level === 'error'');
         const errorTypes: Record<string, number> = {};
-        ';
+        ';'
         errors.forEach(error => {  ')'
             const type = error.data? .name || 'Unknown'); }
             errorTypes[type] = (errorTypes[type] || 0) + 1; }
@@ -189,7 +189,7 @@ export class SEOLogger {
     /**
      * SEOヘルスチェックレポート'
      */''
-    getHealthReport('')';
+    getHealthReport()';
         const validations = this.logs.filter(log => log.level === 'validation'');''
         const errors = this.logs.filter(log => log.level === 'error'');''
         const warnings = this.logs.filter(log => log.level === 'warn');
@@ -244,6 +244,6 @@ export class SEOLogger {
         return Math.max(0, Math.round(baseScore - errorPenalty - warningPenalty); }
     }
 }
-';
-// シングルトンインスタンス''
+;
+// シングルトンインスタンス
 export const seoLogger = new SEOLogger(');

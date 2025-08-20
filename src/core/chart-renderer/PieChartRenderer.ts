@@ -15,7 +15,7 @@
  */
 
 // 型定義
-export interface PieChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement;
+export interface PieChartContext extends CanvasRenderingContext2D { canvas: HTMLCanvasElement
     }
 }
 
@@ -30,7 +30,7 @@ export interface PieChartData { value: number,
 export interface ProcessedPieData extends PieChartData { percentage: number,
     index: number,
     normalizedValue: number,
-    sliceInfo?: SliceGeometry;
+    sliceInfo?: SliceGeometry
     }
 }
 
@@ -69,7 +69,7 @@ export interface PieThemeColors { primary: string,
     text: string,
     border: string,
     shadow: string,
-    highlight: string; }
+    highlight: string }
 }
 
 export interface PieFontTheme { family: string,
@@ -84,7 +84,7 @@ export interface SliceStyleTheme { borderWidth: number,
     borderColor: string,
     shadowBlur: number,
     shadowColor: string,
-    hoverScale: number; }
+    hoverScale: number }
 }
 
 export interface SliceOptions { borderWidth?: number;
@@ -101,7 +101,7 @@ export interface SliceShadowOptions { enabled: boolean,
     color: string,
     blur: number,
     offsetX: number,
-    offsetY: number; }
+    offsetY: number }
 }
 
 export interface SliceGradientOptions { enabled: boolean,
@@ -113,7 +113,7 @@ export interface SliceGradientOptions { enabled: boolean,
 }
 
 export interface GradientStop { position: number,
-    color: string; }
+    color: string }
 }
 
 export interface SlicePatternOptions { enabled: boolean,
@@ -145,13 +145,13 @@ export interface ConnectorOptions { show: boolean,
     color: string,
     width: number,
     length: number,
-    style: LineStyle;
+    style: LineStyle
     }
 }
 
 export interface CollisionAvoidance { enabled: boolean,
     method: AvoidanceMethod,
-    spacing: number; }
+    spacing: number }
 }
 
 export interface PieLegendOptions { show?: boolean;
@@ -170,7 +170,7 @@ export interface PieLegendOptions { show?: boolean;
 export interface LegendBorderOptions { show: boolean,
     color: string,
     width: number,
-    radius: number; }
+    radius: number }
 }
 
 export interface DonutOptions { enabled?: boolean;
@@ -207,7 +207,7 @@ export interface ExplosionOptions { enabled?: boolean;
 export interface ExplosionAnimationOptions { enabled: boolean,
     duration: number,
     easing: EasingFunction,
-    stagger: number; }
+    stagger: number }
 }
 
 export interface PieAnimationOptions { enabled?: boolean;
@@ -236,13 +236,13 @@ export interface PieHoverOptions { enabled?: boolean;
 export interface PieClickOptions { enabled?: boolean;
     toggle?: boolean;
     explodeOnClick?: boolean;
-    callback?: (slice: SliceData, event: MouseEvent) => void; }
+    callback?: (slice: SliceData, event: MouseEvent) => void }
 }
 
 export interface SelectionOptions { enabled: boolean,
     multiple: boolean,
     highlightColor: string,
-    selectedSlices: Set<number>;
+    selectedSlices: Set<number>
     }
 }
 
@@ -266,7 +266,7 @@ export interface PieChartArea { centerX: number,
     centerY: number,
     radius: number,
     innerRadius?: number;
-    size: number; }
+    size: number }
 }
 
 export interface SliceGeometry { startAngle: number,
@@ -293,12 +293,12 @@ export interface SliceData { startAngle: number,
     exploded: boolean,
     selected: boolean,
     geometry: SliceGeometry,
-    data: ProcessedPieData;
+    data: ProcessedPieData
     }
 }
 
 export interface Point2D { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface PieRenderResult { type: ChartType,
@@ -315,30 +315,30 @@ export interface PieRenderPerformance { renderTime: number,
     sliceDrawTime: number,
     labelDrawTime: number,
     legendDrawTime: number,
-    memoryUsage?: number; }
+    memoryUsage?: number }
 }
 
 export interface PieValidationResult { isValid: boolean,
     errors: PieValidationError[],
-    warnings: PieValidationWarning[];
+    warnings: PieValidationWarning[]
     }
 }
 
 export interface PieValidationError { field: string,
     message: string,
-    code: string; }
+    code: string }
 }
 
 export interface PieValidationWarning { field: string,
     message: string,
-    suggestion: string; }
+    suggestion: string }
 }
 
 export interface LabelBounds { x: number,
     y: number,
     width: number,
     height: number,
-    text: string; }
+    text: string }
 }
 
 // 列挙型
@@ -363,11 +363,11 @@ export const DEFAULT_PIE_OPTIONS: Partial<PieChartOptions> = { padding: 20,
     showLabels: true,
     showLegend: false,
     showPercentages: true,
-    showValues: false,';
+    showValues: false,
     fontSize: 12,'';
     fontFamily: 'Arial, sans-serif' }
 } as const;
-';
+';'
 export const DEFAULT_PIE_THEME: PieChartTheme = { colors: {''
         primary: '#3B82F6','';
         secondary: '#10B981','';
@@ -414,13 +414,13 @@ export const EXPLOSION_CONFIG = { DEFAULT_DISTANCE: 10,
 
 // ユーティリティ関数
 export function validatePieData(data: any[]): PieValidationResult { const errors: PieValidationError[] = [],
-    const warnings: PieValidationWarning[] = [],';
+    const warnings: PieValidationWarning[] = [],
     '';
     if (!Array.isArray(data)') {'
         errors.push({''
             field: 'data',')';
             message: 'Pie chart data must be an array',')';
-            code: 'INVALID_DATA_TYPE'); }
+            code: 'INVALID_DATA_TYPE') }
         });
         return { isValid: false, errors, warnings };
     }'
@@ -428,24 +428,24 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
     if(data.length === 0') {'
         errors.push({''
             field: 'data',')';
-            message: 'Pie chart data cannot be empty',');
+            message: 'Pie chart data cannot be empty',')
     }'
             code: 'EMPTY_DATA')'); }
     }
-    ';
+    ';'
     const hasNegativeValues = data.some(item => {  ')'
         const value = typeof item === 'number' ? item: item? .value,')';
         return typeof value === 'number' && value < 0);'
     '';
     if(hasNegativeValues') {'
         errors.push({ : undefined''
-            field: 'data.value',';
+            field: 'data.value','
     })'
             message: 'Pie chart data cannot contain negative values',') }'
             code: 'NEGATIVE_VALUES'),' }'
         }');
     }
-    ';
+    ';'
     const hasInvalidValues = data.some(item => {  ')'
         const value = typeof item === 'number' ? item: item? .value'),' }'
         return typeof value !== 'number' || !isFinite(value); }
@@ -454,7 +454,7 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
     if(hasInvalidValues') {'
         errors.push({ : undefined''
             field: 'data.value',')';
-            message: 'All data items must have valid numeric values',');
+            message: 'All data items must have valid numeric values',')
     }'
             code: 'INVALID_VALUES'); }
         });
@@ -477,7 +477,7 @@ export function validatePieData(data: any[]): PieValidationResult { const errors
     if(total === 0') {'
         errors.push({ : undefined''
             field: 'data',')';
-            message: 'Total value cannot be zero',');
+            message: 'Total value cannot be zero',')
     }'
             code: 'ZERO_TOTAL'); }
         });
@@ -522,15 +522,15 @@ export function isPointInSlice(point: Point2D, slice: SliceData): boolean {
     
     return angle >= startAngle && angle <= endAngle;
 }
-';
+';'
 export function formatPieValue(value: number, format: LabelFormat, percentage?: number): string { ''
     switch(format') {'
-        ';
+        ';'
     }'
         case 'percentage':' }'
             return `${(percentage || 0).toFixed(1'})}%`;''
         case 'value':'';
-            return value.toLocaleString('')';
+            return value.toLocaleString()';
         case 'both':);
             return `${value.toLocaleString(})} (${(percentage || 0).toFixed(1})}%)`;
         default:;
@@ -574,7 +574,7 @@ export class PieChartRenderer {
             const startTime = performance.now();
             
             // データの検証
-            const validation = validatePieData(data);'
+            const validation = validatePieData(data);
             if (!validation.isValid) {' }'
                 throw new Error(`Data validation failed: ${validation.errors.map(e => e.message').join(', '})}`);
             }
@@ -615,7 +615,7 @@ export class PieChartRenderer {
             this.performance.renderTime = performance.now() - startTime;'
             '';
             const total = processedData.reduce((sum, item) => sum + item.value, 0');
-            ';
+            ';'
             return { : undefined''
                 type: 'pie',
                 dataPoints: processedData.length,
@@ -625,7 +625,7 @@ export class PieChartRenderer {
                 performance: { ...this.performance }
             },'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Pie chart rendering failed:', error');'
             return { ''
                 type: 'pie', ;
@@ -739,7 +739,7 @@ export class PieChartRenderer {
             } else {  // 標準パイチャート }
                 context.arc(geometry.centerX, geometry.centerY, chartArea.radius, currentAngle, currentAngle + sliceAngle, !clockwise); }
             }
-            ';
+            ';'
             context.closePath();''
             context.fill(''';
             const borderColor = sliceOptions.borderColor || options.theme.sliceStyles?.borderColor || '#FFFFFF';)
@@ -776,11 +776,11 @@ export class PieChartRenderer {
             },
             
             slices.push(sliceData);
-            ';
+            ';'
             currentAngle += clockwise ? sliceAngle: -sliceAngle,'';
         }');
         ';
-        // 影をリセット''
+        // 影をリセット
         context.shadowColor = 'transparent';
         context.shadowBlur = 0;
         context.shadowOffsetX = 0;
@@ -796,7 +796,7 @@ export class PieChartRenderer {
         const labelOptions = options.labelOptions || {};
         const fontSize = options.fontSize || DEFAULT_PIE_OPTIONS.fontSize!;
         const fontFamily = options.fontFamily || DEFAULT_PIE_OPTIONS.fontFamily!;
-        ';
+        ';'
         context.font = `${fontSize}px ${fontFamily}`;''
         context.textAlign = 'center';''
         context.textBaseline = 'middle';
@@ -804,11 +804,11 @@ export class PieChartRenderer {
         
         const labelBounds: LabelBounds[] = [],
         
-        slices.forEach((slice, index) => {  const labelRadius = chartArea.radius * 0.7; // 内側のラベル位置'
+        slices.forEach((slice, index) => {  const labelRadius = chartArea.radius * 0.7; // 内側のラベル位置
             const x = slice.geometry.centerX + Math.cos(slice.midAngle) * labelRadius;''
             const y = slice.geometry.centerY + Math.sin(slice.midAngle') * labelRadius;
             ';
-            // フォーマットされたラベルの生成''
+            // フォーマットされたラベルの生成
             let labelText = '';''
             const format = labelOptions.format || 'percentage';'
             '';
@@ -821,8 +821,8 @@ export class PieChartRenderer {
             }
             
             // ラベルが十分な大きさのスライスにのみ表示
-            if(slice.angle > PIE_CONFIG.MIN_SLICE_ANGLE && labelText) {'
-                // 背景の描画（可読性向上のため）''
+            if(slice.angle > PIE_CONFIG.MIN_SLICE_ANGLE && labelText) {
+                // 背景の描画（可読性向上のため）
                 const textMetrics = context.measureText(labelText');
                 const textWidth = textMetrics.width;
                 const textHeight = fontSize;'
@@ -836,9 +836,9 @@ export class PieChartRenderer {
                 
                 labelBounds.push({
                     x: x - textWidth/2,
-                    y: y - textHeight/2,);
+                    y: y - textHeight/2);
                     width: textWidth);
-                    height: textHeight,);
+                    height: textHeight,)
             }
                     text: labelText); }
             }
@@ -854,17 +854,17 @@ export class PieChartRenderer {
         const fontFamily = legendOptions.font?.family || options.fontFamily || DEFAULT_PIE_OPTIONS.fontFamily!;
         const symbolSize = legendOptions.symbolSize || 16;
         const itemGap = legendOptions.itemGap || 24;
-        ';
+        ';'
         const legendX = chartArea.centerX + chartArea.radius + 20;''
         let legendY = chartArea.centerY - (data.length * itemGap') / 2;
-        ';
+        ';'
         context.font = `${fontSize}px ${fontFamily}`;''
         context.textAlign = 'left';''
         context.textBaseline = 'middle';'
         '';
         data.forEach((item, index') => {  const color = item.color || options.theme.palette[index % options.theme.palette.length];
             ';
-            // シンボルの描画''
+            // シンボルの描画
             const symbolShape = legendOptions.symbolShape || 'square';
             context.fillStyle = color;'
             '';
@@ -887,7 +887,7 @@ export class PieChartRenderer {
 
     /**
      * ドーナツ中央ラベルの描画
-     */ : undefined'
+     */ : undefined
     private renderCenterLabel(context: PieChartContext, chartArea: PieChartArea, options: PieChartOptions): void { const centerLabel = options.donutOptions? .centerLabel;''
         if (!centerLabel || !centerLabel.show') return;
         
@@ -927,11 +927,11 @@ export class PieChartRenderer {
             errors.push({''
                 field: 'padding',')';
                 message: 'Padding must be between 0 and 100',')';
-                code: 'INVALID_PADDING'); }
+                code: 'INVALID_PADDING') }
         }
         
         if(options.donutOptions? .innerRadiusPercent) {
-        ';
+        ';'
             const percent = options.donutOptions.innerRadiusPercent;''
             if (percent < DONUT_CONFIG.MIN_INNER_RADIUS_PERCENT || percent > DONUT_CONFIG.MAX_INNER_RADIUS_PERCENT') {'
                 errors.push({ : undefined'
@@ -944,7 +944,7 @@ export class PieChartRenderer {
         }
         
         if(options.explosionOptions? .distance) {
-        ';
+        ';'
             const distance = options.explosionOptions.distance;''
             if (distance > EXPLOSION_CONFIG.MAX_DISTANCE') {'
                 warnings.push({ : undefined')

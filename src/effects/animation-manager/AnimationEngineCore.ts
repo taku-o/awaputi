@@ -32,7 +32,7 @@ export interface AnimationEngineSettings { enabled: boolean,
     globalSpeed: number,
     quality: AnimationQuality,
     enableEasing: boolean,
-    enableParallax: boolean; }
+    enableParallax: boolean }
 }
 
 /**
@@ -40,14 +40,14 @@ export interface AnimationEngineSettings { enabled: boolean,
  */
 export interface PerformanceMetrics { activeAnimations: number,
     frameTime: number,
-    droppedFrames: number; }
+    droppedFrames: number }
 }
 
 /**
  * Animation progress result interface
  */
 export interface AnimationProgress { progress: number,
-    easedProgress: number; }
+    easedProgress: number }
 }
 
 /**
@@ -81,7 +81,7 @@ export interface Animation { type?: string;
  */
 export interface QualityLevelSettings { particleCount: number,
     effectIntensity: number,
-    complexAnimations: boolean; }
+    complexAnimations: boolean }
 }
 
 /**
@@ -90,14 +90,14 @@ export interface QualityLevelSettings { particleCount: number,
 export interface QualityLevels { low: QualityLevelSettings,
     medium: QualityLevelSettings,
     high: QualityLevelSettings,
-    ultra: QualityLevelSettings;
+    ultra: QualityLevelSettings
     }
 }
 
 /**
  * Quality settings with level interface
  */
-export interface QualitySettings extends QualityLevelSettings { level: AnimationQuality;
+export interface QualitySettings extends QualityLevelSettings { level: AnimationQuality
     }
 }
 
@@ -124,7 +124,7 @@ export class AnimationEngineCore {
     
     /**
      * カスタムイージング関数
-     */'
+     */
     ease(t: number, type: EasingType): number { ''
         switch(type') {'
             '';
@@ -225,15 +225,15 @@ export class AnimationEngineCore {
         if(animation.options? .onComplete) {
             try {
         }
-                animation.options.onComplete(animation); }'
+                animation.options.onComplete(animation); }
             } catch (error) { ''
-                getErrorHandler('')';
+                getErrorHandler()';
                     context: 'AnimationEngineCore.completeAnimation'),' }'
                 }');
             }
         }
         ';
-        // イベント発火''
+        // イベント発火
         this.dispatchAnimationEvent('complete', animation);
     }
     
@@ -243,9 +243,9 @@ export class AnimationEngineCore {
     private autoAdjustQuality(): void { const frameTime = this.performanceMetrics.frameTime;
         const activeCount = this.performanceMetrics.activeAnimations;
         ';
-        // フレーム時間が長すぎる場合は品質を下げる''
+        // フレーム時間が長すぎる場合は品質を下げる
         if(frameTime > 16.67 && activeCount > 20') {'
-            // 60FPS基準''
+            // 60FPS基準
             if (this.settings.quality === 'ultra'') {'
         }'
                 this.settings.quality = 'high';' }'
@@ -256,7 +256,7 @@ export class AnimationEngineCore {
             }
         }
         ';
-        // パフォーマンスが良い場合は品質を上げる''
+        // パフォーマンスが良い場合は品質を上げる
         if(frameTime < 8 && activeCount < 10') {'
             '';
             if (this.settings.quality === 'low'') {'
@@ -273,7 +273,7 @@ export class AnimationEngineCore {
     /**
      * イベント発火'
      */''
-    private dispatchAnimationEvent(eventType: string, animation: Animation'): void { // カスタムイベントの実装''
+    private dispatchAnimationEvent(eventType: string, animation: Animation'): void { // カスタムイベントの実装
         if (typeof window !== 'undefined' && window.dispatchEvent) { }
             const event = new CustomEvent(`animation${eventType}`, {
                 detail: { animation })
@@ -330,7 +330,7 @@ export class AnimationQualityController {
     private qualityLevels: QualityLevels;
     private currentQuality: AnimationQuality;
     private frameTimeHistory: number[]);
-    private readonly maxHistorySize: number)';
+    private readonly maxHistorySize: number);
     '';
     constructor(''';
         this.currentQuality = 'high';
@@ -374,7 +374,7 @@ export class AnimationQualityController {
     }
     
     /**
-     * 品質を下げる'
+     * 品質を下げる
      */''
     private downgradeQuality(''';
         const qualityOrder: AnimationQuality[] = ['ultra', 'high', 'medium', 'low'];)

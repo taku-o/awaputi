@@ -11,18 +11,18 @@ export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = { scoreMultiplie
         id: 'scoreMultiplier','';
         name: 'スコア倍率アップ','';
         description: '獲得スコアが1.3倍になります（レベルごとに+0.2倍）','';
-        cost: 75, // 100 -> 75 (安く');
+        cost: 75, // 100 -> 75 (安く);
         maxLevel: 5,';
         effect: {''
             type: 'scoreMultiplier','';
-            value: 1.3 // 1.5 -> 1.3 (少し弱く、でもレベルアップで強化'); }
+            value: 1.3 // 1.5 -> 1.3 (少し弱く、でもレベルアップで強化) }
         }
     },'
     revival: { ''
         id: 'revival','';
         name: '復活','';
         description: 'HP全損時に一度だけ満タンで復活します',';
-        cost: 150, // 200 -> 150 (少し安く);''
+        cost: 150, // 200 -> 150 (少し安く);
         maxLevel: 2, // 1 -> 2 (2回まで購入可能に');'
         effect: {''
             type: 'revival',
@@ -33,33 +33,33 @@ export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = { scoreMultiplie
         id: 'rareRate','';
         name: 'レア率アップ','';
         description: 'レア泡の出現率が上昇します（レベルごとに+30%）',';
-        cost: 100, // 150 -> 100 (安く);''
+        cost: 100, // 150 -> 100 (安く);
         maxLevel: 4, // 3 -> 4 (レベル上限増加');'
         effect: {''
             type: 'rareRate','';
-            value: 1.3 // 1.5 -> 1.3 (少し弱く、でもレベルアップで強化'); }
+            value: 1.3 // 1.5 -> 1.3 (少し弱く、でもレベルアップで強化) }
         }
     },'
     hpBoost: { ''
         id: 'hpBoost','';
         name: 'HP増加','';
         description: '最大HPが25増加します',';
-        cost: 60, // 80 -> 60 (安く);''
+        cost: 60, // 80 -> 60 (安く);
         maxLevel: 6, // 5 -> 6 (レベル上限増加');'
         effect: {''
             type: 'hpBoost','';
-            value: 25 // 20 -> 25 (少し強く'); }
+            value: 25 // 20 -> 25 (少し強く) }
         }
     },'
     timeExtension: { ''
         id: 'timeExtension','';
         name: '時間延長','';
         description: 'ゲーム時間が45秒延長されます',';
-        cost: 90, // 120 -> 90 (安く);''
+        cost: 90, // 120 -> 90 (安く);
         maxLevel: 4, // 3 -> 4 (レベル上限増加');'
         effect: {''
             type: 'timeExtension','';
-            value: 45000 // 30000 -> 45000 (30秒 -> 45秒に強化'); }
+            value: 45000 // 30000 -> 45000 (30秒 -> 45秒に強化) }
         }
     },'
     comboBoost: { ''
@@ -77,7 +77,7 @@ export const ITEM_DEFINITIONS: Record<string, ItemDefinition> = { scoreMultiplie
         id: 'reset','';
         name: 'アイテム効果リセット','';
         description: '全アイテム効果をリセットし、再購入可能にします','';
-        cost: 30, // 50 -> 30 (安く');
+        cost: 30, // 50 -> 30 (安く);
         maxLevel: 1,';
         effect: {''
             type: 'reset',
@@ -96,7 +96,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
     public activeEffects: Map<string, number> = new Map();
 
     constructor(gameEngine: any) {
-        this.gameEngine = gameEngine; }
+        this.gameEngine = gameEngine }
     }
     
     /**
@@ -177,16 +177,16 @@ export class ItemManager implements IItemManager { public gameEngine: any,
     }
     
     /**
-     * アイテム効果をリセット'
+     * アイテム効果をリセット
      */''
-    resetAllItems('')';
+    resetAllItems()';
         if(!this.purchaseItem('reset') { return false; }
         }
         
         // 全アイテムをクリア（リセットアイテム以外）
-        this.ownedItems.clear();'
+        this.ownedItems.clear();
         this.activeEffects.clear();''
-        this.saveOwnedItems('')';
+        this.saveOwnedItems()';
         console.log('All item effects have been reset');
         return true;
     }
@@ -204,7 +204,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
         switch(effect.type') {'
             '';
             case 'scoreMultiplier':';
-                // スコア倍率は累積''
+                // スコア倍率は累積
                 const currentMultiplier = this.activeEffects.get('scoreMultiplier') || 1;''
                 const newMultiplier = currentMultiplier + (effect.value - 1') * level;''
                 this.activeEffects.set('scoreMultiplier', newMultiplier');
@@ -215,28 +215,28 @@ export class ItemManager implements IItemManager { public gameEngine: any,
                 break;'
                 '';
             case 'rareRate':';
-                // レア率は累積''
+                // レア率は累積
                 const currentRareRate = this.activeEffects.get('rareRate') || 1;''
                 const newRareRate = currentRareRate + (effect.value - 1') * level;''
                 this.activeEffects.set('rareRate', newRareRate');
                 break;'
                 '';
             case 'hpBoost':;
-                // HP増加は累積'
+                // HP増加は累積
                 const hpBoost = effect.value * level;''
                 this.activeEffects.set('hpBoost', hpBoost');
                 // 最大HPを更新
                 this.gameEngine.playerData.maxHP = 100 + hpBoost;
-                break;'
+                break;
                 '';
             case 'timeExtension':;
-                // 時間延長は累積'
+                // 時間延長は累積
                 const timeExtension = effect.value * level;''
                 this.activeEffects.set('timeExtension', timeExtension');
                 break;'
                 '';
             case 'comboBoost':';
-                // コンボ強化は累積''
+                // コンボ強化は累積
                 const currentComboBoost = this.activeEffects.get('comboBoost') || 1;''
                 const newComboBoost = currentComboBoost + (effect.value - 1') * level;''
                 this.activeEffects.set('comboBoost', newComboBoost);
@@ -249,7 +249,7 @@ export class ItemManager implements IItemManager { public gameEngine: any,
      * 全アイテム効果を適用
      */'
     applyAllEffects(): void { ''
-        this.activeEffects.clear('')';
+        this.activeEffects.clear()';
         this.activeEffects.set('scoreMultiplier', 1');''
         this.activeEffects.set('rareRate', 1');''
         this.activeEffects.set('hpBoost', 0');''
@@ -301,17 +301,17 @@ export class ItemManager implements IItemManager { public gameEngine: any,
     }
     
     /**
-     * 復活効果を使用'
+     * 復活効果を使用
      */''
-    useRevival('')';
+    useRevival()';
         const revivalCount = this.getEffectValue('revival');''
         if(revivalCount > 0') {'
-            // 復活効果を1回分消費''
+            // 復活効果を1回分消費
             this.activeEffects.set('revival', revivalCount - 1);
             
-            // HPを満タンに回復'
+            // HPを満タンに回復
             this.gameEngine.playerData.currentHP = this.gameEngine.playerData.maxHP;''
-            this.gameEngine.playerData.updateUI('')';
+            this.gameEngine.playerData.updateUI()';
             console.log('Revival effect used!');
         }
             return true; }
@@ -377,9 +377,9 @@ export class ItemManager implements IItemManager { public gameEngine: any,
             // 効果を即座に適用
             this.applyItemEffect(itemId);
             
-            console.log(`[ItemManager] アイテム付与: ${itemId} (レベル ${currentLevel} -> ${newLevel)`});'
+            console.log(`[ItemManager] アイテム付与: ${itemId} (レベル ${currentLevel} -> ${newLevel)`});
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[ItemManager] grantItem error:', error');
             return false; }
         }'

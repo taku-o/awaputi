@@ -32,7 +32,7 @@ declare namespace jest { interface Matchers<R> {
 
 // モック関数の型
 export interface MockedFunction<T extends (...args: any[]) => any> extends jest.MockedFunction<T> { mockName(name: string): this,
-    getMockName(): string; }
+    getMockName(): string }
 }
 
 // テスト用のCanvasコンテキストモック
@@ -62,14 +62,14 @@ export interface TestFixture<T> { setup(): Promise<T> | T;
 export interface TestData { validData: any,
     invalidData: any,
     edgeCases: any[],
-    mockResponses: any[]; }
+    mockResponses: any[] }
 }
 
 // 非同期テストユーティリティ
 export interface AsyncTestUtils { waitFor(condition: () => boolean, timeout?: number): Promise<void>;
     delay(ms: number): Promise<void>,
     timeout(promise: Promise<any>, ms: number): Promise<any>,
-    retry<T>(fn: () => Promise<T>, retries?: number, delay?: number): Promise<T>;
+    retry<T>(fn: () => Promise<T>, retries?: number, delay?: number): Promise<T>
     }
 }
 
@@ -97,7 +97,7 @@ export interface SnapshotTestOptions { name?: string;
 export interface ErrorTestCase { name: string,
     input: any,
     expectedError: string | RegExp | Error,
-    expectedErrorType?: any; }
+    expectedErrorType?: any }
 }
 
 // モックストレージ実装
@@ -112,7 +112,7 @@ export interface MockTimers { useFakeTimers(): void;
     runAllTimers(): void;
     runOnlyPendingTimers(): void;
     advanceTimersByTime(ms: number): void,
-    clearAllTimers(): void; }
+    clearAllTimers(): void }
 }
 
 // イベントテストユーティリティ
@@ -121,7 +121,7 @@ export interface EventTestUtils { simulateClick(element: Element, options?: Mous
     simulateInput(element: HTMLInputElement, value: string): void,
     simulateFocus(element: Element): void,
     simulateBlur(element: Element): void,
-    simulateDrag(element: Element, startX: number, startY: number, endX: number, endY: number): void; }
+    simulateDrag(element: Element, startX: number, startY: number, endX: number, endY: number): void }
 }
 
 // デバッグユーティリティ
@@ -144,5 +144,5 @@ export interface TestDataBuilder<T> { with(key: keyof T, value: any): this,
 export interface AssertionHelpers { assertDefined<T>(value: T | undefined | null, message?: string): asserts value is T;
     assertType<T>(value: any, type: string, message?: string): asserts value is T;
     assertRange(value: number, min: number, max: number, message?: string): void;
-    assertArrayLength<T>(array: T[], length: number, message?: string): void; }
+    assertArrayLength<T>(array: T[], length: number, message?: string): void }
 }

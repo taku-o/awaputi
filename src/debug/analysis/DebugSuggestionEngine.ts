@@ -2,17 +2,17 @@ import { BaseComponent } from '../BaseComponent.js';
 
 // Type definitions
 interface Suggestion { action: string,
-    code?: string;'
+    code?: string;
     description: string,'';
     priority: 'low' | 'medium' | 'high',
     category: string,
-    score?: number; }
+    score?: number }
 }
 
 interface Pattern { id: string,
     name: string,';
     category: string,'';
-    severity: 'low' | 'medium' | 'high' | 'critical'; }
+    severity: 'low' | 'medium' | 'high' | 'critical' }
 }
 
 interface Test { name: string,
@@ -22,17 +22,17 @@ interface Test { name: string,
 
 interface ContextualSuggestion { action: string,
     code: string,
-    description: string; }
+    description: string }
 }
 
 interface ComponentPattern { pattern: RegExp,
-    name: string; }
+    name: string }
 }
 
 interface SuggestionStatistics { totalPatterns: number,
     totalSuggestions: number,
     suggestionsByCategory: Record<string, number>;
-    suggestionsByPriority: Record<string, number>; }
+    suggestionsByPriority: Record<string, number> }
 }
 
 interface MainController { [key: string]: any, }
@@ -60,7 +60,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
     /**
      * デバッグ提案システムを設定'
      */''
-    setupDebugSuggestions('')';
+    setupDebugSuggestions()';
         this.debugSuggestions.set('null_reference', [{ ')'
                 action: 'Add null checks''),' }'
                 code: 'if (object && object.property') { /* use object.property */ }',''
@@ -130,7 +130,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             },'
             { ''
                 action: 'Handle promise rejection',' }'
-                code: 'try { await asyncFunc() } catch (error') { /* handle */ }',''
+                code: 'try { await asyncFunc() } catch (error) { /* handle */ }',''
                 description: 'Promise拒否のエラーハンドリングを追加','';
                 priority: 'high','';
                 category: 'error_handling';
@@ -247,7 +247,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
     /**
      * コンテキスト特化の提案を設定'
      */''
-    setupContextualSuggestions('')';
+    setupContextualSuggestions()';
         this.contextualSuggestions.set('BubbleManager', { null_reference: [{')'
                     action: 'Check GameEngine initialization''),'';
                     code: 'await gameEngine.initialize(); console.log(gameEngine.bubbleManager')',''
@@ -319,12 +319,12 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
         const componentName = this.extractComponentName(test.name);
         
         if(componentName && this.contextualSuggestions.has(componentName) {
-        ';
+        ';'
             const contextSuggestions = this.contextualSuggestions.get(componentName)!;''
             if (contextSuggestions[pattern.id]') {
                 suggestions.push(...contextSuggestions[pattern.id].map(s => ({'
                     ...s,')';
-                    category: 'contextual',');
+                    category: 'contextual',')
         }'
                     priority: 'high' as const))); }
             }
@@ -341,9 +341,9 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
     generateTestSpecificSuggestions(test: Test): Suggestion[] { if (!test || !test.name) {
             return []; }
         }
-';
+';'
         const suggestions: Suggestion[] = [],'';
-        const testName = test.name.toLowerCase('')';
+        const testName = test.name.toLowerCase()';
         if (testName.includes('async'') || testName.includes('promise')') { suggestions.push({')'
                 action: 'Add async/await to test''),' }'
                 code: 'test("async test", async () => { await asyncOperation() }")',''
@@ -387,7 +387,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
         return suggestions;
             .map(suggestion => ({ )
                 ...suggestion);
-                score: this.calculateSuggestionScore(suggestion, pattern, test) ; }
+                score: this.calculateSuggestionScore(suggestion, pattern, test)  }
             })
             .sort((a, b) => {  // 優先度でソート
                 const priorityDiff = (priorityOrder[b.priority] || 1) - (priorityOrder[a.priority] || 1);
@@ -404,20 +404,20 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
      * @param suggestion - 提案
      * @param pattern - パターン情報
      * @param test - テスト情報
-     * @returns スコア'
+     * @returns スコア
      */''
     calculateSuggestionScore(suggestion: Suggestion, pattern: Pattern, test: Test'): number { let score = 0;
-';
+';'
         // 基本スコア' }'
         const priorityScore = { 'high': 10, 'medium': 5, 'low': 2 };
         score += priorityScore[suggestion.priority] || 2;
 ';
-        // カテゴリボーナス''
+        // カテゴリボーナス
         if (suggestion.category === 'contextual'') score += 5;''
         if (suggestion.category === 'safety'') score += 3;''
         if (suggestion.category === 'debugging'') score += 2;
 ';
-        // パターン適合度''
+        // パターン適合度
         if (pattern && pattern.severity === 'high') score += 3;
 
         return score;
@@ -430,7 +430,7 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
      */'
     extractComponentName(testName: string): string | null { ''
         if (!testName') return null;
-';
+';'
         const componentPatterns: ComponentPattern[] = [' }'
             { pattern: /bubblemanager/i, name: 'BubbleManager' },''
             { pattern: /scoremanager/i, name: 'ScoreManager' },''
@@ -469,19 +469,18 @@ export class DebugSuggestionEngine extends BaseComponent { private debugSuggesti
             totalPatterns: this.debugSuggestions.size,
             totalSuggestions: 0, }
             suggestionsByCategory: {},
-            suggestionsByPriority: {}
-        },
+            suggestionsByPriority: {},
 
         for(const suggestions of this.debugSuggestions.values() {
 
             stats.totalSuggestions += suggestions.length;'
             '';
             for (const suggestion of suggestions') {'
-                // カテゴリ別統計''
+                // カテゴリ別統計
                 const category = suggestion.category || 'general';''
                 stats.suggestionsByCategory[category] = (stats.suggestionsByCategory[category] || 0') + 1;
 ';
-                // 優先度別統計''
+                // 優先度別統計
                 const priority = suggestion.priority || 'medium';
 
         }

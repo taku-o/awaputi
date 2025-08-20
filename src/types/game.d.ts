@@ -5,7 +5,7 @@
 
 import { Position, Size, Color, EventListener, Animation, Vector2 } from './global';
 ';
-// Re-export commonly used types for convenience''
+// Re-export commonly used types for convenience
 export { Position, Vector2 } from './global';
 
 // Core game engine types
@@ -80,7 +80,7 @@ export interface Bubble { id: string,
   handleBoundaryCollision(): void;
   renderSpecialIcon(context: CanvasRenderingContext2D, centerX: number, centerY: number): void,
   blendColors(color1: string, color2: string, ratio: number): string,
-  triggerSpecialEffect(): void;'
+  triggerSpecialEffect(): void;
   updateSpecialBehavior(deltaTime: number, mousePosition?: Position): void;''
   getAndClearEffects(''';
 export type BubbleType = 'normal' | 'stone' | 'iron' | 'diamond' | 'pink' | 'poison' | 'spiky' | '';
@@ -111,7 +111,7 @@ export interface BubbleConfiguration {
   phaseChance?: number;       // phantom bubble
   scoreMultiplier?: number;   // multiplier bubble }
 }
-';
+';'
 export interface BubbleEffect { ''
   type: 'heal' | 'damage' | 'chain_destroy' | 'bonus_time' | 'time_stop' | 'bonus_score' | '';
         'screen_shake' | 'score_multiplier' | 'slow_area' | 'magnetic_pull' | 'big_explosion' | '';
@@ -135,7 +135,7 @@ export interface BubbleManager { gameEngine: any, // GameEngine type will be def
   effectProcessor: BubbleEffectProcessor,
   lastCullTime: number,
   cullInterval: number,
-  offscreenBubbles: Set<Bubble>,
+  offscreenBubbles: Set<Bubble>
     );
   offscreenTimer: Map<Bubble, number>);
   setStageConfig(config: any): any,
@@ -158,7 +158,7 @@ export interface BubbleManager { gameEngine: any, // GameEngine type will be def
   getBubbleCount(): number;
   getActiveBubbles(): Bubble[];
   setSpecialSpawnRate(bubbleType: string, rate: number): void,
-  addTestBubble(bubbleData: any): boolean,';
+  addTestBubble(bubbleData: any): boolean,
   addTestBubbles(bubblesData: any[]): number,'';
   removeTestBubbles(condition: string | ((bubble: Bubble) => boolean') | 'all'): number;
   getTestBubbleInfo(): TestBubbleInfo;
@@ -172,7 +172,7 @@ export interface TestBubbleInfo { total: number,
     type: string,
     x: number,
     y: number,
-    health?: number; }
+    health?: number }
   }>;
 }
 
@@ -196,19 +196,19 @@ export interface BubblePhysicsEngine { gameEngine: any,
   isBubbleVisible(bubble: Bubble): boolean,
   getBubblesAlongPath(bubbles: Bubble[], startPos: Position, endPos: Position): Bubble[],
   getBubblesInRadius(bubbles: Bubble[], x: number, y: number, radius: number): Bubble[],
-  applyForceToBubble(bubble: Bubble | any, direction: Vector2, strength: number): void; }
+  applyForceToBubble(bubble: Bubble | any, direction: Vector2, strength: number): void }
 }
 
 export interface BubbleDragSystem { handleDragStart(bubbles: Bubble[], x: number, y: number): any,
   handleDragMove(x: number, y: number): any,
   handleDragEnd(startX: number, startY: number, endX: number, endY: number, physicsEngine: BubblePhysicsEngine): any,
   renderDragTrail(context: CanvasRenderingContext2D, renderQuality: number): void,
-  resetDrag(): void; }
+  resetDrag(): void }
 }
 
 export interface BubbleEffectProcessor { gameEngine: any,
   checkAutoBurst(bubble: Bubble): void,
-  processBubbleEffect(bubble: Bubble, x: number, y: number): void; }
+  processBubbleEffect(bubble: Bubble, x: number, y: number): void }
 }
 
 // Input system
@@ -222,12 +222,12 @@ export interface InputState { mouse: {
       shift: boolean,
       ctrl: boolean,
       alt: boolean,
-      meta: boolean; }
+      meta: boolean }
     };
   };
   touch: { touches: Touch[],
     scale: number,
-    rotation: number; }
+    rotation: number }
   };
 }
 
@@ -241,7 +241,7 @@ export interface InputManager { state: InputState,
   getMousePosition(): Position;
   addListener(event: string, callback: EventListener): void,
   removeListener(event: string, callback: EventListener): void,
-  destroy(): void; }
+  destroy(): void }
 }
 
 // Score and progression
@@ -276,7 +276,7 @@ export interface ScoreDebugInfo { combo: number,
   itemMultiplier: number,
   specialMultiplier: number,
   totalMultiplier: number,
-  comboTimer: number; }
+  comboTimer: number }
 }
 
 export interface StageManager { gameEngine: any,
@@ -290,7 +290,7 @@ export interface StageManager { gameEngine: any,
   getLockedStages(): LockedStageInfo[];
   getCurrentStageConfig(): StageConfig | null;
   getCurrentStageId(): string | null;
-  checkBossEvents(timeRemaining: number): void,';
+  checkBossEvents(timeRemaining: number): void,
   triggerBossEvent(event: BossEvent): void,'';
   completeStage(finalScore: number'): void, }
 }
@@ -298,7 +298,7 @@ export interface StageManager { gameEngine: any,
 export interface CurrentStage { id: string,
   config: StageConfig,
   startTime: number,
-  bossEventsTriggered: number[]; }
+  bossEventsTriggered: number[] }
 }
 
 export interface StageConfig { name: string,
@@ -312,28 +312,28 @@ export interface StageConfig { name: string,
   bossEvents?: BossEvent[];
     }
 }
-';
+';'
 export interface UnlockCondition { ''
   type: 'tap' | 'highScore' | 'stageComplete',
   value: number,
-  stage?: string; }
+  stage?: string }
 }
 
 export interface BossEvent { time: number,
   type: string,
-  count: number; }
+  count: number }
 }
 
 export interface UnlockedStageInfo { id: string,
   name: string,
   description: string,
-  duration: number; }
+  duration: number }
 }
 
 export interface LockedStageInfo { id: string,
   name: string,
   description: string,
-  unlockMessage: string; }
+  unlockMessage: string }
 }
 
 // Audio system
@@ -362,7 +362,7 @@ export interface ParticleSystem { particles: Particle[],
   emit(position: Position, config: ParticleConfig): void,
   update(deltaTime: number): void,
   render(context: CanvasRenderingContext2D): void,
-  clear(): void; }
+  clear(): void }
 }
 
 export interface Particle { position: Position,
@@ -375,7 +375,7 @@ export interface Particle { position: Position,
   
   update(deltaTime: number): void,
   render(context: CanvasRenderingContext2D): void,
-  isAlive(): boolean; }
+  isAlive(): boolean }
 }
 
 export interface ParticleConfig { count: number,
@@ -394,7 +394,7 @@ export interface EffectManager { effects: Map<string, Effect>,
   removeEffect(id: string): void,
   update(deltaTime: number): void,
   render(context: CanvasRenderingContext2D): void,
-  clear(): void; }
+  clear(): void }
 }
 
 export interface Effect extends Animation { id: string,
@@ -417,7 +417,7 @@ export interface GameUI { scoreDisplay: UIElement,
 export interface MenuItem { id: string,
   key: string,
   label?: string;
-  action: () => void; }
+  action: () => void }
 }
 
 export interface MainMenuScene { gameEngine: any,
@@ -478,7 +478,7 @@ export interface UIButton extends UIElement { enabled: boolean,
   hover: boolean,
   pressed: boolean,
   onClick: EventListener,
-  handleMouseDown(position: Position): void,';
+  handleMouseDown(position: Position): void,
   handleMouseUp(position: Position): void,'';
   handleMouseMove(position: Position'): void, }
 }
@@ -498,19 +498,19 @@ export interface ItemDefinition { id: string,
   description: string,
   cost: number,
   maxLevel: number,
-  effect: ItemEffect;
+  effect: ItemEffect
     }
 }
-';
+';'
 export interface ItemEffect { ''
   type: 'scoreMultiplier' | 'revival' | 'rareRate' | 'hpBoost' | 'timeExtension' | 'comboBoost' | 'reset',
-  value: number; }
+  value: number }
 }
 
 export interface ItemInfo extends ItemDefinition { currentLevel: number,
   cost: number,
   canPurchase: boolean,
-  isMaxLevel: boolean; }
+  isMaxLevel: boolean }
 }
 
 export interface ItemManager { gameEngine: any,
@@ -544,12 +544,12 @@ export interface Achievement { id: string,
 
 export interface AchievementReward { type: string,
   value: number,
-  description: string; }
+  description: string }
 }
 
 export interface AchievementProgressResult { isComplete: boolean,
   progress: number,
-  maxProgress: number; }
+  maxProgress: number }
 }
 
 export interface AchievementStatistics { total: number,
@@ -587,31 +587,31 @@ export interface AchievementManager { gameEngine: any,
   getProgressData(): any;
   updateConfig(config: Partial<AchievementConfig>): void,
   getDebugInfo(): any;
-  resetData(): void;'
+  resetData(): void;
   load(): void;''
   destroy(''';
   quality: 'low' | 'medium' | 'high',
   fullscreen: boolean,
   vsync: boolean,
   particles: boolean,
-  effects: boolean; }
+  effects: boolean }
 }
 
 export interface AudioSettings { masterVolume: number,
   musicVolume: number,
   sfxVolume: number,
-  muted: boolean; }
+  muted: boolean }
 }
 
 export interface ControlSettings { mouseControls: boolean,
   keyboardControls: boolean,
   touchControls: boolean,
-  sensitivity: number; }
+  sensitivity: number }
 }
-';
+';'
 export interface GameplaySettings { ''
   difficulty: 'easy' | 'normal' | 'hard',
-  tutorials: boolean,);
+  tutorials: boolean);
   hints: boolean)';
   autoSave: boolean,' }'
 }

@@ -24,7 +24,7 @@ interface AnimationConfig { fadeSpeed: number,
     transitionDuration: number,
     easingFunction: string,
     maxScrollVelocity: number,
-    scrollDamping: number; }
+    scrollDamping: number }
 }
 
 /**
@@ -36,7 +36,7 @@ interface EntryAnimation { startTime: number,
     endValue: number,
     currentValue: number,
     easing: string,
-    onComplete: (() => void) | null; }
+    onComplete: (() => void) | null }
 }
 
 /**
@@ -50,7 +50,7 @@ interface HoverAnimation { startTime: number,
     startOpacity: number,
     targetOpacity: number,
     currentOpacity: number,
-    persistent: boolean; }
+    persistent: boolean }
 }
 
 /**
@@ -60,7 +60,7 @@ interface SelectAnimation { startTime: number,
     duration: number,
     maxIntensity: number,
     currentIntensity: number,
-    type: string; }
+    type: string }
 }
 
 /**
@@ -74,7 +74,7 @@ interface AnimationState { scrollOffset: number,
     targetFadeOpacity: number,
     entryAnimations: Map<string, EntryAnimation>;
     hoverAnimations: Map<string, HoverAnimation>;
-    selectAnimations: Map<string, SelectAnimation>; }
+    selectAnimations: Map<string, SelectAnimation> }
 }
 
 /**
@@ -85,7 +85,7 @@ interface InteractionState { hoveredEntry: any | null,
     selectedEntry: any | null,
     lastHoverTime: number,
     lastClickTime: number,
-    hoverDelay: number; }
+    hoverDelay: number }
 }
 
 /**
@@ -105,7 +105,7 @@ interface ScrollConfig { wheelSensitivity: number,
 interface PerformanceMetrics { frameCount: number,
     averageFPS: number,
     lastFrameTime: number,
-    animationLoad: number; }
+    animationLoad: number }
 }
 
 /**
@@ -133,7 +133,7 @@ interface SelectAnimationOptions { duration?: number;
  */
 interface EntryAnimationConfig { duration?: number;
     startValue?: number;
-    endValue?: number;'
+    endValue?: number;
     easing?: string;''
     onComplete?: (') => void; }
 }
@@ -169,7 +169,7 @@ export class LeaderboardAnimationController {
         scrollSpeed: 0.2,
         hoverScale: 1.05,
         selectScale: 1.1,
-        entryHeight: 50,';
+        entryHeight: 50,
         transitionDuration: 300,'';
         easingFunction: 'easeInOutCubic',
         maxScrollVelocity: 10,
@@ -185,7 +185,7 @@ export class LeaderboardAnimationController {
         targetFadeOpacity: 1.0,
         entryAnimations: new Map(),
         hoverAnimations: new Map(),
-        selectAnimations: new Map(); }
+        selectAnimations: new Map() }
     };
     
     // ホバー・選択状態
@@ -230,11 +230,11 @@ export class LeaderboardAnimationController {
     /**
      * アニメーションコントローラーを初期化
      */
-    initialize(): void { try {'
-            // アニメーションループを開始''
-            this.startAnimationLoop('')';
+    initialize(): void { try {
+            // アニメーションループを開始
+            this.startAnimationLoop()';
             console.log('[LeaderboardAnimationController] Animation controller initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.initialize'); }
         }
     }
@@ -288,9 +288,9 @@ export class LeaderboardAnimationController {
             this.updateHoverAnimations(currentTime);
             
             // 選択アニメーション
-            this.updateSelectAnimations(currentTime);'
+            this.updateSelectAnimations(currentTime);
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.updateAnimations'); }
         }
     }
@@ -372,7 +372,7 @@ export class LeaderboardAnimationController {
      * ホバーアニメーションを更新
      * @param {number} currentTime - 現在時刻
      */
-    updateHoverAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.hoverAnimations.entries() {'
+    updateHoverAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.hoverAnimations.entries() {
             const elapsed = currentTime - animation.startTime;''
             const progress = Math.min(elapsed / animation.duration, 1');'
             '';
@@ -408,7 +408,7 @@ export class LeaderboardAnimationController {
      * 選択アニメーションを更新
      * @param {number} currentTime - 現在時刻
      */
-    updateSelectAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.selectAnimations.entries() {'
+    updateSelectAnimations(currentTime: number): void { for(const [elementId, animation] of this.animationState.selectAnimations.entries() {
             const elapsed = currentTime - animation.startTime;''
             const progress = Math.min(elapsed / animation.duration, 1');'
             '';
@@ -461,9 +461,9 @@ export class LeaderboardAnimationController {
             if (this.scrollConfig.snapToEntry) { this.snapToNearestEntry(); }
             }
             
-            this.startAnimationLoop();'
+            this.startAnimationLoop();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.scroll'); }
         }
     }
@@ -484,7 +484,7 @@ export class LeaderboardAnimationController {
      * @param {Object} options - オプション'
      */''
     startHover(target: string | { id: string }, options: HoverOptions = { )'): void {'
-        try {''
+        try {'
             const targetId = typeof target === 'string' ? target: target.id,
             const currentTime = Date.now();
             
@@ -504,14 +504,14 @@ export class LeaderboardAnimationController {
                 startScale: 1.0,
                 targetScale: this.animationConfig.hoverScale,
                 currentScale: 1.0,
-                startOpacity: 1.0,);
+                startOpacity: 1.0);
                 targetOpacity: options.targetOpacity || 1.0);
                 currentOpacity: 1.0,);
                 persistent: true),
             
-            this.startAnimationLoop();'
+            this.startAnimationLoop();
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.startHover'); }
         }
     }
@@ -521,7 +521,7 @@ export class LeaderboardAnimationController {
      * @param {string|Object} target - ホバー対象'
      */''
     endHover(target: string | { id: string )'): void {'
-        try {''
+        try {'
             const targetId = typeof target === 'string' ? target: target.id,
             const currentTime = Date.now();
             
@@ -536,16 +536,16 @@ export class LeaderboardAnimationController {
                     startScale: existingAnimation.currentScale,
                     targetScale: 1.0,
                     currentScale: existingAnimation.currentScale,
-                    startOpacity: existingAnimation.currentOpacity,);
+                    startOpacity: existingAnimation.currentOpacity);
                     targetOpacity: 1.0);
-                    currentOpacity: existingAnimation.currentOpacity,);
+                    currentOpacity: existingAnimation.currentOpacity,)
             }
                     persistent: false); }
             }
             
-            this.startAnimationLoop();'
+            this.startAnimationLoop();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.endHover'); }
         }
     }
@@ -556,14 +556,14 @@ export class LeaderboardAnimationController {
      * @param {Object} options - オプション'
      */''
     startSelectAnimation(target: string | { id: string }, options: SelectAnimationOptions = { )'): void {'
-        try {''
+        try {'
             const targetId = typeof target === 'string' ? target: target.id,'';
-            const currentTime = Date.now('')';
+            const currentTime = Date.now()';
                 type: options.type || 'pulse'),
             
             this.startAnimationLoop();'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.startSelectAnimation'); }
         }
     }
@@ -580,14 +580,14 @@ export class LeaderboardAnimationController {
                 startTime: currentTime,
                 duration: animationConfig.duration || this.animationConfig.transitionDuration,
                 startValue: animationConfig.startValue || 0,
-                endValue: animationConfig.endValue || 1,);
+                endValue: animationConfig.endValue || 1);
                 currentValue: animationConfig.startValue || 0);
                 easing: animationConfig.easing || this.animationConfig.easingFunction,);
                 onComplete: animationConfig.onComplete || null),
             
             this.startAnimationLoop();'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardAnimationController.startEntryAnimation'); }
         }
     }
@@ -772,8 +772,8 @@ export class LeaderboardAnimationController {
     updateConfig(newConfig: UpdateConfig): void { if (newConfig.animationConfig) {
             Object.assign(this.animationConfig, newConfig.animationConfig); }
         }
-        if(newConfig.scrollConfig) {'
-            ';
+        if(newConfig.scrollConfig) {
+            ';'
         }'
             Object.assign(this.scrollConfig, newConfig.scrollConfig'); }
         }'
@@ -786,7 +786,7 @@ export class LeaderboardAnimationController {
      */
     clearAllAnimations(): void { this.animationState.entryAnimations.clear();'
         this.animationState.hoverAnimations.clear();''
-        this.animationState.selectAnimations.clear('')';
+        this.animationState.selectAnimations.clear()';
         console.log('[LeaderboardAnimationController] All animations cleared'); }
     }
     
@@ -794,7 +794,7 @@ export class LeaderboardAnimationController {
      * アニメーションコントローラーを破棄
      */'
     dispose(): void { this.stopAnimationLoop();''
-        this.clearAllAnimations('')';
+        this.clearAllAnimations()';
         console.log('[LeaderboardAnimationController] Animation controller disposed''); }'
     }''
 }

@@ -14,7 +14,7 @@ interface MonitoringConfig { interval: number,
     metricsFilter: string[],
     retention: number,
     bufferSize: number,
-    samplingRate: number; }
+    samplingRate: number }
 }
 
 // Event detection interfaces
@@ -28,7 +28,7 @@ interface EventDetector { threshold: number,
     }
 
 interface HistoryEntry { value: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 // Performance event interfaces
@@ -44,12 +44,12 @@ interface PerformanceEvent { type: string,
 interface RealtimeStream { active: boolean,
     buffer: StreamDataPoint[],
     bufferSize: number,
-    lastFlush: number; }
+    lastFlush: number }
 }
 
 interface StreamDataPoint { timestamp: number,
     metrics: Record<string, any>;
-    events: string[]; }
+    events: string[] }
 }
 
 // Data collector interfaces
@@ -58,13 +58,13 @@ interface IDataCollector { initialize(): Promise<void>;
 }
 
 // Error handler type
-interface ErrorHandler { handleError(error: any, context?: { context: string ): void; }
+interface ErrorHandler { handleError(error: any, context?: { context: string ): void }
 }
 
-// Performance monitoring system interface'
+// Performance monitoring system interface
 interface PerformanceMonitoringSystem { ''
     onRealTimeData?(timestamp: number, metrics: Map<string, any>'): void;''
-    onPerformanceEvent?(type: 'detected' | 'resolved', event: PerformanceEvent): void; }
+    onPerformanceEvent?(type: 'detected' | 'resolved', event: PerformanceEvent): void }
 }
 
 // Navigator extensions
@@ -116,7 +116,7 @@ export class RealTimePerformanceMonitor {
             enableRealtimeStream: true,
             metricsFilter: [], // 空の場合は全メトリクス;
             retention: 24 * 60 * 60 * 1000, // 24時間;
-            bufferSize: 1000, // データポイント数;
+            bufferSize: 1000, // データポイント数
     }
     }
             samplingRate: 1.0 // 100%サンプリング }
@@ -143,9 +143,9 @@ export class RealTimePerformanceMonitor {
         this.eventDetectors = new Map<string, EventDetector>();
         this.detectedEvents = [];
         this.eventThresholds = new Map<string, any>();
-        ';
+        ';'
         this.initializeCollectors();''
-        this.setupEventDetectors('')';
+        this.setupEventDetectors()';
         console.log('[RealTimePerformanceMonitor] Real-time performance monitoring component initialized');
     }
     
@@ -158,10 +158,10 @@ export class RealTimePerformanceMonitor {
             await this.renderDataCollector.initialize();
             await this.networkDataCollector.initialize();'
             await this.interactionDataCollector.initialize();''
-            await this.batteryDataCollector.initialize('');'
+            await this.batteryDataCollector.initialize();'
             console.log('[RealTimePerformanceMonitor] Data collectors initialized');' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'RealTimePerformanceMonitor.initializeCollectors'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'RealTimePerformanceMonitor.initializeCollectors') }
             });
         }
     }
@@ -169,37 +169,37 @@ export class RealTimePerformanceMonitor {
     /**
      * Setup performance event detectors'
      */''
-    private setupEventDetectors('')';
-        this.eventDetectors.set('fps_drop', { threshold: 45,)
+    private setupEventDetectors()';
+        this.eventDetectors.set('fps_drop', { threshold: 45)
             duration: 3000, // 3秒間);
             condition: (value: number, threshold: number) => value < threshold,
-            active: false,';
+            active: false,
             startTime: null' }'
         }'),
         ';
-        // Memory leak detector''
+        // Memory leak detector
         this.eventDetectors.set('memory_leak', { threshold: 10, // 10MB/min growth)
             samples: 10),
-            condition: (values: HistoryEntry[]) => this.detectMemoryLeak(values,);
-            active: false)';
+            condition: (values: HistoryEntry[]) => this.detectMemoryLeak(values);
+            active: false);
             history: []') }'
         }'),
         ';
-        // Frame time spike detector''
+        // Frame time spike detector
         this.eventDetectors.set('frame_spike', { )
             threshold: 50, // 50ms);
-            condition: (value: number, threshold: number) => value > threshold,';
+            condition: (value: number, threshold: number) => value > threshold,
             active: false' }'
         }'),
         ';
-        // Network latency spike detector''
+        // Network latency spike detector
         this.eventDetectors.set('network_spike', { )
             threshold: 500, // 500ms);
-            condition: (value: number, threshold: number) => value > threshold,';
+            condition: (value: number, threshold: number) => value > threshold,
             active: false' }'
         }'),
         ';
-        // Input lag detector''
+        // Input lag detector
         this.eventDetectors.set('input_lag', { )
             threshold: 100, // 100ms);
             condition: (value: number, threshold: number) => value > threshold,
@@ -210,7 +210,7 @@ export class RealTimePerformanceMonitor {
     /**
      * Start real-time monitoring
      * @param config - Monitoring configuration
-     */'
+     */
     async startMonitoring(config: Partial<MonitoringConfig> = { ): Promise<void> {''
         if(this.monitoring') {'
             '';
@@ -230,14 +230,14 @@ export class RealTimePerformanceMonitor {
             }, this.monitoringConfig.interval);
             
             // Initialize real-time stream
-            if(this.monitoringConfig.enableRealtimeStream) {'
+            if(this.monitoringConfig.enableRealtimeStream) {
                 '';
-                this.initializeStream('')';
+                this.initializeStream()';
             console.log('[RealTimePerformanceMonitor] Real-time monitoring started');
             }'
             ' }'
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'RealTimePerformanceMonitor.startMonitoring'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'RealTimePerformanceMonitor.startMonitoring') }
             });
             this.monitoring = false;
         }
@@ -262,13 +262,13 @@ export class RealTimePerformanceMonitor {
             }
                 this.monitoringInterval = null; }
             }
-            ';
-            // Stop real-time stream''
-            this.stopStream('')';
+            ;
+            // Stop real-time stream
+            this.stopStream()';
             console.log('[RealTimePerformanceMonitor] Real-time monitoring stopped');'
             '';
-        } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'RealTimePerformanceMonitor.stopMonitoring'); }
+        } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'RealTimePerformanceMonitor.stopMonitoring') }
             });
         }
     }
@@ -313,10 +313,10 @@ export class RealTimePerformanceMonitor {
             if (this.monitoringConfig.enableRealtimeStream) { this.streamData(timestamp, filteredMetrics); }
             }
             
-            // Notify monitoring system'
+            // Notify monitoring system
             if (this.performanceMonitoringSystem && this.performanceMonitoringSystem.onRealTimeData) { this.performanceMonitoringSystem.onRealTimeData(timestamp, filteredMetrics);' }'
-            } catch (error') { this.errorHandler.handleError(error, {')'
-                context: 'RealTimePerformanceMonitor.collectRealTimeData'); }
+            } catch (error) { this.errorHandler.handleError(error, {')'
+                context: 'RealTimePerformanceMonitor.collectRealTimeData') }
             });
         }
     }
@@ -374,7 +374,7 @@ export class RealTimePerformanceMonitor {
      * @param metrics - Current metrics
      * @param timestamp - Current timestamp
      * @returns True if event condition is met
-     */'
+     */
     private checkEventCondition(eventType: string, detector: EventDetector, metrics: Map<string, any>, timestamp: number): boolean { ''
         switch(eventType') {'
             '';
@@ -426,7 +426,7 @@ export class RealTimePerformanceMonitor {
      * @param detector - Memory leak detector
      * @param metrics - Current metrics
      * @param timestamp - Current timestamp
-     * @returns True if memory leak detected'
+     * @returns True if memory leak detected
      */''
     private checkMemoryLeakEvent(detector: EventDetector, metrics: Map<string, any>, timestamp: number'): boolean { ''
         const memoryUsed = metrics.get('memory_used');
@@ -461,7 +461,7 @@ export class RealTimePerformanceMonitor {
      * Check frame spike event
      * @param detector - Frame spike detector
      * @param metrics - Current metrics
-     * @returns True if frame spike detected'
+     * @returns True if frame spike detected
      */''
     private checkFrameSpikeEvent(detector: EventDetector, metrics: Map<string, any>'): boolean { ''
         const frameTime = metrics.get('frame_time');
@@ -526,7 +526,7 @@ export class RealTimePerformanceMonitor {
             type: eventType,
             detected: timestamp,
             metrics: new Map(metrics);
-            severity: this.calculateEventSeverity(eventType, metrics); }
+            severity: this.calculateEventSeverity(eventType, metrics) }
         };
         
         this.detectedEvents.push(event);
@@ -534,10 +534,10 @@ export class RealTimePerformanceMonitor {
         // Keep events history manageable
         if (this.detectedEvents.length > 100) { this.detectedEvents.shift(); }
         }
-        ';
-        // Notify monitoring system''
+        ;
+        // Notify monitoring system
         if(this.performanceMonitoringSystem && this.performanceMonitoringSystem.onPerformanceEvent') {'
-            ';
+            ';'
         }'
             this.performanceMonitoringSystem.onPerformanceEvent('detected', event); }
         }
@@ -570,10 +570,10 @@ export class RealTimePerformanceMonitor {
         }
             detectedEvent.duration = event.duration; }
         }
-        ';
-        // Notify monitoring system''
+        ;
+        // Notify monitoring system
         if(this.performanceMonitoringSystem && this.performanceMonitoringSystem.onPerformanceEvent') {'
-            ';
+            ';'
         }'
             this.performanceMonitoringSystem.onPerformanceEvent('resolved', event); }
         }
@@ -619,7 +619,7 @@ export class RealTimePerformanceMonitor {
                 if (inputLag > 200') return 'critical';''
                 if (inputLag > 150') return 'high';''
                 return 'medium';'
-                ';
+                ';'
         }'
             default: return 'low'; }
         }
@@ -632,7 +632,7 @@ export class RealTimePerformanceMonitor {
             active: true,
             buffer: [],';
             bufferSize: this.monitoringConfig.bufferSize,'';
-            lastFlush: Date.now('')';
+            lastFlush: Date.now()';
         console.log('[RealTimePerformanceMonitor] Real-time stream initialized'), }
     }
     
@@ -645,8 +645,8 @@ export class RealTimePerformanceMonitor {
         
         const dataPoint: StreamDataPoint = {
             timestamp,
-            metrics: Object.fromEntries(metrics,);
-            events: this.getActiveEvents(); }
+            metrics: Object.fromEntries(metrics);
+            events: this.getActiveEvents() }
         };
         
         // Add to stream buffer
@@ -662,7 +662,7 @@ export class RealTimePerformanceMonitor {
     
     /**
      * Stop real-time data stream
-     */'
+     */
     private stopStream(): void { ''
         if(this.realtimeStream') {
             this.realtimeStream.active = false;
@@ -690,10 +690,10 @@ export class RealTimePerformanceMonitor {
      * @param dataPoint - Stream data point
      */
     private notifyStreamSubscribers(dataPoint: StreamDataPoint): void { for (const callback of this.streamSubscribers) {
-            try {'
+            try {
                 callback(dataPoint);' }'
-            } catch (error') { ''
-                console.warn('[RealTimePerformanceMonitor] Stream subscriber error:', error); }
+            } catch (error) { ''
+                console.warn('[RealTimePerformanceMonitor] Stream subscriber error:', error) }
             }
         }
     }
@@ -767,7 +767,7 @@ export class RealTimePerformanceMonitor {
         this.stopStream();
         this.streamSubscribers.clear();'
         this.detectedEvents = [];''
-        this.eventDetectors.clear('')';
+        this.eventDetectors.clear()';
         console.log('[RealTimePerformanceMonitor] Monitor destroyed'); }
     }
 }
@@ -793,10 +793,10 @@ class FrameDataCollector implements IDataCollector { private lastFrameTime: numb
         }
             this.frameTimes.shift(); }
         }
-        ';
+        ';'
         const fps = this.frameTimes.length > 0 ? 1000 / (this.frameTimes.reduce((a, b) => a + b) / this.frameTimes.length) : 60;''
         const variance = this.calculateVariance(this.frameTimes');
-        ';
+        ';'
         return new Map(['])';
             ['fps', Math.min(fps, 60')],'';
             ['frame_time', frameTime],'';
@@ -821,12 +821,12 @@ class MemoryDataCollector implements IDataCollector { private baselineMemory: nu
         if (!memory) return new Map();
         
         const now = Date.now();
-        const timeDelta = (now - this.lastMemoryCheck) / 1000; // seconds'
-        const memoryUsed = memory.usedJSHeapSize / 1024 / 1024; // MB''
+        const timeDelta = (now - this.lastMemoryCheck) / 1000; // seconds
+        const memoryUsed = memory.usedJSHeapSize / 1024 / 1024; // MB
         const memoryGrowth = timeDelta > 0 ? (memoryUsed - this.baselineMemory') / timeDelta: 0,
         
         this.lastMemoryCheck = now;
-        ';
+        ';'
         return new Map([']';
             ['memory_used', memoryUsed],'';
             ['memory_growth', memoryGrowth],'';
@@ -838,11 +838,11 @@ class MemoryDataCollector implements IDataCollector { private baselineMemory: nu
 class RenderDataCollector implements IDataCollector { private lastRenderTime: number = 0
     
     async initialize(): Promise<void> {
-        this.lastRenderTime = performance.now(); }
+        this.lastRenderTime = performance.now() }
     }
-    ';
+    ';'
     async collect(): Promise<Map<string, any>> { const now = performance.now();''
-        const renderTime = Math.random('')';
+        const renderTime = Math.random()';
             ['render_time', renderTime],')';
             ['draw_calls', Math.floor(Math.random() * 50') + 10],'';
             ['triangles', Math.floor(Math.random() * 10000) + 1000];
@@ -853,9 +853,9 @@ class RenderDataCollector implements IDataCollector { private lastRenderTime: nu
 class NetworkDataCollector implements IDataCollector { private connection: any
     
     async initialize(): Promise<void> {
-        this.connection = navigator.connection; }
+        this.connection = navigator.connection }
     }
-    ';
+    ';'
     async collect(): Promise<Map<string, any>> { ''
         const latency = Math.random(''';
             ['network_latency', latency],')';
@@ -871,7 +871,7 @@ class InteractionDataCollector implements IDataCollector { : undefined
         this.lastInputTime = Date.now(); }
     }
     ';
-    async collect(): Promise<Map<string, any>> { const inputLag = Math.random() * 30 + 5; // Simulated input lag''
+    async collect(): Promise<Map<string, any>> { const inputLag = Math.random() * 30 + 5; // Simulated input lag
         const responseTime = Math.random(''';
             ['input_lag', inputLag],')';
             ['response_time', responseTime]);
@@ -882,12 +882,12 @@ class InteractionDataCollector implements IDataCollector { : undefined
 class BatteryDataCollector implements IDataCollector { private battery: any
     
     async initialize(): Promise<void> {
-        this.battery = navigator.battery || navigator.getBattery? .(); }
+        this.battery = navigator.battery || navigator.getBattery? .() }
     }
      : undefined';
-    async collect(): Promise<Map<string, any>> { const powerConsumption = Math.random() * 400 + 200; // Simulated power consumption''
-        const thermalState = Math.floor(Math.random() * 3'); // 0-2 thermal levels
-        ';
+    async collect(): Promise<Map<string, any>> { const powerConsumption = Math.random() * 400 + 200; // Simulated power consumption
+        const thermalState = Math.floor(Math.random() * 3); // 0-2 thermal levels
+        ';'
         return new Map([']';
             ['power_consumption', powerConsumption],'';
             ['thermal_state', thermalState]')';

@@ -12,7 +12,7 @@ interface CullingConfig { distanceCulling: boolean,
     maxCullingDistance: number,
     nearCullingDistance: number,
     maxAge: number,
-    ageBasedCulling: boolean; }
+    ageBasedCulling: boolean }
 }
 
 interface ImportanceFactors {
@@ -29,7 +29,7 @@ interface ImportanceThresholds { veryHigh: number,
     high: number,
     medium: number,
     low: number,
-    veryLow: number; }
+    veryLow: number }
 }
 
 interface ImportanceScoring { enabled: boolean,
@@ -37,7 +37,7 @@ interface ImportanceScoring { enabled: boolean,
     scoreCache: Map<string, number>;
     cacheValidFrames: number,
     currentFrame: number,
-    thresholds: ImportanceThresholds;
+    thresholds: ImportanceThresholds
     }
 }
 
@@ -51,30 +51,30 @@ interface CullingStats { totalParticles: number,
     cullingEfficiency: number,
     cullingTime: number,
     averageCullingTime: number,
-    scoringTime: number; }
+    scoringTime: number }
 }
 
 interface OcclusionSystem { enabled: boolean,
     occluders: Set<OccluderBounds>,
     occlusionMap: Map<string, boolean>;
     raycastGrid: Map<string, any>;
-    gridSize: number; }
+    gridSize: number }
 }
 
 interface OccluderBounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface CameraInfo { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface ParticleVelocity { x: number,
-    y: number; }
+    y: number }
 }
 
 interface CullableParticle { x: number,
@@ -120,7 +120,7 @@ export class ParticleCullingSystem {
             nearCullingDistance: config.nearCullingDistance || 50,
             
             // Age thresholds
-            maxAge: config.maxAge || 10.0, // seconds;
+            maxAge: config.maxAge || 10.0, // seconds
     }
     }
             ageBasedCulling: config.ageBasedCulling || true }
@@ -337,7 +337,7 @@ export class ParticleCullingSystem {
         // Calculate importance scores
         const scoredParticles = particles.map(particle => ({ )
             particle);
-            score: this.calculateImportanceScore(particle, camera); }
+            score: this.calculateImportanceScore(particle, camera) }
         });
         
         // Sort by importance score (highest first);

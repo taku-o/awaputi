@@ -4,7 +4,7 @@ import { getErrorHandler } from '../../utils/ErrorHandler.js';
 
 interface ResourcePool<T = any> { pool: T[],
     maxSize: number,
-    active: number; }
+    active: number }
 }
 
 interface PooledResource { active: boolean,
@@ -21,26 +21,26 @@ interface ParticleResource extends PooledResource { x: number,
     opacity: number,
     life: number,
     maxLife: number,
-    type: string; }
+    type: string }
 }
 
 interface TextureResource extends PooledResource { canvas: HTMLCanvasElement,
     context: CanvasRenderingContext2D,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface AnimationResource extends PooledResource { startTime: number,
     duration: number,
     elapsed: number,
-    progress: number,';
+    progress: number,
     easing: string,'';
-    onComplete: (() => void') | null; }
+    onComplete: (() => void') | null }
 }
 
 interface SoundResource extends PooledResource { buffer: AudioBuffer | null,
     source: AudioBufferSourceNode | null,
-    gainNode: GainNode | null; }
+    gainNode: GainNode | null }
 }'
 '';
 type ResourceType = 'particles' | 'textures' | 'animations' | 'sounds';
@@ -48,7 +48,7 @@ type ResourceType = 'particles' | 'textures' | 'animations' | 'sounds';
 interface MemorySettings { maxHeapUsage: number,
     gcThreshold: number,
     cleanupInterval: number,
-    lowMemoryThreshold: number; }
+    lowMemoryThreshold: number }
 }
 
 interface NetworkSettings { enabled: boolean,
@@ -56,13 +56,13 @@ interface NetworkSettings { enabled: boolean,
     dataUsageLimit: number,
     dataUsageCount: number,
     preferredFormats: string[],
-    compressionLevel: number; }
+    compressionLevel: number }
 }
-';
+';'
 interface NetworkConnection { ''
     effectiveType: '4g' | '3g' | '2g' | 'slow-2g',';
     downlink: number,'';
-    addEventListener(type: 'change', listener: EventListener): void; }
+    addEventListener(type: 'change', listener: EventListener): void }
 }
 
 interface ResourceStatistics { memoryAllocated: number,
@@ -77,13 +77,13 @@ interface ResourceStatistics { memoryAllocated: number,
     memoryUsage: number,
     dataUsage: { transferred: number,
         limit: number,
-        remaining: number; }
+        remaining: number }
     };
 }
 
 interface ResourceManagerState { initialized: boolean,
     memoryBudget: number,
-    networkAware: boolean; }
+    networkAware: boolean }
 }
 
 interface CachedResource { _cacheTime: number,
@@ -95,14 +95,14 @@ interface LoadedImageResource { canvas: HTMLCanvasElement,
     width: number,
     height: number,
     size: number,
-    url: string; }
+    url: string }
 }
 
 interface LoadedAudioResource { buffer: AudioBuffer,
     context: AudioContext,
     duration: number,
     size: number,
-    url: string; }
+    url: string }
 }
 
 interface ResourceSettings { memory?: Partial<MemorySettings>;
@@ -129,10 +129,10 @@ declare global { interface Navigator {
     interface Performance { memory?: {
             totalJSHeapSize: number,
             usedJSHeapSize: number,
-            jsHeapSizeLimit: number; }
+            jsHeapSizeLimit: number }
         };
     }
-    ';
+    ';'
     interface Window { ''
         gc?: (') => void;
         AudioContext?: typeof AudioContext;
@@ -150,7 +150,7 @@ export class MobileResourceManager {
         memoryBudget: 0,
         networkAware: false }
     },
-    ';
+    ';'
     private readonly resourcePools = new Map<ResourceType, ResourcePool>([']';
         ['particles', { pool: [], maxSize: 1000, active: 0 }],''
         ['textures', { pool: [], maxSize: 50, active: 0 }],''
@@ -166,12 +166,12 @@ export class MobileResourceManager {
     
     private networkSettings: NetworkSettings = { enabled: false
         connection: null,
-        dataUsageLimit: 10 * 1024 * 1024, // 10MB';
+        dataUsageLimit: 10 * 1024 * 1024, // 10MB;
         dataUsageCount: 0,'';
         preferredFormats: ['webp', 'avif', 'jpg'],
         compressionLevel: 0.8 }
     },
-    ';
+    ';'
     private readonly caches = new Map<string, Map<string, CachedResource>>(['';
         ['textures', new Map(''';
         ['sounds', new Map('']';
@@ -188,14 +188,14 @@ export class MobileResourceManager {
         dataTransferred: 0 }
     },'
     '';
-    constructor('')';
+    constructor()';
         console.log('MobileResourceManager initialized');
     }
     
     /**
      * 初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('Initializing mobile resource management...');
             
             // メモリ情報の取得
@@ -212,16 +212,16 @@ export class MobileResourceManager {
             
             // メモリ監視の開始
             this.startMemoryMonitoring();
-            ';
-            // イベントリスナーの設定''
-            this.setupEventListeners('')';
+            ;
+            // イベントリスナーの設定
+            this.setupEventListeners()';
             console.log('Mobile resource management initialized successfully');
             
             return true;'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'RESOURCE_MANAGEMENT_ERROR', {')'
                 operation: 'initialize',')';
-                component: 'MobileResourceManager'); }
+                component: 'MobileResourceManager') }
             });
             return false;
         }
@@ -230,7 +230,7 @@ export class MobileResourceManager {
     /**
      * メモリ機能の検出'
      */''
-    private detectMemoryCapabilities('')';
+    private detectMemoryCapabilities()';
         if('memory' in performance && performance.memory) {
             const memory = performance.memory;
             this.state.memoryBudget = memory.jsHeapSizeLimit;
@@ -246,7 +246,7 @@ export class MobileResourceManager {
                 this.adjustPoolSizes(0.5); }
             } else if (memoryGB >= 4) { // 4GB以上: プールサイズを拡張
                 this.adjustPoolSizes(1.5); }
-            }'
+            }
             '';
             console.log(`Memory budget: ${(memoryGB).toFixed(2})}GB`');'
         } else {  ''
@@ -257,15 +257,15 @@ export class MobileResourceManager {
     }
     
     /**
-     * ネットワーク機能の検出'
+     * ネットワーク機能の検出
      */''
-    private async detectNetworkCapabilities('')';
+    private async detectNetworkCapabilities()';
         if('connection' in navigator && navigator.connection) {
             this.networkSettings.connection = navigator.connection;
             this.networkSettings.enabled = true;
             ';
-            // 接続タイプに基づく設定調整''
-            this.adjustNetworkSettings('');
+            // 接続タイプに基づく設定調整
+            this.adjustNetworkSettings();
         }'
             navigator.connection.addEventListener('change', () => {  }'
                 this.adjustNetworkSettings();' }'
@@ -297,7 +297,7 @@ export class MobileResourceManager {
         const connection = this.networkSettings.connection;
         const effectiveType = connection.effectiveType;
          }
-        console.log(`Network type: ${effectiveType}, downlink: ${ connection.downlink)Mbps`),'
+        console.log(`Network type: ${effectiveType}, downlink: ${ connection.downlink)Mbps`),
         ' }'
         switch(effectiveType'}) {'
             '';
@@ -305,12 +305,12 @@ export class MobileResourceManager {
             case '2g':;
                 this.networkSettings.compressionLevel = 0.6;
                 this.networkSettings.dataUsageLimit = 1 * 1024 * 1024; // 1MB
-                break;'
+                break;
                 '';
             case '3g':;
                 this.networkSettings.compressionLevel = 0.7;
                 this.networkSettings.dataUsageLimit = 5 * 1024 * 1024; // 5MB
-                break;'
+                break;
                 '';
             case '4g':;
             default: this.networkSettings.compressionLevel = 0.8,
@@ -322,7 +322,7 @@ export class MobileResourceManager {
     
     /**
      * リソースプールの初期化
-     */'
+     */
     private initializeResourcePools(): void { for (const [type, pool] of this.resourcePools) {''
             this.preAllocatePool(type, Math.min(pool.maxSize / 4, 25)'); }
         }'
@@ -360,7 +360,7 @@ export class MobileResourceManager {
             case 'textures':'';
                 return this.createTextureResource(''';
             case 'animations':'';
-                return this.createAnimationResource('')';
+                return this.createAnimationResource()';
             case 'sounds':);
                 return this.createSoundResource();
                 
@@ -386,14 +386,14 @@ export class MobileResourceManager {
     /**
      * テクスチャリソースの作成'
      */''
-    private createTextureResource('')';
+    private createTextureResource()';
         const canvas = document.createElement('canvas'');
         canvas.width = 32;
         canvas.height = 32;'
         '';
         const context = canvas.getContext('2d');''
         if(!context') {'
-            ';
+            ';'
         }'
             throw new Error('Failed to get 2D context for texture resource'); }
         }
@@ -490,11 +490,11 @@ export class MobileResourceManager {
     }
     
     /**
-     * リソース状態のリセット'
+     * リソース状態のリセット
      */''
-    private resetResourceState(resource: PooledResource'): void { // 基本プロパティのリセット''
+    private resetResourceState(resource: PooledResource'): void { // 基本プロパティのリセット
         if('life' in resource) {'
-            ';
+            ';'
         }'
             resource.life = (resource as any').maxLife || 1; }
         }'
@@ -526,16 +526,16 @@ export class MobileResourceManager {
     }
     
     /**
-     * リソースのクリーンアップ'
+     * リソースのクリーンアップ
      */''
-    private cleanupResource(resource: PooledResource'): void { // Canvas リソースのクリーンアップ''
+    private cleanupResource(resource: PooledResource'): void { // Canvas リソースのクリーンアップ
         if('canvas' in resource && 'context' in resource) {'
             const textureResource = resource as TextureResource;'
         }'
             textureResource.context.clearRect(0, 0, textureResource.canvas.width, textureResource.canvas.height'); }
         }
         ';
-        // Audio リソースのクリーンアップ''
+        // Audio リソースのクリーンアップ
         if('source' in resource) {
             const soundResource = resource as SoundResource;
             if (soundResource.source) {
@@ -544,12 +544,12 @@ export class MobileResourceManager {
                     soundResource.source.disconnect();
         }'
                     soundResource.source = null;' }'
-                } catch (error') { // 既に停止している場合は無視 }
+                } catch (error) { // 既に停止している場合は無視 }
                 }
             }
         }
-        ';
-        // アニメーションリソースのクリーンアップ''
+        ;
+        // アニメーションリソースのクリーンアップ
         if ('onComplete' in resource) { (resource as AnimationResource).onComplete = null; }
         }
     }
@@ -648,7 +648,7 @@ export class MobileResourceManager {
     /**
      * 定期クリーンアップの開始
      */
-    private startPeriodicCleanup(): void { setInterval(() => {  }'
+    private startPeriodicCleanup(): void { setInterval(() => {  }
             this.performPeriodicCleanup();' }'
         }, this.memorySettings.cleanupInterval');'
         '';
@@ -677,9 +677,9 @@ export class MobileResourceManager {
     }
     
     /**
-     * 現在のメモリ使用量の取得'
+     * 現在のメモリ使用量の取得
      */''
-    private getCurrentMemoryUsage('')';
+    private getCurrentMemoryUsage()';
         if('memory' in performance && performance.memory) {
             const memory = performance.memory;
         }
@@ -737,12 +737,12 @@ export class MobileResourceManager {
     }
     
     /**
-     * ガベージコレクション実行の提案'
+     * ガベージコレクション実行の提案
      */''
-    private suggestGarbageCollection('')';
+    private suggestGarbageCollection()';
         if(window.gc && typeof window.gc === 'function') {'
-            try {''
-                window.gc('');
+            try {'
+                window.gc();
         }'
                 console.log('Manual garbage collection invoked'); }
             } catch (error) { // 本番環境では利用不可 }
@@ -751,9 +751,9 @@ export class MobileResourceManager {
     }
     
     /**
-     * メモリ監視の開始'
+     * メモリ監視の開始
      */''
-    private startMemoryMonitoring('')';
+    private startMemoryMonitoring()';
         if(!('memory' in performance) return;
         
         setInterval(() => {  const memoryUsage = this.getCurrentMemoryUsage();
@@ -770,9 +770,9 @@ export class MobileResourceManager {
     }
     
     /**
-     * 低メモリ時の処理'
+     * 低メモリ時の処理
      */''
-    private handleLowMemory('')';
+    private handleLowMemory()';
         console.log('Handling low memory condition');
         
         // 緊急クリーンアップ
@@ -802,8 +802,8 @@ export class MobileResourceManager {
         }
             return this.loadResourceDirect(url, type, options); }
         }
-        ';
-        // データ使用量チェック''
+        ;
+        // データ使用量チェック
         if(this.networkSettings.dataUsageCount >= this.networkSettings.dataUsageLimit') {'
             '';
             console.warn('Data usage limit reached, using cached resources only');
@@ -813,11 +813,11 @@ export class MobileResourceManager {
         
         // 接続品質に基づく最適化
         const optimizedUrl = this.optimizeResourceUrl(url, type);
-        ';
-        try { ''
+        ';'
+        try {'
             const resource = await this.loadResourceDirect(optimizedUrl, type, options');
             ';
-            // データ使用量を更新''
+            // データ使用量を更新
             if(resource && 'size' in resource) {
                 this.networkSettings.dataUsageCount += resource.size as number;
             }
@@ -839,15 +839,15 @@ export class MobileResourceManager {
     
     /**
      * リソースURLの最適化
-     */'
+     */
     private optimizeResourceUrl(url: string, type: string): string { ''
         if (!this.networkSettings.connection') return url;
         
         const connection = this.networkSettings.connection;
         ';
-        // 低速接続の場合の最適化''
+        // 低速接続の場合の最適化
         if(connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g'') {'
-            // 低解像度版やプレースホルダーを使用''
+            // 低解像度版やプレースホルダーを使用
             if (type === 'texture' || type === 'image') {'
         }'
                 return url.replace(/\.(jpg|png')$/, '_low.$1'); }
@@ -860,7 +860,7 @@ export class MobileResourceManager {
     /**
      * 直接リソース読み込み
      */'
-    private async loadResourceDirect(url: string, type: string, options: Record<string, any>): Promise<CachedResource | null> { // 実装は type に応じて分岐''
+    private async loadResourceDirect(url: string, type: string, options: Record<string, any>): Promise<CachedResource | null> { // 実装は type に応じて分岐
         switch(type') {'
             '';
             case 'texture':'';
@@ -888,7 +888,7 @@ export class MobileResourceManager {
                 const ctx = canvas.getContext('2d');'
                 '';
                 if(!ctx') {'
-                    ';
+                    ';'
                 }'
                     reject(new Error('Failed to get 2D context for image loading'); }
                     return; }
@@ -900,7 +900,7 @@ export class MobileResourceManager {
                 
                 resolve({ canvas: canvas,
                     context: ctx,
-                    width: img.width,);
+                    width: img.width);
                     height: img.height);
                     size: img.width * img.height * 4, // RGBA;
                     url: url;
@@ -917,10 +917,10 @@ export class MobileResourceManager {
     
     /**
      * 音声リソースの読み込み
-     */'
+     */
     private async loadAudioResource(url: string, options: Record<string, any>): Promise<LoadedAudioResource> { ''
         if(!window.AudioContext && !window.webkitAudioContext') {'
-            ';
+            ';'
         }'
             throw new Error('Web Audio API not supported'); }
         }
@@ -943,17 +943,17 @@ export class MobileResourceManager {
     /**
      * イベントリスナーの設定'
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         window.addEventListener('memory-pressure', () => { this.handleLowMemory();' }'
         }');
         ';
-        // ページ非表示時のリソース解放''
+        // ページ非表示時のリソース解放
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.handlePageHidden(); }'
             }''
         }');
         ';
-        // アンロード時のクリーンアップ''
+        // アンロード時のクリーンアップ
         window.addEventListener('beforeunload', () => { this.handleBeforeUnload(); }
         });
     }
@@ -961,10 +961,10 @@ export class MobileResourceManager {
     /**
      * ページ非表示時の処理'
      */''
-    private handlePageHidden('')';
+    private handlePageHidden()';
         console.log('Page hidden, releasing non-essential resources');
         ';
-        // 非必須リソースの解放''
+        // 非必須リソースの解放
         for(const [type, pool] of this.resourcePools') {'
             '';
             if (type !== 'particles') { // パーティクル以外を解放
@@ -975,9 +975,9 @@ export class MobileResourceManager {
     }
     
     /**
-     * アンロード前の処理'
+     * アンロード前の処理
      */''
-    private handleBeforeUnload('')';
+    private handleBeforeUnload()';
         console.log('Page unloading, performing final cleanup');
         
         // 全リソースのクリーンアップ
@@ -1000,7 +1000,7 @@ export class MobileResourceManager {
             memoryUsage: this.getCurrentMemoryUsage(),
             dataUsage: { transferred: this.statistics.dataTransferred,
                 limit: this.networkSettings.dataUsageLimit,
-                remaining: Math.max(0, this.networkSettings.dataUsageLimit - this.networkSettings.dataUsageCount); }
+                remaining: Math.max(0, this.networkSettings.dataUsageLimit - this.networkSettings.dataUsageCount) }
             }
         };
     }
@@ -1013,8 +1013,8 @@ export class MobileResourceManager {
         }
         
         if(newSettings.network) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             Object.assign(this.networkSettings, newSettings.network'); }
         }'
@@ -1035,7 +1035,7 @@ export class MobileResourceManager {
             statistics: this.getStatistics(),
             resourcePools: Object.fromEntries(this.resourcePools),
             cacheStatus: Object.fromEntries(),
-                Array.from(this.caches.entries().map(([type, cache]) => [type, ];
+                Array.from(this.caches.entries().map(([type, cache]) => [type ];
                     { size: cache.size, maxSize: this.getMaxCacheSize(type) }]
                 ]);
             );
@@ -1045,7 +1045,7 @@ export class MobileResourceManager {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying MobileResourceManager...');
         
         // 全リソースのクリーンアップ
@@ -1057,13 +1057,13 @@ export class MobileResourceManager {
         }
         
         // キャッシュのクリア
-        for(const cache of this.caches.values() {'
+        for(const cache of this.caches.values() {
             '';
-            cache.clear('')';
+            cache.clear()';
         window.removeEventListener('memory-pressure', this.handleLowMemory');''
         document.removeEventListener('visibilitychange', this.handlePageHidden');''
         window.removeEventListener('beforeunload', this.handleBeforeUnload');
-        ';
+        ';'
         this.state.initialized = false;'
         }'
         console.log('MobileResourceManager destroyed''); }'

@@ -24,7 +24,7 @@ export interface EventTheme { name: string,
     },
     effects: { bubbleDestruction: string,
         comboEffect: string,
-        backgroundPattern: string; }
+        backgroundPattern: string }
     };
 }
 
@@ -37,7 +37,7 @@ export interface SeasonalSummary { currentSeason: Season,
     activeEvents: string[],
     daysUntilNextSeason: number,
     lastCheck: Date,
-    nextCheck: Date;
+    nextCheck: Date
     }
 }
 
@@ -45,7 +45,7 @@ export interface DetectorStatus { currentSeason: Season,
     currentEvent: string | null,
     lastCheck: number,
     checkInterval: number,
-    isCheckRequired: boolean; }
+    isCheckRequired: boolean }
 }
 
 export interface DetectorSettings { seasonCheckInterval?: number; }
@@ -55,7 +55,7 @@ export class SeasonDetector {
     private lastSeasonCheck: number;
     private seasonCheckInterval: number;
     private currentSeason: Season;
-    private currentEvent: string | null';
+    private currentEvent: string | null;
     '';
     constructor(''';
         this.currentSeason = 'spring';
@@ -69,8 +69,8 @@ export class SeasonDetector {
     detectCurrentSeason(): Season { const now = new Date();
         const month = now.getMonth() + 1; // 0-based to 1-based
         const day = now.getDate();
-        ';
-        // 季節の判定（北半球基準）''
+        ;
+        // 季節の判定（北半球基準）
         if ((month === 3 && day >= 20) || (month === 4) || (month === 5) || (month === 6 && day < 21)') {''
             this.currentSeason = 'spring';' }'
         } else if ((month === 6 && day >= 21) || (month === 7) || (month === 8) || (month === 9 && day < 23)') { ''
@@ -165,10 +165,10 @@ export class SeasonDetector {
         
         const seasonStartDates: Record<Season, Date> = {
             spring: new Date(currentYear, 2, 20), // 3月20日;
-            summer: new Date(currentYear, 5, 21), // 6月21日';
-            autumn: new Date(currentYear, 8, 23), // 9月23日'';
+            summer: new Date(currentYear, 5, 21), // 6月21日;
+            autumn: new Date(currentYear, 8, 23), // 9月23日;
             winter: new Date(currentYear, 11, 21') // 12月21日 }
-        };'
+        };
         '';
         const seasons: Season[] = ['spring', 'summer', 'autumn', 'winter'];
         const currentIndex = seasons.indexOf(currentSeason);
@@ -189,7 +189,7 @@ export class SeasonDetector {
      * 現在進行中のイベント一覧を取得
      * @param eventThemes - イベントテーマ定義
      * @returns アクティブイベント配列
-     */'
+     */
     getAllActiveEvents(eventThemes: EventThemes): string[] { const now = new Date();' }'
         const currentDate = `${String(now.getMonth() + 1').padStart(2, '0'})}-${String(now.getDate()').padStart(2, '0'})}`;
         
@@ -247,6 +247,6 @@ export class SeasonDetector {
      */
     getDetectorStatus(): DetectorStatus { return { currentSeason: this.currentSeason,
             currentEvent: this.currentEvent,
-            lastCheck: this.lastSeasonCheck,';
+            lastCheck: this.lastSeasonCheck,
             checkInterval: this.seasonCheckInterval,' };'
             isCheckRequired: this.shouldCheckSeason(') }')

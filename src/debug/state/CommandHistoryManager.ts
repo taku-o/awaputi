@@ -12,6 +12,6 @@ export class CommandHistoryManager {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

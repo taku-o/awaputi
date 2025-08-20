@@ -16,11 +16,11 @@ export interface OptimizerConfig { batchSize: number,
     maxNotifications: number,
     enableCaching: boolean,
     enableBatching: boolean,
-    enableThrottling: boolean; }
+    enableThrottling: boolean }
 }
 
 export interface CacheEntry<T = any> { value: T,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface BatchEvent { eventType: string,
@@ -28,7 +28,7 @@ export interface BatchEvent { eventType: string,
     processor: EventProcessor,
     resolve: (value: any) => void,
     reject: (reason: any) => void,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface ThrottledEvent { eventType: string,
@@ -36,7 +36,7 @@ export interface ThrottledEvent { eventType: string,
     processor: EventProcessor,
     resolve: (value: any) => void,
     reject: (reason: any) => void,
-    timestamp?: number; }
+    timestamp?: number }
 }
 
 export interface PerformanceStats { updateCount: number,
@@ -45,23 +45,23 @@ export interface PerformanceStats { updateCount: number,
     cacheMisses: number,
     batchProcessingCount: number,
     throttledEvents: number,
-    totalProcessingTime: number; }
+    totalProcessingTime: number }
 }
 
 export interface ExtendedPerformanceStats extends PerformanceStats { cacheEfficiency: number,
     cacheSize: number,
-    queueSize: number; }
+    queueSize: number }
 }
 
 export interface OptimizedBubbleData { totalBubbles: number,
     bubbleTypeCounts: Record<string, number>,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface OptimizedScoreData { totalScore: number,
     maxScore: number,
     updateCount: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface EventData { bubbleType?: string;
@@ -183,7 +183,7 @@ export class AchievementPerformanceOptimizer {
     private async addToBatch(eventType: string, data: any, processor: EventProcessor): Promise<any> { return new Promise<any>((resolve, reject) => { 
             this.batchQueue.push({
                 eventType,
-                data,);
+                data);
                 processor);
                 resolve,);
                 reject); }
@@ -260,7 +260,7 @@ export class AchievementPerformanceOptimizer {
      * @param eventType イベントタイプ
      * @param events イベント配列
      * @returns 最適化されたデータ
-     */'
+     */
     private optimizeEventData(eventType: string, events: BatchEvent[]): OptimizedBubbleData | OptimizedScoreData | null { ''
         switch(eventType') {'
             '';
@@ -277,12 +277,12 @@ export class AchievementPerformanceOptimizer {
     /**
      * 泡イベントを最適化
      * @param events 泡イベント配列
-     * @returns 最適化されたデータ'
+     * @returns 最適化されたデータ
      */''
     private optimizeBubbleEvents(events: BatchEvent[]'): OptimizedBubbleData {
         const bubbleTypeCounts: Record<string, number> = {};
         let totalBubbles = 0;
-        ';
+        ';'
         events.forEach(event => {  ')'
             const bubbleType = event.data.bubbleType || 'normal');
             bubbleTypeCounts[bubbleType] = (bubbleTypeCounts[bubbleType] || 0) + 1; }
@@ -422,7 +422,7 @@ export class AchievementPerformanceOptimizer {
         
         this.cache.set(key, {)
             value);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         });
         
         // キャッシュサイズ制限
@@ -553,6 +553,6 @@ export class AchievementPerformanceOptimizer {
      */
     destroy(): void { this.pause();
         this.cache.clear();
-        this.updateQueue = [];'
+        this.updateQueue = [];
         this.batchQueue = [];''
         this.resetPerformanceStats(') }')

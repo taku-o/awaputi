@@ -12,62 +12,62 @@ interface PerformanceTestSuite { baselines: Map<string, any>;
     summarizeNetworkResults(results: any): any,
     summarizeBatteryResults(results: any): any,
     calculateVariance(values: number[]): number,
-    calculatePercentile(values: number[], percentile: number): number; }
+    calculatePercentile(values: number[], percentile: number): number }
 }
 
 interface TestEnvironment { canvas: HTMLCanvasElement | null,
     context: CanvasRenderingContext2D | null,
     mockGameEngine: any,
-    performanceObserver: PerformanceObserver | null; }
+    performanceObserver: PerformanceObserver | null }
 }
 
 interface TestResult { name: string,
     result: number,
     expected: number,
     passed: boolean,
-    details?: any; }
+    details?: any }
 }
 
 interface CategoryTestResult { category: string,
     tests: Record<string, TestResult>;
     passed: boolean,
-    summary: any; }
+    summary: any }
 }
 
 interface MemoryUsage { usedJSHeapSize: number,
     totalJSHeapSize: number,
-    jsHeapSizeLimit: number; }
+    jsHeapSizeLimit: number }
 }
 
 interface FrameRateTestResults { steadyState: TestResult,
     underLoad: TestResult,
     stabilityAfterSpike: TestResult,
-    varianceAnalysis: TestResult;
+    varianceAnalysis: TestResult
     }
 }
 
 interface MemoryTestResults { baselineUsage: TestResult,
     leakDetection: TestResult,
     gcEfficiency: TestResult,
-    pressureHandling: TestResult;
+    pressureHandling: TestResult
     }
 }
 
 interface RenderingTestResults { dirtyRegionEfficiency: TestResult,
     viewportCulling: TestResult,
     layerComposition: TestResult,
-    renderTime: TestResult;
+    renderTime: TestResult
     }
 }
 
 interface NetworkTestResults { latency: TestResult,
     throughput: TestResult,
-    reliability: TestResult;
+    reliability: TestResult
     }
 }
 
 interface BatteryTestResults { powerConsumption: TestResult,
-    efficiency: TestResult;
+    efficiency: TestResult
     }
 }
 
@@ -99,9 +99,9 @@ export class PerformanceTestExecutor {
         if ('PerformanceObserver' in window) { this.testEnvironment.performanceObserver = new PerformanceObserver((list) => {  }'
                 this.performanceTestSuite.processPerformanceEntries(list.getEntries();' }'
             }');
-            ';
+            ';'
             this.testEnvironment.performanceObserver.observe({ ')'
-                entryTypes: ['measure', 'navigation', 'resource', 'paint']); }
+                entryTypes: ['measure', 'navigation', 'resource', 'paint']) }
             });
         }
     }
@@ -109,12 +109,12 @@ export class PerformanceTestExecutor {
     /**
      * フレームレートテストの実行'
      */''
-    async runFrameRateTests('')';
+    async runFrameRateTests()';
         console.log('Running frame rate tests...');
         const frameRateTests = { steadyState: await this.testSteadyStateFrameRate(),
             underLoad: await this.testFrameRateUnderLoad(),';
             stabilityAfterSpike: await this.testFrameStabilityAfterSpike(),'';
-            varianceAnalysis: await this.testFrameRateVariance('')';
+            varianceAnalysis: await this.testFrameRateVariance()';
             category: 'frameRate');
             tests: frameRateTests,);
             passed: Object.values(frameRateTests).every(test => test.passed),
@@ -132,11 +132,11 @@ export class PerformanceTestExecutor {
         return new Promise((resolve) => { 
             const measureFrame = () => {
                 const currentTime = performance.now();
-                if(currentTime - startTime >= testDuration) {'
+                if(currentTime - startTime >= testDuration) {
                     '';
                     const avgFrameRate = frameRates.reduce((sum, fps) => sum + fps, 0') / frameRates.length;''
                     const baseline = this.performanceTestSuite.baselines.get('frameRate'');
-                    ';
+                    ';'
                     resolve({''
                         name: 'Steady State Frame Rate',
                         result: avgFrameRate,
@@ -165,29 +165,29 @@ export class PerformanceTestExecutor {
     }
 
     /**
-     * 負荷条件下でのフレームレートテスト'
+     * 負荷条件下でのフレームレートテスト
      */''
-    async testFrameRateUnderLoad('')';
+    async testFrameRateUnderLoad()';
         const { LoadSimulator } = await import('../../utils/PerformanceTestSuite.js');
         const loadSimulator = new LoadSimulator();
         await loadSimulator.applyHighLoad();
-        ';
+        ';'
         const result = await this.testSteadyStateFrameRate();''
-        await loadSimulator.removeLoad('')';
+        await loadSimulator.removeLoad()';
             name: 'Frame Rate Under Load',);
-            loadConditions: loadSimulator.getAppliedLoad(),;
+            loadConditions: loadSimulator.getAppliedLoad(),
         };
     }
 
     /**
      * スパイク後の安定性テスト'
      */''
-    async testFrameStabilityAfterSpike('')';
+    async testFrameStabilityAfterSpike()';
         const { SpikeSimulator } = await import('../../utils/PerformanceTestSuite.js');
         const spikeSimulator = new SpikeSimulator();
         await spikeSimulator.createPerformanceSpike();
         ';
-        // 安定化時間を測定''
+        // 安定化時間を測定
         const stabilizationTime = await this.measureStabilizationTime(''';
             name: 'Frame Stability After Spike',
             result: stabilizationTime,
@@ -209,11 +209,11 @@ export class PerformanceTestExecutor {
             await this.waitForNextFrame();
         }
             frameRates.push(this.getCurrentFrameRate(); }
-        }'
+        }
         '';
         const variance = this.performanceTestSuite.calculateVariance(frameRates');''
         const baseline = this.performanceTestSuite.baselines.get('frameRate'');
-        ';
+        ';'
         return { ''
             name: 'Frame Rate Variance',
             result: variance,
@@ -229,12 +229,12 @@ export class PerformanceTestExecutor {
     /**
      * メモリテストの実行'
      */''
-    async runMemoryTests('')';
+    async runMemoryTests()';
         console.log('Running memory tests...');
         const memoryTests = { baselineUsage: await this.testBaselineMemoryUsage(),
             leakDetection: await this.testMemoryLeakDetection(),';
             gcEfficiency: await this.testGarbageCollectionEfficiency(),'';
-            pressureHandling: await this.testMemoryPressureHandling('')';
+            pressureHandling: await this.testMemoryPressureHandling()';
             category: 'memory');
             tests: memoryTests,);
             passed: Object.values(memoryTests).every(test => test.passed),
@@ -246,10 +246,10 @@ export class PerformanceTestExecutor {
      * ベースラインメモリ使用量テスト
      */
     async testBaselineMemoryUsage(): Promise<TestResult> { const initialMemory = this.getMemoryUsage();'
-        await this.simulateNormalGameplay(10000); // 10秒''
-        const finalMemory = this.getMemoryUsage('')';
+        await this.simulateNormalGameplay(10000); // 10秒
+        const finalMemory = this.getMemoryUsage()';
         const baseline = this.performanceTestSuite.baselines.get('memoryUsage'');
-        ';
+        ';'
         return { ''
             name: 'Baseline Memory Usage',
             result: finalMemory.usedJSHeapSize,
@@ -265,14 +265,14 @@ export class PerformanceTestExecutor {
     }
 
     /**
-     * メモリリーク検出テスト'
+     * メモリリーク検出テスト
      */''
-    async testMemoryLeakDetection('')';
+    async testMemoryLeakDetection()';
         const { MemoryLeakDetector } = await import('../../utils/PerformanceTestSuite.js');
         const leakDetector = new MemoryLeakDetector();
         const testDuration = 30000; // 30秒
         
-        await leakDetector.startMonitoring();'
+        await leakDetector.startMonitoring();
         await this.simulateExtendedGameplay(testDuration);''
         const leakReport = await leakDetector.generateReport(''';
             name: 'Memory Leak Detection',
@@ -289,13 +289,13 @@ export class PerformanceTestExecutor {
     /**
      * ガベージコレクション効率テスト'
      */''
-    async testGarbageCollectionEfficiency('');'
+    async testGarbageCollectionEfficiency();'
         const { GCMonitor } = await import('../../utils/PerformanceTestSuite.js');
         const gcMonitor = new GCMonitor();
         await gcMonitor.startMonitoring();
         
         // メモリプレッシャーを作成してGCを誘発
-        await this.createMemoryPressure();'
+        await this.createMemoryPressure();
         '';
         const gcStats = await gcMonitor.getStatistics(''';
             name: 'Garbage Collection Efficiency',
@@ -310,13 +310,13 @@ export class PerformanceTestExecutor {
     }
 
     /**
-     * メモリプレッシャー処理テスト'
+     * メモリプレッシャー処理テスト
      */''
-    async testMemoryPressureHandling('');'
+    async testMemoryPressureHandling();'
         const { MemoryPressureSimulator } = await import('../../utils/PerformanceTestSuite.js');
         const pressureSimulator = new MemoryPressureSimulator();
         await pressureSimulator.applyPressure();
-        ';
+        ';'
         const responseTime = await this.measureSystemResponse();''
         await pressureSimulator.releasePressure(''';
             name: 'Memory Pressure Handling',
@@ -331,14 +331,14 @@ export class PerformanceTestExecutor {
     }
 
     /**
-     * レンダリングテストの実行'
+     * レンダリングテストの実行
      */''
     async runRenderingTests('';)'
         console.log('Running rendering tests...');
         const renderingTests = { dirtyRegionEfficiency: await this.testDirtyRegionEfficiency(),
             viewportCulling: await this.testViewportCulling(),';
             layerComposition: await this.testLayerComposition(),'';
-            renderTime: await this.testRenderTime('')';
+            renderTime: await this.testRenderTime()';
             category: 'rendering');
             tests: renderingTests,);
             passed: Object.values(renderingTests).every(test => test.passed),
@@ -349,16 +349,16 @@ export class PerformanceTestExecutor {
     /**
      * ダーティリージョン効率テスト'
      */''
-    async testDirtyRegionEfficiency('')';
+    async testDirtyRegionEfficiency()';
         const { RenderOptimizer, DirtyRegionTestScenario } = await import('../../utils/PerformanceTestSuite.js');
         const renderOptimizer = new RenderOptimizer();
         const testScenario = new DirtyRegionTestScenario();
-        ';
+        ';'
         await testScenario.setup();''
         const efficiency = await renderOptimizer.measureDirtyRegionEfficiency(testScenario');'
         '';
         const baseline = this.performanceTestSuite.baselines.get('renderingEfficiency'');
-        ';
+        ';'
         return { ''
             name: 'Dirty Region Efficiency',
             result: efficiency.ratio,
@@ -375,7 +375,7 @@ export class PerformanceTestExecutor {
     /**
      * ビューポートカリングテスト'
      */''
-    async testViewportCulling('')';
+    async testViewportCulling()';
         const { ViewportCullingTester } = await import('../../utils/PerformanceTestSuite.js');'
         const cullingTester = new ViewportCullingTester();''
         const efficiency = await cullingTester.measureCullingEfficiency(''';
@@ -391,12 +391,12 @@ export class PerformanceTestExecutor {
     }
 
     /**
-     * レイヤー合成テスト'
+     * レイヤー合成テスト
      */''
-    async testLayerComposition('');'
+    async testLayerComposition();'
         const { LayerCompositionTester } = await import('../../utils/PerformanceTestSuite.js');'
         const layerTester = new LayerCompositionTester();''
-        const performance = await layerTester.measureCompositionPerformance('')';
+        const performance = await layerTester.measureCompositionPerformance()';
             name: 'Layer Composition');
             result: performance.compositionTime,);
             expected: 8.33, // 120fps target (8.33ms per frame);
@@ -409,9 +409,9 @@ export class PerformanceTestExecutor {
     }
 
     /**
-     * レンダー時間テスト'
+     * レンダー時間テスト
      */''
-    async testRenderTime('')';
+    async testRenderTime()';
         const { RenderTimer } = await import('../../utils/PerformanceTestSuite.js');
         const renderTimer = new RenderTimer();
         const times = [];
@@ -426,7 +426,7 @@ export class PerformanceTestExecutor {
         '';
         const averageTime = times.reduce((sum, time) => sum + time, 0') / times.length;''
         const baseline = this.performanceTestSuite.baselines.get('renderingEfficiency'');
-        ';
+        ';'
         return { ''
             name: 'Render Time',
             result: averageTime,
@@ -444,11 +444,11 @@ export class PerformanceTestExecutor {
     /**
      * ネットワークテストの実行'
      */''
-    async runNetworkTests('')';
+    async runNetworkTests()';
         console.log('Running network tests...');
         const networkTests = { latency: await this.testNetworkLatency(),'
             throughput: await this.testNetworkThroughput(),'';
-            reliability: await this.testNetworkReliability('')';
+            reliability: await this.testNetworkReliability()';
             category: 'network');
             tests: networkTests,);
             passed: Object.values(networkTests).every(test => test.passed),
@@ -470,7 +470,7 @@ export class PerformanceTestExecutor {
         '';
         const averageLatency = latencies.reduce((sum, lat) => sum + lat, 0') / latencies.length;''
         const baseline = this.performanceTestSuite.baselines.get('networkPerformance'');
-        ';
+        ';'
         return { ''
             name: 'Network Latency',
             result: averageLatency,
@@ -487,12 +487,12 @@ export class PerformanceTestExecutor {
     /**
      * ネットワークスループットテスト'
      */''
-    async testNetworkThroughput('')';
+    async testNetworkThroughput()';
         const { NetworkThroughputTester } = await import('../../utils/PerformanceTestSuite.js');'
         const throughputTester = new NetworkThroughputTester();''
-        const throughput = await throughputTester.measureThroughput('');'
+        const throughput = await throughputTester.measureThroughput();'
         const baseline = this.performanceTestSuite.baselines.get('networkPerformance'');
-        ';
+        ';'
         return { ''
             name: 'Network Throughput',
             result: throughput,
@@ -508,12 +508,12 @@ export class PerformanceTestExecutor {
     /**
      * ネットワーク信頼性テスト'
      */''
-    async testNetworkReliability('')';
+    async testNetworkReliability()';
         const { NetworkReliabilityTester } = await import('../../utils/PerformanceTestSuite.js');'
         const reliabilityTester = new NetworkReliabilityTester();''
-        const errorRate = await reliabilityTester.measureErrorRate('');'
+        const errorRate = await reliabilityTester.measureErrorRate();'
         const baseline = this.performanceTestSuite.baselines.get('networkPerformance'');
-        ';
+        ';'
         return { ''
             name: 'Network Reliability',
             result: errorRate,
@@ -529,7 +529,7 @@ export class PerformanceTestExecutor {
     /**
      * バッテリーテストの実行'
      */''
-    async runBatteryTests('')';
+    async runBatteryTests()';
         console.log('Running battery tests...'');''
         if (!('getBattery' in navigator)') { return { ' };'
                 category: 'battery', }
@@ -538,9 +538,9 @@ export class PerformanceTestExecutor {
                 summary: 'Battery API not supported, skipping tests';
             };
         }
-';
+';'
         const batteryTests = { powerConsumption: await this.testPowerConsumption(),''
-            efficiency: await this.testBatteryEfficiency('')';
+            efficiency: await this.testBatteryEfficiency()';
             category: 'battery');
             tests: batteryTests,);
             passed: Object.values(batteryTests).every(test => test.passed),
@@ -551,16 +551,16 @@ export class PerformanceTestExecutor {
     /**
      * 電力消費テスト'
      */''
-    async testPowerConsumption('')';
+    async testPowerConsumption()';
         const { BatteryMonitor } = await import('../../utils/PerformanceTestSuite.js');
         const batteryMonitor = new BatteryMonitor();
         await batteryMonitor.startMonitoring();
         
-        await this.simulateNormalGameplay(60000); // 1分間'
+        await this.simulateNormalGameplay(60000); // 1分間
         '';
-        const consumption = await batteryMonitor.getConsumption('');'
+        const consumption = await batteryMonitor.getConsumption();'
         const baseline = this.performanceTestSuite.baselines.get('batteryOptimization'');
-        ';
+        ';'
         return { ''
             name: 'Power Consumption',
             result: consumption,
@@ -576,12 +576,12 @@ export class PerformanceTestExecutor {
     /**
      * バッテリー効率テスト'
      */''
-    async testBatteryEfficiency('')';
+    async testBatteryEfficiency()';
         const { BatteryEfficiencyTester } = await import('../../utils/PerformanceTestSuite.js');'
         const efficiencyTester = new BatteryEfficiencyTester();''
-        const efficiency = await efficiencyTester.measureEfficiency('');'
+        const efficiency = await efficiencyTester.measureEfficiency();'
         const baseline = this.performanceTestSuite.baselines.get('batteryOptimization'');
-        ';
+        ';'
         return { ''
             name: 'Battery Efficiency',
             result: efficiency,
@@ -690,12 +690,12 @@ export class PerformanceTestExecutor {
      * 現在のフレームレート取得
      */
     getCurrentFrameRate(): number { const now = performance.now();
-        if(this.lastFrameTime) {'
-            ';
+        if(this.lastFrameTime) {
+            ';'
         }'
             return 1000 / (now - this.lastFrameTime'); }
         }
         this.lastFrameTime = now;
-        return 60; // デフォルト値'
+        return 60; // デフォルト値
     }''
 }

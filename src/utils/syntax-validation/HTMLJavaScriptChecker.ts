@@ -25,13 +25,13 @@ interface ValidationWarning { type: string,
 interface ScriptBlock { content: string,
     fullMatch: string,
     startIndex: number,
-    attributes: Record<string, string>; }
+    attributes: Record<string, string> }
 }
 
 interface ValidationResult { isValid: boolean,
     errors: ValidationError[],
     warnings: ValidationWarning[],
-    scriptBlockCount: number; }
+    scriptBlockCount: number }
 }
 
 export class HTMLJavaScriptChecker {
@@ -100,7 +100,7 @@ export class HTMLJavaScriptChecker {
                 content: match[1]);
                 fullMatch: match[0],);
                 startIndex: match.index),
-                attributes: this.parseScriptAttributes(match[0]); }
+                attributes: this.parseScriptAttributes(match[0]) }
             });
         }
 
@@ -131,7 +131,7 @@ export class HTMLJavaScriptChecker {
     validateScriptBlock(block: ScriptBlock, index: number): void {
         const { content, attributes } = block;
 ';
-        // 空のスクリプトブロックをチェック''
+        // 空のスクリプトブロックをチェック
         if (!content.trim()') { this.warnings.push({')'
                 type: 'EMPTY_SCRIPT'), }
                 message: `空のscriptブロックが検出されました (ブロック ${index + 1)})`,'
@@ -140,7 +140,7 @@ export class HTMLJavaScriptChecker {
             return;
         }
 ';
-        // ES6モジュールの場合はスキップ''
+        // ES6モジュールの場合はスキップ
         if(attributes.type === 'module'') {'
             this.warnings.push({')
         }'
@@ -152,9 +152,9 @@ export class HTMLJavaScriptChecker {
         }
 
         // 基本的な構文チェック
-        try { // Functionコンストラクタで構文をチェック'
+        try { // Functionコンストラクタで構文をチェック
             new Function(content);' }'
-        } catch (error') { this.errors.push({')'
+        } catch (error) { this.errors.push({')'
                 type: 'SYNTAX_ERROR'), }
                 message: `構文エラー (ブロック ${index + 1}): ${(error as Error}).message}`,
                 blockIndex: index,
@@ -176,7 +176,7 @@ export class HTMLJavaScriptChecker {
 
         xssPatterns.forEach(pattern => { );
             const matches = htmlContent.match(pattern);
-            if(matches) {'
+            if(matches) {
                 matches.forEach(match => {')'
                     // エスケープされているかチェック');''
                     if (!match.includes('&lt;'') && !match.includes('&gt;')') {
@@ -192,7 +192,7 @@ export class HTMLJavaScriptChecker {
         });
 
         // 適切にエスケープされた文字列をチェック
-        const escapedXSSPattern = /&lt;script&gt;.*alert.*&lt;\/script&gt;/gi;'
+        const escapedXSSPattern = /&lt;script&gt;.*alert.*&lt;\/script&gt;/gi;
         const escapedMatches = htmlContent.match(escapedXSSPattern);''
         if(escapedMatches') {'
             this.warnings.push({')
@@ -213,8 +213,8 @@ export class HTMLJavaScriptChecker {
         
         // 不適切なエスケープパターン
         const badEscapePatterns: RegExp[] = [ }]
-            /\\x[^0-9a-fA-F]{2}/g,  // 不正な16進エスケープ'
-            /\\u[^0-9a-fA-F]{4}/g,  // 不正なUnicodeエスケープ''
+            /\\x[^0-9a-fA-F]{2}/g,  // 不正な16進エスケープ
+            /\\u[^0-9a-fA-F]{4}/g,  // 不正なUnicodeエスケープ
             /\\[^\\'"ntrbfv0xu]/g    // 不正なエスケープ文字;
         ];
 ";
@@ -242,7 +242,7 @@ export class HTMLJavaScriptChecker {
     generateSummary(result: ValidationResult): string { const parts: string[] = [],'
         '';
         if(result.isValid') {'
-            ';
+            ';'
         }'
             parts.push('✅ 構文検証: 合格'); }
         } else {  }

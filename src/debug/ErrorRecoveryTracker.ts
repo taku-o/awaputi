@@ -4,7 +4,7 @@
  */
 
 interface ErrorReporter { gameEngine?: GameEngine;
-    sessionStartTime: number; }
+    sessionStartTime: number }
 }
 
 interface GameEngine {
@@ -30,7 +30,7 @@ interface AudioManager { stop(): Promise<void>;
 }
 
 interface SceneManager { currentScene: any,
-    reloadCurrentScene(): Promise<void>;
+    reloadCurrentScene(): Promise<void>
     }
 }
 
@@ -38,14 +38,14 @@ interface RecoveryStrategy { name: string,
     description: string,
     triggers: string[],
     priority: number,
-    action: (error: ErrorInfo, context: any) => Promise<RecoveryResult>; }
+    action: (error: ErrorInfo, context: any) => Promise<RecoveryResult> }
 }
 
 interface ErrorInfo { id: string,
     message: string,
     category: string,
     severity: string,
-    fingerprint: string; }
+    fingerprint: string }
 }
 
 interface RecoveryResult { success: boolean,
@@ -75,7 +75,7 @@ interface StrategyAttempt { id: string,
     startTime: number,
     success: boolean,
     error: string | null,
-    duration: number; }
+    duration: number }
 }
 
 interface RecoveryConfig { enabled: boolean,
@@ -84,18 +84,18 @@ interface RecoveryConfig { enabled: boolean,
     cooldownPeriod: number,
     timeoutDuration: number,
     enablePreventiveRecovery: boolean,
-    enableLearning: boolean; }
+    enableLearning: boolean }
 }
 
 interface StrategyStats { attempts: number,
     successes: number,
     failures: number,
-    averageDuration: number; }
+    averageDuration: number }
 }
 
 interface CategoryStats { attempts: number,
     successes: number,
-    failures: number; }
+    failures: number }
 }
 
 interface RecoveryStats { totalAttempts: number,
@@ -104,12 +104,12 @@ interface RecoveryStats { totalAttempts: number,
     byStrategy: Map<string, StrategyStats>;
     byErrorCategory: Map<string, CategoryStats>;
     averageRecoveryTime: number,
-    recentSuccessRate: number; }
+    recentSuccessRate: number }
 }
 
 interface LearningData { strategyEffectiveness: Map<string, number[]>;
     contextualPatterns: Map<string, any>;
-    timeBasedPatterns: Map<string, any>; }
+    timeBasedPatterns: Map<string, any> }
 }
 
 interface RecoveryReport { timeframe: string,
@@ -131,7 +131,7 @@ interface StrategyPerformance { strategyId: string,
     successes: number,
     averageDuration: number,
     totalDuration: number,
-    successRate: string; }
+    successRate: string }
 }
 
 interface CategoryPerformance { category: string,
@@ -139,7 +139,7 @@ interface CategoryPerformance { category: string,
     successes: number,
     averageDuration: number,
     totalDuration: number,
-    successRate: string; }
+    successRate: string }
 }
 
 interface RecoveryRecommendation { type: string,
@@ -166,13 +166,13 @@ export class ErrorRecoveryTracker {
     constructor(errorReporter: ErrorReporter') {
         this.errorReporter = errorReporter;
         
-        // 復旧戦略の定義'
+        // 復旧戦略の定義
         this.recoveryStrategies = new Map(['';
             ['memory_cleanup', {''
                 name: 'Memory Cleanup',']';
                 description: 'メモリクリーンアップとガベージコレクション','])';
                 triggers: ['memory', 'allocation'])';
-                priority: 1,';
+                priority: 1,'
     }
     }'
                 action: this.performMemoryCleanup.bind(this'); }'
@@ -182,42 +182,42 @@ export class ErrorRecoveryTracker {
                 description: 'Canvas コンテキストのリセット',']';
                 triggers: ['rendering', 'canvas'],';
                 priority: 2,'';
-                action: this.performCanvasReset.bind(this'); }'
+                action: this.performCanvasReset.bind(this') }'
             }],''
             ['audio_restart', { ''
                 name: 'Audio Restart',']';
                 description: 'オーディオシステムの再起動',']';
                 triggers: ['audio', 'sound'],';
                 priority: 2,'';
-                action: this.performAudioRestart.bind(this'); }'
+                action: this.performAudioRestart.bind(this') }'
             }],''
             ['storage_fallback', { ''
                 name: 'Storage Fallback',']';
                 description: 'ストレージの代替手段への切り替え',']';
                 triggers: ['storage', 'localstorage'],';
                 priority: 3,'';
-                action: this.performStorageFallback.bind(this'); }'
+                action: this.performStorageFallback.bind(this') }'
             }],''
             ['scene_reload', { ''
                 name: 'Scene Reload',']';
                 description: '現在のシーンの再読み込み',']';
                 triggers: ['scene', 'navigation'],';
                 priority: 3,'';
-                action: this.performSceneReload.bind(this'); }'
+                action: this.performSceneReload.bind(this') }'
             }],''
             ['safe_mode', { ''
                 name: 'Safe Mode',']';
                 description: 'セーフモードへの切り替え',']';
                 triggers: ['critical', 'system'],';
                 priority: 4,'';
-                action: this.performSafeModeSwitch.bind(this'); }'
+                action: this.performSafeModeSwitch.bind(this') }'
             }],''
             ['component_restart', { ''
                 name: 'Component Restart',']';
                 description: '特定コンポーネントの再起動',']';
                 triggers: ['component', 'module'],
                 priority: 2,
-                action: this.performComponentRestart.bind(this); }
+                action: this.performComponentRestart.bind(this) }
             }]
         ]);
         
@@ -246,9 +246,9 @@ export class ErrorRecoveryTracker {
         },
         
         // 復旧学習システム
-        this.learningData = { strategyEffectiveness: new Map(,)
+        this.learningData = { strategyEffectiveness: new Map()
             contextualPatterns: new Map();
-            timeBasedPatterns: new Map(); }
+            timeBasedPatterns: new Map() }
         };
         
         // 復旧状態管理
@@ -260,9 +260,9 @@ export class ErrorRecoveryTracker {
     
     /**
      * 初期化
-     */'
+     */
     private initialize(): void { this.loadRecoveryData();''
-        this.setupPeriodicAnalysis('')';
+        this.setupPeriodicAnalysis()';
         console.log('ErrorRecoveryTracker initialized'); }
     }
     
@@ -278,15 +278,15 @@ export class ErrorRecoveryTracker {
         const recoverySession = this.startRecoverySession(error, context);
         
         try { // 適用可能な復旧戦略を選択
-            const strategies = this.selectRecoveryStrategies(error, context);'
+            const strategies = this.selectRecoveryStrategies(error, context);
             '';
             if(strategies.length === 0') {'
-                ';
+                ';'
             }'
                 return this.completeRecoverySession(recoverySession, false, 'No applicable strategies'); }
             }
             
-            // 戦略を順次実行'
+            // 戦略を順次実行
             for (const strategy of strategies) { if(await this.executeRecoveryStrategy(strategy, error, context, recoverySession) {' };'
                     return this.completeRecoverySession(recoverySession, true, `Recovered using ${strategy.name)`'});
                 }
@@ -294,8 +294,8 @@ export class ErrorRecoveryTracker {
             '';
             return this.completeRecoverySession(recoverySession, false, 'All strategies failed');'
             '';
-        } catch (recoveryError') { ''
-            console.error('Recovery attempt failed:', recoveryError); }
+        } catch (recoveryError) { ''
+            console.error('Recovery attempt failed:', recoveryError) }
             return this.completeRecoverySession(recoverySession, false, `Recovery error: ${(recoveryError as Error}).message}`);
         }
     }
@@ -420,7 +420,7 @@ export class ErrorRecoveryTracker {
         try {
             // タイムアウト付きで戦略を実行
             const result = await Promise.race([);
-                strategy.action(error, context),];
+                strategy.action(error, context)];
                 this.createTimeoutPromise(this.recoveryConfig.timeoutDuration)];
             ]);
             
@@ -434,7 +434,7 @@ export class ErrorRecoveryTracker {
             }
                 console.log(`✅ Recovery strategy ${strategy.name) succeeded`); }
                 this.recordStrategySuccess(strategy.id, error.category, strategyAttempt.duration});
-                return true;'
+                return true;
             } else { ' }'
                 console.log(`❌ Recovery strategy ${strategy.name} failed: ${ result.reason)`'),' }'
                 this.recordStrategyFailure(strategy.id, error.category, result.reason || 'Unknown failure'});
@@ -481,8 +481,8 @@ export class ErrorRecoveryTracker {
         this.activeRecoveries.delete(session.id);
         
         // 学習データを更新
-        if(this.recoveryConfig.enableLearning) {'
-            ';
+        if(this.recoveryConfig.enableLearning) {
+            ';'
         }'
             this.updateLearningData(session'); }
         }'
@@ -537,13 +537,13 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performCanvasReset(error: ErrorInfo, context: any): Promise<RecoveryResult> { try {'
-            const gameEngine = this.errorReporter.gameEngine;''
+    private async performCanvasReset(error: ErrorInfo, context: any): Promise<RecoveryResult> { try {
+            const gameEngine = this.errorReporter.gameEngine;
             if (!gameEngine? .canvas') { : undefined' }'
                 return { success: false, reason: 'Canvas not available' }
             }
             ';
-            // Canvas コンテキストの取得''
+            // Canvas コンテキストの取得
             const ctx = gameEngine.canvas.getContext('2d');''
             if (!ctx') { ' }'
                 return { success: false, reason: 'Cannot get 2D context' }
@@ -556,7 +556,7 @@ export class ErrorRecoveryTracker {
             ctx.restore();
             
             // レンダリングシステムの再初期化
-            if(gameEngine.renderOptimizer) {'
+            if(gameEngine.renderOptimizer) {
                 '';
                 gameEngine.renderOptimizer.reset('';
             }'
@@ -570,7 +570,7 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performAudioRestart(error: ErrorInfo, context: any): Promise<RecoveryResult> { try {'
+    private async performAudioRestart(error: ErrorInfo, context: any): Promise<RecoveryResult> { try {
             const gameEngine = this.errorReporter.gameEngine;''
             if (!gameEngine? .audioManager') { : undefined' }'
                 return { success: false, reason: 'AudioManager not available' }
@@ -581,8 +581,8 @@ export class ErrorRecoveryTracker {
             
             // 短時間待機
             await new Promise(resolve => setTimeout(resolve, 100);
-            ';
-            // オーディオシステムの再起動''
+            ;
+            // オーディオシステムの再起動
             await gameEngine.audioManager.initialize(''';
                 details: 'Audio system restarted successfully');
             })
@@ -605,7 +605,7 @@ export class ErrorRecoveryTracker {
             }
             
             // 設定管理システムのフォールバック
-            if(gameEngine?.settingsManager) {'
+            if(gameEngine?.settingsManager) {
                 '';
                 gameEngine.settingsManager.enableFallbackMode('';
             }'
@@ -619,12 +619,12 @@ export class ErrorRecoveryTracker {
         }
     }
     
-    private async performSceneReload(error: ErrorInfo, context: any): Promise<RecoveryResult> { try {'
+    private async performSceneReload(error: ErrorInfo, context: any): Promise<RecoveryResult> { try {
             const gameEngine = this.errorReporter.gameEngine;''
             if (!gameEngine? .sceneManager') { : undefined' }'
                 return { success: false, reason: 'SceneManager not available' }
             }
-            ';
+            ';'
             const currentScene = gameEngine.sceneManager.currentScene;''
             if (!currentScene') { ' }'
                 return { success: false, reason: 'No current scene to reload' }
@@ -666,7 +666,7 @@ export class ErrorRecoveryTracker {
             }
             
             // オーディオの無効化
-            if(gameEngine?.audioManager) {'
+            if(gameEngine?.audioManager) {
                 '';
                 gameEngine.audioManager.mute('';
             }'
@@ -688,12 +688,12 @@ export class ErrorRecoveryTracker {
                 return { success: false, reason: 'Could not identify problem component' }
             }
             
-            // コンポーネントの再起動'
+            // コンポーネントの再起動
             const component = gameEngine? .[componentName];''
             if(component && typeof component.restart === 'function') {'
-                ';
+                ';'
             }'
-                await component.restart('') };'
+                await component.restart() };'
             } else if (component && typeof component.initialize === 'function') { await component.initialize();
                 
                 return {  };
@@ -714,7 +714,7 @@ export class ErrorRecoveryTracker {
      * ユーティリティメソッド群
      */'
     private identifyProblemComponent(error: ErrorInfo, context: any): string | null { const message = error.message.toLowerCase();''
-        const category = error.category.toLowerCase('')';
+        const category = error.category.toLowerCase()';
         if (message.includes('bubble'') || category.includes('bubble')') {''
             return 'bubbleManager'; }
         }'
@@ -755,9 +755,9 @@ export class ErrorRecoveryTracker {
     private recordStrategySuccess(strategyId: string, errorCategory: string, duration: number): void { // 戦略別統計
         if(!this.recoveryStats.byStrategy.has(strategyId) {
             this.recoveryStats.byStrategy.set(strategyId, {
-                attempts: 0,);
+                attempts: 0);
                 successes: 0);
-                failures: 0,);
+                failures: 0,)
         }
                 averageDuration: 0); }
         }
@@ -772,7 +772,7 @@ export class ErrorRecoveryTracker {
         if(!this.recoveryStats.byErrorCategory.has(errorCategory) {
             this.recoveryStats.byErrorCategory.set(errorCategory, {)
                 attempts: 0);
-                successes: 0,);
+                successes: 0,)
         }
                 failures: 0); }
         }
@@ -785,9 +785,9 @@ export class ErrorRecoveryTracker {
     private recordStrategyFailure(strategyId: string, errorCategory: string, reason: string): void { // 戦略別統計
         if(!this.recoveryStats.byStrategy.has(strategyId) {
             this.recoveryStats.byStrategy.set(strategyId, {
-                attempts: 0,);
+                attempts: 0);
                 successes: 0);
-                failures: 0,);
+                failures: 0,)
         }
                 averageDuration: 0); }
         }
@@ -800,7 +800,7 @@ export class ErrorRecoveryTracker {
         if(!this.recoveryStats.byErrorCategory.has(errorCategory) {
             this.recoveryStats.byErrorCategory.set(errorCategory, {)
                 attempts: 0);
-                successes: 0,);
+                successes: 0,)
         }
                 failures: 0); }
         }
@@ -833,9 +833,9 @@ export class ErrorRecoveryTracker {
         // 最新100件のみ保持
         if (data.length > 100) { data.shift(); }
         }
-    }'
+    }
      : undefined'';
-    private generateRecoveryId('')';
+    private generateRecoveryId()';
         return 'recovery_' + Date.now(') + '_' + Math.random().toString(36).substr(2, 9');
     }
     
@@ -877,7 +877,7 @@ export class ErrorRecoveryTracker {
         
         return this.recoveryAttempts.filter(recovery => recovery.startTime >= timeLimit);
     }
-    ';
+    ';'
     private calculateAverageRecoveryTime(recoveries: RecoverySession[]): string { ''
         if (recoveries.length === 0') return '0';
         
@@ -890,7 +890,7 @@ export class ErrorRecoveryTracker {
             attempts: number,
             successes: number,
             averageDuration: number,
-            totalDuration: number; }
+            totalDuration: number }
         }>();
         
         recoveries.forEach(recovery => {  )
@@ -898,8 +898,8 @@ export class ErrorRecoveryTracker {
                 if(!strategyPerformance.has(strategy.id) {
                     strategyPerformance.set(strategy.id, {
                         name: strategy.name,
-                        attempts: 0,);
-                        successes: 0);
+                        attempts: 0);
+                        successes: 0)
                 }
                         averageDuration: 0,) }
                         totalDuration: 0); }
@@ -926,7 +926,7 @@ export class ErrorRecoveryTracker {
             attempts: number,
             successes: number,
             averageDuration: number,
-            totalDuration: number; }
+            totalDuration: number }
         }>();
         
         recoveries.forEach(recovery => {  )
@@ -934,8 +934,8 @@ export class ErrorRecoveryTracker {
             );
             if(!categoryPerformance.has(category) {
                 categoryPerformance.set(category, {
-                    attempts: 0,);
-                    successes: 0);
+                    attempts: 0);
+                    successes: 0)
             }
                     averageDuration: 0,) }
                     totalDuration: 0); }
@@ -963,7 +963,7 @@ export class ErrorRecoveryTracker {
         const strategyAnalysis = this.analyzeStrategyPerformance(recoveries);
         const lowPerformanceStrategies = strategyAnalysis.filter(s => );
             s.attempts > 5 && parseFloat(s.successRate) < 30;
-        );'
+        );
         '';
         if(lowPerformanceStrategies.length > 0') {'
             recommendations.push({')'
@@ -980,7 +980,7 @@ export class ErrorRecoveryTracker {
         const categoryAnalysis = this.analyzeCategoryPerformance(recoveries);
         const unrecoverableCategories = categoryAnalysis.filter(c => );
             c.attempts > 3 && parseFloat(c.successRate) === 0;
-        );'
+        );
         '';
         if(unrecoverableCategories.length > 0') {'
             recommendations.push({')'
@@ -1017,9 +1017,9 @@ export class ErrorRecoveryTracker {
         }
         
         this.recoveryStats.averageRecoveryTime = parseFloat(this.calculateAverageRecoveryTime(this.recoveryAttempts);
-    }'
+    }
     '';
-    private loadRecoveryData('')';
+    private loadRecoveryData()';
             const stored = localStorage.getItem('error_recovery_data');
             if(stored) {
                 const data = JSON.parse(stored);
@@ -1027,24 +1027,24 @@ export class ErrorRecoveryTracker {
             }
                     Object.assign(this.recoveryStats, data.recoveryStats); }'
                 }''
-            } catch (error') { ''
-            console.warn('Failed to load recovery data:', (error as Error).message); }
+            } catch (error) { ''
+            console.warn('Failed to load recovery data:', (error as Error).message) }
         }
     }
     
     private saveRecoveryData(): void { try {
             const dataToSave = {'
                 recoveryStats: this.recoveryStats,'';
-                lastUpdated: Date.now('')';
+                lastUpdated: Date.now()';
             localStorage.setItem('error_recovery_data', JSON.stringify(dataToSave);' }'
-        } catch (error') { ''
-            console.warn('Failed to save recovery data:', (error as Error).message); }
+        } catch (error) { ''
+            console.warn('Failed to save recovery data:', (error as Error).message) }
         }
     }
-    ';
+    ';'
     public updateConfiguration(newConfig: Partial<RecoveryConfig>): void { ''
         Object.assign(this.recoveryConfig, newConfig');''
-        console.log('Recovery configuration updated:', newConfig); }
+        console.log('Recovery configuration updated:', newConfig) }
     }
     
     /**
@@ -1056,9 +1056,9 @@ export class ErrorRecoveryTracker {
         for(const session of this.activeRecoveries.values() { }
             console.log(`Cancelling active recovery session: ${session.id)`});
         }
-        ';
+        ';'
         this.activeRecoveries.clear();''
-        this.cooldownTimers.clear('')';
+        this.cooldownTimers.clear()';
         console.log('ErrorRecoveryTracker destroyed'');
     }
 }'

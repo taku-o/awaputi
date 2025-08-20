@@ -24,7 +24,7 @@ export class StatisticsFilterManager {
             custom: { label: 'カスタム', days: null }
         };
         
-        // 現在のフィルター設定'
+        // 現在のフィルター設定
         this.currentFilter = { ''
             period: 'last7days',
             customStart: null,';
@@ -37,7 +37,7 @@ export class StatisticsFilterManager {
         // フィルター適用状態
         this.filterState = { isApplying: false,
             lastApplied: null,
-            cachedResults: new Map(); }
+            cachedResults: new Map() }
         };
         
         // イベントハンドラ
@@ -45,10 +45,10 @@ export class StatisticsFilterManager {
     }
     
     /**
-     * フィルター期間の設定'
+     * フィルター期間の設定
      */''
     setPeriod(period, customStart = null, customEnd = null') {'
-        ';
+        ';'
     }'
         if (!this.filterPeriods[period] && period !== 'custom') {' }'
             throw new Error(`Invalid filter period: ${period)`'});
@@ -68,11 +68,11 @@ export class StatisticsFilterManager {
             this.currentFilter.customEnd = null; }
         }
         ';
-        // キャッシュをクリア''
-        this.clearCache('')';
+        // キャッシュをクリア
+        this.clearCache()';
         this.emit('filterChanged', { period: this.currentFilter.period)
             customStart: this.currentFilter.customStart,);
-            customEnd: this.currentFilter.customEnd); }
+            customEnd: this.currentFilter.customEnd) }
     }
     
     /**
@@ -83,11 +83,11 @@ export class StatisticsFilterManager {
     }
             categories = [categories]; }
         }
-        ';
+        ';'
         this.currentFilter.categories = categories;''
-        this.clearCache('')';
+        this.clearCache()';
         this.emit('categoriesChanged', { ')'
-            categories: this.currentFilter.categories)'); }
+            categories: this.currentFilter.categories)') }
     }
     
     /**
@@ -113,9 +113,9 @@ export class StatisticsFilterManager {
         
         this.currentFilter.sortBy = sortBy;'
         this.currentFilter.sortOrder = sortOrder;''
-        this.clearCache('')';
-        this.emit('sortingChanged', { sortBy: this.currentFilter.sortBy,)
-            sortOrder: this.currentFilter.sortOrder); }
+        this.clearCache()';
+        this.emit('sortingChanged', { sortBy: this.currentFilter.sortBy)
+            sortOrder: this.currentFilter.sortOrder) }
     }
     
     /**
@@ -170,14 +170,14 @@ export class StatisticsFilterManager {
                 }
             },
             
-            // 結果をキャッシュ'
+            // 結果をキャッシュ
             this.filterState.cachedResults.set(cacheKey, result);''
-            this.filterState.lastApplied = Date.now('')';
+            this.filterState.lastApplied = Date.now()';
             this.emit('dataFiltered', result);
             
             return result;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Filter application failed:', error');''
             this.emit('filterError', error);
             throw error; }
@@ -190,7 +190,7 @@ export class StatisticsFilterManager {
      */
     calculateDateRange() {'
         '';
-        const now = new Date('')';
+        const now = new Date()';
         if (this.currentFilter.period === 'custom'') {
     }
             return { start: this.currentFilter.customStart, };
@@ -204,7 +204,7 @@ export class StatisticsFilterManager {
                 start: new Date(0'), // Unix epoch };
                 end: now }
             },
-        }'
+        }
         '';
         if(this.currentFilter.period === 'today') {
             const start = new Date(now);
@@ -235,7 +235,7 @@ export class StatisticsFilterManager {
         }'
         '';
         if(this.currentFilter.period === 'thisMonth') {'
-            ';
+            ';'
         }'
             const start = new Date(now.getFullYear(), now.getMonth(), 1'); }
             return { start, end: now }
@@ -256,13 +256,13 @@ export class StatisticsFilterManager {
     /**
      * 時系列データの取得
      */
-    async getTimeSeriesData(dateRange) { try {'
-            // StatisticsManagerから時系列データを取得''
+    async getTimeSeriesData(dateRange) { try {
+            // StatisticsManagerから時系列データを取得
             if(this.statisticsManager.timeSeriesDataManager') {'
                 const dailyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange(')';
                     'daily', dateRange.start, dateRange.end)';'
-                ');
-                ';
+                ');'
+                ';'
                 const weeklyData = await this.statisticsManager.timeSeriesDataManager.getDataInRange(');'
                     'weekly', dateRange.start, dateRange.end);
                 
@@ -272,10 +272,10 @@ export class StatisticsFilterManager {
                     range: dateRange }
                 },
             }
-            ';
+            ';'
             return { daily: [], weekly: [], range: dateRange }''
-        } catch (error') { ''
-            console.warn('Failed to get time series data:', error); }
+        } catch (error) { ''
+            console.warn('Failed to get time series data:', error) }
             return { daily: [], weekly: [], range: dateRange }
         }
     }
@@ -289,13 +289,13 @@ export class StatisticsFilterManager {
         let filteredStats = { ...rawStats };
         
         // 日付範囲フィルター
-        if(timeSeriesData.daily.length > 0) {'
-            // 時系列データから期間内のデータを抽出'
+        if(timeSeriesData.daily.length > 0) {
+            // 時系列データから期間内のデータを抽出
         }'
             filteredStats = this.filterByDateRange(filteredStats, dateRange, timeSeriesData'); }
         }
         ';
-        // カテゴリフィルター''
+        // カテゴリフィルター
         if(!this.currentFilter.categories.includes('all') { filteredStats = this.filterByCategories(filteredStats, this.currentFilter.categories); }
         }
         
@@ -346,7 +346,7 @@ export class StatisticsFilterManager {
         if(stats.sessions && Array.isArray(stats.sessions) {
         
             sortedStats.sessions = [...stats.sessions].sort((a, b) => { 
-                let aValue, bValue;'
+                let aValue, bValue;
                 '';
                 switch (this.currentFilter.sortBy') {''
                     case 'date':';
@@ -442,7 +442,7 @@ export class StatisticsFilterManager {
      * @returns {Object} フィルタリングされた統計データ'
      */''
     filterByPeriod(statisticsData, period') {'
-        try {''
+        try {'
             if (!statisticsData || period === 'all' || period === 'allTime') {
     }
                 return statisticsData; }
@@ -475,9 +475,9 @@ export class StatisticsFilterManager {
                 filteredPeriod: period,
                 filterStartDate: startDate, };
                 sessionCount: filteredSessions.length }
-            },'
+            },
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Error filtering statistics by period:', error);
             return statisticsData; }
         }
@@ -514,7 +514,7 @@ export class StatisticsFilterManager {
             sortOrder: 'desc');
         })'
         '';
-        this.clearCache('')';
+        this.clearCache()';
         this.emit('filtersReset', this.currentFilter);
     }
     
@@ -533,7 +533,7 @@ export class StatisticsFilterManager {
     getAvailablePeriods() {
         return Object.entries(this.filterPeriods).map(([key, value]) => ({
             key,
-            label: value.label);
+            label: value.label)
     }
             days: value.days }
         }),

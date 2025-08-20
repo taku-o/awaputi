@@ -26,7 +26,7 @@ export interface GesturePattern { type: GestureType,
     action: string,
     alternatives?: string[];
     oneHandedOnly?: boolean;
-    customMatcher?: (gestureData: GestureData) => number; }
+    customMatcher?: (gestureData: GestureData) => number }
 }
 
 export interface GestureData { type?: GestureInputType;
@@ -47,13 +47,13 @@ export interface GestureData { type?: GestureInputType;
 }
 
 export interface Position { x: number,
-    y: number; }
+    y: number }
 }
 
 export interface TouchPoint { id: number,
     x: number,
     y: number,
-    force: number; }
+    force: number }
 }
 
 export interface RecognitionResult { gesture: string,
@@ -63,7 +63,7 @@ export interface RecognitionResult { gesture: string,
     alternativeActions?: string[]; }
 }
 
-export interface GestureRecognizer { recognize: (gestureData: GestureData) => RecognitionResult | null; }
+export interface GestureRecognizer { recognize: (gestureData: GestureData) => RecognitionResult | null }
 }
 
 export interface EngineStats { totalPatterns: number,
@@ -79,19 +79,19 @@ export interface EngineStats { totalPatterns: number,
 
 export interface PatternMatchingResult { matches: boolean,
     confidence: number,
-    deviations?: Record<string, number>; }
+    deviations?: Record<string, number> }
 }
 
 export interface ThresholdAdjustment { gesture: string,
     parameter: string,
     oldRange: [number, number],
     newRange: [number, number],
-    improvement: number; }
+    improvement: number }
 }
 
 export interface RecognitionBuffer { data: GestureData[],
     maxSize: number,
-    currentIndex: number; }
+    currentIndex: number }
 }
 
 // 列挙型
@@ -111,8 +111,8 @@ export type PinchDirection = 'in' | 'out';
 export const DEFAULT_RECOGNITION_THRESHOLD = 0.8;
 export const DEFAULT_MAX_BUFFER_SIZE = 20;
 export const REALTIME_CONFIDENCE_THRESHOLD = 0.5;
-';
-// 型ガード''
+;
+// 型ガード
 export function isBasicTouchGesture(pattern: GesturePattern'): boolean { ''
     return pattern.type === 'touch' && pattern.fingers !== undefined && pattern.fingers <= 3; }
 }'
@@ -144,10 +144,10 @@ export class GestureRecognitionEngine {
     constructor(config: GestureRecognitionConfig = {)') {
         this.config = config;
         
-        // ジェスチャーパターン定義'
-        this.gesturePatterns = new Map<string, GesturePattern>([// 基本ジェスチャー'';
+        // ジェスチャーパターン定義
+        this.gesturePatterns = new Map<string, GesturePattern>([// 基本ジェスチャー;
             ['tap', {''
-                type: 'touch',];
+                type: 'touch'];
                 fingers: 1,];
                 duration: [50, 300],';
                 movement: [0, 10],'';
@@ -155,7 +155,7 @@ export class GestureRecognitionEngine {
                 alternatives: ['click', 'space', 'enter'] }'
             }],''
             ['longPress', { ''
-                type: 'touch',];
+                type: 'touch'];
                 fingers: 1,];
                 duration: [800, 2000],';
                 movement: [0, 15],'';
@@ -163,7 +163,7 @@ export class GestureRecognitionEngine {
                 alternatives: ['rightClick', 'ctrl+click'] }'
             }],''
             ['doubleTap', { ''
-                type: 'touch',];
+                type: 'touch'];
                 fingers: 1,];
                 duration: [50, 200],
                 interval: [50, 400],';
@@ -172,11 +172,11 @@ export class GestureRecognitionEngine {
                 alternatives: ['doubleClick', 'enter'] }
             }],
             ';
-            // スワイプジェスチャー''
+            // スワイプジェスチャー
             ['swipeUp', { ']'
                 type: 'swipe',];
                 direction: [80, 100], // 角度範囲（度）;
-                distance: [50, 500],';
+                distance: [50, 500],;
                 velocity: [0.2, 3.0],'';
                 action: 'scrollUp','';
                 alternatives: ['arrowUp', 'pageUp', 'wheelUp'] }'
@@ -206,23 +206,23 @@ export class GestureRecognitionEngine {
                 alternatives: ['arrowRight', 'tab', 'enter'] }
             }],
             ';
-            // マルチタッチジェスチャー''
+            // マルチタッチジェスチャー
             ['pinchIn', { ''
-                type: 'pinch',];
+                type: 'pinch'];
                 fingers: 2,]';
                 scale: [0.5, 1.0],'';
                 action: 'zoomOut','';
                 alternatives: ['ctrl+-', 'minus'] }'
             }],''
             ['pinchOut', { ''
-                type: 'pinch',];
+                type: 'pinch'];
                 fingers: 2,]';
                 scale: [1.0, 2.0],'';
                 action: 'zoomIn','';
                 alternatives: ['ctrl+=', 'plus'] }'
             }],''
             ['twoFingerTap', { ''
-                type: 'touch',];
+                type: 'touch'];
                 fingers: 2,];
                 duration: [50, 300],';
                 movement: [0, 20],'';
@@ -230,7 +230,7 @@ export class GestureRecognitionEngine {
                 alternatives: ['rightClick', 'contextMenu'] }'
             }],''
             ['threeFingerTap', { ''
-                type: 'touch',];
+                type: 'touch'];
                 fingers: 3,];
                 duration: [50, 300],';
                 movement: [0, 30],'';
@@ -238,7 +238,7 @@ export class GestureRecognitionEngine {
                 alternatives: ['alt', 'menu', 'F10'] }
             }],
             ';
-            // 片手操作専用ジェスチャー''
+            // 片手操作専用ジェスチャー
             ['edgeSwipeLeft', { ''
                 type: 'edgeSwipe',']';
                 edge: 'left',]';
@@ -278,9 +278,9 @@ export class GestureRecognitionEngine {
     }
     
     /**
-     * 認識エンジンの初期化'
+     * 認識エンジンの初期化
      */''
-    private initializeRecognizers('')';
+    private initializeRecognizers()';
         this.recognizers.set('tap', this.createTapRecognizer()');''
         this.recognizers.set('swipe', this.createSwipeRecognizer()');''
         this.recognizers.set('pinch', this.createPinchRecognizer()');''
@@ -296,7 +296,7 @@ export class GestureRecognitionEngine {
             recognize: (gestureData: GestureData): RecognitionResult | null => { }
                 const { duration, movement, fingers } = gestureData;
                 ';
-                // タップパターンのマッチング''
+                // タップパターンのマッチング
                 for(const [name, pattern] of this.gesturePatterns') {'
                     '';
                     if(pattern.type === 'touch' && );
@@ -322,7 +322,7 @@ export class GestureRecognitionEngine {
             recognize: (gestureData: GestureData): RecognitionResult | null => { }
                 const { direction, distance, velocity } = gestureData;
                 ';
-                // スワイプパターンのマッチング''
+                // スワイプパターンのマッチング
                 for(const [name, pattern] of this.gesturePatterns') {'
                     '';
                     if(pattern.type === 'swipe' && );
@@ -350,7 +350,7 @@ export class GestureRecognitionEngine {
                 
                 if (fingers !== 2) return null;
                 ';
-                // ピンチパターンのマッチング''
+                // ピンチパターンのマッチング
                 for(const [name, pattern] of this.gesturePatterns') {'
                     '';
                     if(pattern.type === 'pinch' && );
@@ -377,7 +377,7 @@ export class GestureRecognitionEngine {
                 for(const [name, pattern] of this.customGestures) {
                     if(this.matchesCustomPattern(gestureData, pattern) {
                         return { 
-                            gesture: name, ;
+                            gesture: name, 
                 }
                             confidence: this.calculateCustomConfidence(gestureData, pattern), }
                             pattern, };
@@ -655,16 +655,16 @@ export class GestureRecognitionEngine {
         
         // 成功したジェスチャーに基づいて閾値を微調整
         if(pattern.duration && gestureData.duration !== undefined) {
-            const adjustment = gestureData.duration * 0.1;'
+            const adjustment = gestureData.duration * 0.1;
             const oldRange: [number, number] = [...pattern.duration];''
             pattern.duration[0] = Math.max(0, pattern.duration[0] - adjustment');
             pattern.duration[1] = pattern.duration[1] + adjustment;
             
             adjustments.push({'
                 gesture: gestureName,'';
-                parameter: 'duration',);
+                parameter: 'duration');
                 oldRange);
-                newRange: [...pattern.duration],);
+                newRange: [...pattern.duration],)
         }
                 improvement: adjustment); }
         }
@@ -678,9 +678,9 @@ export class GestureRecognitionEngine {
             
             adjustments.push({'
                 gesture: gestureName,'';
-                parameter: 'distance',);
+                parameter: 'distance');
                 oldRange);
-                newRange: [...pattern.distance],);
+                newRange: [...pattern.distance],)
         }
                 improvement: adjustment); }
         }
@@ -712,7 +712,7 @@ export class GestureRecognitionEngine {
     recognizeGestureSequence(gestureSequence: GestureData[]): RecognitionResult | null { // ジェスチャーシーケンスの認識（複数のジェスチャーの組み合わせ）
         if (gestureSequence.length < 2) return null;
         
-        // シーケンスパターンのマッチング'
+        // シーケンスパターンのマッチング
         const sequenceString = gestureSequence.map(g => { );''
             const result = this.recognizeGesture(g');' }'
             return result ? result.gesture: 'unknown',' }'
@@ -723,7 +723,7 @@ export class GestureRecognitionEngine {
         for(const [name, pattern] of sequencePatterns) {
             if(pattern.sequenceMatch && pattern.sequenceMatch(sequenceString) {
                 return { gesture: name,
-                    confidence: 0.9, // シーケンス認識の基本信頼度;
+                    confidence: 0.9, // シーケンス認識の基本信頼度
         }
                     pattern: pattern, };
                     alternativeActions: pattern.alternatives }
@@ -762,12 +762,12 @@ export class GestureRecognitionEngine {
     
     /**
      * バッファからのパターン学習
-     */'
+     */
     learnFromBuffer(): void { ''
         if (this.gestureBuffer.length < 5') return;
         
-        // バッファ内のジェスチャーデータから学習'
-        // （機械学習的なアプローチの基礎実装）''
+        // バッファ内のジェスチャーデータから学習
+        // （機械学習的なアプローチの基礎実装）
         console.log('Learning from gesture buffer...'); }
     }
     
@@ -844,7 +844,7 @@ export class GestureRecognitionEngine {
         }
         
         if (newConfig.maxBufferSize !== undefined) { this.maxBufferSize = newConfig.maxBufferSize; }
-        }'
+        }
         '';
         Object.assign(this.config, newConfig');'
         '';
@@ -858,7 +858,7 @@ export class GestureRecognitionEngine {
             config: this.config,
             recognitionThreshold: this.recognitionThreshold,
             maxBufferSize: this.maxBufferSize,
-            customGestures: Object.fromEntries(this.customGestures); }
+            customGestures: Object.fromEntries(this.customGestures) }
         };
         
         return JSON.stringify(config, null, 2);
@@ -896,7 +896,7 @@ export class GestureRecognitionEngine {
             '';
             console.log('GestureRecognitionEngine configuration imported');'
             return true;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to import configuration:', error);
             return false; }
         }
@@ -907,7 +907,7 @@ export class GestureRecognitionEngine {
      */
     destroy(): void { this.gesturePatterns.clear();'
         this.customGestures.clear();''
-        this.recognizers.clear('')';
+        this.recognizers.clear()';
         console.log('GestureRecognitionEngine destroyed''); }'
     }''
 }

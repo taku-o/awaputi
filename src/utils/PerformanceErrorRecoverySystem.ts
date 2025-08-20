@@ -32,7 +32,7 @@ interface RecoveryStrategy { strategy: string,
     actions: string[],
     priority: number,
     estimatedTime: number,
-    fallbackStrategy?: string; }
+    fallbackStrategy?: string }
 }
 
 interface RecoveryResult { success: boolean,
@@ -47,9 +47,9 @@ interface DegradationResult { currentLevel: number,
     previousLevel: number,
     appliedMeasures: string[],
     impact: string,
-    estimatedRecoveryTime?: number; }
+    estimatedRecoveryTime?: number }
 }
-';
+';'
 interface SystemStatus { ''
     status: 'not_initialized' | 'operational' | 'degraded' | 'critical',
     detectionStatus?: any;
@@ -62,13 +62,13 @@ interface SystemStatus { ''
 
 interface MessageTemplate { title: string,'
     icon: string,'';
-    type: 'success' | 'warning' | 'error' | 'info'; }
+    type: 'success' | 'warning' | 'error' | 'info' }
 }
-';
-interface LogEntry { ''
+';'
+interface LogEntry {'
     type: 'error' | 'recovery_success' | 'degradation' | 'critical',
     data: any,
-    timestamp: number; }
+    timestamp: number }
 }
 
 // Component interfaces (will be replaced when actual files are converted);
@@ -77,7 +77,7 @@ interface PerformanceErrorDetector { initialize(): Promise<void>;
     startMonitoring(): void;
     stopMonitoring(): void;
     updateThresholds(newThresholds: any): void,
-    onErrorDetected(callback: (error: DetectedError) => void): void; }
+    onErrorDetected(callback: (error: DetectedError) => void): void }
 }
 
 interface PerformanceErrorClassifier { initialize(): Promise<void>;
@@ -89,7 +89,7 @@ interface PerformanceRecoveryEngine { initialize(): Promise<void>;
     determineStrategy(error: ClassifiedError): Promise<RecoveryStrategy>,
     executeRecovery(strategy: RecoveryStrategy): Promise<RecoveryResult>,
     getRecoveryStatistics(): any;
-    onRecoveryFailed(callback: (error: ClassifiedError, attemptedRecovery: RecoveryResult) => void): void; }
+    onRecoveryFailed(callback: (error: ClassifiedError, attemptedRecovery: RecoveryResult) => void): void }
 }
 
 interface GracefulDegradationManager { initialize(): Promise<void>;
@@ -103,9 +103,9 @@ interface GracefulDegradationManager { initialize(): Promise<void>;
 
 // Dummy implementations for missing dependencies (will be replaced when actual files are converted);
 class DummyPerformanceErrorDetector implements PerformanceErrorDetector { private callbacks: Array<(error: DetectedError) => void> = [];
-    private monitoring = false;'
+    private monitoring = false;
 '';
-    async initialize('')';
+    async initialize()';
         console.log('[PerformanceErrorDetector] Initialized'); }
     }
 
@@ -113,24 +113,24 @@ class DummyPerformanceErrorDetector implements PerformanceErrorDetector { privat
         return { monitoring: this.monitoring, detectedErrors: 0 }
     }'
 '';
-    startMonitoring('')';
+    startMonitoring()';
         console.log('[PerformanceErrorDetector] Monitoring started');
     }'
 '';
-    stopMonitoring('')';
+    stopMonitoring()';
         console.log('[PerformanceErrorDetector] Monitoring stopped');
     }'
 '';
     updateThresholds(newThresholds: any'): void { ''
-        console.log('[PerformanceErrorDetector] Thresholds updated:', newThresholds); }
+        console.log('[PerformanceErrorDetector] Thresholds updated:', newThresholds) }
     }
 
     onErrorDetected(callback: (error: DetectedError) => void): void { this.callbacks.push(callback); }
     }
 }
-';
+';'
 class DummyPerformanceErrorClassifier implements PerformanceErrorClassifier { ''
-    async initialize('')';
+    async initialize()';
         console.log('[PerformanceErrorClassifier] Initialized'); }
     }'
 '';
@@ -149,7 +149,7 @@ class DummyPerformanceErrorClassifier implements PerformanceErrorClassifier { ''
 
 class DummyPerformanceRecoveryEngine implements PerformanceRecoveryEngine { private failureCallbacks: Array<(error: ClassifiedError, attemptedRecovery: RecoveryResult) => void> = [];'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('[PerformanceRecoveryEngine] Initialized'); }
     }'
 '';
@@ -162,7 +162,7 @@ class DummyPerformanceRecoveryEngine implements PerformanceRecoveryEngine { priv
         },
     }
 ';
-    async executeRecovery(strategy: RecoveryStrategy): Promise<RecoveryResult> { // Simulate recovery execution''
+    async executeRecovery(strategy: RecoveryStrategy): Promise<RecoveryResult> { // Simulate recovery execution
         const success = Math.random(''';
             error: success ? undefined : 'Recovery failed due to system constraints' })
         })
@@ -178,14 +178,14 @@ class DummyPerformanceRecoveryEngine implements PerformanceRecoveryEngine { priv
 
 class DummyGracefulDegradationManager implements GracefulDegradationManager { private currentLevel = 0;'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('[GracefulDegradationManager] Initialized'); }
     }'
 '';
     async initiateDegradation(error: ClassifiedError, attemptedRecovery: RecoveryResult'): Promise<void> { ''
-        console.log('[GracefulDegradationManager] Initiating degradation for error:', error.type); }
+        console.log('[GracefulDegradationManager] Initiating degradation for error:', error.type) }
     }
-';
+';'
     async executeDegradation(error: ClassifiedError, recoveryResult: RecoveryResult): Promise<DegradationResult> { const previousLevel = this.currentLevel;''
         this.currentLevel = Math.min(5, this.currentLevel + 1');
         
@@ -258,11 +258,11 @@ export class PerformanceErrorRecoverySystem {
             await this.troubleshootingGuide.initialize();
             await this.errorLogger.initialize();
             await this.monitoringIntegration.initialize();
-            ';
-            // システム統合の設定''
-            await this.setupSystemIntegration('');'
+            ;
+            // システム統合の設定
+            await this.setupSystemIntegration();'
             console.log('PerformanceErrorRecoverySystem initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to initialize PerformanceErrorRecoverySystem:', error);
             throw error; }
         }
@@ -299,9 +299,9 @@ export class PerformanceErrorRecoverySystem {
                 await this.userCommunicator.notifyRecoverySuccess(classifiedError, recoveryResult);
             }
                 await this.errorLogger.logRecoverySuccess(classifiedError, recoveryResult); }
-            } else {  // 回復失敗時の劣化処理 }'
+            } else {  // 回復失敗時の劣化処理 }
                 await this.handleRecoveryFailure(classifiedError, recoveryResult);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Error handling failed:', error);
             await this.handleCriticalSystemError(error as Error); }
         }
@@ -313,16 +313,16 @@ export class PerformanceErrorRecoverySystem {
         try {
             // 劣化戦略の実行
             const degradationResult = await this.degradationManager.executeDegradation(;
-                classifiedError, );
+                classifiedError );
                 recoveryResult);
             
             // ユーザーへの通知
             await this.userCommunicator.notifyDegradation(classifiedError, degradationResult);
             
             // ログ記録
-            await this.errorLogger.logDegradation(classifiedError, degradationResult);'
+            await this.errorLogger.logDegradation(classifiedError, degradationResult);
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Degradation handling failed:', error);
             await this.handleCriticalSystemError(error as Error); }
         }
@@ -339,16 +339,16 @@ export class PerformanceErrorRecoverySystem {
             await this.errorLogger.logCriticalError(error);
             
             // 監視システムへの報告
-            await this.monitoringIntegration.reportCriticalError(error);'
+            await this.monitoringIntegration.reportCriticalError(error);
             ' }'
-        } catch (emergencyError') { ''
+        } catch (emergencyError) { ''
             console.error('Emergency handling failed:', emergencyError');'
-            // 最後の手段として、コンソールのみに出力''
+            // 最後の手段として、コンソールのみに出力
             console.error('EMERGENCY: System recovery has failed completely. Manual intervention required.'), }
         }
     }
 
-    // Public API methods for external integration'
+    // Public API methods for external integration
     async reportPerformanceIssue(issueData: Partial<DetectedError>): Promise<void> { ''
         if(!this.initialized') {'
             '';
@@ -356,7 +356,7 @@ export class PerformanceErrorRecoverySystem {
         }
             return; }
         }
-';
+';'
         const syntheticError: DetectedError = { ''
             detector: 'external','';
             type: issueData.type || 'performance', }
@@ -368,12 +368,12 @@ export class PerformanceErrorRecoverySystem {
 
         await this.handleDetectedError(syntheticError);
     }
-';
+';'
     getSystemStatus(): SystemStatus { ''
         if (!this.initialized') {' }'
             return { status: 'not_initialized' }
         }
-';
+';'
         return { ''
             status: 'operational',
             detectionStatus: this.errorDetector.getDetectionStatus(),
@@ -384,10 +384,10 @@ export class PerformanceErrorRecoverySystem {
             uptime: Date.now() - this.initializationTime }
         },
     }
-';
+';'
     async restorePerformance(targetLevel: number = 0): Promise<DegradationResult> { ''
         if(!this.initialized') {'
-            ';
+            ';'
         }'
             throw new Error('System not initialized'); }
         }
@@ -395,7 +395,7 @@ export class PerformanceErrorRecoverySystem {
         try { const result = await this.degradationManager.restoreToLevel(targetLevel);
             await this.userCommunicator.notifyPerformanceRestoration(result);'
             return result;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Performance restoration failed:', error);
             throw error; }
         }
@@ -411,9 +411,9 @@ export class PerformanceErrorRecoverySystem {
     disableMonitoring(): void { this.errorDetector.stopMonitoring(); }
     }
 
-    // Helper component cleanup'
+    // Helper component cleanup
     destroy(): void { this.errorDetector.stopMonitoring();''
-        this.userCommunicator.cleanup('')';
+        this.userCommunicator.cleanup()';
         console.log('PerformanceErrorRecoverySystem destroyed'); }
     }
 }
@@ -424,13 +424,13 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
     private messageTemplates: Map<string, MessageTemplate> = new Map();
 
     async initialize(): Promise<void> {
-        this.createNotificationContainer();'
+        this.createNotificationContainer();
         this.setupMessageTemplates();''
-        this.setupStyles('')';
+        this.setupStyles()';
         console.log('User communicator initialized'); }
     }'
 '';
-    createNotificationContainer('')';
+    createNotificationContainer()';
         if (typeof document === 'undefined'') return;'
         '';
         this.notificationContainer = document.createElement('div'');''
@@ -453,10 +453,10 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
         this.messageTemplates.set('critical_error', {''
             title: '重要なエラーが発生',')';
             icon: '🚨',')';
-            type: 'error'); }
+            type: 'error') }
     }'
 '';
-    setupStyles('')';
+    setupStyles()';
         if (typeof document === 'undefined'') return;'
         '';
         const styleId = 'performance-notification-styles';''
@@ -476,7 +476,7 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
                 border-radius: 8px,
                 margin-bottom: 10px,
                 padding: 15px,
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1) }
             }
         `;
         document.head.appendChild(style);
@@ -504,7 +504,7 @@ class PerformanceUserCommunicator { private notificationContainer: HTMLElement |
     }
 
     showNotification(type: string, message: string): void { if (!this.notificationContainer) return;
-';
+';'
         const template = this.messageTemplates.get(type);''
         if (!template') return;'
 '';
@@ -551,34 +551,34 @@ class TroubleshootingGuide { ""
 class PerformanceErrorLogger { private logs: LogEntry[] = []
     private maxLogSize: number = 100';
 '';
-    async initialize('')';
+    async initialize()';
         console.log('Error logger initialized'); }
     }'
 '';
     async logError(error: DetectedError'): Promise<void> { ''
         this.addLog('error', error');''
-        console.error('Performance error logged:', error); }
+        console.error('Performance error logged:', error) }
     }'
 '';
     async logRecoverySuccess(error: ClassifiedError, result: RecoveryResult'): Promise<void> { ''
         this.addLog('recovery_success', { error, result )');''
-        console.log('Recovery success logged:', result); }
+        console.log('Recovery success logged:', result) }
     }'
 '';
     async logDegradation(error: ClassifiedError, result: DegradationResult'): Promise<void> { ''
         this.addLog('degradation', { error, result )');''
-        console.warn('Degradation logged:', result); }
+        console.warn('Degradation logged:', result) }
     }'
 '';
     async logCriticalError(error: Error'): Promise<void> { ''
         this.addLog('critical', error');''
-        console.error('Critical error logged:', error'); }
+        console.error('Critical error logged:', error') }
     }'
 '';
     addLog(type: LogEntry['type'], data: any): void { this.logs.push({)
             type,);
             data);
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
 
         if (this.logs.length > this.maxLogSize) { this.logs.shift(); }
@@ -591,7 +591,7 @@ class PerformanceErrorLogger { private logs: LogEntry[] = []
 
 class ErrorMonitoringIntegration { private criticalErrorCallbacks: Array<(error: Error | DetectedError) => void> = [];'
 '';
-    async initialize('')';
+    async initialize()';
         console.log('Monitoring integration initialized'); }
     }
 
@@ -604,8 +604,8 @@ class ErrorMonitoringIntegration { private criticalErrorCallbacks: Array<(error:
         this.criticalErrorCallbacks.forEach(callback => { )
             try {); }'
                 callback(error);' }'
-            } catch (err') { ''
-                console.error('Critical error callback failed:', err); }
+            } catch (err) { ''
+                console.error('Critical error callback failed:', err) }
             }
         };
     }
@@ -629,6 +629,6 @@ export function getPerformanceErrorRecoverySystem(): PerformanceErrorRecoverySys
  * @returns PerformanceErrorRecoverySystem instance
  */
 export function reinitializePerformanceErrorRecoverySystem(): PerformanceErrorRecoverySystem { if (performanceErrorRecoverySystemInstance) {
-        performanceErrorRecoverySystemInstance.destroy(); }'
+        performanceErrorRecoverySystemInstance.destroy(); }
     }''
     performanceErrorRecoverySystemInstance = new PerformanceErrorRecoverySystem(');

@@ -7,11 +7,11 @@ interface TestResult { id: string,
     name: string,
     status: 'passed' | 'failed' | 'skipped',
     duration: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface ChartData { labels: string[],
-    datasets: ChartDataset[];
+    datasets: ChartDataset[]
     }
 }
 
@@ -27,17 +27,17 @@ interface ChartOptions { responsive: boolean,
     plugins: {
         legend: {
             display: boolean,
-            position?: string; }
+            position?: string }
         };
         title: { display: boolean,
-            text: string; }
+            text: string }
         };
     };
     scales?: { [axis: string]: {
             beginAtZero: boolean,
             title?: {
                 display: boolean,
-                text: string; }
+                text: string }
             };
         };
     };
@@ -75,14 +75,14 @@ export class TestChartGenerator {
         if (!results.length) return;'
 '';
         const statusCounts = this.calculateStatusCounts(results');
-        ';
+        ';'
         const chartData: ChartData = {''
             labels: ['Passed', 'Failed', 'Skipped'],';
             datasets: [{']'
                 label: 'Test Results',];
                 data: [statusCounts.passed, statusCounts.failed, statusCounts.skipped],
                 backgroundColor: [this.defaultColors.passed,
-                    this.defaultColors.failed,];
+                    this.defaultColors.failed];
                     this.defaultColors.skipped];
                 ] }
             }]
@@ -110,7 +110,7 @@ export class TestChartGenerator {
         const sortedResults = results;
             .sort((a, b) => b.duration - a.duration);
             .slice(0, 10); // Top 10 slowest tests
-';
+';'
         const chartData: ChartData = {''
             labels: sortedResults.map(r => this.truncateTestName(r.name)'),';
             datasets: [{''
@@ -126,7 +126,7 @@ export class TestChartGenerator {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false }
+                    display: false }'
                 },'
                 title: { display: true,''
                     text: 'Slowest Tests' }
@@ -193,13 +193,13 @@ export class TestChartGenerator {
         this.renderChart('line', chartData, options, 'timeline-chart');
     }'
 '';
-    private generatePerformanceTrendChart('')';
+    private generatePerformanceTrendChart()';
         this.renderPlaceholderChart('Performance Trend', 'performance-trend-chart');
     }
 
     private generateDurationDistributionChart(): void { const results = this.getTestResults();
         if (!results.length) return;
-';
+';'
         const durations = results.map(r => r.duration);''
         const distribution = this.calculateDurationDistribution(durations');
 
@@ -207,7 +207,7 @@ export class TestChartGenerator {
             labels: distribution.labels,';
             datasets: [{''
                 label: 'Number of Tests',
-                data: distribution.counts,];
+                data: distribution.counts];
                 backgroundColor: this.defaultColors.primary }]
             }]
         },
@@ -240,19 +240,19 @@ export class TestChartGenerator {
         this.renderChart('bar', chartData, options, 'duration-distribution-chart');
     }'
 '';
-    private generateSlowTestsChart('')';
+    private generateSlowTestsChart()';
         this.renderPlaceholderChart('Slow Tests Analysis', 'slow-tests-chart');
     }'
 '';
-    private generateHistoricalTrendChart('')';
+    private generateHistoricalTrendChart()';
         this.renderPlaceholderChart('Historical Trends', 'historical-trend-chart');
     }'
 '';
-    private generateSuccessRateChart('')';
+    private generateSuccessRateChart()';
         this.renderPlaceholderChart('Success Rate Over Time', 'success-rate-chart');
     }'
 '';
-    private generateTestVelocityChart('')';
+    private generateTestVelocityChart()';
         this.renderPlaceholderChart('Test Execution Velocity', 'test-velocity-chart');
     }
 
@@ -262,7 +262,7 @@ export class TestChartGenerator {
 
     private calculateStatusCounts(results: TestResult[]): { passed: number,
         failed: number,
-        skipped: number; }
+        skipped: number }
     } { return results.reduce((counts, result) => { 
             counts[result.status]++; }
             return counts; }
@@ -271,7 +271,7 @@ export class TestChartGenerator {
 
     private generateTimelineData(results: TestResult[]): { labels: string[],
         passed: number[],
-        failed: number[]; }
+        failed: number[] }
     } { // Group results by time intervals
         const intervals = this.createTimeIntervals(results);
         
@@ -279,12 +279,12 @@ export class TestChartGenerator {
             passed: intervals.map(i = > i.passed) };
             failed: intervals.map(i => i.failed); }
         };
-    }'
+    }
 '';
     private createTimeIntervals(results: TestResult[]'): Array<{ label: string,
         passed: number,
-        failed: number; }
-    }> { // Simplified implementation - would be more sophisticated in real usage'
+        failed: number }
+    }> { // Simplified implementation - would be more sophisticated in real usage
         return [' }'
             { label: '0-5 min', passed: 10, failed: 2 },''
             { label: '5-10 min', passed: 8, failed: 1 },']'
@@ -293,7 +293,7 @@ export class TestChartGenerator {
     }'
 '';
     private calculateDurationDistribution(durations: number[]'): { labels: string[],
-        counts: number[]; }'
+        counts: number[] }'
     } { const buckets = [' }'
             { min: 0, max: 50, label: '0-50ms' },''
             { min: 50, max: 100, label: '50-100ms' },''
@@ -310,7 +310,7 @@ export class TestChartGenerator {
             counts }
         };
     }
-';
+';'
     private truncateTestName(name: string, maxLength = 30): string { ''
         return name.length > maxLength ? name.substring(0, maxLength') + '...' : name; }
     }
@@ -324,7 +324,7 @@ export class TestChartGenerator {
             container.innerHTML = `<div>Chart: ${options.plugins.title.text}</div>`;
         }
     }
-';
+';'
     private renderPlaceholderChart(title: string, containerId: string): void { const container = document.getElementById(containerId);''
         if(container') {'
             container.innerHTML = `';

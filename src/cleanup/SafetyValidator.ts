@@ -4,24 +4,24 @@ import { ReferenceResult } from './ReferenceChecker.js';
 
 interface CurrentFileCheck { exists: boolean,
     currentFilePath: string,
-    error: string | null; }
+    error: string | null }
 }
-';
+';'
 interface Reference { ''
     type: 'import' | 'string',
-    context: string; }
+    context: string }
 }
 
 interface ReferenceValidation { hasActiveReferences: boolean,
     activeReferences: Reference[],
-    inactiveReferences: Reference[];
+    inactiveReferences: Reference[]
     }
 }
 
 interface FileSizeValidation { valid: boolean,
     size: number,
     warnings: string[],
-    error: string | null; }
+    error: string | null }
 }
 
 interface SafetyReportResult { filePath: string,
@@ -37,7 +37,7 @@ interface SafetyReportResult { filePath: string,
     details: {
         currentFileCheck: CurrentFileCheck,
         referenceCheck: ReferenceValidation,
-        sizeCheck: FileSizeValidation;
+        sizeCheck: FileSizeValidation
     }
     };
 }
@@ -47,7 +47,7 @@ export interface SafetyResults { results: SafetyReportResult[],
     safeToDelete: number,
     unsafeToDelete: number,
     totalWarnings: number,
-    totalErrors: number; }
+    totalErrors: number }
 }
 
 export class SafetyValidator {
@@ -77,17 +77,17 @@ export class SafetyValidator {
         }
     }
 
-    private getCurrentFilePath(oldFilePath: string): string { const dir = path.dirname(oldFilePath);'
+    private getCurrentFilePath(oldFilePath: string): string { const dir = path.dirname(oldFilePath);
         const basename = path.basename(oldFilePath);''
         const ext = path.extname(oldFilePath');
-        ';
+        ';'
         const currentBasename = basename'';
             .replace(/_old/g, ''')'';
             .replace(/_original/g, '');
             
         return path.join(dir, currentBasename); }
     }
-';
+';'
     validateNoActiveReferences(references: Reference[]): ReferenceValidation { ''
         const activeReferences = references.filter(ref => { ');' }'
             return ref.type === 'import' || this.isActiveStringReference(ref.context); }
@@ -100,10 +100,10 @@ export class SafetyValidator {
     }
 
     private isActiveStringReference(context: string): boolean { const inactivePatterns = [
-            /\/\/.*/, // Comments]';
-            /\/\*[\s\S]*? \*\//, // Block comments'';
-            /console\.(log|debug|info|warn|error')/, // Console logs : undefined';
-            /TODO:|FIXME:|NOTE:/, // Code comments'';
+            /\/\/.*/, // Comments];
+            /\/\*[\s\S]*? \*\//, // Block comments;
+            /console\.(log|debug|info|warn|error')/, // Console logs : undefined;
+            /TODO:|FIXME:|NOTE:/, // Code comments;
             /['"`].*['"`]/, // String literals that might be comments;
         ];
 
@@ -138,7 +138,7 @@ export class SafetyValidator {
             },
         }
     }
-';
+';'
     private formatBytes(bytes: number): string { ''
         if (bytes === 0') return '0 Bytes';'
         const k = 1024;''
@@ -214,7 +214,7 @@ export class SafetyValidator {
 
         return { results,
             totalFiles: files.length,
-            safeToDelete: results.filter(r => r.isSafeToDelete).length,
+            safeToDelete: results.filter(r => r.isSafeToDelete).length,'
             unsafeToDelete: results.filter(r => !r.isSafeToDelete).length,';
             totalWarnings: results.reduce((sum, r) => sum + r.warnings.length, 0),' };'
             totalErrors: results.reduce((sum, r) => sum + r.errors.length, 0'); }

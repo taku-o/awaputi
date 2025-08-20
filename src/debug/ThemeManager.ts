@@ -2,7 +2,7 @@
  * Theme Manager - デバッグインターフェースのテーマ管理
  */
 
-interface DebugInterface { debugPanel: HTMLElement;
+interface DebugInterface { debugPanel: HTMLElement
     }
 }
 
@@ -16,16 +16,16 @@ interface ThemeColors { background: string,
     success: string,
     warning: string,
     error: string,
-    info: string; }
+    info: string }
 }
 
 interface Theme { name: string,
-    colors: ThemeColors;
+    colors: ThemeColors
     }
 }
 
 interface AvailableTheme { key: string,
-    name: string; }
+    name: string }
 }
 
 type ThemeName = 'dark' | 'light' | 'highContrast';
@@ -51,7 +51,7 @@ export class ThemeManager {
                     accent: '#0066cc','';
                     success: '#00ff00','';
                     warning: '#ffaa00','';
-                    error: '#ff4444',';
+                    error: '#ff4444','
     }
     }'
                     info: '#00aaff' }
@@ -123,7 +123,7 @@ export class ThemeManager {
      */
     public getAvailableThemes(): AvailableTheme[] { return Object.keys(this.themes).map(key => ({)
             key,);
-            name: this.themes[key].name))); }
+            name: this.themes[key].name))) }
     }
 
     /**
@@ -148,7 +148,7 @@ export class ThemeManager {
     }
 
     /**
-     * 要素にテーマを適用'
+     * 要素にテーマを適用
      */''
     private applyThemeToElement(element: HTMLElement, theme: Theme'): void { const colors = theme.colors;
         
@@ -156,8 +156,8 @@ export class ThemeManager {
         element.style.background = colors.background;
         element.style.color = colors.text;
         element.style.borderColor = colors.border;
-';
-        // ヘッダー''
+;
+        // ヘッダー
         const header = element.querySelector('.debug-header') as HTMLElement;''
         if(header') {'
             '';
@@ -171,7 +171,7 @@ export class ThemeManager {
             }
         }
 ';
-        // タブエリア''
+        // タブエリア
         const tabsArea = element.querySelector('.debug-tabs') as HTMLElement;''
         if(tabsArea') {
             tabsArea.style.background = colors.panel;
@@ -179,7 +179,7 @@ export class ThemeManager {
             tabsArea.style.borderColor = colors.border; }
         }
 ';
-        // タブボタン''
+        // タブボタン
         element.querySelectorAll('.debug-tab').forEach(tab => {  const tabElement = tab as HTMLElement;')'
             tabElement.style.color = colors.textSecondary');''
             tabElement.style.background = this.currentTheme === 'highContrast' ? colors.background : 'rgba(255, 255, 255, 0.1')';
@@ -191,7 +191,7 @@ export class ThemeManager {
             }''
         }');
 ';
-        // コンテンツエリア''
+        // コンテンツエリア
         const content = element.querySelector('.debug-content') as HTMLElement;''
         if(content') {
             content.style.background = colors.background;
@@ -199,7 +199,7 @@ export class ThemeManager {
             content.style.color = colors.text; }
         }
 ';
-        // ステータスバー''
+        // ステータスバー
         const status = element.querySelector('.debug-status') as HTMLElement;
         if(status) {
             status.style.background = colors.panel;
@@ -234,9 +234,9 @@ export class ThemeManager {
     private updateThemeClasses(): void { const debugPanel = this.debugInterface.debugPanel;''
         if (!debugPanel') return;
 ';
-        // 既存のテーマクラスを削除''
+        // 既存のテーマクラスを削除
         debugPanel.classList.remove('theme-dark', 'theme-light', 'theme-high-contrast');
-        ';
+        ';'
         // 現在のテーマクラスを追加' }'
         const themeClass = `theme-${this.currentTheme.replace(/([A-Z]')/g, '-$1').toLowerCase(})}`;
         debugPanel.classList.add(themeClass);
@@ -245,7 +245,7 @@ export class ThemeManager {
     /**
      * テーマスタイルを作成'
      */''
-    private createThemeStyles('')';
+    private createThemeStyles()';
         if (document.getElementById('debug-theme-styles')') return;'
         '';
         const style = document.createElement('style'');''
@@ -293,11 +293,11 @@ export class ThemeManager {
             
             .enhanced-debug-interface.theme-high-contrast button { background: var(--debug-bg) !important,
                 border: 2px solid var(--debug-border) !important,
-                color: var(--debug-text) !important; }
+                color: var(--debug-text) !important }
             }
             
             .enhanced-debug-interface.theme-high-contrast button:hover { background: var(--debug-accent) !important,
-                color: var(--debug-bg) !important; }
+                color: var(--debug-bg) !important }
             }
 
             /* CSS変数を使用するスタイル */
@@ -306,16 +306,16 @@ export class ThemeManager {
                 border-color: var(--debug-border), }
             }
 
-            .test-result.test-success { color: var(--debug-success; }
+            .test-result.test-success { color: var(--debug-success }
             }
 
-            .test-result.test-error { color: var(--debug-error; }
+            .test-result.test-error { color: var(--debug-error }
             }
 
-            .test-result.test-warning { color: var(--debug-warning; }
+            .test-result.test-warning { color: var(--debug-warning }
             }
 
-            .test-result.test-info { color: var(--debug-info; }
+            .test-result.test-info { color: var(--debug-info }
             }
 );
             .error-item.error-error { border-left: 3px solid var(--debug-error), }
@@ -333,14 +333,14 @@ export class ThemeManager {
     /**
      * テーマを保存'
      */''
-    private saveTheme('')';
+    private saveTheme()';
         localStorage.setItem('debug-theme', this.currentTheme);
     }
 
     /**
      * テーマを読み込み'
      */''
-    private loadTheme('')';
+    private loadTheme()';
         const saved = localStorage.getItem('debug-theme');
         if (saved && this.themes[saved]) { this.currentTheme = saved as ThemeName; }
         }
@@ -349,7 +349,7 @@ export class ThemeManager {
     /**
      * システムのダークモード設定を検出'
      */''
-    public detectSystemTheme('')';
+    public detectSystemTheme()';
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark')').matches') { ''
             return 'dark';' }'
         } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light')').matches') { ''
@@ -375,11 +375,11 @@ export class ThemeManager {
     }
 
     /**
-     * 破棄'
+     * 破棄
      */''
-    public destroy('')';
+    public destroy()';
         const style = document.getElementById('debug-theme-styles');
         if(style) {'
-            ';
+            ';'
         }'
             style.remove(') }

@@ -16,17 +16,17 @@ interface DeviceCapabilities { vibrationSupported: boolean,
     speechSynthesisSupported: boolean,
     visualFeedbackSupported: boolean,
     highContrastSupported: boolean,
-    reducedMotionSupported: boolean; }
+    reducedMotionSupported: boolean }
 }
 
-// Types for legacy vibration manager'
+// Types for legacy vibration manager
 interface LegacyVibrationManager { vibrate: (pattern: VibrationPattern) => void;''
-    isSupported: (') => boolean; }
+    isSupported: (') => boolean }
 }
 
 // Types for audio cue
 interface AudioCue { pattern: string,
-    vibrationPattern: VibrationPattern;
+    vibrationPattern: VibrationPattern
     }
 }
 
@@ -35,10 +35,10 @@ interface AccessibilitySettings { visualFeedback: boolean,
     captioning: boolean,
     colorIndication: boolean,
     hapticFeedback: boolean,
-    descriptionEnabled: boolean; }
+    descriptionEnabled: boolean }
 }
 
-// Types for settings change event'
+// Types for settings change event
 interface SettingsChangeEvent { ''
     type: 'single' | 'batch',
     key?: string;
@@ -53,7 +53,7 @@ interface MainController { feedbackManager: {
     updateColorIndicator(level: AudioLevel): void,
     updateSetting(key: string, value: any): void,
     updateSettings(settings: Partial<AccessibilitySettings>): Promise<void>,
-    eventManager: { recordEvent(eventType: string, eventData: any): void; }
+    eventManager: { recordEvent(eventType: string, eventData: any): void }
     };
     triggerHapticFeedback(feedbackType: string): void,
 }
@@ -74,7 +74,7 @@ export class AudioLegacyAdapter {
 
     /**
      * VibrationManagerの互換性設定
-     */'
+     */
     private initializeVibrationManager(): void { this.vibrationManager = {''
             vibrate: (pattern: VibrationPattern'): void => {' }'
                 const cue: AudioCue = { pattern: 'custom', vibrationPattern: pattern }
@@ -156,9 +156,9 @@ export class AudioLegacyAdapter {
     public handleSettingsChange(event: SettingsChangeEvent'): void { ''
         this.mainController.eventManager.recordEvent('settings_change', event');
         ';
-        // 必要に応じて追加の処理''
+        // 必要に応じて追加の処理
         if(event.type === 'single' && event.key === 'vibrationIntensity'') {'
-            // 振動強度変更時の即座テスト'
+            // 振動強度変更時の即座テスト
         }'
             this.mainController.triggerHapticFeedback('notification'); }
         }

@@ -37,7 +37,7 @@ interface AppManifestConfig { name?: string;
     icons?: Array<{
         src: string,
         sizes: string,
-        type: string; }
+        type: string }
     }>;
     categories?: string[];
     lang?: string;
@@ -77,7 +77,7 @@ export class PWAServiceWorkerManager {
         }
             return false; }
         }
-';
+';'
         try { this.isRegistering = true;''
             console.log('[PWAServiceWorkerManager] Registering Service Worker...'');'
 '';
@@ -89,9 +89,9 @@ export class PWAServiceWorkerManager {
 
             // Service Workerの状態監視開始
             this.monitorServiceWorkerState();
-';
+';'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PWAServiceWorkerManager] Service Worker registration failed:', error);
             return false; }
         } finally { this.isRegistering = false; }
@@ -108,12 +108,12 @@ export class PWAServiceWorkerManager {
             return; }
         }
 ';
-        // 更新チェック''
+        // 更新チェック
         this.registration.addEventListener('updatefound', () => {  const newWorker = this.registration!.installing;''
             if(newWorker') {'
                 '';
                 console.log('[PWAServiceWorkerManager] New Service Worker found');''
-                this.handleServiceWorkerUpdate('')';
+                this.handleServiceWorkerUpdate()';
                 newWorker.addEventListener('statechange', (') => {''
                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller') {''
                         console.log('[PWAServiceWorkerManager] New Service Worker installed');
@@ -125,13 +125,13 @@ export class PWAServiceWorkerManager {
             }''
         }');
 ';
-        // コントローラー変更の監視''
+        // コントローラー変更の監視
         navigator.serviceWorker.addEventListener('controllerchange', (') => {  ''
             console.log('[PWAServiceWorkerManager] Service Worker controller changed'); }'
             this.pwaManager.suggestPageReload();' }'
         }');
 ';
-        // メッセージリスナー''
+        // メッセージリスナー
         navigator.serviceWorker.addEventListener('message', (event) => { this.handleServiceWorkerMessage(event); }
         });
     }
@@ -139,7 +139,7 @@ export class PWAServiceWorkerManager {
     /**
      * Service Worker更新の処理'
      */''
-    private handleServiceWorkerUpdate('')';
+    private handleServiceWorkerUpdate()';
         console.log('[PWAServiceWorkerManager] Service Worker update detected');
         this.updateAvailable = true;
         this.pwaManager.showUpdateNotification();
@@ -150,9 +150,9 @@ export class PWAServiceWorkerManager {
      */'
     applyServiceWorkerUpdate(): void { ''
         if(this.registration && this.registration.waiting') {'
-            ';
+            ';'
         }'
-            this.registration.waiting.postMessage({ action: 'SKIP_WAITING' ); }
+            this.registration.waiting.postMessage({ action: 'SKIP_WAITING' ) }
         }
     }
 
@@ -166,7 +166,7 @@ export class PWAServiceWorkerManager {
 
         try { await this.registration.update();'
             return this.updateAvailable;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PWAServiceWorkerManager] Update check failed:', error);
             return false; }
         }
@@ -198,7 +198,7 @@ export class PWAServiceWorkerManager {
             case 'UPDATE_AVAILABLE':'';
                 this.handleUpdateMessage(data');
                 break;'
-            default:';
+            default:'
         }'
                 console.log('[PWAServiceWorkerManager] Unknown message type:', data.type); }
         }
@@ -216,7 +216,7 @@ export class PWAServiceWorkerManager {
 
     /**
      * オフライン準備完了の処理
-     * @param {Object} data メッセージデータ'
+     * @param {Object} data メッセージデータ
      */ : undefined''
     private handleOfflineReady(data: any'): void { ''
         console.log('[PWAServiceWorkerManager] Offline mode ready');
@@ -235,7 +235,7 @@ export class PWAServiceWorkerManager {
 
     /**
      * 更新メッセージの処理
-     * @param {Object} data メッセージデータ'
+     * @param {Object} data メッセージデータ
      */''
     private handleUpdateMessage(data: any'): void { ''
         console.log('[PWAServiceWorkerManager] Update message received:', data);
@@ -252,7 +252,7 @@ export class PWAServiceWorkerManager {
             return; }
         }
 ';
-        // データ同期の登録''
+        // データ同期の登録
         (this.registration as any').sync.register('sync-data').then((') => {  ' }'
             console.log('[PWAServiceWorkerManager] Background sync registered');' }'
         }).catch((error: Error') => {  ' }'
@@ -267,7 +267,7 @@ export class PWAServiceWorkerManager {
      */'
     async postMessage(message: ServiceWorkerMessage): Promise<any> { ''
         if(!this.registration || !this.registration.active') {'
-            ';
+            ';'
         }'
             throw new Error('Service Worker not available'); }
         }
@@ -280,7 +280,7 @@ export class PWAServiceWorkerManager {
                 } else { resolve(event.data); }
                 }
             };
-';
+';'
             this.registration!.active!.postMessage(message, [messageChannel.port2]);''
         }');
     }
@@ -292,7 +292,7 @@ export class PWAServiceWorkerManager {
      * @returns {Promise<Object>} 結果'
      */''
     async manageCache(action: string, options: any = {})'): Promise<any> {
-        try {'
+        try {
             const result = await this.postMessage({')'
                 type: 'CACHE_MANAGEMENT');
                 action: action,);
@@ -311,14 +311,14 @@ export class PWAServiceWorkerManager {
      * @param {Array} resources リソースURL配列
      * @returns {Promise<boolean>} キャッシュ成功可否'
      */''
-    async precacheResources(resources: string[]'): Promise<boolean> { try {'
+    async precacheResources(resources: string[]'): Promise<boolean> { try {
             const result = await this.postMessage({')'
                 type: 'PRECACHE_RESOURCES',')';
                 resources: resources)'),';
 ';'
             console.log('[PWAServiceWorkerManager] Resources precached:', result);'
             return true;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PWAServiceWorkerManager] Precaching failed:', error);
             return false; }
         }
@@ -328,7 +328,7 @@ export class PWAServiceWorkerManager {
      * Service Worker統計の取得
      * @returns {Promise<Object>} 統計データ'
      */''
-    async getServiceWorkerStats('')';
+    async getServiceWorkerStats()';
                 type: 'GET_STATS'),
 
             return { registration: !!this.registration,
@@ -355,7 +355,7 @@ export class PWAServiceWorkerManager {
     async unregisterServiceWorker(): Promise<boolean> { if (!this.registration) {
             return true; }
         }
-';
+';'
         try { const result = await this.registration.unregister();''
             if(result') {'
                 '';
@@ -365,7 +365,7 @@ export class PWAServiceWorkerManager {
                 this.updateAvailable = false; }
             }'
             return result;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[PWAServiceWorkerManager] Service Worker unregistration failed:', error);
             return false; }
         }
@@ -375,10 +375,10 @@ export class PWAServiceWorkerManager {
      * アプリマニフェストのチェック
      * @returns {Promise<Object>} マニフェスト情報'
      */''
-    async checkAppManifest('')';
+    async checkAppManifest()';
             const manifestLink = document.querySelector('link[rel="manifest"]') as HTMLLinkElement;''
             if(!manifestLink') {'
-                ';
+                ';'
             }'
                 throw new Error('Manifest link not found'); }
             }
@@ -390,7 +390,7 @@ export class PWAServiceWorkerManager {
                 throw new Error(`Failed to fetch manifest: ${response.status)`});
             }'
 '';
-            const manifest = await response.json('');'
+            const manifest = await response.json();'
             console.log('[PWAServiceWorkerManager] App manifest loaded:', manifest);
 
             return { valid: true,
@@ -449,7 +449,7 @@ export class PWAServiceWorkerManager {
             
         }
             clearInterval(this.updateCheckInterval); }
-        }'
+        }
 '';
         this.updateCheckInterval = setInterval(async (') => {  ''
             console.log('[PWAServiceWorkerManager] Performing periodic update check'); }
@@ -467,9 +467,9 @@ export class PWAServiceWorkerManager {
             this.updateCheckInterval = undefined; }
         }
 ';
-        // Service Workerイベントリスナーの削除''
+        // Service Workerイベントリスナーの削除
         if(this.registration') {'
-            ';
+            ';'
         }'
             this.registration.removeEventListener('updatefound', this.handleServiceWorkerUpdate'); }
         }'

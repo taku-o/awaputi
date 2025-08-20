@@ -13,7 +13,7 @@
 interface BoundingBox { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface Layer { name: string,
@@ -30,7 +30,7 @@ interface Layer { name: string,
     objects: Set<string>,
     boundingBox: BoundingBox,
     renderTime: number,
-    complexity: number; }
+    complexity: number }
 }
 
 interface LayerProperties { static?: boolean;
@@ -41,7 +41,7 @@ interface LayerStats { totalLayers: number,
     cachedLayers: number,
     compositedLayers: number,
     cacheHitRate: number,
-    compositionTime: number; }
+    compositionTime: number }
 }
 
 interface LayerManagerConfig { enabled: boolean,
@@ -57,7 +57,7 @@ interface LayerManagerConfig { enabled: boolean,
     blendOptimization: boolean,
     layerFusion: boolean,
     layerProperties: Map<string, LayerProperties>;
-    stats: LayerStats;
+    stats: LayerStats
     }
 }
 
@@ -82,7 +82,7 @@ interface RenderObject { type?: string;
 interface DirtyRegion { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface ConfigurationOptions { enabled?: boolean;
@@ -107,8 +107,8 @@ export class BasicLayerManager {
             layerOrder: [],
             staticLayers: new Set(),
             dynamicLayers: new Set(),
-            ';
-            // Layer caching''
+            ;
+            // Layer caching
             layerCache: new Map(''';
             compositionMode: 'smart', // 'simple', 'smart', 'advanced');
             blendOptimization: true);
@@ -133,13 +133,13 @@ export class BasicLayerManager {
     }
 
     /**
-     * Initialize default layers'
+     * Initialize default layers
      */''
-    private initializeDefaultLayers('')';
+    private initializeDefaultLayers()';
         this.createLayer('background', 0, { static: true, cacheable: true )'),''
         this.createLayer('game', 1, { static: false, cacheable: false )'),''
         this.createLayer('ui', 2, { static: true, cacheable: true )'),''
-        this.createLayer('overlay', 3, { static: false, cacheable: false ); }
+        this.createLayer('overlay', 3, { static: false, cacheable: false ) }
     }
 
     /**
@@ -175,8 +175,8 @@ export class BasicLayerManager {
             renderTime: 0,
             complexity: 0;
         },
-        ';
-        // Create layer canvas if cacheable''
+        ;
+        // Create layer canvas if cacheable
         if(layer.cacheable') {'
             '';
             layer.canvas = document.createElement('canvas'');
@@ -285,8 +285,8 @@ export class BasicLayerManager {
      * @returns Layer batches organized by layer
      */
     optimizeLayerComposition(objects: RenderObject[]): Map<string, RenderObject[]> { const layerBatches = new Map<string, RenderObject[]>();
-        ';
-        // Group objects by layer''
+        ;
+        // Group objects by layer
         for(const obj of objects') {'
             '';
             const layerName = obj.layer || 'game';
@@ -315,13 +315,13 @@ export class BasicLayerManager {
      * @param objects - Objects in layer
      */
     private optimizeLayerBatch(layer: Layer, objects: RenderObject[]): void { // Update layer cache if needed
-        if(layer.cacheable && (layer.dirty || !layer.canvas) {'
-            ';
+        if(layer.cacheable && (layer.dirty || !layer.canvas) {
+            ';'
         }'
             this.updateLayerCache(layer, objects'); }
         }
         ';
-        // Batch objects for efficient rendering''
+        // Batch objects for efficient rendering
         if (this.config.compositionMode !== 'simple') { this.batchDrawCalls(objects); }
         }
     }
@@ -369,8 +369,8 @@ export class BasicLayerManager {
         
         if (obj.alpha !== undefined && obj.alpha !== 1) { ctx.globalAlpha = obj.alpha; }
         }
-        ';
-        // Render based on object type''
+        ;
+        // Render based on object type
         switch(obj.type') {'
             '';
             case 'sprite':'';
@@ -490,7 +490,7 @@ export class BasicLayerManager {
 
         mainCtx.save();
         ';
-        // Apply layer properties''
+        // Apply layer properties
         if(layer.opacity !== 1') {
             
         }
@@ -571,6 +571,6 @@ export class BasicLayerManager {
 
     /**
      * Reset layer manager
-     */'
+     */
     reset(): void { this.clearAllLayers();''
         this.config.layerCache.clear(') }

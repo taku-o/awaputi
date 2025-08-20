@@ -12,6 +12,6 @@ export class TestExecutionManager {
     }
 
     public initialize(): void { // Implementation }
-    }'
+    }
 '';
     public destroy(');

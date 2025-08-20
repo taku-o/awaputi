@@ -21,7 +21,7 @@ interface GameEngine { // Add specific properties/methods as needed }
  * Cached data interface
  */
 interface CachedData { rankings: RankingEntry[],
-    error?: string; }
+    error?: string }
 }
 
 /**
@@ -49,7 +49,7 @@ interface UIState { currentView: string,
     showDetails: boolean,
     cachedData: CachedData | null,
     lastUpdateTime: number,
-    isLoading: boolean; }
+    isLoading: boolean }
 }
 
 /**
@@ -60,7 +60,7 @@ interface LayoutConfig { headerHeight: number,
     entryHeight: number,
     padding: number,
     scrollOffset: number,
-    maxVisibleEntries: number; }
+    maxVisibleEntries: number }
 }
 
 /**
@@ -68,24 +68,24 @@ interface LayoutConfig { headerHeight: number,
  */
 interface Touch { identifier: number,
     clientX: number,
-    clientY: number; }
+    clientY: number }
 }
 
 /**
  * Event data interfaces
  */
-interface ViewChangeData { view: string; }
+interface ViewChangeData { view: string }
 }
 
-interface SortChangeData { sortBy: string; }
+interface SortChangeData { sortBy: string }
 }
 
 interface EntrySelectData { entry: RankingEntry,
-    index: number; }
+    index: number }
 }
 
 interface DetailsToggleData { show: boolean,
-    entry?: RankingEntry;
+    entry?: RankingEntry
     }
 }
 
@@ -95,14 +95,14 @@ interface ScrollData { deltaX?: number;
     scrollTo?: string; }
 }
 
-interface HoverData { target: any; }
+interface HoverData { target: any }
 }
 
 /**
  * Refresh options interface
  */
 interface RefreshOptions { sortBy: string,
-    stageId: string | null; }
+    stageId: string | null }
 }
 
 /**
@@ -110,7 +110,7 @@ interface RefreshOptions { sortBy: string,
  */
 interface Statistics { dataManager: any,
     animation: any,
-    eventHandler: any; }
+    eventHandler: any }
 }
 
 /**
@@ -126,7 +126,7 @@ interface ConfigUpdate { layout?: Partial<LayoutConfig>;
 interface Bounds { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 /**
@@ -146,7 +146,7 @@ interface UIElements { tabs: UIElement[],
     sortOptions: UIElement[],
     entries: UIElement[],
     buttons: UIElement[],
-    scrollbar: UIElement | null; }
+    scrollbar: UIElement | null }
 }
 
 export class LeaderboardUI {
@@ -157,7 +157,7 @@ export class LeaderboardUI {
     private dataManager: LeaderboardDataManager;
     private animationController: LeaderboardAnimationController;
     private eventHandler: LeaderboardEventHandler;
-    // UI状態'
+    // UI状態
     private uiState: UIState = {''
         currentView: 'overall';
         currentStage: null,';
@@ -192,9 +192,9 @@ export class LeaderboardUI {
         this.animationController = new LeaderboardAnimationController(gameEngine);
         this.eventHandler = new LeaderboardEventHandler(gameEngine);
         
-        // コンポーネント統合'
+        // コンポーネント統合
         this.setupEventHandlers();''
-        this.setupDataWatchers('');
+        this.setupDataWatchers();
     }
     }'
         console.log('[LeaderboardUI] Initialized with modular architecture'); }
@@ -208,11 +208,11 @@ export class LeaderboardUI {
             await this.dataManager.initialize();
             this.animationController.initialize();
             this.eventHandler.initialize();
-            ';
-            // 初期データ読み込み''
-            await this.refreshData('');'
+            ;
+            // 初期データ読み込み
+            await this.refreshData();'
             console.log('[LeaderboardUI] All components initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardUI.initialize'); }
         }
     }
@@ -220,41 +220,41 @@ export class LeaderboardUI {
     /**
      * イベントハンドラー設定'
      */''
-    setupEventHandlers('')';
+    setupEventHandlers()';
         this.eventHandler.addCallback('onViewChange', (data: ViewChangeData) => { this.changeView(data.view);' }'
         }');
         ';
-        // ソート変更''
+        // ソート変更
         this.eventHandler.addCallback('onSortChange', (data: SortChangeData) => { this.changeSortBy(data.sortBy);' }'
         }');
         ';
-        // エントリー選択''
+        // エントリー選択
         this.eventHandler.addCallback('onEntrySelect', (data: EntrySelectData) => { this.selectEntry(data.entry, data.index);' }'
         }');
         ';
-        // 詳細表示切り替え''
+        // 詳細表示切り替え
         this.eventHandler.addCallback('onDetailsToggle', (data: DetailsToggleData) => {  this.uiState.showDetails = data.show;
             if (data.entry) { }
                 this.uiState.selectedEntry = data.entry; }'
             }''
         }');
         ';
-        // スクロール''
+        // スクロール
         this.eventHandler.addCallback('onScroll', (data: ScrollData) => {  if (data.scrollRatio !== undefined) {
                 // スクロールバークリック }
                 this.setScrollRatio(data.scrollRatio); }
             } else if (data.scrollTo) { // ショートカットスクロール
                 this.scrollTo(data.scrollTo); }
             } else if (data.deltaY !== undefined) { // 通常スクロール
-                this.scroll(data.deltaY); }'
+                this.scroll(data.deltaY); }
             }''
         }');
         ';
-        // データ更新''
+        // データ更新
         this.eventHandler.addCallback('onRefresh', () => { this.refreshData();' }'
         }');
         ';
-        // ホバー処理''
+        // ホバー処理
         this.eventHandler.addCallback('onHover', (data: HoverData) => { this.handleHover(data.target);' }'
         }');'
         '';
@@ -267,7 +267,7 @@ export class LeaderboardUI {
      */
     setupDataWatchers(): void { this.dataManager.addDataWatcher((viewType: string, data: CachedData) => { 
             if(viewType === this.uiState.currentView) {
-                this.uiState.cachedData = data;
+                this.uiState.cachedData = data
             }
                 this.uiState.lastUpdateTime = Date.now(); }
                 this.updateScrollBounds(); }
@@ -283,9 +283,9 @@ export class LeaderboardUI {
             this.updateUIElementBounds(x, y, width, height);
             
             // レンダリング実行
-            this.renderer.render(context, x, y, width, height, this.uiState, this.layout);'
+            this.renderer.render(context, x, y, width, height, this.uiState, this.layout);
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardUI.render');
             this.renderErrorState(context, x, y, width, height); }
         }
@@ -308,7 +308,7 @@ export class LeaderboardUI {
         const headerHeight = this.layout.headerHeight;
         const tabHeight = this.layout.tabHeight;
         ';
-        // タブ境界''
+        // タブ境界
         const tabs = ['overall', 'daily', 'weekly', 'monthly', 'stage'];
         const tabWidth = (width - padding * 2) / tabs.length;
         const tabElements: UIElement[] = tabs.map((tab, index) => ({
@@ -321,7 +321,7 @@ export class LeaderboardUI {
             }''
         }'),
         ';
-        // ソートオプション境界''
+        // ソートオプション境界
         const sortOptions = ['score', 'timestamp', 'combo', 'accuracy'];
         const sortWidth = (width - padding * 2) / sortOptions.length;
         const sortY = y + headerHeight + tabHeight;
@@ -347,7 +347,7 @@ export class LeaderboardUI {
             
             for (let i = startIndex; i < endIndex; i++) {
                 entryElements.push({
-                    data: data.rankings[i],);
+                    data: data.rankings[i]);
                     index: i);
                     bounds: {)
                         x: x + 5),
@@ -369,7 +369,7 @@ export class LeaderboardUI {
             scrollbar: data && data.rankings && data.rankings.length > this.layout.maxVisibleEntries ? { : undefined
                 bounds: {
                     x: x + width - 15,
-                    y: y,);
+                    y: y);
                     width: 15);
                     height: height }
                 })
@@ -388,8 +388,8 @@ export class LeaderboardUI {
      */
     handleMouseHover(x: number, y: number, options: any = { ): void {
         this.eventHandler.handleHover(x, y, options);
-        ';
-        // アニメーション連携''
+        ;
+        // アニメーション連携
         const target = this.eventHandler.getTargetAt(x, y');''
         if(target && target.type === 'entry') {
             
@@ -498,7 +498,7 @@ export class LeaderboardUI {
             
             }'
                 this.updateScrollBounds();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'LeaderboardUI.refreshData'); }
         } finally { this.uiState.isLoading = false; }
         }
@@ -583,13 +583,13 @@ export class LeaderboardUI {
      * リソースを破棄
      */
     dispose(): void { this.renderer.dispose();
-        this.dataManager.dispose();'
+        this.dataManager.dispose();
         this.animationController.dispose();''
-        this.eventHandler.dispose('')';
+        this.eventHandler.dispose()';
         console.log('[LeaderboardUI] All components disposed''); }
     }
 }
 
-// ChallengeDetailModal と ChallengeUI クラスも必要に応じて分離可能ですが、'
-// ファイルサイズの制約内で基本的なリーダーボード機能を維持しています。''
+// ChallengeDetailModal と ChallengeUI クラスも必要に応じて分離可能ですが、
+// ファイルサイズの制約内で基本的なリーダーボード機能を維持しています。
 // これらの追加機能は、必要に応じて別ファイルに分離することを推奨します。

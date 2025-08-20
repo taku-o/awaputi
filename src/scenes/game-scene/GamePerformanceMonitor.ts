@@ -14,20 +14,20 @@ interface PerformanceMetrics { fps: number,
     minFps: number,
     maxFps: number,
     frameHistory: number[],
-    maxHistorySize: number; }
+    maxHistorySize: number }
 }
 
 interface PerformanceThresholds { minAcceptableFps: number,
     targetFps: number,
     maxBubbleCount: number,
     memoryWarningThreshold: number,
-    frameTimeWarning: number; }
+    frameTimeWarning: number }
 }
 
 interface OptimizationFlags { reducedEffects: boolean,
     reducedParticles: boolean,
     simplifiedRendering: boolean,
-    lowQualityMode: boolean; }
+    lowQualityMode: boolean }
 }
 
 interface PerformanceStatistics { totalFrames: number,
@@ -35,14 +35,14 @@ interface PerformanceStatistics { totalFrames: number,
     performanceWarnings: number,
     optimizationTriggers: number,
     averageUpdateTime: number,
-    averageRenderTime: number; }
+    averageRenderTime: number }
 }
 
 interface PerformanceStats { metrics: PerformanceMetrics,
     statistics: PerformanceStatistics,
     optimizations: OptimizationFlags,
     thresholds: PerformanceThresholds,
-    recommendations: string[]; }
+    recommendations: string[] }
 }
 
 interface PerformanceSettings { showMetrics?: boolean;
@@ -54,7 +54,7 @@ interface PerformanceSettings { showMetrics?: boolean;
 interface GameEngine { canvas: HTMLCanvasElement,
     bubbleManager: {
         getBubbleCount(): number,
-        cleanupDestroyedBubbles(): void; }
+        cleanupDestroyedBubbles(): void }
     };
 }
 
@@ -62,7 +62,7 @@ interface GameEngine { canvas: HTMLCanvasElement,
 interface ExtendedPerformance extends Performance { memory?: {
         usedJSHeapSize: number,
         totalJSHeapSize: number,
-        jsHeapSizeLimit: number; }
+        jsHeapSizeLimit: number }
     };
 }
 
@@ -136,7 +136,7 @@ export class GamePerformanceMonitor {
     /**
      * パフォーマンス監視の停止'
      */''
-    public stopMonitoring('')';
+    public stopMonitoring()';
         console.log('[GamePerformanceMonitor] Monitoring stopped');
         this.logPerformanceSummary();
     }
@@ -291,9 +291,9 @@ export class GamePerformanceMonitor {
     }
     
     /**
-     * メモリ使用量チェック'
+     * メモリ使用量チェック
      */''
-    private checkMemoryUsage('')';
+    private checkMemoryUsage()';
         if('memory' in extPerformance && extPerformance.memory) {
             const memInfo = extPerformance.memory;
             if (memInfo.usedJSHeapSize > this.performanceThresholds.memoryWarningThreshold) {
@@ -307,39 +307,39 @@ export class GamePerformanceMonitor {
     /**
      * 軽減エフェクトの有効化'
      */''
-    private enableReducedEffects('')';
+    private enableReducedEffects()';
         console.log('[GamePerformanceMonitor] Reduced effects enabled');
     }
     
     /**
      * 軽減パーティクルの有効化'
      */''
-    private enableReducedParticles('')';
+    private enableReducedParticles()';
         console.log('[GamePerformanceMonitor] Reduced particles enabled');
     }
     
     /**
      * 簡略化レンダリングの有効化'
      */''
-    public enableSimplifiedRendering('')';
+    public enableSimplifiedRendering()';
         console.log('[GamePerformanceMonitor] Simplified rendering enabled');
     }
     
     /**
      * 低品質モードの有効化'
      */''
-    private enableLowQualityMode('')';
+    private enableLowQualityMode()';
         console.log('[GamePerformanceMonitor] Low quality mode enabled');
     }
     
     /**
      * メモリクリーンアップの実行
      */'
-    private triggerMemoryCleanup(): void { // 未使用リソースのクリーンアップ''
-        this.gameEngine.bubbleManager.cleanupDestroyedBubbles('')';
+    private triggerMemoryCleanup(): void { // 未使用リソースのクリーンアップ
+        this.gameEngine.bubbleManager.cleanupDestroyedBubbles()';
         if('gc' in extWindow && extWindow.gc) {'
             '';
-            extWindow.gc('');
+            extWindow.gc();
         }'
         console.log('[GamePerformanceMonitor] Memory cleanup triggered'); }
     }
@@ -347,7 +347,7 @@ export class GamePerformanceMonitor {
     /**
      * パフォーマンス最適化のリセット'
      */''
-    public resetOptimizations('')';
+    public resetOptimizations()';
         console.log('[GamePerformanceMonitor] Optimizations reset');
     }
     
@@ -362,11 +362,11 @@ export class GamePerformanceMonitor {
         const x = canvas.width - 200;
         const y = 20;
         ';
-        // 背景''
+        // 背景
         context.fillStyle = 'rgba(0, 0, 0, 0.7')';''
         context.fillRect(x - 10, y - 10, 190, 150');
         ';
-        // テキスト設定''
+        // テキスト設定
         context.fillStyle = '#FFFFFF';''
         context.font = '12px monospace';''
         context.textAlign = 'left';
@@ -380,14 +380,14 @@ export class GamePerformanceMonitor {
             `Bubbles: ${this.performanceMetrics.bubbleCount}`,
             `Update: ${this.statistics.averageUpdateTime.toFixed(2})}ms`,
             `Render: ${this.statistics.averageRenderTime.toFixed(2})}ms`,
-            `Warnings: ${this.statistics.performanceWarnings}`,]
+            `Warnings: ${this.statistics.performanceWarnings}`]
             `Optimizations: ${this.statistics.optimizationTriggers}`]
         ];
         
         metrics.forEach((metric, index) => { context.fillText(metric, x, y + index * 15); }
         };
-        ';
-        // 最適化状態''
+        ;
+        // 最適化状態
         if (Object.values(this.optimizations).some(opt => opt)') { ''
             context.fillStyle = '#FFAA00';''
             context.fillText('Optimized', x, y + metrics.length * 15); }
@@ -397,7 +397,7 @@ export class GamePerformanceMonitor {
     /**
      * パフォーマンスサマリーのログ出力'
      */''
-    private logPerformanceSummary('')';
+    private logPerformanceSummary()';
         console.log('[GamePerformanceMonitor] Performance Summary: '),
         console.log(`  Total Frames: ${ this.statistics.totalFrames)`), }
         console.log(`  Total Game Time: ${(this.statistics.totalGameTime / 1000).toFixed(2})}s`);
@@ -419,29 +419,29 @@ export class GamePerformanceMonitor {
     /**
      * パフォーマンス推奨事項の取得
      * @returns 推奨事項配列
-     */
+     */'
     public getPerformanceRecommendations(): string[] { const recommendations: string[] = [],'
         '';
         if(this.performanceMetrics.averageFps < this.performanceThresholds.targetFps') {'
-            ';
+            ';'
         }'
             recommendations.push('FPSが目標値を下回っています。エフェクトや泡の数を減らすことを推奨します。'); }
         }'
         '';
         if(this.performanceMetrics.bubbleCount > this.performanceThresholds.maxBubbleCount * 0.8') {'
-            ';
+            ';'
         }'
             recommendations.push('泡の数が多くなっています。パフォーマンスに影響する可能性があります。'); }
         }'
         '';
         if(this.statistics.averageUpdateTime > 16.67') {'
-            ';
+            ';'
         }'
             recommendations.push('更新処理に時間がかかっています。処理の最適化を推奨します。'); }
         }'
         '';
         if(this.statistics.averageRenderTime > 16.67') {'
-            ';
+            ';'
         }'
             recommendations.push('描画処理に時間がかかっています。描画の最適化を推奨します。'); }
         }
@@ -471,8 +471,8 @@ export class GamePerformanceMonitor {
         }
         
         if(settings.thresholds) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             Object.assign(this.performanceThresholds, settings.thresholds'); }
         }'

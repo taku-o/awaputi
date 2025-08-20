@@ -22,7 +22,7 @@ export class AnalyticsPerformanceOptimizer {
             // パフォーマンス監視設定
             performanceCheckInterval: options.performanceCheckInterval || 1000, // 1秒;
             fpsThreshold: options.fpsThreshold || 30,
-            memoryWarningThreshold: options.memoryWarningThreshold || 80 * 1024 * 1024, // 80MB;
+            memoryWarningThreshold: options.memoryWarningThreshold || 80 * 1024 * 1024, // 80MB
     }
     }
             ...options }
@@ -40,7 +40,7 @@ export class AnalyticsPerformanceOptimizer {
         // メモリ管理
         this.memoryUsage = { current: 0,
             peak: 0,
-            lastCleanup: Date.now(); }
+            lastCleanup: Date.now() }
         };
         
         // パフォーマンス監視
@@ -114,7 +114,7 @@ export class AnalyticsPerformanceOptimizer {
         // FPS警告チェック
         if(this.performanceMetrics.fps < this.config.fpsThreshold) {
             this.handlePerformanceWarning('Low FPS detected', {)
-                fps: this.performanceMetrics.fps,);
+                fps: this.performanceMetrics.fps,)
         }
                 threshold: this.config.fpsThreshold); }
         }
@@ -138,8 +138,8 @@ export class AnalyticsPerformanceOptimizer {
         const originalTrackPlayerBehavior = this.analyticsManager.trackPlayerBehavior?.bind(this.analyticsManager);
         
         if(originalTrackPlayerBehavior) {
-        ';
-            ';
+        ';'
+            ';'
         }'
             this.analyticsManager.trackPlayerBehavior = (eventType, data') => {' }'
                 return this.batchEvent('player_behavior', { eventType, ...data }, originalTrackPlayerBehavior);
@@ -200,9 +200,9 @@ export class AnalyticsPerformanceOptimizer {
             this.lastBatchTime = Date.now();
             
             // 処理時間記録
-            this.performanceMetrics.eventProcessingTime = Date.now() - startTime;'
+            this.performanceMetrics.eventProcessingTime = Date.now() - startTime;
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Batch processing failed:', error);
             
             // エラー時は個別処理にフォールバック
@@ -251,7 +251,7 @@ export class AnalyticsPerformanceOptimizer {
                 // バッチ処理に対応している場合
                 if (handler.length > 2) {
         }
-                    await handler(type, batchData, { batch: true ); }
+                    await handler(type, batchData, { batch: true ) }
                 } else {  // 個別処理
                     for (const event of events) {; }
                         await handler(event.type, event.data); }
@@ -269,10 +269,10 @@ export class AnalyticsPerformanceOptimizer {
             try {
                 if(event.handler) {
                     
-                }'
+                }
                     await event.handler(event.type, event.data);' }'
-                } catch (error') { ''
-                console.error('Individual event processing failed:', error); }
+                } catch (error) { ''
+                console.error('Individual event processing failed:', error) }
             }
         }
     }
@@ -365,13 +365,13 @@ export class AnalyticsPerformanceOptimizer {
             event.timestamp > oldEventThreshold);
         
         // パフォーマンスメトリクスの古いデータをクリーンアップ
-        if (this.analyticsManager.performanceHistory) {'
+        if (this.analyticsManager.performanceHistory) {
             this.analyticsManager.performanceHistory = this.analyticsManager.performanceHistory';
     }'
                 .filter(entry => entry.timestamp > now - 3600000'); // 1時間保持 }
         }
-        ';
-        // ガベージコレクションのヒント（実際の効果は限定的）''
+        ;
+        // ガベージコレクションのヒント（実際の効果は限定的）
         if(typeof window !== 'undefined' && window.gc) {
             try {
         }
@@ -385,17 +385,17 @@ export class AnalyticsPerformanceOptimizer {
     }
     
     /**
-     * メモリ警告処理'
+     * メモリ警告処理
      */''
-    handleMemoryWarning('')';
+    handleMemoryWarning()';
         console.warn('High memory usage detected, performing aggressive cleanup');
         
         // 積極的なクリーンアップ
         this.cache.clear();
         this.cacheTimestamps.clear();
-        ';
-        // 即座にバッチ処理を実行''
-        this.processBatch('')';
+        ;
+        // 即座にバッチ処理を実行
+        this.processBatch()';
             event.type === 'error' || event.type === 'critical');
         
         this.optimizationStats.performanceWarnings++;
@@ -431,7 +431,7 @@ export class AnalyticsPerformanceOptimizer {
     }
     
     /**
-     * 設定動的調整'
+     * 設定動的調整
      */''
     adjustConfiguration(newConfig') {
         
@@ -450,7 +450,7 @@ export class AnalyticsPerformanceOptimizer {
         return { summary: {'
                 batchesProcessed: stats.batchesProcessed,'';
                 cacheHitRate: stats.performanceMetrics.cacheHitRate.toFixed(2') + '%',';
-                averageFPS: stats.performanceMetrics.fps,';
+                averageFPS: stats.performanceMetrics.fps,'
     }'
                 memoryUsage: (stats.memoryUsage.current / 1024 / 1024).toFixed(2') + 'MB',' };'
                 eventProcessingTime: stats.performanceMetrics.eventProcessingTime + 'ms' }
@@ -472,19 +472,19 @@ export class AnalyticsPerformanceOptimizer {
         }'
         '';
         if(stats.performanceMetrics.fps < 30') {'
-            ';
+            ';'
         }'
             recommendations.push('FPSが低下しています。バッチサイズを小さくするか、処理間隔を長くしてください。'); }
         }'
         '';
         if(stats.memoryUsage.current > this.config.memoryWarningThreshold') {'
-            ';
+            ';'
         }'
             recommendations.push('メモリ使用量が多いです。より頻繁なクリーンアップを実行してください。'); }
         }'
         '';
         if(stats.eventQueueSize > this.config.batchSize * 2') {'
-            ';
+            ';'
         }'
             recommendations.push('イベントキューが大きくなっています。バッチ処理頻度を上げてください。'); }
         }
@@ -505,6 +505,6 @@ export class AnalyticsPerformanceOptimizer {
         if (this.eventQueue.length > 0) { this.processBatch(); }
         }
         
-        // キャッシュクリア'
+        // キャッシュクリア
         this.cache.clear();''
         this.cacheTimestamps.clear(');

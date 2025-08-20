@@ -16,7 +16,7 @@ export class TimingAdjustmentManager {'
         
         // 設定とプロファイル
         this.config = {
-            // 基本設定'
+            // 基本設定
             enabled: true,'';
             defaultProfile: 'standard',
             autoAdjustment: true,
@@ -24,7 +24,7 @@ export class TimingAdjustmentManager {'
             
             // 時間調整レベル
     }
-    }'
+    }
             adjustmentLevels: {' }'
                 none: { multiplier: 1.0, name: '標準', description: '時間調整なし' },''
                 minimal: { multiplier: 1.5, name: '軽微', description: '1.5倍の時間' },''
@@ -33,7 +33,7 @@ export class TimingAdjustmentManager {'
                 unlimited: { multiplier: Infinity, name: '無制限', description: '時間制限なし' }
             },
             
-            // プロファイル別設定'
+            // プロファイル別設定
             profiles: { standard: {''
                     name: '標準','';
                     description: '一般的な使用','';
@@ -116,7 +116,7 @@ export class TimingAdjustmentManager {'
             }
         },
         
-        // 状態管理'
+        // 状態管理
         this.state = { ''
             currentProfile: 'standard',
             isGlobalPaused: false,
@@ -134,7 +134,7 @@ export class TimingAdjustmentManager {'
         this.timers = { active: new Map(),
             paused: new Map(),
             extensions: new Map(),
-            warnings: new Map(); }
+            warnings: new Map() }
         };
         
         // 適応学習データ
@@ -157,11 +157,11 @@ export class TimingAdjustmentManager {'
         this.boundHandlers = { keydown: this.handleKeydown.bind(this),
             visibilitychange: this.handleVisibilityChange.bind(this),
             focus: this.handleFocusChange.bind(this),
-            blur: this.handleFocusChange.bind(this); }
+            blur: this.handleFocusChange.bind(this) }
         };
         
         // サブコンポーネントの初期化（依存注入）
-        this.calibrator = new TimingCalibrator(this);'
+        this.calibrator = new TimingCalibrator(this);
         this.algorithms = new TimingAdjustmentAlgorithms(this);''
         this.feedback = new TimingFeedbackSystem(this');'
         '';
@@ -172,7 +172,7 @@ export class TimingAdjustmentManager {'
     /**
      * システムを初期化'
      */''
-    async initialize('')';
+    async initialize()';
             console.log('TimingAdjustmentManager: 初期化開始'),
             
             // 設定の読み込み
@@ -188,13 +188,13 @@ export class TimingAdjustmentManager {'
             this.algorithms.applyProfile(this.config.defaultProfile);
             
             // アクセシビリティマネージャーとの統合（キャリブレーターに委譲）
-            if(this.gameEngine.accessibilityManager) {'
+            if(this.gameEngine.accessibilityManager) {
                 '';
-                this.calibrator.integrateWithAccessibilityManager('')';
+                this.calibrator.integrateWithAccessibilityManager()';
             console.log('TimingAdjustmentManager: 初期化完了'),
             }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('TimingAdjustmentManager: 初期化エラー:', error);
             throw error; }
         }
@@ -203,7 +203,7 @@ export class TimingAdjustmentManager {'
     /**
      * 設定を読み込み'
      */''
-    async loadConfiguration('')';
+    async loadConfiguration()';
             const savedConfig = localStorage.getItem('timingAdjustmentConfig');
             if(savedConfig) {'
                 const parsed = JSON.parse(savedConfig);'
@@ -211,19 +211,19 @@ export class TimingAdjustmentManager {'
                 this.mergeConfig(parsed'); }
             }
             ';
-            // ユーザープロファイルの読み込み''
+            // ユーザープロファイルの読み込み
             const savedProfile = localStorage.getItem('timingAdjustmentProfile');''
             if (savedProfile') { this.state.currentProfile = savedProfile; }
             }
             ';
-            // 適応学習データの読み込み''
+            // 適応学習データの読み込み
             const savedLearningData = localStorage.getItem('timingAdaptiveLearning');
             if(savedLearningData) {
                 
             }'
                 this.adaptiveLearning.data = { ...this.adaptiveLearning.data, ...JSON.parse(savedLearningData) };''
-            } catch (error') { ''
-            console.warn('TimingAdjustmentManager: 設定読み込みエラー:', error); }
+            } catch (error) { ''
+            console.warn('TimingAdjustmentManager: 設定読み込みエラー:', error) }
         }
     }
     
@@ -237,19 +237,19 @@ export class TimingAdjustmentManager {'
     }
     
     /**
-     * イベントリスナーを設定'
+     * イベントリスナーを設定
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         document.addEventListener('keydown', this.boundHandlers.keydown');
         ';
-        // ページ可視性変更''
+        // ページ可視性変更
         document.addEventListener('visibilitychange', this.boundHandlers.visibilitychange');
         ';
-        // フォーカス変更''
+        // フォーカス変更
         window.addEventListener('focus', this.boundHandlers.focus');''
         window.addEventListener('blur', this.boundHandlers.blur);
         ';
-        // ゲームエンジンイベント''
+        // ゲームエンジンイベント
         if(this.gameEngine.eventEmitter') {'
             '';
             this.gameEngine.eventEmitter.on('gameStateChange', this.handleGameStateChange.bind(this)');''
@@ -345,18 +345,18 @@ export class TimingAdjustmentManager {'
     // ========== イベントハンドラー ==========
     
     /**
-     * キーボードイベントを処理'
+     * キーボードイベントを処理
      */''
     handleKeydown(event') {'
-        // スペースキーまたはPキーでゲーム一時停止''
+        // スペースキーまたはPキーでゲーム一時停止
         if ((event.code === 'Space' || event.code === 'KeyP') && !event.repeat) {
             if (this.getCurrentProfile().pauseEnabled) {'
                 event.preventDefault();''
-                this.toggleGlobalPause('')';
+                this.toggleGlobalPause()';
         if (event.code === 'KeyT' && !event.repeat) {
             if (this.getCurrentProfile().timeoutExtensions) {'
                 event.preventDefault();''
-                this.requestTimeExtension('')';
+                this.requestTimeExtension()';
         if (event.code === 'Escape' && event.ctrlKey) {
             event.preventDefault();
     }
@@ -369,7 +369,7 @@ export class TimingAdjustmentManager {'
      */
     handleVisibilityChange() {
         if (document.hidden) {'
-            // ページが隠れた場合、自動的に一時停止''
+            // ページが隠れた場合、自動的に一時停止
             if (this.config.autoAdjustment') {'
     }'
                 this.algorithms.pauseAllTimers('visibility''); }
@@ -385,10 +385,10 @@ export class TimingAdjustmentManager {'
     handleFocusChange(event') {'
         '';
         if (event.type === 'blur' && this.config.autoAdjustment') {'
-            // フォーカスが外れた場合、タイマーを一時停止'
+            // フォーカスが外れた場合、タイマーを一時停止
     }'
             this.algorithms.pauseAllTimers('focus'');' }'
-        } else if (event.type === 'focus'') { // フォーカスが戻った場合、タイマーを再開''
+        } else if (event.type === 'focus'') { // フォーカスが戻った場合、タイマーを再開
             this.algorithms.resumeAllTimers('focus'); }
         }
     }
@@ -432,9 +432,9 @@ export class TimingAdjustmentManager {'
         
         this.state.isGlobalPaused = !this.state.isGlobalPaused;
         ';
-        // UI更新イベントを発火''
+        // UI更新イベントを発火
         this.emitEvent('globalPauseToggled', { )
-            paused: this.state.isGlobalPaused); }
+            paused: this.state.isGlobalPaused) }
     }
     
     // ========== パブリックAPI ==========
@@ -459,9 +459,9 @@ export class TimingAdjustmentManager {'
      */
     getAvailableProfiles() {
         return Object.keys(this.config.profiles).map(key => ({
-            id: key,);
+            id: key);
             name: this.config.profiles[key].name);
-            description: this.config.profiles[key].description,);
+            description: this.config.profiles[key].description,)
     }
             current: key === this.state.currentProfile))); }
     }
@@ -478,7 +478,7 @@ export class TimingAdjustmentManager {'
         // カスタムイベントも発火
         const customEvent = new CustomEvent(`timingAdjustment:${eventName}`, { detail: data)
         ),
-        document.dispatchEvent(customEvent); }
+        document.dispatchEvent(customEvent) }
     }
     
     /**
@@ -487,7 +487,7 @@ export class TimingAdjustmentManager {'
     deepMerge(target, source) {
         
     }
-        const result = { ...target };'
+        const result = { ...target };
         '';
         for(const key in source') {'
             '';
@@ -504,12 +504,12 @@ export class TimingAdjustmentManager {'
     /**
      * 設定を保存'
      */''
-    saveConfiguration('')';
+    saveConfiguration()';
             localStorage.setItem('timingAdjustmentConfig', JSON.stringify(this.config)');''
             localStorage.setItem('timingAdjustmentProfile', this.state.currentProfile');''
             localStorage.setItem('timingAdaptiveLearning', JSON.stringify(this.adaptiveLearning.data);''
-        } catch (error') { ''
-            console.warn('TimingAdjustmentManager: 設定保存エラー:', error); }
+        } catch (error) { ''
+            console.warn('TimingAdjustmentManager: 設定保存エラー:', error) }
         }
     }
     
@@ -529,16 +529,16 @@ export class TimingAdjustmentManager {'
         }
         
         if(this.feedback) {
-        ';
+        ';'
             '';
-            this.feedback.destroy('')';
+            this.feedback.destroy()';
         document.removeEventListener('keydown', this.boundHandlers.keydown');''
         document.removeEventListener('visibilitychange', this.boundHandlers.visibilitychange');''
         window.removeEventListener('focus', this.boundHandlers.focus');''
         window.removeEventListener('blur', this.boundHandlers.blur);
         ';
-        // 設定を保存''
-        this.saveConfiguration('');
+        // 設定を保存
+        this.saveConfiguration();
         }'
         console.log('[TimingAdjustmentManager] Main Controller cleaned up successfully''); }'
     }''

@@ -42,16 +42,16 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         this.notificationSystem = undefined;
         this.progressTracker = undefined;
         this.performanceOptimizer = undefined;
-        ';
-        // 非同期でコンポーネントを初期化''
-        this.initializeComponentsAsync('')';
+        ;
+        // 非同期でコンポーネントを初期化
+        this.initializeComponentsAsync()';
         console.log('[AchievementManager] Achievement management system initialized'); }
     }
     
     /**
      * コンポーネントを非同期で初期化'
      */''
-    private async initializeComponentsAsync('')';
+    private async initializeComponentsAsync()';
             // const { AchievementDefinitions } = await import('./achievements/AchievementDefinitions.js'');''
             // const { AchievementNotificationSystem } = await import('./achievements/AchievementNotificationSystem.js'');''
             // const { AchievementProgressTracker } = await import('./achievements/AchievementProgressTracker.js'');''
@@ -64,20 +64,20 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             
             // 実際のクラスを使用
             this.definitions = this.createMockDefinitions(); // AchievementDefinitionsは未実装のため、モックを継続使用
-            this.notificationSystem = this.createMockNotificationSystem(); // AchievementNotificationSystemは未実装のため、モックを継続使用'
-            this.progressTracker = new ProgressTracker(); // 実装済みのProgressTrackerクラスを使用''
-            this.performanceOptimizer = new PerformanceOptimizer('')';
+            this.notificationSystem = this.createMockNotificationSystem(); // AchievementNotificationSystemは未実装のため、モックを継続使用
+            this.progressTracker = new ProgressTracker(); // 実装済みのProgressTrackerクラスを使用
+            this.performanceOptimizer = new PerformanceOptimizer()';
             if (this.performanceOptimizer && typeof this.performanceOptimizer.initialize === 'function') { this.performanceOptimizer.initialize(); }
             }
             
             // 進捗追跡イベントリスナーを設定
             this.setupEventListeners();
-            ';
-            // 通知システム設定''
-            this.configureNotificationSystem('')';
+            ;
+            // 通知システム設定
+            this.configureNotificationSystem()';
             console.log('[AchievementManager] Components initialized successfully');''
-        } catch (error') { ''
-            console.error('[AchievementManager] Failed to initialize components:', error); }
+        } catch (error) { ''
+            console.error('[AchievementManager] Failed to initialize components:', error) }
         }
     }
     
@@ -87,14 +87,14 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     private createMockDefinitions(): any { return { }'
             getAllAchievements: () => ({}),''
             getAchievementsByCategory: (category: string') => {  ''
-                console.log('Mock getAchievementsByCategory called with:', category); }
+                console.log('Mock getAchievementsByCategory called with:', category) }
                 return []; }'
             },''
             getAchievement: (id: string') => {  ''
-                console.log('Mock getAchievement called with:', id); }
+                console.log('Mock getAchievement called with:', id) }
                 return null; }
             },
-            getStatistics: () => ({ total: 0, byCategory: {} });
+            getStatistics: () => ({ total: 0, byCategory: {});
         };
     }
     
@@ -109,20 +109,19 @@ export class AchievementManager implements IAchievementManager { public gameEngi
                 console.log('Mock createAchievementNotification called with:', achievement); }'
             },''
             getNotificationHistory: (limit: number') => {  ''
-                console.log('Mock getNotificationHistory called with limit:', limit); }
+                console.log('Mock getNotificationHistory called with limit:', limit) }
                 return []; }
             },
             clearAllNotifications: () => {},
             loadHistory: () => {},
-            destroy: () => {}
-        },
+            destroy: () => {},
     }
     
     /**
      * @deprecated ProgressTrackerクラスが実装されたため、このメソッドは使用されません
      * モックProgressTrackerオブジェクトを作成'
      */''
-    private createMockProgressTracker('')';
+    private createMockProgressTracker()';
         console.warn('[AchievementManager] createMockProgressTracker is deprecated. Use ProgressTracker class instead.');
         return new ProgressTracker();
     }
@@ -131,7 +130,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      * @deprecated PerformanceOptimizerクラスが実装されたため、このメソッドは使用されません
      * モックPerformanceOptimizerオブジェクトを作成'
      */''
-    private createMockPerformanceOptimizer('')';
+    private createMockPerformanceOptimizer()';
         console.warn('[AchievementManager] createMockPerformanceOptimizer is deprecated. Use PerformanceOptimizer class instead.');
         return new PerformanceOptimizer();
     }
@@ -142,12 +141,12 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     setupEventListeners(): void { ''
         if (!this.progressTracker') return;
         ';
-        // 進捗追跡からの実績解除イベント''
+        // 進捗追跡からの実績解除イベント
         this.progressTracker.addEventListener('achievementUnlocked', (data: any) => {  }'
             this.handleAchievementUnlocked(data);' }'
         }');
         ';
-        // 進捗更新イベント''
+        // 進捗更新イベント
         this.progressTracker.addEventListener('progressUpdated', (data: any) => { this.handleProgressUpdated(data); }
         });
     }
@@ -157,12 +156,12 @@ export class AchievementManager implements IAchievementManager { public gameEngi
      */'
     configureNotificationSystem(): void { ''
         if (!this.notificationSystem || !this.config.enableNotifications') return;
-        ';
+        ';'
         this.notificationSystem.updateConfig({''
-            position: 'top-right',);
+            position: 'top-right');
             fadeIn: true);
             slideIn: true,);
-            sound: true); }
+            sound: true) }
     }
     
     /**
@@ -236,13 +235,13 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         this.progressTracker.unlockAchievement(achievement.id, achievement);
         
         // 通知を表示
-        if(this.config.enableNotifications) {'
-            ';
+        if(this.config.enableNotifications) {
+            ';'
         }'
             this.notificationSystem.createAchievementNotification(achievement'); }
         }
         ';
-        // ゲームエンジンに通知（AP獲得など）''
+        // ゲームエンジンに通知（AP獲得など）
         if (this.gameEngine && typeof this.gameEngine.handleAchievementUnlocked === 'function') { this.gameEngine.handleAchievementUnlocked(achievement); }
         }
         
@@ -252,9 +251,9 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     /**
      * 実績解除イベントを処理
      */'
-    handleAchievementUnlocked(data: any): void { // 追加の処理が必要な場合はここに記述''
+    handleAchievementUnlocked(data: any): void { // 追加の処理が必要な場合はここに記述
         if(this.config.debugMode') {'
-            ';
+            ';'
         }'
             console.log('[AchievementManager] Achievement unlocked event:', data); }
         }
@@ -263,9 +262,9 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     /**
      * 進捗更新イベントを処理
      */'
-    handleProgressUpdated(data: any): void { // 追加の処理が必要な場合はここに記述''
+    handleProgressUpdated(data: any): void { // 追加の処理が必要な場合はここに記述
         if(this.config.debugMode') {'
-            ';
+            ';'
         }'
             console.log('[AchievementManager] Progress updated event:', data); }
         }
@@ -347,8 +346,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
             unlockedPercentage: 0, }
             categories: {},
             performance: {},
-            byCategory: {}
-        },
+            byCategory: {},
         
         if (!this.definitions || !this.progressTracker || !this.performanceOptimizer) { return defaultStats; }
         }
@@ -391,7 +389,7 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         if(config.enableNotifications !== undefined && this.notificationSystem) {
             
         }
-            this.notificationSystem.updateConfig({ enabled: config.enableNotifications ); }
+            this.notificationSystem.updateConfig({ enabled: config.enableNotifications ) }
         }
         
         if (this.performanceOptimizer) { this.performanceOptimizer.updateConfig(config); }
@@ -418,9 +416,9 @@ export class AchievementManager implements IAchievementManager { public gameEngi
         }
         if (this.notificationSystem) { this.notificationSystem.clearAllNotifications(); }
         }
-        if(this.performanceOptimizer) {'
+        if(this.performanceOptimizer) {
             '';
-            this.performanceOptimizer.resetPerformanceStats('');
+            this.performanceOptimizer.resetPerformanceStats();
         }'
         console.log('[AchievementManager] All achievement data reset'); }
     }
@@ -428,20 +426,20 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     /**
      * データを読み込み'
      */''
-    load('')';
+    load()';
             console.log('[AchievementManager] Loading achievement data...'');
             ';
-            // 進捗データを読み込み''
+            // 進捗データを読み込み
             if(this.progressTracker && typeof this.progressTracker.loadProgress === 'function') {'
                 '';
-                this.progressTracker.loadProgress('')';
+                this.progressTracker.loadProgress()';
             if (this.notificationSystem && typeof this.notificationSystem.loadHistory === 'function') {''
-                this.notificationSystem.loadHistory('')';
+                this.notificationSystem.loadHistory()';
             if (this.performanceOptimizer && typeof this.performanceOptimizer.loadStats === 'function') {''
-                this.performanceOptimizer.loadStats('');
+                this.performanceOptimizer.loadStats();
             }'
             console.log('[AchievementManager] Achievement data loaded successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[AchievementManager] Failed to load achievement data:', error);
             // エラーが発生しても続行できるようにする }
         }
@@ -453,9 +451,9 @@ export class AchievementManager implements IAchievementManager { public gameEngi
     destroy(): void { if (this.performanceOptimizer) {
             this.performanceOptimizer.destroy(); }
         }
-        if(this.notificationSystem) {'
+        if(this.notificationSystem) {
             '';
-            this.notificationSystem.destroy('');
+            this.notificationSystem.destroy();
         }'
         console.log('[AchievementManager] Achievement management system destroyed''); }'
     }''

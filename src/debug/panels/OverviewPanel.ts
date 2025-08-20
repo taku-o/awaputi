@@ -17,7 +17,7 @@ interface EffectManager { getActiveEffectCount(): number; }
 interface BubbleManager { getActiveBubbleCount(): number; }
 }
 
-interface Achievement { unlocked: boolean; }
+interface Achievement { unlocked: boolean }
 }
 
 interface AchievementManager { getAchievements(): Achievement[];
@@ -42,7 +42,7 @@ export class OverviewPanel {
     private updateInterval: NodeJS.Timeout | null = null;
     constructor(gameEngine: GameEngine, debugInterface: DebugInterface) {
 
-        this.gameEngine = gameEngine;
+        this.gameEngine = gameEngine
 
     }
     }
@@ -107,7 +107,7 @@ export class OverviewPanel {
         Object.entries(buttons).forEach(([buttonId, panelName]) => {  }'
             const button = this.element!.querySelector(`#${buttonId}`) as HTMLButtonElement;''
             if(button') {'
-                ';
+                ';'
             }'
                 button.addEventListener('click', () => {  }
                     this.debugInterface.switchPanel(panelName); }
@@ -167,17 +167,17 @@ export class OverviewPanel {
             this.updateSystemStatus();
             
             // アクティブシステムの更新
-            this.updateActiveSystems();'
+            this.updateActiveSystems();
             ' }'
-        } catch (error') { ''
-            console.error('Overview panel update error:', error); }
+        } catch (error) { ''
+            console.error('Overview panel update error:', error) }
         }
     }
 
     /**
      * システム状況を更新'
      */''
-    private updateSystemStatus('')';
+    private updateSystemStatus()';
         this.setElementText('overview-fps', (stats.fps || 0).toFixed(1)');''
         this.setElementText('overview-memory', ((stats.memoryUsage || 0) / 1024 / 1024).toFixed(1') + ' MB'');''
         this.setElementText('overview-render', (stats.renderTime || 0).toFixed(2') + ' ms'');''
@@ -187,19 +187,19 @@ export class OverviewPanel {
     /**
      * アクティブシステムを更新
      */'
-    private updateActiveSystems(): void { // パーティクル数''
-        const particleCount = this.gameEngine.enhancedParticleManager? .getActiveParticleCount('')';
+    private updateActiveSystems(): void { // パーティクル数
+        const particleCount = this.gameEngine.enhancedParticleManager? .getActiveParticleCount()';
         this.setElementText('active-particles', particleCount.toString();
 ';
-        // エフェクト数''
-        const effectCount = this.gameEngine.enhancedEffectManager?.getActiveEffectCount('')';
+        // エフェクト数
+        const effectCount = this.gameEngine.enhancedEffectManager?.getActiveEffectCount()';
         this.setElementText('active-effects', effectCount.toString();
 ';
-        // バブル数''
-        const bubbleCount = this.gameEngine.bubbleManager?.getActiveBubbleCount('')';
+        // バブル数
+        const bubbleCount = this.gameEngine.bubbleManager?.getActiveBubbleCount()';
         this.setElementText('active-bubbles', bubbleCount.toString();
 
-        // 実績数'
+        // 実績数
         const achievements = this.gameEngine.achievementManager?.getAchievements() || [];''
         const unlockedCount = achievements.filter(a => a.unlocked').length;' }'
         this.setElementText('active-achievements', `${unlockedCount}/${achievements.length)`});
@@ -230,8 +230,8 @@ export class OverviewPanel {
      * パネルを破棄
      */
     destroy(): void { this.stopUpdate();
-        if(this.element && this.element.parentNode) {'
-            ';
+        if(this.element && this.element.parentNode) {
+            ';'
         }'
             this.element.parentNode.removeChild(this.element'); }
         }

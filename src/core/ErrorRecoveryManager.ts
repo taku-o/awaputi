@@ -61,15 +61,15 @@ export class ErrorRecoveryManager {
             
             // エラーメッセージ設定
             messages: { showDetailed: true,
-                showSuggestions: true,';
+                showSuggestions: true,
                 showPreventionTips: true,'';
                 language: 'ja','';
                 verbosity: 'detailed' // concise, detailed, verbose }
             },
             
-            // UI設定'
+            // UI設定
             ui: { ''
-                position: 'center', // center, top, bottom'';
+                position: 'center', // center, top, bottom;
                 animation: 'slide',
                 duration: 5000,';
                 persistent: false,'';
@@ -80,7 +80,7 @@ export class ErrorRecoveryManager {
         
         // エラータイプの定義
         this.errorTypes = { // ゲームプレイエラー
-            gameplay: {'
+            gameplay: {
                 missedBubble: {''
                     name: 'バブルの取り逃し','';
                     severity: 'medium',
@@ -119,7 +119,7 @@ export class ErrorRecoveryManager {
                 }
             },
             
-            // UI/UXエラー'
+            // UI/UXエラー
             interface: { accidentalPause: {''
                     name: '誤って一時停止','';
                     severity: 'low',
@@ -158,7 +158,7 @@ export class ErrorRecoveryManager {
                 }
             },
             
-            // 入力エラー'
+            // 入力エラー
             input: { doubleClick: {''
                     name: 'ダブルクリック','';
                     severity: 'low',
@@ -188,7 +188,7 @@ export class ErrorRecoveryManager {
                 }
             },
             
-            // システムエラー'
+            // システムエラー
             system: { performanceDrop: {''
                     name: 'パフォーマンス低下','';
                     severity: 'medium',
@@ -213,7 +213,7 @@ export class ErrorRecoveryManager {
         // 状態管理
         this.state = { errorHistory: [],
             currentError: null,
-            errorCount: {'
+            errorCount: {
                 total: 0,'';
                 byType: new Map(''';
                 level: 'normal' }
@@ -254,16 +254,16 @@ export class ErrorRecoveryManager {
             keydown: this.handleKeydown.bind(this),
             click: this.handleClick.bind(this),
             gameAction: this.handleGameAction.bind(this),
-            stateChange: this.handleStateChange.bind(this); }
+            stateChange: this.handleStateChange.bind(this) }
         };
         
         this.initialize();
     }
     
     /**
-     * システムを初期化'
+     * システムを初期化
      */''
-    async initialize('')';
+    async initialize()';
             console.log('ErrorRecoveryManager: 初期化開始'),
             
             // 設定の読み込み
@@ -287,12 +287,12 @@ export class ErrorRecoveryManager {
             this.startErrorMonitoring();
             
             // アクセシビリティマネージャーとの統合
-            if(this.gameEngine.accessibilityManager) {'
+            if(this.gameEngine.accessibilityManager) {
                 '';
-                this.integrateWithAccessibilityManager('')';
+                this.integrateWithAccessibilityManager()';
             console.log('ErrorRecoveryManager: 初期化完了') }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('ErrorRecoveryManager: 初期化エラー:', error);
             throw error; }
         }
@@ -301,7 +301,7 @@ export class ErrorRecoveryManager {
     /**
      * 設定を読み込み'
      */''
-    async loadConfiguration('')';
+    async loadConfiguration()';
             const savedConfig = localStorage.getItem('errorRecoveryConfig');
             if(savedConfig) {'
                 const parsed = JSON.parse(savedConfig);'
@@ -309,7 +309,7 @@ export class ErrorRecoveryManager {
                 this.mergeConfig(parsed'); }
             }
             ';
-            // エラー履歴の読み込み''
+            // エラー履歴の読み込み
             const savedHistory = localStorage.getItem('errorRecoveryHistory');
             if(savedHistory) {
                 const parsed = JSON.parse(savedHistory);
@@ -317,10 +317,10 @@ export class ErrorRecoveryManager {
                 this.state.errorHistory = parsed.errorHistory || []; }
                 this.state.errorCount = parsed.errorCount || { total: 0, byType: new Map(), recent: [] }
                 // Mapオブジェクトの復元
-                if (parsed.errorCount.byType) { this.state.errorCount.byType = new Map(parsed.errorCount.byType); }'
+                if (parsed.errorCount.byType) { this.state.errorCount.byType = new Map(parsed.errorCount.byType); }
                 }''
-            } catch (error') { ''
-            console.warn('ErrorRecoveryManager: 設定読み込みエラー:', error); }
+            } catch (error) { ''
+            console.warn('ErrorRecoveryManager: 設定読み込みエラー:', error) }
         }
     }
     
@@ -336,9 +336,9 @@ export class ErrorRecoveryManager {
         
         // 警告バナーを作成
         this.ui.warningBanner = this.createWarningBanner();
-        ';
-        // 回復パネルを作成''
-        this.ui.recoveryPanel = this.createRecoveryPanel('');
+        ;
+        // 回復パネルを作成
+        this.ui.recoveryPanel = this.createRecoveryPanel();'
     }'
         console.log('ErrorRecoveryManager: UI作成完了'), }
     }
@@ -346,14 +346,14 @@ export class ErrorRecoveryManager {
     /**
      * エラーダイアログを作成'
      */''
-    createErrorDialog('')';
+    createErrorDialog()';
         const dialog = document.createElement('div'');''
         dialog.id = 'error-recovery-dialog';''
         dialog.className = 'error-dialog hidden';''
         dialog.setAttribute('role', 'alertdialog'');''
         dialog.setAttribute('aria-labelledby', 'error-title'');''
         dialog.setAttribute('aria-describedby', 'error-description'');
-        ';
+        ';'
         dialog.innerHTML = `'';
             <div class="error-dialog-backdrop"></div>"";
             <div class="error-dialog-content">"";
@@ -405,12 +405,12 @@ export class ErrorRecoveryManager {
                 z-index: 10000,
                 display: flex,
                 align-items: center,";
-                justify-content: center,";
+                justify-content: center,"
     }"
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
             }
             
-            .error-dialog.hidden { display: none; }
+            .error-dialog.hidden { display: none }
             }
             
             .error-dialog-backdrop { position: absolute,
@@ -430,7 +430,7 @@ export class ErrorRecoveryManager {
                 width: 90%,
                 max-height: 80vh,
                 overflow: hidden,
-                animation: errorDialogSlideIn 0.3s ease-out; }
+                animation: errorDialogSlideIn 0.3s ease-out }
             }
             
             .error-dialog-header { background: linear-gradient(135deg, #dc3545, #c82333),
@@ -439,7 +439,7 @@ export class ErrorRecoveryManager {
                 display: flex,
                 align-items: center,
                 gap: 15px,
-                position: relative; }
+                position: relative }
             }
             
             .error-icon { font-size: 28px,
@@ -464,13 +464,13 @@ export class ErrorRecoveryManager {
                 display: flex,
                 align-items: center,
                 justify-content: center,
-                transition: background-color 0.2s; }
+                transition: background-color 0.2s }
             }
             
-            .error-close-btn:hover { background-color: rgba(255, 255, 255, 0.2); }
+            .error-close-btn:hover { background-color: rgba(255, 255, 255, 0.2) }
             }
             
-            .error-dialog-body { padding: 25px; }
+            .error-dialog-body { padding: 25px }
             }
             
             .error-description { color: #2c3e50,
@@ -494,7 +494,7 @@ export class ErrorRecoveryManager {
             .error-prevention h3 { margin: 0 0 8px 0,
                 font-size: 14px,
                 font-weight: 600,
-                color: #495057; }
+                color: #495057 }
             }
             
             .error-suggestion-text,
@@ -516,31 +516,31 @@ export class ErrorRecoveryManager {
                 cursor: pointer,
                 font-size: 14px,
                 font-weight: 500,
-                transition: all 0.2s; }
+                transition: all 0.2s }
             }
             
             .error-action-btn.primary { background: #dc3545,
-                color: white; }
+                color: white }
             }
             
             .error-action-btn.primary:hover { background: #c82333,
-                transform: translateY(-1px); }
+                transform: translateY(-1px) }
             }
             
             .error-action-btn.secondary { background: #6c757d,
-                color: white; }
+                color: white }
             }
             
             .error-action-btn.secondary:hover { background: #545b62,
-                transform: translateY(-1px); }
+                transform: translateY(-1px) }
             }
             
             @keyframes errorDialogSlideIn { from {
                     opacity: 0,
-                    transform: scale(0.9) translateY(-20px); }
+                    transform: scale(0.9) translateY(-20px) }
                 }'
                 to { opacity: 1,''
-                    transform: scale(1) translateY(0'); }
+                    transform: scale(1) translateY(0') }
                 }
             }
         `;'
@@ -557,11 +557,11 @@ export class ErrorRecoveryManager {
      * エラーダイアログのイベントを設定'
      */''
     setupErrorDialogEvents(dialog') {'
-        // 閉じるボタン''
+        // 閉じるボタン
         dialog.querySelector('.error-close-btn'').addEventListener('click', () => { ''
-            this.hideErrorDialog('')';
+            this.hideErrorDialog()';
         dialog.querySelector('.error-dialog-backdrop'').addEventListener('click', () => {''
-            this.hideErrorDialog('')';
+            this.hideErrorDialog()';
         dialog.querySelectorAll('.error-action-btn').forEach(btn => {');''
             btn.addEventListener('click', () => {
     }'
@@ -570,7 +570,7 @@ export class ErrorRecoveryManager {
             };
         };
         ';
-        // キーボードサポート''
+        // キーボードサポート
         dialog.addEventListener('keydown', (e') => {  ''
             if (e.key === 'Escape') { }
                 this.hideErrorDialog(); }
@@ -581,14 +581,14 @@ export class ErrorRecoveryManager {
     /**
      * 確認ダイアログを作成'
      */''
-    createConfirmDialog('')';
+    createConfirmDialog()';
         const dialog = document.createElement('div'');''
         dialog.id = 'confirm-dialog';''
         dialog.className = 'confirm-dialog hidden';''
         dialog.setAttribute('role', 'dialog'');''
         dialog.setAttribute('aria-labelledby', 'confirm-title'');''
         dialog.setAttribute('aria-describedby', 'confirm-description'');
-        ';
+        ';'
         dialog.innerHTML = `'';
             <div class="confirm-dialog-backdrop"></div>"";
             <div class="confirm-dialog-content">"";
@@ -623,7 +623,7 @@ export class ErrorRecoveryManager {
         banner.className = 'warning-banner hidden';''
         banner.setAttribute('role', 'alert'');''
         banner.setAttribute('aria-live', 'polite'');
-        ';
+        ';'
         banner.innerHTML = `'';
             <div class="warning-content">"";
                 <div class="warning-icon">⚠️</div>"";
@@ -640,7 +640,7 @@ export class ErrorRecoveryManager {
         ";
         // イベントリスナー""
         banner.querySelector('.warning-dismiss-btn'').addEventListener('click', () => { ''
-            this.hideWarningBanner('');
+            this.hideWarningBanner();
     }'
         banner.querySelector('.warning-action-btn'').addEventListener('click', () => { }
             this.handleWarningAction(); }
@@ -653,11 +653,11 @@ export class ErrorRecoveryManager {
     /**
      * 回復パネルを作成'
      */''
-    createRecoveryPanel('')';
+    createRecoveryPanel()';
         const panel = document.createElement('div'');''
         panel.id = 'recovery-panel';''
         panel.className = 'recovery-panel hidden';
-        ';
+        ';'
         panel.innerHTML = `'';
             <div class="recovery-header">";
                 <h3>エラー回復オプション</h3>"";
@@ -681,20 +681,20 @@ export class ErrorRecoveryManager {
     /**
      * イベントリスナーを設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         window.addEventListener('beforeunload', this.boundHandlers.beforeUnload');
         ';
-        // エラーイベント''
+        // エラーイベント
         window.addEventListener('error', this.boundHandlers.error');''
         window.addEventListener('unhandledrejection', this.boundHandlers.error');
         ';
-        // キーボードショートカット''
+        // キーボードショートカット
         document.addEventListener('keydown', this.boundHandlers.keydown');
         ';
-        // クリックイベント''
+        // クリックイベント
         document.addEventListener('click', this.boundHandlers.click);
         ';
-        // ゲームエンジンイベント''
+        // ゲームエンジンイベント
         if(this.gameEngine.eventEmitter') {'
             '';
             this.gameEngine.eventEmitter.on('gameAction', this.boundHandlers.gameAction');''
@@ -718,9 +718,9 @@ export class ErrorRecoveryManager {
             }, 10000); // 10秒間隔
         }
         
-        // エラー頻度監視'
+        // エラー頻度監視
         setInterval(() => { this.checkErrorFrequency();' }'
-        }, 5000'); // 5秒間隔'
+        }, 5000'); // 5秒間隔
         '';
         console.log('ErrorRecoveryManager: エラー監視開始'),
     }
@@ -734,23 +734,23 @@ export class ErrorRecoveryManager {
         const currentFPS = this.gameEngine.performanceManager.getCurrentFPS();
         const memoryUsage = this.gameEngine.performanceManager.getMemoryUsage();
         ';
-        // FPSが低い場合''
+        // FPSが低い場合
         if (currentFPS < 30') {'
             this.handleError({''
                 type: 'system','';
-                subtype: 'performanceDrop',';
+                subtype: 'performanceDrop','
     })'
                 severity: 'medium',) }
                 data: { fps: currentFPS }
             ),
         }
         ';
-        // メモリ使用量が高い場合''
+        // メモリ使用量が高い場合
         if(memoryUsage > 100 * 1024 * 1024') {
-            // 100MB'
+            // 100MB
             this.showWarning({''
                 type: 'performance',')';
-                title: 'メモリ使用量警告',');
+                title: 'メモリ使用量警告',')
         }'
                 message: 'メモリ使用量が多くなっています。ページを再読み込みすることをお勧めします。'); }
         }
@@ -766,12 +766,12 @@ export class ErrorRecoveryManager {
         // 最近のエラーをフィルタリング
         const recentErrors = this.state.errorCount.recent.filter();
             errorTime => now - errorTime < timeWindow);
-        ';
-        // 閾値を超えた場合''
+        ;
+        // 閾値を超えた場合
         if (recentErrors.length >= this.warningSystem.thresholds.errorFrequency') {'
             this.showWarning({''
                 type: 'errorFrequency',')';
-                title: 'エラー頻発警告',');
+                title: 'エラー頻発警告',')
     }'
                 message: 'エラーが頻発しています。操作を確認するか、ページを再読み込みしてください。'); }
         }
@@ -788,8 +788,8 @@ export class ErrorRecoveryManager {
     }
     
     handleBeforeUnload(event) {
-    ';
-        // 未保存の重要な変更がある場合''
+    ;
+        // 未保存の重要な変更がある場合
         if (this.hasUnsavedChanges()') {''
             const message = '未保存の変更があります。本当にページを離れますか？';
             event.returnValue = message;
@@ -813,7 +813,7 @@ export class ErrorRecoveryManager {
     }
     
     handleError(event) {
-    ';
+    ';'
         const errorInfo = this.analyzeError(event);''
         this.recordError(errorInfo');'
         '';
@@ -825,7 +825,7 @@ export class ErrorRecoveryManager {
     }
     
     analyzeError(event) {
-    ';
+    ';'
         let errorInfo = { : undefined''
             timestamp: Date.now(''';
             type: 'unknown','';
@@ -839,14 +839,14 @@ export class ErrorRecoveryManager {
             preventable: false })
         })
         // エラーの種類を判定)
-        if (event.type) { // カスタムエラーオブジェクト }'
+        if (event.type) { // カスタムエラーオブジェクト }
             errorInfo = { ...errorInfo, ...event };''
-        } else if (event.error') { // JavaScriptエラー''
+        } else if (event.error') { // JavaScriptエラー
             errorInfo.type = 'javascript';
             errorInfo.message = event.error.message;'
             errorInfo.source = event.filename;''
             errorInfo.severity = 'high';' }'
-        } else if (event.reason') { // Promise rejection''
+        } else if (event.reason') { // Promise rejection
             errorInfo.type = 'promise';''
             errorInfo.message = event.reason.message || String(event.reason');''
             errorInfo.severity = 'medium'; }
@@ -874,14 +874,14 @@ export class ErrorRecoveryManager {
         const typeKey = `${errorInfo.type}_${errorInfo.subtype}`;
         const currentCount = this.state.errorCount.byType.get(typeKey) || 0;
         this.state.errorCount.byType.set(typeKey, currentCount + 1);
-        ';
-        // 履歴を保存''
-        this.saveErrorHistory('')';
+        ;
+        // 履歴を保存
+        this.saveErrorHistory()';
         console.log('ErrorRecoveryManager: エラー記録:', errorInfo);
     }'
     '';
     handleKeydown(event') {'
-        // F9 で回復パネル表示''
+        // F9 で回復パネル表示
         if (event.key === 'F9') {
             event.preventDefault();
     }
@@ -914,21 +914,21 @@ export class ErrorRecoveryManager {
     
     /**
      * UI操作メソッド
-     */'
+     */
     '';
     showErrorDialog(errorInfo') { const dialog = this.ui.errorDialog; }
         const errorType = this.errorTypes[errorInfo.type]? .[errorInfo.subtype] || {};
         ';
-        // コンテンツを設定''
+        // コンテンツを設定
         dialog.querySelector('.error-title'').textContent = errorType.name || errorInfo.message;''
-        dialog.querySelector('.error-description'').textContent = ';
+        dialog.querySelector('.error-description'').textContent = ';'
             errorType.message || errorInfo.message;''
         dialog.querySelector('.error-suggestion-text'').textContent = '';
             errorType.suggestion || '問題を確認してください';''
         dialog.querySelector('.error-prevention-text'').textContent = '';
             errorType.prevention || '注意深く操作してください';
         ';
-        // アクションボタンの表示制御''
+        // アクションボタンの表示制御
         const retryBtn = dialog.querySelector('[data-action="retry"]'');''
         const undoBtn = dialog.querySelector('[data-action="undo"]'');''
         const continueBtn = dialog.querySelector('[data-action="continue"]'');'
@@ -937,20 +937,20 @@ export class ErrorRecoveryManager {
         undoBtn.style.display = this.undoRedoSystem.canUndo(') ? 'inline-block' : 'none';''
         continueBtn.style.display = 'inline-block';
         ';
-        // ダイアログを表示''
+        // ダイアログを表示
         dialog.classList.remove('hidden'');''
         dialog.setAttribute('aria-hidden', 'false'');
         ';
-        // フォーカスを設定''
+        // フォーカスを設定
         const firstButton = dialog.querySelector('.error-action-btn: not([style*="display: none"]")'),
         if (firstButton) { firstButton.focus(); }
         }
         
         // 現在のエラーを記録
         this.state.currentError = errorInfo;
-    }'
+    }
     '';
-    hideErrorDialog('')';
+    hideErrorDialog()';
         this.ui.errorDialog.classList.add('hidden'');''
         this.ui.errorDialog.setAttribute('aria-hidden', 'true');
         this.state.currentError = null;
@@ -964,23 +964,23 @@ export class ErrorRecoveryManager {
         banner.classList.remove('hidden'); }
     }'
     '';
-    hideWarningBanner('')';
+    hideWarningBanner()';
         this.ui.warningBanner.classList.add('hidden');
     }
     
     handleWarningAction() { this.hideWarningBanner(); }
     }'
     '';
-    showRecoveryPanel('')';
+    showRecoveryPanel()';
         this.ui.recoveryPanel.classList.remove('hidden');
     }'
     '';
-    hideRecoveryPanel('')';
+    hideRecoveryPanel()';
         this.ui.recoveryPanel.classList.add('hidden');
     }
     
     handleErrorAction(action) {
-    ';
+    ';'
         '';
         switch (action') {''
             case 'retry':'';
@@ -994,9 +994,9 @@ export class ErrorRecoveryManager {
                 break; })
         })
         this.hideErrorDialog();
-    }'
+    }
     '';
-    retryLastAction('')';
+    retryLastAction()';
         console.log('ErrorRecoveryManager: アクションを再試行'),
     }
     
@@ -1016,9 +1016,9 @@ export class ErrorRecoveryManager {
     
     canRedo() { return this.undoRedoSystem.canRedo(); }
     }
-    ';
-    // 自動保存操作''
-    saveState('')';
+    ;
+    // 自動保存操作
+    saveState()';
         return this.autoSaveSystem.performSave('manual');
     }
     
@@ -1050,21 +1050,21 @@ export class ErrorRecoveryManager {
     
     }
         this.config = { ...this.config, ...newConfig };
-    }'
+    }
     '';
-    saveConfiguration('')';
+    saveConfiguration()';
             localStorage.setItem('errorRecoveryConfig', JSON.stringify(this.config);
             
             const historyData = { errorHistory: this.state.errorHistory,
                 errorCount: {'
                     ...this.state.errorCount,'';
-                    byType: Array.from(this.state.errorCount.byType.entries()'); }
+                    byType: Array.from(this.state.errorCount.byType.entries()') }
                 }'
             };''
             localStorage.setItem('errorRecoveryHistory', JSON.stringify(historyData);'
             '';
-        } catch (error') { ''
-            console.warn('ErrorRecoveryManager: 設定保存エラー:', error); }
+        } catch (error) { ''
+            console.warn('ErrorRecoveryManager: 設定保存エラー:', error) }
         }
     }
     
@@ -1081,7 +1081,7 @@ export class ErrorRecoveryManager {
             undoRedo: this.undoRedoSystem.getStatistics(), };
             autoSave: this.autoSaveSystem.getStatistics(); }
         };
-    }'
+    }
     '';
     getSystemHealth(''';
             status: 'healthy',
@@ -1099,7 +1099,7 @@ export class ErrorRecoveryManager {
         };
     }'
     '';
-    integrateWithAccessibilityManager('')';
+    integrateWithAccessibilityManager()';
         console.log('ErrorRecoveryManager: アクセシビリティ統合完了'),
     }
     
@@ -1117,9 +1117,9 @@ export class ErrorRecoveryManager {
         }
         
         if(this.autoSaveSystem) {
-        ';
+        ';'
             '';
-            this.autoSaveSystem.destroy('')';
+            this.autoSaveSystem.destroy()';
         window.removeEventListener('beforeunload', this.boundHandlers.beforeUnload');''
         window.removeEventListener('error', this.boundHandlers.error');''
         document.removeEventListener('keydown', this.boundHandlers.keydown');''
@@ -1133,9 +1133,9 @@ export class ErrorRecoveryManager {
                 element.parentNode.removeChild(element); }
             }
         };
-        ';
-        // 設定を保存''
-        this.saveConfiguration('')';
+        ;
+        // 設定を保存
+        this.saveConfiguration()';
         console.log('ErrorRecoveryManager: クリーンアップ完了''),';
     }''
 }

@@ -17,13 +17,13 @@ export interface StageInfo { id: string,
 }
 
 export interface StageSelectionState { selectedStageIndex: number,
-    scrollOffset: number; }
+    scrollOffset: number }
 }
 
 export interface StageUpdateResult { unlockedChanged: boolean,
     lockedChanged: boolean,
     unlockedCount: number,
-    lockedCount: number; }
+    lockedCount: number }
 }
 
 export interface DebugInfo { selectedStageIndex: number,
@@ -33,7 +33,7 @@ export interface DebugInfo { selectedStageIndex: number,
     maxVisibleStages: number,
     visibleRange: {
         start: number,
-        end: number; }
+        end: number }
     };
 }
 
@@ -50,13 +50,13 @@ interface ExtendedGameEngine { stageManager: StageManager,
             type: string,
             title: string,
             message: string,
-            icon: string,);
+            icon: string);
             duration: number);
         ): void; }
     };
 }
 
-interface ExtendedStageSelectScene extends StageSelectScene { sceneManager: SceneManager;
+interface ExtendedStageSelectScene extends StageSelectScene { sceneManager: SceneManager
     }
 }
 
@@ -72,7 +72,7 @@ export class StageSelectDataManager {
 
     constructor(stageSelectScene: StageSelectScene) {
 
-        this.stageSelectScene = stageSelectScene as ExtendedStageSelectScene;
+        this.stageSelectScene = stageSelectScene as ExtendedStageSelectScene
 
     }
     }
@@ -124,20 +124,20 @@ export class StageSelectDataManager {
             // 開放済みステージを選択
             const selectedStage = this.unlockedStages[this.selectedStageIndex]; }
             console.log(`Selected stage: ${selectedStage.name} (ID: ${ selectedStage.id)`),
-            ';
-            // BubbleManagerの存在確認''
+            ;
+            // BubbleManagerの存在確認
             if (!this.gameEngine.bubbleManager') {' }'
                 console.error('BubbleManager not initialized''});
                 return;
             }
             ';
-            // ゲームシーンに切り替えてステージ開始''
+            // ゲームシーンに切り替えてステージ開始
             console.log('Attempting to start stage...');
             const success = this.gameEngine.stageManager.startStage(selectedStage.id);
             console.log(`Stage start result: ${ success)`),'
             '';
             if(success') {'
-                ';
+                ';'
             }'
                 console.log('Switching to game scene...'');' }'
                 this.stageSelectScene.sceneManager.switchScene('game''});'
@@ -177,7 +177,7 @@ export class StageSelectDataManager {
      */
     public renderPlayerInfo(context: CanvasRenderingContext2D): void { const playerData = this.gameEngine.playerData;
         
-        if (!playerData) return;'
+        if (!playerData) return;
         '';
         context.save(''';
         context.fillStyle = '#CCCCCC';''
@@ -188,7 +188,7 @@ export class StageSelectDataManager {
         const infoY = 70;')'
         context.fillText(`プレイヤー: ${playerData.username || '名無し')`, 20, infoY);
         context.fillText(`AP: ${playerData.ap || 0)`, 20, infoY + 25);
-        context.fillText(`TAP: ${playerData.tap || 0)`, 20, infoY + 50);
+        context.fillText(`TAP: ${playerData.tap || 0)`, 20, infoY + 50)
          }
         context.restore(});
     }
@@ -201,8 +201,8 @@ export class StageSelectDataManager {
         const itemHeight = 60;
         const itemWidth = canvas.width - 40;
         const itemX = 20;
-        ';
-        // セクションタイトル''
+        ;
+        // セクションタイトル
         context.save(''';
         context.fillStyle = '#FFFFFF';''
         context.font = 'bold 20px Arial';''
@@ -242,14 +242,14 @@ export class StageSelectDataManager {
         x: number, ;
         y: number, ;
         width: number, ;
-        height: number, );
+        height: number );
         isSelected: boolean);
         isLocked: boolean;
     ): void { context.save(),
-        ';
-        // 背景''
+        ;
+        // 背景
         if(isSelected') {'
-            ';
+            ';'
         }'
             context.fillStyle = isLocked ? '#444444' : '#0066CC'; }'
         } else {  ' }'
@@ -257,28 +257,28 @@ export class StageSelectDataManager {
         }''
         context.fillRect(x, y, width, height');
         ';
-        // 枠線''
+        // 枠線
         context.strokeStyle = isSelected ? '#FFFFFF' : '#666666';'
         context.lineWidth = 2;''
         context.strokeRect(x, y, width, height');
         ';
-        // テキスト色''
+        // テキスト色
         context.fillStyle = isLocked ? '#888888' : '#FFFFFF';
         ';
-        // ステージ名''
+        // ステージ名
         context.font = 'bold 20px Arial';''
         context.textAlign = 'left';''
         context.textBaseline = 'top';'
         const stageName = isLocked ? `🔒 ${stage.name}` : stage.name;''
         context.fillText(stageName, x + 15, y + 10');
         ';
-        // 説明文''
+        // 説明文
         context.font = '14px Arial';''
         context.fillStyle = isLocked ? '#666666' : '#CCCCCC';
         const description = isLocked ? (stage as LockedStageInfo).unlockMessage: stage.description,
         context.fillText(description, x + 15, y + 35);
         ';
-        // 時間表示（開放済みのみ）''
+        // 時間表示（開放済みのみ）
         if (!isLocked && (stage as UnlockedStageInfo).duration') { ''
             context.font = '12px Arial';''
             context.textAlign = 'right';''
@@ -388,13 +388,13 @@ export class StageSelectDataManager {
         // 新しいステージが解放された場合の処理
         if(newUnlockedCount > currentUnlockedCount) {
             console.log(`New stages unlocked: ${newUnlockedCount - currentUnlockedCount)`),
-            ';
-            // 新解放ステージの通知''
+            ;
+            // 新解放ステージの通知
             if (this.gameEngine.achievementNotificationSystem') {'
                 this.gameEngine.achievementNotificationSystem.queueNotification({''
                     type: 'success',')';
                     title: 'ステージ解放！')';
-                    message: `新しいステージが解放されました`,';
+                    message: `新しいステージが解放されました`,'
         }'
                     icon: '🔓',) }
                     duration: 4000)}),
@@ -426,7 +426,7 @@ export class StageSelectDataManager {
         } else if (this.scrollOffset > totalStages - this.maxVisibleStages) { this.scrollOffset = Math.max(0, totalStages - this.maxVisibleStages); }
         }
         
-        // 選択がスクロール範囲外の場合の調整'
+        // 選択がスクロール範囲外の場合の調整
         if (this.selectedStageIndex < this.scrollOffset) { this.scrollOffset = this.selectedStageIndex;' }'
         } else if (this.selectedStageIndex >= this.scrollOffset + this.maxVisibleStages') { this.scrollOffset = this.selectedStageIndex - this.maxVisibleStages + 1; }
         }'

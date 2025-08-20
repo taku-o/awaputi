@@ -8,7 +8,7 @@ export class RenderingOptimizer {
         this.config = {
             offscreenCanvas: {
                 enabled: true,
-                cacheSize: 10, // 最大10個のオフスクリーンキャンバスをキャッシュ;
+                cacheSize: 10, // 最大10個のオフスクリーンキャンバスをキャッシュ
     }
     }
                 reusable: true }
@@ -111,11 +111,11 @@ export class RenderingOptimizer {
     /**
      * レイヤーシステムの設定
      */
-    setupLayers() {'
+    setupLayers() {
         '';
         if (!this.config.layering.enabled') return;
         ';
-        // デフォルトレイヤーの作成''
+        // デフォルトレイヤーの作成
         const defaultLayers = ['background', 'charts', 'ui', 'overlay', 'debug'];
         
     }
@@ -178,9 +178,9 @@ export class RenderingOptimizer {
             
             // レンダリング方式の決定
             if(this.config.differentialUpdate.enabled && this.hasDirtyRegions() { return await this.renderDifferential(context, renderables, options); }
-            } else if (this.config.layering.enabled) { return await this.renderLayered(context, renderables, options); }'
+            } else if (this.config.layering.enabled) { return await this.renderLayered(context, renderables, options); }
             } else { return await this.renderDirect(context, renderables, options);' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Optimized rendering failed:', error);
             throw error; }
         } finally { this.renderingState.isRendering = false;
@@ -221,12 +221,12 @@ export class RenderingOptimizer {
      */
     async renderEmergencyMode(context, renderables, options) { this.renderingState.emergencyMode = true;
         
-        // 最小限の描画のみ実行'
+        // 最小限の描画のみ実行
         const essentialRenderables = this.filterEssentialRenderables(renderables);''
         const culledRenderables = this.applyViewportCulling(essentialRenderables');
         
         // 品質を下げて描画
-        const emergencyOptions = {'
+        const emergencyOptions = {
             ...options,'';
             quality: 'low',
             skipAnimations: true,
@@ -257,9 +257,9 @@ export class RenderingOptimizer {
         }
             await this.renderRegion(context, renderables, region, options); }
         }
-        ';
-        // 差分領域をクリア''
-        this.dirtyRegions.clear('')';
+        ;
+        // 差分領域をクリア
+        this.dirtyRegions.clear()';
             type: 'differential');
             regionsUpdated: mergedRegions.length,);
             totalArea: mergedRegions.reduce((sum, region) => sum + (region.width * region.height), 0);
@@ -405,12 +405,12 @@ export class RenderingOptimizer {
         for(const layerName of this.layerOrder) {
             const layer = this.layers.get(layerName);
             
-            if (!layer || !layer.visible || layer.renderables.length === 0) continue;'
-            ';
+            if (!layer || !layer.visible || layer.renderables.length === 0) continue;
+            ';'
         }'
             await this.renderLayer(context, layer, options'); }
         }
-        ';
+        ';'
         return { ''
             type: 'layered',
             layersRendered: this.layerOrder.length, };
@@ -446,8 +446,8 @@ export class RenderingOptimizer {
      */
     determineLayer(renderable) {
         if (renderable.layer) return renderable.layer;
-        ';
-        // タイプに基づく自動判定''
+        ;
+        // タイプに基づく自動判定
         switch (renderable.type') {''
             case 'background': return 'background';''
             case 'chart':'';
@@ -476,7 +476,7 @@ export class RenderingOptimizer {
         }
         
         // レイヤーキャンバスの作成または取得
-        if(!layer.canvas) {'
+        if(!layer.canvas) {
             '';
             layer.canvas = this.createLayerCanvas(this.viewport.width, this.viewport.height');'
         }'
@@ -505,7 +505,7 @@ export class RenderingOptimizer {
     /**
      * レイヤーキャンバスの作成
      */
-    createLayerCanvas(width, height) {'
+    createLayerCanvas(width, height) {
         if (this.offscreenCanvasSupported && this.config.offscreenCanvas.enabled) {'
     }'
             return new OffscreenCanvas(width, height'); }'
@@ -524,12 +524,12 @@ export class RenderingOptimizer {
         const culledRenderables = this.applyViewportCulling(renderables);
         
         // 各レンダラブルを直接描画
-        for(const renderable of culledRenderables) {'
-            ';
+        for(const renderable of culledRenderables) {
+            ';'
         }'
             await this.renderSingle(context, renderable, options'); }
         }
-        ';
+        ';'
         return { ''
             type: 'direct',
             renderablesProcessed: culledRenderables.length, };
@@ -592,10 +592,10 @@ export class RenderingOptimizer {
             await renderable.render(context, options);
             
             // レンダリング状態の記録
-            this.updateRenderState(renderable);'
+            this.updateRenderState(renderable);
             '';
-        } catch (error') { ''
-            console.error('Single renderable rendering failed:', error); }
+        } catch (error) { ''
+            console.error('Single renderable rendering failed:', error) }
         }
     }
     
@@ -657,7 +657,7 @@ export class RenderingOptimizer {
             this.dirtyRegions.clear();
             this.addDirtyRegion({)
                 x: 0, y: 0);
-                width: this.viewport.width,);
+                width: this.viewport.width,)
     }
                 height: this.viewport.height); }
         }
@@ -732,9 +732,9 @@ export class RenderingOptimizer {
      */
     triggerPerformanceWarning(frameTime) {
         if (this.performanceAlert) return; // 重複警告防止
-        ';
+        ';'
         this.performanceAlert = {''
-            timestamp: Date.now('';
+            timestamp: Date.now(''
     }'
             type: frameTime > this.config.performance.emergencyThreshold ? 'emergency' : 'warning' })
         })
@@ -803,6 +803,6 @@ export class RenderingOptimizer {
         if (this.renderingState.frameRequestId) {
     }
             cancelAnimationFrame(this.renderingState.frameRequestId); }
-        }'
+        }
         '';
         this.layers.clear(');

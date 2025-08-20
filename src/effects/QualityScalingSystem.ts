@@ -12,9 +12,9 @@ interface ParticleManager { setQualityLevel(quality: string): void,
 interface Particle { type: string,
     life: number,
     maxLife: number,
-    size: number; }
+    size: number }
 }
-';
+';'
 interface PerformanceMonitor { ''
     getCurrentMetrics(''';
 type QualityLevelName = 'potato' | 'low' | 'medium' | 'high' | 'ultra' | 'insane';
@@ -39,7 +39,7 @@ export class QualityScalingSystem {
         this.particleManager = particleManager;
         this.performanceMonitor = performanceMonitor;
         
-        // 品質レベル定義'
+        // 品質レベル定義
         this.qualityLevels = {''
             'potato': {''
                 name: 'ポテト',
@@ -48,7 +48,7 @@ export class QualityScalingSystem {
                 complexityLevel: 0,'';
                 enabledEffects: ['circle'],'';
                 disabledFeatures: ['trail', 'glow', 'background', 'lighting'],';
-                maxParticles: 50,';
+                maxParticles: 50,'
     }
     }'
                 description: '最低品質 - 古い端末向け' }'
@@ -105,7 +105,7 @@ export class QualityScalingSystem {
             }
         },
         ';
-        // 現在の品質レベル''
+        // 現在の品質レベル
         this.currentQuality = 'high';
         
         // 自動調整設定
@@ -122,7 +122,7 @@ export class QualityScalingSystem {
         this.lastAdjustmentTime = 0;
         this.adjustmentCooldown = 2000; // 2秒
         
-        // フォールバック効果定義'
+        // フォールバック効果定義
         this.fallbackEffects = { ''
             'glow_circle': 'advanced_circle','';
             'advanced_circle': 'circle','';
@@ -152,9 +152,9 @@ export class QualityScalingSystem {
         this.currentQuality = quality;
         
         // パーティクルマネージャーに品質設定を適用
-        if(this.particleManager) {'
+        if(this.particleManager) {
             this.particleManager.setQualityLevel(quality);''
-            this.applyQualitySettings('')';
+            this.applyQualitySettings()';
         this.recordAdjustment(oldQuality, quality, force ? 'manual' : 'auto');
         }
          }
@@ -175,13 +175,13 @@ export class QualityScalingSystem {
         }
         
         // 現在のパーティクル数が制限を超えている場合は削減
-        if(this.particleManager.particles.length > settings.maxParticles) {'
+        if(this.particleManager.particles.length > settings.maxParticles) {
             const excessCount = this.particleManager.particles.length - settings.maxParticles;'
         }'
             this.removeExcessParticles(excessCount'); }
         }
         ';
-        // 背景パーティクルの調整''
+        // 背景パーティクルの調整
         if(settings.disabledFeatures.includes('background') {
             this.particleManager.backgroundEnabled = false;
         }
@@ -216,7 +216,7 @@ export class QualityScalingSystem {
     /**
      * パーティクルの優先度を取得
      * @param particle - パーティクル
-     * @returns 優先度 (低いほど削除されやすい)'
+     * @returns 優先度 (低いほど削除されやすい)
      */''
     private getParticlePriority(particle: Particle'): number { const typePriorities: Record<string, number> = {''
             'background': 1,'';
@@ -271,10 +271,10 @@ export class QualityScalingSystem {
             // 品質レベル調整
             this.adjustQualityLevel(adjustmentDirection);
             this.lastAdjustmentTime = now;
-            ';
+            ';'
         } catch (error) { ''
-            getErrorHandler('')';
-                context: 'QualityScalingSystem.autoAdjustQuality'); }
+            getErrorHandler()';
+                context: 'QualityScalingSystem.autoAdjustQuality') }
             });
         }
     }
@@ -308,12 +308,12 @@ export class QualityScalingSystem {
      */
     public isEffectSupported(effectType: string): boolean { const settings = this.qualityLevels[this.currentQuality];
         ';
-        // 無効化された機能をチェック''
+        // 無効化された機能をチェック
         if (settings.disabledFeatures.includes(effectType)') {
             return false; }
         }
         ';
-        // 有効な効果をチェック''
+        // 有効な効果をチェック
         if(settings.enabledEffects.includes('*') { return true; }
         }
         
@@ -334,12 +334,12 @@ export class QualityScalingSystem {
         
         // フォールバック効果を検索
         let fallbackType: string | undefined = this.fallbackEffects[originalType],
-        ';
-        // フォールバック効果もサポートされていない場合は再帰的に検索''
+        ;
+        // フォールバック効果もサポートされていない場合は再帰的に検索
         while (fallbackType && !this.isEffectSupported(fallbackType)') { fallbackType = this.fallbackEffects[fallbackType]; }
         }
         ';
-        // 最終的なフォールバック''
+        // 最終的なフォールバック
         return fallbackType || 'circle';
     }
     
@@ -392,19 +392,19 @@ export class QualityScalingSystem {
     
     /**
      * デバイス性能を評価して推奨品質を取得
-     * @returns 推奨品質レベル'
+     * @returns 推奨品質レベル
      */''
-    public getRecommendedQuality('')';
+    public getRecommendedQuality()';
         const canvas = document.createElement('canvas'');''
         const gl = canvas.getContext('webgl'') || canvas.getContext('experimental-webgl');
         
         let score = 0;
         ';
-        // WebGLサポート''
+        // WebGLサポート
         if(gl') {
             score += 2;
             ';
-            // GPU情報''
+            // GPU情報
             const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');'
             if (debugInfo) {''
                 const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL');''
@@ -415,7 +415,7 @@ export class QualityScalingSystem {
             }
         }
         ';
-        // メモリ情報''
+        // メモリ情報
         if('deviceMemory' in navigator) {
             const deviceMemory = (navigator as any).deviceMemory;
             if (deviceMemory >= 8) score += 3;
@@ -434,8 +434,8 @@ export class QualityScalingSystem {
         // モバイル検出
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) { score -= 2; }
         }
-        ';
-        // 品質レベル決定''
+        ;
+        // 品質レベル決定
         if (score >= 8') return 'ultra';''
         if (score >= 6') return 'high';''
         if (score >= 4') return 'medium';''
@@ -454,7 +454,7 @@ export class QualityScalingSystem {
     /**
      * デバッグ情報を出力'
      */''
-    public debugInfo('')';
+    public debugInfo()';
         console.group('[QualityScalingSystem] デバッグ情報'');''
         console.log('現在の品質:', this.getCurrentQualitySettings()');''
         console.log('パフォーマンス統計:', this.getPerformanceStats()');''

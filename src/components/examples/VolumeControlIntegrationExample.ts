@@ -30,11 +30,11 @@ export class VolumeControlIntegrationExample {
      */
     initializeSettingsScene(): boolean { // 設定画面のDOM構造を作成
         this.createSettingsUI();
-        ';
-        // VolumeControlComponentを初期化''
+        ;
+        // VolumeControlComponentを初期化
         this.volumeControl = new VolumeControlComponent(this.gameEngine');
         ';
-        // 音響設定セクションに追加''
+        // 音響設定セクションに追加
         const audioSection = document.getElementById('audio-settings-section');''
         if(!audioSection') {'
             '';
@@ -59,7 +59,7 @@ export class VolumeControlIntegrationExample {
     /**
      * 設定画面のDOM構造作成例'
      */''
-    private createSettingsUI('')';
+    private createSettingsUI()';
         this.container = document.createElement('div'');''
         this.container.className = 'settings-container';'
         this.container.innerHTML = `'';
@@ -176,7 +176,7 @@ export class VolumeControlIntegrationExample {
             }
             
             // DOM要素を削除
-            if(this.container && this.container.parentNode) {'
+            if(this.container && this.container.parentNode) {
                 '';
                 this.container.parentNode.removeChild(this.container');
             }
@@ -185,8 +185,8 @@ export class VolumeControlIntegrationExample {
             '';
             console.log('[VolumeControlIntegration] Integration disposed');'
             '';
-        } catch (error') { ''
-            console.error('[VolumeControlIntegration] Disposal error:', error); }
+        } catch (error) { ''
+            console.error('[VolumeControlIntegration] Disposal error:', error) }
         }
     }
     
@@ -208,11 +208,11 @@ export class VolumeControlIntegrationExample {
      */)
     static getSampleCode(): string { return `
 // VolumeControlComponent の基本的な使用例
-';
-// 1. コンポーネント初期化''
+;
+// 1. コンポーネント初期化
 const volumeControl = new VolumeControlComponent(gameEngine');
 ';
-// 2. DOM要素への追加''
+// 2. DOM要素への追加
 const audioSection = document.getElementById('audio-settings');
 const success = volumeControl.initialize(audioSection);
 
@@ -222,6 +222,6 @@ volumeControl.setVolume(0.8); // 80%
 // 4. 現在の音量取得
 const currentVolume = volumeControl.getCurrentVolume();
 
-// 5. コンポーネントの破棄'
+// 5. コンポーネントの破棄
 volumeControl.dispose();''
         `.trim(') }

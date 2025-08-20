@@ -7,9 +7,9 @@
 import { getErrorHandler } from '../ErrorHandler.js';''
 import { getConfigurationManager } from '../../core/ConfigurationManager.js';
 
-// Type definitions'
+// Type definitions
 interface ErrorHandler { ''
-    handleError(error: Error, context: string'): void; }
+    handleError(error: Error, context: string'): void }
 }
 
 interface ConfigurationManager { [key: string]: any, }
@@ -19,27 +19,27 @@ interface MemoryLimits { maxMemoryMB: number,
     warningThreshold: number,
     criticalThreshold: number,
     gcTriggerThreshold: number,
-    emergencyThreshold: number; }
+    emergencyThreshold: number }
 }
 
 interface GarbageCollectionConfig { enabled: boolean,
     aggressiveMode: boolean,
     intervalMs: number,
     forceGCOnPressure: boolean,
-    preventMemoryLeaks: boolean; }
+    preventMemoryLeaks: boolean }
 }
 
 interface PressureThresholds { moderate: number,
     severe: number,
-    critical: number; }
+    critical: number }
 }
-';
+';'
 interface PressureDetectionConfig { enabled: boolean,''
     currentPressure: 'normal' | 'moderate' | 'severe' | 'critical',
     pressureLevels: string[],
     thresholds: PressureThresholds,
     warningCallbacks: Set<(pressure: string) => void>,
-    criticalCallbacks: Set<(pressure: string) => void>; }
+    criticalCallbacks: Set<(pressure: string) => void> }
 }
 
 interface ObjectPool { name: string,
@@ -47,7 +47,7 @@ interface ObjectPool { name: string,
     available: any[],
     inUse: Set<any>,
     totalCreated: number,
-    totalReused: number; }
+    totalReused: number }
 }
 
 interface PoolManagementConfig { enabled: boolean,
@@ -55,7 +55,7 @@ interface PoolManagementConfig { enabled: boolean,
     maxPoolSize: number,
     poolReuse: boolean,
     poolCleanupInterval: number,
-    autoCleanup: boolean; }
+    autoCleanup: boolean }
 }
 
 interface PlatformOptimizations { ios: {
@@ -69,7 +69,7 @@ interface PlatformOptimizations { ios: {
     },
     web: { webWorkerMemoryLimit: number,
         offscreenCanvasLimit: number,
-        serviceWorkerCaching: boolean; }
+        serviceWorkerCaching: boolean }
     };
 }
 
@@ -78,7 +78,7 @@ interface MemoryConfig { enabled: boolean,
     garbageCollection: GarbageCollectionConfig,
     pressureDetection: PressureDetectionConfig,
     poolManagement: PoolManagementConfig,
-    platformOptimizations: PlatformOptimizations;
+    platformOptimizations: PlatformOptimizations
     }
 }
 
@@ -88,38 +88,38 @@ interface MemoryUsage { jsHeapSize: number,
     textureMemory: number,
     bufferMemory: number,
     domNodes: number,
-    eventListeners: number; }
+    eventListeners: number }
 }
 
 interface MemoryUsageHistoryEntry { timestamp: number,
     jsHeapSize: number,
     totalMemory: number,
-    domNodes: number; }
+    domNodes: number }
 }
 
 interface PressureHistoryEntry { timestamp: number,
     oldPressure: string,
     newPressure: string,
-    memoryUsage: number; }
+    memoryUsage: number }
 }
 
 interface GCHistoryEntry { timestamp: number,
     duration: number,
     forced: boolean,
-    memoryBefore: number; }
+    memoryBefore: number }
 }
 
 interface MemoryHistory { usageHistory: MemoryUsageHistoryEntry[],
     pressureHistory: PressureHistoryEntry[],
     gcHistory: GCHistoryEntry[],
     maxHistorySize: number,
-    samplingInterval: number; }
+    samplingInterval: number }
 }
 
 interface MemoryLeak { timestamp: number,
     memoryGrowth: number,
     currentMemory: number,
-    stackTrace?: string; }
+    stackTrace?: string }
 }
 
 interface LeakDetectionConfig { enabled: boolean,
@@ -129,21 +129,21 @@ interface LeakDetectionConfig { enabled: boolean,
     detectedLeaks: MemoryLeak[],
     monitoringInterval: number,
     baselineMemory: number,
-    consistentGrowthCount: number; }
+    consistentGrowthCount: number }
 }
 
 interface PerformanceImpact { gcPauses: number[],
     memoryAllocations: number,
     memoryDeallocations: number,
     averageGCTime: number,
-    lastGCTime: number; }
+    lastGCTime: number }
 }
 
 interface MemoryMonitoring { enabled: boolean,
     usage: MemoryUsage,
     history: MemoryHistory,
     leakDetection: LeakDetectionConfig,
-    performanceImpact: PerformanceImpact;
+    performanceImpact: PerformanceImpact
     }
 }
 
@@ -152,7 +152,7 @@ interface PoolStatistics { [poolName: string]: {
         inUse: number,
         totalCreated: number,
         totalReused: number,
-        reuseRatio: number; }
+        reuseRatio: number }
     };
 }
 
@@ -164,7 +164,7 @@ interface MemoryStatistics { usage: MemoryUsage,
     history: {
         usage: MemoryUsageHistoryEntry[],
         pressure: PressureHistoryEntry[],
-        gc: GCHistoryEntry[];
+        gc: GCHistoryEntry[]
     }
     };
 }
@@ -175,7 +175,7 @@ export class MobileMemoryManager {
     private memoryConfig: MemoryConfig;
     private memoryMonitoring: MemoryMonitoring;
     constructor() {
-';
+';'
         this.errorHandler = getErrorHandler();''
         this.configManager = getConfigurationManager(''';
                 currentPressure: 'normal','';
@@ -265,18 +265,18 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Initialize memory management system'
+     * Initialize memory management system
      */''
-    initializeMemoryManager('')';
+    initializeMemoryManager()';
         console.log('[MobileMemoryManager] Initializing memory management...');
         
         try { this.setupMemoryMonitoring();
             this.setupObjectPools();
             this.setupPlatformOptimizations();'
             this.startMemoryTracking();''
-            this.setupLeakDetection('')';
+            this.setupLeakDetection()';
             console.log('[MobileMemoryManager] Memory management initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'MobileMemoryManager.initializeMemoryManager'); }
         }
     }
@@ -284,13 +284,13 @@ export class MobileMemoryManager {
     /**
      * Setup memory monitoring'
      */''
-    setupMemoryMonitoring('')';
+    setupMemoryMonitoring()';
         if (typeof performance !== 'undefined' && (performance as any).memory) { this.updateMemoryUsage();
             
             // Set up periodic memory monitoring
             setInterval(() => { 
                 this.updateMemoryUsage();
-                this.analyzeMemoryPressure(); }'
+                this.analyzeMemoryPressure(); }
                 this.checkForMemoryLeaks();' }'
             }, this.memoryMonitoring.history.samplingInterval');'
             '';
@@ -303,16 +303,16 @@ export class MobileMemoryManager {
     /**
      * Update memory usage statistics'
      */''
-    updateMemoryUsage('')';
+    updateMemoryUsage()';
         if (typeof performance !== 'undefined' && (performance as any).memory) { const memory = (performance as any).memory;
-            usage.jsHeapSize = memory.usedJSHeapSize / (1024 * 1024); // MB'
-            usage.jsHeapSizeLimit = memory.jsHeapSizeLimit / (1024 * 1024); // MB''
+            usage.jsHeapSize = memory.usedJSHeapSize / (1024 * 1024); // MB
+            usage.jsHeapSizeLimit = memory.jsHeapSizeLimit / (1024 * 1024); // MB
             usage.totalJSHeapSize = memory.totalJSHeapSize / (1024 * 1024'); // MB }
         }
-        ';
-        // Estimate DOM nodes and event listeners''
+        ;
+        // Estimate DOM nodes and event listeners
         if(typeof document !== 'undefined'') {'
-            ';
+            ';'
         }'
             usage.domNodes = document.querySelectorAll('*').length; }
         }
@@ -332,7 +332,7 @@ export class MobileMemoryManager {
         
         // Add usage to history
         history.usageHistory.push({
-            timestamp,);
+            timestamp);
             jsHeapSize: usage.jsHeapSize);
             totalMemory: usage.jsHeapSize + usage.textureMemory + usage.bufferMemory,);
             domNodes: usage.domNodes),
@@ -346,13 +346,13 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Update memory pressure'
+     * Update memory pressure
      */''
-    updateMemoryPressure('')';
+    updateMemoryPressure()';
         let newPressure: 'normal' | 'moderate' | 'severe' | 'critical' = 'normal')';
         '';
         if(usageRatio >= config.thresholds.critical') {'
-            ';
+            ';'
         }'
             newPressure = 'critical';' }'
         } else if (usageRatio >= config.thresholds.severe') { ''
@@ -385,8 +385,8 @@ export class MobileMemoryManager {
             newPressure, }
             memoryUsage: this.getCurrentMemoryUsage(}),
         });
-        ';
-        // Execute callbacks''
+        ;
+        // Execute callbacks
         switch(newPressure') {'
             '';
             case 'critical':';
@@ -414,7 +414,7 @@ export class MobileMemoryManager {
     /**
      * Handle critical memory pressure'
      */''
-    handleCriticalMemoryPressure('')';
+    handleCriticalMemoryPressure()';
         console.error('[MobileMemoryManager] Critical memory pressure - emergency cleanup');
         
         // Emergency memory cleanup
@@ -431,9 +431,9 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Handle severe memory pressure'
+     * Handle severe memory pressure
      */''
-    handleSevereMemoryPressure('')';
+    handleSevereMemoryPressure()';
         console.warn('[MobileMemoryManager] Severe memory pressure - aggressive cleanup');
         
         // Aggressive memory cleanup
@@ -447,9 +447,9 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Handle moderate memory pressure'
+     * Handle moderate memory pressure
      */''
-    handleModerateMemoryPressure('')';
+    handleModerateMemoryPressure()';
         console.warn('[MobileMemoryManager] Moderate memory pressure - standard cleanup');
         
         // Standard memory cleanup
@@ -460,9 +460,9 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Handle normal memory pressure'
+     * Handle normal memory pressure
      */''
-    handleNormalMemoryPressure('')';
+    handleNormalMemoryPressure()';
         console.log('[MobileMemoryManager] Normal memory pressure restored');
         
         // Disable aggressive mode
@@ -494,10 +494,10 @@ export class MobileMemoryManager {
     /**
      * Setup object pools
      */
-    setupObjectPools(): void { const poolConfig = this.memoryConfig.poolManagement;'
+    setupObjectPools(): void { const poolConfig = this.memoryConfig.poolManagement;
         '';
         if (!poolConfig.enabled') return;
-        ';
+        ';'
         // Initialize common object pools' }'
         this.createObjectPool('Vector2', () => ({ x: 0, y: 0 }');''
         this.createObjectPool('Vector3', () => ({ x: 0, y: 0, z: 0 }');''
@@ -505,7 +505,7 @@ export class MobileMemoryManager {
         this.createObjectPool('Color', () => ({ r: 0, g: 0, b: 0, a: 1 });
         
         // Set up pool cleanup
-        if (poolConfig.autoCleanup) { setInterval(() => {  }'
+        if (poolConfig.autoCleanup) { setInterval(() => {  }
                 this.cleanupObjectPools();' }'
             }, poolConfig.poolCleanupInterval');
         }'
@@ -590,9 +590,9 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Reset object to default state'
+     * Reset object to default state
      */''
-    resetObject(obj: any'): void { // Reset common object types''
+    resetObject(obj: any'): void { // Reset common object types
         if (obj.hasOwnProperty('x'') && obj.hasOwnProperty('y')') {
             obj.x = 0;'
             obj.y = 0;''
@@ -649,11 +649,11 @@ export class MobileMemoryManager {
     
     /**
      * Setup platform-specific optimizations
-     */'
+     */
     setupPlatformOptimizations(): void { ''
-        const userAgent = navigator.userAgent.toLowerCase('')';
+        const userAgent = navigator.userAgent.toLowerCase()';
         if (userAgent.includes('iphone'') || userAgent.includes('ipad') {''
-            this.setupIOSOptimizations('') }'
+            this.setupIOSOptimizations() }'
         } else if (userAgent.includes('android') { this.setupAndroidOptimizations(); }
         } else { this.setupWebOptimizations(); }
         }
@@ -665,7 +665,7 @@ export class MobileMemoryManager {
     setupIOSOptimizations(): void { const iosConfig = this.memoryConfig.platformOptimizations.ios;
         
         if(iosConfig.memoryWarningHandling) {
-        ';
+        ';'
             '';
             // Listen for memory warnings (if available');'
         
@@ -687,7 +687,7 @@ export class MobileMemoryManager {
             // More aggressive cleanup for Android
         }
             this.memoryConfig.garbageCollection.intervalMs = 20000; // 20 seconds }
-        }'
+        }
         '';
         console.log('[MobileMemoryManager] Android optimizations enabled');
     }
@@ -695,7 +695,7 @@ export class MobileMemoryManager {
     /**
      * Setup web-specific optimizations'
      */''
-    setupWebOptimizations('')';
+    setupWebOptimizations()';
         document.addEventListener('visibilitychange', () => {  if (document.hidden) { }
                 this.handlePageHidden(); }'
             }''
@@ -713,7 +713,7 @@ export class MobileMemoryManager {
         }, this.memoryMonitoring.history.samplingInterval);
         
         // Garbage collection monitoring
-        if (this.memoryConfig.garbageCollection.enabled) { setInterval(() => {  }'
+        if (this.memoryConfig.garbageCollection.enabled) { setInterval(() => {  }
                 this.monitorGarbageCollection();' }'
             }, this.memoryConfig.garbageCollection.intervalMs');
         }'
@@ -732,7 +732,7 @@ export class MobileMemoryManager {
         leakConfig.baselineMemory = this.getCurrentMemoryUsage();
         
         // Start leak monitoring
-        setInterval(() => {  }'
+        setInterval(() => {  }
             this.checkForMemoryLeaks();' }'
         }, leakConfig.monitoringInterval');'
         '';
@@ -786,21 +786,21 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Perform different levels of cleanup'
+     * Perform different levels of cleanup
      */''
-    performEmergencyCleanup('')';
+    performEmergencyCleanup()';
         console.log('[MobileMemoryManager] Performing emergency cleanup');
         this.clearAllObjectPools();
         this.forceGarbageCollection();
     }'
     '';
-    performAggressiveCleanup('')';
+    performAggressiveCleanup()';
         console.log('[MobileMemoryManager] Performing aggressive cleanup');
         this.clearObjectPools(0.7);
         this.forceGarbageCollection();
     }'
     '';
-    performStandardCleanup('')';
+    performStandardCleanup()';
         console.log('[MobileMemoryManager] Performing standard cleanup');
         this.clearObjectPools(0.3);
         this.triggerGarbageCollection();
@@ -809,7 +809,7 @@ export class MobileMemoryManager {
     /**
      * Force garbage collection'
      */''
-    forceGarbageCollection('')';
+    forceGarbageCollection()';
         if (typeof window !== 'undefined' && (window as any).gc) { const startTime = performance.now();
             (window as any).gc();
             const gcTime = performance.now() - startTime;
@@ -841,7 +841,7 @@ export class MobileMemoryManager {
             timestamp: Date.now(),
             duration,
             forced,
-            memoryBefore: this.getCurrentMemoryUsage(); }
+            memoryBefore: this.getCurrentMemoryUsage() }
         };
         
         this.memoryMonitoring.history.gcHistory.push(gcEvent);
@@ -869,9 +869,9 @@ export class MobileMemoryManager {
     }
     
     /**
-     * Handle memory warning'
+     * Handle memory warning
      */''
-    handleMemoryWarning('')';
+    handleMemoryWarning()';
         console.warn('[MobileMemoryManager] Memory warning received');
         this.performAggressiveCleanup();
     }
@@ -879,7 +879,7 @@ export class MobileMemoryManager {
     /**
      * Handle page hidden event'
      */''
-    handlePageHidden('')';
+    handlePageHidden()';
         console.log('[MobileMemoryManager] Page hidden - performing cleanup');
         this.performStandardCleanup();
     }
@@ -887,7 +887,7 @@ export class MobileMemoryManager {
     /**
      * Investigate memory growth'
      */''
-    investigateMemoryGrowth('')';
+    investigateMemoryGrowth()';
         console.log('[MobileMemoryManager] Investigating memory growth patterns');
         
         // This would typically include more sophisticated analysis
@@ -898,10 +898,10 @@ export class MobileMemoryManager {
      * Notify callbacks
      */
     notifyCallbacks(callbacks: Set<(pressure: string) => void>, pressure: string): void { callbacks.forEach(callback => { )
-            try {); }'
+            try {); }
                 callback(pressure);' }'
-            } catch (error') { ''
-                console.error('[MobileMemoryManager] Error in pressure callback:', error); }
+            } catch (error) { ''
+                console.error('[MobileMemoryManager] Error in pressure callback:', error) }
             }
         });
     }
@@ -979,11 +979,11 @@ export class MobileMemoryManager {
             this.memoryMonitoring.leakDetection.detectedLeaks = [];
             this.memoryMonitoring.performanceImpact.gcPauses = [];
             
-            // Clear callbacks'
+            // Clear callbacks
             this.memoryConfig.pressureDetection.warningCallbacks.clear();''
-            this.memoryConfig.pressureDetection.criticalCallbacks.clear('')';
+            this.memoryConfig.pressureDetection.criticalCallbacks.clear()';
             console.log('[MobileMemoryManager] Memory manager disposed');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'MobileMemoryManager.dispose''); }
         }'
     }''

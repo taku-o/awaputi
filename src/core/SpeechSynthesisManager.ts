@@ -11,7 +11,7 @@ export class SpeechSynthesisManager {'
         this.accessibilityManager = screenReaderManager.accessibilityManager;
         this.gameEngine = this.accessibilityManager? .gameEngine;
         ';
-        // Speech Synthesis API の可用性チェック''
+        // Speech Synthesis API の可用性チェック
         this.isSupported = 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window;
         this.speechSynthesis = window.speechSynthesis;
         
@@ -26,7 +26,7 @@ export class SpeechSynthesisManager {'
     }
     }
                 respectPause: true }
-            },'
+            },
             voice: { autoSelection: true,''
                 preferredLanguages: ['ja-JP', 'en-US'],'';
                 genderPreference: 'female', // 'male', 'female', 'none''';
@@ -48,8 +48,8 @@ export class SpeechSynthesisManager {'
         },
         
         // 音声関連
-        this.availableVoices = [];'
-        this.selectedVoices = new Map(); // 言語別の選択された音声''
+        this.availableVoices = [];
+        this.selectedVoices = new Map(); // 言語別の選択された音声
         this.voicePreferences = new Map(''';
             ['ja', /[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FAF]/],')';
             ['en', /^[A-Za-z\s\d\.,!?;:'"(")-]+$/],""
@@ -68,7 +68,7 @@ export class SpeechSynthesisManager {'
             averageDuration: 0,
             languageUsage: new Map(),
             voiceUsage: new Map(),
-            sessionStart: Date.now(); }
+            sessionStart: Date.now() }
         };
         
         // ユーザー設定
@@ -81,11 +81,11 @@ export class SpeechSynthesisManager {'
             respectGamePause: true,
             skipRepeatedMessages: true }
         },
-        ';
-        // カスタム発音辞書（日本語）''
-        this.initializeCustomDictionary('')';
+        ;
+        // カスタム発音辞書（日本語）
+        this.initializeCustomDictionary()';
         console.log('SpeechSynthesisManager initialized', { supported: this.isSupported ),
-        this.initialize(); }
+        this.initialize() }
     }
     
     /**
@@ -107,13 +107,13 @@ export class SpeechSynthesisManager {'
             
             // イベントリスナーの設定
             this.setupEventListeners();
-            ';
-            // 音声の自動選択''
-            this.autoSelectVoices('')';
+            ;
+            // 音声の自動選択
+            this.autoSelectVoices()';
             console.log('SpeechSynthesisManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'SPEECH_SYNTHESIS_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -127,27 +127,27 @@ export class SpeechSynthesisManager {'
             ['ポップ', 'ポップ'],'';
             ['pop', 'ポップ'],
             ';
-            // スコア関連''
+            // スコア関連
             ['スコア', 'スコア'],'';
             ['score', 'スコア'],'';
             ['コンボ', 'コンボ'],'';
             ['combo', 'コンボ'],'';
             ['HP', 'エッチピー'],
             ';
-            // ゲーム状態''
+            // ゲーム状態
             ['ゲームオーバー', 'ゲーム オーバー'],'';
             ['Game Over', 'ゲーム オーバー'],'';
             ['レベルアップ', 'レベル アップ'],'';
             ['Level Up', 'レベル アップ'],
             ';
-            // 特殊バブル''
+            // 特殊バブル
             ['レインボー', 'レインボー'],'';
             ['rainbow', 'レインボー'],'';
             ['ボス', 'ボス'],'';
             ['boss', 'ボス'],'';
             ['ゴールデン', 'ゴールデン'],')';
             ['golden', 'ゴールデン'])';
-            // 数字の読み方改善''
+            // 数字の読み方改善
             ['1st', '1番目'],'';
             ['2nd', '2番目'],'';
             ['3rd', '3番目'],'';
@@ -175,7 +175,7 @@ export class SpeechSynthesisManager {'
                 }
             };
             ';
-            // voiceschangedイベントを監視''
+            // voiceschangedイベントを監視
             this.speechSynthesis.addEventListener('voiceschanged', loadVoicesOnce);
             
             // 即座に試行
@@ -187,7 +187,7 @@ export class SpeechSynthesisManager {'
      * 音声の分析
      */
     analyzeVoices() {
-        const voicesByLanguage = new Map();'
+        const voicesByLanguage = new Map();
         '';
         this.availableVoices.forEach(voice => { ');''
             const lang = voice.lang.split('-'')[0]; // 'ja-JP' -> 'ja'
@@ -197,12 +197,12 @@ export class SpeechSynthesisManager {'
                 voicesByLanguage.set(lang, []); }
             }
             
-            voicesByLanguage.get(lang).push({ voice: voice,)
+            voicesByLanguage.get(lang).push({ voice: voice)
                 name: voice.name);
                 language: voice.lang,);
                 isLocal: voice.localService),
                 gender: this.detectGender(voice.name),
-                quality: this.estimateQuality(voice); }'
+                quality: this.estimateQuality(voice) }'
             });''
         }');'
         '';
@@ -215,7 +215,7 @@ export class SpeechSynthesisManager {'
      */
     detectGender(voiceName) {'
         '';
-        const name = voiceName.toLowerCase('')';
+        const name = voiceName.toLowerCase()';
         if (name.includes('kyoko'') || name.includes('haruka'') || name.includes('sayaka')') {'
     }'
             return 'female'; }'
@@ -224,7 +224,7 @@ export class SpeechSynthesisManager {'
             return 'male'; }
         }
         ';
-        // 英語音声''
+        // 英語音声
         if (name.includes('female'') || name.includes('woman'') || '';
             name.includes('samantha'') || name.includes('alex'') && name.includes('female')') { ''
             return 'female'; }'
@@ -241,14 +241,14 @@ export class SpeechSynthesisManager {'
      * 音声品質の推定
      */
     estimateQuality(voice) {'
-        // ローカル音声は一般的に高品質''
+        // ローカル音声は一般的に高品質
         if (voice.localService') {'
     }'
             return 'high'; }
         }
         ';
-        // 名前による推定''
-        const name = voice.name.toLowerCase('')';
+        // 名前による推定
+        const name = voice.name.toLowerCase()';
         if (name.includes('premium'') || name.includes('neural'') || '';
             name.includes('enhanced'') || name.includes('hd')') { ''
             return 'high'; }
@@ -272,13 +272,13 @@ export class SpeechSynthesisManager {'
             '';
             if (voices.length === 0') continue;
             
-            // 品質、性別、ローカル優先で選択'
+            // 品質、性別、ローカル優先で選択
             const selectedVoice = voices'';
                 .filter(v => this.config.voice.genderPreference === 'none' || ')';
                            v.gender === this.config.voice.genderPreference || ');''
                            v.gender === 'unknown');
                 .sort((a, b) => { 
-                    // 品質優先'
+                    // 品質優先
                     const qualityScore = (voice) => {''
                         switch (voice.quality') {''
                             case 'high': return 3;''
@@ -304,28 +304,28 @@ export class SpeechSynthesisManager {'
     /**
      * ユーザー設定の読み込み'
      */''
-    loadUserPreferences('')';
+    loadUserPreferences()';
             const saved = localStorage.getItem('speechSynthesis_preferences');
             if(saved) {
                 const preferences = JSON.parse(saved);
                 Object.assign(this.userPreferences, preferences);
                 
                 // 設定を適用
-            }'
+            }
                 this.applyUserPreferences();' }'
-            } catch (error') { ''
-            console.warn('Failed to load speech synthesis preferences:', error); }
+            } catch (error) { ''
+            console.warn('Failed to load speech synthesis preferences:', error) }
         }
     }
     
     /**
      * ユーザー設定の保存'
      */''
-    saveUserPreferences('')';
+    saveUserPreferences()';
             localStorage.setItem('speechSynthesis_preferences');'
                 JSON.stringify(this.userPreferences);''
-        } catch (error') { ''
-            console.warn('Failed to save speech synthesis preferences:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save speech synthesis preferences:', error) }
         }
     }
     
@@ -343,13 +343,13 @@ export class SpeechSynthesisManager {'
     /**
      * イベントリスナーの設定'
      */''
-    setupEventListeners('')';
+    setupEventListeners()';
         document.addEventListener('visibilitychange', () => {  if (document.hidden && this.userPreferences.respectGamePause) { }
                 this.pause(); }'
             }''
         }');
         ';
-        // ウィンドウフォーカス変更''
+        // ウィンドウフォーカス変更
         window.addEventListener('blur', () => {  if (this.userPreferences.respectGamePause) { }
                 this.pause(); }'
             }''
@@ -358,13 +358,13 @@ export class SpeechSynthesisManager {'
         window.addEventListener('focus', () => { this.resume();' }'
         }');
         ';
-        // キーボードによる中断''
+        // キーボードによる中断
         document.addEventListener('keydown', (event) => {  ''
             if(this.config.interruption.allowUserInterrupt') {'
-                ';
+                ';'
             }'
                 if (event.key === 'Escape') {' }'
-                    this.stop('') }'
+                    this.stop() }'
                 } else if (event.key === ' ' && event.ctrlKey) { event.preventDefault();
                     this.toggle(); }
                 }
@@ -374,7 +374,7 @@ export class SpeechSynthesisManager {'
     
     /**
      * 言語の自動検出
-     */
+     */'
     detectLanguage(text) {'
         '';
         if (!this.config.autoLanguageDetection') {'
@@ -383,7 +383,7 @@ export class SpeechSynthesisManager {'
         }
         
         for(const [lang, pattern] of this.languagePatterns) {
-        ';
+        ';'
             '';
             if (pattern.test(text)') {
         
@@ -392,7 +392,7 @@ export class SpeechSynthesisManager {'
             }
         }
         ';
-        // デフォルト言語''
+        // デフォルト言語
         return 'ja';
     }
     
@@ -402,14 +402,14 @@ export class SpeechSynthesisManager {'
     preprocessText(text, language) {
         let processed = text;
         ';
-        // カスタム辞書による置換''
+        // カスタム辞書による置換
         for (const [original, replacement] of this.config.pronunciation.customDictionary') {''
             const regex = new RegExp(original, 'gi');'
     }'
             processed = processed.replace(regex, replacement'); }
         }
         ';
-        // 数字のフォーマット（日本語）''
+        // 数字のフォーマット（日本語）
         if (language === 'ja' && this.config.pronunciation.numberFormatting) { processed = this.formatJapaneseNumbers(processed); }
         }
         
@@ -426,15 +426,15 @@ export class SpeechSynthesisManager {'
     /**
      * 日本語数字のフォーマット
      */
-    formatJapaneseNumbers(text) {'
-        // 点数の読み方改善''
+    formatJapaneseNumbers(text) {
+        // 点数の読み方改善
         text = text.replace(/(\d+')点/g, '$1 点');''
         text = text.replace(/(\d+')秒/g, '$1 秒');''
         text = text.replace(/(\d+')個/g, '$1 個');''
         text = text.replace(/(\d+')回/g, '$1 回');''
         text = text.replace(/(\d+')倍/g, '$1 倍');
         ';
-        // 大きな数字の読み方''
+        // 大きな数字の読み方
         text = text.replace(/(\d+)000(\d+')/g, '$1千$2');''
         text = text.replace(/(\d+')0000/g, '$1万');
         
@@ -452,7 +452,7 @@ export class SpeechSynthesisManager {'
             ['FPS', language === 'ja' ? 'フレームレート' : 'Frames Per Second'],'';
             ['AI', language === 'ja' ? 'エーアイ' : 'Artificial Intelligence']);
         ]);
-        ';
+        ';'
         for (const [abbr, expansion] of abbreviations) {'
     }'
             const regex = new RegExp(`\\b${abbr')\\b`, 'gi'); }
@@ -486,7 +486,7 @@ export class SpeechSynthesisManager {'
         
         // 言語設定
         const language = options.language || this.detectLanguage(text);
-        const voice = options.voice || this.selectedVoices.get(language);'
+        const voice = options.voice || this.selectedVoices.get(language);
         '';
         if(voice') {
             utterance.voice = voice;
@@ -500,8 +500,8 @@ export class SpeechSynthesisManager {'
         utterance.rate = options.rate !== undefined ? options.rate: this.config.speech.rate,
         utterance.pitch = options.pitch !== undefined ? options.pitch: this.config.speech.pitch,
         utterance.volume = options.volume !== undefined ? options.volume: this.config.speech.volume,
-        ';
-        // イベントハンドラー''
+        ;
+        // イベントハンドラー
         utterance.onstart = (') => {  this.isPlaying = true; }'
             this.currentUtterance = utterance;' }'
             this.emit('speechStart', { text: processedText, utterance });
@@ -546,11 +546,11 @@ export class SpeechSynthesisManager {'
      * 即座に発話
      */
     speakImmediate(utterance) {'
-        try {''
+        try {'
             this.speechSynthesis.speak(utterance');
             this.stats.totalUtterances++;
             ';
-            // 統計更新''
+            // 統計更新
             const language = utterance.lang? .split('-'')[0] || 'unknown';
             const langCount = this.stats.languageUsage.get(language) || 0;
             this.stats.languageUsage.set(language, langCount + 1);
@@ -562,7 +562,7 @@ export class SpeechSynthesisManager {'
             } catch (error) { this.stats.errorCount++;''
             getErrorHandler(').handleError(error, 'SPEECH_SYNTHESIS_ERROR', { : undefined')'
                 operation: 'speakImmediate',);
-                utterance: utterance); }
+                utterance: utterance) }
             });
         }
     }
@@ -591,12 +591,12 @@ export class SpeechSynthesisManager {'
         }
             this.speakImmediate(utterance); }
         } else if (this.isPlaying) { // キューに追加
-            if(this.speechQueue.length < this.config.queueManagement.maxQueueSize) {'
-                ';
+            if(this.speechQueue.length < this.config.queueManagement.maxQueueSize) {
+                ';'
             }'
                 this.speechQueue.push({ utterance, options )'); }'
             } else {  ''
-                console.warn('Speech queue full, dropping message:', text); }
+                console.warn('Speech queue full, dropping message:', text) }
                 return false; }
             }
         } else {  // 即座に発話 }
@@ -626,7 +626,7 @@ export class SpeechSynthesisManager {'
     speakUrgent(text, options = { ) {
         
     }
-        return this.speak(text, { ...options, urgent: true ); }
+        return this.speak(text, { ...options, urgent: true ) }
     }
     
     /**
@@ -707,9 +707,9 @@ export class SpeechSynthesisManager {'
         if (settings.volume !== undefined) { this.config.speech.volume = Math.max(0, Math.min(1, settings.volume); }
         }
         
-        // ユーザー設定も更新'
+        // ユーザー設定も更新
         Object.assign(this.userPreferences, settings);''
-        this.saveUserPreferences('')';
+        this.saveUserPreferences()';
         console.log('Voice settings updated:', settings);
     }
     
@@ -768,7 +768,7 @@ export class SpeechSynthesisManager {'
     applyConfig(config) {
         if (config.speechSynthesis) {'
             Object.assign(this.config, config.speechSynthesis);''
-            this.applyUserPreferences('');
+            this.applyUserPreferences();
     }'
         console.log('SpeechSynthesisManager configuration applied''); }
     }
@@ -816,7 +816,7 @@ export class SpeechSynthesisManager {'
     }
                 try {); }
                     callback(data); }
-                } catch (error) { console.error(`Error in speech synthesis event listener:`, error); }
+                } catch (error) { console.error(`Error in speech synthesis event listener:`, error) }
                 }
             });
         }
@@ -844,7 +844,7 @@ export class SpeechSynthesisManager {'
                 sessionDuration: sessionDuration,
                 successRate: this.stats.totalUtterances > 0 ?   : undefined;
                     this.stats.completedUtterances / this.stats.totalUtterances : 0,
-                utterancesPerMinute: this.stats.totalUtterances / (sessionDuration / 60000); }
+                utterancesPerMinute: this.stats.totalUtterances / (sessionDuration / 60000) }
             },
             currentStatus: this.getStatus(),
             userPreferences: this.userPreferences;
@@ -864,14 +864,14 @@ export class SpeechSynthesisManager {'
             this.clearQueue(); }
         }'
         '';
-        this.saveUserPreferences('')';
+        this.saveUserPreferences()';
         console.log(`SpeechSynthesisManager ${this.config.enabled ? 'enabled' : 'disabled')`});
     }
     
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying SpeechSynthesisManager...');
         
         // 音声停止
@@ -885,9 +885,9 @@ export class SpeechSynthesisManager {'
         this.eventListeners.clear();
         
         // データのクリア
-        this.selectedVoices.clear();'
+        this.selectedVoices.clear();
         this.voicePreferences.clear();''
-        this.config.pronunciation.customDictionary.clear('')';
+        this.config.pronunciation.customDictionary.clear()';
         console.log('SpeechSynthesisManager destroyed'');'
     }''
 }

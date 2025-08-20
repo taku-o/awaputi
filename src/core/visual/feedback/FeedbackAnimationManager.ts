@@ -19,41 +19,41 @@ import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 // 型定義
 export interface VisualFeedbackManager { config: FeedbackManagerConfig,
     elements: FeedbackElements,
-    state: FeedbackManagerState;
+    state: FeedbackManagerState
     }
 }
 
 export interface FeedbackManagerConfig { animations: AnimationGlobalConfig,
     performance: PerformanceConfig,
-    accessibility: AccessibilityConfig;
+    accessibility: AccessibilityConfig
     }
 }
 
 export interface AnimationGlobalConfig { maxConcurrent: number,
     reducedMotion: boolean,
     hardwareAcceleration: boolean,
-    respectUserPreferences: boolean; }
+    respectUserPreferences: boolean }
 }
 
 export interface PerformanceConfig { maxAnimationDuration: number,
     maxFrameRate: number,
-    lowPowerMode: boolean; }
+    lowPowerMode: boolean }
 }
 
 export interface AccessibilityConfig { respectReducedMotion: boolean,
     highContrast: boolean,
-    alternativeText: boolean; }
+    alternativeText: boolean }
 }
 
 export interface FeedbackElements { container: HTMLElement,
     overlay: HTMLElement,
-    statusDisplay: HTMLElement;
+    statusDisplay: HTMLElement
     }
 }
 
 export interface FeedbackManagerState { activeAnimations: Map<string, AnimationEffect>,
     animationQueue: AnimationQueueItem[],
-    performance: PerformanceMetrics;
+    performance: PerformanceMetrics
     }
 }
 
@@ -61,20 +61,20 @@ export interface AnimationConfig { flash: FlashAnimationConfig,
     glow: GlowAnimationConfig,
     pulse: PulseAnimationConfig,
     ripple: RippleAnimationConfig,
-    shake: ShakeAnimationConfig;
+    shake: ShakeAnimationConfig
     }
 }
 
 export interface FlashAnimationConfig { defaultDuration: number,
     easingFunction: string,
     maxIntensity: number,
-    fadeOutRatio: number; }
+    fadeOutRatio: number }
 }
 
 export interface GlowAnimationConfig { defaultDuration: number,
     easingFunction: string,
     maxGlowSize: number,
-    opacityRange: OpacityRange;
+    opacityRange: OpacityRange
     }
 }
 
@@ -82,7 +82,7 @@ export interface PulseAnimationConfig { defaultDuration: number,
     easingFunction: string,
     iterationsPerSecond: number,
     scaleRange: ScaleRange,
-    intensityRange: IntensityRange;
+    intensityRange: IntensityRange
     }
 }
 
@@ -90,25 +90,25 @@ export interface RippleAnimationConfig { defaultDuration: number,
     easingFunction: string,
     minSize: number,
     maxSize: number,
-    borderWidth: number; }
+    borderWidth: number }
 }
 
 export interface ShakeAnimationConfig { defaultDuration: number,
     easingFunction: string,
     stepInterval: number,
-    maxDistance: number; }
+    maxDistance: number }
 }
 
 export interface OpacityRange { min: number,
-    max: number; }
+    max: number }
 }
 
 export interface ScaleRange { min: number,
-    max: number; }
+    max: number }
 }
 
 export interface IntensityRange { min: number,
-    max: number; }
+    max: number }
 }
 
 export interface EffectOptions { id: string,
@@ -149,25 +149,25 @@ export interface ShakeEffectOptions extends EffectOptions { maxDistance?: number
 
 export interface AnimationEffect { id: string,
     target: HTMLElement,
-    type: EffectType,';
+    type: EffectType,
     animation: Animation,'';
     cleanup: (') => void,
     startTime: number,
     duration: number,
-    options: EffectOptions;
+    options: EffectOptions
     }
 }
 
 export interface AnimationQueueItem { effect: EffectOptions,
     priority: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 export interface PerformanceMetrics { totalAnimations: number,
     activeCount: number,
     averageDuration: number,
     droppedFrames: number,
-    memoryUsage: number; }
+    memoryUsage: number }
 }
 
 export interface AnimationStatistics { activeAnimations: number,
@@ -180,12 +180,12 @@ export interface AnimationStatistics { activeAnimations: number,
 export interface AnimationTypeStats { count: number,
     totalDuration: number,
     averageIntensity: number,
-    successRate: number; }
+    successRate: number }
 }
 
 export interface CleanupResult { cleaned: number,
     failed: number,
-    errors: Error[];
+    errors: Error[]
     }
 }
 
@@ -194,7 +194,7 @@ export interface AnimationValidationResult { isValid: boolean,
     suggestion?: string; }
 }
 ';
-// 列挙型''
+// 列挙型
 export type EffectType = 'flash' | 'glow' | 'pulse' | 'ripple' | 'shake';''
 export type AnimationState = 'idle' | 'running' | 'paused' | 'finished' | 'cancelled';''
 export type EasingFunction = 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear';''
@@ -202,7 +202,7 @@ export type ShakeDirection = 'horizontal' | 'vertical' | 'both' | 'radial';''
 export type Priority = 'low' | 'normal' | 'high' | 'critical';
 
 // 定数
-export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { flash: {'
+export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = { flash: {
         defaultDuration: 300,'';
         easingFunction: 'ease-out',
         maxIntensity: 1.0,
@@ -243,7 +243,7 @@ export const ANIMATION_PRIORITIES: Record<Priority, number> = { low: 1,
     high: 3,
     critical: 4 }
 } as const,
-';
+';'
 export const CSS_PROPERTIES = { ''
     TRANSFORM: 'transform','';
     OPACITY: 'opacity','';
@@ -252,7 +252,7 @@ export const CSS_PROPERTIES = { ''
     BORDER: 'border' }
 } as const,
 
-// ユーティリティ関数'
+// ユーティリティ関数
 export function validateEffectOptions(options: Partial<EffectOptions>): AnimationValidationResult { ''
     if(!options.target') {'
         return { isValid: false,'
@@ -283,10 +283,10 @@ export function validateEffectOptions(options: Partial<EffectOptions>): Animatio
 
 export function normalizeIntensity(intensity: number): number { return Math.max(0, Math.min(1, intensity); }
 }
-';
+';'
 export function createAnimationKeyframes(type: EffectType, options: EffectOptions): Keyframe[] { ''
     switch(type') {'
-        ';
+        ';'
     }'
         case 'flash': return [' }'
                 { opacity: normalizeIntensity(options.intensity') };]
@@ -294,7 +294,7 @@ export function createAnimationKeyframes(type: EffectType, options: EffectOption
             ];''
         case 'glow':'';
             const glowSize = 10 * normalizeIntensity(options.intensity');
-            return [{ boxShadow: `0 0 ${glowSize}px ${options.color}`, opacity: 0.8 },]
+            return [{ boxShadow: `0 0 ${glowSize}px ${options.color}`, opacity: 0.8 }]
                 { boxShadow: `0 0 0px ${options.color}`, opacity: 0 }]'
             ];''
         case 'pulse':'';
@@ -337,7 +337,7 @@ export function generateShakeKeyframes(distance: number, steps: number): Keyfram
     
     return keyframes;
 }
-';
+';'
 export function calculateAnimationTiming(duration: number, easing: string): KeyframeAnimationOptions { return { ''
         duration: Math.min(duration, PERFORMANCE_LIMITS.MAX_ANIMATION_DURATION'),';
         easing,' };'
@@ -345,7 +345,7 @@ export function calculateAnimationTiming(duration: number, easing: string): Keyf
     },
 }'
 '';
-export function shouldUseReducedMotion('')';
+export function shouldUseReducedMotion()';
            window.matchMedia('(prefers-reduced-motion: reduce')').matches,
 }
 
@@ -355,7 +355,7 @@ export class FeedbackAnimationManager {
     private animationConfig: AnimationConfig;
     private performanceMetrics: PerformanceMetrics;
     constructor(mainController: VisualFeedbackManager) {
-';
+';'
         this.mainController = mainController;''
         this.activeAnimations = new Map('';
     }
@@ -374,9 +374,9 @@ export class FeedbackAnimationManager {
             
             const originalBackground = options.target.style.background;
             const flashIntensity = normalizeIntensity(options.intensity);
-            ';
+            ';'
             options.target.style.background = options.color;''
-            options.target.style.opacity = flashIntensity.toString('')';
+            options.target.style.opacity = flashIntensity.toString()';
             const keyframes = createAnimationKeyframes('flash', options);
             const timing = calculateAnimationTiming(;
                 options.duration || this.animationConfig.flash.defaultDuration);
@@ -385,12 +385,12 @@ export class FeedbackAnimationManager {
             
             const animation = options.target.animate(keyframes, timing);'
             '';
-            const cleanup = (') => {  try {'
+            const cleanup = (') => {  try {
                     options.target.style.background = originalBackground;''
                     options.target.style.opacity = '0'; }'
                     this.activeAnimations.delete(options.id);' }'
-                } catch (error') { ''
-                    console.warn('Flash effect cleanup error:', error'); }
+                } catch (error) { ''
+                    console.warn('Flash effect cleanup error:', error') }
                 }
             };'
             '';
@@ -410,11 +410,11 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'ANIMATION_ERROR', {')'
                 operation: 'createFlashEffect',);
-                effectId: options.id); }
+                effectId: options.id) }
             });
             return null;
         }
@@ -431,7 +431,7 @@ export class FeedbackAnimationManager {
             '';
             const glowSize = (options.glowSize || 10) * normalizeIntensity(options.intensity');
             const originalBoxShadow = options.target.style.boxShadow;
-            ';
+            ';'
             options.target.style.boxShadow = `0 0 ${glowSize}px ${options.color}`;''
             options.target.style.opacity = '0.8';'
             '';
@@ -443,12 +443,12 @@ export class FeedbackAnimationManager {
             
             const animation = options.target.animate(keyframes, timing);'
             '';
-            const cleanup = (') => {  try {'
+            const cleanup = (') => {  try {
                     options.target.style.boxShadow = originalBoxShadow;''
                     options.target.style.opacity = '0'; }'
                     this.activeAnimations.delete(options.id);' }'
-                } catch (error') { ''
-                    console.warn('Glow effect cleanup error:', error'); }
+                } catch (error) { ''
+                    console.warn('Glow effect cleanup error:', error') }
                 }
             };'
             '';
@@ -468,11 +468,11 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'ANIMATION_ERROR', {')'
                 operation: 'createGlowEffect',);
-                effectId: options.id); }
+                effectId: options.id) }
             });
             return null;
         }
@@ -492,7 +492,7 @@ export class FeedbackAnimationManager {
             const pulseIntensity = 0.3 + (normalizeIntensity(options.intensity) * 0.7);
             
             options.target.style.background = `radial-gradient(circle, ${ options.color) 0%, transparent 70%)`;
-            ';
+            ';'
             const duration = options.duration || this.animationConfig.pulse.defaultDuration;''
             const iterations = options.iterations || Math.ceil(duration / 400');'
             '';
@@ -504,13 +504,13 @@ export class FeedbackAnimationManager {
             
             const animation = options.target.animate(keyframes, timing);'
             '';
-            const cleanup = (') => {  try {'
+            const cleanup = (') => {  try {
                     options.target.style.background = originalBackground;''
                     options.target.style.opacity = '0';
                     options.target.style.transform = originalTransform; }'
                     this.activeAnimations.delete(options.id);' }'
-                } catch (error') { ''
-                    console.warn('Pulse effect cleanup error:', error'); }
+                } catch (error) { ''
+                    console.warn('Pulse effect cleanup error:', error') }
                 }
             };'
             '';
@@ -530,11 +530,11 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'ANIMATION_ERROR', {')'
                 operation: 'createPulseEffect',);
-                effectId: options.id); }
+                effectId: options.id) }
             });
             return null;
         }
@@ -548,7 +548,7 @@ export class FeedbackAnimationManager {
             if (!validation.isValid) {' }'
                 throw new Error(`Ripple effect validation failed: ${validation.reason)`'});
             }
-            ';
+            ';'
             const config = this.animationConfig.ripple;''
             const ripple = document.createElement('div');
             const startSize = options.startSize || config.minSize;
@@ -593,8 +593,8 @@ export class FeedbackAnimationManager {
                         ripple.parentNode.removeChild(ripple); }
                     }'
                     this.activeAnimations.delete(options.id);''
-                } catch (error') { ''
-                    console.warn('Ripple effect cleanup error:', error'); }
+                } catch (error) { ''
+                    console.warn('Ripple effect cleanup error:', error') }
                 }
             };'
             '';
@@ -614,11 +614,11 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'ANIMATION_ERROR', {')'
                 operation: 'createRippleEffect',);
-                effectId: options.id); }
+                effectId: options.id) }
             });
             return null;
         }
@@ -632,12 +632,12 @@ export class FeedbackAnimationManager {
             if (!validation.isValid) { }
                 throw new Error(`Shake effect validation failed: ${validation.reason)`});
             }
-            ';
+            ';'
             const config = this.animationConfig.shake;''
             const shakeDistance = (options.maxDistance || 5) * normalizeIntensity(options.intensity');
             const originalTransform = options.target.style.transform;
             const originalBackground = options.target.style.background;
-            ';
+            ';'
             options.target.style.background = options.color;''
             options.target.style.opacity = '0.6';
             
@@ -657,8 +657,8 @@ export class FeedbackAnimationManager {
                     options.target.style.background = originalBackground;''
                     options.target.style.opacity = '0'; }'
                     this.activeAnimations.delete(options.id);' }'
-                } catch (error') { ''
-                    console.warn('Shake effect cleanup error:', error'); }
+                } catch (error) { ''
+                    console.warn('Shake effect cleanup error:', error') }
                 }
             };'
             '';
@@ -678,11 +678,11 @@ export class FeedbackAnimationManager {
             this.updatePerformanceMetrics();
             
             return effect;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'ANIMATION_ERROR', {')'
                 operation: 'createShakeEffect',);
-                effectId: options.id); }
+                effectId: options.id) }
             });
             return null;
         }
@@ -696,10 +696,10 @@ export class FeedbackAnimationManager {
             failed: 0,
             errors: [] }
         },
-        ';
-        try { ''
+        ';'
+        try {'
             for(const [id, effect] of this.activeAnimations') {'
-                try {''
+                try {'
                     if (effect.animation && typeof effect.animation.cancel === 'function') {
             }
                         effect.animation.cancel(); }
@@ -718,10 +718,10 @@ export class FeedbackAnimationManager {
             
             console.log(`Animation cleanup completed: ${result.cleaned} cleaned, ${result.failed) failed`});
             return result;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error as Error, 'ANIMATION_ERROR', {')'
-                operation: 'stopAllAnimations'); }
+                operation: 'stopAllAnimations') }
             });
             result.errors.push(error as Error);
             return result;
@@ -798,13 +798,13 @@ export class FeedbackAnimationManager {
     }
 
     /**
-     * リソースの解放'
+     * リソースの解放
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying FeedbackAnimationManager...');
         ';
-        // 全アニメーションの停止''
-        this.stopAllAnimations('')';
+        // 全アニメーションの停止
+        this.stopAllAnimations()';
         console.log('FeedbackAnimationManager destroyed'');'
     }''
 }

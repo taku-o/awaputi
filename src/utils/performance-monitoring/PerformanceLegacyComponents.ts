@@ -7,22 +7,22 @@ import { getErrorHandler } from '../../core/ErrorHandler.js';
 
 // Type definitions
 interface MetricValue { timestamp: number,
-    value: number; }
+    value: number }
 }
 
 interface AlertEvent { alertId: string,
     metricId: string,
-    value: number,';
+    value: number,
     threshold: number,'';
     condition: 'above' | 'below' | 'equal',
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface Alert { metricId: string,'
     threshold: number,'';
     condition: 'above' | 'below' | 'equal','';
     callback?: (event: AlertEvent') => void,
-    id: string; }
+    id: string }
 }
 
 interface MetricConfig { id: string,
@@ -33,9 +33,9 @@ interface MetricConfig { id: string,
 }
 
 interface DataPoint { timestamp: number,
-    metrics: Record<string, any>; }
+    metrics: Record<string, any> }
 }
-';
+';'
 interface DashboardConfig { updateInterval?: number;''
     position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';''
     theme?: 'dark' | 'light'; }
@@ -76,9 +76,9 @@ export class PerformanceDashboard {
     }
     }
         this.charts = new Map(); }
-    }'
+    }
 '';
-    async initialize('')';
+    async initialize()';
         console.log('PerformanceDashboard initialized');
     }
 
@@ -86,21 +86,21 @@ export class PerformanceDashboard {
         
         this.createDashboard();'
         this.visible = true;''
-        this.startUpdates('')';
+        this.startUpdates()';
         console.log('PerformanceDashboard shown'); }
     }
 
     async hide(): Promise<void> { if (!this.visible) return;
-        ';
+        ';'
         this.stopUpdates();''
-        this.removeDashboard('')';
+        this.removeDashboard()';
         console.log('PerformanceDashboard hidden'); }
     }
 
     toggle(): Promise<void> { return this.visible ? this.hide() : this.show(); }
     }'
 '';
-    createDashboard('')';
+    createDashboard()';
         this.container = document.createElement('div'');''
         this.container.id = 'performance-dashboard';
         this.container.style.cssText = `;
@@ -124,7 +124,7 @@ export class PerformanceDashboard {
             this.container = null; }
         }
     }
-';
+';'
     updateMetrics(metrics: Map<string, any>): void { ''
         if (!this.container || !this.visible') return;'
         '';
@@ -167,9 +167,9 @@ export class PerformanceDataGatherer {
     }
     }
         this.collecting = false; }
-    }'
+    }
 '';
-    async initialize('')';
+    async initialize()';
         console.log('PerformanceDataGatherer initialized');
     }'
 '';
@@ -177,14 +177,14 @@ export class PerformanceDataGatherer {
         console.log('PerformanceDataGatherer started'); }
     }'
 '';
-    async stop('')';
+    async stop()';
         console.log('PerformanceDataGatherer stopped');
     }
-';
+';'
     async collectAllMetrics(): Promise<Map<string, number>> { ''
         const metrics = new Map<string, number>(');
         ';
-        // Collect basic performance metrics''
+        // Collect basic performance metrics
         metrics.set('fps', this.calculateFPS()');''
         metrics.set('memory_used', this.getMemoryUsage()');''
         metrics.set('frame_time', this.getFrameTime();
@@ -193,9 +193,9 @@ export class PerformanceDataGatherer {
     }
 
     calculateFPS(): number { return Math.random() * 60; // Simulated FPS }
-    }'
+    }
 '';
-    getMemoryUsage('')';
+    getMemoryUsage()';
         if ('memory' in performance && (performance as any).memory) { return (performance as any).memory.usedJSHeapSize / 1024 / 1024; }
         }
         return Math.random() * 100;
@@ -216,12 +216,12 @@ export class PerformanceHistoryTracker {
     }
     }
         this.maxDataPoints = 1000; }
-    }'
+    }
 '';
-    async initialize('')';
+    async initialize()';
         console.log('PerformanceHistoryTracker initialized');
     }
-';
+';'
     async start(config?: HistoryTrackerConfig): Promise<void> { ''
         if(config? .maxDataPoints !== undefined') {
             
@@ -231,7 +231,7 @@ export class PerformanceHistoryTracker {
         console.log('PerformanceHistoryTracker started');
     }'
  : undefined'';
-    async stop('')';
+    async stop()';
         console.log('PerformanceHistoryTracker stopped');
     }
 
@@ -254,7 +254,7 @@ export class PerformanceHistoryTracker {
         }
     }
 
-    getHistory(metricId: string, timeRange: number): MetricValue[] { const dataPoints = this.history.get(metricId) || [];'
+    getHistory(metricId: string, timeRange: number): MetricValue[] { const dataPoints = this.history.get(metricId) || [];
         const now = Date.now();''
         return dataPoints.filter(point => now - point.timestamp < timeRange'); }
     }'
@@ -300,9 +300,9 @@ export class PerformanceAlertManager {
     }
     }
         this.alertHistory = []; }
-    }'
+    }
 '';
-    async initialize('')';
+    async initialize()';
         console.log('PerformanceAlertManager initialized');
     }'
 '';
@@ -310,7 +310,7 @@ export class PerformanceAlertManager {
         console.log('PerformanceAlertManager started'); }
     }'
 '';
-    async stop('')';
+    async stop()';
         console.log('PerformanceAlertManager stopped'');
     }'
 '';
@@ -329,7 +329,7 @@ export class PerformanceAlertManager {
     checkThresholds(metrics: Map<string, number>): void { for (const [alertId, alert] of this.alerts) {
             const value = metrics.get(alert.metricId);
             if (value === undefined) continue;
-            ';
+            ';'
             let triggered = false;''
             switch(alert.condition') {'
                 '';
@@ -356,7 +356,7 @@ export class PerformanceAlertManager {
             value,
             threshold: alert.threshold,
             condition: alert.condition,
-            timestamp: Date.now(); }
+            timestamp: Date.now() }
         };
         
         this.activeAlerts.push(alertEvent);
@@ -420,9 +420,9 @@ export class RealtimeMetricsStream {
     }
     }
         this.buffer = []; }
-    }'
+    }
 '';
-    async initialize('')';
+    async initialize()';
         console.log('RealtimeMetricsStream initialized');
     }'
 '';
@@ -430,7 +430,7 @@ export class RealtimeMetricsStream {
         console.log('RealtimeMetricsStream started'); }
     }'
 '';
-    async stop('')';
+    async stop()';
         console.log('RealtimeMetricsStream stopped');
     }
 
@@ -438,7 +438,7 @@ export class RealtimeMetricsStream {
         
         const dataPoint: DataPoint = {
             timestamp,
-            metrics: Object.fromEntries(metrics); }
+            metrics: Object.fromEntries(metrics) }
         };
         
         this.buffer.push(dataPoint);
@@ -450,14 +450,14 @@ export class RealtimeMetricsStream {
         // Notify subscribers
         for(const subscriber of this.subscribers) {
             try {
-        }'
+        }
                 subscriber(dataPoint);' }'
-            } catch (error') { ''
-                console.warn('RealtimeMetricsStream subscriber error:', error); }
+            } catch (error) { ''
+                console.warn('RealtimeMetricsStream subscriber error:', error) }
             }
         }
     }
-';
+';'
     subscribe(callback: (dataPoint: DataPoint) => void): () => void { this.subscribers.add(callback);''
         return () => this.subscribers.delete(callback'); }'
     }''

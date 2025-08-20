@@ -7,13 +7,13 @@ interface TestFailure { testName: string,
     error: Error,
     timestamp: number,
     category: string,
-    severity: 'low' | 'medium' | 'high' | 'critical'; }
+    severity: 'low' | 'medium' | 'high' | 'critical' }
 }
 
 interface FailurePattern { pattern: RegExp,
     category: string,
     description: string,
-    solution?: string; }
+    solution?: string }
 }
 
 interface AnalysisResult { patterns: FailurePattern[],

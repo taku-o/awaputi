@@ -9,23 +9,23 @@ export interface Particle { isActive: boolean,
     color: string,
     type: ParticleType,
     trail: TrailPoint[],
-    zIndex?: number; }
+    zIndex?: number }
 }
 
 export interface TrailPoint { x: number,
     y: number,
-    alpha: number; }
+    alpha: number }
 }
 
 export interface Viewport { x: number,
     y: number,
     width: number,
-    height: number; }
+    height: number }
 }
 
 export interface RenderingStats { supportedTypes: string[],
     colorSets: number,
-    renderingFeatures: string[]; }
+    renderingFeatures: string[] }
 }
 
 export interface ColorSets { [key: string]: string[], }
@@ -51,12 +51,12 @@ export class ParticleRenderer {
     // @ts-ignore 将来のパーティクル管理機能で使用予定
     private __particleManager: any;
     private quality?: number;
-    private customDrawFunctions?: Map<string, DrawFunction>;'
+    private customDrawFunctions?: Map<string, DrawFunction>;
 '';
     constructor(particleManager: any') {
         this.__particleManager = particleManager;'
         ';
-    }
+    }'
     }'
         console.log('[ParticleRenderer] Renderer initialized'); }
     }
@@ -100,7 +100,7 @@ export class ParticleRenderer {
      * @param {Particle} particle パーティクルオブジェクト
      */
     private renderParticle(context: CanvasRenderingContext2D, particle: Particle): void { context.fillStyle = particle.color;
-        context.strokeStyle = particle.color;'
+        context.strokeStyle = particle.color;
         '';
         switch(particle.type') {'
             '';
@@ -148,7 +148,7 @@ export class ParticleRenderer {
      * トレイル描画
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {Particle} particle パーティクルオブジェクト
-     */'
+     */
     private renderTrail(context: CanvasRenderingContext2D, particle: Particle): void { ''
         if (particle.trail.length < 2') return;
         
@@ -158,7 +158,7 @@ export class ParticleRenderer {
         
         context.beginPath();
         context.moveTo(;
-            particle.trail[0].x - particle.x,);
+            particle.trail[0].x - particle.x);
             particle.trail[0].y - particle.y);
         
         for(let i = 1; i < particle.trail.length; i++) {
@@ -166,7 +166,7 @@ export class ParticleRenderer {
             const trailPoint = particle.trail[i];
             context.globalAlpha = trailPoint.alpha * (i / particle.trail.length);
             context.lineTo(;
-                trailPoint.x - particle.x,);
+                trailPoint.x - particle.x);
         }
                 trailPoint.y - particle.y); }
         }
@@ -309,7 +309,7 @@ export class ParticleRenderer {
     /**
      * パーティクルタイプ別の色を取得
      * @param {string} bubbleType バブルタイプ
-     * @returns {string[]} 色の配列'
+     * @returns {string[]} 色の配列
      */''
     public getBubbleColors(bubbleType: string'): string[] { const colorSets: ColorSets = {''
             normal: ['#4A90E2', '#7ED321', '#50E3C2'],'';
@@ -338,7 +338,7 @@ export class ParticleRenderer {
     public getRenderingStats(''';
                 'circle', 'star', 'diamond', 'spike', 'lightning','';
                 'cloud', 'ripple', 'explosion';
-            ],);
+            ]);
             colorSets: 14)';
             renderingFeatures: ['';
                 'Trail rendering','';
@@ -365,7 +365,7 @@ export class ParticleRenderer {
      */''
     public registerCustomDrawFunction(type: string, drawFunction: DrawFunction'): void { ''
         if(typeof drawFunction !== 'function'') {'
-            ';
+            ';'
         }'
             throw new Error('Draw function must be a function'); }
         }
@@ -477,8 +477,8 @@ export class ParticleRenderer {
      * パーティクルタイプ用の描画状態準備
      * @param {CanvasRenderingContext2D} context レンダリングコンテキスト
      * @param {string} type パーティクルタイプ
-     */'
-    private prepareRenderingStateForType(context: CanvasRenderingContext2D, type: string): void { // タイプ別の最適化された描画状態設定''
+     */
+    private prepareRenderingStateForType(context: CanvasRenderingContext2D, type: string): void { // タイプ別の最適化された描画状態設定
         switch(type') {'
             '';
             case 'lightning':'';
@@ -500,7 +500,7 @@ export class ParticleRenderer {
      * クリーンアップ
      */'
     public cleanup(): void { if (this.customDrawFunctions) {''
-            this.customDrawFunctions.clear('')';
+            this.customDrawFunctions.clear()';
         console.log('[ParticleRenderer] Cleanup completed''); }'
     }''
 }

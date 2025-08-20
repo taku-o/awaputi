@@ -4,7 +4,7 @@
  * 各種イベントコンポーネントを統合管理
  * Updated: 2024 with load() method for GameEngineInitializer compatibility
  */
-// import { EventRankingManager } from './EventRankingManager.js'; // 未使用インポート''
+// import { EventRankingManager } from './EventRankingManager.js'; // 未使用インポート
 import { SeasonalEventManager, type SeasonalEventData, type SeasonInfo } from './events/SeasonalEventManager.js';''
 import { EventNotificationSystem, type NotificationData } from './events/EventNotificationSystem.js';''
 import { EventHistoryManager, type HistoryEntry, type DetailedStatistics } from './events/EventHistoryManager.js';''
@@ -21,10 +21,10 @@ interface EventStage { id: string,
     rewards?: {
         ap?: number;
         completion?: {
-            ap: number; }
+            ap: number }
         };
         highScore?: { threshold: number,
-            ap: number; }
+            ap: number }
         };
         items?: string[];
         badges?: string[];
@@ -73,7 +73,7 @@ export class EventStageManager {
         
         // 分離されたコンポーネントを初期化
         this.seasonalEventManager = new SeasonalEventManager(gameEngine);
-        this.notificationSystem = new EventNotificationSystem(gameEngine);'
+        this.notificationSystem = new EventNotificationSystem(gameEngine);
         this.historyManager = new EventHistoryManager(gameEngine);''
         this.rankingSystem = new EventRankingSystem(gameEngine');
         
@@ -81,7 +81,7 @@ export class EventStageManager {
         this.eventRankingManager = this.rankingSystem;
         
         // 将来使用予定の履歴データ（現在は未使用）
-        // this._eventHistory = [];'
+        // this._eventHistory = [];
         '';
         console.log('EventStageManager initialized with new component architecture'');'
 
@@ -105,7 +105,7 @@ export class EventStageManager {
                 description: '黄金の泡が大量出現！スコア倍率2倍のチャンス','';
                 icon: '✨','';
                 type: 'limited_time',';
-                duration: 300000, // 5分'';
+                duration: 300000, // 5分;
                 bubbleTypes: ['normal', 'stone', 'golden', 'golden', 'golden', 'rainbow', 'pink'],
                 spawnRate: 2.0,
                 maxBubbles: 25,
@@ -121,7 +121,7 @@ export class EventStageManager {
                     recurring: 'weekly' }
                 }
             },
-            ';
+            ';'
             phantomNight: { ''
                 id: 'phantomNight','';
                 name: '幻影の夜','';
@@ -146,7 +146,7 @@ export class EventStageManager {
                     recurring: 'monthly' }
                 }
             },
-            ';
+            ';'
             rainbowCascade: { ''
                 id: 'rainbowCascade','';
                 name: 'レインボーカスケード','';
@@ -217,15 +217,15 @@ export class EventStageManager {
      * 繰り返しイベントがアクティブかチェック
      */
     isRecurringEventActive(event: any, currentTime: number): boolean { const recurringType = event.availability.recurring;
-        const now = new Date(currentTime);'
+        const now = new Date(currentTime);
         '';
         switch(recurringType') {'
             '';
             case 'weekly':';
-                // 週末（金曜日〜日曜日）にアクティブ''
+                // 週末（金曜日〜日曜日）にアクティブ
                 const dayOfWeek = now.getDay(''';
             case 'monthly':';
-                // 月の最初の週にアクティブ''
+                // 月の最初の週にアクティブ
                 const dayOfMonth = now.getDate(''';
             case 'daily':);
                 // 毎日特定の時間帯にアクティブ)
@@ -263,9 +263,9 @@ export class EventStageManager {
             }),
             
             console.log(`Event started: ${event.name)`});
-            return true;'
+            return true;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to start event:', error);
             return false; }
         }
@@ -284,20 +284,20 @@ export class EventStageManager {
             }
             
             // 特別ルールを適用
-            if(event.specialRules) {'
-                ';
+            if(event.specialRules) {
+                ';'
             }'
                 this.applySpecialRules(event, event.specialRules'); }
             }
             ';
-            // 季節エフェクトを適用''
+            // 季節エフェクトを適用
             if (event.type === 'seasonal') { this.seasonalEventManager.applySeasonalEffects(event, event.specialRules || {); }
             }
             
             console.log(`Event settings applied: ${event.name)`});'
             '';
-        } catch (error') { ''
-            console.error('Failed to apply event settings:', error); }
+        } catch (error) { ''
+            console.error('Failed to apply event settings:', error) }
         }
     }
     
@@ -312,7 +312,7 @@ export class EventStageManager {
         }
         
         // 特別なバブルスポーン率
-        if(this.gameEngine.bubbleManager) {'
+        if(this.gameEngine.bubbleManager) {
             '';
             if (specialRules.goldenSpawnRate') {'
         }'
@@ -320,13 +320,13 @@ export class EventStageManager {
             }'
             '';
             if(specialRules.phantomSpawnRate') {'
-                ';
+                ';'
             }'
                 this.gameEngine.bubbleManager.setSpecialBubbleSpawnRate('phantom', specialRules.phantomSpawnRate); }
             }'
             '';
             if(specialRules.rainbowChainBonus') {'
-                ';
+                ';'
             }'
                 this.gameEngine.bubbleManager.setChainBonus('rainbow', specialRules.rainbowChainBonus); }
             }
@@ -352,11 +352,11 @@ export class EventStageManager {
             console.error(`Active event not found: ${eventId)`});
             return false;
         }
-        ';
-        try { // イベント完了を履歴に記録''
+        ;
+        try { // イベント完了を履歴に記録
             this.historyManager.recordEventCompletion(event, results');
             ';
-            // ランキングを更新''
+            // ランキングを更新
             if(this.rankingSystem && this.rankingSystem.updatePlayerScore && 'score' in results) {
                 
             }
@@ -373,9 +373,9 @@ export class EventStageManager {
             this.activeEvents.delete(eventId);
             
             console.log(`Event completed: ${event.name)`});
-            return true;'
+            return true;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Failed to complete event:', error);
             return false; }
         }
@@ -439,9 +439,9 @@ export class EventStageManager {
     /**
      * 季節イベント情報を取得
      */
-    getSeasonalEventInfo() {'
+    getSeasonalEventInfo() {
         '';
-        return this.seasonalEventManager.getCurrentSeasonInfo('')';
+        return this.seasonalEventManager.getCurrentSeasonInfo()';
     getRankingInfo(type = 'global', category = null) {
     }
         return this.rankingSystem.getRanking(type, category); }
@@ -494,32 +494,32 @@ export class EventStageManager {
             expiredEvents.forEach(eventId => {  ) }
                 // const event = this.activeEvents.get(eventId); // 現在は未使用 }
                 this.completeEvent(eventId, { score: 0, completed: false } as any);
-            });'
+            });
             '';
-        } catch (error') { ''
-            console.error('EventStageManager update error:', error); }
+        } catch (error) { ''
+            console.error('EventStageManager update error:', error) }
         }
     }
     
     /**
      * データを読み込み（GameEngineInitializer互換性用）'
      */''
-    load('')';
+    load()';
             console.log('[DEBUG] EventStageManager.load(') 開始'');
             ';
-            // 各サブコンポーネントのloadメソッドを呼び出し（存在する場合）''
+            // 各サブコンポーネントのloadメソッドを呼び出し（存在する場合）
             if(this.seasonalEventManager && typeof this.seasonalEventManager.load === 'function') {'
                 '';
-                this.seasonalEventManager.load('')';
+                this.seasonalEventManager.load()';
             if (this.historyManager && typeof this.historyManager.load === 'function') {''
-                this.historyManager.load('')';
+                this.historyManager.load()';
             if (this.rankingSystem && typeof this.rankingSystem.load === 'function') {''
-                this.rankingSystem.load('')';
+                this.rankingSystem.load()';
             console.log('[DEBUG] EventStageManager.load(') 完了');
             return true;
             }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[DEBUG] EventStageManager.load(') エラー:', error);
             return false; }
         }
@@ -529,17 +529,17 @@ export class EventStageManager {
      * イベント通知をチェック
      * 互換性のためのメソッド（EventStageDataManager用）'
      */''
-    checkEventNotifications('')';
+    checkEventNotifications()';
             console.log('[DEBUG] EventStageManager.checkEventNotifications(') 実行'');
             ';
-            // 通知システムから通知をチェック''
+            // 通知システムから通知をチェック
             if (this.notificationSystem && typeof this.notificationSystem.checkNotifications === 'function') { return this.notificationSystem.checkNotifications(); }
             }
             
             // フォールバック: 空の通知配列を返す
-            return [];'
+            return [];
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('[DEBUG] EventStageManager.checkEventNotifications(') エラー:', error);
             return []; }
         }
@@ -555,14 +555,14 @@ export class EventStageManager {
             this.notificationSystem?.dispose();
             this.historyManager?.dispose();
             this.rankingSystem?.dispose();
-            ';
-            // アクティブイベントをクリア''
-            this.activeEvents.clear('')';
+            ;
+            // アクティブイベントをクリア
+            this.activeEvents.clear()';
             console.log('EventStageManager disposed');
     }'
             ' }'
-        } catch (error') { : undefined''
-            console.error('EventStageManager dispose error:', error'); }
+        } catch (error) { : undefined''
+            console.error('EventStageManager dispose error:', error') }
         }'
     }''
 }

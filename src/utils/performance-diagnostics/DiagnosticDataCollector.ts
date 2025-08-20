@@ -18,7 +18,7 @@ interface DataSample { timestamp: number,
     memoryUsage: number,
     renderTime: number,
     networkLatency: number,
-    inputLag: number; }
+    inputLag: number }
 }
 
 interface MetricData { values: number[],
@@ -26,7 +26,7 @@ interface MetricData { values: number[],
     max: number,
     sum: number,
     count: number,
-    average: number; }
+    average: number }
 }
 
 interface CollectionMetrics { [key: string]: MetricData,
@@ -37,7 +37,7 @@ interface CollectedData { samples: DataSample[],
     metrics: CollectionMetrics,
     startTime: number,
     endTime: number,
-    collectionDuration: number; }
+    collectionDuration: number }
 }
 
 interface DataSummary { duration: number,
@@ -53,29 +53,29 @@ interface DataSummary { duration: number,
 interface DataQuality { completeness: number,
     consistency: number,
     overall: number,
-    issues: DataQualityIssue[];
+    issues: DataQualityIssue[]
     }
 }
 
 interface DataQualityIssue { type: string,
     severity: 'low' | 'medium' | 'high',
     description: string,
-    impact: string; }
+    impact: string }
 }
 
 interface TimeGap { start: number,
     end: number,
-    duration: number; }
+    duration: number }
 }
 
 interface CollectionStatus { collecting: boolean,
     sampleCount: number,
     collectionDuration: number,
-    metricsCount: number; }
+    metricsCount: number }
 }
 
 interface DiagnosticDataResult { rawData: CollectedData,
-    summary: DataSummary;
+    summary: DataSummary
     }
 }
 
@@ -92,7 +92,7 @@ export class DiagnosticDataCollector {
     private endTime: number | null;
     private collectionInterval: NodeJS.Timeout | null;
     private lastFrameTime: number | null;
-    private maxSamples?: number;'
+    private maxSamples?: number;
 '';
     constructor(mainController: MainController') {
         this.mainController = mainController;
@@ -106,7 +106,7 @@ export class DiagnosticDataCollector {
         this.startTime = null;
         this.endTime = null;
         this.collectionInterval = null;
-        this.lastFrameTime = null;'
+        this.lastFrameTime = null;
         '';
         console.log('[DiagnosticDataCollector] Data collector component initialized');
     }
@@ -119,9 +119,9 @@ export class DiagnosticDataCollector {
         this.metrics = {};
         this.startTime = performance.now();
 
-        // 定期的なデータ収集'
+        // 定期的なデータ収集
         this.collectionInterval = setInterval(() => { this.collectSample();' }'
-        }, 100'); // 100ms間隔'
+        }, 100'); // 100ms間隔
 '';
         console.log('[DiagnosticDataCollector] Diagnostic data collection started');
     }
@@ -163,7 +163,7 @@ export class DiagnosticDataCollector {
             memoryUsage: this.getCurrentMemoryUsage(),
             renderTime: this.getCurrentRenderTime(),
             networkLatency: this.getCurrentNetworkLatency(),
-            inputLag: this.getCurrentInputLag(); }
+            inputLag: this.getCurrentInputLag() }
         };
 
         this.samples.push(sample);
@@ -187,9 +187,9 @@ export class DiagnosticDataCollector {
     }
 
     /**
-     * Get current memory usage'
+     * Get current memory usage
      */''
-    getCurrentMemoryUsage('')';
+    getCurrentMemoryUsage()';
         if ('memory' in performance && (performance as any).memory) { return (performance as any).memory.usedJSHeapSize; }
         }
         return 0;
@@ -218,7 +218,7 @@ export class DiagnosticDataCollector {
 
     /**
      * Update metrics statistics with new sample
-     */'
+     */
     updateMetricsStatistics(sample: DataSample): void { ''
         for (const [key, value] of Object.entries(sample)') {''
             if (key === 'timestamp' || key === 'complete') continue;
@@ -252,7 +252,7 @@ export class DiagnosticDataCollector {
     }
 
     /**
-     * Collect comprehensive diagnostic data'
+     * Collect comprehensive diagnostic data
      */''
     async collectDiagnosticData(options: CollectionOptions & { duration: number )'): Promise<DiagnosticDataResult> {''
         console.log('[DiagnosticDataCollector] Collecting diagnostic data...');
@@ -322,22 +322,22 @@ export class DiagnosticDataCollector {
      */
     identifyDataQualityIssues(data: CollectedData): DataQualityIssue[] { const issues: DataQualityIssue[] = [],
         
-        // 欠損データの検出'
+        // 欠損データの検出
         const incompleteSamples = data.samples.filter(s => !s.complete);''
         if(incompleteSamples.length > data.samples.length * 0.1') {'
             issues.push({''
-                type: 'missing_data',';
+                type: 'missing_data','
         }'
                 severity: 'medium', })'
                 description: `${incompleteSamples.length} incomplete samples detected`,')'
                 impact: 'May affect analysis accuracy'),
         }
         
-        // 異常な時間間隔の検出'
+        // 異常な時間間隔の検出
         const timeGaps = this.detectTimeGaps(data.samples);''
         if(timeGaps.length > 0') {'
             issues.push({''
-                type: 'time_gaps',';
+                type: 'time_gaps','
         }'
                 severity: 'low', })'
                 description: `${timeGaps.length} time gaps detected`,')'
@@ -359,7 +359,7 @@ export class DiagnosticDataCollector {
             if (interval > expectedInterval * 2) {
                 gaps.push({)
                     start: samples[i - 1].timestamp);
-                    end: samples[i].timestamp,);
+                    end: samples[i].timestamp,)
         }
                     duration: interval); }
             }
@@ -380,9 +380,9 @@ export class DiagnosticDataCollector {
     }
 
     /**
-     * Clear collected data'
+     * Clear collected data
      */''
-    clearData('')';
+    clearData()';
         console.log('[DiagnosticDataCollector] Collected data cleared');
     }
 
@@ -409,9 +409,9 @@ export class DiagnosticDataCollector {
      */
     destroy(): void { if (this.collecting) {
             this.stop(); }
-        }'
+        }
         '';
-        this.clearData('')';
+        this.clearData()';
         console.log('[DiagnosticDataCollector] Data collector destroyed'');'
     }''
 }

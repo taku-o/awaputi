@@ -266,7 +266,7 @@ export class StatisticsEventHandler {
     onSpecialEffect(effectData) {
         
     }
-        const { type, duration, power } = effectData;'
+        const { type, duration, power } = effectData;
         '';
         switch(type') {'
             '';
@@ -391,7 +391,7 @@ export class StatisticsEventHandler {
      * @param {number} score - スコア
      */
     updateScoreDistribution(score) {
-        const dist = this.statistics.scoreDistribution;'
+        const dist = this.statistics.scoreDistribution;
         '';
         if (score <= 1000') {'
     }'
@@ -481,7 +481,7 @@ export class StatisticsEventHandler {
         reactionStats.fastest = Math.min(reactionStats.fastest, reactionTime);
         reactionStats.slowest = Math.max(reactionStats.slowest, reactionTime);
         
-        // 分布統計更新'
+        // 分布統計更新
         if (reactionTime < 200) { reactionStats.distribution.under_200ms++;' }'
         } else if (reactionTime < 500') { ''
             reactionStats.distribution['200_500ms']++;' }'
@@ -498,7 +498,7 @@ export class StatisticsEventHandler {
     updateComboDetailStats(maxCombo) {
         const comboStats = this.statistics.comboDetailStats;
         ';
-        // コンボ範囲別統計''
+        // コンボ範囲別統計
         if (maxCombo <= 5') {'
     }'
             comboStats.comboRanges['1-5']++;' }'
@@ -667,7 +667,7 @@ export function getStatisticsEventHandler(statistics, sessionStats) { if (!stati
  * @param {Object} statistics - 統計データ
  * @param {Object} sessionStats - セッション統計
  * @returns {StatisticsEventHandler} 新しいシングルトンインスタンス
- */'
+ */
 export function reinitializeStatisticsEventHandler(statistics, sessionStats) { ''
     statisticsEventHandlerInstance = new StatisticsEventHandler(statistics, sessionStats');
     return statisticsEventHandlerInstance; }

@@ -22,7 +22,7 @@ interface PerformanceConfig { enableLazyInitialization: boolean,
     initializationTimeout: number,
     componentInitDelay: number,
     retryAttempts: number,
-    maxConcurrentTasks: number; }
+    maxConcurrentTasks: number }
 }
 
 interface LocalModeConfig { enableMetaTagOptimization?: boolean;
@@ -42,21 +42,21 @@ interface DefaultConfig { enableMetaTagOptimization: boolean,
     enableFallbackResources: boolean,
     autoInitialize: boolean,
     debugMode: boolean,
-    enablePerformanceOptimizations: boolean; }
+    enablePerformanceOptimizations: boolean }
 }
 
 interface InitializationMetrics { startTime: number | null,
     endTime: number | null,
     componentTimes: Record<string, number>;
     totalExecutionTime: number,
-    optimizationsApplied: string[]; }
+    optimizationsApplied: string[] }
 }
 
 interface ExecutionContext { isLocal: boolean,
     protocol: string,
     url: string,
     domain: string,
-    path: string; }
+    path: string }
 }
 
 interface InitializationResult { success: boolean,
@@ -65,7 +65,7 @@ interface InitializationResult { success: boolean,
     reason?: string;
     error?: Error;
     }
-}'
+}
 '';
 type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
@@ -123,9 +123,9 @@ class LocalModeManager { /**
             endTime: null, }
             componentTimes: {}
             totalExecutionTime: 0,
-            optimizationsApplied: []';
+            optimizationsApplied: [];
         };''
-        this._resourcePreloadPromises = new Map('')';
+        this._resourcePreloadPromises = new Map()';
         this.log('LocalModeManager instance created');
     }
 
@@ -147,7 +147,7 @@ class LocalModeManager { /**
      */
     private async _performInitialization(): Promise<boolean> { try {
             const result: InitializationResult = this.config.enablePerformanceOptimizations ? await LocalModeInitializer.performOptimizedInitialization(;
-                    this.config, );
+                    this.config );
                     this._componentCache); : undefined
                     this.log.bind(this) :;
                 await LocalModeInitializer.performLegacyInitialization();

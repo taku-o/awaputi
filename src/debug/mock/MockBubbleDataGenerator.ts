@@ -45,9 +45,9 @@ export class MockBubbleDataGenerator {
             timestamp: Date.now(),
         };
     }
-';
+';'
     public generateBubbles(count: number, options: Partial<GenerationOptions> = { ): BubbleData[] {''
-        return Array.from({ length: count ), () => this.generateBubble(options)'); }
+        return Array.from({ length: count ), () => this.generateBubble(options)') }
     }'
 '';
     public generateBubblePattern(pattern: 'grid' | 'circle' | 'random', count: number): BubbleData[] { ''
@@ -106,7 +106,7 @@ export class MockBubbleDataGenerator {
 
         return bubbles;
     }
-';
+';'
     private generateId(): string { ' }'
         return `bubble_${Date.now(})}_${Math.random().toString(36).substr(2, 9'})}`;'
     }''

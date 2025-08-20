@@ -38,38 +38,38 @@ export class PrivacyManager {
     }
     
     /**
-     * デフォルトの匿名化ルール設定'
+     * デフォルトの匿名化ルール設定
      */''
-    private setupDefaultAnonymizationRules('')';
+    private setupDefaultAnonymizationRules()';
         this.anonymizationRules.set('ipAddress', (value: string): string | null => {  ''
             if (!value') return null;''
             const parts = value.split('.');
             if (parts.length === 4) { }
                 // 最後のオクテットを0に置換 }
                 return `${parts[0]}.${parts[1]}.${parts[2]}.0`;
-            }'
+            }
             return value;''
         }');
         ';
-        // ユーザーエージェントの匿名化''
+        // ユーザーエージェントの匿名化
         this.anonymizationRules.set('userAgent', (value: string): string | null => {  ''
             if (!value') return null;'
             // バージョン番号を除去' }'
             return value.replace(/\d+\.\d+[\.\d]*/g, 'X.X');' }'
         }');
         ';
-        // セッションIDの匿名化''
+        // セッションIDの匿名化
         this.anonymizationRules.set('sessionId', (value: string): string | null => {  if (!value) return null;
-            // セッションIDをハッシュ化 }'
+            // セッションIDをハッシュ化 }
             return this.hashValue(value);' }'
         }');
         ';
-        // タイムスタンプの曖昧化（分単位に丸める）''
+        // タイムスタンプの曖昧化（分単位に丸める）
         this.anonymizationRules.set('timestamp', (value: number): number => {  if (!value) return 0; }'
             return Math.floor(value / 60000) * 60000; // 分単位に丸める' }'
         }');
         ';
-        // 座標の曖昧化''
+        // 座標の曖昧化
         this.anonymizationRules.set('coordinates', (value: { x: number; y: number }'): { x: number; y: number } | null => {  ''
             if (!value || typeof value.x !== 'number' || typeof value.y !== 'number') return null;
             // 10ピクセル単位に丸める }
@@ -114,12 +114,12 @@ export class PrivacyManager {
     }
     
     /**
-     * データの匿名化'
+     * データの匿名化
      */''
     anonymizeData(data: any'): any { ''
         if (!data || typeof data !== 'object') return data;
         
-        const anonymized = JSON.parse(JSON.stringify(data); // ディープコピー'
+        const anonymized = JSON.parse(JSON.stringify(data); // ディープコピー
         '';
         return this.applyAnonymizationRules(anonymized'); }
     }
@@ -136,7 +136,7 @@ export class PrivacyManager {
         }
             return obj.map((item, index) =>  }'
                 this.applyAnonymizationRules(item, `${path}[${ index)]`)' }'
-            '});
+            '});'
         }'
         '';
         if(typeof obj === 'object') {
@@ -150,12 +150,12 @@ export class PrivacyManager {
                 // 特定のフィールドに対する匿名化ルール適用
                 if(this.anonymizationRules.has(key) {
                     
-                }'
+                }
                     const rule = this.anonymizationRules.get(key)!;' }'
                     value = rule(value'});
                 }
                 ';
-                // 再帰的に匿名化ルールを適用''
+                // 再帰的に匿名化ルールを適用
                 if (typeof value === 'object' && value !== null) { value = this.applyAnonymizationRules(value, currentPath); }
                 }
                 
@@ -213,7 +213,7 @@ export class PrivacyManager {
         return new Promise((resolve) => {  try {
                 // LocalStorageからデータを削除
                 const keysToDelete = [];
-                for(let i = 0; i < localStorage.length; i++) {'
+                for(let i = 0; i < localStorage.length; i++) {
                     '';
                     const key = localStorage.key(i');'
                 }'
@@ -224,14 +224,14 @@ export class PrivacyManager {
                 
                 keysToDelete.forEach(key => localStorage.removeItem(key);
                 ';
-                // IndexedDBからデータを削除（実装は環境に依存）''
+                // IndexedDBからデータを削除（実装は環境に依存）
                 this.clearIndexedDBData().then((') => {  ''
                     console.log('User data deletion completed'); }
                     resolve(true); }
                 }).catch(() => { resolve(false); }
                 });'
                 '';
-            } catch (error') { ''
+            } catch (error) { ''
                 console.error('Data deletion failed:', error);
                 resolve(false); }
             }
@@ -247,15 +247,14 @@ export class PrivacyManager {
                     exportDate: new Date().toISOString() }
                     consentStatus: this.consentStatus, }
                     localStorage: {},
-                    indexedDB: {}
-                },
+                    indexedDB: {},
                 
                 // LocalStorageデータの収集
-                for(let i = 0; i < localStorage.length; i++) {'
+                for(let i = 0; i < localStorage.length; i++) {
                     '';
                     const key = localStorage.key(i');''
                     if (key && (key.startsWith('analytics_'') || key.startsWith('game_data_')) {'
-                        try {'
+                        try {
                 }'
                             exportData.localStorage[key] = JSON.parse(localStorage.getItem(key') || ''); }
                         } catch { exportData.localStorage[key] = localStorage.getItem(key); }
@@ -268,9 +267,9 @@ export class PrivacyManager {
                     exportData.indexedDB = indexedDBData); }
                     resolve(exportData); }
                 }).catch(() => { resolve(exportData); }
-                });'
+                });
                 '';
-            } catch (error') { ''
+            } catch (error) { ''
                 console.error('Data export failed:', error);
                 resolve(null); }
             }
@@ -290,17 +289,17 @@ export class PrivacyManager {
     /**
      * 同意状態の保存'
      */''
-    private saveConsentStatus('')';
+    private saveConsentStatus()';
             localStorage.setItem('privacy_consent', JSON.stringify(this.consentStatus);''
-        } catch (error') { ''
-            console.error('Failed to save consent status:', error); }
+        } catch (error) { ''
+            console.error('Failed to save consent status:', error) }
         }
     }
     
     /**
      * 同意状態の読み込み'
      */''
-    private loadConsentStatus('')';
+    private loadConsentStatus()';
             const saved = localStorage.getItem('privacy_consent');
             if(saved) {
                 this.consentStatus = JSON.parse(saved);
@@ -312,10 +311,10 @@ export class PrivacyManager {
                         if (!enabled) { }
                             this.optOutFeatures.add(feature as PrivacyFeature); }
                         }
-                    });'
+                    });
                 }''
-            } catch (error') { : undefined''
-            console.error('Failed to load consent status:', error); }
+            } catch (error) { : undefined''
+            console.error('Failed to load consent status:', error) }
         }
     }
     
@@ -333,23 +332,23 @@ export class PrivacyManager {
     }
     
     /**
-     * IndexedDBデータのクリア'
+     * IndexedDBデータのクリア
      */''
-    private async clearIndexedDBData('')';
+    private async clearIndexedDBData()';
             if('indexedDB' in window) {
                 // ゲーム関連のデータベースを削除
                 const deleteDB = (dbName: string) => { 
                     return new Promise<void>((resolve, reject) => {
-                        const deleteRequest = indexedDB.deleteDatabase(dbName);
+                        const deleteRequest = indexedDB.deleteDatabase(dbName)
             }
-                        deleteRequest.onsuccess = () => resolve(); }'
+                        deleteRequest.onsuccess = () => resolve(); }
                         deleteRequest.onerror = () => reject(deleteRequest.error);' }'
                     }');
                 };'
                 '';
                 await deleteDB('gameAnalytics'');''
                 await deleteDB('bubblePopData');''
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('IndexedDB cleanup failed:', error);
             throw error; }
         }
@@ -359,10 +358,10 @@ export class PrivacyManager {
      * IndexedDBデータのエクスポート
      */
     private async exportIndexedDBData(): Promise<any>;
-        try { // 実装は省略（複雑なため） }'
+        try { // 実装は省略（複雑なため） }
             return {};''
-        } catch (error') { ''
-            console.error('IndexedDB export failed:', error); }
+        } catch (error) { ''
+            console.error('IndexedDB export failed:', error) }
             return {};
         }
     }
@@ -391,7 +390,7 @@ export class PrivacyManager {
      * リソースの解放
      */'
     destroy(): void { this.anonymizationRules.clear();''
-        this.optOutFeatures.clear('')';
+        this.optOutFeatures.clear()';
         console.log('PrivacyManager destroyed''); }'
     }''
 }

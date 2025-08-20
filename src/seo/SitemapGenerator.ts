@@ -9,11 +9,11 @@ import { seoErrorHandler } from './SEOErrorHandler';''
 import { normalizeUrl, measurePerformance } from './SEOUtils';
 
 // URL情報インターフェース
-interface UrlData { loc: string,'
+interface UrlData { loc: string,
     priority: number,'';
     changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never',
     lastmod: string,
-    hreflang?: string; }
+    hreflang?: string }
 }
 
 // 動的URL生成関数型
@@ -32,7 +32,7 @@ interface SitemapSummary { totalUrls: number,
     urlsByPriority: Record<string, number>;
     urlsByChangeFreq: Record<string, number>;
     supportedLanguages: number,
-    dynamicGenerators: number; }
+    dynamicGenerators: number }
 }
 
 // サイトマップ検証結果インターフェース
@@ -40,12 +40,12 @@ interface SitemapValidationResult { isValid: boolean,
     issues: string[],
     warnings: string[],
     urlCount: number,
-    duplicateCount: number; }
+    duplicateCount: number }
 }
 
 // LocalizationManager インターフェース
 interface LocalizationManager { getCurrentLanguage(): string;
-    t(key: string, defaultValue?: string): string; }
+    t(key: string, defaultValue?: string): string }
 }
 
 // File System Access API拡張インターフェース
@@ -53,7 +53,7 @@ interface ExtendedWindow extends Window { showSaveFilePicker?: (options?: {
         suggestedName?: string;
         types?: Array<{
             description: string);
-            accept: Record<string, string[]>; }
+            accept: Record<string, string[]> }
         }>;
     }) => Promise<FileSystemFileHandle>;
 }
@@ -65,7 +65,7 @@ interface FileSystemFileHandle { createWritable(): Promise<FileSystemWritableFil
 
 // FileSystemWritableFileStream インターフェース
 interface FileSystemWritableFileStream { write(data: BufferSource | Blob | string): Promise<void>,
-    close(): Promise<void>;
+    close(): Promise<void>
     }
 }
 
@@ -98,11 +98,11 @@ export class SitemapGenerator {
     private _initialize(): void { try {
             // 静的URLの登録
             this._registerStaticUrls();
-            ';
-            // 動的URL生成関数の登録''
-            this._registerDynamicGenerators('')';
+            ;
+            // 動的URL生成関数の登録
+            this._registerDynamicGenerators()';
             seoLogger.info('SitemapGenerator initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'sitemapGeneratorInit'); }
         }
     }
@@ -129,14 +129,14 @@ export class SitemapGenerator {
             const xml = this._generateXML();
             
             // 生成時刻の記録
-            this.lastGenerated = new Date();'
+            this.lastGenerated = new Date();
             '';
-            const duration = performance.now('')';
+            const duration = performance.now()';
             seoLogger.performance('sitemapGeneration', duration, {)
                 urlCount: this.urls.size),
-            ';
+            ';'
             return xml;' }'
-        } catch (error') { ''
+        } catch (error) { ''
             return seoErrorHandler.handle(error as Error, 'sitemapGeneration', options); }
         }
     }
@@ -144,12 +144,12 @@ export class SitemapGenerator {
     /**
      * サイトマップファイルの書き込み
      */'
-    async writeSitemapFile(options: SitemapGenerationOptions = {}): Promise<void> { try {''
+    async writeSitemapFile(options: SitemapGenerationOptions = {}): Promise<void> { try {'
             const xml = await this.generateSitemap(options');
             
             const extWindow = window as ExtendedWindow;
             ';
-            // ファイルシステムAPIが利用可能かチェック''
+            // ファイルシステムAPIが利用可能かチェック
             if(typeof window !== 'undefined' && extWindow.showSaveFilePicker) {'
                 '';
                 // File System Access API (Chrome等');'
@@ -163,9 +163,9 @@ export class SitemapGenerator {
                 ;
                 const writable = await fileHandle.createWritable();'
                 await writable.write(xml);''
-                await writable.close('');'
+                await writable.close();'
                 seoLogger.info('Sitemap file saved successfully'');'
-            } else {  // フォールバック: データURLでダウンロード''
+            } else {  // フォールバック: データURLでダウンロード
                 const blob = new Blob([xml], { type: 'application/xml' ),''
                 const url = URL.createObjectURL(blob');'
                 '';
@@ -178,7 +178,7 @@ export class SitemapGenerator {
                 URL.revokeObjectURL(url');'
                 ' }'
                 seoLogger.info('Sitemap file downloaded');' }'
-            } catch (error') { ''
+            } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'sitemapFileWrite', options); }
         }
     }
@@ -187,7 +187,7 @@ export class SitemapGenerator {
      * 静的URLの登録'
      */''
     private _registerStaticUrls(''';
-                loc: '/',);
+                loc: '/');
                 priority: SEOConfig.sitemap.priority.home)';
                 changefreq: SEOConfig.sitemap.changeFrequency.home,'';
                 lastmod: new Date().toISOString(').split('T'')[0];
@@ -200,7 +200,7 @@ export class SitemapGenerator {
             }
         ],
         
-        // アセットページ（重要な画像など）'
+        // アセットページ（重要な画像など）
         const importantAssets = ['';
             '/assets/screenshots/game-portrait.png','';
             '/assets/screenshots/game-landscape-1.png','';
@@ -220,10 +220,10 @@ export class SitemapGenerator {
     /**
      * 動的URL生成関数の登録'
      */''
-    private _registerDynamicGenerators('')';
+    private _registerDynamicGenerators()';
         this.registerDynamicGenerator('helpPages', async (') => {  const helpPages: UrlData[] = [],
             
-            // 基本ヘルプページ'
+            // 基本ヘルプページ
             const basicHelp = ['';
                 'tutorial','';
                 'gameplay','';
@@ -241,18 +241,18 @@ export class SitemapGenerator {
                     lastmod: new Date().toISOString(').split('T'})[0]
                 }),
             });
-            ';
+            ';'
             return helpPages;''
         }');
         ';
-        // ゲーム統計ページ（将来的な実装用）''
+        // ゲーム統計ページ（将来的な実装用）
         this.registerDynamicGenerator('statsPages', async () => {  const statsPages: UrlData[] = [],
             ';
-            // 統計ページがある場合''
+            // 統計ページがある場合
             if(this.hasStatsPages') {'
                 statsPages.push({')'
                     loc: '/stats/')';
-                    priority: 0.6,');
+                    priority: 0.6,')
             }'
                     changefreq: 'weekly'),' }'
                     lastmod: new Date().toISOString(').split('T')[0] }
@@ -319,16 +319,16 @@ export class SitemapGenerator {
             if (lang === SEOConfig.defaultLanguage) { }
                 return; // デフォルト言語は既に追加済み }
             }
-            ';
+            ';'
             baseUrls.forEach(baseUrl => {  );''
                 const urlData = this.urls.get(baseUrl')!;
                 ';
-                // 言語固有のURLを生成''
+                // 言語固有のURLを生成
                 const path = urlData.loc.replace(this.baseUrl, '');
                 const localizedUrl = getLocalizedUrl(lang, path);
                 
                 this.urls.set(localizedUrl, {
-                    ...urlData,);
+                    ...urlData);
                     loc: localizedUrl);
                     priority: SEOConfig.sitemap.priority.languageVariants,) }
                     hreflang: lang); }
@@ -342,14 +342,14 @@ export class SitemapGenerator {
     private _generateXML(''';
         let xml = '<? xml version="1.0" encoding="UTF-8"?>\n'; : undefined''
         xml += '<urlset xmlns="http: //www.sitemaps.org/schemas/sitemap/0.9"',')';
-        xml += ' xmlns: xhtml="http://www.w3.org/1999/xhtml">\n');
+        xml += ' xmlns: xhtml="http://www.w3.org/1999/xhtml">\n);
         // URLをソート（優先度とURLでソート）
         const sortedUrls = Array.from(this.urls.values().sort((a, b) => {  if (a.priority !== b.priority) { }
                 return b.priority - a.priority; }
             }'
             return a.loc.localeCompare(b.loc);''
         }');
-        ';
+        ';'
         sortedUrls.forEach(urlData => {  ') }'
             xml += '  <url>\n'); }
             xml += `    <loc>${this._escapeXml(urlData.loc})}</loc>\n`;
@@ -379,8 +379,8 @@ export class SitemapGenerator {
             }
             
             // hreflang代替リンク
-            if(urlData.hreflang) {'
-                ';
+            if(urlData.hreflang) {
+                ';'
             }'
                 xml = this._addHreflangLinks(xml, urlData'); }
             }'
@@ -398,7 +398,7 @@ export class SitemapGenerator {
      */''
     private _addHreflangLinks(xml: string, urlData: UrlData'): string { ''
         const path = urlData.loc.replace(this.baseUrl, ''').replace(/^\/[a-z-]+/, '');
-        ';
+        ';'
         SEOConfig.supportedLanguages.forEach(lang => { );' }'
             const hrefUrl = getLocalizedUrl(lang, path');' }'
             xml += `    <xhtml:link rel="alternate" hreflang="${lang}" href="${this._escapeXml(hrefUrl"})}" />\n`;
@@ -430,11 +430,11 @@ export class SitemapGenerator {
         const urlsByChangeFreq: Record<string, number> = {};
         
         Array.from(this.urls.values().forEach(urlData => {  )'
-            // 優先度別);''
+            // 優先度別);
             const priority = urlData.priority? .toString(') || 'undefined';''
             urlsByPriority[priority] = (urlsByPriority[priority] || 0') + 1;
             ';
-            // 更新頻度別''
+            // 更新頻度別
             const changefreq = urlData.changefreq || 'undefined'; }
             urlsByChangeFreq[changefreq] = (urlsByChangeFreq[changefreq] || 0) + 1; }
         });
@@ -481,11 +481,11 @@ export class SitemapGenerator {
         // 優先度の範囲チェック
         Array.from(this.urls.values().forEach(urlData => {  ); }
             if(urlData.priority && (urlData.priority < 0 || urlData.priority > 1) { }
-                warnings.push(`Invalid priority ${urlData.priority} for ${urlData.loc}`);'
+                warnings.push(`Invalid priority ${urlData.priority} for ${urlData.loc}`);
             }''
         }');
         ';
-        // 更新頻度の有効性チェック''
+        // 更新頻度の有効性チェック
         const validChangeFreqs: string[] = ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'];
         Array.from(this.urls.values().forEach(urlData => {  ); }
             if(urlData.changefreq && !validChangeFreqs.includes(urlData.changefreq) { }
@@ -509,7 +509,7 @@ export class SitemapGenerator {
      * リソースのクリーンアップ
      */'
     cleanup(): void { this.urls.clear();''
-        this.dynamicUrlGenerators.clear('')';
+        this.dynamicUrlGenerators.clear()';
         seoLogger.info('SitemapGenerator cleaned up''); }'
     }''
 }

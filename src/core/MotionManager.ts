@@ -20,12 +20,12 @@ export class MotionManager {'
             enabled: true,
             globalReducedMotion: false,
             respectSystemPreference: true,
-            vestibularSafety: true,';
+            vestibularSafety: true,
             motionLevels: {''
                 none: 'すべてのアニメーションを無効','';
                 essential: '重要なアニメーションのみ','';
                 reduced: '軽減されたアニメーション','';
-                normal: '通常のアニメーション',';
+                normal: '通常のアニメーション','
     }
     }'
                 enhanced: '強化されたアニメーション' }
@@ -47,8 +47,8 @@ export class MotionManager {'
                 autoplayPause: 5000 // 5秒で自動停止 }
             }
         },
-        ';
-        // 現在の状態''
+        ;
+        // 現在の状態
         this.currentLevel = 'normal';
         this.activeAnimations = new Map();
         this.pausedAnimations = new Set();
@@ -65,7 +65,7 @@ export class MotionManager {'
         this.stats = { animationsControlled: 0,
             animationsPaused: 0,
             animationsReduced: 0,
-            vestibularWarnings: 0,';
+            vestibularWarnings: 0,
             performanceAdjustments: 0,'';
             sessionStart: Date.now(''';
             motionLevel: 'normal',
@@ -94,13 +94,13 @@ export class MotionManager {'
         // 危険なモーションパターンの検出
         this.hazardPatterns = {
             rapidFlashing: { threshold: 3, detected: false },
-            rapidRotation: { threshold: 720, detected: false },)
+            rapidRotation: { threshold: 720, detected: false })
             extremeZoom: { threshold: 3.0, detected: false })
             violentShaking: { threshold: 20, detected: false }
         };
         
         // サブコンポーネントの初期化（依存注入）)
-        this.configManager = new MotionConfigManager(this);'
+        this.configManager = new MotionConfigManager(this);
         this.animationController = new AnimationController(this);''
         this.vestibularSafetyManager = new VestibularSafetyManager(this');'
         '';
@@ -130,14 +130,14 @@ export class MotionManager {'
             
             // 初期アニメーション分析
             this.analyzeExistingAnimations();
-            ';
-            // 安全性監視開始（前庭安全に委譲）''
-            this.vestibularSafetyManager.startSafetyMonitoring('');
+            ;
+            // 安全性監視開始（前庭安全に委譲）
+            this.vestibularSafetyManager.startSafetyMonitoring();'
     }'
             console.log('MotionManager initialized successfully'); }'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'MOTION_MANAGER_ERROR', {')'
-                operation: 'initialize'); }
+                operation: 'initialize') }
             });
         }
     }
@@ -145,17 +145,17 @@ export class MotionManager {'
     /**
      * 既存アニメーションの分析'
      */''
-    analyzeExistingAnimations('')';
+    analyzeExistingAnimations()';
                 '[style*="animation"], [style*="transition"], .animated, .animate');
             
             animatedElements.forEach(element => {  );
                 const category = this.detectAnimationCategory(element); }
                 this.animationController.registerAnimation(element, category); }
             });
-            ';
+            ';'
             console.log(`Analyzed ${animatedElements.length} existing animations`);''
-        } catch (error') { ''
-            console.warn('Failed to analyze existing animations:', error); }
+        } catch (error) { ''
+            console.warn('Failed to analyze existing animations:', error) }
         }
     }
     
@@ -163,8 +163,8 @@ export class MotionManager {'
      * アニメーションカテゴリの検出
      */
     detectAnimationCategory(element) {'
-        // クラス名からカテゴリを推定''
-        const classNames = element.className.toLowerCase('')';
+        // クラス名からカテゴリを推定
+        const classNames = element.className.toLowerCase()';
         if (classNames.includes('particle')') return 'particles';''
         if (classNames.includes('parallax')') return 'parallax';''
         if (classNames.includes('camera')') return 'camera';''
@@ -173,7 +173,7 @@ export class MotionManager {'
         if (classNames.includes('background'') || classNames.includes('bg')') return 'background';''
         if (classNames.includes('transition')') return 'transitions';''
         if (classNames.includes('transform')') return 'transforms';'
-        ';
+        ';'
     }'
         return 'general'; }
     }
@@ -278,7 +278,7 @@ export class MotionManager {'
     }
     
     /**
-     * パフォーマンスモードの切り替え（アニメーション制御に委譲）'
+     * パフォーマンスモードの切り替え（アニメーション制御に委譲）
      */''
     togglePerformanceMode(enabled') {'
         '';
@@ -296,7 +296,7 @@ export class MotionManager {'
     // ========== 個別アニメーション制御（後方互換性） ==========
     
     /**
-     * 個別アニメーション一時停止（後方互換性）'
+     * 個別アニメーション一時停止（後方互換性）
      */''
     pauseAnimation(element') {'
         '';
@@ -410,13 +410,13 @@ export class MotionManager {'
             }
             
             if(this.configManager) {
-            ';
+            ';'
                 '';
-                this.configManager.destroy('');
+                this.configManager.destroy();
             }'
             console.log('MotionManager cleaned up successfully');' }'
-        } catch (error') { ''
-            console.error('Failed to cleanup MotionManager:', error'); }
+        } catch (error) { ''
+            console.error('Failed to cleanup MotionManager:', error') }
         }'
     }''
 }

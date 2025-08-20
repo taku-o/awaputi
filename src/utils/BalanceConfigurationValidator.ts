@@ -12,18 +12,18 @@ interface ValidationRule { type: string,
     min?: number;
     max?: number;
     description: string,
-    category: string; }
+    category: string }
 }
 
 interface ValidationError { property: string,
     value: any,
     error: string,
     rule: string,
-    details?: string; }
+    details?: string }
 }
 
 interface ValidationWarning { property: string,
-    message: string; }
+    message: string }
 }
 
 interface ValidationResult { validationId: string,
@@ -32,22 +32,22 @@ interface ValidationResult { validationId: string,
     errors: ValidationError[],
     warnings: ValidationWarning[],
     executionTime: number,
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface PropertyValidationResult { isValid: boolean,
-    error: string | null; }
+    error: string | null }
 }
 
 interface LogicalValidationResult { errors: ValidationError[],
-    warnings: ValidationWarning[];
+    warnings: ValidationWarning[]
     }
 }
 
 interface ErrorStatistics { totalValidations: number,
     failedValidations: number,
     errorsByType: Map<string, number>;
-    errorsByBubbleType: Map<string, number>; }
+    errorsByBubbleType: Map<string, number> }
 }
 
 interface ValidationStatistics { totalValidations: number,
@@ -55,7 +55,7 @@ interface ValidationStatistics { totalValidations: number,
     successRate: string,
     errorsByType: Record<string, number>;
     errorsByBubbleType: Record<string, number>;
-    recentValidations: ValidationResult[];
+    recentValidations: ValidationResult[]
     }
 }
 
@@ -113,9 +113,9 @@ export class BalanceConfigurationValidator {
     }
             errorsByBubbleType: new Map(); }
         };
-        ';
-        // 検証ルールを初期化''
-        this._initializeValidationRules('')';
+        ;
+        // 検証ルールを初期化
+        this._initializeValidationRules()';
         console.log('[BalanceConfigurationValidator] 初期化完了');
     }
     
@@ -136,72 +136,72 @@ export class BalanceConfigurationValidator {
     }
     
     /**
-     * 泡設定の検証ルールを初期化'
+     * 泡設定の検証ルールを初期化
      */''
     private _initializeBubbleValidationRules(''';
         this.validationRules.set('bubble.health', { ''
-            type: 'number',);
+            type: 'number');
             min: 1)';
             max: 20,'';
             description: 'Bubble health must be between 1 and 20',')';
             category: 'bubble')'),';
         '';
         this.validationRules.set('bubble.size', {''
-            type: 'number',);
+            type: 'number');
             min: 20)';
             max: 150,'';
             description: 'Bubble size must be between 20 and 150 pixels',')';
             category: 'bubble')'),';
         '';
         this.validationRules.set('bubble.maxAge', {''
-            type: 'number',);
+            type: 'number');
             min: 3000)';
             max: 60000,'';
             description: 'Bubble max age must be between 3 and 60 seconds',')';
             category: 'bubble')'),';
         '';
         this.validationRules.set('bubble.score', {''
-            type: 'number',);
+            type: 'number');
             min: 1)';
             max: 2000,'';
             description: 'Bubble score must be between 1 and 2000',')';
             category: 'bubble')'),
         ';
-        // 特殊効果の検証ルール''
+        // 特殊効果の検証ルール
         this.validationRules.set('bubble.healAmount', {''
-            type: 'number',);
+            type: 'number');
             min: 5)';
             max: 100,'';
             description: 'Heal amount must be between 5 and 100',')';
             category: 'bubble')'),';
         '';
         this.validationRules.set('bubble.damageAmount', {''
-            type: 'number',);
+            type: 'number');
             min: 1)';
             max: 50,'';
             description: 'Damage amount must be between 1 and 50',')';
             category: 'bubble')'),';
         '';
         this.validationRules.set('bubble.shakeIntensity', {''
-            type: 'number',);
+            type: 'number');
             min: 5)';
             max: 50,'';
             description: 'Shake intensity must be between 5 and 50',')';
             category: 'bubble')'),';
         '';
         this.validationRules.set('bubble.disableDuration', {''
-            type: 'number',);
+            type: 'number');
             min: 500)';
             max: 5000,'';
             description: 'Disable duration must be between 0.5 and 5 seconds',')';
             category: 'bubble')'),';
         '';
         this.validationRules.set('bubble.bonusTimeMs', {''
-            type: 'number',);
+            type: 'number');
             min: 2000)';
             max: 15000,'';
             description: 'Bonus time must be between 2 and 15 seconds',')';
-            category: 'bubble'); }
+            category: 'bubble') }
     }
     
     /**
@@ -209,25 +209,25 @@ export class BalanceConfigurationValidator {
      */''
     private _initializeScoreValidationRules(''';
         this.validationRules.set('score.baseScore', { ''
-            type: 'number',);
+            type: 'number');
             min: 1)';
             max: 2000,'';
             description: 'Base score must be between 1 and 2000',')';
             category: 'score')'),';
         '';
         this.validationRules.set('score.comboMultiplier', {''
-            type: 'number',);
+            type: 'number');
             min: 1.0)';
             max: 10.0,'';
             description: 'Combo multiplier must be between 1.0 and 10.0',')';
             category: 'score')'),';
         '';
         this.validationRules.set('score.ageBonus', {''
-            type: 'number',);
+            type: 'number');
             min: 1.0)';
             max: 5.0,'';
             description: 'Age bonus must be between 1.0 and 5.0',')';
-            category: 'score'); }
+            category: 'score') }
     }
     
     /**
@@ -235,25 +235,25 @@ export class BalanceConfigurationValidator {
      */''
     private _initializeStageValidationRules(''';
         this.validationRules.set('stage.spawnRate', { ''
-            type: 'number',);
+            type: 'number');
             min: 0.1)';
             max: 10.0,'';
             description: 'Spawn rate must be between 0.1 and 10.0',')';
             category: 'stage')'),';
         '';
         this.validationRules.set('stage.maxBubbles', {''
-            type: 'number',);
+            type: 'number');
             min: 5)';
             max: 100,'';
             description: 'Max bubbles must be between 5 and 100',')';
             category: 'stage')'),';
         '';
         this.validationRules.set('stage.unlockRequirement', {''
-            type: 'number',);
+            type: 'number');
             min: 0)';
             max: 100000,'';
             description: 'Unlock requirement must be between 0 and 100000',')';
-            category: 'stage'); }
+            category: 'stage') }
     }
     
     /**
@@ -261,25 +261,25 @@ export class BalanceConfigurationValidator {
      */''
     private _initializeItemValidationRules(''';
         this.validationRules.set('item.baseCost', { ''
-            type: 'number',);
+            type: 'number');
             min: 10)';
             max: 1000,'';
             description: 'Item base cost must be between 10 and 1000',')';
             category: 'item')'),';
         '';
         this.validationRules.set('item.costMultiplier', {''
-            type: 'number',);
+            type: 'number');
             min: 1.0)';
             max: 3.0,'';
             description: 'Cost multiplier must be between 1.0 and 3.0',')';
             category: 'item')'),';
         '';
         this.validationRules.set('item.maxLevel', {''
-            type: 'number',);
+            type: 'number');
             min: 1)';
             max: 10,'';
             description: 'Max level must be between 1 and 10',')';
-            category: 'item'); }
+            category: 'item') }
     }
     
     /**
@@ -294,15 +294,15 @@ export class BalanceConfigurationValidator {
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
             ';
-            // 基本プロパティの検証''
+            // 基本プロパティの検証
             if(config.health !== undefined') {'
                 '';
                 const healthValidation = this._validateProperty('bubble.health', config.health);''
                 if (!healthValidation.isValid') {'
                     errors.push({''
-                        property: 'health',);
+                        property: 'health');
                         value: config.health)';
-                        error: healthValidation.error!,');
+                        error: healthValidation.error!,')
             }'
                         rule: 'bubble.health'); }
                 }
@@ -313,9 +313,9 @@ export class BalanceConfigurationValidator {
                 const sizeValidation = this._validateProperty('bubble.size', config.size);''
                 if (!sizeValidation.isValid') {'
                     errors.push({''
-                        property: 'size',);
+                        property: 'size');
                         value: config.size)';
-                        error: sizeValidation.error!,');
+                        error: sizeValidation.error!,')
             }'
                         rule: 'bubble.size'); }
                 }
@@ -326,9 +326,9 @@ export class BalanceConfigurationValidator {
                 const maxAgeValidation = this._validateProperty('bubble.maxAge', config.maxAge);''
                 if (!maxAgeValidation.isValid') {'
                     errors.push({''
-                        property: 'maxAge',);
+                        property: 'maxAge');
                         value: config.maxAge)';
-                        error: maxAgeValidation.error!,');
+                        error: maxAgeValidation.error!,')
             }'
                         rule: 'bubble.maxAge'); }
                 }
@@ -339,9 +339,9 @@ export class BalanceConfigurationValidator {
                 const scoreValidation = this._validateProperty('bubble.score', config.score);''
                 if (!scoreValidation.isValid') {'
                     errors.push({''
-                        property: 'score',);
+                        property: 'score');
                         value: config.score)';
-                        error: scoreValidation.error!,');
+                        error: scoreValidation.error!,')
             }'
                         rule: 'bubble.score'); }
                 }
@@ -363,7 +363,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };
             
             // 統計を更新
@@ -377,9 +377,9 @@ export class BalanceConfigurationValidator {
             this.validationHistory.push(result);
             this._cleanupHistory();
             
-            return result;'
+            return result;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {')'
                 context: 'BalanceConfigurationValidator.validateBubbleConfig');
                 bubbleType,)';
@@ -416,14 +416,14 @@ export class BalanceConfigurationValidator {
             const warnings: ValidationWarning[] = [],
             
             // 基本スコアの検証
-            if(scoreConfig.baseScores) {'
+            if(scoreConfig.baseScores) {
                 '';
                 for (const [bubbleType, baseScore] of Object.entries(scoreConfig.baseScores)') {''
                     const validation = this._validateProperty('score.baseScore', baseScore);''
                     if (!validation.isValid') {
             }
                         errors.push({ }
-                            property: `baseScores.${bubbleType}`,)
+                            property: `baseScores.${bubbleType}`)
                             value: baseScore)';
                             error: validation.error!,')';
                             rule: 'score.baseScore');
@@ -432,15 +432,15 @@ export class BalanceConfigurationValidator {
             }
             
             // コンボ設定の検証
-            if(scoreConfig.combo) {'
+            if(scoreConfig.combo) {
                 '';
                 if (scoreConfig.combo.maxMultiplier !== undefined') {''
                     const validation = this._validateProperty('score.comboMultiplier', scoreConfig.combo.maxMultiplier);''
                     if (!validation.isValid') {'
                         errors.push({''
-                            property: 'combo.maxMultiplier',);
+                            property: 'combo.maxMultiplier');
                             value: scoreConfig.combo.maxMultiplier)';
-                            error: validation.error!,');
+                            error: validation.error!,')
             }'
                             rule: 'score.comboMultiplier'); }
                     }
@@ -448,14 +448,14 @@ export class BalanceConfigurationValidator {
             }
             
             // 年齢ボーナスの検証
-            if(scoreConfig.ageBonus) {'
+            if(scoreConfig.ageBonus) {
                 '';
                 for (const [bonusType, bonusValue] of Object.entries(scoreConfig.ageBonus)') {''
                     const validation = this._validateProperty('score.ageBonus', bonusValue);''
                     if (!validation.isValid') {
             }
                         errors.push({ }
-                            property: `ageBonus.${bonusType}`,)
+                            property: `ageBonus.${bonusType}`)
                             value: bonusValue)';
                             error: validation.error!,')';
                             rule: 'score.ageBonus');
@@ -473,7 +473,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };
             
             if (!result.isValid) { this.errorStats.failedValidations++; }
@@ -482,9 +482,9 @@ export class BalanceConfigurationValidator {
             this.validationHistory.push(result);
             this._cleanupHistory();
             
-            return result;'
+            return result;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {')'
                 context: 'BalanceConfigurationValidator.validateScoreConfig',)';
                 scoreConfig);' }'
@@ -517,43 +517,43 @@ export class BalanceConfigurationValidator {
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
             ';
-            // スポーン率の検証''
+            // スポーン率の検証
             if(stageConfig.spawnRate !== undefined') {'
                 '';
                 const validation = this._validateProperty('stage.spawnRate', stageConfig.spawnRate);''
                 if (!validation.isValid') {'
                     errors.push({''
-                        property: 'spawnRate',);
+                        property: 'spawnRate');
                         value: stageConfig.spawnRate)';
-                        error: validation.error!,');
+                        error: validation.error!,')
             }'
                         rule: 'stage.spawnRate'); }
                 }
             }
             ';
-            // 最大泡数の検証''
+            // 最大泡数の検証
             if(stageConfig.maxBubbles !== undefined') {'
                 '';
                 const validation = this._validateProperty('stage.maxBubbles', stageConfig.maxBubbles);''
                 if (!validation.isValid') {'
                     errors.push({''
-                        property: 'maxBubbles',);
+                        property: 'maxBubbles');
                         value: stageConfig.maxBubbles)';
-                        error: validation.error!,');
+                        error: validation.error!,')
             }'
                         rule: 'stage.maxBubbles'); }
                 }
             }
             ';
-            // 開放条件の検証''
+            // 開放条件の検証
             if(stageConfig.unlockRequirement !== undefined') {'
                 '';
                 const validation = this._validateProperty('stage.unlockRequirement', stageConfig.unlockRequirement);''
                 if (!validation.isValid') {'
                     errors.push({''
-                        property: 'unlockRequirement',);
+                        property: 'unlockRequirement');
                         value: stageConfig.unlockRequirement)';
-                        error: validation.error!,');
+                        error: validation.error!,')
             }'
                         rule: 'stage.unlockRequirement'); }
                 }
@@ -564,7 +564,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };
             
             if (!result.isValid) { this.errorStats.failedValidations++; }
@@ -575,7 +575,7 @@ export class BalanceConfigurationValidator {
             
             return result;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {')'
                 context: 'BalanceConfigurationValidator.validateStageConfig',)';
                 stageConfig);' }'
@@ -608,43 +608,43 @@ export class BalanceConfigurationValidator {
             const errors: ValidationError[] = [],
             const warnings: ValidationWarning[] = [],
             ';
-            // 基本コストの検証''
+            // 基本コストの検証
             if(itemConfig.baseCost !== undefined') {'
                 '';
                 const validation = this._validateProperty('item.baseCost', itemConfig.baseCost);''
                 if (!validation.isValid') {'
                     errors.push({''
-                        property: 'baseCost',);
+                        property: 'baseCost');
                         value: itemConfig.baseCost)';
-                        error: validation.error!,');
+                        error: validation.error!,')
             }'
                         rule: 'item.baseCost'); }
                 }
             }
             ';
-            // コスト倍率の検証''
+            // コスト倍率の検証
             if(itemConfig.costMultiplier !== undefined') {'
                 '';
                 const validation = this._validateProperty('item.costMultiplier', itemConfig.costMultiplier);''
                 if (!validation.isValid') {'
                     errors.push({''
-                        property: 'costMultiplier',);
+                        property: 'costMultiplier');
                         value: itemConfig.costMultiplier)';
-                        error: validation.error!,');
+                        error: validation.error!,')
             }'
                         rule: 'item.costMultiplier'); }
                 }
             }
             ';
-            // 最大レベルの検証''
+            // 最大レベルの検証
             if(itemConfig.maxLevel !== undefined') {'
                 '';
                 const validation = this._validateProperty('item.maxLevel', itemConfig.maxLevel);''
                 if (!validation.isValid') {'
                     errors.push({''
-                        property: 'maxLevel',);
+                        property: 'maxLevel');
                         value: itemConfig.maxLevel)';
-                        error: validation.error!,');
+                        error: validation.error!,')
             }'
                         rule: 'item.maxLevel'); }
                 }
@@ -655,7 +655,7 @@ export class BalanceConfigurationValidator {
                 errors,
                 warnings,
                 executionTime: Date.now() - startTime,
-                timestamp: Date.now(); }
+                timestamp: Date.now() }
             };
             
             if (!result.isValid) { this.errorStats.failedValidations++; }
@@ -666,7 +666,7 @@ export class BalanceConfigurationValidator {
             
             return result;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'VALIDATION_ERROR', {')'
                 context: 'BalanceConfigurationValidator.validateItemConfig',)';
                 itemConfig);' }'
@@ -695,14 +695,14 @@ export class BalanceConfigurationValidator {
             return { isValid: true, error: null }
         }
         ';
-        // 型チェック''
+        // 型チェック
         if (rule.type && typeof value !== rule.type') { return {  };
                 isValid: false, }
                 error: `Expected ${rule.type}, got ${typeof value}`
             };
         }
         ';
-        // 数値範囲チェック''
+        // 数値範囲チェック
         if(rule.type === 'number') {
             if (rule.min !== undefined && value < rule.min) {
         }
@@ -733,9 +733,9 @@ export class BalanceConfigurationValidator {
                     const validation = this._validateProperty('bubble.healAmount', config.healAmount);''
                     if (!validation.isValid') {'
                         errors.push({''
-                            property: 'healAmount',);
+                            property: 'healAmount');
                             value: config.healAmount)';
-                            error: validation.error!,');
+                            error: validation.error!,')
         }'
                             rule: 'bubble.healAmount')'); }
                     }
@@ -748,9 +748,9 @@ export class BalanceConfigurationValidator {
                     const validation = this._validateProperty('bubble.damageAmount', config.damageAmount);''
                     if (!validation.isValid') {'
                         errors.push({''
-                            property: 'damageAmount',);
+                            property: 'damageAmount');
                             value: config.damageAmount)';
-                            error: validation.error!,');
+                            error: validation.error!,')
                 }'
                             rule: 'bubble.damageAmount')'); }
                     }
@@ -763,9 +763,9 @@ export class BalanceConfigurationValidator {
                     const validation = this._validateProperty('bubble.shakeIntensity', config.shakeIntensity);''
                     if (!validation.isValid') {'
                         errors.push({''
-                            property: 'shakeIntensity',);
+                            property: 'shakeIntensity');
                             value: config.shakeIntensity)';
-                            error: validation.error!,');
+                            error: validation.error!,')
                 }'
                             rule: 'bubble.shakeIntensity'); }
                     }'
@@ -775,9 +775,9 @@ export class BalanceConfigurationValidator {
                     const validation = this._validateProperty('bubble.disableDuration', config.disableDuration);''
                     if (!validation.isValid') {'
                         errors.push({''
-                            property: 'disableDuration',);
+                            property: 'disableDuration');
                             value: config.disableDuration)';
-                            error: validation.error!,');
+                            error: validation.error!,')
                 }'
                             rule: 'bubble.disableDuration')'); }
                     }
@@ -790,9 +790,9 @@ export class BalanceConfigurationValidator {
                     const validation = this._validateProperty('bubble.bonusTimeMs', config.bonusTimeMs);''
                     if (!validation.isValid') {'
                         errors.push({''
-                            property: 'bonusTimeMs',);
+                            property: 'bonusTimeMs');
                             value: config.bonusTimeMs)';
-                            error: validation.error!,');
+                            error: validation.error!,')
                 }'
                             rule: 'bubble.bonusTimeMs'); }
                     }
@@ -809,19 +809,19 @@ export class BalanceConfigurationValidator {
     private _validateBubbleLogicalConsistency(bubbleType: string, config: BubbleConfig'): LogicalValidationResult { const errors: ValidationError[] = [],
         const warnings: ValidationWarning[] = [],
         ';
-        // ボス泡は通常の泡より強くあるべき''
+        // ボス泡は通常の泡より強くあるべき
         if(bubbleType === 'boss') {'
             '';
             if (config.health !== undefined && config.health <= 1') {'
                 warnings.push({')'
-                    property: 'health''),';
+                    property: 'health''),'
         }'
                     message: 'Boss bubble health should be greater than normal bubble health (1')' }
                 }),'
             }''
             if(config.score !== undefined && config.score <= 15') {'
                 warnings.push({')'
-                    property: 'score''),';
+                    property: 'score''),'
             }'
                     message: 'Boss bubble score should be significantly higher than normal bubble score (15')' }
                 }),
@@ -830,7 +830,7 @@ export class BalanceConfigurationValidator {
         
         // 硬い泡（stone, iron, diamond）は健康値が段階的に増加すべき
         const hardBubbleHealthOrder: Record<string, number> = { stone: 2, iron: 3, diamond: 4 }
-        if(bubbleType in hardBubbleHealthOrder) {'
+        if(bubbleType in hardBubbleHealthOrder) {
             const expectedMinHealth = hardBubbleHealthOrder[bubbleType];''
             if (config.health !== undefined && config.health < expectedMinHealth') {'
                 warnings.push({'
@@ -840,12 +840,12 @@ export class BalanceConfigurationValidator {
             }
         }
         ';
-        // 特殊効果泡の効果値が適切な範囲内か''
+        // 特殊効果泡の効果値が適切な範囲内か
         if(bubbleType === 'pink' && config.healAmount !== undefined) {'
             '';
             if (config.healAmount > 50') {'
                 warnings.push({')'
-                    property: 'healAmount',');
+                    property: 'healAmount',')
         }'
                     message: 'High heal amount may make the game too easy')'); }
             }
@@ -855,7 +855,7 @@ export class BalanceConfigurationValidator {
             '';
             if (config.damageAmount > 25') {'
                 warnings.push({')'
-                    property: 'damageAmount',');
+                    property: 'damageAmount',')
         }'
                     message: 'High damage amount may make the game too difficult'); }
             }
@@ -873,25 +873,25 @@ export class BalanceConfigurationValidator {
         // 基本スコアの順序性チェック
         if(scoreConfig.baseScores) {
             const scores = scoreConfig.baseScores;
-            ';
-            // 硬い泡は通常の泡よりスコアが高いべき''
+            ;
+            // 硬い泡は通常の泡よりスコアが高いべき
             if (scores.normal && scores.stone && scores.stone <= scores.normal') {'
                 warnings.push({')'
-                    property: 'baseScores.stone',');
+                    property: 'baseScores.stone',')
         }'
                     message: 'Stone bubble score should be higher than normal bubble score'); }
             }'
             '';
             if(scores.stone && scores.iron && scores.iron <= scores.stone') {'
                 warnings.push({')'
-                    property: 'baseScores.iron',');
+                    property: 'baseScores.iron',')
             }'
                     message: 'Iron bubble score should be higher than stone bubble score'); }
             }'
             '';
             if(scores.iron && scores.diamond && scores.diamond <= scores.iron') {'
                 warnings.push({')'
-                    property: 'baseScores.diamond',');
+                    property: 'baseScores.diamond',')
             }'
                     message: 'Diamond bubble score should be higher than iron bubble score'); }
             }
@@ -899,13 +899,13 @@ export class BalanceConfigurationValidator {
             // ボス泡は最高スコアであるべき
             if(scores.boss) {
                 const maxRegularScore = Math.max(;
-                    scores.normal || 0,);
+                    scores.normal || 0);
                     scores.stone || 0);
-                    scores.iron || 0,)';
+                    scores.iron || 0,);
                     scores.diamond || 0);''
                 if (scores.boss <= maxRegularScore * 5') {'
                     warnings.push({')'
-                        property: 'baseScores.boss',');
+                        property: 'baseScores.boss',')
             }'
                         message: 'Boss bubble score should be significantly higher than regular bubbles'); }
                 }
@@ -921,8 +921,8 @@ export class BalanceConfigurationValidator {
     private _updateErrorStats(bubbleType: string, errors: ValidationError[]): void { // 泡タイプ別エラー統計
         const currentCount = this.errorStats.errorsByBubbleType.get(bubbleType) || 0;
         this.errorStats.errorsByBubbleType.set(bubbleType, currentCount + 1);
-        ';
-        // エラータイプ別統計''
+        ;
+        // エラータイプ別統計
         for(const error of errors') {'
             '';
             const errorType = error.rule || 'unknown';
@@ -987,6 +987,6 @@ let instance: BalanceConfigurationValidator | null = null,
 
 /**
  * BalanceConfigurationValidatorのシングルトンインスタンスを取得
- */'
+ */
 export function getBalanceConfigurationValidator(): BalanceConfigurationValidator { if (!instance) {''
         instance = new BalanceConfigurationValidator(' })

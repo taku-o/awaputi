@@ -78,17 +78,17 @@ interface PlatformMetadata { imageWidth: number,
     richPins?: boolean; }
 }
 
-// Twitter固有データインターフェース'
+// Twitter固有データインターフェース
 interface TwitterCardData { ''
     card: 'summary' | 'summary_large_image' | 'app' | 'player',
     site: string,
-    creator: string; }
+    creator: string }
 }
 
 // Facebook固有データインターフェース
 interface FacebookData { appId?: string;
     type: string,
-    locale: string; }
+    locale: string }
 }
 
 // Discord Embedインターフェース
@@ -102,14 +102,14 @@ interface DiscordEmbed { title: string,
 // Discord Fieldインターフェース
 interface DiscordField { name: string,
     value: string,
-    inline: boolean; }
+    inline: boolean }
 }
 
 // 共有コンテンツインターフェース（Twitter用）
 interface TwitterShareContent { text: string,
     url: string,
     hashtags: string[],
-    imageUrl: string; }
+    imageUrl: string }
 }
 
 // 共有コンテンツインターフェース（Facebook用）
@@ -117,16 +117,16 @@ interface FacebookShareContent { title: string,
     description: string,
     url: string,
     imageUrl: string,
-    quote?: string; }
+    quote?: string }
 }
 
 // 共有コンテンツインターフェース（LINE用）
 interface LineShareContent { message: string,
-    url: string; }
+    url: string }
 }
 
 // 共有コンテンツインターフェース（Discord用）
-interface DiscordShareContent { embeds: DiscordEmbed[];
+interface DiscordShareContent { embeds: DiscordEmbed[]
     }
 }
 
@@ -135,19 +135,19 @@ interface FallbackShareContent { title: string,
     description: string,
     url: string,
     text: string,
-    imageUrl: string; }
+    imageUrl: string }
 }
 
-// LocalizationManagerインターフェース'
+// LocalizationManagerインターフェース
 interface LocalizationManager { getCurrentLanguage(): string;''
-    t(key: string, defaultValue?: string'): string; }
+    t(key: string, defaultValue?: string'): string }
 }
 
 // GameConfigインターフェース
 interface GameConfig { [key: string]: any, }
 }
-';
-// プラットフォーム名タイプ''
+;
+// プラットフォーム名タイプ
 type PlatformName = 'facebook' | 'twitter' | 'linkedin' | 'pinterest' | 'discord';''
 type SharePlatform = 'twitter' | 'facebook' | 'line' | 'discord';''
 type SupportedLanguage = 'ja' | 'en' | 'zh-CN' | 'zh-TW' | 'ko';
@@ -183,11 +183,11 @@ export class SocialMediaOptimizer {
     private _initialize(): void { try {
             // プラットフォーム仕様の設定
             this._setupPlatformSpecs();
-            ';
-            // Canvas要素の作成（画像生成用）''
-            this._setupCanvas('')';
+            ;
+            // Canvas要素の作成（画像生成用）
+            this._setupCanvas()';
             seoLogger.info('SocialMediaOptimizer initialized successfully');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             seoErrorHandler.handle(error as Error, 'socialMediaOptimizerInit'); }
         }
     }
@@ -197,39 +197,39 @@ export class SocialMediaOptimizer {
      */''
     private _setupPlatformSpecs(''';
         this.platformSpecs.set('facebook', {
-            imageSize: { width: 1200, height: 630 },)
+            imageSize: { width: 1200, height: 630 })
             titleLimit: 60)';
             descriptionLimit: 155,'';
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'fb_cache')'),
         ';
-        // Twitter''
+        // Twitter
         this.platformSpecs.set('twitter', {
-            imageSize: { width: 1200, height: 600 },)
+            imageSize: { width: 1200, height: 600 })
             titleLimit: 70)';
             descriptionLimit: 200,'';
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'twitter_cache')'),
         ';
-        // LinkedIn''
+        // LinkedIn
         this.platformSpecs.set('linkedin', {
-            imageSize: { width: 1200, height: 627 },)
+            imageSize: { width: 1200, height: 627 })
             titleLimit: 150)';
             descriptionLimit: 300,'';
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'li_cache')'),
         ';
-        // Pinterest''
+        // Pinterest
         this.platformSpecs.set('pinterest', {
-            imageSize: { width: 1000, height: 1500 },)
+            imageSize: { width: 1000, height: 1500 })
             titleLimit: 500)';
             descriptionLimit: 500,'';
             imageFormats: ['jpg', 'png'],')';
             cacheBustParam: 'pin_cache')'),
         ';
-        // Discord''
+        // Discord
         this.platformSpecs.set('discord', {
-            imageSize: { width: 1280, height: 720 },)
+            imageSize: { width: 1280, height: 720 })
             titleLimit: 256)';
             descriptionLimit: 2048,'';
             imageFormats: ['jpg', 'png', 'gif'],')';
@@ -239,7 +239,7 @@ export class SocialMediaOptimizer {
     /**
      * Canvas要素の設定'
      */''
-    private _setupCanvas('')';
+    private _setupCanvas()';
         if(typeof document !== 'undefined'') {'
             '';
             this.canvas = document.createElement('canvas'');'
@@ -267,12 +267,12 @@ export class SocialMediaOptimizer {
             
             // 最適化されたコンテンツの生成
             const optimized: OptimizedContent = { platform,
-                title: this._optimizeTitle(content.title, specs),';
+                title: this._optimizeTitle(content.title, specs),;
                 description: this._optimizeDescription(content.description, specs),'';
                 image: await this._optimizeImage(content, specs, platform'),'';
                 url: content.url || (typeof window !== 'undefined' ? window.location.href : ''),
                 hashtags: this._generateHashtags(content, platform),;
-                metadata: this._generatePlatformMetadata(content, specs, platform); }
+                metadata: this._generatePlatformMetadata(content, specs, platform) }
             };
             
             // プラットフォーム固有の最適化
@@ -280,9 +280,9 @@ export class SocialMediaOptimizer {
             
             // キャッシュに保存
             this.shareCache.set(cacheKey, optimized);
-            ';
+            ';'
             return optimized;''
-        } catch (error') { ' }'
+        } catch (error) { ' }'
             return seoErrorHandler.handle(error as Error, 'generateOptimizedContent', { platform, content };
         }
     }
@@ -290,7 +290,7 @@ export class SocialMediaOptimizer {
     /**
      * ゲーム状態に基づいた動的共有コンテンツを生成)
      */)'
-    generateShareContent(platform: SharePlatform, gameState: GameState = {}): TwitterShareContent | FacebookShareContent | LineShareContent | DiscordShareContent | FallbackShareContent { try {''
+    generateShareContent(platform: SharePlatform, gameState: GameState = {}): TwitterShareContent | FacebookShareContent | LineShareContent | DiscordShareContent | FallbackShareContent { try {'
             if(!this.initialized') {'
                 '';
                 seoLogger.warn('SocialMediaOptimizer not initialized');
@@ -298,7 +298,7 @@ export class SocialMediaOptimizer {
                 return this._getFallbackShareContent(platform); }
             }
 ';
-            // プラットフォーム別の動的コンテンツ生成''
+            // プラットフォーム別の動的コンテンツ生成
             switch (platform.toLowerCase() as SharePlatform') { ''
                 case 'twitter':'';
                     return this._generateTwitterShareContent(gameState');'
@@ -314,7 +314,7 @@ export class SocialMediaOptimizer {
                 
                 default: seoLogger.warn(`Unsupported platform: ${platform)`), }'
                     return this._getFallbackShareContent(platform});''
-            } catch (error') { ' }'
+            } catch (error) { ' }'
             seoErrorHandler.handle(error as Error, 'generateShareContent', { platform, gameState };)
             return this._getFallbackShareContent(platform);
         }
@@ -352,7 +352,7 @@ export class SocialMediaOptimizer {
             }
         }
         ';
-        // 実績がある場合は追加''
+        // 実績がある場合は追加
         if (achievements && achievements.length > 0') { const recentAchievement = achievements[achievements.length - 1]; }
             tweetText += ` 「${recentAchievement.name}」実績解除！🏆`;
         }'
@@ -384,7 +384,7 @@ export class SocialMediaOptimizer {
             description = `レベル ${level || 1} で ${score.toLocaleString(})} 点を獲得しました！`;
             
             if(bubblesPopped && bubblesPopped > 0) {
-            ';
+            ';'
                 '';
                 description += ` 合計 ${bubblesPopped.toLocaleString(''
             
@@ -392,7 +392,7 @@ export class SocialMediaOptimizer {
             description += ' あなたも挑戦してみませんか？'; }
         }
         
-        return { title,)
+        return { title)
             description)';
             url: this._generateGameUrl(gameState,') };'
             imageUrl: this._selectDynamicImage(gameState, 'facebook'), }
@@ -426,7 +426,7 @@ export class SocialMediaOptimizer {
      */''
     private _generateDiscordShareContent(gameState: GameState'): DiscordShareContent {
         const { score, level, bubblesPopped, playTime } = gameState;
-        ';
+        ';'
         const embed: DiscordEmbed = { ''
             title: 'BubblePop - 泡割りゲーム','';
             description: 'HTML5 Canvas バブルポップゲーム',
@@ -434,7 +434,7 @@ export class SocialMediaOptimizer {
         },
         
         if(score && score > 0) {
-        ';
+        ';'
             '';
             embed.title = `BubblePop スコア: ${score.toLocaleString('''
                     name: 'スコア',
@@ -460,7 +460,7 @@ export class SocialMediaOptimizer {
             }
             
             if(playTime && playTime > 0) {
-            ';
+            ';'
                 const minutes = Math.floor(playTime / 60000);''
                 const seconds = Math.floor((playTime % 60000) / 1000');'
                 embed.fields.push({'
@@ -483,14 +483,14 @@ export class SocialMediaOptimizer {
         const specs = this.platformSpecs.get(platform);'
         '';
         if(!score || score === 0') {'
-            ';
+            ';'
         }'
             return specs? .defaultImage || '/assets/social/og-image.png'; }
         }
         ';
-        // スコアに基づいた画像選択''
+        // スコアに基づいた画像選択
         if(score >= 100000') {'
-            ';
+            ';'
         }'
             return '/assets/social/og-image-champion.png';' }'
         } else if (score >= 50000') { ''
@@ -507,9 +507,9 @@ export class SocialMediaOptimizer {
      */ : undefined''
     private _generateGameUrl(gameState: GameState'): string { ''
         if(typeof window === 'undefined'') {'
-            ';
+            ';'
         }'
-            return 'https://example.com'; // サーバーサイドレンダリング用フォールバック }
+            return 'https://example.com; // サーバーサイドレンダリング用フォールバック }
         }
         
         const baseUrl = window.location.origin + window.location.pathname;
@@ -520,7 +520,7 @@ export class SocialMediaOptimizer {
                 utm_source: 'social_share','';
                 utm_medium: 'share',')';
                 utm_campaign: 'gameplay_share');
-                score: score.toString(,);
+                score: score.toString()
         }
                 level: (level || 1).toString(); }
             };
@@ -569,19 +569,19 @@ export class SocialMediaOptimizer {
             
             // ゲーム状態に基づくコンテンツの描画
             await this._drawGameContent(gameState);
-            ';
-            // オーバーレイ（ロゴ、タイトル等）の描画''
+            ;
+            // オーバーレイ（ロゴ、タイトル等）の描画
             await this._drawOverlay(gameState, platform');
             ';
-            // 画像をData URLとして取得''
+            // 画像をData URLとして取得
             const dataUrl = this.canvas.toDataURL('image/png', 0.9);
             
             // キャッシュに保存
             const cacheKey = generateCacheKey(`dynamic_${ platform)`, gameState); }
             this.imageCache.set(cacheKey, dataUrl});
-            ';
+            ';'
             return dataUrl;''
-        } catch (error') { ''
+        } catch (error) { ''
             seoLogger.error('Dynamic social image generation failed', error as Error');''
             return getSocialImageUrl(platform, 'default'); }
         }
@@ -593,7 +593,7 @@ export class SocialMediaOptimizer {
     private _optimizeTitle(title: string | undefined, specs: PlatformSpec): string { ''
         if(!title') {'
             title = this.localizationManager ?   : undefined'';
-                this.localizationManager.t('seo.defaultTitle'') : ';
+                this.localizationManager.t('seo.defaultTitle'') : ';'
         }'
                 'BubblePop - 泡割りゲーム'; }
         }
@@ -607,7 +607,7 @@ export class SocialMediaOptimizer {
     private _optimizeDescription(description: string | undefined, specs: PlatformSpec): string { ''
         if(!description') {'
             description = this.localizationManager ?   : undefined'';
-                this.localizationManager.t('seo.defaultDescription'') : ';
+                this.localizationManager.t('seo.defaultDescription'') : ';'
         }'
                 'HTML5 Canvas を使用したバブルポップゲーム。泡を割って高スコアを目指そう！'; }
         }
@@ -621,21 +621,21 @@ export class SocialMediaOptimizer {
     private async _optimizeImage(content: BaseContent, specs: PlatformSpec, platform: string): Promise<string> { // カスタム画像が指定されている場合
         if(content.image) {
             return optimizeImageUrl(content.image, {
-                width: specs.imageSize.width,);
+                width: specs.imageSize.width);
                 height: specs.imageSize.height);
-                format: specs.imageFormats[0];
+                format: specs.imageFormats[0]
         }
             ), }
         }
         
         // ゲーム状態に基づく動的画像
-        if(content.gameState) {'
-            ';
+        if(content.gameState) {
+            ';'
         }'
             return await this.generateDynamicSocialImage(content.gameState, platform as PlatformName'); }
         }
         ';
-        // デフォルト画像''
+        // デフォルト画像
         return getSocialImageUrl(platform, content.imageVariant || 'default');
     }
     
@@ -649,7 +649,7 @@ export class SocialMediaOptimizer {
             'zh-TW': ['#泡泡消除', '#HTML5遊戲', '#瀏覽器遊戲', '#免費遊戲'],'';
             ko: ['#버블팝', '#HTML5게임', '#브라우저게임', '#무료게임'] }
         };
-        ';
+        ';'
         const lang = (this.localizationManager ?   : undefined'';
             this.localizationManager.getCurrentLanguage(') : 'ja') as SupportedLanguage;
         
@@ -660,14 +660,14 @@ export class SocialMediaOptimizer {
         }
         
         // ゲーム状態に基づくハッシュタグ
-        if(content.gameState) {'
+        if(content.gameState) {
             '';
             if (content.gameState.highScore') {'
         }'
                 hashtags.push(lang === 'ja' ? '#ハイスコア' : '#HighScore'); }'
             }''
             if(content.gameState.achievement') {'
-                ';
+                ';'
             }'
                 hashtags.push(lang === 'ja' ? '#実績解除' : '#Achievement'); }
             }
@@ -692,15 +692,15 @@ export class SocialMediaOptimizer {
             imageWidth: specs.imageSize.width,
             imageHeight: specs.imageSize.height,
             platform,
-            generatedAt: new Date().toISOString(); }
+            generatedAt: new Date().toISOString() }
         };
-        ';
-        // プラットフォーム固有のメタデータ''
+        ;
+        // プラットフォーム固有のメタデータ
         switch(platform') {'
             '';
             case 'twitter':'';
                 metadata.cardType = 'summary_large_image';''
-                metadata.site = '@BubblePopGame'; // 実際のアカウントに変更'
+                metadata.site = '@BubblePopGame'; // 実際のアカウントに変更
                 break;''
             case 'facebook':'';
                 metadata.type = 'website';''
@@ -724,21 +724,21 @@ export class SocialMediaOptimizer {
         switch(platform') {'
             '';
             case 'twitter':;
-                // Twitterカード情報の追加'
+                // Twitterカード情報の追加
                 optimized.twitterCard = {''
                     card: 'summary_large_image','';
-                    site: '@BubblePopGame',';
+                    site: '@BubblePopGame','
         }'
                     creator: '@BubblePopGame' }
                 },
                 
                 // Twitter用の短縮文の作成
-                if(content.gameState? .score) {'
+                if(content.gameState? .score) {
                     '';
                     optimized.tweetText = `BubblePopで${content.gameState.score.toLocaleString('''
             case 'facebook':;
                 // Facebook用の詳細情報
-                optimized.facebookSpecific = {'
+                optimized.facebookSpecific = {
                     appId: content.facebookAppId,'';
                     type: 'game','';
                     locale: this._getOGLocale(''';
@@ -766,8 +766,8 @@ export class SocialMediaOptimizer {
      */
     private async _drawBackground(): Promise<void>;
         if (!this.ctx || !this.canvas) return;
-        ';
-        // グラデーション背景''
+        ;
+        // グラデーション背景
         const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height');''
         gradient.addColorStop(0, '#4CAF50'');''
         gradient.addColorStop(1, '#2E7D32');
@@ -781,11 +781,11 @@ export class SocialMediaOptimizer {
     
     /**
      * 背景パターンの描画
-     */'
+     */
     private async _drawBackgroundPattern(): Promise<void>;''
         if (!this.ctx || !this.canvas') return;
         
-        // 泡のパターンを描画'
+        // 泡のパターンを描画
         this.ctx.globalAlpha = 0.1;''
         this.ctx.fillStyle = '#FFFFFF';
         
@@ -822,8 +822,8 @@ export class SocialMediaOptimizer {
             const scoreText = `Score: ${gameState.score.toLocaleString(})}`;
             this.ctx.fillText(scoreText, this.canvas.width / 2, this.canvas.height / 2);
         }
-        ';
-        // 実績の表示''
+        ;
+        // 実績の表示
         if(gameState.achievement') {'
             '';
             this.ctx.font = 'bold 24px Arial, sans-serif';
@@ -831,9 +831,9 @@ export class SocialMediaOptimizer {
             this.ctx.fillText(gameState.achievement, this.canvas.width / 2, this.canvas.height / 2 + 60); }
         }
         ';
-        // コンボの表示''
+        // コンボの表示
         if(gameState.combo && gameState.combo > 10') {'
-            ';
+            ';'
         }'
             this.ctx.font = 'bold 32px Arial, sans-serif'; }
             this.ctx.fillText(`${gameState.combo) Combo!`, this.canvas.width / 2, this.canvas.height / 2 + 100});
@@ -846,7 +846,7 @@ export class SocialMediaOptimizer {
     private async _drawOverlay(gameState: GameState, platform: string): Promise<void>,'';
         if (!this.ctx || !this.canvas') return;
         ';
-        // タイトルの描画''
+        // タイトルの描画
         this.ctx.fillStyle = '#FFFFFF';''
         this.ctx.font = 'bold 64px Arial, sans-serif';''
         this.ctx.textAlign = 'center';''
@@ -857,9 +857,9 @@ export class SocialMediaOptimizer {
         this.ctx.strokeText(title, this.canvas.width / 2, 80);''
         this.ctx.fillText(title, this.canvas.width / 2, 80');
         ';
-        // プラットフォーム固有の要素''
+        // プラットフォーム固有の要素
         if(platform === 'pinterest'') {'
-            // Pinterest用の詳細情報''
+            // Pinterest用の詳細情報
             this.ctx.font = '16px Arial, sans-serif';'
         }'
             this.ctx.fillText('無料で遊べるブラウザゲーム', this.canvas.width / 2, this.canvas.height - 30); }
@@ -871,7 +871,7 @@ export class SocialMediaOptimizer {
      */''
     private _expandDescriptionForPinterest(description: string, content: BaseContent'): string { let expanded = description;
         
-        // ゲーム機能の詳細を追加'
+        // ゲーム機能の詳細を追加
         const features = ['';
             '18種類以上の特殊な泡','';
             'コンボシステム','';
@@ -905,13 +905,13 @@ export class SocialMediaOptimizer {
                 value: `${content.gameState.combo}連続`;')'
                 inline: true)'),
         }
-        ';
+        ';'
         fields.push({ ''
             name: 'プラットフォーム',')';
             value: 'ブラウザ（無料）',);
             inline: true),
         
-        return fields; }
+        return fields }
     }
     
     /**
@@ -919,7 +919,7 @@ export class SocialMediaOptimizer {
      */'
     private _getOGLocale(): string { const lang = this.localizationManager ?   : undefined''
             this.localizationManager.getCurrentLanguage(') : 'ja';
-        ';
+        ';'
         const localeMap: Record<string, string> = {''
             'ja': 'ja_JP','';
             'en': 'en_US','';
@@ -972,9 +972,9 @@ export class SocialMediaOptimizer {
             twitter: 'https://twitter.com/intent/tweet','';
             linkedin: 'https://www.linkedin.com/sharing/share-offsite/','';
             pinterest: 'https://pinterest.com/pin/create/button/','';
-            reddit: 'https://reddit.com/submit' }
+            reddit: 'https://reddit.com/submit }
         },
-        ';
+        ';'
         const baseUrl = baseUrls[platform];''
         if (!baseUrl') return content.url || '';
         
@@ -1014,7 +1014,7 @@ export class SocialMediaOptimizer {
      * キャッシュのクリア
      */ : undefined'
     clearCache(): void { this.imageCache.clear();''
-        this.shareCache.clear('')';
+        this.shareCache.clear()';
         seoLogger.info('Social media cache cleared'); }
     }
     

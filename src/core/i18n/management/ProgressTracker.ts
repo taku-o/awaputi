@@ -2,9 +2,9 @@ import { getErrorHandler } from '../../../utils/ErrorHandler.js';
 
 // インターフェース定義
 interface TranslationSetData { name: string,
-    totalKeys: number;
+    totalKeys: number
 }
-    translations: { [key: string]: TranslationEntry ;
+    translations: { [key: string]: TranslationEntry 
 }
     metadata: TranslationMetadata,
     progress: ProgressData;
@@ -49,14 +49,14 @@ interface LanguageProgress { totalSets: number,
 interface SetProgress { completionRate: number,
     qualityScore: number,
     translationRate: number,
-    totalKeys: number; };
+    totalKeys: number };
 }
 interface CategoryProgress { category: string,
     totalKeys: number,
     translated: number,
     reviewed: number,
     approved: number,
-    empty: number;
+    empty: number
 }
     sets: Array<{ name: string; progress: ProgressData }>;
     completionRate?: number;
@@ -69,13 +69,13 @@ interface ProgressReport { language: string,
         totalKeys: number,
         completionRate: number,
         qualityScore: number,
-        translationRate: number ;
+        translationRate: number 
 }
     },
     status: { translated: number,
         reviewed: number,
         approved: number,
-        empty: number; }
+        empty: number }
     };
     sets?: { [key: string]: any }
     categories?: { [key: string]: CategoryProgress }
@@ -88,19 +88,19 @@ interface HistoryEntry { date: string,
     key: string,
     previousStatus: string,
     newStatus: string,
-    completionRate: number; };
+    completionRate: number };
 }
 interface Milestone { name: string,
     targetPercentage: number,
     description: string,
     achieved: boolean,
     achievedAt: string | null,
-    createdAt: string; };
+    createdAt: string };
 }
 interface ProgressGoal { targetDate: string,
     targetPercentage: number,
     description: string,
-    setAt: string; };
+    setAt: string };
 }
 interface IncompleteItem { key: string,
     set: string,
@@ -109,7 +109,7 @@ interface IncompleteItem { key: string,
     value: string,
     priority: string,
     lastUpdated?: string;
-    metadata: TranslationEntry;
+    metadata: TranslationEntry
     };
 }
 interface GoalPrediction { currentProgress: number,
@@ -119,7 +119,7 @@ interface GoalPrediction { currentProgress: number,
     dailyProgressRate: number,
     daysToGoal: number,
     isOnTrack: boolean,
-    daysAheadBehind: number; };
+    daysAheadBehind: number };
 }
 interface BatchUpdateItem { key: string,
     status: string,
@@ -127,19 +127,19 @@ interface BatchUpdateItem { key: string,
     metadata?: any; };
 }
 interface BatchUpdateResult { successful: string[],
-    failed: string[]; };
+    failed: string[] };
 }
 interface SetDetails { recentUpdates: Array<{
         key: string,
         updatedAt: string,
         updatedBy: string,
-        status?: string; }
+        status?: string }
     }>;
     topContributors: Array<{ contributor: string; count: number }>,
     qualityDistribution: { draft: number,
         review: number,
         approved: number,
-        final: number; }
+        final: number }
     };
 }
 
@@ -159,7 +159,7 @@ interface ProgressStats { trackedLanguages: number,
     totalTranslationSets: number,
     totalMilestones: number,
     progressGoals: number,
-    categories: string[]; };
+    categories: string[] };
 }
 /**
  * 翻訳進捗追跡クラス - 翻訳の完成度と進捗を追跡・管理
@@ -174,11 +174,11 @@ export class ProgressTracker {
     private progressWeights: {
         translated: number,
         reviewed: number,
-        approved: number; }
+        approved: number }
     };
     private qualityLevels: { [key: string]: {
             name: string,
-            weight: number; }
+            weight: number }
         };
     };
     public onMilestoneAchieved?: (language: string, milestone: Milestone) => void;
@@ -187,22 +187,22 @@ export class ProgressTracker {
 
         this.languageProgress = new Map();
         this.progressHistory = new Map();
-        this.milestones = new Map();'
+        this.milestones = new Map();
         this.progressGoals = new Map();''
-        this.translationSets = new Map('')';
+        this.translationSets = new Map()';
         this.categories = new Set(['common', 'menu', 'game', 'settings', 'errors', 'achievements', 'help']');
         
         // 進捗計算設定
         this.progressWeights = {
             translated: 0.6,    // 翻訳済み;
-            reviewed: 0.3,      // レビュー済み;
+            reviewed: 0.3,      // レビュー済み
     };
 }
             approved: 0.1       // 承認済み ;
 }
         },
         
-        // 品質レベル'
+        // 品質レベル
         this.qualityLevels = { ' }'
             draft: { name: 'ドラフト', weight: 0.3 },''
             review: { name: 'レビュー中', weight: 0.6 },''
@@ -238,10 +238,10 @@ export class ProgressTracker {
                     ...metadata }
                 },
                 progress: { translated: 0,
-                    reviewed: 0,);
+                    reviewed: 0);
                     approved: 0);
                     empty: 0,);
-                    total: Object.keys(flattenedKeys).length ;
+                    total: Object.keys(flattenedKeys).length 
 };
 }
             },
@@ -252,7 +252,7 @@ export class ProgressTracker {
             
             console.log(`Translation set registered: ${language}/${setName} (${setData.totalKeys) keys)`});
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'PROGRESS_TRACKER_ERROR', {')'
                 operation: 'registerTranslationSet');
@@ -274,7 +274,7 @@ export class ProgressTracker {
             
             const setData = languageSets.get(setName)!;
             ';
-            // キーの状態を更新''
+            // キーの状態を更新
             if(!setData.translations[key]') {
                 
             }
@@ -304,13 +304,13 @@ export class ProgressTracker {
             this.recordProgressHistory(language, setName, key, previousStatus, status);
             
             return true;
-            ';
+            ';'
         } catch (error) { ''
             getErrorHandler(').handleError(error, 'PROGRESS_TRACKER_ERROR', {''
-                operation: 'updateTranslationStatus',);
+                operation: 'updateTranslationStatus');
                 language: language);
                 setName: setName,);
-                key: key); }
+                key: key) }
             });
             return false;
         };
@@ -320,7 +320,7 @@ export class ProgressTracker {
      */
     batchUpdateTranslationStatus(language: string, setName: string, updates: BatchUpdateItem[]): BatchUpdateResult { const results: BatchUpdateResult = {
             successful: [],
-            failed: [] ;
+            failed: [] 
 }
         },
         
@@ -329,7 +329,7 @@ export class ProgressTracker {
             const success = this.updateTranslationStatus(;
                 language,
                 setName,
-                update.key,);
+                update.key);
                 update.status);
                 update.value,);
                 update.metadata);
@@ -338,7 +338,7 @@ export class ProgressTracker {
         
         }
                 results.successful.push(update.key); }
-            } else { results.failed.push(update.key); };
+            } else { results.failed.push(update.key); }
 }
         }
         
@@ -359,7 +359,7 @@ export class ProgressTracker {
             reviewed: 0,
             approved: 0,
             empty: 0,
-            total: setData.totalKeys ;
+            total: setData.totalKeys 
 }
         },
         
@@ -370,7 +370,7 @@ export class ProgressTracker {
             const quality = translation.quality || 'draft';''
             const hasValue = translation.value && translation.value.trim(') !== '';
             ';
-            // 状態別カウント''
+            // 状態別カウント
             switch(status') {'
                 '';
                 case 'translated':;
@@ -382,14 +382,14 @@ export class ProgressTracker {
                 case 'approved':;
                     progress.approved++;
                     break;
-                default: progress.empty++;
+                default: progress.empty++
 }
                     break; };
 }
             // 重み付き進捗計算
             if(hasValue) {
                 const qualityWeight = this.qualityLevels[quality]? .weight || 0.3;
-                let statusWeight = 0;'
+                let statusWeight = 0;
                 '';
                 switch (status') { : undefined''
                     case 'translated':;
@@ -418,7 +418,7 @@ export class ProgressTracker {
             completionRate: completionRate,
             qualityScore: qualityScore,
             translationRate: translationRate,
-            lastCalculated: new Date().toISOString(); }
+            lastCalculated: new Date().toISOString() }
         };
         
         return setData.progress;
@@ -442,7 +442,7 @@ export class ProgressTracker {
             completionRate: 0,
             qualityScore: 0,
             translationRate: 0,
-            sets: new Map(); }
+            sets: new Map() }
         };
         
         let totalWeightedProgress = 0;
@@ -460,9 +460,9 @@ export class ProgressTracker {
             totalWeightedProgress += (setProgress.qualityScore || 0) * setProgress.total;
             
             overallProgress.sets.set(setName, {
-                completionRate: setProgress.completionRate || 0,);
+                completionRate: setProgress.completionRate || 0);
                 qualityScore: setProgress.qualityScore || 0);
-                translationRate: setProgress.translationRate || 0,);
+                translationRate: setProgress.translationRate || 0,)
         }
                 totalKeys: setProgress.total); };
 }
@@ -503,7 +503,7 @@ export class ProgressTracker {
             reviewed: 0,
             approved: 0,
             empty: 0,
-            sets: [] ;
+            sets: [] 
 }
         },
         
@@ -519,7 +519,7 @@ export class ProgressTracker {
                 categoryProgress.empty += setProgress.empty;
                 
                 categoryProgress.sets.push({)
-                    name: setName,);
+                    name: setName,)
         }
                     progress: setProgress); };
 }
@@ -532,13 +532,13 @@ export class ProgressTracker {
                 / categoryProgress.totalKeys) * 100;
         }
             ); }
-        } else { categoryProgress.completionRate = 0; };
+        } else { categoryProgress.completionRate = 0; }
 }
         return categoryProgress;
     }
     
     /**
-     * 進捗レポートを生成'
+     * 進捗レポートを生成
      */''
     generateProgressReport(language: string, options: GenerateReportOptions = { )'): any {
         const { includeSets = true,
@@ -557,13 +557,13 @@ export class ProgressTracker {
                 totalKeys: languageProgress.totalKeys,
                 completionRate: languageProgress.completionRate,
                 qualityScore: languageProgress.qualityScore,
-                translationRate: languageProgress.translationRate ;
+                translationRate: languageProgress.translationRate 
 }
             },
             status: { translated: languageProgress.translated,
                 reviewed: languageProgress.reviewed,
                 approved: languageProgress.approved,
-                empty: languageProgress.empty ;
+                empty: languageProgress.empty 
 };
 }
         },
@@ -580,7 +580,7 @@ export class ProgressTracker {
                 for (const [setName, setData] of languageSets) {
                     report.sets[setName] = {
                         totalKeys: setData.totalKeys,
-                        progress: setData.progress;
+                        progress: setData.progress
 }
                         metadata: setData.metadata ;
 }
@@ -615,7 +615,7 @@ export class ProgressTracker {
     }
     
     /**
-     * 未完成項目を取得'
+     * 未完成項目を取得
      */''
     getIncompleteItems(language: string, options: GetIncompleteOptions = { )'): IncompleteItem[] {
         const { setName = null,';
@@ -639,7 +639,7 @@ export class ProgressTracker {
 }
             // カテゴリフィルター
             if (category && setData.metadata.category !== category) { continue; }
-            }'
+            }
             '';
             for (const [key, translation] of Object.entries(setData.translations)') { ''
                 const translationStatus = translation.status || 'empty';'
@@ -653,7 +653,7 @@ export class ProgressTracker {
                         value: translation.value || '',')';
                         priority: setData.metadata.priority || 'normal');
                         lastUpdated: translation.updatedAt,);
-                        metadata: translation); };
+                        metadata: translation) };
 }
             };
 }
@@ -661,8 +661,8 @@ export class ProgressTracker {
         this.sortIncompleteItems(incompleteItems, sortBy);
         
         // 制限適用
-        if(limit && limit > 0) {'
-            ';
+        if(limit && limit > 0) {
+            ';'
         }'
             return incompleteItems.slice(0, limit'); };
 }
@@ -677,11 +677,11 @@ export class ProgressTracker {
 }
         const languageMilestones = this.milestones.get(language)!;
         languageMilestones.set(name, { name: name,
-            targetPercentage: targetPercentage,);
+            targetPercentage: targetPercentage);
             description: description);
             achieved: false,);
             achievedAt: null),
-            createdAt: new Date().toISOString(); }
+            createdAt: new Date().toISOString() }
         });
         
         console.log(`Milestone set: ${language}/${name} (${targetPercentage)%)`});
@@ -705,7 +705,7 @@ export class ProgressTracker {
         };
 }
                 console.log(`🎉 Milestone achieved: ${language}/${name} (${ milestone.targetPercentage)%)`);
-                ';
+                ';'
                 // マイルストーン達成イベントを発火（実装に応じて）' }'
                 this.onMilestoneAchieved? .(language, milestone'});
             };
@@ -719,7 +719,7 @@ export class ProgressTracker {
             targetDate: new Date(targetDate).toISOString(),
             targetPercentage: targetPercentage,
             description: description,
-            setAt: new Date().toISOString(); }
+            setAt: new Date().toISOString() }
         });
         
         console.log(`Progress goal set: ${language} -> ${targetPercentage}% by ${targetDate)`});
@@ -766,7 +766,7 @@ export class ProgressTracker {
             targetDate: goal.targetDate,
             estimatedCompletionDate: estimatedCompletionDate.toISOString(),
             dailyProgressRate: Math.round(dailyProgressRate * 100) / 100,
-            daysToGoal: Math.ceil(estimatedDaysToGoal),';
+            daysToGoal: Math.ceil(estimatedDaysToGoal),
             isOnTrack: isOnTrack,' };'
             daysAheadBehind: Math.ceil((targetDate.getTime() - estimatedCompletionDate.getTime() / (1000 * 60 * 60 * 24)'); }
         };
@@ -782,13 +782,13 @@ export class ProgressTracker {
             const fullKey = prefix ? `${prefix}.${key}` : key;'
             '';
             if(typeof value === 'object' && value !== null && !Array.isArray(value) {'
-                ';
+                ';'
             }'
                 Object.assign(flattened, this.flattenTranslations(value, fullKey)');' }'
             } else if (typeof value === 'string') { flattened[fullKey] = {'
                     value: value,'';
                     status: value.trim(') ? 'translated' : 'empty','';
-                    quality: 'draft' ;
+                    quality: 'draft' 
 }
                 },
             };
@@ -815,7 +815,7 @@ export class ProgressTracker {
             key: key,
             previousStatus: previousStatus,
             newStatus: newStatus,
-            completionRate: this.languageProgress.get(language)? .completionRate || 0 ;
+            completionRate: this.languageProgress.get(language)? .completionRate || 0 
 }
         }),
         
@@ -847,7 +847,7 @@ export class ProgressTracker {
 }
         const setData = languageSets.get(setName)!;
         const details: SetDetails = { recentUpdates: [],
-            topContributors: [];
+            topContributors: []
 }
             qualityDistribution: { draft: 0, review: 0, approved: 0, final: 0 }
         };
@@ -855,20 +855,20 @@ export class ProgressTracker {
         const contributorMap = new Map<string, number>();
         
         // 最近の更新と品質分布を分析
-        for(const [key, translation] of Object.entries(setData.translations) {'
+        for(const [key, translation] of Object.entries(setData.translations) {
             '';
             if (translation.updatedAt') {
                 details.recentUpdates.push({)
                     key: key)';
                     updatedAt: translation.updatedAt,'';
-                    updatedBy: translation.updatedBy || 'unknown',');
+                    updatedBy: translation.updatedBy || 'unknown',')
         }'
                     status: translation.status)'); }
             }'
             '';
             const quality = translation.quality || 'draft';
             if(details.qualityDistribution.hasOwnProperty(quality) {'
-                ';
+                ';'
             }'
                 (details.qualityDistribution as any')[quality]++; }
             }'
@@ -890,10 +890,10 @@ export class ProgressTracker {
         
         return details;
     }
-    ';
+    ';'
     sortIncompleteItems(items: IncompleteItem[], sortBy: string): void { ''
         switch(sortBy') {'
-            ';
+            ';'
         }'
             case 'priority': }'
                 const priorityOrder: { [key: string]: number } = { high: 3, normal: 2, low: 1 }''
@@ -913,7 +913,7 @@ export class ProgressTracker {
                 break;
         };
 }
-    ';
+    ';'
     formatProgressReport(report: ProgressReport, format: string): any { ''
         switch(format') {'
             '';
@@ -936,14 +936,14 @@ export class ProgressTracker {
         ];
         
         if(report.sets) {
-        ';
+        ';'
             '';
             for (const [setName, setData] of Object.entries(report.sets)') {
         
         }'
                 rows.push([' }'
                     `"${setName}"`,
-                    setData.totalKeys,);
+                    setData.totalKeys);
                     `${setData.progress.completionRate}%`)"
                     `${setData.progress.qualityScore}%`,")"
                     `"${setData.metadata.category}"`")"]"
@@ -985,6 +985,6 @@ let progressTrackerInstance: ProgressTracker | null = null,
 
 /**
  * ProgressTrackerのシングルトンインスタンスを取得
- */'
+ */
 export function getProgressTracker(): ProgressTracker { if (!progressTrackerInstance) {''
         progressTrackerInstance = new ProgressTracker(' })

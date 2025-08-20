@@ -31,21 +31,21 @@ interface MigrationResults { migrationId: string,
 }
 
 interface MigrationError { bubbleType: string,
-    error: string; }
+    error: string }
 }
 
 interface ValidationResults { timestamp: number,
     validated: string[],
     missing: MissingProperty[],
     inconsistent: any[],
-    error?: string; }
+    error?: string }
 }
 
 interface MissingProperty { bubbleType: string,
     missingProperties: {
         health: boolean,
         size: boolean,
-        score: boolean; }
+        score: boolean }
     };
 }
 
@@ -53,7 +53,7 @@ interface RollbackResults { success: boolean,
     migrationId: string,
     rolledBackCount?: number;
     timestamp: number,
-    error?: string; }
+    error?: string }
 }
 
 interface MigrationStats { totalMigrations: number,
@@ -61,7 +61,7 @@ interface MigrationStats { totalMigrations: number,
     failedMigrations: number,
     successRate: string,
     totalMigratedTypes: number,
-    lastMigration: MigrationResults | null; }
+    lastMigration: MigrationResults | null }
 }
 
 export class ConfigurationMigrationUtility {
@@ -69,7 +69,7 @@ export class ConfigurationMigrationUtility {
     private errorHandler: ErrorHandler;
     private migrationHistory: MigrationResults[];
     constructor() {
-';
+';'
         this.configManager = getConfigurationManager();''
         this.errorHandler = getErrorHandler('';
     }
@@ -83,7 +83,7 @@ export class ConfigurationMigrationUtility {
      */
     async migrateBubbleConfigurations(): Promise<MigrationResults> {'
         const migrationId = `bubble_migration_${Date.now(})}`;''
-        const startTime = Date.now('')';
+        const startTime = Date.now()';
             console.log('[ConfigurationMigrationUtility] 泡設定の移行開始'');
             
             const migrationResults: MigrationResults = { migrationId,
@@ -93,7 +93,7 @@ export class ConfigurationMigrationUtility {
                 totalMigrated: 0 }
             },
             
-            // 基本泡タイプの設定'
+            // 基本泡タイプの設定
             const basicBubbleTypes = ['';
                 'normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison', ']';
                 'spiky', 'rainbow', 'clock', 'score', 'electric', 'escaping', 'cracked'];
@@ -119,7 +119,7 @@ export class ConfigurationMigrationUtility {
                 }
             }
             
-            // 新しい泡タイプの設定'
+            // 新しい泡タイプの設定
             const newBubbleTypes = [']';
                 'golden', 'frozen', 'magnetic', 'explosive', 'phantom', 'multiplier'];
             ];
@@ -153,11 +153,11 @@ export class ConfigurationMigrationUtility {
             
             console.log(`[ConfigurationMigrationUtility] 移行完了: ${migrationResults.totalMigrated}タイプ, ${migrationResults.errors.length)エラー`});
             
-            return migrationResults;'
+            return migrationResults;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', {')'
-                context: 'ConfigurationMigrationUtility.migrateBubbleConfigurations'); }
+                context: 'ConfigurationMigrationUtility.migrateBubbleConfigurations') }
             });
             
             return { migrationId,
@@ -186,7 +186,7 @@ export class ConfigurationMigrationUtility {
         
         let migrated = false;
         ';
-        // 基本設定の移行''
+        // 基本設定の移行
         if (bubbleConfig.health !== undefined') { ' }'
             this.configManager.set('game', `bubbles.${bubbleType).health`, bubbleConfig.health});
             migrated = true;
@@ -212,7 +212,7 @@ export class ConfigurationMigrationUtility {
             migrated = true;
         }
         
-        // 特殊効果の移行'
+        // 特殊効果の移行
         const specialEffects = this._extractSpecialEffects(bubbleType, bubbleConfig);''
         for (const [effectKey, effectValue] of Object.entries(specialEffects)') { ' }'
             this.configManager.set('game', `bubbles.${bubbleType}.${effectKey)`, effectValue});
@@ -334,7 +334,7 @@ export class ConfigurationMigrationUtility {
             },
             // 新しい泡タイプ
             golden: { health: 1,
-                size: 55,';
+                size: 55,
                 maxAge: 8000,'';
                 color: '#FFD700',
                 score: 500,
@@ -390,7 +390,7 @@ export class ConfigurationMigrationUtility {
     private _extractSpecialEffects(bubbleType: string, config: BubbleConfig'): Record<string, any> {
         const effects: Record<string, any> = {};
         ';
-        // 基本設定以外のプロパティを特殊効果として扱う''
+        // 基本設定以外のプロパティを特殊効果として扱う
         const basicProperties = new Set(['health', 'size', 'maxAge', 'score', 'color']);
         
         for(const [key, value] of Object.entries(config) {
@@ -409,7 +409,7 @@ export class ConfigurationMigrationUtility {
      * 設定の検証
      * @returns {Promise<ValidationResults>} 検証結果
      */
-    async validateMigration(): Promise<ValidationResults> { try {'
+    async validateMigration(): Promise<ValidationResults> { try {
             const validationResults: ValidationResults = {''
                 timestamp: Date.now(''';
                 'normal', 'stone', 'iron', 'diamond', 'boss', 'pink', 'poison', '';
@@ -429,7 +429,7 @@ export class ConfigurationMigrationUtility {
                 } else {  validationResults.missing.push({
                         bubbleType,
                         missingProperties: {
-                            health: healthConfig === null,);
+                            health: healthConfig === null);
                             size: sizeConfig === null) }
                             score: scoreConfig === null) }
                         }),
@@ -440,9 +440,9 @@ export class ConfigurationMigrationUtility {
             
             return validationResults;'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', {')'
-                context: 'ConfigurationMigrationUtility.validateMigration'); }
+                context: 'ConfigurationMigrationUtility.validateMigration') }
             });
             
             return { timestamp: Date.now(),
@@ -480,9 +480,9 @@ export class ConfigurationMigrationUtility {
                 migrationId, };
                 rolledBackCount: rolledBack, }
                 timestamp: Date.now(}),
-            };'
+            };
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error as Error, 'MIGRATION_ERROR', {')'
                 context: 'ConfigurationMigrationUtility.rollbackMigration',);
                 migrationId); }
@@ -537,6 +537,6 @@ export function getConfigurationMigrationUtility(): ConfigurationMigrationUtilit
 /**
  * 泡設定の移行を実行するヘルパー関数
  * @returns {Promise<MigrationResults>} 移行結果
- */'
+ */
 export async function migrateBubbleConfigurations(): Promise<MigrationResults> { const utility = getConfigurationMigrationUtility();''
     return await utility.migrateBubbleConfigurations(') };

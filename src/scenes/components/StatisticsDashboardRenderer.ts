@@ -4,12 +4,12 @@
  */
 
 interface GameEngine { errorHandler?: {
-        handleError(error: Error, context: any): void; }
+        handleError(error: Error, context: any): void }
     };
-    statisticsDashboard?: { render(context: CanvasRenderingContext2D, options: RenderOptions): Promise<void>;
+    statisticsDashboard?: { render(context: CanvasRenderingContext2D, options: RenderOptions): Promise<void>
     }
     };
-    chartRenderer?: { render(context: CanvasRenderingContext2D, type: string, data: any, options: any): Promise<void>;
+    chartRenderer?: { render(context: CanvasRenderingContext2D, type: string, data: any, options: any): Promise<void>
     }
     };
     debugMode?: boolean;
@@ -17,15 +17,15 @@ interface GameEngine { errorHandler?: {
 
 interface EventBus { on(event: string, callback: Function): void,
     off(event: string): void,
-    emit(event: string, data?: any): void; }
+    emit(event: string, data?: any): void }
 }
 
 interface AccessibilitySettings { highContrast: boolean,
     largeText: boolean,
-    reducedMotion: boolean; }
+    reducedMotion: boolean }
 }
 
-interface ComponentState { accessibilitySettings: AccessibilitySettings;
+interface ComponentState { accessibilitySettings: AccessibilitySettings
     }
 }
 
@@ -33,7 +33,7 @@ interface StatisticsDisplaySettings { showDashboard: boolean,
     showCharts: boolean,
     showDetailedStats: boolean,
     enableAnimations: boolean,
-    compactMode: boolean; }
+    compactMode: boolean }
 }
 
 interface RenderOptions { data: any,
@@ -44,7 +44,7 @@ interface RenderOptions { data: any,
     compactMode: boolean,
     largeText: boolean,
     width: number,
-    height: number; }
+    height: number }
 }
 
 interface StatisticsData { basic?: {
@@ -60,7 +60,7 @@ interface StatisticsData { basic?: {
         accuracy?: string;
         averageReactionTime?: string;
         favoriteType?: {
-            type: string; }
+            type: string }
         };
         typeBreakdown?: Record<string, { count: number }>;
     };
@@ -80,7 +80,7 @@ interface StatisticsData { basic?: {
 
 interface StatCard { title: string,
     value: number,
-    unit: string; }
+    unit: string }
 }
 
 export class StatisticsDashboardRenderer {
@@ -98,8 +98,8 @@ export class StatisticsDashboardRenderer {
     private statisticsData: StatisticsData | null = null;
     // ダッシュボード設定
     private statisticsDisplaySettings: StatisticsDisplaySettings;
-    ';
-    // 統計システム参照''
+    ;
+    // 統計システム参照
     private statisticsDashboard: GameEngine['statisticsDashboard'] | null = null'';
     private chartRenderer: GameEngine['chartRenderer'] | null = null;
     constructor(gameEngine: GameEngine, eventBus: EventBus, state: ComponentState) {
@@ -134,13 +134,13 @@ export class StatisticsDashboardRenderer {
     }
     
     /**
-     * イベントリスナーの設定'
+     * イベントリスナーの設定
      */''
-    private setupEventListeners('')';
+    private setupEventListeners()';
         this.eventBus.on('statistics-data-updated', (data: StatisticsData) => { this.statisticsData = data;' }'
         }');
         ';
-        // 設定変更イベント''
+        // 設定変更イベント
         this.eventBus.on('statistics-display-settings-changed', (settings: Partial<StatisticsDisplaySettings>) => {  }
             this.statisticsDisplaySettings = { ...this.statisticsDisplaySettings, ...settings };
         });
@@ -165,11 +165,11 @@ export class StatisticsDashboardRenderer {
             if (this.gameEngine.chartRenderer) { this.chartRenderer = this.gameEngine.chartRenderer; }
             } else {  // フォールバック: 簡易チャート実装
                 this.chartRenderer = { }
-                    render: this.renderFallbackChart.bind(this); }'
+                    render: this.renderFallbackChart.bind(this); }
                 };''
-            } catch (error') { this.errorHandler? .handleError(error as Error, { : undefined')'
+            } catch (error) { this.errorHandler? .handleError(error as Error, { : undefined')'
                 context: 'StatisticsDashboardRenderer.initializeStatisticsSystems',')';
-                details: '統計システムの初期化でエラーが発生しました'); }
+                details: '統計システムの初期化でエラーが発生しました') }
             });
         }
     }
@@ -182,11 +182,11 @@ export class StatisticsDashboardRenderer {
      * @param width - 描画幅
      * @param height - 描画高さ
      */
-    render(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { try {'
+    render(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number): void { try {
             this.renderStatisticsDashboard(context, x, y, width, height);' }'
-        } catch (error') { this.errorHandler? .handleError(error as Error, { : undefined')'
+        } catch (error) { this.errorHandler? .handleError(error as Error, { : undefined')'
                 context: 'StatisticsDashboardRenderer.render',')';
-                details: 'ダッシュボードレンダリングでエラーが発生しました'); }
+                details: 'ダッシュボードレンダリングでエラーが発生しました') }
             });
             this.renderErrorFallback(context, x, y, width, height, error as Error);
         }
@@ -208,7 +208,7 @@ export class StatisticsDashboardRenderer {
             return; }
         }
         ';
-        try { // ダッシュボード用のサブキャンバス作成''
+        try { // ダッシュボード用のサブキャンバス作成
             const dashboardCanvas = document.createElement('canvas'');
             dashboardCanvas.width = width;'
             dashboardCanvas.height = height;''
@@ -216,20 +216,20 @@ export class StatisticsDashboardRenderer {
             
             // ダッシュボードの描画
             await this.statisticsDashboard.render(dashboardContext, {
-                data: this.statisticsData,';
+                data: this.statisticsData,
                 animated: this.statisticsDisplaySettings.enableAnimations,'';
                 backgroundColor: this.accessibilitySettings.highContrast ? '#000000' : '#FFFFFF','';
                 textColor: this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333','';
                 accentColor: this.accessibilitySettings.highContrast ? '#FFFF00' : '#4a90e2',
-                compactMode: this.statisticsDisplaySettings.compactMode,);
+                compactMode: this.statisticsDisplaySettings.compactMode);
                 largeText: this.accessibilitySettings.largeText);
                 width: width,);
                 height: height),
             
             // メインキャンバスに描画;
-            context.drawImage(dashboardCanvas, x, y);'
+            context.drawImage(dashboardCanvas, x, y);
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             console.error('Dashboard rendering failed:', error');''
             this.renderNoDataMessage(context, x, y, width, height, 'ダッシュボードの描画に失敗しました'); }
         }
@@ -243,17 +243,17 @@ export class StatisticsDashboardRenderer {
     private async renderFallbackDashboard(context: CanvasRenderingContext2D, options: RenderOptions = { ) as RenderOptions'): Promise<void> }
         const { width, height, backgroundColor, textColor, accentColor } = options;
         ';
-        // 背景''
+        // 背景
         context.fillStyle = backgroundColor || (this.accessibilitySettings.highContrast ? '#000000' : '#F8FAFC');''
         context.fillRect(0, 0, width, height');
         ';
-        // 枠線''
+        // 枠線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB';
         context.lineWidth = this.accessibilitySettings.highContrast ? 2 : 1;
         context.strokeRect(0, 0, width, height);'
         '';
         if(!this.statisticsData') {'
-            // データなしメッセージ''
+            // データなしメッセージ
             context.fillStyle = textColor || (this.accessibilitySettings.highContrast ? '#FFFFFF' : '#666666'');''
             context.font = this.accessibilitySettings.largeText ? '18px Arial' : '16px Arial';''
             context.textAlign = 'center';''
@@ -263,7 +263,7 @@ export class StatisticsDashboardRenderer {
             return; }
         }
         ';
-        // ダッシュボードタイトル''
+        // ダッシュボードタイトル
         context.fillStyle = accentColor || (this.accessibilitySettings.highContrast ? '#FFFF00' : '#4a90e2'');''
         context.font = this.accessibilitySettings.largeText ? 'bold 20px Arial' : 'bold 18px Arial';''
         context.textAlign = 'center';''
@@ -281,12 +281,12 @@ export class StatisticsDashboardRenderer {
      * @param y - 描画Y座標
      * @param width - 描画幅
      * @param height - 描画高さ
-     * @param options - レンダリングオプション'
+     * @param options - レンダリングオプション
      */''
     private renderSimpleStatsCards(context: CanvasRenderingContext2D, x: number, y: number, width: number, height: number, options: RenderOptions = { ) as RenderOptions'): void { }
         const { textColor, accentColor } = options;
         
-        // 統計データの準備'
+        // 統計データの準備
         const stats: StatCard[] = [{ ''
                 title: 'プレイ回数',';
                 value: this.statisticsData? .basic?.totalGamesPlayed || 0, : undefined'';
@@ -333,28 +333,28 @@ export class StatisticsDashboardRenderer {
      * @param y - 描画Y座標
      * @param width - 描画幅
      * @param height - 描画高さ
-     * @param options - レンダリングオプション'
+     * @param options - レンダリングオプション
      */''
     private renderStatsCard(context: CanvasRenderingContext2D, stat: StatCard, x: number, y: number, width: number, height: number, options: { textColor?: string; accentColor?: string } = { )'): void { }
         const { textColor, accentColor } = options;
         ';
-        // カード背景''
+        // カード背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#222222' : '#FFFFFF';''
         context.fillRect(x, y, width, height');
         ';
-        // カード枠線''
+        // カード枠線
         context.strokeStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#E5E7EB';'
         context.lineWidth = this.accessibilitySettings.highContrast ? 2 : 1;''
         context.strokeRect(x, y, width, height');
         ';
-        // タイトル''
+        // タイトル
         context.fillStyle = textColor || (this.accessibilitySettings.highContrast ? '#CCCCCC' : '#666666'');''
         context.font = this.accessibilitySettings.largeText ? '14px Arial' : '12px Arial';''
         context.textAlign = 'center';''
         context.textBaseline = 'top';''
         context.fillText(stat.title, x + width / 2, y + 10');
         ';
-        // 値''
+        // 値
         context.fillStyle = accentColor || (this.accessibilitySettings.highContrast ? '#FFFFFF' : '#333333'');''
         context.font = this.accessibilitySettings.largeText ? 'bold 24px Arial' : 'bold 20px Arial';''
         context.textAlign = 'center';''
@@ -375,11 +375,11 @@ export class StatisticsDashboardRenderer {
     }
         const { width, height } = options;
         ';
-        // 背景''
+        // 背景
         context.fillStyle = this.accessibilitySettings.highContrast ? '#000000' : '#FFFFFF';''
         context.fillRect(0, 0, width || 400, height || 300');
         ';
-        // プレースホルダーメッセージ''
+        // プレースホルダーメッセージ
         context.fillStyle = this.accessibilitySettings.highContrast ? '#FFFFFF' : '#666666';''
         context.font = this.accessibilitySettings.largeText ? '16px Arial' : '14px Arial';''
         context.textAlign = 'center';''
@@ -425,7 +425,7 @@ export class StatisticsDashboardRenderer {
         const errorText = 'ダッシュボード表示でエラーが発生しました';
         context.fillText(errorText, x + width / 2, y + height / 2);
         ';
-        // デバッグ情報（開発時のみ）''
+        // デバッグ情報（開発時のみ）
         if(this.gameEngine.debugMode') {'
             '';
             context.font = '12px monospace';
@@ -444,9 +444,9 @@ export class StatisticsDashboardRenderer {
             // ダッシュボード内のインタラクティブ要素のクリック処理
             // 現在の実装では特別なクリック処理は不要
             // 将来的にチャートのドリルダウン等を実装する場合はここで処理
-            return false;'
+            return false;
             ' }'
-        } catch (error') { this.errorHandler? .handleError(error as Error, { : undefined')'
+        } catch (error) { this.errorHandler? .handleError(error as Error, { : undefined')'
                 context: 'StatisticsDashboardRenderer.handleClick'), }
                 details: `クリック処理でエラーが発生しました: (${x}, ${y})`
             });
@@ -461,11 +461,11 @@ export class StatisticsDashboardRenderer {
     update(deltaTime: number): void { try {
             // アニメーション等が必要な場合はここで処理
             // 現在の実装では静的表示のため何もしない
-            // 将来的にリアルタイム更新やアニメーションを実装する場合はここで処理'
+            // 将来的にリアルタイム更新やアニメーションを実装する場合はここで処理
             ' }'
-        } catch (error') { this.errorHandler? .handleError(error as Error, { : undefined')'
+        } catch (error) { this.errorHandler? .handleError(error as Error, { : undefined')'
                 context: 'StatisticsDashboardRenderer.update',')';
-                details: 'ダッシュボード更新処理でエラーが発生しました'); }
+                details: 'ダッシュボード更新処理でエラーが発生しました') }
             });
         }
     }
@@ -482,13 +482,13 @@ export class StatisticsDashboardRenderer {
     /**
      * コンポーネントのクリーンアップ'
      */''
-    cleanup('')';
+    cleanup()';
         this.eventBus.off('statistics-data-updated'');''
         this.eventBus.off('statistics-display-settings-changed'');
         
         // データのクリア
         this.statisticsData = null;
         this.statisticsDashboard = null;
-        this.chartRenderer = null;'
+        this.chartRenderer = null;
     }''
 }

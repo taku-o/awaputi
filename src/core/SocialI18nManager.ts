@@ -12,21 +12,21 @@ export class SocialI18nManager {'
         
         // 設定
         this.config = {
-            // 対応言語（優先度順）'
+            // 対応言語（優先度順）
             supportedLanguages: ['';
-                'ja', // 日本語（デフォルト）'';
-                'en', // 英語'';
-                'ko', // 韓国語'';
-                'zh-CN', // 中国語（簡体字）'';
-                'zh-TW', // 中国語（繁体字）'';
-                'es', // スペイン語'';
-                'fr', // フランス語'';
-                'de', // ドイツ語'';
+                'ja', // 日本語（デフォルト）;
+                'en', // 英語;
+                'ko', // 韓国語;
+                'zh-CN', // 中国語（簡体字）;
+                'zh-TW', // 中国語（繁体字）;
+                'es', // スペイン語;
+                'fr', // フランス語;
+                'de', // ドイツ語;
                 'pt', // ポルトガル語']';
                 'ru'  // ロシア語];
             ],
             
-            // 地域別設定'
+            // 地域別設定
             regionalSettings: {''
                 'ja': {''
                     platforms: ['twitter', 'line', 'facebook', 'copy'],'';
@@ -102,14 +102,14 @@ export class SocialI18nManager {'
                 ttl: options.cacheTtl || 3600000 // 1時間 }
             },
             
-            // フォールバック設定'
+            // フォールバック設定
             fallback: { ''
                 language: options.fallbackLanguage || 'en',
                 enabled: options.fallback !== false }
             }
         },
         
-        // 状態管理'
+        // 状態管理
         this.state = { ''
             currentLanguage: 'ja','';
             loadedLanguages: new Set(['ja']'),
@@ -118,7 +118,7 @@ export class SocialI18nManager {'
         },
         
         // メッセージテンプレート
-        this.messageTemplates = { // 基本共有メッセージ'
+        this.messageTemplates = { // 基本共有メッセージ
             shareScore: {' }'
                 ja: 'BubblePopで{score}点を獲得しました！🎮 #{gameTitle} #{score}点',''
                 en: 'I scored {score} points in BubblePop! 🎮 #{gameTitle} #{score}points',''
@@ -132,7 +132,7 @@ export class SocialI18nManager {'
                 ru: 'Я набрал {score} очков в BubblePop! 🎮 #{gameTitle} #{score}очков'
             },
             
-            // ハイスコア達成'
+            // ハイスコア達成
             highScore: { ' }'
                 ja: '🏆 新記録達成！BubblePopで{score}点の新ハイスコアを樹立しました！',''
                 en: '🏆 New High Score! Achieved {score} points in BubblePop!',''
@@ -146,7 +146,7 @@ export class SocialI18nManager {'
                 ru: '🏆 Новый рекорд! Достиг {score} очков в BubblePop!'
             },
             
-            // 実績解除'
+            // 実績解除
             achievement: { ' }'
                 ja: '🎖️ 実績「{achievementName}」を解除しました！BubblePopで新たな挑戦を達成！',''
                 en: '🎖️ Achievement unlocked: \"{achievementName}\"! Conquered a new challenge in BubblePop!',''
@@ -160,7 +160,7 @@ export class SocialI18nManager {'
                 ru: '🎖️ Достижение разблокировано: \"{achievementName}\"! Покорил новый вызов в BubblePop!'
             },
             
-            // チャレンジ完了'
+            // チャレンジ完了
             challengeComplete: { ' }'
                 ja: '✅ チャレンジ「{challengeName}」完了！{reward}を獲得しました！',''
                 en: '✅ Challenge \"{challengeName}\" completed! Earned {reward}!',''
@@ -174,7 +174,7 @@ export class SocialI18nManager {'
                 ru: '✅ Вызов \"{challengeName}\" завершен! Получил {reward}!'
             },
             
-            // リーダーボード'
+            // リーダーボード
             leaderboard: { ' }'
                 ja: '🏅 BubblePopリーダーボードで{rank}位にランクイン！総スコア{totalScore}点',''
                 en: '🏅 Ranked #{rank} on BubblePop leaderboard! Total score: {totalScore}',''
@@ -191,7 +191,7 @@ export class SocialI18nManager {'
         
         // UIテキスト
         this.uiTexts = { // 共有ダイアログ
-            shareDialog: {'
+            shareDialog: {
                 title: {''
                     ja: '共有','';
                     en: 'Share','';
@@ -267,7 +267,7 @@ export class SocialI18nManager {'
                 }
             },
             
-            // チャレンジUI'
+            // チャレンジUI
             challengeUI: { title: {''
                     ja: 'チャレンジ','';
                     en: 'Challenges','';
@@ -319,7 +319,7 @@ export class SocialI18nManager {'
                 }
             },
             
-            // リーダーボード'
+            // リーダーボード
             leaderboard: { title: {''
                     ja: 'リーダーボード','';
                     en: 'Leaderboard','';
@@ -365,7 +365,7 @@ export class SocialI18nManager {'
         // フォーマッター
         this.formatters = { number: this.createNumberFormatter.bind(this),
             date: this.createDateFormatter.bind(this),
-            currency: this.createCurrencyFormatter.bind(this); }
+            currency: this.createCurrencyFormatter.bind(this) }
         };
         
         // 統計
@@ -374,9 +374,9 @@ export class SocialI18nManager {'
             cacheMisses: 0,
             languageChanges: 0,
             errors: 0 }
-        },'
+        },
         '';
-        this.initialize('')';
+        this.initialize()';
         this.log('SocialI18nManager初期化完了');
     }
     
@@ -385,11 +385,11 @@ export class SocialI18nManager {'
      */
     initialize() {
         try {
-            // LocalizationManagerの現在の言語を取得'
+            // LocalizationManagerの現在の言語を取得
             if (this.localizationManager) {''
                 this.state.currentLanguage = this.localizationManager.getCurrentLanguage(') || 'ja';
                 ';
-                // 言語変更イベントのリスナー登録''
+                // 言語変更イベントのリスナー登録
                 if (typeof this.localizationManager.addChangeListener === 'function') {
     }
                     this.localizationManager.addChangeListener((newLanguage, oldLanguage) => {  }
@@ -399,9 +399,9 @@ export class SocialI18nManager {'
             }
             
             // 現在の言語を読み込み済みとして設定
-            this.state.loadedLanguages.add(this.state.currentLanguage);'
+            this.state.loadedLanguages.add(this.state.currentLanguage);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.handleError('SOCIAL_I18N_INIT_FAILED', error); }
         }
     }
@@ -441,9 +441,9 @@ export class SocialI18nManager {'
                 this.cleanupCache(); }
             }
             
-            return message;'
+            return message;
             '';
-        } catch (error') { this.stats.errors++;' }'
+        } catch (error) { this.stats.errors++;' }'
             this.handleError('GET_MESSAGE_FAILED', error, { messageKey, language, params };)
             return this.getFallbackMessage(messageKey, params);
         }
@@ -485,9 +485,9 @@ export class SocialI18nManager {'
                 this.cleanupCache(); }
             }
             
-            return text;'
+            return text;
             '';
-        } catch (error') { this.stats.errors++;' }'
+        } catch (error) { this.stats.errors++;' }'
             this.handleError('GET_UI_TEXT_FAILED', error, { category, key, language };)
             return this.getFallbackUIText(category, key);
         }
@@ -505,7 +505,7 @@ export class SocialI18nManager {'
             return regionalSetting.platforms; }
         }
         
-        // フォールバック'
+        // フォールバック
         return this.config.regionalSettings[this.config.fallback.language]? .platforms || '';
                ['twitter', 'facebook', 'copy'];
     }
@@ -522,7 +522,7 @@ export class SocialI18nManager {'
             return regionalSetting.socialHosts[platform]; }
         }
         
-        // デフォルトホスト'
+        // デフォルトホスト
         const defaultHosts = { : undefined''
             twitter: 'twitter.com','';
             facebook: 'facebook.com','';
@@ -594,7 +594,7 @@ export class SocialI18nManager {'
         // パラメータ置換
         Object.keys(params).forEach(key => { 
             const value = params[key];
-            let formattedValue = value;)'
+            let formattedValue = value;)
             ')';
             // 型に応じてフォーマット');''
             if (typeof value === 'number'') {'
@@ -615,7 +615,7 @@ export class SocialI18nManager {'
      * フォールバックメッセージの取得'
      */''
     getFallbackMessage(messageKey, params') {'
-        // LocalizationManagerにフォールバック''
+        // LocalizationManagerにフォールバック
         if (this.localizationManager && typeof this.localizationManager.get === 'function') {
     }
             try { }
@@ -629,10 +629,10 @@ export class SocialI18nManager {'
     }
     
     /**
-     * フォールバックUIテキストの取得'
+     * フォールバックUIテキストの取得
      */''
     getFallbackUIText(category, key') {'
-        // LocalizationManagerにフォールバック''
+        // LocalizationManagerにフォールバック
         if (this.localizationManager && typeof this.localizationManager.get === 'function') {
     }
             try { }
@@ -657,13 +657,13 @@ export class SocialI18nManager {'
     }
     
     /**
-     * 日付フォーマッターの作成'
+     * 日付フォーマッターの作成
      */''
     createDateFormatter(language') {
-        try {'
+        try {
             return new Intl.DateTimeFormat(language, {''
                 year: 'numeric',')';
-                month: '2-digit',');
+                month: '2-digit',')
     }'
                 day: '2-digit'); }
             };
@@ -678,14 +678,14 @@ export class SocialI18nManager {'
         const regionalSetting = this.config.regionalSettings[language];''
         const currency = regionalSetting ? regionalSetting.currency: 'USD',
         
-        try {'
+        try {
             return new Intl.NumberFormat(language, {')'
-                style: 'currency',);
+                style: 'currency',)
     }'
                 currency: currency);' }'
-        } catch (error') { return new Intl.NumberFormat(this.config.fallback.language, {')'
+        } catch (error) { return new Intl.NumberFormat(this.config.fallback.language, {')'
                 style: 'currency',')';
-                currency: 'USD'); }
+                currency: 'USD') }
             };
         }
     }
@@ -697,11 +697,11 @@ export class SocialI18nManager {'
         this.state.currentLanguage = newLanguage;
         this.stats.languageChanges++;
         
-        // キャッシュをクリア'
+        // キャッシュをクリア
         if (this.config.cache.enabled) {''
-            this.cache.clear('');
+            this.cache.clear();
     }'
-        this.log('言語変更', { from: oldLanguage, to: newLanguage ); }
+        this.log('言語変更', { from: oldLanguage, to: newLanguage ) }
     }
     
     /**
@@ -746,7 +746,7 @@ export class SocialI18nManager {'
      */
     getStats() {
         return { ...this.stats,
-            cacheSize: this.cache.size,';
+            cacheSize: this.cache.size,
             cacheHitRate: this.stats.translationRequests > 0 '';
                 ? (this.stats.cacheHits / this.stats.translationRequests * 100).toFixed(2') + '%''';
                 : '0%',
@@ -766,9 +766,9 @@ export class SocialI18nManager {'
         this.config = { ...this.config, ...newConfig };
         
         // キャッシュクリア
-        if(this.config.cache.enabled) {'
+        if(this.config.cache.enabled) {
             '';
-            this.cache.clear('');
+            this.cache.clear();
         }'
         this.log('設定更新', newConfig); }
     }
@@ -778,7 +778,7 @@ export class SocialI18nManager {'
      */
     clearCache() {'
         '';
-        this.cache.clear('');
+        this.cache.clear();
     }'
         this.log('キャッシュクリア'); }
     }
@@ -796,7 +796,7 @@ export class SocialI18nManager {'
         };'
         '';
         if(ErrorHandler') {'
-            ';
+            ';'
         }'
             ErrorHandler.handleError(error, 'SocialI18nManager', context'); }
         }'
@@ -810,7 +810,7 @@ export class SocialI18nManager {'
     log(message, data = null, level = 'info') {'
         const logEntry = {''
             timestamp: Date.now(''';
-        const consoleMethod = level === 'error' ? 'error' : ';
+        const consoleMethod = level === 'error' ? 'error' : ';'
     })'
                             level === 'warn' ? 'warn' : 'log';') }'
         console[consoleMethod](`[SocialI18nManager] ${message}`, data || ''');

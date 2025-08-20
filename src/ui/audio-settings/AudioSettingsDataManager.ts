@@ -14,7 +14,7 @@ interface AudioSettingsFile { version: string,
         master: number,
         bgm: number,
         sfx: number,
-        muted: boolean; }
+        muted: boolean }
     };
     quality?: { sampleRate?: number;
         bufferSize?: number;
@@ -33,7 +33,7 @@ interface AudioSettingsFile { version: string,
 }
 
 /**
- * Notification callback type'
+ * Notification callback type
  */''
 type NotificationCallback = (message: string, type: 'success' | 'error' | 'info'') => void;
 
@@ -72,7 +72,7 @@ export class AudioSettingsDataManager {
     }
     
     /**
-     * 設定をエクスポート'
+     * 設定をエクスポート
      */''
     async exportSettings(''';
                 version: '1.0','';
@@ -85,12 +85,12 @@ export class AudioSettingsDataManager {
                 quality: { ''
                     sampleRate: this.configManager.get('audio.quality.sampleRate',')';
                     bufferSize: this.configManager.get('audio.quality.bufferSize',')';
-                    compression: this.configManager.get('audio.effects.compression''); }
+                    compression: this.configManager.get('audio.effects.compression'') }
                 },'
                 effects: { ''
                     reverb: this.configManager.get('audio.effects.reverb',')';
                     compression: this.configManager.get('audio.effects.compression',')';
-                    environmentalAudio: this.configManager.get('audio.effects.environmentalAudio'); }
+                    environmentalAudio: this.configManager.get('audio.effects.environmentalAudio') }
                 },'
                 equalizer: (this.audioManager as any).audioController ?   : undefined'';
                     (this.audioManager as any).audioController.getEqualizerSettings(''';
@@ -101,7 +101,7 @@ export class AudioSettingsDataManager {
                 }
             };
             ';
-            // JSONファイルとしてダウンロード''
+            // JSONファイルとしてダウンロード
             const json = JSON.stringify(settings, null, 2');''
             const blob = new Blob([json], { type: 'application/json' ),''
             const url = URL.createObjectURL(blob');'
@@ -115,25 +115,25 @@ export class AudioSettingsDataManager {
             '';
             URL.revokeObjectURL(url');
             ';
-            // 成功音を再生''
+            // 成功音を再生
             this.audioManager.playSound('success', { volume: 0.5 ),
             ';
-            // 成功メッセージを表示''
-            this._showNotification('')';
+            // 成功メッセージを表示
+            this._showNotification()';
                 this.localizationManager.getText('audio.settings.export.success''),'';
                 'success''';
             ');'
             '';
             console.log('Audio settings exported successfully');'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'UI_ERROR', {')'
                 component: 'AudioSettingsDataManager',')';
                 operation: 'exportSettings'),' }'
             }');'
             '';
             this.audioManager.playSound('error', { volume: 0.5 ),''
-            this._showNotification('')';
+            this._showNotification()';
                 this.localizationManager.getText('audio.settings.export.error''),'';
                 'error';
             ); }
@@ -143,7 +143,7 @@ export class AudioSettingsDataManager {
     /**
      * 設定をインポート'
      */''
-    async importSettings('')';
+    async importSettings()';
             const input = document.createElement('input'');''
             input.type = 'file';''
             input.accept = '.json';''
@@ -163,13 +163,13 @@ export class AudioSettingsDataManager {
                     try { const text = await file.text();
                         const settings = JSON.parse(text) as AudioSettingsFile;
                         ';
-                        // 設定ファイルを検証''
+                        // 設定ファイルを検証
                         if (!this.validateSettingsFile(settings)') {''
                             throw new Error('Invalid settings file format'); }
                         }
                         ';
-                        // 確認ダイアログ''
-                        const confirm = window.confirm('')';
+                        // 確認ダイアログ
+                        const confirm = window.confirm()';
                             this.localizationManager.getText('audio.settings.import.confirm');
                         if(!confirm) {
                             resolve(null);
@@ -177,14 +177,14 @@ export class AudioSettingsDataManager {
                             return; }
                         }
                         ';
-                        // 設定を適用''
+                        // 設定を適用
                         await this.applyImportedSettings(settings');
                         ';
-                        // 成功音を再生 : undefined''
+                        // 成功音を再生 : undefined
                         this.audioManager.playSound('success', { volume: 0.5 ),
                         ';
-                        // 成功メッセージを表示''
-                        this._showNotification('')';
+                        // 成功メッセージを表示
+                        this._showNotification()';
                             this.localizationManager.getText('audio.settings.import.success''),'';
                             'success''';
                         ');'
@@ -192,7 +192,7 @@ export class AudioSettingsDataManager {
                         console.log('Audio settings imported successfully');
                         resolve(settings);'
                         ' }'
-                    } catch (parseError') { ''
+                    } catch (parseError) { ''
                         this.errorHandler.handleError(parseError, 'UI_ERROR', {''
                             component: 'AudioSettingsDataManager',')';
                             operation: 'importSettings',')';
@@ -200,7 +200,7 @@ export class AudioSettingsDataManager {
                         }');'
                         '';
                         this.audioManager.playSound('error', { volume: 0.5 ),''
-                        this._showNotification('')';
+                        this._showNotification()';
                             this.localizationManager.getText('audio.settings.import.parseError''),'';
                             'error';
                         );
@@ -213,12 +213,12 @@ export class AudioSettingsDataManager {
                 
                 document.body.appendChild(input);
                 input.click();
-            });'
+            });
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'UI_ERROR', {')'
                 component: 'AudioSettingsDataManager',')';
-                operation: 'importSettings'); }
+                operation: 'importSettings') }
             });
             throw error;
         }
@@ -227,12 +227,12 @@ export class AudioSettingsDataManager {
     /**
      * 設定をリセット
      */'
-    async resetSettings(): Promise<boolean> { try {''
-            const confirm = window.confirm('')';
+    async resetSettings(): Promise<boolean> { try {'
+            const confirm = window.confirm()';
                 this.localizationManager.getText('audio.settings.confirmReset');''
             if (!confirm') return false;
             ';
-            // デフォルト値に戻す''
+            // デフォルト値に戻す
             await this.configManager.set('audio.volumes.master', 1.0');''
             await this.configManager.set('audio.volumes.bgm', 0.7');''
             await this.configManager.set('audio.volumes.sfx', 0.8');''
@@ -240,17 +240,17 @@ export class AudioSettingsDataManager {
             await this.configManager.set('audio.effects.reverb', true');''
             await this.configManager.set('audio.effects.compression', true);
             ';
-            // AudioManagerの設定を同期''
-            this.audioManager.syncWithConfig('')';
+            // AudioManagerの設定を同期
+            this.audioManager.syncWithConfig()';
             this.audioManager.playSound('success', { volume: 0.5 )'),'
             '';
             console.log('Audio settings reset to defaults');
             return true;'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'UI_ERROR', {')'
                 component: 'AudioSettingsDataManager',')';
-                operation: 'resetSettings'); }
+                operation: 'resetSettings') }
             });
             return false;
         }
@@ -259,15 +259,15 @@ export class AudioSettingsDataManager {
     /**
      * 設定ファイルを検証'
      */''
-    validateSettingsFile(settings: any'): settings is AudioSettingsFile { try {'
-            // 基本構造をチェック''
+    validateSettingsFile(settings: any'): settings is AudioSettingsFile { try {
+            // 基本構造をチェック
             if(!settings || typeof settings !== 'object'') {
                 
             }
                 return false; }
             }
             ';
-            // 必須フィールドをチェック''
+            // 必須フィールドをチェック
             const requiredFields = ['version', 'volumes'];
             for(const field of requiredFields) {'
                 '';
@@ -277,7 +277,7 @@ export class AudioSettingsDataManager {
                 }
             }
             
-            // 音量設定をチェック'
+            // 音量設定をチェック
             const volumes = settings.volumes;''
             if (!volumes || typeof volumes !== 'object'') { return false; }
             }'
@@ -302,8 +302,8 @@ export class AudioSettingsDataManager {
     /**
      * インポートした設定を適用
      */
-    async applyImportedSettings(settings: AudioSettingsFile): Promise<void> { try {'
-            // 音量設定を適用''
+    async applyImportedSettings(settings: AudioSettingsFile): Promise<void> { try {
+            // 音量設定を適用
             if(settings.volumes') {'
                 '';
                 await this.configManager.set('audio.volumes.master', settings.volumes.master');''
@@ -316,20 +316,20 @@ export class AudioSettingsDataManager {
             }
             
             // 品質設定を適用
-            if(settings.quality) {'
+            if(settings.quality) {
                 '';
                 if (settings.quality.sampleRate') {'
             }'
                     await this.configManager.set('audio.quality.sampleRate', settings.quality.sampleRate); }'
                 }''
                 if(settings.quality.bufferSize') {'
-                    ';
+                    ';'
                 }'
                     await this.configManager.set('audio.quality.bufferSize', settings.quality.bufferSize); }
                 }
             }
             ';
-            // エフェクト設定を適用''
+            // エフェクト設定を適用
             if(settings.effects') {'
                 '';
                 if ('reverb' in settings.effects') {'
@@ -337,12 +337,12 @@ export class AudioSettingsDataManager {
                     await this.configManager.set('audio.effects.reverb', settings.effects.reverb'); }'
                 }''
                 if('compression' in settings.effects') {'
-                    ';
+                    ';'
                 }'
                     await this.configManager.set('audio.effects.compression', settings.effects.compression'); }'
                 }''
                 if('environmentalAudio' in settings.effects') {'
-                    ';
+                    ';'
                 }'
                     await this.configManager.set('audio.effects.environmentalAudio', settings.effects.environmentalAudio); }
                 }
@@ -362,12 +362,12 @@ export class AudioSettingsDataManager {
             }
             
             // AudioManagerの設定を同期
-            this.audioManager.syncWithConfig();'
+            this.audioManager.syncWithConfig();
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'UI_ERROR', {')'
                 component: 'AudioSettingsDataManager',')';
-                operation: 'applyImportedSettings'); }
+                operation: 'applyImportedSettings') }
             });
             throw error;
         }
@@ -379,7 +379,7 @@ export class AudioSettingsDataManager {
     setupConfigWatchers(): Set<any> { ''
         const configWatchers = new Set<any>(');
         ';
-        // 音量変更の監視''
+        // 音量変更の監視
         const volumeWatchers = ['master', 'bgm', 'sfx'].map(type => { ');''
             return this.configManager.watch('audio', `volumes.${type)`, (newValue: number') => { }'
                 // 設定変更の通知' }'
@@ -388,7 +388,7 @@ export class AudioSettingsDataManager {
         });''
         volumeWatchers.forEach(w => w && configWatchers.add(w)');
         ';
-        // ミュート状態の監視''
+        // ミュート状態の監視
         const muteWatcher = this.configManager.watch('audio', 'volumes.muted', (newValue: boolean') => {  ' }'
             this._onConfigChange('mute', 'all', newValue); }'
         });''
@@ -412,6 +412,6 @@ export class AudioSettingsDataManager {
      */'
     private _onConfigChange(category: ConfigChangeCategory, type: ConfigChangeType, value: number | boolean): void { ' }'
         console.log(`Config changed: ${category}.${type} = ${value)`'});
-        // UIの更新が必要な場合の処理'
+        // UIの更新が必要な場合の処理
     }''
 }

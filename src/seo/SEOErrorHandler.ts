@@ -21,7 +21,7 @@ interface ErrorHandlerData { cached?: any;
 // リトライ設定インターフェース
 interface RetryConfig { maxRetries: number,
     retryDelay: number,
-    backoffMultiplier: number; }
+    backoffMultiplier: number }
 }
 
 // エラー統計インターフェース
@@ -32,12 +32,12 @@ interface ErrorStatistics { errorCount: number,
     lastError?: {
         timestamp: string,
         message: string,
-        context: string; }
+        context: string }
     };
 }
 
 // ネットワークエラークラス
-class NetworkError extends Error { constructor(message: string) {'
+class NetworkError extends Error { constructor(message: string) {
         '';
         super(message');'
     }'
@@ -84,7 +84,7 @@ export class SEOErrorHandler {
     async handle(error: Error, context: string, data: ErrorHandlerData = { ): Promise<any> {
         seoLogger.error(`Error in ${context)`, error);
         ';
-        // エラータイプ別のハンドラー実行''
+        // エラータイプ別のハンドラー実行
         const handler = this.errorHandlers.get(error.constructor.name') || '';
                        this.errorHandlers.get('default');
         
@@ -95,7 +95,7 @@ export class SEOErrorHandler {
         }
             try { }'
                 return await handler(error, context, data});''
-            } catch (handlerError') { ''
+            } catch (handlerError) { ''
                 seoLogger.error('Error handler failed', handlerError as Error); }
             }
         }
@@ -146,12 +146,12 @@ export class SEOErrorHandler {
         }
         
         // 全てのリトライが失敗
-        return this.handle(lastError!, context, { retriesExhausted: true ); }
+        return this.handle(lastError!, context, { retriesExhausted: true ) }
     }
     
     /**
      * フォールバックの実行
-     */'
+     */
     private _executeFallback(context: string, data: any): any { ''
         const fallback = this.fallbackStrategies.get(context') || '';
                         this.fallbackStrategies.get('default');
@@ -172,13 +172,13 @@ export class SEOErrorHandler {
     /**
      * デフォルトエラーハンドラーの登録'
      */''
-    private _registerDefaultHandlers('')';
+    private _registerDefaultHandlers()';
         this.registerHandler('NetworkError', async (error: Error, context: string, data: ErrorHandlerData') => {  ''
             seoLogger.warn('Network error detected, using cached data if available'); }'
             return data.cached || null;' }'
         }');
         ';
-        // 型エラー''
+        // 型エラー
         this.registerHandler('TypeError', (error: Error, context: string, data: ErrorHandlerData') => {  ''
             seoLogger.error('Type error in SEO operation', {)
                 context);
@@ -188,7 +188,7 @@ export class SEOErrorHandler {
             return this._executeFallback(context, data);''
         }');
         ';
-        // 参照エラー''
+        // 参照エラー
         this.registerHandler('ReferenceError', (error: Error, context: string, data: ErrorHandlerData') => {  ''
             seoLogger.error('Reference error in SEO operation', {)
                 context,) }
@@ -197,7 +197,7 @@ export class SEOErrorHandler {
             return this._executeFallback(context, data);''
         }');
         ';
-        // デフォルトハンドラー''
+        // デフォルトハンドラー
         this.registerHandler('default', (error: Error, context: string, data: ErrorHandlerData') => {  ''
             seoLogger.error('Unhandled error in SEO operation', {)
                 context);
@@ -211,14 +211,14 @@ export class SEOErrorHandler {
     /**
      * デフォルトフォールバック戦略の登録'
      */''
-    private _registerDefaultFallbacks('')';
+    private _registerDefaultFallbacks()';
         this.registerFallback('metaTags', () => {  return { title: SEOConfig.siteName, }
                 description: SEOConfig.metadata.defaultDescription[SEOConfig.defaultLanguage], };
                 image: SEOConfig.socialImages.fallback }'
             };''
         }');
         ';
-        // 構造化データフォールバック''
+        // 構造化データフォールバック
         this.registerFallback('structuredData', (') => {  return { ''
                 '@context': 'https://schema.org','';
                 '@type': 'WebSite', }
@@ -227,12 +227,12 @@ export class SEOErrorHandler {
             };''
         }');
         ';
-        // ソーシャル画像フォールバック''
+        // ソーシャル画像フォールバック
         this.registerFallback('socialImage', () => { const fallbackPath = SEOConfig.socialImages.fallback; }'
             return `${SEOConfig.baseUrl}${fallbackPath}`;''
         }');
         ';
-        // サイトマップフォールバック''
+        // サイトマップフォールバック
         this.registerFallback('sitemap', (') => {  ''
             return `<? xml version="1.0" encoding="UTF-8"?> : undefined"";
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> }
@@ -245,7 +245,7 @@ export class SEOErrorHandler {
 </urlset>`;''
         }');
         ';
-        // デフォルトフォールバック''
+        // デフォルトフォールバック
         this.registerFallback('default', (') => {  ''
             seoLogger.warn('Using empty fallback'); }
             return null; }
@@ -267,7 +267,7 @@ export class SEOErrorHandler {
      * リカバリー率の計算
      */'
     private _calculateRecoveryRate(): number { ''
-        const logs = seoLogger.export('')';
+        const logs = seoLogger.export()';
         const errors = logs.filter(log => log.level === 'error'');'
         const recoveries = logs.filter(log => ')';
             log.level === 'info' && ')'';
@@ -298,5 +298,5 @@ export class SEOErrorHandler {
     }
 }
 ';
-// シングルトンインスタンス''
+// シングルトンインスタンス
 export const seoErrorHandler = new SEOErrorHandler(');

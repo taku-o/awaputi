@@ -19,14 +19,14 @@ interface GameEngine { context: CanvasRenderingContext2D,
     debugInterface?: any; };
 }
 export class GameEngineRenderer { private gameEngine: GameEngine }
-    private screenShake: { active: boolean, duration: number; intensity: number; elapsed: number ;
+    private screenShake: { active: boolean, duration: number; intensity: number; elapsed: number 
     };
     constructor(gameEngine: GameEngine) {
         this.gameEngine = gameEngine;
         this.screenShake = {
             active: false,
             duration: 0,
-            intensity: 0;
+            intensity: 0
 };
 }
             elapsed: 0 ;
@@ -37,7 +37,7 @@ export class GameEngineRenderer { private gameEngine: GameEngine }
     /**
      * 描画処理
      */'
-    render(): void { // Canvas の状態を確認''
+    render(): void { // Canvas の状態を確認
         if(!this.gameEngine.context') {'
             '';
             console.error('[GameEngineRenderer] Context が存在しません');
@@ -103,7 +103,7 @@ export class GameEngineRenderer { private gameEngine: GameEngine }
             active: true,
             duration,
             intensity,
-            elapsed: 0 ;
+            elapsed: 0 
 }
         },
     }
@@ -126,9 +126,9 @@ export class GameEngineRenderer { private gameEngine: GameEngine }
         this.gameEngine.context.translate(offsetX, offsetY); };
 }
     /**
-     * リソースの破棄'
+     * リソースの破棄
      */''
-    destroy('')';
+    destroy()';
         console.log('[GameEngineRenderer] Destroyed'');
     }
 }'

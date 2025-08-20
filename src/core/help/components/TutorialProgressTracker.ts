@@ -21,35 +21,35 @@ export interface ProgressData { sessionId: string,
     revisitedSteps: Set<number>,
     stepTimings: Map<number, StepTiming>,
     userActions: UserAction[],
-    errors: ErrorRecord[],';
+    errors: ErrorRecord[],
     helpRequests: HelpRequest[],'';
-    completionStatus: 'not_started' | 'in_progress' | 'completed' | 'abandoned'; }
+    completionStatus: 'not_started' | 'in_progress' | 'completed' | 'abandoned' }
 }
 
 export interface StepTiming { stepIndex: number,
     startTime: number,
     endTime?: number;
     duration?: number;
-    interactions: number; }
+    interactions: number }
 }
 
 export interface UserAction { type: string,
     timestamp: number,
     stepIndex: number,
-    data: any; }
+    data: any }
 }
 
 export interface ErrorRecord { message: string,
     timestamp: number,
     stepIndex: number,
     stack?: string;
-    context: string; }
+    context: string }
 }
 
 export interface HelpRequest { type: string,
     timestamp: number,
     stepIndex: number,
-    query?: string; }
+    query?: string }
 }
 
 export interface SessionStats { totalInteractions: number,
@@ -62,7 +62,7 @@ export interface SessionStats { totalInteractions: number,
         scrolls: number,
         clicks: number,
         keystrokes: number,
-        gestures: number; }
+        gestures: number }
     };
 }
 
@@ -73,16 +73,16 @@ export interface AnalyticsConfig { trackDetailedActions: boolean,
     sendToServer: boolean,
     serverEndpoint: string | null,
     batchSize: number,
-    batchInterval: number; }
+    batchInterval: number }
 }
 
 export interface StorageKeys { progress: string,
     analytics: string,
-    userPreferences: string; }
+    userPreferences: string }
 }
 
 export interface TutorialData { id: string,
-    steps?: any[]; }
+    steps?: any[] }
 }
 
 export class TutorialProgressTracker {
@@ -111,18 +111,18 @@ export class TutorialProgressTracker {
             currentStep: 0,
             totalSteps: 0,
             completedSteps: new Set<number>(),
-            skippedSteps: new Set<number>(),';
+            skippedSteps: new Set<number>(),
             revisitedSteps: new Set<number>(),'';
             stepTimings: new Map<number, StepTiming>('),
             userActions: [],
             errors: [],';
-            helpRequests: [],';
+            helpRequests: [],'
     }
     }'
             completionStatus: 'not_started' }
         },
         ';
-        // ステップレベルの詳細データ''
+        // ステップレベルの詳細データ
         this.stepMetrics = new Map(''';
             progress: 'tutorial_progress','';
             analytics: 'tutorial_analytics','';
@@ -138,11 +138,11 @@ export class TutorialProgressTracker {
     /**
      * 進捗追跡システムを初期化
      */
-    initialize(): void { try {'
-            this.loadStoredProgress();''
-            this.setupBatchProcessing('')';
+    initialize(): void { try {
+            this.loadStoredProgress();
+            this.setupBatchProcessing()';
             this.loggingSystem.debug('TutorialProgressTracker', 'Progress tracker initialized');' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.initialize'); }
         }
     }
@@ -183,14 +183,14 @@ export class TutorialProgressTracker {
                 }
             },'
             '';
-            this.stepMetrics.clear('')';
+            this.stepMetrics.clear()';
             this.recordEvent('tutorial_started', { tutorialId: tutorial.id)'
                 totalSteps: this.progressData.totalSteps,')';
                 userId: userId)'),';
             ' }'
             this.loggingSystem.info('TutorialProgressTracker', `Tracking started for tutorial: ${tutorial.id)`});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.startTracking'); }
         }
     }
@@ -211,23 +211,23 @@ export class TutorialProgressTracker {
                 this.progressData.stepTimings.set(previousStepIndex, stepDuration);
                 
     }
-                this.updateStepMetrics(previousStepIndex, { duration: stepDuration ); }
+                this.updateStepMetrics(previousStepIndex, { duration: stepDuration ) }
             }
             
             this.currentStepStartTime = Date.now();
             
             // 再訪問チェック
             if(this.progressData.completedSteps.has(stepIndex) { this.progressData.revisitedSteps.add(stepIndex); }
-            }'
+            }
             '';
             this.initializeStepMetrics(stepIndex, stepData');'
             '';
-            this.recordEvent('step_started', { stepIndex: stepIndex,)
+            this.recordEvent('step_started', { stepIndex: stepIndex)
                 stepTitle: stepData.title),
-                isRevisit: this.progressData.revisitedSteps.has(stepIndex); }
+                isRevisit: this.progressData.revisitedSteps.has(stepIndex) }
             });'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordStepStart'); }
         }
     }
@@ -258,7 +258,7 @@ export class TutorialProgressTracker {
             this.saveProgress();
     }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordStepComplete''); }
         }
     }
@@ -280,10 +280,10 @@ export class TutorialProgressTracker {
                 stepIndex: stepIndex,);
                 reason: reason),
             
-            this.updateSessionStats();
+            this.updateSessionStats()
     }'
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordStepSkip'); }
         }
     }
@@ -312,9 +312,9 @@ export class TutorialProgressTracker {
             this.updateEngagementStats(actionType);
             
             // バッチキューに追加
-            this.addToBatch(action);'
+            this.addToBatch(action);
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordUserAction''); }
         }
     }
@@ -341,7 +341,7 @@ export class TutorialProgressTracker {
             '';
             this.recordEvent('error_occurred', errorRecord);'
             '';
-        } catch (recordError') { ''
+        } catch (recordError) { ''
             this.errorHandler.handleError(recordError, 'TutorialProgressTracker.recordError'); }
         }
     }
@@ -365,7 +365,7 @@ export class TutorialProgressTracker {
             '';
             this.recordEvent('help_requested', helpRequest);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordHelpRequest''); }
         }
     }
@@ -385,20 +385,20 @@ export class TutorialProgressTracker {
                 const lastStepDuration = Date.now() - this.currentStepStartTime;
     }
                 this.progressData.stepTimings.set(this.progressData.currentStep, lastStepDuration); }
-            }'
+            }
             '';
             this.updateSessionStats(''';
             this.recordEvent('tutorial_ended', { completionType: completionType,
-                totalDuration: this.progressData.totalDuration,);
+                totalDuration: this.progressData.totalDuration);
                 completedSteps: this.progressData.completedSteps.size);
                 skippedSteps: this.progressData.skippedSteps.size,);
                 totalSteps: this.progressData.totalSteps),
             
             this.generateFinalReport();
             this.saveProgress();
-            this.sendBatch(true); // 強制送信'
+            this.sendBatch(true); // 強制送信
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordTutorialEnd'); }
         }
     }
@@ -412,13 +412,13 @@ export class TutorialProgressTracker {
         try {
             const event = {'
                 type: eventType,'';
-                timestamp: Date.now('')';
-            this.loggingSystem.debug('TutorialProgressTracker', `Event recorded: ${eventType)`, event);
+                timestamp: Date.now()';
+            this.loggingSystem.debug('TutorialProgressTracker', `Event recorded: ${eventType)`, event)
     }
              }
             this.addToBatch(event});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.recordEvent'); }
         }
     }
@@ -476,9 +476,9 @@ export class TutorialProgressTracker {
             if (this.progressData.stepTimings.size > 0) {
                 const totalTime = Array.from(this.progressData.stepTimings.values();
                     .reduce((sum, time) => sum + time, 0);
-    }'
+    }
                 this.sessionStats.averageStepTime = totalTime / this.progressData.stepTimings.size;' }'
-            } catch (error') { ''
+            } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.updateSessionStats'); }
         }
     }
@@ -538,13 +538,13 @@ export class TutorialProgressTracker {
      * バッチデータを送信
      * @param {boolean} force - 強制送信フラグ
      */
-    async sendBatch(force = false) { try {'
+    async sendBatch(force = false) { try {
             if (!this.analyticsConfig.sendToServer || !this.analyticsConfig.serverEndpoint) return;''
             if (this.batchQueue.length === 0 && !force') return;
             
             const dataToSend = [...this.batchQueue];
             this.batchQueue = [];
-            ';
+            ';'
             const response = await fetch(this.analyticsConfig.serverEndpoint, {')'
                 method: 'POST')';
                 headers: {''
@@ -556,14 +556,14 @@ export class TutorialProgressTracker {
                     timestamp: Date.now(), };
                 });
             });
-            ';
+            ';'
             if (!response.ok) { ' }'
                 throw new Error(`Server responded with status: ${response.status)`'});
             }'
             '';
             this.loggingSystem.debug('TutorialProgressTracker', `Batch sent: ${dataToSend.length) events`});'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.sendBatch');
             // 送信失敗時はデータを戻す
             this.batchQueue.unshift(...dataToSend); }
@@ -595,7 +595,7 @@ export class TutorialProgressTracker {
                     totalInteractions: this.sessionStats.totalInteractions,
                     helpRequests: this.progressData.helpRequests.length,
                     errors: this.progressData.errors.length }
-                },'
+                },
                 engagement: this.sessionStats.userEngagement,'';
                 stepDetails: Object.fromEntries(this.stepMetrics'),
             };'
@@ -606,9 +606,9 @@ export class TutorialProgressTracker {
             localStorage.setItem(`${this.storageKeys.analytics}_${ this.progressData.sessionId)`,  }
                 JSON.stringify(report)});
             
-            return report;'
+            return report;
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.generateFinalReport');
             return null; }
         }
@@ -630,7 +630,7 @@ export class TutorialProgressTracker {
             
             localStorage.setItem(this.storageKeys.progress, JSON.stringify(progressToSave);'
             '';
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.saveProgress'); }
         }
     }
@@ -652,9 +652,9 @@ export class TutorialProgressTracker {
             parsedData.stepTimings = new Map(Object.entries(parsedData.stepTimings);
             
             Object.assign(this.progressData, parsedData);
-    }'
+    }
             ' }'
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.loadStoredProgress'); }
         }
     }
@@ -711,9 +711,9 @@ export class TutorialProgressTracker {
         if (this.batchTimer) {
             clearInterval(this.batchTimer);
     }
-            this.batchTimer = null; }'
+            this.batchTimer = null; }
         }''
-        this.setupBatchProcessing('')';
+        this.setupBatchProcessing()';
         this.loggingSystem.debug('TutorialProgressTracker', 'Configuration updated', newConfig);
     }
     
@@ -730,11 +730,11 @@ export class TutorialProgressTracker {
             
             // 残りのバッチデータを送信
             this.sendBatch(true);
-            ';
-            // 最終進捗を保存''
-            this.saveProgress('')';
+            ;
+            // 最終進捗を保存
+            this.saveProgress()';
             this.loggingSystem.debug('TutorialProgressTracker', 'Progress tracker disposed');''
-        } catch (error') { ''
+        } catch (error) { ''
             this.errorHandler.handleError(error, 'TutorialProgressTracker.dispose''); }
         }'
     }''

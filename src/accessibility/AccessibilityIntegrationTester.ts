@@ -14,11 +14,11 @@ interface TestConfig { enabled: boolean,
     regressionTest: boolean,
     userScenarioTest: boolean,
     timeout: number,
-    maxRetries: number; }
+    maxRetries: number }
 }
 
 interface TestSuite { name: string,
-    tests: string[]; }
+    tests: string[] }
 }
 
 interface TestSuites { core: TestSuite,
@@ -26,17 +26,17 @@ interface TestSuites { core: TestSuite,
     audio: TestSuite,
     motor: TestSuite,
     cognitive: TestSuite,
-    integration: TestSuite;
+    integration: TestSuite
     }
 }
 
-interface TestResult { suite: string,'
+interface TestResult { suite: string,
     name: string,'';
     status: 'passed' | 'failed' | 'skipped',
     duration: number,
     error: string | null,
     details: Record<string, any>;
-    timestamp: number; }
+    timestamp: number }
 }
 
 interface SuiteResult { name: string,
@@ -44,7 +44,7 @@ interface SuiteResult { name: string,
     failed: number,
     skipped: number,
     tests: TestResult[],
-    duration: number; }
+    duration: number }
 }
 
 interface PerformanceMetrics { renderingPerformance?: RenderingPerformanceResult;
@@ -55,7 +55,7 @@ interface PerformanceMetrics { renderingPerformance?: RenderingPerformanceResult
 
 interface RenderingPerformanceResult { averageTimePerElement: number,
     totalTime: number,
-    acceptable: boolean; }
+    acceptable: boolean }
 }
 
 interface MemoryUsageResult { available: boolean,
@@ -67,14 +67,14 @@ interface MemoryUsageResult { available: boolean,
 
 interface MemoryInfo { used: number,
     total: number,
-    limit: number; }
+    limit: number }
 }
 
 interface AccessibilityOverheadResult { withoutAccessibility: number,
     withAccessibility: number,
     overhead: number,
     overheadPercentage: number,
-    acceptable: boolean; }
+    acceptable: boolean }
 }
 
 interface TestResults { startTime: number | null,
@@ -89,13 +89,13 @@ interface TestResults { startTime: number | null,
     detailResults: TestResult[],
     performanceMetrics: PerformanceMetrics,
     issues: TestIssue[],
-    regression?: RegressionComparison;
+    regression?: RegressionComparison
     }
 }
 
 interface TestIssue { type: string,
     message: string,
-    stack?: string; }
+    stack?: string }
 }
 
 interface BrowserFeatures { speechSynthesis: boolean,
@@ -108,7 +108,7 @@ interface BrowserFeatures { speechSynthesis: boolean,
     mutationObserver: boolean,
     localStorage: boolean,
     sessionStorage: boolean,
-    webAudio: boolean; }
+    webAudio: boolean }
 }
 
 interface EnvironmentInfo { userAgent: string,
@@ -130,7 +130,7 @@ interface EnvironmentInfo { userAgent: string,
 
 interface PerformanceMonitor { startTime: number | null,
     marks: Map<string, number>;
-    measures: Map<string, number>; }
+    measures: Map<string, number> }
 }
 
 interface TestMethodResult { success: boolean,
@@ -142,27 +142,27 @@ interface ColorContrastDetails { elementsChecked: number,
     compliantElements: number,
     nonCompliantElements: Array<{
         element: string,
-        contrast: string; }
+        contrast: string }
     }>;
     averageContrast: number,
 }
 
 interface RGB { r: number,
     g: number,
-    b: number; }
+    b: number }
 }
 
 interface PreviousTestResults { timestamp: number,
     successRate: number,
     totalTests: number,
     passedTests: number,
-    performanceMetrics: PerformanceMetrics;
+    performanceMetrics: PerformanceMetrics
     }
 }
 
 interface RegressionComparison { successRateChange: number,
     testCountChange: number,
-    regressionDetected: boolean; }
+    regressionDetected: boolean }
 }
 
 interface TestReport { summary: {
@@ -180,11 +180,11 @@ interface TestReport { summary: {
     issues: TestIssue[],
     recommendations: Recommendation[],
     }
-';
+';'
 interface Recommendation { ''
     priority: 'high' | 'medium' | 'low',
     category: string,
-    message: string; }
+    message: string }
 }
 
 // AccessibilityManager interface (minimal definition);
@@ -201,7 +201,7 @@ declare global { interface Performance {
         memory?: {
             usedJSHeapSize: number,
             totalJSHeapSize: number,
-            jsHeapSizeLimit: number; }
+            jsHeapSizeLimit: number }
         };
     }
 }
@@ -213,7 +213,7 @@ export class AccessibilityIntegrationTester {
     private testSuites: TestSuites;
     private testResults: TestResults;
     private environmentInfo: EnvironmentInfo;
-    private performanceMonitor: PerformanceMonitor';
+    private performanceMonitor: PerformanceMonitor;
 '';
     constructor(accessibilityManager: AccessibilityManager | null') {
         this.accessibilityManager = accessibilityManager;
@@ -235,7 +235,7 @@ export class AccessibilityIntegrationTester {
         },
         
         // テストスイート
-        this.testSuites = { // コア機能テスト'
+        this.testSuites = { // コア機能テスト
             core: {''
                 name: 'Core Accessibility Features',';
                 tests: ['';
@@ -247,7 +247,7 @@ export class AccessibilityIntegrationTester {
                 ] }
             },
             
-            // 視覚的アクセシビリティテスト'
+            // 視覚的アクセシビリティテスト
             visual: { ''
                 name: 'Visual Accessibility',';
                 tests: ['';
@@ -259,7 +259,7 @@ export class AccessibilityIntegrationTester {
                 ] }
             },
             
-            // 音声アクセシビリティテスト'
+            // 音声アクセシビリティテスト
             audio: { ''
                 name: 'Audio Accessibility',';
                 tests: ['';
@@ -270,7 +270,7 @@ export class AccessibilityIntegrationTester {
                 ] }
             },
             
-            // 運動機能アクセシビリティテスト'
+            // 運動機能アクセシビリティテスト
             motor: { ''
                 name: 'Motor Accessibility',';
                 tests: ['';
@@ -281,7 +281,7 @@ export class AccessibilityIntegrationTester {
                 ] }
             },
             
-            // 認知支援テスト'
+            // 認知支援テスト
             cognitive: { ''
                 name: 'Cognitive Support',';
                 tests: ['';
@@ -292,7 +292,7 @@ export class AccessibilityIntegrationTester {
                 ] }
             },
             
-            // 統合シナリオテスト'
+            // 統合シナリオテスト
             integration: { ''
                 name: 'Integration Scenarios',';
                 tests: ['';
@@ -337,9 +337,9 @@ export class AccessibilityIntegrationTester {
         };
         
         // パフォーマンス監視
-        this.performanceMonitor = { startTime: null,'
+        this.performanceMonitor = { startTime: null,
             marks: new Map(),'';
-            measures: new Map('')';
+            measures: new Map()';
         console.log('AccessibilityIntegrationTester initialized'), }
     }
     
@@ -364,7 +364,7 @@ export class AccessibilityIntegrationTester {
     /**
      * 全テストスイートの実行'
      */''
-    async runAllTests('')';
+    async runAllTests()';
         console.log('Starting comprehensive accessibility integration tests...');
         
         this.testResults.startTime = Date.now();
@@ -381,9 +381,9 @@ export class AccessibilityIntegrationTester {
             if (this.config.performanceTest) { await this.runPerformanceTests(); }
             }
             
-            // 回帰テストの実行'
+            // 回帰テストの実行
             if (this.config.regressionTest) { await this.runRegressionTests();' }'
-            } catch (error') { ''
+            } catch (error) { ''
             console.error('Test execution failed:', error');'
             this.testResults.issues.push({')'
                 type: 'execution_error'),
@@ -413,7 +413,7 @@ export class AccessibilityIntegrationTester {
         for(const testName of suite.tests) {
         
             const testResult = await this.runIndividualTest(suiteKey, testName);
-            ';
+            ';'
             suiteResults.tests.push(testResult);''
             this.testResults.detailResults.push(testResult');'
             '';
@@ -442,7 +442,7 @@ export class AccessibilityIntegrationTester {
      */'
     private async runIndividualTest(suite: string, testName: string): Promise<TestResult> { ''
         const testStartTime = performance.now(''';
-            status: 'skipped',);
+            status: 'skipped');
             duration: 0);
             error: null, }
             details: {},)
@@ -451,7 +451,7 @@ export class AccessibilityIntegrationTester {
         
         try { console.log(`  Running test: ${testName)`),
             ';
-            // テストメソッドの動的呼び出し''
+            // テストメソッドの動的呼び出し
             const testMethod = (this as any')[testName];''
             if (typeof testMethod === 'function') {' }'
                 const result: TestMethodResult = await testMethod.call(this'});''
@@ -459,14 +459,14 @@ export class AccessibilityIntegrationTester {
                 testResult.details = result.details || {};'
                 '';
                 if(!result.success') {'
-                    ';
+                    ';'
                 }'
                     testResult.error = result.error || 'Test failed without specific error'; }
                 }'
             } else {  ' }'
                 testResult.status = 'skipped'; }'
                 testResult.error = `Test method ${testName} not found`;''
-            } catch (error') { ''
+            } catch (error) { ''
             testResult.status = 'failed';
             testResult.error = (error as Error).message; }
             console.error(`Test ${testName} failed:`, error);
@@ -485,7 +485,7 @@ export class AccessibilityIntegrationTester {
             managerExists: !!this.accessibilityManager,
             configLoaded: !!this.accessibilityManager? .config, : undefined;
             componentsInitialized: 0 }
-        },'
+        },
         '';
         if(!this.accessibilityManager') {'
             return { success: false,'
@@ -495,7 +495,7 @@ export class AccessibilityIntegrationTester {
             };
         }
         
-        // コンポーネント初期化確認'
+        // コンポーネント初期化確認
         const components = ['';
             'keyboardAccessibilityManager','';
             'screenReaderSupport',']';
@@ -525,8 +525,8 @@ export class AccessibilityIntegrationTester {
             keyboardTrapsDetected: 0 }
         },
         ';
-        // フォーカス可能要素の検出''
-        const focusableElements = document.querySelectorAll('')';
+        // フォーカス可能要素の検出
+        const focusableElements = document.querySelectorAll()';
             'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]'), [tabindex]:not([tabindex="-1"]")';
         );
         details.focusableElements = focusableElements.length;
@@ -544,9 +544,9 @@ export class AccessibilityIntegrationTester {
     }
     
     /**
-     * スクリーンリーダーサポートテスト'
+     * スクリーンリーダーサポートテスト
      */''
-    private async screenReaderSupport('')';
+    private async screenReaderSupport()';
         details.ariaLabels = document.querySelectorAll('[aria-label], [aria-labelledby]'').length;''
         details.ariaRoles = document.querySelectorAll('[role]'').length;''
         details.liveRegions = document.querySelectorAll('[aria-live]').length;
@@ -560,9 +560,9 @@ export class AccessibilityIntegrationTester {
     }
     
     /**
-     * 色コントラスト準拠テスト'
+     * 色コントラスト準拠テスト
      */''
-    private async colorContrastCompliance('')';
+    private async colorContrastCompliance()';
         const textElements = document.querySelectorAll('p, span, div, button, a, label, h1, h2, h3, h4, h5, h6');
         const contrastRatios: number[] = [],
         
@@ -599,15 +599,15 @@ export class AccessibilityIntegrationTester {
     }
     
     /**
-     * 運動機能アクセシビリティテスト'
+     * 運動機能アクセシビリティテスト
      */''
     private async alternativeInputMethods(''';
         details.gamepadSupport = 'getGamepads' in navigator;
         ';
-        // タッチサポート確認  ''
+        // タッチサポート確認  
         details.touchSupport = 'ontouchstart' in window;
         ';
-        // 音声認識サポート確認''
+        // 音声認識サポート確認
         details.voiceRecognition = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
         
         // カスタムジェスチャーサポート確認
@@ -620,8 +620,8 @@ export class AccessibilityIntegrationTester {
             details }
         };
     }
-    ';
-    // Stub implementations for other test methods''
+    ;
+    // Stub implementations for other test methods
     private async focusManagement(''';
         return { success: true, details: { message: 'Focus management test stub' } }
     }'
@@ -709,7 +709,7 @@ export class AccessibilityIntegrationTester {
     /**
      * パフォーマンステストの実行'
      */''
-    private async runPerformanceTests('')';
+    private async runPerformanceTests()';
         console.log('Running performance tests...');
         
         const performanceResults: PerformanceMetrics = { renderingPerformance: await this.testRenderingPerformance(),
@@ -725,9 +725,9 @@ export class AccessibilityIntegrationTester {
      */
     private async testRenderingPerformance(): Promise<RenderingPerformanceResult> { const startTime = performance.now();
         ';
-        // レンダリング操作をシミュレート''
+        // レンダリング操作をシミュレート
         for(let i = 0; i < 100; i++') {'
-            ';
+            ';'
         }'
             const div = document.createElement('div''); }'
             div.textContent = `Test element ${i}`;''
@@ -759,7 +759,7 @@ export class AccessibilityIntegrationTester {
             limit: performance.memory.jsHeapSizeLimit }
         },
         
-        // メモリ集約的な操作をシミュレート'
+        // メモリ集約的な操作をシミュレート
         const testData: any[] = [],'';
         for(let i = 0; i < 10000; i++') {
             testData.push({
@@ -804,9 +804,9 @@ export class AccessibilityIntegrationTester {
     }
     
     /**
-     * 回帰テストの実行'
+     * 回帰テストの実行
      */''
-    private async runRegressionTests('')';
+    private async runRegressionTests()';
         console.log('Running regression tests...');
         
         // 以前のテスト結果と比較
@@ -840,9 +840,9 @@ export class AccessibilityIntegrationTester {
     }
     
     /**
-     * キーボードトラップの検出'
+     * キーボードトラップの検出
      */''
-    private detectKeyboardTraps('')';
+    private detectKeyboardTraps()';
         const focusTraps = document.querySelectorAll('[data-focus-trap], .modal: not([aria-hidden="true"]")'),
         return focusTraps.length;
     }
@@ -850,7 +850,7 @@ export class AccessibilityIntegrationTester {
     /**
      * 見出し構造の検証'
      */''
-    private validateHeadingStructure('')';
+    private validateHeadingStructure()';
         const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
         if (headings.length === 0) return false;
         
@@ -898,7 +898,7 @@ export class AccessibilityIntegrationTester {
     }
     
     /**
-     * 色の解析'
+     * 色の解析
      */''
     private parseColor(color: string'): RGB | null { ''
         const div = document.createElement('div');
@@ -937,9 +937,9 @@ export class AccessibilityIntegrationTester {
      */
     private async measureWithoutAccessibility(): Promise<number> { const startTime = performance.now();
         ';
-        // 基本的なDOM操作''
+        // 基本的なDOM操作
         for(let i = 0; i < 1000; i++') {'
-            ';
+            ';'
         }'
             const div = document.createElement('div'); }
             div.textContent = `Element ${i}`;
@@ -955,9 +955,9 @@ export class AccessibilityIntegrationTester {
      */
     private async measureWithAccessibility(): Promise<number> { const startTime = performance.now();
         ';
-        // アクセシビリティ属性付きのDOM操作''
+        // アクセシビリティ属性付きのDOM操作
         for(let i = 0; i < 1000; i++') {'
-            ';
+            ';'
         }'
             const div = document.createElement('div''); }'
             div.textContent = `Element ${i}`;''
@@ -991,12 +991,12 @@ export class AccessibilityIntegrationTester {
     }
     
     /**
-     * 以前のテスト結果の読み込み'
+     * 以前のテスト結果の読み込み
      */''
-    private loadPreviousTestResults('')';
+    private loadPreviousTestResults()';
             const saved = localStorage.getItem('accessibilityTestResults');'
             return saved ? JSON.parse(saved) : null;''
-        } catch (error') { ''
+        } catch (error) { ''
             console.warn('Failed to load previous test results:', error);
             return null; }
         }
@@ -1007,12 +1007,12 @@ export class AccessibilityIntegrationTester {
      */''
     private saveTestResults(''';
             localStorage.setItem('accessibilityTestResults', JSON.stringify({ timestamp: this.testResults.endTime,
-                successRate: this.testResults.successRate,);
+                successRate: this.testResults.successRate);
                 totalTests: this.testResults.totalTests);
                 passedTests: this.testResults.passedTests,)';
                 performanceMetrics: this.testResults.performanceMetrics)));' }'
-        } catch (error') { ''
-            console.warn('Failed to save test results:', error); }
+        } catch (error) { ''
+            console.warn('Failed to save test results:', error) }
         }
     }
     
@@ -1025,10 +1025,10 @@ export class AccessibilityIntegrationTester {
             regressionDetected: (this.testResults.successRate || 0) < previousResults.successRate - 5 // 5%以上の低下 }
         },
         
-        this.testResults.regression = comparison;'
+        this.testResults.regression = comparison;
         '';
         if(comparison.regressionDetected') {'
-            ';
+            ';'
         }'
             console.warn('⚠️ Regression detected! Success rate decreased significantly.'); }
         }
@@ -1066,15 +1066,15 @@ export class AccessibilityIntegrationTester {
             recommendations.push({''
                 priority: 'high',')';
                 category: 'compliance',')';
-                message: 'Overall success rate is below 90%. Review failed tests and address issues.'); }
+                message: 'Overall success rate is below 90%. Review failed tests and address issues.') }
         }
-        ';
+        ';'
         if(this.testResults.performanceMetrics? .accessibilityOverhead?.overheadPercentage && ')';
             this.testResults.performanceMetrics.accessibilityOverhead.overheadPercentage > 20') {
-        ';
+        ';'
             recommendations.push({ : undefined''
                 priority: 'medium',')';
-                category: 'performance',');
+                category: 'performance',')
         }'
                 message: 'Accessibility overhead exceeds 20%. Consider optimization.'); }
         }
@@ -1088,8 +1088,8 @@ export class AccessibilityIntegrationTester {
      * 設定の適用
      */
     applyConfig(config: { integrationTester?: Partial<TestConfig> ): void {
-        if(config.integrationTester) {'
-            ';
+        if(config.integrationTester) {
+            ';'
         }'
             Object.assign(this.config, config.integrationTester'); }
         }'
@@ -1107,13 +1107,13 @@ export class AccessibilityIntegrationTester {
     /**
      * クリーンアップ'
      */''
-    destroy('')';
+    destroy()';
         console.log('Destroying AccessibilityIntegrationTester...');
         
         // テスト結果の保存
-        if(this.testResults.endTime) {'
+        if(this.testResults.endTime) {
             '';
-            this.saveTestResults('');
+            this.saveTestResults();
         }'
         console.log('AccessibilityIntegrationTester destroyed''); }'
     }''
