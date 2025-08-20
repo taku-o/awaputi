@@ -610,3 +610,21 @@ TypeScript移行作業中に「将来実装する」「現時点では未実装�
 
 ## 次の作業
 - TypeScriptビルドエラーの確認と修正（Phase 7継続）
+
+### 2025-08-20
+- **Phase 6: Task 29の完了**:
+  - ✅ **tests/unit/内の最終10個のJavaScriptファイルをTypeScript変換完了**
+  - ✅ **変換したファイル**:
+    1. tests/unit/syntax-validation/SyntaxValidation.test.ts - 構文検証テスト（HTMLJavaScriptChecker, JavaScriptModuleValidator）
+    2. tests/unit/Bubble.updated.test.ts - Bubbleクラス統合テスト（手動作成 + 自動生成テスト）
+    3. tests/unit/KeyboardShortcutRemoval.test.ts - キーボードショートカット削除検証テスト（Issue #170）
+    4. tests/unit/components/SettingsImportExportComponent.test.ts - 設定インポート/エクスポートコンポーネントテスト
+    5. tests/unit/components/VolumeControlComponent.test.ts - ボリュームコントロールコンポーネントテスト
+    6. tests/unit/OfflineManager.test.ts - オフライン管理システムテスト
+    7. tests/unit/help-system/HelpManager.test.ts - ヘルプマネージャーテスト
+    8. tests/unit/help-system/TutorialManager.test.ts - チュートリアルマネージャーテスト
+    9. tests/unit/help-system/ContextManager.test.ts - コンテキストマネージャーテスト
+    10. tests/unit/LoggingSystem.test.ts - ロギングシステムテスト
+  - ✅ **包括的な型定義**: 各テストファイルに詳細なインターフェースを定義（モック、テストデータ、戻り値の型）
+  - ✅ **Jest統合**: `@jest/globals`からのインポートと完全な型安全性
+  - ✅ **Task 29完了**: tests/unit/内の全62個のJavaScriptファイルをTypeScript変換完了
