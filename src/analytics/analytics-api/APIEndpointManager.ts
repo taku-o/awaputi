@@ -19,6 +19,29 @@ export interface AnalysisResult {
 }
 
 export class APIEndpointManager {
+    private storageManager: any;
+    private privacyManager: any;
+    private endpoints: Map<string, any>;
+    private rateLimiting: {
+        enabled: boolean;
+        maxRequestsPerMinute: number;
+        maxRequestsPerHour: number;
+        requestHistory: Map<string, any[]>;
+    };
+    private accessControl: {
+        enabled: boolean;
+        allowedOrigins: string[];
+        requireAuthentication: boolean;
+    };
+    private apiStats: {
+        totalRequests: number;
+        successfulRequests: number;
+        failedRequests: number;
+        rateLimitedRequests: number;
+        averageResponseTime: number;
+        lastRequestTime: number | null;
+    };
+
     constructor(storageManager: any, privacyManager: any = null) {
         this.storageManager = storageManager;
         this.privacyManager = privacyManager;
@@ -72,27 +95,27 @@ export class APIEndpointManager {
      */
     registerStandardEndpoints() {
         // セッションデータ取得
-        this.registerEndpoint('/sessions', async (query) => {
+        this.registerEndpoint('/sessions', async (query: any) => {
             return await this.storageManager.getData('sessionData', query);
         });
         
         // バブルインタラクション取得
-        this.registerEndpoint('/bubbles', async (query) => {
+        this.registerEndpoint('/bubbles', async (query: any) => {
             return await this.storageManager.getData('bubbleInteractions', query);
         });
         
         // パフォーマンスデータ取得
-        this.registerEndpoint('/performance', async (query) => {
+        this.registerEndpoint('/performance', async (query: any) => {
             return await this.storageManager.getData('performanceData', query);
         });
         
         // 集計データ取得
-        this.registerEndpoint('/aggregated', async (query) => {
+        this.registerEndpoint('/aggregated', async (query: any) => {
             return await this.storageManager.getData('aggregatedData', query);
         });
         
         // リアルタイム監視データ取得
-        this.registerEndpoint('/realtime', async (query) => {
+        this.registerEndpoint('/realtime', async (query: any) => {
             return await this.storageManager.getData('realtimeMonitoring', query);
         });
         
@@ -108,7 +131,7 @@ export class APIEndpointManager {
      * @param {Function} handler - ハンドラー関数
      * @param {Object} options - オプション設定
      */
-    registerEndpoint(path, handler, options: any = {}) {
+    registerEndpoint(path: string, handler: Function, options: any = {}) {
         try {
             const endpointConfig = {
                 path,
