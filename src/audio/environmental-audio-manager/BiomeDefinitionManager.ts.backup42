@@ -4,8 +4,8 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * Sound layer interface
  */
 export interface SoundLayer {
-    name: string;
-    type: string;
+    name: 'string',
+    type: 'string',
     volume: number;
     frequency: number;
     modulation: {
@@ -17,8 +17,8 @@ export interface SoundLayer {
  * Additional layer interface for time variations
  */
 export interface AdditionalLayer {
-    name: string;
-    type: string;
+    name: 'string',
+    type: 'string',
     volume: number;
     biomes: string[];
 }
@@ -34,9 +34,9 @@ export interface BiomeCharacteristics {
  * Biome definition interface
  */
 export interface BiomeDefinition {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     layers: SoundLayer[];
     characteristics: BiomeCharacteristics;
 }
@@ -44,7 +44,7 @@ export interface BiomeDefinition {
  * Sound profile interface
  */
 export interface SoundProfile {
-    type: string;
+    type: 'string',
     volume: number;
     frequency: number;
     filterCutoff: number;
@@ -61,9 +61,9 @@ export interface BiomeModifier {
  * Weather effect interface
  */
 export interface WeatherEffect {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     intensity: number;
     soundProfile: SoundProfile;
     biomeModifiers: Record<string, BiomeModifier>;
@@ -89,8 +89,8 @@ export interface TimeModifiers {
  * Time variation interface
  */
 export interface TimeVariation {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     timeRange: TimeRange;
     modifiers: TimeModifiers;
     additionalLayers: AdditionalLayer[];
@@ -110,25 +110,24 @@ export interface SoundCharacteristics {
  * Available item info interfaces
  */
 export interface AvailableBiome {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     layerCount: number;
-}
+    }
 
 export interface AvailableWeatherEffect {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     intensity: number;
-}
+    }
 
 export interface AvailableTimeVariation {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     timeRange: TimeRange;
     layerCount: number;
-}
 
 /**
  * BiomeDefinitionManager - バイオーム定義管理システム
@@ -197,10 +196,9 @@ export class BiomeDefinitionManager {
                         modulation: {rate: 0.03, depth: 0.5  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 200,
-                    richness: 0.8,
-    dynamics: 0.6
+                characteristics: {baseFrequency: 200)
+                    richness: 0.8'  };
+    dynamics: 0.6'
 
                 });'
             ;
@@ -231,10 +229,9 @@ export class BiomeDefinitionManager {
                         modulation: {rate: 0.15, depth: 0.6  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 100,
-                    richness: 0.9,
-    dynamics: 0.8
+                characteristics: {baseFrequency: 100)
+                    richness: 0.9'  };
+    dynamics: 0.8'
 
                 });'
             ;
@@ -265,10 +262,9 @@ export class BiomeDefinitionManager {
                         modulation: {rate: 0.05, depth: 0.3  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 150,
-                    richness: 0.6,
-    dynamics: 0.9
+                characteristics: {baseFrequency: 150)
+                    richness: 0.6'  };
+    dynamics: 0.9'
 
                 });'
             ;
@@ -299,10 +295,9 @@ export class BiomeDefinitionManager {
                         modulation: {rate: 0.02, depth: 0.3  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 80,
-                    richness: 0.5,
-    dynamics: 0.4
+                characteristics: {baseFrequency: 80)
+                    richness: 0.5'  };
+    dynamics: 0.4'
 
                 });'
             ;
@@ -333,14 +328,11 @@ export class BiomeDefinitionManager {
                         modulation: {rate: 0.07, depth: 0.4  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 60,
+                characteristics: {baseFrequency: 60)
                     richness: 0.7 ;
     dynamics: 0.3 ;
-            console.log(`Initialized ${this.biomes.size} biome, definitions`);
-        }
-        } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            console.log(`Initialized ${this.biomes.size} biome, definitions`}
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_initializeBiomes,);
                 component: 'BiomeDefinitionManager'
             };'
@@ -351,8 +343,7 @@ export class BiomeDefinitionManager {
      * 天候効果を初期化
      * @private'
      */'
-    
-    private _initializeWeatherEffects(): void {
+    private _initializeWeatherEffects('
             this.weatherEffects.set('rain', { '
                 id: 'rain;
                 name: ''雨',
@@ -404,10 +395,8 @@ export class BiomeDefinitionManager {
                     urban: {volumeMultiplier: 1.1, filterMultiplier: 1.0  }
                     mountain: {volumeMultiplier: 1.4, filterMultiplier: 1.2  });
             
-            console.log(`Initialized ${this.weatherEffects.size} weather, effects`);
-        }
-        } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            console.log(`Initialized ${this.weatherEffects.size} weather, effects`}
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_initializeWeatherEffects,);
                 component: 'BiomeDefinitionManager'
             };'
@@ -418,8 +407,7 @@ export class BiomeDefinitionManager {
      * 時間帯バリエーションを初期化
      * @private'
      */'
-    
-    private _initializeTimeVariations(): void {
+    private _initializeTimeVariations('
             this.timeVariations.set('night', { '
                 id: 'night;
                 name: '夜間'
@@ -433,7 +421,7 @@ export class BiomeDefinitionManager {
                         name: ''夜虫の声',
                         type: 'night_insects];
     volume: 0.3,'];
-                        biomes: ['forest', 'grassland] },
+                        biomes: ['forest', 'grassland] },'
 
                     { '
                         name: '遠くの音'
@@ -490,10 +478,8 @@ export class BiomeDefinitionManager {
                         type: 'evening_sounds')]'
     volume: 0.2,'];
                         biomes: ['all]  }]);
-            console.log(`Initialized ${this.timeVariations.size} time, variations`);
-        }
-        } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            console.log(`Initialized ${this.timeVariations.size} time, variations`}
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_initializeTimeVariations,);
                 component: 'BiomeDefinitionManager'
                 }

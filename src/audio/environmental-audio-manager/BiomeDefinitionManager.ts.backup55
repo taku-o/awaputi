@@ -4,8 +4,8 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * Sound layer interface
  */
 export interface SoundLayer {
-    name: string;
-    type: string;
+    name: 'string',
+    type: 'string',
     volume: number;
     frequency: number;
     modulation: {
@@ -17,8 +17,8 @@ export interface SoundLayer {
  * Additional layer interface for time variations
  */
 export interface AdditionalLayer {
-    name: string;
-    type: string;
+    name: 'string',
+    type: 'string',
     volume: number;
     biomes: string[];
 }
@@ -34,9 +34,9 @@ export interface BiomeCharacteristics {
  * Biome definition interface
  */
 export interface BiomeDefinition {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     layers: SoundLayer[];
     characteristics: BiomeCharacteristics;
 }
@@ -44,7 +44,7 @@ export interface BiomeDefinition {
  * Sound profile interface
  */
 export interface SoundProfile {
-    type: string;
+    type: 'string',
     volume: number;
     frequency: number;
     filterCutoff: number;
@@ -61,9 +61,9 @@ export interface BiomeModifier {
  * Weather effect interface
  */
 export interface WeatherEffect {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     intensity: number;
     soundProfile: SoundProfile;
     biomeModifiers: Record<string, BiomeModifier>;
@@ -89,8 +89,8 @@ export interface TimeModifiers {
  * Time variation interface
  */
 export interface TimeVariation {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     timeRange: TimeRange;
     modifiers: TimeModifiers;
     additionalLayers: AdditionalLayer[];
@@ -110,25 +110,24 @@ export interface SoundCharacteristics {
  * Available item info interfaces
  */
 export interface AvailableBiome {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     layerCount: number;
-}
+    }
 
 export interface AvailableWeatherEffect {
-    id: string;
-    name: string;
-    description: string;
+    id: 'string',
+    name: 'string',
+    description: 'string',
     intensity: number;
-}
+    }
 
 export interface AvailableTimeVariation {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     timeRange: TimeRange;
     layerCount: number;
-}
 
 /**
  * BiomeDefinitionManager - バイオーム定義管理システム
@@ -200,7 +199,7 @@ export class BiomeDefinitionManager {
                 characteristics: {
                 baseFrequency: 200,
                     richness: 0.8,
-    dynamics: 0.6
+    dynamics: 0.6'
 
                 });'
             ;
@@ -234,7 +233,7 @@ export class BiomeDefinitionManager {
                 characteristics: {
                 baseFrequency: 100,
                     richness: 0.9,
-    dynamics: 0.8
+    dynamics: 0.8'
 
                 });'
             ;
@@ -268,7 +267,7 @@ export class BiomeDefinitionManager {
                 characteristics: {
                 baseFrequency: 150,
                     richness: 0.6,
-    dynamics: 0.9
+    dynamics: 0.9'
 
                 });'
             ;
@@ -302,7 +301,7 @@ export class BiomeDefinitionManager {
                 characteristics: {
                 baseFrequency: 80,
                     richness: 0.5,
-    dynamics: 0.4
+    dynamics: 0.4'
 
                 });'
             ;

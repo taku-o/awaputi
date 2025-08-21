@@ -4,7 +4,7 @@ import { getErrorHandler  } from '../../utils/ErrorHandler';
  * Sound layer interface
  */
 export interface SoundLayer {
-    name: string;
+    name: 'string',
     type: string;
     volume: number;
     frequency: number;
@@ -17,7 +17,7 @@ export interface SoundLayer {
  * Additional layer interface for time variations
  */
 export interface AdditionalLayer {
-    name: string;
+    name: 'string',
     type: string;
     volume: number;
     biomes: string[];
@@ -34,8 +34,8 @@ export interface BiomeCharacteristics {
  * Biome definition interface
  */
 export interface BiomeDefinition {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     description: string;
     layers: SoundLayer[];
     characteristics: BiomeCharacteristics;
@@ -61,8 +61,8 @@ export interface BiomeModifier {
  * Weather effect interface
  */
 export interface WeatherEffect {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     description: string;
     intensity: number;
     soundProfile: SoundProfile;
@@ -89,8 +89,8 @@ export interface TimeModifiers {
  * Time variation interface
  */
 export interface TimeVariation {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     timeRange: TimeRange;
     modifiers: TimeModifiers;
     additionalLayers: AdditionalLayer[];
@@ -110,25 +110,24 @@ export interface SoundCharacteristics {
  * Available item info interfaces
  */
 export interface AvailableBiome {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     description: string;
     layerCount: number;
-}
+    }
 
 export interface AvailableWeatherEffect {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     description: string;
     intensity: number;
-}
+    }
 
 export interface AvailableTimeVariation {
-    id: string;
-    name: string;
+    id: 'string',
+    name: 'string',
     timeRange: TimeRange;
     layerCount: number;
-}
 
 /**
  * BiomeDefinitionManager - バイオーム定義管理システム
@@ -174,33 +173,32 @@ export class BiomeDefinitionManager {
         this.biomes.set('forest', {
             id: 'forest';
             name: ''森林'',
-            description: ''豊かな森の環境音'',
+            description: '豊かな森の環境音';
             layers: [{
                 name: ''風音'',
                 type: 'wind';
                 volume: 0.6;
                 frequency: 0.3;
-                modulation: { rate: 0.1, depth: 0.2 }
+                modulation: {rate: 0.1, depth: 0.2 }
 
                     { '
                         name: ''葉擦れ音',
                         type: 'leaves;
                         volume: 0.4;
-    frequency: 0.8,
+    frequency: 0.8 }
                         modulation: {rate: 0.05, depth: 0.3  ;
 
                     { '
                         name: ''鳥のさえずり',
                         type: 'birds;
                         volume: 0.3;
-    frequency: 0.2,
+    frequency: 0.2 }
                         modulation: {rate: 0.03, depth: 0.5  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 200,
-                    richness: 0.8,
-    dynamics: 0.6
+                characteristics: {baseFrequency: 200)
+                    richness: 0.8'  };
+    dynamics: 0.6'
 
                 });'
             ;
@@ -208,33 +206,32 @@ export class BiomeDefinitionManager {
             this.biomes.set('ocean', { '
                 id: 'ocean;
                 name: ''海洋',
-                description: ''波と海風の環境音',
+                description: '波と海風の環境音;
                 layers: [{
                         name: ''波音',
                         type: 'waves;
                         volume: 0.8;
-    frequency: 0.2,
+    frequency: 0.2 }
                         modulation: {rate: 0.08, depth: 0.4  ;
 
                     { '
                         name: ''海風',
                         type: 'sea_wind;
                         volume: 0.5;
-    frequency: 0.4,
+    frequency: 0.4 }
                         modulation: {rate: 0.12, depth: 0.3  ;
 
                     { '
                         name: ''水泡音',
                         type: 'bubbles;
                         volume: 0.2;
-    frequency: 1.2,
+    frequency: 1.2 }
                         modulation: {rate: 0.15, depth: 0.6  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 100,
-                    richness: 0.9,
-    dynamics: 0.8
+                characteristics: {baseFrequency: 100)
+                    richness: 0.9'  };
+    dynamics: 0.8'
 
                 });'
             ;
@@ -242,33 +239,32 @@ export class BiomeDefinitionManager {
             this.biomes.set('urban', { '
                 id: 'urban;
                 name: ''都市',
-                description: ''都市の喧騒と機械音',
+                description: '都市の喧騒と機械音;
                 layers: [{
                         name: ''交通音',
                         type: 'traffic;
                         volume: 0.4;
-    frequency: 0.6,
+    frequency: 0.6 }
                         modulation: {rate: 0.2, depth: 0.4  ;
 
                     { '
                         name: ''機械音',
                         type: 'machinery;
                         volume: 0.3;
-    frequency: 0.8,
+    frequency: 0.8 }
                         modulation: {rate: 0.1, depth: 0.2  ;
 
                     { '
                         name: ''人の声',
                         type: 'crowd;
                         volume: 0.2;
-    frequency: 0.4,
+    frequency: 0.4 }
                         modulation: {rate: 0.05, depth: 0.3  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 150,
-                    richness: 0.6,
-    dynamics: 0.9
+                characteristics: {baseFrequency: 150)
+                    richness: 0.6'  };
+    dynamics: 0.9'
 
                 });'
             ;
@@ -276,33 +272,32 @@ export class BiomeDefinitionManager {
             this.biomes.set('mountain', { '
                 id: 'mountain;
                 name: ''山岳',
-                description: ''山の静寂と風音',
+                description: '山の静寂と風音;
                 layers: [{
                         name: ''高山風',
                         type: 'mountain_wind;
                         volume: 0.7;
-    frequency: 0.2,
+    frequency: 0.2 }
                         modulation: {rate: 0.08, depth: 0.5  ;
 
                     { '
                         name: ''遠い谷のこだま',
                         type: 'echo;
                         volume: 0.3;
-    frequency: 0.1,
+    frequency: 0.1 }
                         modulation: {rate: 0.03, depth: 0.4  ;
 
                     { '
                         name: ''岩の軋み',
                         type: 'rock_creaking;
                         volume: 0.2;
-    frequency: 0.05,
+    frequency: 0.05 }
                         modulation: {rate: 0.02, depth: 0.3  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 80,
-                    richness: 0.5,
-    dynamics: 0.4
+                characteristics: {baseFrequency: 80)
+                    richness: 0.5'  };
+    dynamics: 0.4'
 
                 });'
             ;
@@ -310,37 +305,34 @@ export class BiomeDefinitionManager {
             this.biomes.set('cave', { '
                 id: 'cave;
                 name: ''洞窟',
-                description: ''洞窟の静寂と水滴音',
+                description: '洞窟の静寂と水滴音;
                 layers: [{
                         name: ''水滴音',
                         type: 'drips;
                         volume: 0.4;
-    frequency: 0.3,
+    frequency: 0.3 }
                         modulation: {rate: 0.1, depth: 0.8  ;
 
                     { '
                         name: ''洞窟の共鳴',
                         type: 'cave_resonance;
                         volume: 0.6;
-    frequency: 0.1,
+    frequency: 0.1 }
                         modulation: {rate: 0.05, depth: 0.3  ;
 
                     { '
                         name: ''微かな風音',
                         type: 'cave_wind;
                         volume: 0.3;
-    frequency: 0.2,
+    frequency: 0.2 }
                         modulation: {rate: 0.07, depth: 0.4  }]
                     }]
                 ];
-                characteristics: {
-                baseFrequency: 60,
+                characteristics: {baseFrequency: 60)
                     richness: 0.7 ;
     dynamics: 0.3 ;
-            console.log(`Initialized ${this.biomes.size} biome, definitions`);
-        }
-        } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            console.log(`Initialized ${this.biomes.size} biome, definitions`}
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_initializeBiomes,);
                 component: 'BiomeDefinitionManager'
             };'
@@ -351,12 +343,11 @@ export class BiomeDefinitionManager {
      * 天候効果を初期化
      * @private'
      */'
-    
-    private _initializeWeatherEffects(): void {
+    private _initializeWeatherEffects('
             this.weatherEffects.set('rain', { '
                 id: 'rain;
                 name: ''雨',
-                description: ''雨音効果',
+                description: '雨音効果;
     intensity: 0.5;
                 soundProfile: {
                     type: 'rain' ;
@@ -374,7 +365,7 @@ export class BiomeDefinitionManager {
             this.weatherEffects.set('wind', { '
                 id: 'wind;
                 name: ''風',
-                description: ''風音効果',
+                description: '風音効果;
     intensity: 0.7;
                 soundProfile: {
                     type: 'wind' ;
@@ -392,7 +383,7 @@ export class BiomeDefinitionManager {
             this.weatherEffects.set('thunderstorm', { '
                 id: 'thunderstorm;
                 name: ''雷雨',
-                description: ''雷と激しい雨音',
+                description: '雷と激しい雨音;
     intensity: 0.9;
                 soundProfile: {
                     type: 'thunderstorm' ;
@@ -404,10 +395,8 @@ export class BiomeDefinitionManager {
                     urban: {volumeMultiplier: 1.1, filterMultiplier: 1.0  }
                     mountain: {volumeMultiplier: 1.4, filterMultiplier: 1.2  });
             
-            console.log(`Initialized ${this.weatherEffects.size} weather, effects`);
-        }
-        } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            console.log(`Initialized ${this.weatherEffects.size} weather, effects`}
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_initializeWeatherEffects,);
                 component: 'BiomeDefinitionManager'
             };'
@@ -418,8 +407,7 @@ export class BiomeDefinitionManager {
      * 時間帯バリエーションを初期化
      * @private'
      */'
-    
-    private _initializeTimeVariations(): void {
+    private _initializeTimeVariations('
             this.timeVariations.set('night', { '
                 id: 'night;
                 name: '夜間'
@@ -433,7 +421,7 @@ export class BiomeDefinitionManager {
                         name: ''夜虫の声',
                         type: 'night_insects];
     volume: 0.3,'];
-                        biomes: ['forest', 'grassland] },
+                        biomes: ['forest', 'grassland] },'
 
                     { '
                         name: '遠くの音'
@@ -490,10 +478,8 @@ export class BiomeDefinitionManager {
                         type: 'evening_sounds')]'
     volume: 0.2,'];
                         biomes: ['all]  }]);
-            console.log(`Initialized ${this.timeVariations.size} time, variations`);
-        }
-        } catch (error) {
-            getErrorHandler().handleError(error, 'AUDIO_ERROR', {
+            console.log(`Initialized ${this.timeVariations.size} time, variations`}
+        } catch (error) { getErrorHandler().handleError(error, 'AUDIO_ERROR', {
                 operation: '_initializeTimeVariations,);
                 component: 'BiomeDefinitionManager'
                 }
@@ -519,7 +505,7 @@ export class BiomeDefinitionManager {
     getAvailableBiomes(): AvailableBiome[] { return Array.from(this.biomes.values())).map(biome => ({
             id: biome.id);
             name: 'biome.name',
-    description: 'biome.description)',
+    description: biome.description);
             layerCount: biome.layers.length));
     }
     
@@ -529,7 +515,7 @@ export class BiomeDefinitionManager {
     getAvailableWeatherEffects(): AvailableWeatherEffect[] { return Array.from(this.weatherEffects.values())).map(weather => ({
             id: weather.id);
             name: 'weather.name',
-    description: 'weather.description)',
+    description: weather.description);
             intensity: weather.intensity));
     }
     

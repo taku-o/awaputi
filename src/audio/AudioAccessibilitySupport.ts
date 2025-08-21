@@ -7,41 +7,66 @@ import { AudioFeedbackManager  } from './accessibility/AudioFeedbackManager.js';
 import { AudioSettingsManager  } from './accessibility/AudioSettingsManager.js';
 
 // エラーハンドラー型定義
-interface ErrorHandler { handleError(error: Error, type: string, context?: any): void;
+interface ErrorHandler {
+    handleError(error: Error, type: string, context?: any): void;
+}
 
 // 設定管理型定義
-interface ConfigurationManager { // Configuration manager methods }
+interface ConfigurationManager {
+    // Configuration manager methods
+}
 
 // ローカライゼーション管理型定義
-interface LocalizationManager { // Localization manager methods }
+interface LocalizationManager {
+    // Localization manager methods
+}
 
 // オーディオマネージャー型定義
-interface AudioManager { audioVisualizer?: any,
-    getVisualizationStatistics(): AudioVisualizationStats | null }
+interface AudioManager {
+    audioVisualizer?: any;
+    getVisualizationStatistics(): AudioVisualizationStats | null;
+}
 
 // 音響統計型定義
-interface AudioVisualizationStats { averageLevel?: number;
+interface AudioVisualizationStats {
+    averageLevel?: number;
+}
 
 // 視覚通知オプション型定義
-interface VisualNotificationOptions { type: string;
+interface VisualNotificationOptions {
+    type: string;
     title?: string;
     message?: string;
     icon?: string;
     color?: string;
     position?: any;
     duration?: number;
+}
 
 // イベントデータ型定義
-interface BubblePopEventData { bubbleType: string,
+interface BubblePopEventData {
+    bubbleType: string;
     comboLevel: number;
     position?: any;
-    interface ComboEventData { comboLevel: string,
+}
+
+interface ComboEventData {
+    comboLevel: string;
     comboCount: number;
-    interface AchievementEventData { achievementName: string,
+}
+
+interface AchievementEventData {
+    achievementName: string;
     rarity: string;
-    interface GameStateEventData { state: string;
+}
+
+interface GameStateEventData {
+    state: string;
     details?: string;
-    interface AudioEventData { bubbleType?: string,
+}
+
+interface AudioEventData {
+    bubbleType?: string;
     comboLevel?: number | string;
     position?: any;
     comboCount?: number;
@@ -49,16 +74,20 @@ interface BubblePopEventData { bubbleType: string,
     rarity?: string;
     state?: string;
     details?: string;
+}
 
 // 設定型定義
-interface AccessibilitySettings { visualFeedback: boolean,
-    colorIndication: boolean,
-    hapticFeedback: boolean,
+interface AccessibilitySettings {
+    visualFeedback: boolean;
+    colorIndication: boolean;
+    hapticFeedback: boolean;
     captioning: boolean;
+}
 
 // パターン認識型定義
 interface PatternRecognition {
     enabled: boolean;
+}
 
 /**
  * 音響アクセシビリティ支援クラス - 聴覚障害者向け支援機能
