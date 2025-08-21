@@ -3,7 +3,7 @@
  * Main Controller Patternで使用するサブコンポーネントの共通インターフェース
  */
 
-type ErrorHandler = (error: Error, componentName: string, context: string) => void,
+type ErrorHandler = (error: Error, componentName: string, context: string) => void;
 
 export class BaseComponent {
     protected mainController: any;
@@ -11,38 +11,41 @@ export class BaseComponent {
     protected initialized: boolean;
     protected errorHandler: ErrorHandler | null;
 
-    constructor(mainController: any, name: string = 'BaseComponent' {'
-
+    constructor(mainController: any, name: string = 'BaseComponent') {
         this.mainController = mainController;
         this.name = name;
-        this.initialized = false
-};
-        this.errorHandler = null; }
+        this.initialized = false;
+        this.errorHandler = null;
     }
 
     /**
      * コンポーネントの初期化
      * @returns {Promise<void>}
      */
-    async initialize(): Promise<void> { try {
+    async initialize(): Promise<void> {
+        try {
             await this._doInitialize();
-            this.initialized = true,' }'
-
+            this.initialized = true;
         } catch (error) {
             this._handleError('Initialization failed', error as Error);
-            throw error }
+            throw error;
+        }
     }
 
     /**
      * 子クラスでオーバーライドする初期化処理
      * @protected
      */
-    protected async _doInitialize(): Promise<void> { // Override in subclasses }
+    protected async _doInitialize(): Promise<void> {
+        // Override in subclasses
+    }
 
     /**
      * コンポーネントのクリーンアップ
      */
-    cleanup(): void { this.initialized = false }
+    cleanup(): void {
+        this.initialized = false;
+    }
 
     /**
      * エラーハンドリング
@@ -54,17 +57,24 @@ export class BaseComponent {
         const message = `[${this.name}] ${context}: ${error.message}`;
         console.error(message, error);
         
-        if (this.errorHandler) { this.errorHandler(error, this.name, context) }
+        if (this.errorHandler) {
+            this.errorHandler(error, this.name, context);
+        }
     }
 
     /**
      * エラーハンドラーの設定
      * @param {Function} handler - エラーハンドラー関数
      */
-    setErrorHandler(handler: ErrorHandler): void { this.errorHandler = handler }
+    setErrorHandler(handler: ErrorHandler): void {
+        this.errorHandler = handler;
+    }
 
     /**
      * 初期化状態の確認
      * @returns {boolean}
-     */''
-    isInitialized();
+     */
+    isInitialized(): boolean {
+        return this.initialized;
+    }
+}

@@ -6,10 +6,14 @@
 export class GameStateGenerationCommands {
     constructor(parent?: any) {
         // TypeScript implementation
-    };
-        console.log('[GameStateGenerationCommands] Initialized'); }'
+        console.log('[GameStateGenerationCommands] Initialized');
     }
 
-    public initialize(): void { // Implementation }
+    public initialize(): void {
+        // Implementation
+    }
 
-    public destroy();
+    public destroy(): void {
+        // Implementation
+    }
+}
